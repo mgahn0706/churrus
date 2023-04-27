@@ -3,16 +3,17 @@ import Image from "next/image";
 
 export default function Startup(){
 
-
     return (<>
             <Image
             src='/lounge.png'
             alt='스타트업 라운지 이미지'
             fill
             style={{
+                display: 'inline-block',
                 objectFit: "cover",
                 objectPosition: 'center',
                 zIndex: -1,
+                position: 'relative',
             }}
             onClick={()=>{
 
