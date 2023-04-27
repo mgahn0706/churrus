@@ -1,19 +1,24 @@
 import {ClueButton} from "@/components/ClueButton";
+import { Box } from "@mui/material";
 import Image from "next/image";
 
 export default function Startup(){
 
-    return (<>
+    return (<Box
+    sx={{
+        position: 'relative',
+        display: 'inline-block',
+    }}
+    >
             <Image
             src='/lounge.png'
             alt='스타트업 라운지 이미지'
             fill
             style={{
-                display: 'inline-block',
                 objectFit: "cover",
                 objectPosition: 'center',
                 zIndex: -1,
-                position: 'relative',
+                
             }}
             onClick={()=>{
 
@@ -25,7 +30,7 @@ export default function Startup(){
             x={950} y={480}
             />
             <ClueButton label={'한채원의 술잔'} index={2} onClick={()=>{}} x={927} y={443}/>
-        </>
+        </Box>
     )
 }
 
