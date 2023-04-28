@@ -19,8 +19,8 @@ export function ClueButton({
                 onClick={onClick}
         sx={{
             position: 'absolute',
-            left: `${x}px`,
-            top: `${y}px`,
+            left: `${x}%`,
+            top: `${y}%`,
         }}
         >
             <Typography>{index}</Typography>
