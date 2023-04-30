@@ -47,7 +47,11 @@ export function ClueDetailView({ id, clueData, onClose }: ClueDetailViewProps) {
           >
             <CloseIcon />
           </IconButton>
-          <Typography sx={{ ml: 2, flex: 1 }} variant="h5" component="div">
+          <Typography
+            sx={{ ml: 3, flex: 1, my: 1 }}
+            variant="h4"
+            component="div"
+          >
             {`${clueData.id}. ${clueData?.title}`}
           </Typography>
           <Button autoFocus color="inherit" onClick={onClose}>
@@ -66,8 +70,16 @@ export function ClueDetailView({ id, clueData, onClose }: ClueDetailViewProps) {
         </Box>
         <Box display="flex">
           <Divider orientation="vertical" flexItem />
-          <Box ml={"50px"} mt="150px">
-            <Typography variant="h6">{clueData.description}</Typography>
+          <Box mx={"50px"} mt="150px">
+            <Typography
+              variant="h5"
+              sx={{
+                wordBreak: "keep-all",
+                lineHeight: "2",
+              }}
+            >
+              {clueData.description}
+            </Typography>
           </Box>
         </Box>
       </Box>
