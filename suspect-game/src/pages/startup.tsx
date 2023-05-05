@@ -1,7 +1,12 @@
 import { ClueButton } from "@/components/ClueButton";
 import { ClueDetailView } from "@/components/ClueDetailView";
-import { ClueType, startUpClues } from "@/fixtures/clues/startup";
+import { ClueType, startUpClues } from "@/fixtures/startup/clues/clues";
+import { suspects } from "@/fixtures/startup/interrogations/interrogations";
+import { SpeedDial, SpeedDialAction, SpeedDialIcon } from "@mui/material";
 import Image from "next/image";
+import LightBulbIcon from "@mui/icons-material/Lightbulb";
+import PersonSearchIcon from "@mui/icons-material/PersonSearch";
+import MenuBookIcon from "@mui/icons-material/MenuBook";
 import { useState } from "react";
 
 export default function Startup() {
@@ -14,6 +19,7 @@ export default function Startup() {
     <>
       {openedClue !== null && (
         <ClueDetailView
+          suspects={suspects}
           clueData={openedClue}
           id={openedClueId}
           onClose={() => {
@@ -37,7 +43,7 @@ export default function Startup() {
           };
         }}
       />
-      {startUpClues.map((clue, index) => {
+      {startUpClues.map((clue) => {
         return (
           <ClueButton
             key={clue.id}
@@ -51,6 +57,18 @@ export default function Startup() {
           />
         );
       })}
+      <SpeedDial
+        ariaLabel="SpeedDial basic example"
+        sx={{ position: "absolute", bottom: 16, right: 16 }}
+        icon={<SpeedDialIcon />}
+      >
+        <SpeedDialAction icon={<LightBulbIcon />} tooltipTitle={"단서 현황"} />
+        <SpeedDialAction
+          icon={<PersonSearchIcon />}
+          tooltipTitle={"용의자 정보"}
+        />
+        <SpeedDialAction icon={<MenuBookIcon />} tooltipTitle={"규칙"} />
+      </SpeedDial>
     </>
   );
 }

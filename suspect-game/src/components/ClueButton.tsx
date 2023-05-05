@@ -12,7 +12,6 @@ interface ClueButtonProps {
 export function ClueButton({ label, index, onClick, x, y }: ClueButtonProps) {
   return (
     <Button
-      color="warning"
       variant="contained"
       endIcon={<SearchIcon />}
       size="small"
