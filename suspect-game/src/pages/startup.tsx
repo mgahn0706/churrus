@@ -24,6 +24,16 @@ export default function Startup() {
         style={{
           zIndex: -1,
         }}
+        onClick={() => {
+          document.onclick = (e) => {
+            navigator.clipboard.writeText(
+              `x: ${((100 * e.pageX) / screen.availWidth).toFixed(3)}, y: ${(
+                (100 * e.pageY) /
+                screen.availHeight
+              ).toFixed(3)},`
+            );
+          };
+        }}
       />
       {openedClue !== null && (
         <ClueDetailView
