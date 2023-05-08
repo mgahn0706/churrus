@@ -2,7 +2,7 @@ import { ClueButton } from "@/components/ClueButton";
 import { ClueDetailView } from "@/components/ClueDetailView";
 import { ClueType, startUpClues } from "@/fixtures/startup/clues/clues";
 import { suspects } from "@/fixtures/startup/interrogations/interrogations";
-import { SpeedDial, SpeedDialAction, SpeedDialIcon } from "@mui/material";
+import { Box, SpeedDial, SpeedDialAction, SpeedDialIcon } from "@mui/material";
 import Image from "next/image";
 import LightBulbIcon from "@mui/icons-material/Lightbulb";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
@@ -16,7 +16,15 @@ export default function Startup() {
     startUpClues.find((clue) => clue.id === openedClueId) ?? null;
 
   return (
-    <>
+    <Box>
+      <Image
+        src="/startup-lounge.png"
+        alt="스타트업 라운지 이미지"
+        fill
+        style={{
+          zIndex: -1,
+        }}
+      />
       {openedClue !== null && (
         <ClueDetailView
           suspects={suspects}
@@ -27,22 +35,6 @@ export default function Startup() {
           }}
         />
       )}
-      <Image
-        src="/lounge.png"
-        alt="스타트업 라운지 이미지"
-        fill
-        style={{
-          zIndex: -1,
-        }}
-        onClick={() => {
-          document.onclick = (e) => {
-            console.log(
-              ((100 * e.pageX) / screen.width).toFixed(2),
-              ((100 * e.pageY) / screen.height).toFixed(2)
-            );
-          };
-        }}
-      />
       {startUpClues.map((clue) => {
         return (
           <ClueButton
@@ -69,6 +61,6 @@ export default function Startup() {
         />
         <SpeedDialAction icon={<MenuBookIcon />} tooltipTitle={"규칙"} />
       </SpeedDial>
-    </>
+    </Box>
   );
 }
