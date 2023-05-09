@@ -19,7 +19,7 @@ export const startUpClues: ClueType[] = [
     reliability: 'high',
     description: '피해자 한채원의 시체이다. 외상의 흔적은 없다. 사인은 니코틴 중독으로 치사량 이상의 니코틴이 검출되었다.',
     type: 'basic',
-    image: '/startup_1.png',
+    image: '/clueImage/startup-1.png',
     place: 'lounge',
 
 }

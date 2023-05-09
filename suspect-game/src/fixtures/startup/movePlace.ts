@@ -10,20 +10,20 @@ export interface MovePlaceButtonType {
 export const startUpMoveButton : MovePlaceButtonType[] = [{
     from: 'lounge',
     to: 'office',
-    x: 24.525, y: 2.337,
+    x: 22.859, y: 11.152,
     direction: 'up'
 },
 
 {
     from: 'lounge',
     to: 'house',
-    x: 91.377, y: 79.171,
+    x: 88.005, y: 79.880,
     direction: 'right'
 },
 {
     from: 'office',
     to: 'lounge',
-    x: 21.470, y: 89.502,
+    x: 19.965, y: 86.175,
     direction: 'down'
 
 }

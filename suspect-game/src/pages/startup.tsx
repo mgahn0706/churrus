@@ -23,8 +23,8 @@ export default function Startup() {
   return (
     <Box>
       <Image
-        src={`/startup-${currentPlace}.png`}
-        alt="스타트업 라운지 이미지"
+        src={`/mapImage/startup-${currentPlace}.png`}
+        alt="스타트업 맵 이미지"
         fill
         style={{
           zIndex: -1,
