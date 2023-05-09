@@ -35,7 +35,6 @@ export default function MovePlaceButton({
         position: "absolute",
         left: `${x}%`,
         top: `${y}%`,
-        zIndex: 1,
       }}
       onClick={onClick}
     >
