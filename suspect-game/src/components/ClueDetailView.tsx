@@ -97,7 +97,7 @@ export function ClueDetailView({
         </Toolbar>
       </AppBar>
       <Box display="flex" mt={4}>
-        <Box display="flex" m={"150px"} width="300px" height="300px">
+        <Box display="flex" m={"150px"} width="30%" height="30%">
           <Image
             src={clueData.image}
             alt={`${clueData.id}번째 단서 이미지`}
