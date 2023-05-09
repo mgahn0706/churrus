@@ -15,7 +15,7 @@ type PlaceType = "lounge" | "office" | "house" | "suspects";
 
 export default function Startup() {
   const [openedClueId, setOpenedClueId] = useState<number | null>(null);
-  const [currentPlace, setCurrentPlace] = useState<PlaceType>("lounge");
+  const [currentPlace, setCurrentPlace] = useState("lounge");
 
   const openedClue: ClueType | null =
     startUpClues.find((clue) => clue.id === openedClueId) ?? null;
@@ -53,28 +53,34 @@ export default function Startup() {
       )}
       {startUpClues.map((clue) => {
         return (
-          <ClueButton
-            key={clue.id}
-            label={clue.title}
-            index={clue.id}
-            x={clue.x}
-            y={clue.y}
-            onClick={() => {
-              setOpenedClueId(clue.id);
-            }}
-          />
+          clue.place === currentPlace && (
+            <ClueButton
+              key={clue.id}
+              label={clue.title}
+              index={clue.id}
+              x={clue.x}
+              y={clue.y}
+              onClick={() => {
+                setOpenedClueId(clue.id);
+              }}
+            />
+          )
         );
       })}
 
       {startUpMoveButton.map((button) => {
         return (
-          <MovePlaceButton
-            key={`${button.from}-${button.to}}`}
-            direction={button.direction}
-            x={button.x}
-            y={button.y}
-            onClick={() => {}}
-          />
+          button.from === currentPlace && (
+            <MovePlaceButton
+              key={`${button.from}-${button.to}}`}
+              direction={button.direction}
+              x={button.x}
+              y={button.y}
+              onClick={() => {
+                setCurrentPlace(button.to);
+              }}
+            />
+          )
         );
       })}
 
