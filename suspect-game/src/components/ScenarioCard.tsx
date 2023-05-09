@@ -5,7 +5,6 @@ import {
   CardMedia,
   Typography,
 } from "@mui/material";
-import { title } from "process";
 
 interface ScenarioCardProps {
   title: string;
@@ -24,8 +23,8 @@ export default function ScenarioCard({
         <CardMedia
           component="img"
           height="140"
-          image="https%3A%2F%2Fwww.sparkplus.co%2Fspot%2Fmain%2Fdetail%2Fsinnonhyeon&psig=AOvVaw3fh-laauG1bqk8xnz8Y9q2&ust=1683626396373000&source=images&cd=vfe&ved=0CA4QjRxqFwoTCPCOraG75f4CFQAAAAAdAAAAABAr"
-          alt="green iguana"
+          image="../../public/startup-main.png"
+          alt="startup-image"
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">

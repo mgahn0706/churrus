@@ -1,16 +1,21 @@
 import { ClueButton } from "@/components/ClueButton";
 import { ClueDetailView } from "@/components/ClueDetailView";
-import { ClueType, startUpClues } from "@/fixtures/startup/clues/clues";
-import { suspects } from "@/fixtures/startup/interrogations/interrogations";
+import { ClueType, startUpClues } from "@/fixtures/startup/clues";
+import { suspects } from "@/fixtures/startup/interrogations";
 import { Box, SpeedDial, SpeedDialAction, SpeedDialIcon } from "@mui/material";
 import Image from "next/image";
 import LightBulbIcon from "@mui/icons-material/Lightbulb";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import { useState } from "react";
+import { startUpMoveButton } from "@/fixtures/startup/movePlace";
+import MovePlaceButton from "@/components/MovePlaceButton";
+
+type PlaceType = "lounge" | "office" | "house" | "suspects";
 
 export default function Startup() {
   const [openedClueId, setOpenedClueId] = useState<number | null>(null);
+  const [currentPlace, setCurrentPlace] = useState<PlaceType>("lounge");
 
   const openedClue: ClueType | null =
     startUpClues.find((clue) => clue.id === openedClueId) ?? null;
@@ -18,7 +23,7 @@ export default function Startup() {
   return (
     <Box>
       <Image
-        src="/startup-lounge.png"
+        src={`/startup-${currentPlace}.png`}
         alt="스타트업 라운지 이미지"
         fill
         style={{
@@ -35,6 +40,7 @@ export default function Startup() {
           };
         }}
       />
+
       {openedClue !== null && (
         <ClueDetailView
           suspects={suspects}
@@ -59,6 +65,19 @@ export default function Startup() {
           />
         );
       })}
+
+      {startUpMoveButton.map((button) => {
+        return (
+          <MovePlaceButton
+            key={`${button.from}-${button.to}}`}
+            direction={button.direction}
+            x={button.x}
+            y={button.y}
+            onClick={() => {}}
+          />
+        );
+      })}
+
       <SpeedDial
         ariaLabel="SpeedDial basic example"
         sx={{ position: "absolute", bottom: 16, right: 16 }}

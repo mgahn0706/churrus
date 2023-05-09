@@ -15,7 +15,7 @@ import { TransitionProps } from "@mui/material/transitions";
 import React, { useState } from "react";
 import Image from "next/image";
 import CloseIcon from "@mui/icons-material/Close";
-import { ClueType } from "@/fixtures/startup/clues/clues";
+import { ClueType } from "@/fixtures/startup/clues";
 
 interface ClueDetailViewProps {
   id: number | null;
