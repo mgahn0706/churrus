@@ -65,13 +65,11 @@ export default function Startup() {
       )}
       {startUpClues.map((clue) => {
         return (
-          clue.place === currentPlace && (
+          (clue.place === currentPlace ||
+            (clue.place === openedClueId && clue.type === "additional")) && (
             <ClueButton
               key={clue.id}
-              label={clue.title}
-              index={clue.id}
-              x={clue.x}
-              y={clue.y}
+              clue={clue}
               onClick={() => {
                 setOpenedClueId(clue.id);
                 if (!checkedClueList.includes(clue.id)) {
@@ -105,7 +103,7 @@ export default function Startup() {
       />
       <SpeedDial
         ariaLabel="SpeedDial basic example"
-        sx={{ position: "absolute", bottom: 16, right: 16 }}
+        sx={{ position: "absolute", bottom: 18, right: 18 }}
         icon={<SpeedDialIcon />}
       >
         <SpeedDialAction

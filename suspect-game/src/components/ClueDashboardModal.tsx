@@ -48,7 +48,7 @@ export default function ClueDashboardModal({
           })}
         </Box>
         <Box display="flex" justifyContent="flex-end" mt={2}>
-          <Button sx={{ mt: 5 }} variant="contained" onClick={onClose}>
+          <Button sx={{ mt: 5 }} variant="outlined" onClick={onClose}>
             닫기
           </Button>
         </Box>

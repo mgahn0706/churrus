@@ -7,7 +7,7 @@ export interface ClueType {
     reliability: 'low' | 'medium' | 'high';
     description: string;
     type: 'basic' | 'additional' | 'interrogation';
-    place: string;
+    place: string | number;
 }
 
 
@@ -42,6 +42,25 @@ export const startUpClues: ClueType[] = [
     description: '입사 1주년',
     type: 'basic',
     image: '/Suspect_Logo.png',
-    place: 'office',}
+    place: 'office',},
+    {
+    id: 4,
+    title: '한채원의 서랍',
+    x: 82.350, y: 73.617,
+    reliability: 'high',
+    description: '한채원의 서랍이다. 서랍 안에는 다양한 사무용품이 들어있다.',
+    type: 'basic',
+    image: '/Suspect_Logo.png',
+    place: 'office',},
+    
+    {
+    id: 5,
+    title: '네임펜',
+    x: 24.699, y: 32.253,
+    reliability: 'high',
+    description: '한채원의 네임펜이다. 네임펜에는 한채원의 이름과 회사명이 적혀있다.',
+    type: 'additional',
+    image: '/Suspect_Logo.png',
+    place: 4,},
     
 ]

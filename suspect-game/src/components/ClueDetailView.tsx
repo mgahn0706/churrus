@@ -53,7 +53,13 @@ export function ClueDetailView({
   }
 
   return (
-    <Dialog fullScreen open onClose={onClose} TransitionComponent={Transition}>
+    <Dialog
+      fullScreen
+      open
+      onClose={onClose}
+      TransitionComponent={Transition}
+      sx={{ zIndex: 1 }}
+    >
       <AppBar sx={{ position: "relative" }}>
         <Toolbar>
           <IconButton
@@ -97,7 +103,7 @@ export function ClueDetailView({
         </Toolbar>
       </AppBar>
       <Box display="flex" mt={4}>
-        <Box display="flex" m={"150px"} width="30%" height="30%">
+        <Box display="flex" m={"150px"}>
           <Image
             src={clueData.image}
             alt={`${clueData.id}번째 단서 이미지`}

@@ -1,15 +1,13 @@
 import { Button, Divider, Typography } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import { ClueType } from "@/fixtures/startup/clues";
 
 interface ClueButtonProps {
-  label: string;
-  index: number;
-  x: number;
-  y: number;
+  clue: ClueType;
   onClick: () => void;
 }
 
-export function ClueButton({ label, index, onClick, x, y }: ClueButtonProps) {
+export function ClueButton({ clue, onClick }: ClueButtonProps) {
   return (
     <Button
       variant="contained"
@@ -17,14 +15,15 @@ export function ClueButton({ label, index, onClick, x, y }: ClueButtonProps) {
       size="small"
       onClick={onClick}
       sx={{
+        zIndex: clue.type === "additional" ? 2 : 0,
         position: "absolute",
-        left: `${x}%`,
-        top: `${y}%`,
+        left: `${clue.x}%`,
+        top: `${clue.y}%`,
       }}
     >
-      <Typography>{index}</Typography>
+      <Typography>{clue.id}</Typography>
       <Divider sx={{ mx: 1 }} orientation="vertical" flexItem />
-      {label}
+      {clue.title}
     </Button>
   );
 }
