@@ -2,7 +2,14 @@ import { ClueButton } from "@/components/ClueButton";
 import { ClueDetailView } from "@/components/ClueDetailView";
 import { ClueType, startUpClues } from "@/fixtures/startup/clues";
 import { suspects } from "@/fixtures/startup/interrogations";
-import { Box, SpeedDial, SpeedDialAction, SpeedDialIcon } from "@mui/material";
+import {
+  Box,
+  Modal,
+  SpeedDial,
+  SpeedDialAction,
+  SpeedDialIcon,
+  Typography,
+} from "@mui/material";
 import Image from "next/image";
 import LightBulbIcon from "@mui/icons-material/Lightbulb";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
@@ -15,6 +22,7 @@ import ClueDashboardModal from "@/components/ClueDashboardModal";
 import PrologueModal from "@/components/PrologueModal";
 import { StartUpPrologue } from "@/fixtures/startup/prologue";
 import RuleModal from "@/components/RuleModal";
+import { useMobileWidth } from "@/hooks/useMobileWIdth";
 
 export default function Startup() {
   const [openedClueId, setOpenedClueId] = useState<number | null>(null);
@@ -26,6 +34,40 @@ export default function Startup() {
 
   const openedClue: ClueType | null =
     startUpClues.find((clue) => clue.id === openedClueId) ?? null;
+  const { isMobileWidth } = useMobileWidth();
+  if (isMobileWidth) {
+    return (
+      <Box>
+        <Modal
+          open
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: 300,
+              bgcolor: "background.paper",
+              border: "2px solid #000",
+              boxShadow: 24,
+              p: 4,
+            }}
+          >
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              이용 안내
+            </Typography>
+            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+              화면 크기가 작아 해당 기능을 이용할 수 없습니다. 더 큰 화면의
+              PC에서 이용하시길 권장합니다.
+            </Typography>
+          </Box>
+        </Modal>
+      </Box>
+    );
+  }
 
   return (
     <Box>
