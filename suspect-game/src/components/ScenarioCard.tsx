@@ -32,6 +32,8 @@ export default function ScenarioCard({
             sx={{
               zIndex: 1,
               position: "absolute",
+              width: 50,
+              height: 50,
               backgroundColor: "rgb(24 118 210)",
               color: "white",
             }}
