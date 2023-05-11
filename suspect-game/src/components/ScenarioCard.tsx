@@ -7,6 +7,7 @@ import {
 } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 import { ScenarioType } from "@/fixtures";
+import { useRouter } from "next/router";
 
 interface ScenarioCardProps {
   scenario: ScenarioType;
@@ -21,6 +22,8 @@ export default function ScenarioCard({
   onClick,
   onDeslect,
 }: ScenarioCardProps) {
+  const router = useRouter();
+
   return (
     <Card sx={{ width: 300 }}>
       <CardActionArea>
@@ -44,9 +47,7 @@ export default function ScenarioCard({
         />
         <CardContent
           onClick={
-            isSelected
-              ? () => window.location.replace(`/${scenario.keyword}`)
-              : onClick
+            isSelected ? () => router.push(`/${scenario.keyword}`) : onClick
           }
           sx={{
             alignItems: "center",
