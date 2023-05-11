@@ -6,7 +6,9 @@ export interface ClueType {
     y: number;
     reliability: 'low' | 'medium' | 'high';
     description: string;
-    type: 'basic' | 'additional' | 'interrogation';
+    type: 'basic' | 'additional' | 'interrogation' | 'locked';
+    password?: string;
+    passwordHint?: string;
     place: string | number;
 }
 
@@ -62,5 +64,25 @@ export const startUpClues: ClueType[] = [
     type: 'additional',
     image: '/Suspect_Logo.png',
     place: 4,},
+    {
+    id: 6,
+    title: '한채원의 PC',
+    x: 79.688, y: 66.424,
+    reliability: 'high',
+    description: '한채원의 PC이다. 다양한 파일들과 메신저가 열려있다.',
+    passwordHint: '한채원의 PC이다. PC는 잠겨있다. 비밀번호 힌트로 "내 생일"이라고 적혀있다.',
+    type: 'locked',
+    password: '0801',
+    image: '/Suspect_Logo.png',
+    place: 'office',},
+    {
+    id: 7,
+    title: '발표문',
+    x: 19.688, y: 26.424,
+    reliability: 'high',
+    description: '한채원의 발표문이다. 발표문에는 한채원의 이름과 회사명이 적혀있다.',
+    type: 'additional',
+    image: '/Suspect_Logo.png',
+    place: 6,},
     
 ]

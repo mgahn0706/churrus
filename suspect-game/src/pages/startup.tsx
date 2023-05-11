@@ -23,14 +23,16 @@ import PrologueModal from "@/components/PrologueModal";
 import { StartUpPrologue } from "@/fixtures/startup/prologue";
 import RuleModal from "@/components/RuleModal";
 import { useMobileWidth } from "@/hooks/useMobileWIdth";
+import PasswordInputModal from "@/components/PasswordInputModal";
 
 export default function Startup() {
   const [openedClueId, setOpenedClueId] = useState<number | null>(null);
   const [currentPlace, setCurrentPlace] = useState("lounge");
   const [checkedClueList, setCheckedClueList] = useState<number[]>([]);
   const [openedModal, setOpenedModal] = useState<
-    "rule" | "prologue" | "suspects" | "dashboard" | null
+    "rule" | "prologue" | "suspects" | "dashboard" | "password" | null
   >(null);
+  const [unlockingClue, setUnlockingClue] = useState<ClueType | null>(null);
 
   const openedClue: ClueType | null =
     startUpClues.find((clue) => clue.id === openedClueId) ?? null;
@@ -60,8 +62,8 @@ export default function Startup() {
               이용 안내
             </Typography>
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              화면 크기가 작아 해당 기능을 이용할 수 없습니다. 더 큰 화면의
-              PC에서 이용하시길 권장합니다.
+              화면 크기가 작아 게임을 진행할 수 없습니다. 더 큰 화면의 PC에서
+              진행하시길 권장합니다.
             </Typography>
           </Box>
         </Modal>
@@ -108,6 +110,12 @@ export default function Startup() {
               key={clue.id}
               clue={clue}
               onClick={() => {
+                if (clue.type === "locked") {
+                  setOpenedModal("password");
+                  setUnlockingClue(clue);
+                  return;
+                }
+
                 setOpenedClueId(clue.id);
                 if (!checkedClueList.includes(clue.id)) {
                   setCheckedClueList([...checkedClueList, clue.id]);
@@ -117,6 +125,22 @@ export default function Startup() {
           )
         );
       })}
+
+      <PasswordInputModal
+        targetClue={unlockingClue}
+        isOpen={openedModal === "password"}
+        onClose={() => {
+          setOpenedModal(null);
+          setUnlockingClue(null);
+        }}
+        onSuccess={() => {
+          setOpenedClueId(unlockingClue?.id ?? null);
+          if (!checkedClueList.includes(unlockingClue?.id ?? -1)) {
+            setCheckedClueList([...checkedClueList, unlockingClue?.id ?? -1]);
+          }
+          setUnlockingClue(null);
+        }}
+      />
 
       {startUpMoveButton.map((button) => {
         return (
