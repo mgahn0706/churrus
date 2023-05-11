@@ -31,7 +31,9 @@ export default function MovePlaceButton({
     <IconButton
       color="primary"
       size="large"
+      edge="start"
       sx={{
+        backgroundColor: "white",
         position: "absolute",
         left: `${x}%`,
         top: `${y}%`,
