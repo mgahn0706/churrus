@@ -24,7 +24,7 @@ export default function Home() {
               position: "absolute",
               backgroundRepeat: "no-repeat",
               backgroundSize: "100% 100%",
-              backgroundImage: `linear-gradient(to bottom, rgba(255, 255, 255, 0) 70%, white 100%), url("/select-page.png")`,
+              backgroundImage: `linear-gradient(to bottom, rgba(255, 255, 255, 0) 70%, white 100%), url("/image/select-page.png")`,
             }}
           />
         </Box>

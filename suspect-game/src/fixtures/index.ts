@@ -3,7 +3,7 @@ export const scenarios : ScenarioType[]= [{
     difficulty: 2,
     numberOfSuspects: 3,
     playTime: 90,
-    backgroundImage: '/scenarioImage/startup-main.png',
+    backgroundImage: '/image/scenario/startup-main.png',
     cardImage: '/Suspect_Logo.png',
     keyword: 'startup'
 
