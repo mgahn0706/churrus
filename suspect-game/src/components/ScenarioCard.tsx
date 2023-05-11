@@ -5,30 +5,64 @@ import {
   CardMedia,
   Typography,
 } from "@mui/material";
+import CheckIcon from "@mui/icons-material/Check";
+import { ScenarioType } from "@/fixtures";
 
 interface ScenarioCardProps {
-  title: string;
+  scenario: ScenarioType;
   isSelected: boolean;
+  onDeslect: () => void;
   onClick: () => void;
 }
 
 export default function ScenarioCard({
-  title,
+  scenario,
   isSelected,
   onClick,
+  onDeslect,
 }: ScenarioCardProps) {
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ width: 300 }}>
       <CardActionArea>
+        {isSelected && (
+          <CheckIcon
+            sx={{
+              zIndex: 1,
+              position: "absolute",
+              backgroundColor: "rgb(24 118 210)",
+              color: "white",
+            }}
+          />
+        )}
         <CardMedia
+          onClick={isSelected ? onDeslect : onClick}
           component="img"
+          width="140"
           height="140"
-          image="../../public/startup-main.png"
+          image="/scenarioImage/startup-main.png"
           alt="startup-image"
         />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
-            {title}
+        <CardContent
+          onClick={
+            isSelected
+              ? () => window.location.replace(`/${scenario.keyword}`)
+              : onClick
+          }
+          sx={{
+            alignItems: "center",
+            py: 1,
+            display: "flex",
+            backgroundColor: isSelected ? "rgb(24 118 210)" : "white",
+            justifyContent: "center",
+          }}
+        >
+          <Typography
+            color={isSelected ? "white" : "black"}
+            gutterBottom
+            variant="h5"
+            component="div"
+          >
+            {isSelected ? "시작" : scenario.title}
           </Typography>
         </CardContent>
       </CardActionArea>
