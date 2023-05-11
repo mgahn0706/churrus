@@ -14,13 +14,15 @@ import MovePlaceButton from "@/components/MovePlaceButton";
 import ClueDashboardModal from "@/components/ClueDashboardModal";
 import PrologueModal from "@/components/PrologueModal";
 import { StartUpPrologue } from "@/fixtures/startup/prologue";
+import RuleModal from "@/components/RuleModal";
 
 export default function Startup() {
   const [openedClueId, setOpenedClueId] = useState<number | null>(null);
   const [currentPlace, setCurrentPlace] = useState("lounge");
   const [checkedClueList, setCheckedClueList] = useState<number[]>([]);
-  const [isClueDashboardOpen, setIsClueDashboardOpen] = useState(false);
-  const [isPrologueOpen, setIsPrologueOpen] = useState(false);
+  const [openedModal, setOpenedModal] = useState<
+    "rule" | "prologue" | "suspects" | "dashboard" | null
+  >(null);
 
   const openedClue: ClueType | null =
     startUpClues.find((clue) => clue.id === openedClueId) ?? null;
@@ -90,16 +92,18 @@ export default function Startup() {
         );
       })}
       <ClueDashboardModal
-        isOpen={isClueDashboardOpen}
+        isOpen={openedModal === "dashboard"}
         checkedClueList={checkedClueList}
-        onClose={() => setIsClueDashboardOpen(false)}
+        onClose={() => setOpenedModal(null)}
       />
       <PrologueModal
         prolougeContent={<StartUpPrologue />}
-        isOpen={isPrologueOpen}
-        onClose={() => {
-          setIsPrologueOpen(false);
-        }}
+        isOpen={openedModal === "prologue"}
+        onClose={() => setOpenedModal(null)}
+      />
+      <RuleModal
+        isOpen={openedModal === "rule"}
+        onClose={() => setOpenedModal(null)}
       />
       <SpeedDial
         ariaLabel="SpeedDial basic example"
@@ -109,7 +113,7 @@ export default function Startup() {
         <SpeedDialAction
           icon={<LightBulbIcon />}
           tooltipTitle={"단서 현황"}
-          onClick={() => setIsClueDashboardOpen(true)}
+          onClick={() => setOpenedModal("dashboard")}
         />
         <SpeedDialAction
           icon={<PersonSearchIcon />}
@@ -118,9 +122,13 @@ export default function Startup() {
         <SpeedDialAction
           icon={<InfoIcon />}
           tooltipTitle={"공개된 정보"}
-          onClick={() => setIsPrologueOpen(true)}
+          onClick={() => setOpenedModal("prologue")}
         />
-        <SpeedDialAction icon={<MenuBookIcon />} tooltipTitle={"규칙"} />
+        <SpeedDialAction
+          icon={<MenuBookIcon />}
+          tooltipTitle={"규칙"}
+          onClick={() => setOpenedModal("rule")}
+        />
       </SpeedDial>
     </Box>
   );
