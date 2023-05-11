@@ -67,7 +67,7 @@ export default function PasswordInputModal({
               fullWidth
               value={password}
               onChange={(e) => {
-                setPassword(e.target.value);
+                setPassword(e.target.value.slice(0, 4));
               }}
             />
           </Box>
