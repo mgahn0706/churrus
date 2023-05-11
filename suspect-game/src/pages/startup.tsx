@@ -1,7 +1,7 @@
 import { ClueButton } from "@/components/ClueButton";
 import { ClueDetailView } from "@/components/ClueDetailView";
 import { ClueType, startUpClues } from "@/fixtures/startup/clues";
-import { suspects } from "@/fixtures/startup/interrogations";
+import { startUpSuspects, startUpVictim } from "@/fixtures/startup/suspects";
 import {
   Box,
   Modal,
@@ -24,6 +24,7 @@ import { StartUpPrologue } from "@/fixtures/startup/prologue";
 import RuleModal from "@/components/RuleModal";
 import { useMobileWidth } from "@/hooks/useMobileWIdth";
 import PasswordInputModal from "@/components/PasswordInputModal";
+import SuspectsInfoCard from "@/components/SuspectsInfoCard";
 
 export default function Startup() {
   const [openedClueId, setOpenedClueId] = useState<number | null>(null);
@@ -33,6 +34,10 @@ export default function Startup() {
     "rule" | "prologue" | "suspects" | "dashboard" | "password" | null
   >("rule");
   const [unlockingClue, setUnlockingClue] = useState<ClueType | null>(null);
+
+  const handleCloseModal = () => {
+    setOpenedModal(null);
+  };
 
   const openedClue: ClueType | null =
     startUpClues.find((clue) => clue.id === openedClueId) ?? null;
@@ -94,12 +99,10 @@ export default function Startup() {
 
       {openedClue !== null && (
         <ClueDetailView
-          suspects={suspects}
+          suspects={startUpSuspects}
           clueData={openedClue}
           id={openedClueId}
-          onClose={() => {
-            setOpenedClueId(null);
-          }}
+          onClose={handleCloseModal}
         />
       )}
       {startUpClues.map((clue) => {
@@ -130,7 +133,7 @@ export default function Startup() {
         targetClue={unlockingClue}
         isOpen={openedModal === "password"}
         onClose={() => {
-          setOpenedModal(null);
+          handleCloseModal();
           setUnlockingClue(null);
         }}
         onSuccess={() => {
@@ -160,17 +163,21 @@ export default function Startup() {
       <ClueDashboardModal
         isOpen={openedModal === "dashboard"}
         checkedClueList={checkedClueList}
-        onClose={() => setOpenedModal(null)}
+        onClose={handleCloseModal}
+      />
+      <SuspectsInfoCard
+        isAllClueSearched={checkedClueList.length === startUpClues.length}
+        isOpen={openedModal === "suspects"}
+        victim={startUpVictim}
+        suspects={startUpSuspects}
+        onClose={handleCloseModal}
       />
       <PrologueModal
         prolougeContent={<StartUpPrologue />}
         isOpen={openedModal === "prologue"}
-        onClose={() => setOpenedModal(null)}
+        onClose={handleCloseModal}
       />
-      <RuleModal
-        isOpen={openedModal === "rule"}
-        onClose={() => setOpenedModal(null)}
-      />
+      <RuleModal isOpen={openedModal === "rule"} onClose={handleCloseModal} />
       <SpeedDial
         ariaLabel="SpeedDial basic example"
         sx={{ position: "absolute", bottom: 18, right: 18 }}
@@ -184,6 +191,7 @@ export default function Startup() {
         <SpeedDialAction
           icon={<PersonSearchIcon />}
           tooltipTitle={"용의자/피해자 정보"}
+          onClick={() => setOpenedModal("suspects")}
         />
         <SpeedDialAction
           icon={<InfoIcon />}

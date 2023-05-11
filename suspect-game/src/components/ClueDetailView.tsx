@@ -16,11 +16,12 @@ import React, { useState } from "react";
 import Image from "next/image";
 import CloseIcon from "@mui/icons-material/Close";
 import { ClueType } from "@/fixtures/startup/clues";
+import { SuspectType } from "@/fixtures/startup/suspects";
 
 interface ClueDetailViewProps {
   id: number | null;
   clueData: ClueType | null;
-  suspects: string[];
+  suspects: SuspectType[];
   onClose: () => void;
 }
 
@@ -93,8 +94,8 @@ export function ClueDetailView({
             >
               {suspects.map((suspect) => {
                 return (
-                  <MenuItem key={suspect} onClick={handleClose}>
-                    {suspect}
+                  <MenuItem key={suspect.name} onClick={handleClose}>
+                    {suspect.name}
                   </MenuItem>
                 );
               })}
