@@ -74,7 +74,7 @@ export default function Startup() {
   return (
     <Box>
       <Image
-        src={`/mapImage/startup-${currentPlace}.png`}
+        src={`/MapImage/startup-${currentPlace}.png`}
         alt="스타트업 맵 이미지"
         fill
         style={{

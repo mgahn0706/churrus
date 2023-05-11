@@ -22,13 +22,11 @@ export default function Home() {
             sx={{
               color: "white",
               position: "absolute",
-              backgroundImage: `linear-gradient(to top, rgba(0, 0, 0, 0) 3%, black 20%)`,
+              backgroundRepeat: "no-repeat",
+              backgroundSize: "100% 100%",
+              backgroundImage: `linear-gradient(to bottom, rgba(255, 255, 255, 0) 70%, white 100%), url("/select-page.png")`,
             }}
-          >
-            <Typography variant="h1" my={30}>
-              Select the Crime Scene
-            </Typography>
-          </Box>
+          />
         </Box>
       )}
       {selectedScenario && (

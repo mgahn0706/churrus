@@ -39,7 +39,7 @@ export default function ScenarioCard({
           component="img"
           width="140"
           height="140"
-          image="/scenarioImage/startup-main.png"
+          image={`/CardImage/${scenario.keyword}-card.png`}
           alt="startup-image"
         />
         <CardContent
