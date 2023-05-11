@@ -102,29 +102,30 @@ export default function Startup() {
           }}
         />
       )}
-      {startUpClues.map((clue) => {
-        return (
-          (clue.place === currentPlace ||
-            (clue.place === openedClueId && clue.type === "additional")) && (
-            <ClueButton
-              key={clue.id}
-              clue={clue}
-              onClick={() => {
-                if (clue.type === "locked") {
-                  setOpenedModal("password");
-                  setUnlockingClue(clue);
-                  return;
-                }
+      {!openedModal &&
+        startUpClues.map((clue) => {
+          return (
+            (clue.place === currentPlace ||
+              (clue.place === openedClueId && clue.type === "additional")) && (
+              <ClueButton
+                key={clue.id}
+                clue={clue}
+                onClick={() => {
+                  if (clue.type === "locked") {
+                    setOpenedModal("password");
+                    setUnlockingClue(clue);
+                    return;
+                  }
 
-                setOpenedClueId(clue.id);
-                if (!checkedClueList.includes(clue.id)) {
-                  setCheckedClueList([...checkedClueList, clue.id]);
-                }
-              }}
-            />
-          )
-        );
-      })}
+                  setOpenedClueId(clue.id);
+                  if (!checkedClueList.includes(clue.id)) {
+                    setCheckedClueList([...checkedClueList, clue.id]);
+                  }
+                }}
+              />
+            )
+          );
+        })}
 
       <PasswordInputModal
         targetClue={unlockingClue}
