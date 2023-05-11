@@ -31,7 +31,7 @@ export default function Startup() {
   const [checkedClueList, setCheckedClueList] = useState<number[]>([]);
   const [openedModal, setOpenedModal] = useState<
     "rule" | "prologue" | "suspects" | "dashboard" | "password" | null
-  >(null);
+  >("rule");
   const [unlockingClue, setUnlockingClue] = useState<ClueType | null>(null);
 
   const openedClue: ClueType | null =
