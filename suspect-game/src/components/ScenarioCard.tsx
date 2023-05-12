@@ -25,10 +25,18 @@ export default function ScenarioCard({
   const router = useRouter();
 
   return (
-    <Card sx={{ width: 300 }}>
+    <Card
+      sx={{
+        width: 300,
+        boxShadow: isSelected
+          ? "0 0 30px 10px #fff, 0 0 20px 10px rgb(24 118 210)"
+          : "",
+      }}
+    >
       <CardActionArea>
         {isSelected && (
           <CheckIcon
+            onClick={isSelected ? onDeslect : onClick}
             sx={{
               zIndex: 1,
               position: "absolute",
