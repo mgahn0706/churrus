@@ -12,8 +12,6 @@ export default function Home() {
 
   return (
     <Box
-      width="100%"
-      height="100%"
       display="flex"
       flexDirection="column"
       sx={{ backgroundColor: !!selectedScenario ? "inherit" : "black" }}
@@ -23,11 +21,10 @@ export default function Home() {
           <Box
             display="flex"
             alignContent="center"
-            height="80%"
+            height="720px"
             width="100%"
             sx={{
               color: "white",
-              position: "absolute",
               backgroundRepeat: "no-repeat",
               backgroundSize: "100% 100%",
               backgroundImage: `url("/image/select-page.png")`,
@@ -40,7 +37,6 @@ export default function Home() {
           <Box
             p={5}
             sx={{
-              position: "absolute",
               top: "10%",
               left: "5%",
             }}
@@ -64,7 +60,6 @@ export default function Home() {
           </Box>
           <Box
             sx={{
-              position: "absolute",
               margin: 0,
               width: "100%",
               height: "100%",
