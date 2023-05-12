@@ -30,7 +30,19 @@ export const startUpMoveButton : MovePlaceButtonType[] = [{
 {
     from: 'house',
     to: 'lounge',
-    x: 8.005, y: 79.880,
+    x: 8.005, y: 85.880,
     direction: 'left'
-}
+},
+{
+    from: 'house',
+    to: 'interrogate',
+    x: 90.005, y: 85.880,
+    direction: 'right'
+},
+{
+    from: 'interrogate',
+    to: 'house',
+    x: 8.005, y: 85.880,
+    direction: 'left'
+},
 ]

@@ -11,7 +11,13 @@ export default function Home() {
   );
 
   return (
-    <Box width="100%" height="100%" display="flex" flexDirection="column">
+    <Box
+      width="100%"
+      height="100%"
+      display="flex"
+      flexDirection="column"
+      sx={{ backgroundColor: !!selectedScenario ? "inherit" : "black" }}
+    >
       {!selectedScenario && (
         <Box width="100%" height="80%">
           <Box
@@ -24,7 +30,7 @@ export default function Home() {
               position: "absolute",
               backgroundRepeat: "no-repeat",
               backgroundSize: "100% 100%",
-              backgroundImage: `linear-gradient(to bottom, rgba(255, 255, 255, 0) 70%, white 100%), url("/image/select-page.png")`,
+              backgroundImage: `url("/image/select-page.png")`,
             }}
           />
         </Box>
