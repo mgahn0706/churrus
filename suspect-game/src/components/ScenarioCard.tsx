@@ -57,7 +57,12 @@ export default function ScenarioCard({
         />
         <CardContent
           onClick={
-            isSelected ? () => router.push(`/${scenario.keyword}`) : onClick
+            isSelected
+              ? () => {
+                  router.push(`/${scenario.keyword}`);
+                  localStorage.removeItem(scenario.keyword);
+                }
+              : onClick
           }
           sx={{
             alignItems: "center",

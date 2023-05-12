@@ -14,6 +14,7 @@ import WorkIcon from "@mui/icons-material/Work";
 import { SuspectType, VictimType } from "@/fixtures/startup/suspects";
 import { useState } from "react";
 import FinalConfirmModal from "./FinalConfirmModal";
+import { useRouter } from "next/router";
 
 interface SuspectsInfoCardProps {
   isAllClueSearched: boolean;
@@ -34,9 +35,11 @@ export default function SuspectsInfoCard({
     return gender === "male" ? <Male /> : <Female />;
   };
 
-  const [accuesedSuspect, setAccusedSuspect] = useState<SuspectType | null>(
+  const [accusedSuspect, setAccusedSuspect] = useState<SuspectType | null>(
     null
   );
+
+  const router = useRouter();
 
   return (
     <>
@@ -117,10 +120,13 @@ export default function SuspectsInfoCard({
         </DialogActions>
       </Dialog>
       <FinalConfirmModal
-        isOpen={!!accuesedSuspect}
+        isOpen={!!accusedSuspect}
         isAllClueSearched={isAllClueSearched}
-        suspect={accuesedSuspect}
-        onConfirm={() => {}}
+        suspect={accusedSuspect}
+        onConfirm={() => {
+          localStorage.setItem("startup", accusedSuspect?.name ?? "");
+          router.push("/startup/answer");
+        }}
         onClose={() => {
           setAccusedSuspect(null);
         }}

@@ -33,7 +33,7 @@ export default function Home() {
         </Box>
       )}
       {selectedScenario && (
-        <Fade in timeout={1000}>
+        <Fade in timeout={500}>
           <Box height="100%" display="flex" justifyContent="space-between">
             <Box
               p={5}
