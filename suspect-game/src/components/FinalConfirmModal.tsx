@@ -1,5 +1,6 @@
 import { SuspectType } from "@/fixtures/startup/suspects";
 import {
+  Alert,
   Avatar,
   Box,
   Button,
@@ -50,12 +51,18 @@ export default function FinalConfirmModal({
           <Avatar />
           <Paper
             sx={{
+              mt: 2,
               py: 3,
               px: 2,
             }}
           >
             {suspect.finalArgument}
           </Paper>
+          {!isAllClueSearched && (
+            <Alert sx={{ mt: 3 }} variant="outlined" severity="warning">
+              주의 - 아직 모든 단서를 찾지 않았습니다.
+            </Alert>
+          )}
         </Box>
       </DialogContent>
       <DialogActions>
