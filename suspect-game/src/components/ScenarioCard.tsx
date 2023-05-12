@@ -27,7 +27,6 @@ export default function ScenarioCard({
   return (
     <Card
       sx={{
-        width: 300,
         boxShadow: isSelected
           ? "0 0 30px 10px #fff, 0 0 20px 10px rgb(24 118 210)"
           : "",
