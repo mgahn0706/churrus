@@ -102,7 +102,10 @@ export default function Startup() {
           suspects={startUpSuspects}
           clueData={openedClue}
           id={openedClueId}
-          onClose={handleCloseModal}
+          onClose={() => {
+            setOpenedClueId(null);
+            handleCloseModal;
+          }}
         />
       )}
       {startUpClues.map((clue) => {
