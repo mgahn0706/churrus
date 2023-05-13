@@ -15,7 +15,7 @@ import LightBulbIcon from "@mui/icons-material/Lightbulb";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import InfoIcon from "@mui/icons-material/Info";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { startUpMoveButton } from "@/fixtures/startup/movePlace";
 import MovePlaceButton from "@/components/MovePlaceButton";
 import ClueDashboardModal from "@/components/ClueDashboardModal";
@@ -38,6 +38,21 @@ export default function Startup() {
   const handleCloseModal = () => {
     setOpenedModal(null);
   };
+
+  const preventClose = (e: BeforeUnloadEvent) => {
+    e.preventDefault();
+    e.returnValue = ""; //Chrome에서 동작하도록; deprecated
+  };
+
+  useEffect(() => {
+    (() => {
+      window.addEventListener("beforeunload", preventClose);
+    })();
+
+    return () => {
+      window.removeEventListener("beforeunload", preventClose);
+    };
+  }, []);
 
   const openedClue: ClueType | null =
     startUpClues.find((clue) => clue.id === openedClueId) ?? null;

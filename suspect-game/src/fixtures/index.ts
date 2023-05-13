@@ -5,7 +5,9 @@ export const scenarios : ScenarioType[]= [{
     playTime: 90,
     backgroundImage: '/image/scenario/startup-main.png',
     cardImage: '/Suspect_Logo.png',
-    keyword: 'startup'
+    keyword: 'startup',
+    isInDevelopment: false,
+    bgmURL: 'https://www.youtube.com/watch?v=qMwzWk81tVM',
 
 }
 ,
@@ -16,7 +18,8 @@ export const scenarios : ScenarioType[]= [{
     playTime: 120,
     backgroundImage: '/Suspect_Logo.png',
     cardImage: '/Suspect_Logo.png',
-    keyword: 'jahayeon'
+    keyword: 'jahayeon',
+    isInDevelopment: true,
 
 }
 ,
@@ -27,7 +30,8 @@ export const scenarios : ScenarioType[]= [{
     playTime: 120,
     backgroundImage: '/Suspect_Logo.png',
     cardImage: '/Suspect_Logo.png',
-    keyword: 'mt'
+    keyword: 'mt',
+    isInDevelopment: true,
 
 },
 {
@@ -37,7 +41,8 @@ export const scenarios : ScenarioType[]= [{
     playTime: 150,
     backgroundImage: '/Suspect_Logo.png',
     cardImage: '/Suspect_Logo.png',
-    keyword: 'highschool'
+    keyword: 'highschool',
+    isInDevelopment: true,
 
 }
 ]
@@ -50,4 +55,6 @@ export interface ScenarioType {
     backgroundImage: string;
     cardImage: string;
     keyword: string;
+    isInDevelopment: boolean;
+    bgmURL?: string;
 }

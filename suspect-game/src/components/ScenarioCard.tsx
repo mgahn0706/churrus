@@ -28,7 +28,9 @@ export default function ScenarioCard({
     <Card
       sx={{
         boxShadow: isSelected
-          ? "0 0 30px 10px #fff, 0 0 20px 10px rgb(24 118 210)"
+          ? scenario.isInDevelopment
+            ? "0 0 30px 10px #fff, 0 0 20px 10px gray"
+            : "0 0 30px 10px #fff, 0 0 20px 10px rgb(24 118 210)"
           : "",
       }}
     >
@@ -58,6 +60,11 @@ export default function ScenarioCard({
           onClick={
             isSelected
               ? () => {
+                  if (scenario.isInDevelopment) {
+                    onDeslect();
+                    return;
+                  }
+
                   router.push(`/${scenario.keyword}`);
                   localStorage.removeItem(scenario.keyword);
                 }
@@ -67,7 +74,11 @@ export default function ScenarioCard({
             alignItems: "center",
             py: 1,
             display: "flex",
-            backgroundColor: isSelected ? "rgb(24 118 210)" : "white",
+            backgroundColor: isSelected
+              ? scenario.isInDevelopment
+                ? "gray"
+                : "rgb(24 118 210)"
+              : "white",
             justifyContent: "center",
           }}
         >
@@ -77,7 +88,11 @@ export default function ScenarioCard({
             variant="h5"
             component="div"
           >
-            {isSelected ? "시작" : scenario.title}
+            {isSelected
+              ? scenario.isInDevelopment
+                ? "준비중..."
+                : "시작"
+              : scenario.title}
           </Typography>
         </CardContent>
       </CardActionArea>

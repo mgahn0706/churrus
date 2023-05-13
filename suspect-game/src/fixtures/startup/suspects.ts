@@ -20,10 +20,10 @@ finalArgument: '제가 범인이라구요? 저는 그저 데이터를 관리하�
     },
 
     {
-        name: '박지현' ,
+        name: '박지혁' ,
         image: '/Suspect_Logo.png',
         age: 29,
-        gender: 'female',
+        gender: 'male',
         job: '영업팀장',
         description: '데이터 관리자입니다.',
         finalArgument: '제가 범인이라구요? 저는 그저 데이터를 관리하는 사람이에요. 그런데 왜 저를 용의자로 지목하시는 거죠? 아마 제가 채원이를 좋아했다는 것을 근거로 드신건가요?'
