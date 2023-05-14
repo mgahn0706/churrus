@@ -7,6 +7,9 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  List,
+  ListItem,
+  ListItemText,
   Tab,
   Tabs,
   Typography,
@@ -187,19 +190,20 @@ export default function StartUpAnswer() {
             value="confess"
             label="범인의 고백"
           />
-          <Tab
-            sx={{
-              fontSize: "20px",
-            }}
-            value="solution"
-            label="사건 풀이법"
-          />
+
           <Tab
             sx={{
               fontSize: "20px",
             }}
             value="additional"
             label="추가 질문 해답"
+          />
+          <Tab
+            sx={{
+              fontSize: "20px",
+            }}
+            value="solution"
+            label="사건 풀이법"
           />
           <Tab
             sx={{
@@ -276,10 +280,78 @@ export default function StartUpAnswer() {
           </Typography>
         </TabPanel>
         <TabPanel value={tabValue} index="additional">
-          Item Two
+          <List>
+            <ListItem sx={{ my: 3 }}>
+              <ListItemText
+                primary={
+                  <Typography variant="h6" mb={2}>
+                    Q1. 김성균은 피해자를 평소에 어떻게 생각하고 있었나요?
+                  </Typography>
+                }
+                secondary={
+                  <Typography variant="body1">
+                    A. 김성균은 피해자 한채원을 평소에 짝사랑하고 있었습니다.
+                  </Typography>
+                }
+              />
+            </ListItem>
+            <ListItem sx={{ my: 3 }}>
+              <ListItemText
+                primary={
+                  <Typography variant="h6" mb={2}>
+                    Q2. 살해 당시 피해자 맞은 편에 앉아있던 사람은 누구인가요?
+                  </Typography>
+                }
+                secondary={
+                  <Typography variant="body1">
+                    A. 살해 당시 피해자 맞은 편에 앉아있던 사람은 강지혜입니다.
+                  </Typography>
+                }
+              />
+            </ListItem>
+            <ListItem sx={{ my: 3 }}>
+              <ListItemText
+                primary={
+                  <Typography variant="h6" mb={2}>
+                    Q3. 박지혁의 연인은 누구인가요?
+                  </Typography>
+                }
+                secondary={
+                  <Typography variant="body1">
+                    A. 박지혁의 연인은 추러스에서 개발한 인공지능인 'Snack
+                    Genius'입니다.
+                  </Typography>
+                }
+              />
+            </ListItem>
+            <ListItem sx={{ my: 3 }}>
+              <ListItemText
+                primary={
+                  <Typography variant="h6" mb={2}>
+                    Q4. 강지혜가 추러스에 입사하게 된 계기는 무엇인가요?
+                  </Typography>
+                }
+                secondary={
+                  <Typography variant="body1">
+                    A. 강지혜는 '와플러브'에서 온 스파이로, 추러스의 기술을
+                    유출하기 위해 입사했습니다.
+                  </Typography>
+                }
+              />
+            </ListItem>
+          </List>
         </TabPanel>
         <TabPanel value={tabValue} index="solution">
-          Item One
+          <Typography variant="body1" mb={2}>
+            한채원은 위스키를 마시고 니코틴 중독으로 독살되었습니다. 어떻게 된
+            일일까요?
+            <br />
+            먼저, 니코틴은 한채원의 컵과, 위스키의 물약통에서 검출되었습니다.
+            즉, 범인은 축하 파티 이전에 한채원의 위스키 물약통에 니코틴을
+            넣었습니다. 이런 방법을 사용하기 위해서는 두가지 전제 조건이
+            필요합니다. <br />
+            첫째, 한채원이 위스키를 물약통에 따로 마신다는 점을 알아야합니다.
+          </Typography>
         </TabPanel>
 
         <TabPanel value={tabValue} index="others">
