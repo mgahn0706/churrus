@@ -34,7 +34,6 @@ export default function Startup() {
     "rule" | "prologue" | "suspects" | "dashboard" | "password" | null
   >("rule");
   const [unlockingClue, setUnlockingClue] = useState<ClueType | null>(null);
-  const [isImageLoading, setImageLoading] = useState(false);
 
   const handleCloseModal = () => {
     setOpenedModal(null);
@@ -92,12 +91,10 @@ export default function Startup() {
     );
   }
 
+
   return (
     <Box>
       <Image
-        loading={isImageLoading}
-        onLoadingComplete={()=>setImageLoading(false)}
-        onLoadStart={()=>setImageLoading(true)}
         src={`/image/map/startup-${currentPlace}.png`}
         alt="스타트업 맵 이미지"
         fill
