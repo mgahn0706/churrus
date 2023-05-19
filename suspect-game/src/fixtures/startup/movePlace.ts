@@ -23,7 +23,7 @@ export const startUpMoveButton : MovePlaceButtonType[] = [{
 {
     from: 'office',
     to: 'lounge',
-    x: 19.965, y: 86.175,
+    x: 19.965, y: 85.880,
     direction: 'down'
 
 },
