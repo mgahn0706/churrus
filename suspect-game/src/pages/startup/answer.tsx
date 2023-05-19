@@ -117,7 +117,7 @@ export default function StartUpAnswer() {
   return (
     <Box sx={{ backgroundColor: "black" }}>
       <FadeInSection>
-        <Typography variant="h1" color="white" mt={50} mb={20}>
+        <Typography variant="h1" color="white" mt={40} mb={20}>
           {accusedSuspect}
           {accusedSuspect === "강지혜" ? "는" : "은"}
         </Typography>
