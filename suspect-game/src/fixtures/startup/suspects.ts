@@ -14,8 +14,8 @@ finalArgument: '제가 범인이라구요? 저는 그저 데이터를 관리하�
     image: '/Suspect_Logo.png',
     age: 27,
     gender: 'female',
-    job: '마케팅 담당자',
-    description: '마케팅 담당자입니다.',
+    job: '마케팅 인턴',
+    description: '저는 추러스에서 마케팅 업무를 맡고 있는 강지혜라고 합니다. ',
     finalArgument: '제가 범인이라구요? 저는 그저 데이터를 관리하는 사람이에요. 그런데 왜 저를 용의자로 지목하시는 거죠? 아마 제가 채원이를 좋아했다는 것을 근거로 드신건가요?'
     },
 
@@ -24,7 +24,7 @@ finalArgument: '제가 범인이라구요? 저는 그저 데이터를 관리하�
         image: '/Suspect_Logo.png',
         age: 29,
         gender: 'male',
-        job: '영업팀장',
+        job: '영업 팀장',
         description: '데이터 관리자입니다.',
         finalArgument: '제가 범인이라구요? 저는 그저 데이터를 관리하는 사람이에요. 그런데 왜 저를 용의자로 지목하시는 거죠? 아마 제가 채원이를 좋아했다는 것을 근거로 드신건가요?'
         },
