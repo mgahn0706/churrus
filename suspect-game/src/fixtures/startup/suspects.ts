@@ -1,7 +1,7 @@
 
 export const startUpSuspects: SuspectType[]  = [{
 name: '김성균' ,
-image: '/Suspect_Logo.png',
+image: '/image/profile/kim_sg.jpeg',
 age: 29,
 gender: 'male',
 job: '데이터 관리자',
@@ -11,7 +11,7 @@ finalArgument: '제가 범인이라구요? 저는 그저 데이터를 관리하�
 
 {
     name: '강지혜' ,
-    image: '/Suspect_Logo.png',
+    image: '/image/profile/kang_jh.jpeg',
     age: 27,
     gender: 'female',
     job: '마케팅 인턴',
@@ -21,7 +21,7 @@ finalArgument: '제가 범인이라구요? 저는 그저 데이터를 관리하�
 
     {
         name: '박지혁' ,
-        image: '/Suspect_Logo.png',
+        image: '/image/profile/park_jh.jpeg',
         age: 29,
         gender: 'male',
         job: '영업 팀장',
@@ -33,9 +33,9 @@ finalArgument: '제가 범인이라구요? 저는 그저 데이터를 관리하�
 
 ];
 
-export const startUpVictim: SuspectType = {
+export const startUpVictim: VictimType = {
 name: '한채원',
-image: '/Suspect_Logo.png',
+image: '/image/profile/han_cw.jpeg',
 age: 28,
 gender: 'female',
 job: '추러스 대표이사',

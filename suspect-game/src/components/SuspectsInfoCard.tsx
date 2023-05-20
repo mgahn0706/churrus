@@ -54,7 +54,7 @@ export default function SuspectsInfoCard({
               alignItems: "center",
             }}
           >
-            <Avatar sx={{ width: 63, height: 63 }} />
+            <Avatar sx={{ width: 63, height: 63 }} src={victim.image} />
             <Chip size="small" label="피해자" color="default" sx={{ mt: 1 }} />
 
             <Box display="flex" mt={1}>
@@ -84,7 +84,7 @@ export default function SuspectsInfoCard({
                 }}
               >
                 {" "}
-                <Avatar sx={{ width: 63, height: 63 }} />
+                <Avatar sx={{ width: 63, height: 63 }} src={suspect.image} />
                 <Chip
                   label="용의자"
                   color="error"

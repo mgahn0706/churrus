@@ -48,7 +48,7 @@ export default function FinalConfirmModal({
             alignItems: "center",
           }}
         >
-          <Avatar />
+          <Avatar src={suspect.image} />
           <Paper
             sx={{
               mt: 2,
