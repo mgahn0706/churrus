@@ -16,7 +16,7 @@ export function ClueButton({ clue, onClick }: ClueButtonProps) {
         size="small"
         onClick={onClick}
         sx={{
-          zIndex: clue.type === "additional" ? 2 : 0,
+          zIndex: clue.type === "additional" ? 1081 : 0,
           position: "absolute",
           left: `${clue.x}%`,
           top: `${clue.y}%`,

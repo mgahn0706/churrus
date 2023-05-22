@@ -32,7 +32,7 @@ export default function ClueDashboardModal({
         <Typography mt={1}>
           확인한 단서: {checkedClueList.length} / {startUpClues.length}
         </Typography>
-        <Box display="flex" mt={3} gap={3}>
+        <Box display="flex" flexWrap='wrap' mt={3} gap={3} maxWidth={400}>
           {startUpClues.map((clue) => {
             return (
               <Tooltip arrow key={clue.id} title={clue.title}>
