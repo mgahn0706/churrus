@@ -53,7 +53,11 @@ export default function FinalConfirmModal({
             sx={{
               mt: 2,
               py: 3,
-              px: 2,
+              px: 3,
+              wordBreak: "keep-all",
+              whiteSpace: "pre-line",
+              lineHeight: 1.5,
+              wordSpacing: 1.2,
             }}
           >
             {suspect.finalArgument}
