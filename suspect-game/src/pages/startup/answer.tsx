@@ -304,7 +304,7 @@ export default function StartUpAnswer() {
                 }
                 secondary={
                   <Typography variant="body1">
-                    A. 살해 당시 피해자 맞은 편에 앉아있던 사람은 강지혜입니다.
+                    A. 살해 당시 피해자 맞은 편에 앉아있던 사람은 박지혁입니다.
                   </Typography>
                 }
               />

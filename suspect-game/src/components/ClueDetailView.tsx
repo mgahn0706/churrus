@@ -59,7 +59,7 @@ export function ClueDetailView({
       open
       onClose={onClose}
       TransitionComponent={Transition}
-      sx={{ zIndex: 1 }}
+      sx={{ zIndex: 1080 }}
     >
       <AppBar sx={{ position: "relative" }}>
         <Toolbar>
