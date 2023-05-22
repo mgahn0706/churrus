@@ -40,6 +40,8 @@ export default function ClueDashboardModal({
                   color={checkedClueList.includes(clue.id) ? "green" : "gray"}
                   fontWeight="bold"
                   variant="body1"
+                  width={15}
+                  textAlign='center'
                 >
                   {clue.id}
                 </Typography>
