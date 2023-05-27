@@ -149,7 +149,7 @@ export const startUpClues: ClueType[] = [
     title: "경비원: 뒷문",
     x: 13.889, y: 72.872,
     reliability: "medium",
-    description: '아, 뒷문이요? 네, 제가 항상 잠급니다. 매일 사무실에 아무도 없는 거 확인하고 잠그고 나오죠. 어제, 그러니까 25일에도 분명 8시에 아무도 없는 거 확인하고 단단히 잠그고 나왔습니다. ',
+    description: '아, 뒷문이요? 네, 제가 항상 잠급니다. 매일 사무실에 아무도 없는 거 확인하고 잠그고 나오죠. 어제, 그러니까 26일에도 분명 8시에 아무도 없는 거 확인하고 단단히 잠그고 나왔습니다. ',
     type: "basic",
     image: "/Suspect_Logo.png",
     place: "lounge",
@@ -295,7 +295,7 @@ export const startUpClues: ClueType[] = [
     title: "인사 담당자의 노트",
     x: 12.326, y: 11.637,
     reliability: "high",
-    description: '인사 담당자의 노트이다. 여러가지 사람들의 생일, 입사일 등의 정보가 적혀있다.',
+    description: '인사 담당자의 노트이다. 여러가지 사람들의 생일, 입사일 등의 정보가 적혀있다. 각 구성원의 비고한은 비어있지만, 강지혜의 비고란에만 "저성과자"라는 메모가 남겨져있다.',
     type: "basic",
     image: "/Suspect_Logo.png",
     place: "office",
@@ -305,7 +305,7 @@ export const startUpClues: ClueType[] = [
     title: "게시판: 추러스의 역사",
     x: 5.176, y: 59.862,
     reliability: "high",
-    description: '게시판 한 켠에 적혀있는 추러스의 역사에 관련된 기사이다: 추러스는 2017년, 서울대학교 주류 동아리 "휴림"에서 한채원, 박지현, 정혜수 등 6명의 학생이 모여 만든 IT 스타트업입니다. 추러스는 2020년 스위트파인더라는 내 주변 추러스 가게 찾기 앱을 선보이면서 큰 성공을 얻게 되었습니다. 이후 2023년에는 스낵 지니어스(SnackGenius)라는 인공지능을 개발하는데 성공하여 더 많은 투자 유치금을 받게 되었습니다. 추러스는 현재도 빠르게 성장하고 있는 기업입니다.',
+    description: '게시판 한 켠에 적혀있는 추러스의 역사에 관련된 기사이다: 추러스는 2017년, 서울대학교 주류 동아리 "휴림"에서 한채원, 박지혁, 정혜수 등 6명의 학생이 모여 만든 IT 스타트업입니다. 추러스는 2020년 스위트파인더라는 내 주변 추러스 가게 찾기 앱을 선보이면서 큰 성공을 얻게 되었습니다. 이후 2023년에는 스낵 지니어스(SnackGenius)라는 인공지능을 개발하는데 성공하여 더 많은 투자 유치금을 받게 되었습니다. 추러스는 현재도 빠르게 성장하고 있는 기업입니다. 특히, 한채원을 포함한 초기 개발자 4인은, 현재까지도 인원수 변동 없이 유지되고 있으며, 한 대표는 추가 채용 계획은 2017년부터 지금까지 없었고 앞으로도 없을 것이라 말했습니다. ... (계속)',
     type: "basic",
     image: "/Suspect_Logo.png",
     place: "office",
@@ -424,6 +424,72 @@ export const startUpClues: ClueType[] = [
     description: "박지혁과 SG 라는 사람의 카카오톡 내용이다. 내용으로 보아 연인 관계로 보인다."
     ,type: 'additional',
     image: "/Suspect_Logo.png",
-    place: 32,}
+    place: 32,},
+    {
+    id: 40,
+    title: "저장된 페이지: 5/23 회의록",
+    x: 10.208, y: 30.757,
+    reliability: "high",
+    description: "5월 23일 회의록이다. 내용은 최근 개인정보 유출 사건으로 인해 회사에서 개발한 인공지능의 카카오톡 연동 기능을 폐지하고, 이를 통해 수집된 데이터를 모두 삭제하겠다는 내용이다."
+    ,type: 'additional',
+    image: "/Suspect_Logo.png",
+    place: 32,},
+    {
+    id: 41,
+    title: "직원: 박지혁에 대해",
+     x: 80.382, y: 23.029,
+    reliability: "medium",
+    description: '아, 지혁님이요? 저희 공동창업자 중 한명이고, 현재 영업팀장으로 계십니다. 최근에 특별히 수상한 행동은 보이시지 않았어요. 아, 최근에 연인 문제로 스트레스 받고 계시긴 했어요. 뭔가 헤어질 것 같은 분위기던데, 여자친구분과 사이가 안좋아진 건 아니고 다른 이유가 생겼나봐요. 뭔가 채원님과 관계가 있는 것 같기도 하고요.',
+    type: "basic",
+    image: "/Suspect_Logo.png",
+    place: 'lounge',
+    }
+    ,
+    {
+    id: 42,
+    title: "위스키 도서",
+    x: 6.655, y: 44.324,
+    reliability: "high",
+    description: '평소 박지혁이 자주 즐겨보는 위스키 도서이다. 책에는 위스키에 대한 내용들이 적혀있다.',
+    type: "basic",
+    image: "/Suspect_Logo.png",
+    place: 'office',
+    }
+    ,
+    {
+    id: 43,
+    title: "용어: ABV",
+    x: 11.400, y: 14.647,
+    reliability: "high",
+    description: 'ABV(Alcohol by Volume)는 알코올 도수(%)를 의미한다. 위스키의 경우 40도가 일반적이며, 40도를 넘어가면 고도의 위스키라고 한다. 일반적으로 알려진 소주의 경우 20도, 맥주의 경우 5도 정도이다.',
+    type: "additional",
+    image: "/Suspect_Logo.png",
+    place: 42,
+    }
+    ,
+    {
+    id: 44,
+    title: "용어: 캐스크 스트랭스",
+    x: 11.400, y: 23.647,
+    reliability: "high",
+    description: '캐스크 스트랭스(Cask Strength)란 통에서 꺼낸 그대로의 알코올 도수를 말한다. 보통 위스키는 물을 섞어 알코올 도수 40% 정도로 일정하게 맞추는데 캐스크 스트랭스는 오크통에서 숙성을 마친 순수 위스키 원액이다. 알코올 도수가 50~70% 정도로 매우 높지만, 이를 즐기는 마니아 층도 많이 있다.'
+    ,type: 'additional',
+    image: "/Suspect_Logo.png",
+    place: 42,
+    },
+    {
+    id: 45,
+    title: "스크랩: 개인정보보호법 강화",
+    x: 11.400, y: 12.647,
+    reliability: "high",
+    description: '2023년부터 개인정보보호법이 강화된다는 내용의 기사이다. 개인정보를 무단으로 유출하거나 이용한 사람은 기업 차원이 아닌 개인 차원으로도 처벌이 가능하며 그 처벌 수위도 징역 3년 이하의 벌금형에서 징역 5년 이하의 징역형으로 강화된다는 내용이다.'
+    ,type: 'additional',
+    image: "/Suspect_Logo.png",
+    place: 33,
+    }
+
+    
+    
+    
     
 ];

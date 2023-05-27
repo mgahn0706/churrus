@@ -342,7 +342,8 @@ export default function StartUpAnswer() {
           </List>
         </TabPanel>
         <TabPanel value={tabValue} index="solution">
-          <Typography variant="body1" mb={2}>
+          <Typography variant="body1" mb={2}
+             sx={{ wordSpacing: 3, lineHeight: 2.5, wordBreak: "keep-all" }}>
             한채원은 위스키를 마시고 니코틴 중독으로 독살되었습니다. 어떻게 된
             일일까요?
             <br />

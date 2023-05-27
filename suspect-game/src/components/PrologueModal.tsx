@@ -38,6 +38,11 @@ export default function PrologueModal({
           id="scroll-dialog-description"
           ref={descriptionElementRef}
           tabIndex={-1}
+          sx={{
+            whiteSpace: "pre-line",
+            wordSpacing: "1px",
+            wordBreak: "keep-all",
+          }}
         >
           {prolougeContent}
         </DialogContentText>
