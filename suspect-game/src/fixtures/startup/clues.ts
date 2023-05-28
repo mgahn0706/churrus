@@ -12,6 +12,25 @@ export interface ClueType {
   place: string | number;
 }
 
+export const startupAdditionalQuestions: {no: number, question: string}[] = [
+  {
+    no: 1,
+    question: "김성균은 피해자를 평소에 어떻게 생각하고 있었나요?",
+  }
+  ,{
+    no: 2,
+    question: "살해 당시 피해자 맞은 편에 앉아있던 사람은 누구인가요?",
+  },
+  {
+    no: 3,
+    question: "박지혁의 연인은 누구인가요?", 
+  },
+  {
+    no: 4,
+    question: " 강지혜가 추러스에 입사하게 된 계기는 무엇인가요?",
+  }
+];
+
 export const startUpClues: ClueType[] = [
   {
     id: 1,
@@ -209,7 +228,7 @@ export const startUpClues: ClueType[] = [
     title: "직원: 한채원의 술",
     x: 80.382, y: 19.029,
     reliability: "medium",
-    description: '채원님은 술 좋아하셨죠. 소주 맥주도 좋아하시긴 하는데, 술자리보다는 술을 좋아해서 위스키나 브랜디 이런거 혼술하는거 좋아하십니다. 따로 물약통 같은데 담아서 매번 먹는다니까요. 제품팀 회식 했다면 한번 쯤 먹는거 다 봤을텐데?',
+    description: '채원님은 술 좋아하셨죠. 소주 맥주도 좋아하시긴 하는데, 술자리보다는 술을 좋아해서 위스키나 브랜디 이런거 혼술하는거 좋아하십니다. 따로 물약통 같은데 담아서 매번 먹는다니까요. 제품팀 회식 했다면 한번 쯤 먹는거 다 봤을텐데? 저랑 며칠전, 그러니까 5월 24일 저녁에도 한번 드셨어요. 그때는 괜찮았는데...',
     type: "basic",
     image: "/Suspect_Logo.png",
     place: "lounge",
@@ -394,7 +413,7 @@ export const startUpClues: ClueType[] = [
     title: "기사: 추러스 개인정보 유출",
     x: 20.208, y: 33.757,
     reliability: "high",
-    description: '2023년 5월 7일, 와플러브에서 추러스가 무단으로 사용자들의 개인정보를 이용했다는 의혹을 제기했다. 최근 비약적으로 발전한 스낵 지니어스 인공지능의 성능이 사용자들의 개인정보를 이용하지 않고서야 불가능하다는 내용이다. 경찰은 추러스의 한 대표(29)에게 해명을 요구하고 있다.'
+    description: '2023년 5월 7일, 와플러브에서 추러스가 무단으로 사용자들의 개인정보를 이용했다는 의혹을 제기했다. 최근 비약적으로 발전한 스낵 지니어스 인공지능의 성능이 사용자들의 개인정보를 이용하지 않고서야 불가능하다는 내용이다. 경찰은 추러스의 한 대표(28)에게 해명을 요구하고 있다.'
     ,type: 'additional',
     image: "/Suspect_Logo.png",
     place: 24,}
@@ -427,10 +446,10 @@ export const startUpClues: ClueType[] = [
     place: 32,},
     {
     id: 40,
-    title: "저장된 페이지: 5/23 회의록",
+    title: "저장된 페이지: 5/24 회의록",
     x: 10.208, y: 30.757,
     reliability: "high",
-    description: "5월 23일 회의록이다. 내용은 최근 개인정보 유출 사건으로 인해 회사에서 개발한 인공지능의 카카오톡 연동 기능을 폐지하고, 이를 통해 수집된 데이터를 모두 삭제하겠다는 내용이다."
+    description: "5월 24일 회의록이다. 내용은 최근 개인정보 유출 사건으로 인해 회사에서 개발한 인공지능의 카카오톡 연동 기능을 폐지하고, 이를 통해 수집된 데이터를 모두 삭제하겠다는 내용이다."
     ,type: 'additional',
     image: "/Suspect_Logo.png",
     place: 32,},
@@ -439,7 +458,7 @@ export const startUpClues: ClueType[] = [
     title: "직원: 박지혁에 대해",
      x: 80.382, y: 23.029,
     reliability: "medium",
-    description: '아, 지혁님이요? 저희 공동창업자 중 한명이고, 현재 영업팀장으로 계십니다. 최근에 특별히 수상한 행동은 보이시지 않았어요. 아, 최근에 연인 문제로 스트레스 받고 계시긴 했어요. 뭔가 헤어질 것 같은 분위기던데, 여자친구분과 사이가 안좋아진 건 아니고 다른 이유가 생겼나봐요. 뭔가 채원님과 관계가 있는 것 같기도 하고요.',
+    description: '아, 지혁님이요? 저희 공동창업자 중 한명이고, 현재 영업팀장으로 계십니다. 최근에 특별히 수상한 행동은 보이시지 않았어요. 아, 최근에 연인 문제로 우울해 보이시긴 했어요. 뭔가 헤어질 것 같은 분위기던데, 여자친구분과 사이가 안좋아진 건 아니고 다른 이유가 생겼나봐요. 뭔가 채원님과 관계가 있는 것 같기도 하고요.',
     type: "basic",
     image: "/Suspect_Logo.png",
     place: 'lounge',
@@ -486,7 +505,17 @@ export const startUpClues: ClueType[] = [
     ,type: 'additional',
     image: "/Suspect_Logo.png",
     place: 33,
-    }
+    },
+    {
+    id: 46,
+    title: "개인정보 접근 권한 관리도구",
+    x: 11.400, y: 17.647,
+    reliability: 'high',
+    description: '사용자들의 데이터에 접근할 수 있는 권한을 관리하는 프로그램이다. 데이터에 접근 가능한 사람은 김성균, 한채원, 강지혜이다. 대량의 개인정보가 인공지능에 이용된 시점은 2023년 4월 말이며, 한채원과 김성균이 이용한 것으로 확인된다.',
+    type: 'additional',
+    image: '/Suspect_Logo.png',
+    place: 33,
+    },
 
     
     
