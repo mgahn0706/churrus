@@ -516,6 +516,16 @@ export const startUpClues: ClueType[] = [
     image: '/Suspect_Logo.png',
     place: 33,
     },
+    {
+    id: 47,
+    title: "김성균의 지갑",
+    x: 80.729, y: 50.346,
+    reliability: 'high',
+    description: '김성균의 지갑이다. 내용물은 신분증, 현금 10만원 등이 들어있다. 특이한 점으로는 2015년에 화학생물공학부 조별 활동에서 찍은 사진이 들어있다. 사진에는 김성균과 한채원이 찍혀있다.',
+    type: 'basic',
+    image: '/Suspect_Logo.png',
+    place: 'office',
+    }
 
     
     

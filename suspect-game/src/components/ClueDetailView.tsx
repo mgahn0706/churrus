@@ -9,6 +9,7 @@ import {
   MenuItem,
   Slide,
   Toolbar,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import { TransitionProps } from "@mui/material/transitions";
@@ -17,6 +18,7 @@ import Image from "next/image";
 import CloseIcon from "@mui/icons-material/Close";
 import { ClueType } from "@/fixtures/startup/clues";
 import { SuspectType } from "@/fixtures/startup/suspects";
+import { Circle } from "@mui/icons-material";
 
 interface ClueDetailViewProps {
   id: number | null;
@@ -53,6 +55,8 @@ export function ClueDetailView({
     return null;
   }
 
+  const IS_INTERROGATE = false;
+
   return (
     <Dialog
       fullScreen
@@ -79,10 +83,18 @@ export function ClueDetailView({
             {`${clueData.id}. ${clueData?.title}`}
           </Typography>
           <>
+          { IS_INTERROGATE &&
             <Button autoFocus color="inherit" onClick={handleClick}>
               심문
             </Button>
-
+}
+<Tooltip placement="left" title={clueData.reliability === 'high' ? '믿을만한 정보입니다.' : clueData.reliability ==='medium' ? '불확실한 정보입니다.' : '거짓말일 수 있는 정보입니다.'}>
+<Circle sx={{
+  backgroundColor: clueData.reliability === 'high' ? '#4caf50' : clueData.reliability ==='medium' ? '#ff9800' : '#f44336',
+  borderRadius: '50%',
+  boxShadow: `0 0 10px 5px ${clueData.reliability === 'high' ? '#4caf50' : clueData.reliability ==='medium' ? '#ff9800' : '#f44336'}`
+}} color={clueData.reliability === 'high' ? 'success' : clueData.reliability ==='medium' ? 'warning' : 'error'} />
+</Tooltip>
             <Menu
               id="basic-menu"
               anchorEl={anchorEl}

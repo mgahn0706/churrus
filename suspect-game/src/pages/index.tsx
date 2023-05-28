@@ -1,6 +1,6 @@
-import { Circle, PeopleAlt, Schedule } from "@mui/icons-material";
+import { Circle, PeopleAlt, RingVolume, Schedule, Speaker, VolumeDownRounded, VolumeUpRounded } from "@mui/icons-material";
 import ScenarioCard from "@/components/ScenarioCard";
-import { Box, Fade, Rating, Typography } from "@mui/material";
+import { Box, Fade, IconButton, Rating, Typography } from "@mui/material";
 import { useState } from "react";
 import { ScenarioType, scenarios } from "@/fixtures";
 
@@ -59,6 +59,26 @@ export default function Home() {
               <Typography>약 {selectedScenario.playTime}분</Typography>
             </Box>
           </Box>
+          { selectedScenario.bgmURL &&
+          <a         
+          href={selectedScenario.bgmURL}
+          target="_blank"
+          rel="noreferrer noopener"
+          >
+          <IconButton
+           size="large"
+           edge="start"
+           sx={{
+             backgroundColor: "white",
+             position: "absolute",
+            right: "5%",
+            top: "15%",
+           }}
+          >
+            <VolumeUpRounded/>
+          </IconButton>
+          </a>
+}
           <Box
             sx={{
               position: "absolute",
