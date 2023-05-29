@@ -218,7 +218,7 @@ export const startUpClues: ClueType[] = [
     title: "케이크와 칼",
     x: 17.148, y: 39.623,
     reliability: "high",
-    description: "파티 기념으로 사온 케이크와 칼이다. 표시된 구매일자는 5월 26일 18시 20분. 케이크 옆에는 작은 과도가 놓여져있고, 칼에는 그 크기에 비해 큰 케이크를 자르느라 손잡이부분까지 생크림이 묻어있다.",
+    description: "파티 기념으로 사온 케이크와 칼이다. 표시된 구매일자는 5월 27일 18시 20분. 케이크 옆에는 작은 과도가 놓여져있고, 칼에는 그 크기에 비해 큰 케이크를 자르느라 손잡이부분까지 생크림이 묻어있다.",
     type: "additional",
     image: "/Suspect_Logo.png",
     place: 4,
@@ -364,7 +364,7 @@ export const startUpClues: ClueType[] = [
     title: "사직서 양식",
     x: 10.775, y: 36.213,
     reliability: "high",
-    description: '강지혜의 사직서 양식이다. "강지혜"라는 이름만 써져있고 다른 내용은 아직 빈칸이다. 작성하다 만 듯하다. 최종수정 시각은 2023년 5월 26일 오후 5시',
+    description: '강지혜의 사직서 양식이다. "강지혜"라는 이름만 써져있고 다른 내용은 아직 빈칸이다. 작성하다 만 듯하다. 최종수정 시각은 2023년 5월 27일 오후 5시',
     type: "additional",
     image: "/Suspect_Logo.png",
     place: 29,
@@ -525,10 +525,5 @@ export const startUpClues: ClueType[] = [
     type: 'basic',
     image: '/Suspect_Logo.png',
     place: 'office',
-    }
-
-    
-    
-    
-    
+    },
 ];

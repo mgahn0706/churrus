@@ -1,13 +1,66 @@
-import { Circle, PeopleAlt, RingVolume, Schedule, Speaker, VolumeDownRounded, VolumeUpRounded } from "@mui/icons-material";
+import {
+  Circle,
+  PeopleAlt,
+  RingVolume,
+  Schedule,
+  Speaker,
+  VolumeDownRounded,
+  VolumeUpRounded,
+} from "@mui/icons-material";
 import ScenarioCard from "@/components/ScenarioCard";
-import { Box, Fade, IconButton, Rating, Typography } from "@mui/material";
+import {
+  Box,
+  Fade,
+  IconButton,
+  Modal,
+  Rating,
+  Typography,
+  keyframes,
+} from "@mui/material";
 import { useState } from "react";
 import { ScenarioType, scenarios } from "@/fixtures";
+import { useMobileWidth } from "@/hooks/useMobileWIdth";
 
 export default function Home() {
   const [selectedScenario, setSelectedScenario] = useState<ScenarioType | null>(
     null
   );
+
+  const glitch = keyframes`
+  2%,64%{
+    transform: translate(2px,0) skew(0deg);
+  }
+  4%,60%{
+    transform: translate(-2px,0) skew(0deg);
+  }
+  62%{
+    transform: translate(0,0) skew(5deg); 
+  }
+`;
+
+  const glitchTop = keyframes`
+  2%,64%{
+    transform: translate(2px,-2px);
+  }
+  4%,60%{
+    transform: translate(-2px,2px);
+  }
+  62%{
+    transform: translate(13px,-1px) skew(-13deg); 
+  }
+`;
+
+  const glitchBotom = keyframes`
+    2%,64%{
+      transform: translate(-2px,0);
+    }
+    4%,60%{
+      transform: translate(-2px,0);
+    }
+    62%{
+      transform: translate(-22px,5px) skew(21deg); 
+    }
+  `;
 
   return (
     <Box
@@ -16,20 +69,44 @@ export default function Home() {
       sx={{ backgroundColor: !!selectedScenario ? "inherit" : "black" }}
     >
       {!selectedScenario && (
-        <Box width="100%" height="100%">
+        <Box position="absolute" display="flex" width="100%" height="100%">
           <Box
-            position="absolute"
             display="flex"
-            alignContent="center"
-            width="100%"
-            height="100%"
+            justifyContent="center"
+            alignItems="center"
             sx={{
-              backgroundRepeat: "no-repeat",
-              backgroundSize: "100% 100%",
-              backgroundPosition: "center center",
-              backgroundImage: `url("/image/select-page.png")`,
+              backgroundColor: "black",
+              width: "100%",
             }}
-          />
+          >
+            <Box
+              display="flex"
+              alignContent="center"
+              fontFamily="Gill Sans"
+              sx={{
+                animation: `${glitch} 1s linear infinite`,
+                "&:after, &:before": {
+                  content: '"SELECT YOUR CRIME SCENE"',
+                  position: "absolute",
+                  left: 0,
+                },
+                "&:after": {
+                  animation: `${glitchBotom} 1.5s linear infinite`,
+                  clipPath: "polygon(0 66%, 100% 66%, 100% 100%, 0 100%)",
+                  WebkitClipPath: "polygon(0 66%, 100% 66%, 100% 100%, 0 100%)",
+                },
+                "&:before": {
+                  animation: `${glitchTop} 1s linear infinite`,
+                  clipPath: `polygon(0 0, 100% 0, 100% 33%, 0 33%)`,
+                  WebkitClipPath: `polygon(0 0, 100% 0, 100% 33%, 0 33%)`,
+                },
+              }}
+              fontSize={100}
+              color="white"
+            >
+              SELECT YOUR CRIME SCENE
+            </Box>
+          </Box>
         </Box>
       )}
       {selectedScenario && (
@@ -59,26 +136,26 @@ export default function Home() {
               <Typography>약 {selectedScenario.playTime}분</Typography>
             </Box>
           </Box>
-          { selectedScenario.bgmURL &&
-          <a         
-          href={selectedScenario.bgmURL}
-          target="_blank"
-          rel="noreferrer noopener"
-          >
-          <IconButton
-           size="large"
-           edge="start"
-           sx={{
-             backgroundColor: "white",
-             position: "absolute",
-            right: "5%",
-            top: "15%",
-           }}
-          >
-            <VolumeUpRounded/>
-          </IconButton>
-          </a>
-}
+          {selectedScenario.bgmURL && (
+            <a
+              href={selectedScenario.bgmURL}
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              <IconButton
+                size="large"
+                edge="start"
+                sx={{
+                  backgroundColor: "white",
+                  position: "absolute",
+                  right: "5%",
+                  top: "15%",
+                }}
+              >
+                <VolumeUpRounded />
+              </IconButton>
+            </a>
+          )}
           <Box
             sx={{
               position: "absolute",
