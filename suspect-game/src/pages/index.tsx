@@ -1,31 +1,26 @@
 import {
   Circle,
   PeopleAlt,
-  RingVolume,
   Schedule,
-  Speaker,
-  VolumeDownRounded,
   VolumeUpRounded,
 } from "@mui/icons-material";
 import ScenarioCard from "@/components/ScenarioCard";
-import {
-  Box,
-  Fade,
-  IconButton,
-  Modal,
-  Rating,
-  Typography,
-  keyframes,
-} from "@mui/material";
-import { useState } from "react";
+import { Box, IconButton, Rating, Typography, keyframes } from "@mui/material";
+import { useRef, useState } from "react";
 import { ScenarioType, scenarios } from "@/fixtures";
-import { useMobileWidth } from "@/hooks/useMobileWIdth";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, EffectCoverflow, Pagination } from "swiper";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import { useSwiper } from "swiper/react";
 
 export default function Home() {
   const [selectedScenario, setSelectedScenario] = useState<ScenarioType | null>(
     null
   );
 
+  const swiperRef = useRef(null);
   const glitch = keyframes`
   2%,64%{
     transform: translate(2px,0) skew(0deg);
@@ -170,25 +165,51 @@ export default function Home() {
           />
         </Box>
       )}
-      <Box
-        display="flex"
-        gap={2}
-        mb={5}
-        mx={4}
-        position="absolute"
-        sx={{ bottom: 3 }}
-      >
-        {scenarios.map((scenario) => (
-          <ScenarioCard
-            key={scenario.title}
-            scenario={scenario}
-            isSelected={selectedScenario === scenario}
-            onDeslect={() => setSelectedScenario(null)}
-            onClick={() => {
-              setSelectedScenario(scenario);
+      <Box display="flex" justifyContent="center">
+        <Box
+          display="flex"
+          alignItems="center"
+          height="250px"
+          mb={5}
+          mx={4}
+          width="1200px"
+          position="absolute"
+          sx={{ bottom: 3 }}
+        >
+          <Swiper
+            effect={"coverflow"}
+            grabCursor={true}
+            centeredSlides={true}
+            slidesPerView={3}
+            autoplay={{
+              delay: !!selectedScenario ? 99999999 : 2500,
+              disableOnInteraction: false,
             }}
-          />
-        ))}
+            spaceBetween={50}
+            coverflowEffect={{
+              rotate: 20,
+              stretch: 0,
+              depth: 100,
+              modifier: 1,
+              slideShadows: true,
+            }}
+            modules={[Autoplay, EffectCoverflow]}
+          >
+            {scenarios.map((scenario) => (
+              <SwiperSlide key={scenario.title}>
+                <ScenarioCard
+                  key={scenario.title}
+                  scenario={scenario}
+                  isSelected={selectedScenario === scenario}
+                  onDeslect={() => setSelectedScenario(null)}
+                  onClick={() => {
+                    setSelectedScenario(scenario);
+                  }}
+                />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </Box>
       </Box>
     </Box>
   );
