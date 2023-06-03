@@ -67,7 +67,13 @@ export default function SuspectsInfoCard({
               <WorkIcon sx={{ color: "#a7abaf", width: "18px", mr: 1 }} />
               <Typography color="#a7abaf">{victim.job}</Typography>
             </Box>
-            <Box px={2} my={4} color="#a7abaf" lineHeight={1.5} sx={{wordBreak: 'keep-all', wordSpacing: 1.2}}>
+            <Box
+              px={2}
+              my={4}
+              color="#a7abaf"
+              lineHeight={1.5}
+              sx={{ wordBreak: "keep-all", wordSpacing: 1.2 }}
+            >
               {victim.description}
             </Box>
           </Box>
@@ -101,11 +107,17 @@ export default function SuspectsInfoCard({
                   <WorkIcon sx={{ color: "#a7abaf", width: "18px", mr: 1 }} />
                   <Typography color="#a7abaf">{suspect.job}</Typography>
                 </Box>
-                <Box px={2} my={4} color="#a7abaf" lineHeight={1.5} sx={{wordBreak: 'keep-all', wordSpacing: 1.2}}>
+                <Box
+                  px={2}
+                  my={4}
+                  color="#a7abaf"
+                  lineHeight={1.5}
+                  sx={{ wordBreak: "keep-all", wordSpacing: 1.2 }}
+                >
                   {suspect.description}
                 </Box>
                 <Button
-                  sx={{position: 'absolute', bottom: 60}}
+                  sx={{ position: "absolute", bottom: 60 }}
                   variant="outlined"
                   color="error"
                   onClick={() => setAccusedSuspect(suspect)}

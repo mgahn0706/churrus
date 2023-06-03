@@ -1,5 +1,5 @@
-import { ClueButton } from "@/components/ClueButton";
-import { ClueDetailView } from "@/components/ClueDetailView";
+import { ClueButton } from "@/components/InGame/ClueButton";
+import { ClueDetailView } from "@/components/InGame/ClueDetailView";
 import { ClueType, startUpClues } from "@/fixtures/startup/clues";
 import { startUpSuspects, startUpVictim } from "@/fixtures/startup/suspects";
 import {
@@ -17,14 +17,14 @@ import MenuBookIcon from "@mui/icons-material/MenuBook";
 import InfoIcon from "@mui/icons-material/Info";
 import { useEffect, useState } from "react";
 import { startUpMoveButton } from "@/fixtures/startup/movePlace";
-import MovePlaceButton from "@/components/MovePlaceButton";
-import ClueDashboardModal from "@/components/ClueDashboardModal";
-import PrologueModal from "@/components/PrologueModal";
+import MovePlaceButton from "@/components/InGame/MovePlaceButton";
+import ClueDashboardModal from "@/components/InGame/ClueDashboardModal";
+import PrologueModal from "@/components/InGame/PrologueModal";
 import { StartUpPrologue } from "@/fixtures/startup/prologue";
-import RuleModal from "@/components/RuleModal";
+import RuleModal from "@/components/InGame/RuleModal";
 import { useMobileWidth } from "@/hooks/useMobileWIdth";
-import PasswordInputModal from "@/components/PasswordInputModal";
-import SuspectsInfoCard from "@/components/SuspectsInfoCard";
+import PasswordInputModal from "@/components/InGame/PasswordInputModal";
+import SuspectsInfoCard from "@/components/InGame/SuspectsInfoCard";
 
 export default function Startup() {
   const [openedClueId, setOpenedClueId] = useState<number | null>(null);
