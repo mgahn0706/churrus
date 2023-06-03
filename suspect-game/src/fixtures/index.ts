@@ -1,3 +1,5 @@
+import { ScenarioType } from "@/types";
+
 export const scenarios: ScenarioType[] = [
   {
     title: "스타트업 살인사건",
@@ -41,15 +43,3 @@ export const scenarios: ScenarioType[] = [
     isInDevelopment: true,
   },
 ];
-
-export interface ScenarioType {
-  title: string;
-  difficulty: number;
-  numberOfSuspects: number;
-  playTime: number;
-  backgroundImage: string;
-  cardImage: string;
-  keyword: string;
-  isInDevelopment: boolean;
-  bgmURL?: string;
-}

@@ -1,16 +1,4 @@
-export interface ClueType {
-  id: number;
-  image: string;
-  title: string;
-  x: number;
-  y: number;
-  reliability: "low" | "medium" | "high";
-  description: string;
-  type: "basic" | "additional" | "interrogation" | "locked";
-  password?: string;
-  passwordHint?: string;
-  place: string | number;
-}
+import { ClueType } from "@/types";
 
 export const startupAdditionalQuestions: { no: number; question: string }[] = [
   {
