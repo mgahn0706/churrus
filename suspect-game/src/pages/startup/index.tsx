@@ -91,10 +91,10 @@ export default function Startup() {
     );
   }
 
-
   return (
     <Box>
       <Image
+        priority
         src={`/image/map/startup-${currentPlace}.png`}
         alt="스타트업 맵 이미지"
         fill
