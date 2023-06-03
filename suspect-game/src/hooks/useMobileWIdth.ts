@@ -1,9 +1,11 @@
+import { useEffect, useState } from "react";
 
 export const useMobileWidth = () => {
+  const [isMobileWidth, setIsWindowMobileWidth] = useState<boolean>(false);
 
-if (typeof window === 'undefined') {
-    return { isMobileWidth: false };
-}
-return { isMobileWidth: window.innerWidth < 600 };
+  useEffect(() => {
+    setIsWindowMobileWidth(window.innerWidth < 768);
+  }, []);
 
-}
+  return { isMobileWidth };
+};
