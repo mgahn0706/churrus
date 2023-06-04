@@ -7,6 +7,7 @@ export default function MemoButton({ onClick }: { onClick: () => void }) {
       <IconButton
         sx={{
           position: "absolute",
+          boxShadow: 2,
           zIndex: 2023,
           width: 60,
           height: 60,

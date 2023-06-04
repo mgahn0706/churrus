@@ -1,6 +1,6 @@
 import { Button, Divider, Grow, Typography } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { ClueType } from "@/fixtures/startup/clues";
+import { ClueType } from "@/types";
 
 interface ClueButtonProps {
   clue: ClueType;
