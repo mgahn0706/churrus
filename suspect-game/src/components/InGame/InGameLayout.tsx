@@ -18,7 +18,6 @@ import MobileWidthAlertModal from "@/components/MobileWidthAlertModal";
 import {
   AdditionalQuestionType,
   ClueType,
-  DetectiveNoteType,
   MovePlaceButtonType,
   SuspectType,
   VictimType,
@@ -181,6 +180,7 @@ export default function InGameLayout({
         );
       })}
       <ClueDashboardModal
+        clues={clues}
         isOpen={openedModal === "dashboard"}
         checkedClueList={checkedClueList}
         onClose={handleCloseModal}

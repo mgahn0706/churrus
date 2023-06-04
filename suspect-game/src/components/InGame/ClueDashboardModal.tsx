@@ -1,13 +1,15 @@
-import { startUpClues } from "@/fixtures/startup/clues";
+import { ClueType } from "@/types";
 import { Box, Button, Tooltip, Typography, Modal } from "@mui/material";
 
 interface ClueDashboardModalProps {
+  clues: ClueType[];
   isOpen: boolean;
   checkedClueList: number[];
   onClose: () => void;
 }
 
 export default function ClueDashboardModal({
+  clues,
   isOpen,
   checkedClueList,
   onClose,
@@ -30,10 +32,10 @@ export default function ClueDashboardModal({
         <Typography variant="h4">단서 현황</Typography>
 
         <Typography mt={1}>
-          확인한 단서: {checkedClueList.length} / {startUpClues.length}
+          확인한 단서: {checkedClueList.length} / {clues.length}
         </Typography>
-        <Box display="flex" flexWrap='wrap' mt={3} gap={3} maxWidth={400}>
-          {startUpClues.map((clue) => {
+        <Box display="flex" flexWrap="wrap" mt={3} gap={3} maxWidth={400}>
+          {clues.map((clue) => {
             return (
               <Tooltip arrow key={clue.id} title={clue.title}>
                 <Typography
@@ -41,7 +43,7 @@ export default function ClueDashboardModal({
                   fontWeight="bold"
                   variant="body1"
                   width={15}
-                  textAlign='center'
+                  textAlign="center"
                 >
                   {clue.id}
                 </Typography>
