@@ -33,6 +33,7 @@ export interface SuspectType {
   job: string;
   description: string;
   finalArgument?: string;
+  statement: string;
 }
 
 export type VictimType = SuspectType;

@@ -37,6 +37,9 @@ export default function MovePlaceButton({
         position: "absolute",
         left: `${x}%`,
         top: `${y}%`,
+        "&:hover": {
+          backgroundColor: "lightgray",
+        },
       }}
       onClick={onClick}
     >
