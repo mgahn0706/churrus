@@ -48,3 +48,16 @@ export interface ScenarioType {
   isInDevelopment: boolean;
   bgmURL?: string;
 }
+
+export interface AdditionalQuestionType {
+  no: number;
+  question: string;
+}
+
+export interface DetectiveNoteType {
+  accusedSuspect: string;
+  howDunnit: string;
+  whyDunnit: string;
+  additionalQuestionAnswers: string[];
+  memo: string;
+}

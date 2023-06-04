@@ -5,22 +5,14 @@ import {
   VolumeUpRounded,
 } from "@mui/icons-material";
 import ScenarioCard from "@/components/ScenarioSelect/ScenarioCard";
-import {
-  Box,
-  IconButton,
-  Modal,
-  Rating,
-  Typography,
-  keyframes,
-} from "@mui/material";
+import { Box, IconButton, Rating, Typography, keyframes } from "@mui/material";
 import { useRef, useState } from "react";
 import { scenarios } from "@/fixtures";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, EffectCoverflow, Pagination } from "swiper";
+import { Autoplay, EffectCoverflow } from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { useSwiper } from "swiper/react";
 import { useMobileWidth } from "@/hooks/useMobileWIdth";
 import MobileWidthAlertModal from "@/components/MobileWidthAlertModal";
 import { ScenarioType } from "@/types";

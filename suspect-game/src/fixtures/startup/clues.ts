@@ -1,6 +1,6 @@
-import { ClueType } from "@/types";
+import { AdditionalQuestionType, ClueType } from "@/types";
 
-export const startupAdditionalQuestions: { no: number; question: string }[] = [
+export const startupAdditionalQuestions: AdditionalQuestionType[] = [
   {
     no: 1,
     question: "김성균은 피해자를 평소에 어떻게 생각하고 있었나요?",

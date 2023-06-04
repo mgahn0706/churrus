@@ -1,4 +1,4 @@
-import { SuspectType } from "@/fixtures/startup/suspects";
+import { SuspectType } from "@/types";
 import {
   Alert,
   Avatar,
@@ -15,7 +15,7 @@ import {
 interface FinalConfirmModalProps {
   isAllClueSearched: boolean;
   isOpen: boolean;
-  suspect: SuspectType | null;
+  suspect?: SuspectType;
   onClose: () => void;
   onConfirm: () => void;
 }

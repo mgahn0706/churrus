@@ -1,4 +1,4 @@
-import { SuspectType } from "@/types";
+import { SuspectType, VictimType } from "@/types";
 
 export const startUpSuspects: SuspectType[] = [
   {
@@ -47,3 +47,5 @@ export const startUpVictim: VictimType = {
   description:
     "2017년 추러스를 설립한 사람 중 한 명으로, 현재 추러스의 대표이사를 맡고 있었다.",
 };
+
+export { SuspectType };

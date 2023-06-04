@@ -6,7 +6,7 @@ import LightBulbIcon from "@mui/icons-material/Lightbulb";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import InfoIcon from "@mui/icons-material/Info";
-import { ReactNode, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import MovePlaceButton from "@/components/InGame/MovePlaceButton";
 import ClueDashboardModal from "@/components/InGame/ClueDashboardModal";
 import PrologueModal from "@/components/InGame/PrologueModal";
@@ -16,11 +16,15 @@ import PasswordInputModal from "@/components/InGame/PasswordInputModal";
 import SuspectsInfoCard from "@/components/InGame/SuspectsInfoCard";
 import MobileWidthAlertModal from "@/components/MobileWidthAlertModal";
 import {
+  AdditionalQuestionType,
   ClueType,
+  DetectiveNoteType,
   MovePlaceButtonType,
   SuspectType,
   VictimType,
 } from "@/types";
+import MemoButton from "./MemoButton";
+import MemoModal from "./MemoModal";
 
 interface InGameLayoutProps {
   clues: ClueType[];
@@ -29,6 +33,7 @@ interface InGameLayoutProps {
   victim: VictimType;
   movePlaceButton: MovePlaceButtonType[];
   scenarioKeyword: string;
+  additionalQuestions: AdditionalQuestionType[];
 }
 
 export default function InGameLayout({
@@ -38,14 +43,22 @@ export default function InGameLayout({
   victim,
   movePlaceButton,
   scenarioKeyword,
+  additionalQuestions,
 }: InGameLayoutProps) {
   const [openedClueId, setOpenedClueId] = useState<number | null>(null);
   const [currentPlace, setCurrentPlace] = useState("lounge");
   const [checkedClueList, setCheckedClueList] = useState<number[]>([]);
   const [openedModal, setOpenedModal] = useState<
-    "rule" | "prologue" | "suspects" | "dashboard" | "password" | null
+    "rule" | "prologue" | "suspects" | "dashboard" | "password" | "memo" | null
   >("rule");
   const [unlockingClue, setUnlockingClue] = useState<ClueType | null>(null);
+  const [note, setNote] = useState<DetectiveNoteType>({
+    accusedSuspect: "",
+    howDunnit: "",
+    whyDunnit: "",
+    additionalQuestionAnswers: [],
+    memo: "",
+  });
 
   const handleCloseModal = () => {
     setOpenedModal(null);
@@ -94,6 +107,17 @@ export default function InGameLayout({
             );
           };
         }}
+      />
+
+      <MemoButton onClick={() => setOpenedModal("memo")} />
+      <MemoModal
+        scenarioKeyword={scenarioKeyword}
+        isOpen={openedModal === "memo"}
+        onClose={() => setOpenedModal(null)}
+        note={note}
+        suspects={suspects}
+        questions={additionalQuestions}
+        isAllClueSearched={checkedClueList.length === clues.length}
       />
 
       {openedClue !== null && (
@@ -168,7 +192,6 @@ export default function InGameLayout({
         onClose={handleCloseModal}
       />
       <SuspectsInfoCard
-        isAllClueSearched={checkedClueList.length === clues.length}
         isOpen={openedModal === "suspects"}
         victim={victim}
         suspects={suspects}
