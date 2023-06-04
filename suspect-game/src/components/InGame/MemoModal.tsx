@@ -227,7 +227,7 @@ export default function MemoModal({
           return suspects.name === note.accusedSuspect;
         })}
         onConfirm={() => {
-          localStorage.setItem(scenarioKeyword, note.accusedSuspect ?? "");
+          localStorage.setItem(scenarioKeyword, JSON.stringify(note));
           router.push(`/${scenarioKeyword}/answer`);
         }}
         onClose={() => {

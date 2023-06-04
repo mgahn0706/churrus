@@ -23,6 +23,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { DetectiveNoteType } from "@/types";
 
 function FadeInSection(props: { children: ReactNode }) {
   const [isVisible, setVisible] = useState(false);
@@ -112,14 +113,16 @@ export default function StartUpAnswer() {
     );
   }
 
-  const accusedSuspect = localStorage.getItem("startup");
+  const submittedAnswer: DetectiveNoteType = JSON.parse(
+    localStorage.getItem("startup") ?? ""
+  );
 
   return (
     <Box sx={{ backgroundColor: "black" }}>
       <FadeInSection>
         <Typography variant="h1" color="white" mt={40} mb={20}>
-          {accusedSuspect}
-          {accusedSuspect === "강지혜" ? "는" : "은"}
+          {submittedAnswer.accusedSuspect}
+          {submittedAnswer.accusedSuspect === "강지혜" ? "는" : "은"}
         </Typography>
       </FadeInSection>
 
@@ -149,7 +152,9 @@ export default function StartUpAnswer() {
           mb={50}
           fontWeight="bold"
         >
-          {accusedSuspect === "김성균" ? "맞습니다!" : "아닙니다!"}
+          {submittedAnswer.accusedSuspect === "김성균"
+            ? "맞습니다!"
+            : "아닙니다!"}
         </Typography>
       </FadeInSection>
       <FadeInSection>
@@ -160,18 +165,24 @@ export default function StartUpAnswer() {
         </Box>
       </FadeInSection>
       <FadeInSection>
-        <Box display="flex" justifyContent="center">
+        <Box textAlign="center">
           <Typography variant="h5" color="white" mt={1}>
             살해방법: 위스키 물약통을 니코틴이 들어있는 물약통으로 바꿔치기해
             독살
           </Typography>
+          <Typography variant="body2" color="gray">
+            내 답변: {submittedAnswer.howDunnit}
+          </Typography>
         </Box>
       </FadeInSection>
       <FadeInSection>
-        <Box display="flex" justifyContent="center">
+        <Box textAlign="center">
           <Typography variant="h5" color="white">
             살해동기: 짝사랑하던 한채원이 개인정보를 무단 이용한 사건을 본인에게
             덮어씌우려했다.
+          </Typography>
+          <Typography variant="body2" color="gray">
+            내 답변: {submittedAnswer.whyDunnit}
           </Typography>
         </Box>
       </FadeInSection>
@@ -289,9 +300,16 @@ export default function StartUpAnswer() {
                   </Typography>
                 }
                 secondary={
-                  <Typography variant="body1">
-                    A. 김성균은 피해자 한채원을 평소에 짝사랑하고 있었습니다.
-                  </Typography>
+                  <>
+                    <Typography variant="body1" color="white">
+                      A. 김성균은 피해자 한채원을 평소에 짝사랑하고 있었습니다.
+                    </Typography>
+                    <Typography variant="body2" color="gray">
+                      내 답변:{" "}
+                      {submittedAnswer.additionalQuestionAnswers[0] ??
+                        "입력되지 않음"}
+                    </Typography>
+                  </>
                 }
               />
             </ListItem>
@@ -303,9 +321,17 @@ export default function StartUpAnswer() {
                   </Typography>
                 }
                 secondary={
-                  <Typography variant="body1">
-                    A. 살해 당시 피해자 맞은 편에 앉아있던 사람은 박지혁입니다.
-                  </Typography>
+                  <>
+                    <Typography variant="body1" color="white">
+                      A. 살해 당시 피해자 맞은 편에 앉아있던 사람은
+                      박지혁입니다.
+                    </Typography>
+                    <Typography variant="body2" color="gray">
+                      내 답변:{" "}
+                      {submittedAnswer.additionalQuestionAnswers[1] ??
+                        "입력되지 않음"}
+                    </Typography>
+                  </>
                 }
               />
             </ListItem>
@@ -317,10 +343,17 @@ export default function StartUpAnswer() {
                   </Typography>
                 }
                 secondary={
-                  <Typography variant="body1">
-                    A. 박지혁의 연인은 추러스에서 개발한 인공지능인 'Snack
-                    Genius'입니다.
-                  </Typography>
+                  <>
+                    <Typography variant="body1" color="white">
+                      A. 박지혁의 연인은 추러스에서 개발한 인공지능인 'Snack
+                      Genius'입니다.
+                    </Typography>
+                    <Typography variant="body2" color="gray">
+                      내 답변:{" "}
+                      {submittedAnswer.additionalQuestionAnswers[2] ??
+                        "입력되지 않음"}
+                    </Typography>
+                  </>
                 }
               />
             </ListItem>
@@ -332,10 +365,17 @@ export default function StartUpAnswer() {
                   </Typography>
                 }
                 secondary={
-                  <Typography variant="body1">
-                    A. 강지혜는 '와플러브'에서 온 스파이로, 추러스의 기술을
-                    유출하기 위해 입사했습니다.
-                  </Typography>
+                  <>
+                    <Typography variant="body1" color="white">
+                      A. 강지혜는 '와플러브'에서 온 스파이로, 추러스의 기술을
+                      유출하기 위해 입사했습니다.
+                    </Typography>
+                    <Typography variant="body2" color="gray">
+                      내 답변:{" "}
+                      {submittedAnswer.additionalQuestionAnswers[3] ??
+                        "입력되지 않음"}
+                    </Typography>
+                  </>
                 }
               />
             </ListItem>
