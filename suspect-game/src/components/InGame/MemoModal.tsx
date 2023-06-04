@@ -27,7 +27,6 @@ import { Close } from "@mui/icons-material";
 interface MemoModalProps {
   isOpen: boolean;
   onClose: () => void;
-  note: DetectiveNoteType;
   suspects: SuspectType[];
   questions: AdditionalQuestionType[];
   isAllClueSearched: boolean;
@@ -47,23 +46,27 @@ export default function MemoModal({
   const handleNoteSave = () => {
     localStorage.setItem(scenarioKeyword, JSON.stringify(note));
   };
-
-  const [note, setNote] = useState<DetectiveNoteType>({
-    accusedSuspect: "",
-    howDunnit: "",
-    whyDunnit: "",
-    additionalQuestionAnswers: [],
-    memo: "",
-  });
-  const router = useRouter();
-
-  useEffect(() => {
+  const handleSetNote = () => {
     const savedNote = localStorage.getItem(scenarioKeyword);
     if (savedNote) {
       setNote({
         ...JSON.parse(savedNote),
       });
     }
+  };
+
+  const [note, setNote] = useState<DetectiveNoteType>({
+    accusedSuspect: "",
+    howDunnit: "",
+    whyDunnit: "",
+    additionalQuestionAnswers: ["", "", "", ""],
+    memo: "",
+  });
+
+  const router = useRouter();
+
+  useEffect(() => {
+    handleSetNote();
   }, []);
 
   const isAllRequiredFilled =
@@ -73,6 +76,12 @@ export default function MemoModal({
     const savedNote = localStorage.getItem(scenarioKeyword);
     return savedNote !== JSON.stringify(note);
   };
+
+  const requiredInputBadge = (
+    <Typography color="error" ml={1}>
+      *
+    </Typography>
+  );
 
   return (
     <>
@@ -95,9 +104,13 @@ export default function MemoModal({
         <Box display="flex" width="100%" justifyContent="space-around">
           <Box width={550}>
             <DialogContent>
-              <InputLabel id="whodunnit" sx={{ fontWeight: "bold" }}>
-                범인은 누구인가요?
+              <InputLabel
+                id="whodunnit"
+                sx={{ fontWeight: "bold", display: "flex" }}
+              >
+                범인은 누구인가요? {requiredInputBadge}
               </InputLabel>
+
               <Select
                 id="whodunnit"
                 autoWidth={false}
@@ -122,8 +135,11 @@ export default function MemoModal({
               </Select>
             </DialogContent>
             <DialogContent>
-              <InputLabel id="howdunnit" sx={{ fontWeight: "bold" }}>
-                살해 방법은 무엇인가요?
+              <InputLabel
+                id="howdunnit"
+                sx={{ fontWeight: "bold", display: "flex" }}
+              >
+                살해 방법은 무엇인가요? {requiredInputBadge}
               </InputLabel>
               <TextField
                 fullWidth
@@ -137,8 +153,11 @@ export default function MemoModal({
               />
             </DialogContent>
             <DialogContent>
-              <InputLabel id="whydunnit" sx={{ fontWeight: "bold" }}>
-                살해 동기는 무엇인가요?
+              <InputLabel
+                id="whydunnit"
+                sx={{ fontWeight: "bold", display: "flex" }}
+              >
+                살해 동기는 무엇인가요? {requiredInputBadge}
               </InputLabel>{" "}
               <TextField
                 id="whydunnit"
@@ -209,6 +228,7 @@ export default function MemoModal({
           >
             최종 제출
           </Button>
+
           <Button
             size="large"
             onClick={() => {
@@ -241,6 +261,16 @@ export default function MemoModal({
         </DialogContent>
         <DialogActions>
           <Button
+            color="error"
+            onClick={() => {
+              handleSetNote();
+              setIsUnsaveAlertModalOpen(false);
+              onClose();
+            }}
+          >
+            저장하지 않고 닫기
+          </Button>
+          <Button
             onClick={() => {
               handleNoteSave();
               setIsUnsaveAlertModalOpen(false);
@@ -248,14 +278,6 @@ export default function MemoModal({
             }}
           >
             저장하고 닫기
-          </Button>
-          <Button
-            onClick={() => {
-              setIsUnsaveAlertModalOpen(false);
-              onClose();
-            }}
-          >
-            저장하지 않고 닫기
           </Button>
         </DialogActions>
       </Dialog>

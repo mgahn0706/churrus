@@ -52,13 +52,6 @@ export default function InGameLayout({
     "rule" | "prologue" | "suspects" | "dashboard" | "password" | "memo" | null
   >("rule");
   const [unlockingClue, setUnlockingClue] = useState<ClueType | null>(null);
-  const [note, setNote] = useState<DetectiveNoteType>({
-    accusedSuspect: "",
-    howDunnit: "",
-    whyDunnit: "",
-    additionalQuestionAnswers: [],
-    memo: "",
-  });
 
   const handleCloseModal = () => {
     setOpenedModal(null);
@@ -110,15 +103,16 @@ export default function InGameLayout({
       />
 
       <MemoButton onClick={() => setOpenedModal("memo")} />
-      <MemoModal
-        scenarioKeyword={scenarioKeyword}
-        isOpen={openedModal === "memo"}
-        onClose={() => setOpenedModal(null)}
-        note={note}
-        suspects={suspects}
-        questions={additionalQuestions}
-        isAllClueSearched={checkedClueList.length === clues.length}
-      />
+      {openedModal === "memo" && (
+        <MemoModal
+          scenarioKeyword={scenarioKeyword}
+          isOpen={openedModal === "memo"}
+          onClose={() => setOpenedModal(null)}
+          suspects={suspects}
+          questions={additionalQuestions}
+          isAllClueSearched={checkedClueList.length === clues.length}
+        />
+      )}
 
       {openedClue !== null && (
         <ClueDetailView

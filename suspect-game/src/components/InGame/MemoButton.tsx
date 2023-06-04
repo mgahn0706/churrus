@@ -7,8 +7,8 @@ export default function MemoButton({ onClick }: { onClick: () => void }) {
       <IconButton
         sx={{
           position: "absolute",
-          width: 50,
-          height: 50,
+          width: 60,
+          height: 60,
           borderRadius: 0,
           border: "1px solid",
           borderColor: "primary.main",
