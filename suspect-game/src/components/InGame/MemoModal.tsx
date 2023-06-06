@@ -74,7 +74,7 @@ export default function MemoModal({
 
   const isNoteChanged = () => {
     const savedNote = localStorage.getItem(scenarioKeyword);
-    return savedNote !== JSON.stringify(note);
+    return !savedNote && savedNote !== JSON.stringify(note);
   };
 
   const requiredInputBadge = (
@@ -104,55 +104,55 @@ export default function MemoModal({
         <Box display="flex" width="100%" justifyContent="space-around">
           <Box width={550}>
             <DialogContent>
-              <InputLabel
-                id="whodunnit"
-                sx={{ fontWeight: "bold", display: "flex" }}
-              >
-                범인은 누구인가요? {requiredInputBadge}
-              </InputLabel>
-
-              <Select
-                id="whodunnit"
-                autoWidth={false}
-                required
-                sx={{
-                  width: 200,
-                }}
-                value={note.accusedSuspect}
-                onChange={(e) =>
-                  setNote({ ...note, accusedSuspect: e.target.value })
-                }
-              >
-                <MenuItem value="">
-                  {" "}
-                  <em>선택 안됨</em>
-                </MenuItem>
-                {suspects.map((suspect) => (
-                  <MenuItem key={suspect.name} value={suspect.name}>
-                    {suspect.name ?? "선택 안됨"}
+              <Box mb={2}>
+                <InputLabel
+                  id="whodunnit"
+                  sx={{ fontWeight: "bold", display: "flex" }}
+                >
+                  범인은 누구인가요? {requiredInputBadge}
+                </InputLabel>
+                <Select
+                  id="whodunnit"
+                  autoWidth={false}
+                  required
+                  sx={{
+                    width: 100,
+                  }}
+                  value={note.accusedSuspect}
+                  onChange={(e) =>
+                    setNote({ ...note, accusedSuspect: e.target.value })
+                  }
+                >
+                  <MenuItem value="">
+                    {" "}
+                    <em>선택 안됨</em>
                   </MenuItem>
-                ))}
-              </Select>
-            </DialogContent>
-            <DialogContent>
-              <InputLabel
-                id="howdunnit"
-                sx={{ fontWeight: "bold", display: "flex" }}
-              >
-                살해 방법은 무엇인가요? {requiredInputBadge}
-              </InputLabel>
-              <TextField
-                fullWidth
-                id="howdunnit"
-                required
-                placeholder="살해 방법"
-                value={note.howDunnit}
-                onChange={(e) =>
-                  setNote({ ...note, howDunnit: e.target.value })
-                }
-              />
-            </DialogContent>
-            <DialogContent>
+                  {suspects.map((suspect) => (
+                    <MenuItem key={suspect.name} value={suspect.name}>
+                      {suspect.name ?? "선택 안됨"}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </Box>
+              <Box mb={2}>
+                {" "}
+                <InputLabel
+                  id="howdunnit"
+                  sx={{ fontWeight: "bold", display: "flex" }}
+                >
+                  살해 방법은 무엇인가요? {requiredInputBadge}
+                </InputLabel>
+                <TextField
+                  fullWidth
+                  id="howdunnit"
+                  required
+                  placeholder="살해 방법"
+                  value={note.howDunnit}
+                  onChange={(e) =>
+                    setNote({ ...note, howDunnit: e.target.value })
+                  }
+                />
+              </Box>
               <InputLabel
                 id="whydunnit"
                 sx={{ fontWeight: "bold", display: "flex" }}
@@ -171,11 +171,11 @@ export default function MemoModal({
               />
             </DialogContent>
             <DialogContent>
-              <DialogContentText sx={{ fontWeight: "bold" }} mb={3}>
+              <DialogContentText sx={{ fontWeight: "bold" }} mb={2}>
                 추가 질문
               </DialogContentText>
               {questions.map((question, idx) => (
-                <Box mb={2} key={question.no}>
+                <Box mb={1} key={question.no}>
                   <InputLabel id={`additionalQuestion-${idx}`}>
                     {question.question}
                   </InputLabel>
@@ -210,7 +210,7 @@ export default function MemoModal({
                 fullWidth
                 placeholder="잊기 쉬운 용의자들의 알리바이, 증거 등을 메모해보세요."
                 multiline
-                rows={31}
+                rows={28}
                 value={note.memo}
                 onChange={(e) => setNote({ ...note, memo: e.target.value })}
               />
@@ -220,6 +220,15 @@ export default function MemoModal({
         <DialogActions>
           <Button
             size="large"
+            onClick={() => {
+              handleNoteSave();
+              onClose();
+            }}
+          >
+            저장하고 닫기
+          </Button>
+          <Button
+            size="large"
             disabled={!isAllRequiredFilled}
             onClick={() => {
               setIsFinalConfirmModalOpen(true);
@@ -227,16 +236,6 @@ export default function MemoModal({
             }}
           >
             최종 제출
-          </Button>
-
-          <Button
-            size="large"
-            onClick={() => {
-              handleNoteSave();
-              onClose();
-            }}
-          >
-            저장하고 닫기
           </Button>
         </DialogActions>
       </Dialog>
