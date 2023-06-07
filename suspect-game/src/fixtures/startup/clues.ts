@@ -179,8 +179,8 @@ export const startUpClues: ClueType[] = [
   {
     id: 14,
     title: "한채원 옆자리",
-    x: 5.549,
-    y: 45.222,
+    x: 9.549,
+    y: 55.222,
     reliability: "high",
     description:
       "한채원 옆자리에 있던 사람이 앉은 자리이다. 케이크는 한입 먹은 상태이고, 술잔에는 립스틱이 묻어있다. 술잔에서 달콤한 브랜디 향이 난다.",
@@ -191,7 +191,7 @@ export const startUpClues: ClueType[] = [
   {
     id: 15,
     title: "한채원과 가장 먼 자리",
-    x: 5.549,
+    x: 9.549,
     y: 26.621,
     reliability: "high",
     description:
@@ -203,7 +203,7 @@ export const startUpClues: ClueType[] = [
   {
     id: 16,
     title: "한채원 맞은 편자리",
-    x: 19.639,
+    x: 23.639,
     y: 26.621,
     reliability: "high",
     description:
@@ -215,7 +215,7 @@ export const startUpClues: ClueType[] = [
   {
     id: 17,
     title: "케이크와 칼",
-    x: 17.148,
+    x: 20.148,
     y: 39.623,
     reliability: "high",
     description:
@@ -243,7 +243,7 @@ export const startUpClues: ClueType[] = [
     y: 39.623,
     reliability: "high",
     description:
-      "빨간색 립스틱이다. 사용 흔적이 있다. 그 외에 별다른 것은 없어보인다.",
+      "빨간색 내지는 분홍색의 립스틱이다. 사용 흔적이 있다. 그 외에 별다른 것은 없어보인다.",
     type: "additional",
     image: "/Suspect_Logo.png",
     place: 7,

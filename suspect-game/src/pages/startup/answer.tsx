@@ -217,13 +217,6 @@ export default function StartUpAnswer() {
             value="solution"
             label="사건 풀이법"
           />
-          <Tab
-            sx={{
-              fontSize: "20px",
-            }}
-            value="others"
-            label="용의자들의 행적"
-          />
         </Tabs>
         <TabPanel value={tabValue} index="confess">
           <Typography

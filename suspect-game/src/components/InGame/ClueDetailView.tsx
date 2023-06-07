@@ -23,6 +23,7 @@ interface ClueDetailViewProps {
   id: number | null;
   clueData: ClueType | null;
   suspects: SuspectType[];
+  scenarioKeyword: string;
   onClose: () => void;
 }
 
@@ -37,6 +38,7 @@ const Transition = React.forwardRef(function Transition(
 
 export function ClueDetailView({
   id,
+  scenarioKeyword,
   clueData,
   suspects,
   onClose,
@@ -144,12 +146,12 @@ export function ClueDetailView({
         </Toolbar>
       </AppBar>
       <Box display="flex" mt={4}>
-        <Box display="flex" m={"150px"}>
+        <Box display="flex" ml="50px" mr="100px" my={"50px"}>
           <Image
-            src={clueData.image}
+            src={`/image/clue/${scenarioKeyword}-${id}.png`}
             alt={`${clueData.id}번째 단서 이미지`}
-            width={300}
-            height={300}
+            width={600}
+            height={500}
           />
         </Box>
         <Box display="flex">

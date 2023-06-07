@@ -192,7 +192,7 @@ export default function Home() {
             slidesPerView={3}
             autoplay={{
               delay: !!selectedScenario ? 99999999 : 2500,
-              disableOnInteraction: false,
+              disableOnInteraction: true,
             }}
             spaceBetween={50}
             coverflowEffect={{

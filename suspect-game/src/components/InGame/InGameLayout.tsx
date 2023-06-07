@@ -115,6 +115,7 @@ export default function InGameLayout({
 
       {openedClue !== null && (
         <ClueDetailView
+          scenarioKeyword={scenarioKeyword}
           suspects={suspects}
           clueData={openedClue}
           id={openedClueId}
