@@ -120,8 +120,14 @@ export default function InGameLayout({
           clueData={openedClue}
           id={openedClueId}
           onClose={() => {
+            if (
+              openedClue.type === "additional" &&
+              typeof openedClue.place !== "string"
+            ) {
+              setOpenedClueId(openedClue.place);
+              return;
+            }
             setOpenedClueId(null);
-            handleCloseModal;
           }}
         />
       )}

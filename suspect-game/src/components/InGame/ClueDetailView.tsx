@@ -16,6 +16,7 @@ import { TransitionProps } from "@mui/material/transitions";
 import React, { useState } from "react";
 import Image from "next/image";
 import CloseIcon from "@mui/icons-material/Close";
+import { ArrowBack } from "@mui/icons-material";
 import { ClueType, SuspectType } from "@/types";
 import { Circle } from "@mui/icons-material";
 
@@ -74,7 +75,7 @@ export function ClueDetailView({
             onClick={onClose}
             aria-label="close"
           >
-            <CloseIcon />
+            {clueData.type === "additional" ? <ArrowBack /> : <CloseIcon />}
           </IconButton>
           <Typography
             sx={{ ml: 3, flex: 1, my: 1 }}
