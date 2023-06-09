@@ -150,12 +150,9 @@ export function ClueDetailView({
       </AppBar>
       <Box display="flex" mt={4}>
         <Box display="flex" ml="50px" mr="100px" my={"50px"}>
-          {isImageLoading && (
-            <Skeleton variant="rectangular" width={600} height={500} />
-          )}
-
           <Image
-            onLoadingComplete={() => setIsImageLoading(false)}
+            placeholder="blur"
+            blurDataURL="iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO8cEGkHgAGYQI13iBqSgAAAABJRU5ErkJggg=="
             src={`/image/clue/${scenarioKeyword}-${id}.png`}
             alt={`${clueData.id}번째 단서 이미지`}
             width={600}
