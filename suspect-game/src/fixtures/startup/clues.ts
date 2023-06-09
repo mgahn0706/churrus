@@ -239,7 +239,7 @@ export const startUpClues: ClueType[] = [
   {
     id: 19,
     title: "립스틱",
-    x: 17.148,
+    x: 10.148,
     y: 39.623,
     reliability: "high",
     description:
@@ -251,11 +251,11 @@ export const startUpClues: ClueType[] = [
   {
     id: 20,
     title: "강지혜의 스마트폰",
-    x: 7.148,
-    y: 29.623,
+    x: 27.148,
+    y: 33.623,
     reliability: "high",
     description:
-      "강지혜의 스마트폰이다. 기종은 갤럭시 폴드2이다. 잠금해제는 강지혜의 도움을 받아 열었다.",
+      "강지혜의 스마트폰이다. 기종은 갤럭시 Z플립2이다. 잠금해제는 강지혜의 도움을 받아 열었다.",
     type: "additional",
     image: "/Suspect_Logo.png",
     place: 7,
