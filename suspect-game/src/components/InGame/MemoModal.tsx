@@ -74,7 +74,7 @@ export default function MemoModal({
 
   const isNoteChanged = () => {
     const savedNote = localStorage.getItem(scenarioKeyword);
-    return !savedNote && savedNote !== JSON.stringify(note);
+    return !!savedNote && savedNote !== JSON.stringify(note);
   };
 
   const requiredInputBadge = (
@@ -171,7 +171,7 @@ export default function MemoModal({
               />
             </DialogContent>
             <DialogContent>
-              <DialogContentText sx={{ fontWeight: "bold" }} mb={2}>
+              <DialogContentText sx={{ fontWeight: "bold" }} mb={1}>
                 추가 질문
               </DialogContentText>
               {questions.map((question, idx) => (
@@ -210,7 +210,7 @@ export default function MemoModal({
                 fullWidth
                 placeholder="잊기 쉬운 용의자들의 알리바이, 증거 등을 메모해보세요."
                 multiline
-                rows={28}
+                rows={27}
                 value={note.memo}
                 onChange={(e) => setNote({ ...note, memo: e.target.value })}
               />
