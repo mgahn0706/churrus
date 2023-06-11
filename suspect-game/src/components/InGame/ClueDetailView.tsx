@@ -157,12 +157,13 @@ export function ClueDetailView({
       <Box display="flex" mt={4}>
         <Box display="flex" ml="50px" mr="100px" my={"50px"}>
           <Image
+            priority
             onLoadingComplete={() => setIsImageLoading(false)}
             onError={() => setIsImageLoading(false)}
             src={`/image/clue/${scenarioKeyword}-${id}.png`}
             alt={`${clueData.id}번째 단서 이미지`}
-            width={600}
-            height={500}
+            width={isImageLoading ? 0 : 600}
+            height={isImageLoading ? 0 : 500}
           />
           {isImageLoading && (
             <Skeleton variant="rectangular" width={600} height={500} />
