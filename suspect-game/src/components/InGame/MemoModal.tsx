@@ -55,13 +55,15 @@ export default function MemoModal({
     }
   };
 
-  const [note, setNote] = useState<DetectiveNoteType>({
+  const INIT_NOTE: DetectiveNoteType = {
     accusedSuspect: "",
     howDunnit: "",
     whyDunnit: "",
     additionalQuestionAnswers: ["", "", "", ""],
     memo: "",
-  });
+  };
+
+  const [note, setNote] = useState<DetectiveNoteType>(INIT_NOTE);
 
   const router = useRouter();
 
@@ -74,7 +76,10 @@ export default function MemoModal({
 
   const isNoteChanged = () => {
     const savedNote = localStorage.getItem(scenarioKeyword);
-    return !!savedNote && savedNote !== JSON.stringify(note);
+    return (
+      (!!savedNote && savedNote !== JSON.stringify(note)) ||
+      (!savedNote && JSON.stringify(note) !== JSON.stringify(INIT_NOTE))
+    );
   };
 
   const requiredInputBadge = (

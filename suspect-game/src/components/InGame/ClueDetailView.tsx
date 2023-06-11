@@ -14,7 +14,7 @@ import {
   Typography,
 } from "@mui/material";
 import { TransitionProps } from "@mui/material/transitions";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import CloseIcon from "@mui/icons-material/Close";
 import { ArrowBack } from "@mui/icons-material";
@@ -54,6 +54,12 @@ export function ClueDetailView({
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  useEffect(() => {
+    if (clueData?.image) {
+      setIsImageLoading(true);
+    }
+  }, [clueData?.image]);
 
   if (clueData === null || id === null) {
     return null;
@@ -151,13 +157,16 @@ export function ClueDetailView({
       <Box display="flex" mt={4}>
         <Box display="flex" ml="50px" mr="100px" my={"50px"}>
           <Image
-            placeholder="blur"
-            blurDataURL="iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO8cEGkHgAGYQI13iBqSgAAAABJRU5ErkJggg=="
+            onLoadingComplete={() => setIsImageLoading(false)}
+            onError={() => setIsImageLoading(false)}
             src={`/image/clue/${scenarioKeyword}-${id}.png`}
             alt={`${clueData.id}번째 단서 이미지`}
             width={600}
             height={500}
           />
+          {isImageLoading && (
+            <Skeleton variant="rectangular" width={600} height={500} />
+          )}
         </Box>
         <Box display="flex">
           <Divider orientation="vertical" flexItem />
