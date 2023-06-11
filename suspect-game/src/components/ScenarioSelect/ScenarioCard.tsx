@@ -27,10 +27,11 @@ export default function ScenarioCard({
   return (
     <Card
       sx={{
-        boxShadow: isSelected
+        border: isSelected ? "1px solid" : "",
+        borderColor: isSelected
           ? scenario.isInDevelopment
-            ? "0 0 30px 10px #fff, 0 0 20px 10px gray"
-            : "0 0 30px 10px #fff, 0 0 20px 10px rgb(24 118 210)"
+            ? "gray"
+            : "rgb(24 118 210)"
           : "",
       }}
     >

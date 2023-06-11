@@ -16,6 +16,7 @@ import "swiper/css/pagination";
 import { useMobileWidth } from "@/hooks/useMobileWIdth";
 import MobileWidthAlertModal from "@/components/MobileWidthAlertModal";
 import { ScenarioType } from "@/types";
+import Header from "@/components/Header";
 
 export default function Home() {
   const [selectedScenario, setSelectedScenario] = useState<ScenarioType | null>(
@@ -72,6 +73,7 @@ export default function Home() {
       flexDirection="column"
       sx={{ backgroundColor: !!selectedScenario ? "inherit" : "black" }}
     >
+      <Header />
       {!selectedScenario && (
         <Box position="absolute" display="flex" width="100%" height="100%">
           <Box
