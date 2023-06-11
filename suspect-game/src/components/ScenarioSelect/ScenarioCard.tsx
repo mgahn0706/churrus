@@ -27,6 +27,7 @@ export default function ScenarioCard({
   return (
     <Card
       sx={{
+        padding: 0,
         border: isSelected ? "1px solid" : "",
         borderColor: isSelected
           ? scenario.isInDevelopment
@@ -52,10 +53,9 @@ export default function ScenarioCard({
         <CardMedia
           onClick={isSelected ? onDeslect : onClick}
           component="img"
-          width="140"
-          height="140"
           image={`/image/card/${scenario.keyword}-card.png`}
-          alt="startup-image"
+          alt={`${scenario.keyword}-card`}
+          height="140px"
         />
         <CardContent
           onClick={

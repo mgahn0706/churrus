@@ -48,6 +48,7 @@ export interface ScenarioType {
   keyword: string;
   isInDevelopment: boolean;
   bgmURL?: string;
+  history?: string;
 }
 
 export interface AdditionalQuestionType {

@@ -142,6 +142,13 @@ export default function Home() {
               <Schedule sx={{ mr: 2 }} />
               <Typography>약 {selectedScenario.playTime}분</Typography>
             </Box>
+            {selectedScenario.history && (
+              <Box display="flex" mt={1} color="gray">
+                <Typography fontSize="15px">
+                  {selectedScenario.history}에서 진행됨
+                </Typography>
+              </Box>
+            )}
           </Box>
           {selectedScenario.bgmURL && (
             <a
@@ -190,6 +197,7 @@ export default function Home() {
         >
           <Swiper
             effect={"coverflow"}
+            preventClicks
             grabCursor={true}
             centeredSlides={true}
             slidesPerView={3}

@@ -13,6 +13,17 @@ export const scenarios: ScenarioType[] = [
     bgmURL: "https://www.youtube.com/watch?v=qMwzWk81tVM",
   },
   {
+    title: "두레문예관 살인사건",
+    difficulty: 3,
+    numberOfSuspects: 4,
+    playTime: 120,
+    backgroundImage: "/image/scenario/dure-main.png",
+    cardImage: "/Suspect_Logo.png",
+    keyword: "dure",
+    isInDevelopment: true,
+    history: "2023년 5월 추러스 문화행사",
+  },
+  {
     title: "자하연 살인사건",
     difficulty: 3,
     numberOfSuspects: 4,
@@ -21,6 +32,7 @@ export const scenarios: ScenarioType[] = [
     cardImage: "/Suspect_Logo.png",
     keyword: "jahayeon",
     isInDevelopment: true,
+    history: "2023년 1월 2차 정기모임",
   },
   {
     title: "추러스 MT 살인사건",
