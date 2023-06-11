@@ -59,7 +59,7 @@ export function ClueDetailView({
     if (clueData?.image) {
       setIsImageLoading(true);
     }
-  }, [clueData?.image]);
+  }, [clueData]);
 
   if (clueData === null || id === null) {
     return null;

@@ -4,7 +4,7 @@ export const useMobileWidth = () => {
   const [isMobileWidth, setIsWindowMobileWidth] = useState<boolean>(false);
 
   useEffect(() => {
-    setIsWindowMobileWidth(window.outerWidth < 768);
+    setIsWindowMobileWidth(window.innerWidth < 768);
   }, []);
   return { isMobileWidth };
 };

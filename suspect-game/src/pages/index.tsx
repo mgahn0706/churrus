@@ -118,6 +118,7 @@ export default function Home() {
           <Box
             p={5}
             sx={{
+              color: "white",
               position: "absolute",
               top: "10%",
               left: "5%",
@@ -168,7 +169,7 @@ export default function Home() {
               height: "100%",
               backgroundSize: "cover",
               zIndex: -1,
-              backgroundImage: `linear-gradient(to left, rgba(255, 255, 255, 0) 3%, rgba(255, 255, 255, 0.25) 30%, rgba(255, 255, 255, 0.5) 40%, rgba(255, 255, 255, 0.55) 50%, #ffffff 85%), url("${selectedScenario.backgroundImage}")`,
+              backgroundImage: `linear-gradient(to left, rgba(255, 255, 255, 0) 3%, rgba(0, 0, 0, 0.25) 30%, rgba(0, 0, 0, 0.5) 40%, rgba(0, 0, 0, 0.55) 50%, #000000 85%), url("${selectedScenario.backgroundImage}")`,
               backgroundRepeat: "no-repeat",
             }}
           />
