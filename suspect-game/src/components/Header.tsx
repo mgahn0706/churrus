@@ -24,7 +24,7 @@ export default function Header() {
       }}
     >
       <Box sx={{ cursor: "pointer" }} onClick={() => router.push("/")}>
-        <Typography fontWeight="bolder" fontSize={16}>
+        <Typography fontWeight="bolder" fontSize={16} mr={1}>
           추러스 크라임씬
           <Search />
         </Typography>
