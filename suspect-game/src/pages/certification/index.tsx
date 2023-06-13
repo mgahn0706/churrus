@@ -59,7 +59,7 @@ export default function Certification() {
               color="lightGray"
               lineHeight="500px"
             >
-              <CertificationCard card={certificationCards[0]} />
+              {/* <CertificationCard card={certificationCards[0]} /> */}
             </Box>
           </Box>
         </FadeInSection>
