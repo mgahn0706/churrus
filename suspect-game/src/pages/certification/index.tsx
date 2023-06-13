@@ -1,8 +1,21 @@
+import CertificationCard from "@/components/Certification/CertificationCard";
 import { FadeInSection } from "@/components/FadeInSection";
 import Header from "@/components/Header";
+import { CertificationCardType } from "@/types";
 import { Box, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
 
 export default function Certification() {
+  const [certificationCards, setCertificationCards] = useState<
+    CertificationCardType[]
+  >([]);
+
+  useEffect(() => {
+    setCertificationCards(
+      JSON.parse(localStorage.getItem("cert-cards") ?? "{}") ?? []
+    );
+  }, []);
+
   return (
     <>
       {" "}
@@ -46,7 +59,7 @@ export default function Certification() {
               color="lightGray"
               lineHeight="500px"
             >
-              아직 준비중인 기능이에요. 빠르게 준비해서 찾아뵐게요!
+              <CertificationCard card={certificationCards[0]} />
             </Box>
           </Box>
         </FadeInSection>

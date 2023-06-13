@@ -63,3 +63,11 @@ export interface DetectiveNoteType {
   additionalQuestionAnswers: string[];
   memo: string;
 }
+
+export interface CertificationCardType {
+  title: string;
+  description: string;
+  image: string;
+  date: string;
+  isSuccess: boolean;
+}
