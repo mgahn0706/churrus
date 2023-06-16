@@ -4,13 +4,11 @@ import { Box, SpeedDial, SpeedDialAction, SpeedDialIcon } from "@mui/material";
 import Image from "next/image";
 import LightBulbIcon from "@mui/icons-material/Lightbulb";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
-import MenuBookIcon from "@mui/icons-material/MenuBook";
 import InfoIcon from "@mui/icons-material/Info";
 import { useEffect, useState } from "react";
 import MovePlaceButton from "@/components/InGame/MovePlaceButton";
 import ClueDashboardModal from "@/components/InGame/ClueDashboardModal";
 import PrologueModal from "@/components/InGame/PrologueModal";
-import RuleModal from "@/components/InGame/RuleModal";
 import { useMobileWidth } from "@/hooks/useMobileWIdth";
 import PasswordInputModal from "@/components/InGame/PasswordInputModal";
 import SuspectsInfoCard from "@/components/InGame/SuspectsInfoCard";
@@ -19,6 +17,7 @@ import {
   AdditionalQuestionType,
   ClueType,
   MovePlaceButtonType,
+  ScenarioType,
   SuspectType,
   VictimType,
 } from "@/types";
@@ -31,7 +30,7 @@ interface InGameLayoutProps {
   suspects: SuspectType[];
   victim: VictimType;
   movePlaceButton: MovePlaceButtonType[];
-  scenarioKeyword: string;
+  scenario: ScenarioType;
   additionalQuestions: AdditionalQuestionType[];
 }
 
@@ -41,15 +40,15 @@ export default function InGameLayout({
   suspects,
   victim,
   movePlaceButton,
-  scenarioKeyword,
+  scenario,
   additionalQuestions,
 }: InGameLayoutProps) {
   const [openedClueId, setOpenedClueId] = useState<number | null>(null);
-  const [currentPlace, setCurrentPlace] = useState("lounge");
+  const [currentPlace, setCurrentPlace] = useState("");
   const [checkedClueList, setCheckedClueList] = useState<number[]>([]);
   const [openedModal, setOpenedModal] = useState<
-    "rule" | "prologue" | "suspects" | "dashboard" | "password" | "memo" | null
-  >("rule");
+    "prologue" | "suspects" | "dashboard" | "password" | "memo" | null
+  >("prologue");
   const [unlockingClue, setUnlockingClue] = useState<ClueType | null>(null);
 
   const handleCloseModal = () => {
@@ -60,6 +59,12 @@ export default function InGameLayout({
     e.preventDefault();
     e.returnValue = ""; // Chrome에서 동작하도록;
   };
+
+  useEffect(() => {
+    if (!currentPlace) {
+      setCurrentPlace(scenario.places[0]);
+    }
+  }, [scenario]);
 
   useEffect(() => {
     (() => {
@@ -81,30 +86,36 @@ export default function InGameLayout({
 
   return (
     <Box>
-      <Image
-        priority
-        src={`/image/map/${scenarioKeyword}-${currentPlace}.png`}
-        alt="맵 이미지"
-        fill
-        style={{
-          zIndex: -1,
-        }}
-        onClick={() => {
-          document.onclick = (e) => {
-            navigator.clipboard.writeText(
-              `x: ${((100 * e.pageX) / screen.availWidth).toFixed(3)}, y: ${(
-                (100 * e.pageY) /
-                screen.availHeight
-              ).toFixed(3)},`
-            );
-          };
-        }}
-      />
+      {scenario && (
+        <Image
+          priority
+          src={`/image/map/${scenario.keyword}-${currentPlace}.png`}
+          alt="맵 이미지"
+          fill
+          style={{
+            zIndex: -1,
+          }}
+          onClick={() => {
+            if (
+              !process.env.NODE_ENV ||
+              process.env.NODE_ENV === "development"
+            ) {
+              document.onclick = (e) => {
+                navigator.clipboard.writeText(
+                  `x: ${((100 * e.pageX) / screen.availWidth).toFixed(
+                    3
+                  )}, y: ${((100 * e.pageY) / screen.availHeight).toFixed(3)},`
+                );
+              };
+            }
+          }}
+        />
+      )}
 
       <MemoButton onClick={() => setOpenedModal("memo")} />
       {openedModal === "memo" && (
         <MemoModal
-          scenarioKeyword={scenarioKeyword}
+          scenarioKeyword={scenario.keyword}
           isOpen={openedModal === "memo"}
           onClose={() => setOpenedModal(null)}
           suspects={suspects}
@@ -115,7 +126,7 @@ export default function InGameLayout({
 
       {openedClue !== null && (
         <ClueDetailView
-          scenarioKeyword={scenarioKeyword}
+          scenarioKeyword={scenario.keyword}
           suspects={suspects}
           clueData={openedClue}
           id={openedClueId}
@@ -202,8 +213,8 @@ export default function InGameLayout({
         prolougeContent={prologue}
         isOpen={openedModal === "prologue"}
         onClose={handleCloseModal}
+        onClickSuspects={() => setOpenedModal("suspects")}
       />
-      <RuleModal isOpen={openedModal === "rule"} onClose={handleCloseModal} />
       <SpeedDial
         ariaLabel="SpeedDial basic example"
         sx={{ position: "absolute", bottom: 18, right: 18 }}
@@ -223,11 +234,6 @@ export default function InGameLayout({
           icon={<InfoIcon />}
           tooltipTitle={"공개된 정보"}
           onClick={() => setOpenedModal("prologue")}
-        />
-        <SpeedDialAction
-          icon={<MenuBookIcon />}
-          tooltipTitle={"규칙"}
-          onClick={() => setOpenedModal("rule")}
         />
       </SpeedDial>
     </Box>

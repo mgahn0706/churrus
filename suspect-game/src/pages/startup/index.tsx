@@ -9,6 +9,13 @@ import { StartUpPrologue } from "@/fixtures/startup/prologue";
 import { startUpSuspects, startUpVictim } from "@/fixtures/startup/suspects";
 
 export default function Startup() {
+  const startUpScenario = scenarios.find(
+    (scenario) => scenario.keyword === "startup"
+  );
+
+  if (!startUpScenario) {
+    throw new Error("Scenario not found");
+  }
   return (
     <InGameLayout
       suspects={startUpSuspects}
@@ -16,7 +23,7 @@ export default function Startup() {
       movePlaceButton={startUpMoveButton}
       victim={startUpVictim}
       prologue={<StartUpPrologue />}
-      scenarioKeyword={"startup"}
+      scenario={startUpScenario}
       additionalQuestions={startupAdditionalQuestions}
     />
   );

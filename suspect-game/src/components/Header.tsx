@@ -2,6 +2,33 @@ import { Search } from "@mui/icons-material";
 import { Box, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 
+function HeaderButton({
+  text,
+  onClick,
+}: {
+  text: string;
+  onClick: () => void;
+}) {
+  return (
+    <Box
+      px="12px"
+      py="4px"
+      sx={{
+        cursor: "pointer",
+        backgroundColor: "rgba(0, 0, 0, 0)",
+        "&:hover": {
+          backgroundColor: "rgb(60, 60, 60)",
+        },
+        transition: "all 0.3s ease-in-out",
+        borderRadius: "2px",
+      }}
+      onClick={onClick}
+    >
+      <Typography fontSize={16}>{text}</Typography>
+    </Box>
+  );
+}
+
 export default function Header() {
   const router = useRouter();
 
@@ -9,7 +36,7 @@ export default function Header() {
     <Box
       color="white"
       display="flex"
-      justifyContent="space-between"
+      justifyContent="flex-start"
       alignItems={"center"}
       position="fixed"
       top={0}
@@ -23,27 +50,18 @@ export default function Header() {
         backdropFilter: "blur(60px)",
       }}
     >
-      <Box sx={{ cursor: "pointer" }} onClick={() => router.push("/")}>
+      <Box mr={4} sx={{ cursor: "pointer" }} onClick={() => router.push("/")}>
         <Typography fontWeight="bolder" fontSize={16} mr={1}>
           추러스 크라임씬
           <Search />
         </Typography>
       </Box>
-
-      <Box mr="48px">
-        <Typography
+      <Box display="flex">
+        <HeaderButton text="규칙" onClick={() => router.push("/rules")} />
+        <HeaderButton
+          text="인증 카드"
           onClick={() => router.push("/certification")}
-          fontSize={14}
-          sx={{
-            cursor: "pointer",
-            "&:hover": {
-              fontSize: 16,
-            },
-            transition: "all 0.3s ease-in-out",
-          }}
-        >
-          추리 인증 카드
-        </Typography>
+        />
       </Box>
     </Box>
   );

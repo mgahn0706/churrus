@@ -11,6 +11,7 @@ export const scenarios: ScenarioType[] = [
     keyword: "startup",
     isInDevelopment: false,
     bgmURL: "https://www.youtube.com/watch?v=qMwzWk81tVM",
+    places: ["lounge", "office"],
   },
   {
     title: "두레문예관 살인사건",
@@ -22,6 +23,7 @@ export const scenarios: ScenarioType[] = [
     keyword: "dure",
     isInDevelopment: true,
     history: "2023년 5월 추러스 문화행사",
+    places: ["3F", "4F"],
   },
   {
     title: "자하연 살인사건",
@@ -33,6 +35,7 @@ export const scenarios: ScenarioType[] = [
     keyword: "jahayeon",
     isInDevelopment: true,
     history: "2023년 1월 2차 정기모임",
+    places: ["pond", "dorm", "house"],
   },
   {
     title: "추러스 MT 살인사건",
@@ -43,6 +46,7 @@ export const scenarios: ScenarioType[] = [
     cardImage: "/Suspect_Logo.png",
     keyword: "mt",
     isInDevelopment: true,
+    places: ["room", "terrace"],
   },
   {
     title: "와부고 살인사건",
@@ -53,5 +57,6 @@ export const scenarios: ScenarioType[] = [
     cardImage: "/Suspect_Logo.png",
     keyword: "highschool",
     isInDevelopment: true,
+    places: ["2-1", "3-1"],
   },
 ];

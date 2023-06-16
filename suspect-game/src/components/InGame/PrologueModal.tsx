@@ -12,6 +12,7 @@ import React, { useEffect, useRef } from "react";
 interface PrologueModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onClickSuspects: () => void;
   prolougeContent: React.ReactNode;
 }
 
@@ -19,6 +20,7 @@ export default function PrologueModal({
   isOpen,
   prolougeContent,
   onClose,
+  onClickSuspects,
 }: PrologueModalProps) {
   const descriptionElementRef = useRef<HTMLElement>(null);
 
@@ -48,6 +50,7 @@ export default function PrologueModal({
         </DialogContentText>
       </DialogContent>
       <DialogActions>
+        <Button onClick={onClickSuspects}>용의자 확인</Button>
         <Button onClick={onClose}>닫기</Button>
       </DialogActions>
     </Dialog>
