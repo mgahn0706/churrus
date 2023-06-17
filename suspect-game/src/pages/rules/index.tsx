@@ -35,6 +35,9 @@ function RuleCard({
             variant="h2"
             mb={1}
             fontWeight="bold"
+            sx={{
+              wordBreak: "keep-all",
+            }}
           >
             {title}
           </Typography>

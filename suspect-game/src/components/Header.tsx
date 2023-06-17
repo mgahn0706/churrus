@@ -50,7 +50,13 @@ export default function Header() {
         backdropFilter: "blur(60px)",
       }}
     >
-      <Box mr={4} sx={{ cursor: "pointer" }} onClick={() => router.push("/")}>
+      <Box
+        mr={4}
+        sx={{
+          cursor: "pointer",
+        }}
+        onClick={() => router.push("/")}
+      >
         <Typography fontWeight="bolder" fontSize={16} mr={1}>
           추러스 크라임씬
           <Search />

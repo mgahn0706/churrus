@@ -25,8 +25,6 @@ export default function Home() {
 
   const { isMobileWidth } = useMobileWidth();
 
-  const swiperRef = useRef(null);
-
   if (isMobileWidth) {
     return <MobileWidthAlertModal />;
   }
@@ -71,11 +69,13 @@ export default function Home() {
     <Box
       display="flex"
       flexDirection="column"
+      width="100vw"
+      height="100vh"
       sx={{ backgroundColor: !!selectedScenario ? "inherit" : "black" }}
     >
       <Header />
       {!selectedScenario && (
-        <Box position="absolute" display="flex" width="100%" height="100%">
+        <Box position="absolute" display="flex" width="100vw" height="100vh">
           <Box
             display="flex"
             justifyContent="center"
@@ -116,7 +116,7 @@ export default function Home() {
         </Box>
       )}
       {selectedScenario && (
-        <Box height="100%" display="flex" justifyContent="space-between">
+        <Box height="100vh" display="flex" justifyContent="space-between">
           <Box
             p={5}
             sx={{
@@ -191,7 +191,7 @@ export default function Home() {
           height="250px"
           mb={5}
           mx={4}
-          width="1200px"
+          width="70vw"
           position="absolute"
           sx={{ bottom: 3 }}
         >
@@ -201,10 +201,6 @@ export default function Home() {
             grabCursor={true}
             centeredSlides={true}
             slidesPerView={3}
-            autoplay={{
-              delay: !!selectedScenario ? 99999999 : 2500,
-              disableOnInteraction: true,
-            }}
             spaceBetween={50}
             coverflowEffect={{
               rotate: 20,

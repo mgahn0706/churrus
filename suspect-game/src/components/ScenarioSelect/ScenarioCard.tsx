@@ -45,7 +45,7 @@ export default function ScenarioCard({
           />
         )}
         <CardMedia
-          sx={{ height: "140px", width: "370px" }}
+          sx={{ height: 140 }}
           onClick={isSelected ? onDeslect : onClick}
           image={`/image/card/${scenario.keyword}-card.png`}
         />
