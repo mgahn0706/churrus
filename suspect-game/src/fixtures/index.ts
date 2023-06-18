@@ -33,7 +33,7 @@ export const scenarios: ScenarioType[] = [
     backgroundImage: "/image/scenario/jahayeon-main.png",
     cardImage: "/Suspect_Logo.png",
     keyword: "jahayeon",
-    isInDevelopment: true,
+    isInDevelopment: false,
     history: "2023년 1월 2차 정기모임",
     places: ["pond", "dorm", "house"],
   },

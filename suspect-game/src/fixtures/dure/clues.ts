@@ -1,6 +1,6 @@
 import { AdditionalQuestionType, ClueType } from "@/types";
 
-export const startupAdditionalQuestions: AdditionalQuestionType[] = [
+export const dureAdditionalQuestions: AdditionalQuestionType[] = [
   {
     no: 1,
     question: "김성균은 피해자를 평소에 어떻게 생각하고 있었나요?",
@@ -19,7 +19,7 @@ export const startupAdditionalQuestions: AdditionalQuestionType[] = [
   },
 ];
 
-export const startUpClues: ClueType[] = [
+export const dureClues: ClueType[] = [
   {
     id: 1,
     title: "시체",
