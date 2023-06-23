@@ -58,7 +58,7 @@ export default function ScenarioCard({
                     return;
                   }
 
-                  router.push(`/${scenario.keyword}`);
+                  router.push(`/suspect/${scenario.keyword}`);
                   localStorage.removeItem(scenario.keyword);
                 }
               : onClick

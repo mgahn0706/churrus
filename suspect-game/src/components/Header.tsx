@@ -55,7 +55,7 @@ export default function Header() {
         sx={{
           cursor: "pointer",
         }}
-        onClick={() => router.push("/")}
+        onClick={() => router.push("/susoect")}
       >
         <Typography fontWeight="bolder" fontSize={16} mr={1}>
           추러스 크라임씬
@@ -63,10 +63,13 @@ export default function Header() {
         </Typography>
       </Box>
       <Box display="flex">
-        <HeaderButton text="규칙" onClick={() => router.push("/rules")} />
+        <HeaderButton
+          text="규칙"
+          onClick={() => router.push("/suspect/rules")}
+        />
         <HeaderButton
           text="인증 카드"
-          onClick={() => router.push("/certification")}
+          onClick={() => router.push("/suspect/certification")}
         />
       </Box>
     </Box>

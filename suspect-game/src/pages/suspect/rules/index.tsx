@@ -152,7 +152,7 @@ export default function Rules() {
               size="large"
               variant="outlined"
               onClick={() => {
-                router.push("/");
+                router.push("/suspect");
               }}
             >
               지금 플레이

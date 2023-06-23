@@ -16,13 +16,7 @@ import {
 } from "@mui/material";
 import PlayButtonIcon from "@mui/icons-material/PlayCircleFilled";
 import { useRouter } from "next/router";
-import {
-  MutableRefObject,
-  ReactNode,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { useEffect, useState } from "react";
 import { DetectiveNoteType } from "@/types";
 import { FadeInSection } from "@/components/FadeInSection";
 
@@ -60,7 +54,7 @@ export default function StartUpAnswer() {
         </DialogTitle>
         <DialogContent>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            아직 스타트업 살인사건의 진범이 지목되지 않았습니다. <br />
+            아직 자하연 살인사건의 진범이 지목되지 않았습니다. <br />
             게임을 진행해서 진범을 찾아주세요.
           </Typography>
         </DialogContent>
@@ -72,7 +66,7 @@ export default function StartUpAnswer() {
               disabled={isLoading}
               onClick={() => {
                 setIsLoading(true);
-                router.push("/startup");
+                router.push("/suspect/jahayeon");
               }}
             >
               확인
@@ -91,8 +85,7 @@ export default function StartUpAnswer() {
     <Box sx={{ backgroundColor: "black" }}>
       <FadeInSection>
         <Typography variant="h1" color="white" mt={40} mb={20}>
-          {submittedAnswer.accusedSuspect}
-          {submittedAnswer.accusedSuspect === "강지혜" ? "는" : "은"}
+          {submittedAnswer.accusedSuspect}은
         </Typography>
       </FadeInSection>
 
@@ -111,7 +104,7 @@ export default function StartUpAnswer() {
 
       <FadeInSection>
         <Typography variant="h1" color="white" mt={70} mb={100}>
-          한채원을 살해한 범인이
+          김규민을 살해한 범인이
         </Typography>
       </FadeInSection>
       <FadeInSection>
@@ -122,7 +115,7 @@ export default function StartUpAnswer() {
           mb={50}
           fontWeight="bold"
         >
-          {submittedAnswer.accusedSuspect === "김성균"
+          {submittedAnswer.accusedSuspect === "조세현"
             ? "맞습니다!"
             : "아닙니다!"}
         </Typography>
@@ -130,15 +123,14 @@ export default function StartUpAnswer() {
       <FadeInSection>
         <Box display="flex" justifyContent="center">
           <Typography variant="h2" color="white">
-            진범: 김성균
+            진범: 조세현
           </Typography>
         </Box>
       </FadeInSection>
       <FadeInSection>
         <Box textAlign="center">
           <Typography variant="h5" color="white" mt={1}>
-            살해방법: 위스키 물약통을 니코틴이 들어있는 물약통으로 바꿔치기해
-            독살
+            살해방법: 피해자를 술에 취하게 한 후 자하연으로 끌고가서 익사시켰다.
           </Typography>
           <Typography variant="body2" color="gray">
             내 답변: {submittedAnswer.howDunnit}
@@ -148,8 +140,7 @@ export default function StartUpAnswer() {
       <FadeInSection>
         <Box textAlign="center">
           <Typography variant="h5" color="white">
-            살해동기: 짝사랑하던 한채원이 개인정보를 무단 이용한 사건을 본인에게
-            덮어씌우려했다.
+            살해동기:
           </Typography>
           <Typography variant="body2" color="gray">
             내 답변: {submittedAnswer.whyDunnit}
@@ -418,7 +409,7 @@ export default function StartUpAnswer() {
           color="primary"
           onClick={() => {
             localStorage.removeItem("startup");
-            router.push("/");
+            router.push("/suspect");
           }}
           sx={{ mb: 20 }}
         >

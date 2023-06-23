@@ -252,7 +252,7 @@ export default function MemoModal({
         })}
         onConfirm={() => {
           localStorage.setItem(scenarioKeyword, JSON.stringify(note));
-          router.push(`/${scenarioKeyword}/answer`);
+          router.push(`/suspect/${scenarioKeyword}/answer`);
         }}
         onClose={() => {
           setIsFinalConfirmModalOpen(false);
