@@ -7,7 +7,7 @@ interface ContentType {
   title: string;
   description: string;
   subDesription: string;
-  mobile?: boolean;
+  isAvailable?: boolean;
   url: string;
   color: {
     main: string;
@@ -22,7 +22,6 @@ const contents: ContentType[] = [
     description: "창의적이고 어려운 문제들을 풀어보세요",
     subDesription:
       "매월 정기모임때마다 풀게 되는 문제적 남자 형식의 문제들입니다. 이곳에서는 역대 문제들을 풀어볼 수 있습니다.",
-    mobile: true,
     url: "quiz",
     color: {
       main: "red",
@@ -45,6 +44,7 @@ const contents: ContentType[] = [
     category: "추리",
     title: "협동 크라임씬",
     description: "단서들을 바탕으로 함께 범인을 추리하세요",
+    isAvailable: true,
     subDesription:
       "용의자들 중에 진범이 있고, 당신은 범인, 방법, 동기를 찾아야합니다. 이곳에서는 협동 크라임씬을 직접 플레이할 수 있습니다.",
     url: "suspect",
@@ -112,7 +112,10 @@ export default function Churrus() {
         >
           <CardContent
             onClick={() => {
-              router.push(`/${content.url}`);
+              if (content.isAvailable) {
+                router.push(`/${content.url}`);
+              }
+              window.alert("아직 준비 중인 게임입니다.");
             }}
             sx={{
               height: 200,
@@ -121,15 +124,32 @@ export default function Churrus() {
             <Typography color="lightgray" variant="body2">
               {content.category}
             </Typography>
-            <Typography
-              variant="h5"
-              component="div"
-              color={content.color.light}
-              fontWeight="bold"
-              gutterBottom
-            >
-              {content.title}
-            </Typography>
+            <Box display="flex" justifyContent="space-between">
+              <Typography
+                variant="h5"
+                component="div"
+                color={content.color.light}
+                fontWeight="bold"
+                gutterBottom
+              >
+                {content.title}
+              </Typography>
+              {!content.isAvailable && (
+                <Box
+                  fontWeight="bold"
+                  color="white"
+                  fontSize="12px"
+                  py="4px"
+                  height="16px"
+                  px="8px"
+                  bgcolor={content.color.light}
+                  textAlign="center"
+                  lineHeight="16px"
+                >
+                  개발 중
+                </Box>
+              )}
+            </Box>
             <Typography
               variant="body2"
               color={content.color.light}
