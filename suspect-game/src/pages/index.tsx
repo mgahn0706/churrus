@@ -114,6 +114,7 @@ export default function Churrus() {
             onClick={() => {
               if (content.isAvailable) {
                 router.push(`/${content.url}`);
+                return;
               }
               window.alert("아직 준비 중인 게임입니다.");
             }}
