@@ -175,7 +175,7 @@ export default function Churrus() {
   };
 
   return (
-    <Box>
+    <Box mb={20}>
       <Box display="flex" justifyContent="center" mt={10}>
         <Typography
           fontWeight="bolder"
