@@ -1,162 +1,232 @@
 import SelectedPanelItem from "@/features/same-number/components/SelectedPanelItem";
 import PanelItem from "@/features/same-number/components/PanelItem";
 import { calculator } from "@/features/same-number/utils/calculator";
-import { Box, Button, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Grid,
+  IconButton,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import { useEffect, useState } from "react";
+import TargetNumberBox from "@/features/same-number/components/TargetNumberBox";
+import Scoreboard from "@/features/same-number/components/Scoreboard";
+import { Flip } from "@mui/icons-material";
 
 const ALPHABETS = [
-  ["A", "L", "I", "E"],
-  ["Y", "O", "U", "M"],
-  ["S", "T", "N", "R"],
-  ["H", "D", "G", "K"],
+  "A",
+  "L",
+  "I",
+  "E",
+  "Y",
+  "O",
+  "U",
+  "M",
+  "S",
+  "T",
+  "N",
+  "R",
+  "H",
+  "D",
+  "G",
+  "K",
 ];
 
 const availableTargetNumbers = [
   1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,
-  23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 40, 44, 48, 45, 50,
-  55, 60, 42, 54, 66, 72, 56, 63, 70, 77, 84, 80, 88, 96, 90, 99, 108, 110, 120,
-  132,
+  23, 24, 26, 27, 28, 30, 32, 33, 35, 36, 40, 44, 48, 45, 50, 55, 60, 42, 54,
+  66, 72, 56, 63, 70, 77, 84, 80, 88, 96, 90, 99, 108, 110, 120, 132,
 ];
-
-interface PanelType {
-  alphabet: string;
-  number: string;
-  isShowingNumber: boolean;
-}
 
 export default function SameNumber() {
   const [round, setRound] = useState(1);
-  const [panel, setPanel] = useState<PanelType[][]>([
-    [
-      { alphabet: "A", number: "1", isShowingNumber: false },
-      { alphabet: "L", number: "2", isShowingNumber: false },
-      { alphabet: "I", number: "3", isShowingNumber: false },
-      { alphabet: "E", number: "4", isShowingNumber: false },
-    ],
-    [
-      { alphabet: "Y", number: "5", isShowingNumber: false },
-      { alphabet: "O", number: "6", isShowingNumber: false },
-      { alphabet: "U", number: "7", isShowingNumber: false },
-      { alphabet: "M", number: "8", isShowingNumber: false },
-    ],
-    [
-      { alphabet: "S", number: "9", isShowingNumber: false },
-      { alphabet: "T", number: "10", isShowingNumber: false },
-      { alphabet: "N", number: "11", isShowingNumber: false },
-      { alphabet: "R", number: "12", isShowingNumber: false },
-    ],
-    [
-      { alphabet: "H", number: "+", isShowingNumber: false },
-      { alphabet: "D", number: "-", isShowingNumber: false },
-      { alphabet: "G", number: "x", isShowingNumber: false },
-      { alphabet: "K", number: "÷", isShowingNumber: false },
-    ],
+  const [panel, setPanel] = useState<string[]>([
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
+    "+",
+    "-",
+    "x",
+    "÷",
   ]);
-  const [targetNumbers, setTargetNumbers] = useState(availableTargetNumbers);
-  const [selectedPanels, setSelectedPanels] = useState<PanelType[]>([]);
+  const [flippedPanels, setFlippedPanels] = useState<number[]>([]);
+  const [selectedPanels, setSelectedPanels] = useState<number[]>([]);
   const [result, setResult] = useState("");
+  const [score, setScore] = useState({
+    player1: 0,
+    player2: 0,
+  });
+
+  const [targetNumbers, setTargetNumbers] = useState<number[]>([]);
 
   useEffect(() => {
-    const numbers = panel.flatMap((row) => row.map((item) => item.number));
-
-    numbers.sort(() => Math.random() - 0.5);
-
-    const shuffledPanel = panel.map((row, rowIdx) =>
-      row.map((item, colIdx) => {
-        return { ...item, number: numbers[rowIdx * 4 + colIdx] };
-      })
-    );
+    const shuffledPanel = panel.sort(() => Math.random() - 0.5);
     setPanel(shuffledPanel);
-    const newTargetNumbers = targetNumbers.sort(() => Math.random() - 0.5);
-    setTargetNumbers(newTargetNumbers);
+    const shuffledTargetNumbers = availableTargetNumbers.sort(
+      () => Math.random() - 0.5
+    );
+    setTargetNumbers(shuffledTargetNumbers);
   }, []);
 
   const handleSubmit = () => {
     if (selectedPanels.length !== 3) return;
-    const submittedExpression = selectedPanels.map((panel) => panel.number);
-    setResult(
-      calculator({
-        expression: submittedExpression,
-      })
+    const submittedExpression = selectedPanels.map(
+      (selectedPanel) => panel[selectedPanel]
     );
+    const calculatedResult = calculator({
+      n1: submittedExpression[0],
+      operator: submittedExpression[1],
+      n2: submittedExpression[2],
+    });
+
+    selectedPanels.forEach((selectedPanel, idx) => {
+      setTimeout(() => {
+        setFlippedPanels((prev) => [...prev, selectedPanel]);
+      }, idx * 500);
+    });
+
+    setTimeout(() => {
+      setResult(calculatedResult);
+    }, selectedPanels.length * 500);
+
+    if (Number(calculatedResult) !== targetNumbers[round - 1]) {
+      setTimeout(() => {
+        resetSubmit();
+      }, (selectedPanels.length + 1) * 500);
+    }
+
+    setTimeout(() => {}, selectedPanels.length * 500);
   };
 
   const resetSubmit = () => {
+    setFlippedPanels([]);
     setSelectedPanels([]);
     setResult("");
+  };
+
+  const handleFlipAll = () => {
+    ALPHABETS.forEach((_, idx) => {
+      setTimeout(() => {
+        setFlippedPanels((prev) => [...prev, idx]);
+      }, idx * 10);
+    });
+    setTimeout(() => {
+      setFlippedPanels([]);
+    }, 5000);
   };
 
   return (
     <Box>
       <Box display="flex" justifyContent="center" mt={10}>
-        <Typography>같은 숫자 찾기 </Typography>
-        <Typography>{round}라운드</Typography>
+        <Typography lineHeight="40px" variant="h5">
+          같은 숫자 찾기
+        </Typography>
+        {round === 1 && (
+          <Tooltip title="5초간 숫자 공개" placement="right">
+            <IconButton onClick={handleFlipAll}>
+              <Flip />
+            </IconButton>
+          </Tooltip>
+        )}
       </Box>
-      <Box>타깃넘버: {targetNumbers[round - 1]}</Box>
-
-      <Box display="flex" justifyContent="center" mt={2}>
-        <Box>
-          {panel.map((row, i) => (
-            <Box key={i} display="flex">
-              {row.map((col, j) => (
-                <PanelItem
-                  key={j}
-                  onClick={() => {
-                    if (
-                      selectedPanels.length < 3 &&
-                      !selectedPanels.includes(col)
-                    ) {
-                      setSelectedPanels([...selectedPanels, col]);
-                    }
-                  }}
-                >
-                  {col.isShowingNumber ? col.number : col.alphabet}
-                </PanelItem>
-              ))}
-            </Box>
-          ))}
+      <Scoreboard
+        score={score}
+        onClick={setScore}
+        player1Name="Player 1"
+        player2Name="Player 2"
+        winner={
+          score.player1 >= 10
+            ? "player1"
+            : score.player2 >= 10
+            ? "player2"
+            : false
+        }
+      />
+      <Box display="flex" justifyContent="center" mt={2} alignItems="center">
+        <Box position="absolute" left="20%">
+          <TargetNumberBox
+            targetNumber={targetNumbers[round - 1]}
+            round={round}
+          />
         </Box>
+        <Grid container width="430px" spacing={1} mb={2}>
+          {panel.map((item, i) => (
+            <Grid item xs={3}>
+              <PanelItem
+                isSelected={selectedPanels.includes(i)}
+                isFlipped={flippedPanels.includes(i)}
+                key={i}
+                onClick={() => {
+                  if (selectedPanels.includes(i)) {
+                    setSelectedPanels(selectedPanels.filter((n) => n !== i));
+                    return;
+                  }
+                  setSelectedPanels(
+                    selectedPanels.length < 3
+                      ? [...selectedPanels, i]
+                      : selectedPanels
+                  );
+                }}
+              >
+                {flippedPanels.includes(i) ? item : ALPHABETS[i]}
+              </PanelItem>
+            </Grid>
+          ))}
+        </Grid>
       </Box>
       <Box display="flex" justifyContent="center" mt={2}>
         {selectedPanels.map((selectedPanel) => (
-          <SelectedPanelItem
-            key={selectedPanel.number}
-            onClick={() => {
-              resetSubmit();
-            }}
-          >
-            {selectedPanel.number}
+          <SelectedPanelItem key={selectedPanel}>
+            {flippedPanels.includes(selectedPanel)
+              ? panel[selectedPanel]
+              : ALPHABETS[selectedPanel]}
           </SelectedPanelItem>
         ))}
         {Array(3 - selectedPanels.length)
           .fill(0)
           .map((_, i) => (
-            <SelectedPanelItem
-              key={i}
-              onClick={() => {
-                resetSubmit();
-              }}
-            >
-              {""}
-            </SelectedPanelItem>
+            <SelectedPanelItem key={i}>{""}</SelectedPanelItem>
           ))}
-        <SelectedPanelItem onClick={handleSubmit}>=</SelectedPanelItem>
-        <SelectedPanelItem
-          onClick={() => {
-            resetSubmit();
-          }}
-        >
-          {result}
+        <SelectedPanelItem onClick={result ? () => {} : handleSubmit}>
+          =
         </SelectedPanelItem>
+        <SelectedPanelItem>{result}</SelectedPanelItem>
       </Box>
 
-      <Box display="flex" justifyContent="center" mt={2}>
+      <Box display="flex" justifyContent="center" gap={2} mt={5}>
+        {round > 1 && (
+          <Button
+            color="primary"
+            onClick={() => {
+              setRound(round - 1);
+              resetSubmit();
+            }}
+          >
+            이전 라운드
+          </Button>
+        )}
         {round < 61 && (
           <Button
+            disabled={
+              score.player1 >= 10 ||
+              score.player2 >= 10 ||
+              score.player1 + score.player2 < round
+            }
             onClick={() => {
               setRound(round + 1);
               resetSubmit();
             }}
+            variant="outlined"
           >
             다음 라운드
           </Button>

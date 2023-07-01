@@ -25,7 +25,10 @@ export const calculator = ({
     case "x":
       return `${Number(n1) * Number(n2)}`;
     case "÷":
-      return `${(Number(n1) / Number(n2)).toFixed(2)}`;
+      if (Number(n1) % Number(n2) !== 0) {
+        return `${(Number(n1) / Number(n2)).toFixed(1)}`;
+      }
+      return `${Number(n1) / Number(n2)}`;
     default:
       return "!";
   }

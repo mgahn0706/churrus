@@ -5,7 +5,7 @@ export default function SelectedPanelItem({
   onClick,
 }: {
   children: React.ReactNode;
-  onClick: () => void;
+  onClick?: () => void;
 }) {
   return (
     <Box
@@ -20,7 +20,7 @@ export default function SelectedPanelItem({
       alignItems="center"
       lineHeight="100px"
       sx={{
-        cursor: "pointer",
+        cursor: onClick ? "pointer" : "default",
       }}
       onClick={onClick}
     >
