@@ -1,4 +1,3 @@
-import TabPanel from "@/components/Answer/TabPanel";
 import {
   Box,
   Button,
@@ -17,8 +16,9 @@ import {
 import PlayButtonIcon from "@mui/icons-material/PlayCircleFilled";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { DetectiveNoteType } from "@/types";
-import { FadeInSection } from "@/components/FadeInSection";
+import { DetectiveNoteType } from "@/features/suspect/types";
+import TabPanel from "@/features/suspect/components/Answer/TabPanel";
+import { FadeInSection } from "@/features/suspect/components/FadeInSection";
 
 export default function StartUpAnswer() {
   const router = useRouter();

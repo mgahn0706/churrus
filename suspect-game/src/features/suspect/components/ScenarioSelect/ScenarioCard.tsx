@@ -6,7 +6,7 @@ import {
   Typography,
 } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
-import { ScenarioType } from "@/types";
+import { ScenarioType } from "@/features/suspect/types";
 import { useRouter } from "next/router";
 
 interface ScenarioCardProps {

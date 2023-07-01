@@ -2,7 +2,7 @@ import {
   AdditionalQuestionType,
   DetectiveNoteType,
   SuspectType,
-} from "@/types";
+} from "@/features/suspect/types";
 import {
   Box,
   Button,

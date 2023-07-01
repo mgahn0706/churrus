@@ -55,7 +55,7 @@ export default function Header() {
         sx={{
           cursor: "pointer",
         }}
-        onClick={() => router.push("/susoect")}
+        onClick={() => router.push("/suspect")}
       >
         <Typography fontWeight="bolder" fontSize={16} mr={1}>
           추러스 크라임씬

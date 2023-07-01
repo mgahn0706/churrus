@@ -1,12 +1,15 @@
-import InGameLayout from "@/components/InGame/InGameLayout";
-import { scenarios } from "@/fixtures";
+import InGameLayout from "@/features/suspect/components/InGame/InGameLayout";
+import { scenarios } from "@/features/suspect/fixtures";
 import {
-  jahayeonAdditionalQuestions,
   jahayeonClues,
-} from "@/fixtures/jahayeon/clues";
-import { jahayeonMoveButton } from "@/fixtures/jahayeon/movePlace";
-import { JahayeonPrologue } from "@/fixtures/jahayeon/prologue";
-import { jahayeonSuspects, jahayeonVictim } from "@/fixtures/jahayeon/suspects";
+  jahayeonAdditionalQuestions,
+} from "@/features/suspect/fixtures/jahayeon/clues";
+import { jahayeonMoveButton } from "@/features/suspect/fixtures/jahayeon/movePlace";
+import { JahayeonPrologue } from "@/features/suspect/fixtures/jahayeon/prologue";
+import {
+  jahayeonSuspects,
+  jahayeonVictim,
+} from "@/features/suspect/fixtures/jahayeon/suspects";
 
 export default function Jahayeon() {
   const jahayeonScenario = scenarios.find(

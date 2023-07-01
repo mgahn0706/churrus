@@ -1,4 +1,4 @@
-import { SuspectType } from "@/types";
+import { SuspectType } from "@/features/suspect/types";
 import {
   Alert,
   Avatar,

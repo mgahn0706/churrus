@@ -14,7 +14,7 @@ import {
 import { Female } from "@mui/icons-material";
 import { Male } from "@mui/icons-material";
 import WorkIcon from "@mui/icons-material/Work";
-import { SuspectType, VictimType } from "@/types";
+import { SuspectType, VictimType } from "@/features/suspect/types";
 import { useState } from "react";
 
 interface SuspectsInfoCardProps {

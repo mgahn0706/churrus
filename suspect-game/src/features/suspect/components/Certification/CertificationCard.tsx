@@ -1,4 +1,4 @@
-import { CertificationCardType } from "@/types";
+import { CertificationCardType } from "@/features/suspect/types";
 import { Box } from "@mui/material";
 
 export default function CertificationCard({

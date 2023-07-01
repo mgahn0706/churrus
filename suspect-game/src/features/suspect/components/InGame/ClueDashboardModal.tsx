@@ -1,4 +1,4 @@
-import { ClueType } from "@/types";
+import { ClueType } from "@/features/suspect/types";
 import { Box, Button, Tooltip, Typography, Modal } from "@mui/material";
 
 interface ClueDashboardModalProps {

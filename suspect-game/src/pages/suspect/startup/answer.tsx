@@ -1,4 +1,3 @@
-import TabPanel from "@/components/Answer/TabPanel";
 import {
   Box,
   Button,
@@ -16,15 +15,10 @@ import {
 } from "@mui/material";
 import PlayButtonIcon from "@mui/icons-material/PlayCircleFilled";
 import { useRouter } from "next/router";
-import {
-  MutableRefObject,
-  ReactNode,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import { DetectiveNoteType } from "@/types";
-import { FadeInSection } from "@/components/FadeInSection";
+import { useEffect, useState } from "react";
+import { DetectiveNoteType } from "@/features/suspect/types";
+import { FadeInSection } from "@/features/suspect/components/FadeInSection";
+import TabPanel from "@/features/suspect/components/Answer/TabPanel";
 
 export default function StartUpAnswer() {
   const router = useRouter();

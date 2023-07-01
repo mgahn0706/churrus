@@ -18,7 +18,7 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import CloseIcon from "@mui/icons-material/Close";
 import { ArrowBack } from "@mui/icons-material";
-import { ClueType, SuspectType } from "@/types";
+import { ClueType, SuspectType } from "@/features/suspect/types";
 import { Circle } from "@mui/icons-material";
 
 interface ClueDetailViewProps {

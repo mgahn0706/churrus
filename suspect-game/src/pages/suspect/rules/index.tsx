@@ -1,5 +1,5 @@
-import { FadeInSection } from "@/components/FadeInSection";
-import Header from "@/components/Header";
+import { FadeInSection } from "@/features/suspect/components/FadeInSection";
+import Header from "@/features/suspect/components/Header";
 import { Box, Button, Typography } from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/router";

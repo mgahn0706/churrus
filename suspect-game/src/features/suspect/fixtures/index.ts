@@ -1,4 +1,4 @@
-import { ScenarioType } from "@/types";
+import { ScenarioType } from "@/features/suspect/types";
 
 export const scenarios: ScenarioType[] = [
   {

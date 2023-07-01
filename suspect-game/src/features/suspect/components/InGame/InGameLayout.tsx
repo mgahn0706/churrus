@@ -1,18 +1,10 @@
-import { ClueButton } from "@/components/InGame/ClueButton";
-import { ClueDetailView } from "@/components/InGame/ClueDetailView";
 import { Box, SpeedDial, SpeedDialAction, SpeedDialIcon } from "@mui/material";
 import Image from "next/image";
 import LightBulbIcon from "@mui/icons-material/Lightbulb";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import InfoIcon from "@mui/icons-material/Info";
 import { useEffect, useState } from "react";
-import MovePlaceButton from "@/components/InGame/MovePlaceButton";
-import ClueDashboardModal from "@/components/InGame/ClueDashboardModal";
-import PrologueModal from "@/components/InGame/PrologueModal";
-import { useMobileWidth } from "@/hooks/useMobileWIdth";
-import PasswordInputModal from "@/components/InGame/PasswordInputModal";
-import SuspectsInfoCard from "@/components/InGame/SuspectsInfoCard";
-import MobileWidthAlertModal from "@/components/MobileWidthAlertModal";
+
 import {
   AdditionalQuestionType,
   ClueType,
@@ -20,9 +12,18 @@ import {
   ScenarioType,
   SuspectType,
   VictimType,
-} from "@/types";
+} from "@/features/suspect/types";
 import MemoButton from "./MemoButton";
 import MemoModal from "./MemoModal";
+import { useMobileWidth } from "@/hooks/useMobileWIdth";
+import MobileWidthAlertModal from "../MobileWidthAlertModal";
+import { ClueDetailView } from "./ClueDetailView";
+import { ClueButton } from "./ClueButton";
+import ClueDashboardModal from "./ClueDashboardModal";
+import MovePlaceButton from "./MovePlaceButton";
+import PasswordInputModal from "./PasswordInputModal";
+import PrologueModal from "./PrologueModal";
+import SuspectsInfoCard from "./SuspectsInfoCard";
 
 interface InGameLayoutProps {
   clues: ClueType[];

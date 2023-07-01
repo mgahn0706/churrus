@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import LockIcon from "@mui/icons-material/Lock";
 import { useState } from "react";
-import { ClueType } from "@/types";
+import { ClueType } from "@/features/suspect/types";
 
 interface PasswordInputModalProps {
   targetClue: ClueType | null;

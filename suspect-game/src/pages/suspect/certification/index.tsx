@@ -1,7 +1,6 @@
-import CertificationCard from "@/components/Certification/CertificationCard";
-import { FadeInSection } from "@/components/FadeInSection";
-import Header from "@/components/Header";
-import { CertificationCardType } from "@/types";
+import { FadeInSection } from "@/features/suspect/components/FadeInSection";
+import Header from "@/features/suspect/components/Header";
+import { CertificationCardType } from "@/features/suspect/types";
 import { Box, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 

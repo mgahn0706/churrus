@@ -1,4 +1,4 @@
-import { AdditionalQuestionType, ClueType } from "@/types";
+import { AdditionalQuestionType, ClueType } from "@/features/suspect/types";
 import { type } from "os";
 
 export const jahayeonAdditionalQuestions: AdditionalQuestionType[] = [

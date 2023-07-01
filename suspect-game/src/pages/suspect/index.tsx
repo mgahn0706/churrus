@@ -4,19 +4,20 @@ import {
   Schedule,
   VolumeUpRounded,
 } from "@mui/icons-material";
-import ScenarioCard from "@/components/ScenarioSelect/ScenarioCard";
 import { Box, IconButton, Rating, Typography, keyframes } from "@mui/material";
-import { useRef, useState } from "react";
-import { scenarios } from "@/fixtures";
+import { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, EffectCoverflow } from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+
+import { ScenarioType } from "@/features/suspect/types";
+import Header from "@/features/suspect/components/Header";
+import MobileWidthAlertModal from "@/features/suspect/components/MobileWidthAlertModal";
+import ScenarioCard from "@/features/suspect/components/ScenarioSelect/ScenarioCard";
+import { scenarios } from "@/features/suspect/fixtures";
 import { useMobileWidth } from "@/hooks/useMobileWIdth";
-import MobileWidthAlertModal from "@/components/MobileWidthAlertModal";
-import { ScenarioType } from "@/types";
-import Header from "@/components/Header";
 
 export default function Home() {
   const [selectedScenario, setSelectedScenario] = useState<ScenarioType | null>(

@@ -1,6 +1,6 @@
-import { SuspectType, VictimType } from "@/types";
+import { SuspectType, VictimType } from "@/features/suspect/types";
 
-export const startUpSuspects: SuspectType[] = [
+export const dureSuspects: SuspectType[] = [
   {
     name: "김성균",
     image: "/image/profile/kim_sg.jpeg",
@@ -44,7 +44,7 @@ export const startUpSuspects: SuspectType[] = [
   },
 ];
 
-export const startUpVictim: VictimType = {
+export const dureVictim: VictimType = {
   name: "한채원",
   image: "/image/profile/han_cw.jpeg",
   age: 28,

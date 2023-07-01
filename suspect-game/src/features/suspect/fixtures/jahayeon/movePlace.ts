@@ -1,4 +1,4 @@
-import { MovePlaceButtonType } from "@/types";
+import { MovePlaceButtonType } from "@/features/suspect/types";
 
 export const jahayeonMoveButton: MovePlaceButtonType[] = [
   {

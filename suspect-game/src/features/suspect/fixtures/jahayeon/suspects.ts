@@ -1,4 +1,4 @@
-import { SuspectType, VictimType } from "@/types";
+import { SuspectType, VictimType } from "@/features/suspect/types";
 
 export const jahayeonSuspects: SuspectType[] = [
   {
