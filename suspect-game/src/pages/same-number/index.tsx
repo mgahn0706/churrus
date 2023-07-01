@@ -1,5 +1,8 @@
+import SelectedPanelItem from "@/features/same-number/components/SelectedPanelItem";
+import PanelItem from "@/features/same-number/components/PanelItem";
+import { calculator } from "@/features/same-number/utils/calculator";
 import { Box, Button, Typography } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const ALPHABETS = [
   ["A", "L", "I", "E"],
@@ -15,20 +18,72 @@ const availableTargetNumbers = [
   132,
 ];
 
+interface PanelType {
+  alphabet: string;
+  number: string;
+  isShowingNumber: boolean;
+}
+
 export default function SameNumber() {
   const [round, setRound] = useState(1);
-  const [panel, setPanel] = useState<string[][]>([
-    ["7", "3", "10", "5"],
-    ["-", "11", "+", "2"],
-    ["1", "6", "8", "x"],
-    ["9", "÷", "12", "4"],
+  const [panel, setPanel] = useState<PanelType[][]>([
+    [
+      { alphabet: "A", number: "1", isShowingNumber: false },
+      { alphabet: "L", number: "2", isShowingNumber: false },
+      { alphabet: "I", number: "3", isShowingNumber: false },
+      { alphabet: "E", number: "4", isShowingNumber: false },
+    ],
+    [
+      { alphabet: "Y", number: "5", isShowingNumber: false },
+      { alphabet: "O", number: "6", isShowingNumber: false },
+      { alphabet: "U", number: "7", isShowingNumber: false },
+      { alphabet: "M", number: "8", isShowingNumber: false },
+    ],
+    [
+      { alphabet: "S", number: "9", isShowingNumber: false },
+      { alphabet: "T", number: "10", isShowingNumber: false },
+      { alphabet: "N", number: "11", isShowingNumber: false },
+      { alphabet: "R", number: "12", isShowingNumber: false },
+    ],
+    [
+      { alphabet: "H", number: "+", isShowingNumber: false },
+      { alphabet: "D", number: "-", isShowingNumber: false },
+      { alphabet: "G", number: "x", isShowingNumber: false },
+      { alphabet: "K", number: "÷", isShowingNumber: false },
+    ],
   ]);
-  const [targetNumbers, setTargetNumbers] = useState(
-    availableTargetNumbers.sort(() => Math.random() - 0.5)
-  );
-  const shuffle = (array: (number | string)[]) => {
-    array.sort(() => Math.random() - 0.5);
-    return array;
+  const [targetNumbers, setTargetNumbers] = useState(availableTargetNumbers);
+  const [selectedPanels, setSelectedPanels] = useState<PanelType[]>([]);
+  const [result, setResult] = useState("");
+
+  useEffect(() => {
+    const numbers = panel.flatMap((row) => row.map((item) => item.number));
+
+    numbers.sort(() => Math.random() - 0.5);
+
+    const shuffledPanel = panel.map((row, rowIdx) =>
+      row.map((item, colIdx) => {
+        return { ...item, number: numbers[rowIdx * 4 + colIdx] };
+      })
+    );
+    setPanel(shuffledPanel);
+    const newTargetNumbers = targetNumbers.sort(() => Math.random() - 0.5);
+    setTargetNumbers(newTargetNumbers);
+  }, []);
+
+  const handleSubmit = () => {
+    if (selectedPanels.length !== 3) return;
+    const submittedExpression = selectedPanels.map((panel) => panel.number);
+    setResult(
+      calculator({
+        expression: submittedExpression,
+      })
+    );
+  };
+
+  const resetSubmit = () => {
+    setSelectedPanels([]);
+    setResult("");
   };
 
   return (
@@ -37,32 +92,75 @@ export default function SameNumber() {
         <Typography>같은 숫자 찾기 </Typography>
         <Typography>{round}라운드</Typography>
       </Box>
+      <Box>타깃넘버: {targetNumbers[round - 1]}</Box>
+
       <Box display="flex" justifyContent="center" mt={2}>
-        <Box>타깃넘버: {targetNumbers[round - 1]}</Box>
         <Box>
           {panel.map((row, i) => (
             <Box key={i} display="flex">
               {row.map((col, j) => (
-                <Box
-                  sx={{ cursor: "pointer" }}
+                <PanelItem
                   key={j}
-                  width="50px"
-                  height="50px"
-                  border="1px solid black"
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
-                  onClick={() => {}}
+                  onClick={() => {
+                    if (
+                      selectedPanels.length < 3 &&
+                      !selectedPanels.includes(col)
+                    ) {
+                      setSelectedPanels([...selectedPanels, col]);
+                    }
+                  }}
                 >
-                  {col}
-                </Box>
+                  {col.isShowingNumber ? col.number : col.alphabet}
+                </PanelItem>
               ))}
             </Box>
           ))}
         </Box>
       </Box>
       <Box display="flex" justifyContent="center" mt={2}>
-        <Button onClick={() => setRound(round + 1)}>다음 라운드</Button>
+        {selectedPanels.map((selectedPanel) => (
+          <SelectedPanelItem
+            key={selectedPanel.number}
+            onClick={() => {
+              resetSubmit();
+            }}
+          >
+            {selectedPanel.number}
+          </SelectedPanelItem>
+        ))}
+        {Array(3 - selectedPanels.length)
+          .fill(0)
+          .map((_, i) => (
+            <SelectedPanelItem
+              key={i}
+              onClick={() => {
+                resetSubmit();
+              }}
+            >
+              {""}
+            </SelectedPanelItem>
+          ))}
+        <SelectedPanelItem onClick={handleSubmit}>=</SelectedPanelItem>
+        <SelectedPanelItem
+          onClick={() => {
+            resetSubmit();
+          }}
+        >
+          {result}
+        </SelectedPanelItem>
+      </Box>
+
+      <Box display="flex" justifyContent="center" mt={2}>
+        {round < 61 && (
+          <Button
+            onClick={() => {
+              setRound(round + 1);
+              resetSubmit();
+            }}
+          >
+            다음 라운드
+          </Button>
+        )}
       </Box>
     </Box>
   );

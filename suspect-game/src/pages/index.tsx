@@ -92,6 +92,7 @@ const contents: ContentType[] = [
     description: "숫자를 기억해서 타겟 넘버를 완성하세요",
     icon: <Filter1 sx={{ fontSize: 90, opacity: 0.2 }} />,
     url: "same-number",
+    isAvailable: true,
     color: {
       main: "orange",
       light: "#F97316",
@@ -130,6 +131,7 @@ const contents: ContentType[] = [
         alt="logo"
         width={90}
         height={90}
+        style={{ opacity: 0.2 }}
       />
     ),
     url: "https://semantle-ko.newsjel.ly/",
@@ -186,10 +188,7 @@ export default function Churrus() {
               height: 200,
             }}
           >
-            <Typography color="lightgray" variant="body2">
-              {content.category}
-            </Typography>
-            <Box display="flex" justifyContent="space-between">
+            <Box display="flex" justifyContent="space-between" mt={1}>
               <Typography
                 variant="h5"
                 component="div"
@@ -252,7 +251,7 @@ export default function Churrus() {
       </Box>
 
       <Box display="flex" justifyContent="center">
-        <Typography>서울대학교 추리 동아리</Typography>
+        <Typography>서울대학교 추리 중앙 동아리</Typography>
       </Box>
       <Box mt={10} mx="auto" px="1rem" maxWidth="1020px">
         <Box width="100%" mb={5}>
