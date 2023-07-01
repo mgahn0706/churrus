@@ -1,12 +1,26 @@
 import { useResponsiveValue } from "@/hooks/useResponsiveValue";
-import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
+import { Box, Card, CardContent, Grid, Icon, Typography } from "@mui/material";
 import { useRouter } from "next/router";
+import { ReactNode } from "react";
+import {
+  AutoStories,
+  Filter1,
+  Help,
+  IndeterminateCheckBox,
+  Quiz,
+  Route,
+  Search,
+  ShowChart,
+  Storefront,
+  StorefrontOutlined,
+} from "@mui/icons-material";
+import Image from "next/image";
 
 interface ContentType {
   category: string;
   title: string;
   description: string;
-  subDesription: string;
+  icon: ReactNode;
   isAvailable?: boolean;
   url: string;
   color: {
@@ -17,11 +31,10 @@ interface ContentType {
 
 const contents: ContentType[] = [
   {
-    category: "문제풀이",
+    category: "정기모임",
     title: "문제적 추러스",
     description: "창의적이고 어려운 문제들을 풀어보세요",
-    subDesription:
-      "매월 정기모임때마다 풀게 되는 문제적 남자 형식의 문제들입니다. 이곳에서는 역대 문제들을 풀어볼 수 있습니다.",
+    icon: <Quiz sx={{ fontSize: 90, opacity: 0.2 }} />,
     url: "quiz",
     color: {
       main: "red",
@@ -29,11 +42,10 @@ const contents: ContentType[] = [
     },
   },
   {
-    category: "추리",
+    category: "정기모임",
     title: "장편 추리 문제",
     description: "소설로 된 추리 문제를 읽으며 범인을 추리하세요",
-    subDesription:
-      "소설 형식으로 쓰여진 추리 문제들이며, 독해력과 추리력을 바탕으로 진범을 지목하세요. 이곳에서는 역대 장편 추리 문제들을 풀어볼 수 있습니다.",
+    icon: <AutoStories sx={{ fontSize: 90, opacity: 0.2 }} />,
     url: "novel",
     color: {
       main: "green",
@@ -41,12 +53,11 @@ const contents: ContentType[] = [
     },
   },
   {
-    category: "추리",
+    category: "정기모임",
     title: "협동 크라임씬",
     description: "단서들을 바탕으로 함께 범인을 추리하세요",
     isAvailable: true,
-    subDesription:
-      "용의자들 중에 진범이 있고, 당신은 범인, 방법, 동기를 찾아야합니다. 이곳에서는 협동 크라임씬을 직접 플레이할 수 있습니다.",
+    icon: <Search sx={{ fontSize: 90, opacity: 0.2 }} />,
     url: "suspect",
     color: {
       main: "blue",
@@ -57,8 +68,7 @@ const contents: ContentType[] = [
     category: "더 지니어스",
     title: "미스터리 사인",
     description: "힌트를 바탕으로 미스터리 사인의 규칙을 맞춰보세요",
-    subDesription:
-      "2팀으로 나누어 서로 힌트를 제시하고, 미지의 연산 기호가 갖는 규칙을 빠르게 파악하는 지니어스 게임입니다. 이곳에서는 미스터리 사인을 직접 플레이할 수 있습니다.",
+    icon: <Help sx={{ fontSize: 90, opacity: 0.2 }} />,
     url: "mystery-sign",
     color: {
       main: "purple",
@@ -69,8 +79,7 @@ const contents: ContentType[] = [
     category: "더 지니어스",
     title: "마이너스 경매",
     description: "경매를 통해 점수 감점을 최소화하세요",
-    subDesription:
-      "자신의 칩을 이용하여 마이너스 점수를 패스하거나, 마이너스 점수와 칩을 낙찰받는 지니어스 게임입니다. 이곳에서는 마이너스 경매를 직접 플레이할 수 있습니다.",
+    icon: <IndeterminateCheckBox sx={{ fontSize: 90, opacity: 0.2 }} />,
     url: "minus",
     color: {
       main: "gold",
@@ -79,14 +88,65 @@ const contents: ContentType[] = [
   },
   {
     category: "더 지니어스",
-    title: "체인옥션",
-    description: "경매와 협상을 통해 타겟 숫자를 완성하세요",
-    subDesription:
-      "숫자와 기호를 경매를 통해 얻고 자신의 칩을 이용해 타겟 넘버와 최대한 가까운 숫자를 만드는 지니어스 게임입니다. 이곳에서는 체인옥션을 직접 플레이할 수 있습니다.",
-    url: "chain",
+    title: "같은 숫자 찾기",
+    description: "숫자를 기억해서 타겟 넘버를 완성하세요",
+    icon: <Filter1 sx={{ fontSize: 90, opacity: 0.2 }} />,
+    url: "same-number",
     color: {
       main: "orange",
       light: "#F97316",
+    },
+  },
+  {
+    category: "더 지니어스",
+    title: "생선 가게",
+    description: "생선을 판매하며 최고의 수익을 내보세요",
+    icon: <Storefront sx={{ fontSize: 90, opacity: 0.2 }} />,
+    url: "fish-market",
+    color: {
+      main: "lime",
+      light: "#c4d87c",
+    },
+  },
+  {
+    category: "더 지니어스",
+    title: "폭풍의 증권시장",
+    description: "폭등과 폭락의 증권시장에서 최고의 수익을 내보세요",
+    icon: <ShowChart sx={{ fontSize: 90, opacity: 0.2 }} />,
+    url: "stock-market",
+    color: {
+      main: "darkblue",
+      light: "#9bb8ed",
+    },
+  },
+  {
+    category: "외부",
+    title: "꼬맨틀",
+    isAvailable: true,
+    description: "단어의 유사도를 바탕으로 정답 단어를 맞추세요",
+    icon: (
+      <Image
+        src="https://semantle-ko.newsjel.ly/assets/icon.svg"
+        alt="logo"
+        width={90}
+        height={90}
+      />
+    ),
+    url: "https://semantle-ko.newsjel.ly/",
+    color: {
+      main: "#00a8e0",
+      light: "#02b5ef",
+    },
+  },
+  {
+    category: "외부",
+    title: "더 라비린스",
+    description: "추러스에서 만든 미궁게임을 플레이 할 수 있어요",
+    icon: <Route sx={{ fontSize: 90, opacity: 0.2 }} />,
+    url: "https://www.thelabyrinth.co.kr/labyrinth/",
+    color: {
+      main: "black",
+      light: "gray",
     },
   },
 ];
@@ -104,7 +164,9 @@ export default function Churrus() {
             cursor: "pointer",
             transition: "all 0.2s",
             height: 200,
-            boxShadow: `${content.color.light} 0px 3px 8px`,
+            boxShadow: content.isAvailable
+              ? `${content.color.light} 0px 3px 8px`
+              : "none",
             "&:hover": {
               border: `${content.color.main} solid 1px`,
             },
@@ -113,7 +175,9 @@ export default function Churrus() {
           <CardContent
             onClick={() => {
               if (content.isAvailable) {
-                router.push(`/${content.url}`);
+                content.category === "외부"
+                  ? window.open(content.url, "_blank", "noopener noreferrer")
+                  : router.push(`/${content.url}`);
                 return;
               }
               window.alert("아직 준비 중인 게임입니다.");
@@ -158,16 +222,13 @@ export default function Churrus() {
             >
               {content.description}
             </Typography>
-            <Typography
-              variant="body2"
-              color="lightgray"
-              fontStyle="oblique"
-              sx={{
-                wordBreak: "keep-all",
-              }}
+            <Box
+              display="flex"
+              justifyContent="flex-end"
+              color={content.color.light}
             >
-              {content.subDesription}
-            </Typography>
+              {content.icon}
+            </Box>
           </CardContent>
         </Card>
       </Grid>
@@ -193,19 +254,52 @@ export default function Churrus() {
       <Box display="flex" justifyContent="center">
         <Typography>서울대학교 추리 동아리</Typography>
       </Box>
-      <Box
-        display="flex"
-        justifyContent="center"
-        mt={10}
-        mx="auto"
-        px="1rem"
-        maxWidth="1020px"
-      >
-        <Grid container spacing={3}>
-          {contents.map((content) => (
-            <ContentCard key={content.title} content={content} />
-          ))}
-        </Grid>
+      <Box mt={10} mx="auto" px="1rem" maxWidth="1020px">
+        <Box width="100%" mb={5}>
+          <Typography variant="h5" gutterBottom>
+            정기모임
+          </Typography>
+
+          <Grid container spacing={3}>
+            {contents
+              .filter((content) => {
+                return content.category === "정기모임";
+              })
+              .map((content) => (
+                <ContentCard key={content.title} content={content} />
+              ))}
+          </Grid>
+        </Box>
+        <Box width="100%" mb={5}>
+          <Typography variant="h5" gutterBottom>
+            더 지니어스
+          </Typography>
+
+          <Grid container spacing={3}>
+            {contents
+              .filter((content) => {
+                return content.category === "더 지니어스";
+              })
+              .map((content) => (
+                <ContentCard key={content.title} content={content} />
+              ))}
+          </Grid>
+        </Box>
+        <Box width="100%" mb={5}>
+          <Typography variant="h5" gutterBottom>
+            외부 사이트
+          </Typography>
+
+          <Grid container spacing={3}>
+            {contents
+              .filter((content) => {
+                return content.category === "외부";
+              })
+              .map((content) => (
+                <ContentCard key={content.title} content={content} />
+              ))}
+          </Grid>
+        </Box>
       </Box>
     </Box>
   );
