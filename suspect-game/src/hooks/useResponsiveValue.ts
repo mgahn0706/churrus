@@ -1,6 +1,8 @@
 import { useWindowSize } from "./useWindowSize";
 
-export function useResponsiveValue(values: [number, number, number]) {
+export function useResponsiveValue(
+  values: [number, number, number] | [boolean, boolean, boolean]
+) {
   const [width, height] = useWindowSize();
   if (width > 768) {
     return values[2];

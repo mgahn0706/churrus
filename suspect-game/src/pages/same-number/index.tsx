@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import TargetNumberBox from "@/features/same-number/components/TargetNumberBox";
 import Scoreboard from "@/features/same-number/components/Scoreboard";
 import { Flip } from "@mui/icons-material";
+import { useResponsiveValue } from "@/hooks/useResponsiveValue";
 
 const ALPHABETS = [
   "A",
@@ -40,6 +41,8 @@ const availableTargetNumbers = [
 ];
 
 export default function SameNumber() {
+  const isMobileWidth = useResponsiveValue([true, true, false]);
+
   const [round, setRound] = useState(1);
   const [panel, setPanel] = useState<string[]>([
     "1",
@@ -139,6 +142,7 @@ export default function SameNumber() {
           </Tooltip>
         )}
       </Box>
+
       <Scoreboard
         score={score}
         onClick={setScore}
@@ -152,13 +156,23 @@ export default function SameNumber() {
             : false
         }
       />
-      <Box display="flex" justifyContent="center" mt={2} alignItems="center">
-        <Box position="absolute" left="20%">
+      {isMobileWidth && (
+        <Box display="flex" justifyContent="center">
           <TargetNumberBox
             targetNumber={targetNumbers[round - 1]}
             round={round}
           />
         </Box>
+      )}
+      <Box display="flex" justifyContent="center" mt={2} alignItems="center">
+        {!isMobileWidth && (
+          <Box position="absolute" left="10%">
+            <TargetNumberBox
+              targetNumber={targetNumbers[round - 1]}
+              round={round}
+            />
+          </Box>
+        )}
         <Grid container width="430px" spacing={1} mb={2}>
           {panel.map((item, i) => (
             <Grid item xs={3}>
