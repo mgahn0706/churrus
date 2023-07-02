@@ -70,6 +70,7 @@ const contents: ContentType[] = [
     description: "힌트를 바탕으로 미스터리 사인의 규칙을 맞춰보세요",
     icon: <Help sx={{ fontSize: 90, opacity: 0.2 }} />,
     url: "mystery-sign",
+    isAvailable: true,
     color: {
       main: "purple",
       light: "#8B5CF6",

@@ -14,6 +14,7 @@ import TargetNumberBox from "@/features/same-number/components/TargetNumberBox";
 import Scoreboard from "@/features/same-number/components/Scoreboard";
 import { Flip } from "@mui/icons-material";
 import { useResponsiveValue } from "@/hooks/useResponsiveValue";
+import HomeButton from "@/components/HomeButton";
 
 const ALPHABETS = [
   "A",
@@ -130,6 +131,7 @@ export default function SameNumber() {
 
   return (
     <Box>
+      <HomeButton />
       <Box display="flex" justifyContent="center" mt={10}>
         <Typography lineHeight="40px" variant="h5">
           같은 숫자 찾기
