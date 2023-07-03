@@ -42,6 +42,9 @@ export default function PlayerSetModal({
           />
           <Button
             onClick={() => {
+              if (playerNameInput.length === 0) {
+                return;
+              }
               onEnterPlayer([
                 ...players,
                 {

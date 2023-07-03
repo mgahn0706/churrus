@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function CubInAuction({
   children,
@@ -7,6 +7,11 @@ export default function CubInAuction({
   children: React.ReactNode;
 }) {
   const [isShowingNumber, setIsShowingNumber] = useState(false);
+
+  useEffect(() => {
+    setIsShowingNumber(false);
+  }, [children]);
+
   return (
     <Box display="flex" justifyContent="center">
       <Box
