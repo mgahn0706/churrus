@@ -14,6 +14,7 @@ import {
   ListItemText,
   Typography,
 } from "@mui/material";
+import { deepOrange } from "@mui/material/colors";
 import { useEffect, useState } from "react";
 
 const CUBES = [
@@ -109,8 +110,8 @@ export default function MinusAuction() {
         }}
         players={players}
       />
-      <Typography>마이너스 경매</Typography>
-      <Typography>Round {round}</Typography>
+      <Typography variant="h5">마이너스 경매</Typography>
+      <Typography variant="h6">Round {round}</Typography>
       <CubInAuction>{cubesForRound[round - 1]}</CubInAuction>
       <Box display="flex" justifyContent="center" mb={2}>
         <Token
@@ -118,7 +119,7 @@ export default function MinusAuction() {
             mr: 1,
           }}
         />
-        <Typography> X {collectedChips}</Typography>
+        <Typography variant="h6"> X {collectedChips}</Typography>
       </Box>
       <Box display="flex" justifyContent="center">
         <Box
@@ -155,7 +156,8 @@ export default function MinusAuction() {
               <ListItemAvatar>
                 <Avatar
                   sx={{
-                    bgColor: player.order === currentOrder ? "green" : "gray",
+                    backgroundColor:
+                      player.order === currentOrder ? deepOrange[500] : "grey",
                   }}
                 >
                   {player.order}

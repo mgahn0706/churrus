@@ -65,6 +65,7 @@ export default function PlayerSetModal({
                   disablePadding
                   secondaryAction={
                     <IconButton
+                      size="small"
                       edge="end"
                       aria-label="delete"
                       onClick={() => {
