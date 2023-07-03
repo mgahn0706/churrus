@@ -81,7 +81,8 @@ const contents: ContentType[] = [
     title: "마이너스 경매",
     description: "경매를 통해 점수 감점을 최소화하세요",
     icon: <IndeterminateCheckBox sx={{ fontSize: 90, opacity: 0.2 }} />,
-    url: "minus",
+    url: "minus-auction",
+    isAvailable: true,
     color: {
       main: "gold",
       light: "#EAB308",
@@ -101,7 +102,7 @@ const contents: ContentType[] = [
   },
   {
     category: "더 지니어스",
-    title: "생선 가게",
+    title: "생선가게",
     description: "생선을 판매하며 최고의 수익을 내보세요",
     icon: <Storefront sx={{ fontSize: 90, opacity: 0.2 }} />,
     url: "fish-market",
