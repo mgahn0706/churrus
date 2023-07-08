@@ -210,6 +210,7 @@ export default function Home() {
               modifier: 1,
               slideShadows: true,
             }}
+            slideToClickedSlide
             modules={[Autoplay, EffectCoverflow]}
           >
             {scenarios.map((scenario) => (
