@@ -89,7 +89,9 @@ export default function PlayerSetModal({
         </DialogContent>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>경매 순서 결정</Button>
+        <Button disabled={players.length < 2} onClick={onClose}>
+          경매 순서 결정
+        </Button>
       </DialogActions>
     </Dialog>
   );

@@ -14,7 +14,13 @@ export default function Scoreboard({
   };
   player1Name: string;
   player2Name: string;
-  onClick: ({ player1, player2 }: { player1: number; player2: number }) => void;
+  onClick?: ({
+    player1,
+    player2,
+  }: {
+    player1: number;
+    player2: number;
+  }) => void;
 }) {
   return (
     <Box display="flex" justifyContent="center" mt={2} gap={2}>
@@ -25,13 +31,16 @@ export default function Scoreboard({
         fontWeight="bold"
         display="flex"
         sx={{
-          cursor: "pointer",
+          cursor: onClick ? "pointer" : "defult",
           boxShadow: winner === "player1" ? "0 0 10px 5px #044977" : "none",
         }}
         justifyContent="center"
         alignItems="center"
         border="solid 2px #044977"
         onClick={() => {
+          if (!onClick) {
+            return;
+          }
           onClick({
             ...score,
             player1: score.player1 + 1,
@@ -52,13 +61,16 @@ export default function Scoreboard({
         fontWeight="bold"
         display="flex"
         sx={{
-          cursor: "pointer",
+          cursor: onClick ? "pointer" : "default",
           boxShadow: winner === "player2" ? "0 0 10px 5px #660008" : "none",
         }}
         justifyContent="center"
         alignItems="center"
         border="solid 2px #660008"
         onClick={() => {
+          if (!onClick) {
+            return;
+          }
           onClick({
             ...score,
             player2: score.player2 + 1,

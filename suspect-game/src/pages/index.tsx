@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { ReactNode } from "react";
 import {
   AutoStories,
+  Category,
   Filter1,
   Help,
   IndeterminateCheckBox,
@@ -11,6 +12,7 @@ import {
   Route,
   Search,
   ShowChart,
+  Shuffle,
   Storefront,
   StorefrontOutlined,
 } from "@mui/icons-material";
@@ -102,6 +104,18 @@ const contents: ContentType[] = [
   },
   {
     category: "더 지니어스",
+    title: "결! 합!",
+    description: "도형들의 속성을 보고 결! 또는 합!을 외치세요",
+    icon: <Category sx={{ fontSize: 90, opacity: 0.2 }} />,
+    url: "set",
+    isAvailable: true,
+    color: {
+      main: "pink",
+      light: "#EC4899",
+    },
+  },
+  {
+    category: "더 지니어스",
     title: "생선가게",
     description: "생선을 판매하며 최고의 수익을 내보세요",
     icon: <Storefront sx={{ fontSize: 90, opacity: 0.2 }} />,
@@ -142,6 +156,19 @@ const contents: ContentType[] = [
       light: "#02b5ef",
     },
   },
+  {
+    category: "외부",
+    title: "랜덤 단어 생성기",
+    description: "랜덤 단어를 생성해주는 사이트에요",
+    icon: <Shuffle sx={{ fontSize: 90, opacity: 0.2 }} />,
+    url: "https://jungdolp.synology.me/word/index.html",
+    isAvailable: true,
+    color: {
+      main: "#fbbf24",
+      light: "#fcd34d",
+    },
+  },
+
   {
     category: "외부",
     title: "더 라비린스",
