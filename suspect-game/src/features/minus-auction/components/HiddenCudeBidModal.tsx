@@ -8,6 +8,7 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  TextField,
 } from "@mui/material";
 import { PlayerType } from "../types";
 import { useState } from "react";
@@ -26,6 +27,8 @@ export default function HiddenCubeBidModal({
   onBid: (player: PlayerType, bid: number) => void;
 }) {
   const [bider, setBider] = useState<PlayerType | null>(null);
+  const [finalChip, setFinalChip] = useState<number>(0);
+
   return (
     <Dialog open={isOpen}>
       <DialogTitle>히든큐브 경매</DialogTitle>
@@ -50,9 +53,25 @@ export default function HiddenCubeBidModal({
             <MenuItem value={player.order}>{player.name}</MenuItem>
           ))}
         </Select>
+        <TextField
+          id="hidden-bidder-label"
+          value={finalChip}
+          type="number"
+          onChange={(e) => {
+            setFinalChip(Number(e.target.value));
+          }}
+        >
+          경매 낙찰가
+        </TextField>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>낙찰 완료</Button>
+        <Button
+          onClick={() => {
+            onClose();
+          }}
+        >
+          낙찰 완료
+        </Button>
 
         <Button onClick={onClose}>닫기</Button>
       </DialogActions>

@@ -6,6 +6,7 @@ import TargetProblem from "@/features/mystery-sign/components/TargetProblem";
 import HintInput from "@/features/mystery-sign/components/HintInput";
 import { HintType } from "@/features/mystery-sign/types";
 import HomeButton from "@/components/HomeButton";
+import RuleVideoButton from "@/components/RuleVideoButton";
 
 export default function Main() {
   const [hintList, setHintList] = useState<HintType[]>([]);
@@ -37,6 +38,7 @@ export default function Main() {
   return (
     <Box sx={{ mt: 6 }} textAlign="center">
       <HomeButton />
+      <RuleVideoButton url="rwo15e1bWeY" />
       <Typography fontFamily="Zen Dots" variant="h2">
         MYSTERY SIGN
       </Typography>
