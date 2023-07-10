@@ -116,12 +116,12 @@ const contents: ContentType[] = [
   },
   {
     category: "더 지니어스",
-    title: "생선가게",
-    description: "생선을 판매하며 최고의 수익을 내보세요",
+    title: "중간 달리기",
+    description: "능력을 사용해 최대한 중간으로 골인하세요",
     icon: <Storefront sx={{ fontSize: 90, opacity: 0.2 }} />,
-    url: "fish-market",
+    url: "middle-race",
     color: {
-      main: "lime",
+      main: "lightgreen",
       light: "#c4d87c",
     },
   },
