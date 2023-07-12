@@ -5,6 +5,7 @@ import { ReactNode } from "react";
 import {
   AutoStories,
   Category,
+  DirectionsRun,
   Filter1,
   Help,
   IndeterminateCheckBox,
@@ -118,7 +119,7 @@ const contents: ContentType[] = [
     category: "더 지니어스",
     title: "중간 달리기",
     description: "능력을 사용해 최대한 중간으로 골인하세요",
-    icon: <Storefront sx={{ fontSize: 90, opacity: 0.2 }} />,
+    icon: <DirectionsRun sx={{ fontSize: 90, opacity: 0.2 }} />,
     url: "middle-race",
     color: {
       main: "lightgreen",
