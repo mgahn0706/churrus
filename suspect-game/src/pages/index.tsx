@@ -5,6 +5,7 @@ import { ReactNode } from "react";
 import {
   AutoStories,
   Category,
+  ConnectWithoutContact,
   DirectionsRun,
   Filter1,
   Help,
@@ -14,6 +15,7 @@ import {
   Search,
   ShowChart,
   Shuffle,
+  Sms,
   Storefront,
   StorefrontOutlined,
 } from "@mui/icons-material";
@@ -156,6 +158,32 @@ const contents: ContentType[] = [
       main: "#00a8e0",
       light: "#02b5ef",
     },
+  },
+  {
+    category: '보드게임',
+    title: '내 마음의 주파수',
+    isAvailable: true,
+    description: '내 마음을 맞춰줘!',
+    icon: <ConnectWithoutContact sx={{ fontSize: 90, opacity: 0.2}}/>,
+    url: 'frequency',
+    color: {
+      main: '#4b9387',
+      light: '#62afa8'
+    }
+
+  },
+  {
+    category: '보드게임',
+    title: '코드네임',
+    isAvailable: false,
+    description: '단어를 조심스럽게 설명해주세요',
+    icon: <Sms sx={{ fontSize: 90, opacity: 0.2}}/>,
+    url: 'code-name',
+    color: {
+      main: '#b4aa6f',
+      light: '#D1CBA7'
+    }
+
   },
   {
     category: "외부",
@@ -308,6 +336,21 @@ export default function Churrus() {
             {contents
               .filter((content) => {
                 return content.category === "더 지니어스";
+              })
+              .map((content) => (
+                <ContentCard key={content.title} content={content} />
+              ))}
+          </Grid>
+        </Box>
+        <Box width="100%" mb={5}>
+          <Typography variant="h5" gutterBottom>
+            보드게임
+          </Typography>
+
+          <Grid container spacing={3}>
+            {contents
+              .filter((content) => {
+                return content.category === "보드게임";
               })
               .map((content) => (
                 <ContentCard key={content.title} content={content} />
