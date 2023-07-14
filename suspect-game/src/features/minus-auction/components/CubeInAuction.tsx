@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import { useEffect, useState } from "react";
 
-export default function CubInAuction({
+export default function CubeInAuction({
   children,
 }: {
   children: React.ReactNode;
