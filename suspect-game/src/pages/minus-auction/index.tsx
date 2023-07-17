@@ -1,5 +1,6 @@
 import HomeButton from "@/components/HomeButton";
-import CubInAuction from "@/features/minus-auction/components/CubeInAuction";
+import CubeInAuction from "@/features/minus-auction/components/CubeInAuction";
+import HiddenCubeBidModal from "@/features/minus-auction/components/HiddenCudeBidModal";
 import PlayerSetModal from "@/features/minus-auction/components/PlayerSetModal";
 import { PlayerType } from "@/features/minus-auction/types";
 import { Delete, Token } from "@mui/icons-material";
@@ -30,6 +31,8 @@ export default function MinusAuction() {
   const [eliminatedCubes, setEliminatedCubes] = useState<number[]>([]);
   const [currentOrder, setCurrentOrder] = useState(1);
   const [collectedChips, setCollectedChips] = useState(0);
+  const [isHiddenCubeBidModalOpen, setIsHiddenCubeBidModalOpen] =
+    useState(false);
 
   const [isPlayerSetModalOpen, setIsPlayerSetModalOpen] = useState(true);
 
@@ -41,8 +44,6 @@ export default function MinusAuction() {
     setCubesForRound(shuffledCubes.slice(0, CUBES.length - 2));
     setEliminatedCubes(shuffledCubes.slice(CUBES.length - 2));
   }, []);
-
-  console.log(cubesForRound, eliminatedCubes);
 
   useEffect(() => {
     if (round > cubesForRound.length && cubesForRound.length !== 0) {
@@ -110,43 +111,84 @@ export default function MinusAuction() {
         }}
         players={players}
       />
+
+      <HiddenCubeBidModal
+        isOpen={isHiddenCubeBidModalOpen}
+        hiddenCube={eliminatedCubes[0]}
+        players={players}
+        onBid={(player, bid) => {
+          setPlayers(
+            players.map((p) => {
+              if (p.order === player.order) {
+                return {
+                  ...p,
+                  chips: p.chips - bid,
+                };
+              }
+              return p;
+            })
+          );
+          setCollectedChips(bid);
+          setIsHiddenCubeBidModalOpen(false);
+        }}
+        onClose={() => {
+          setIsHiddenCubeBidModalOpen(false);
+        }}
+      />
       <Typography variant="h5">마이너스 경매</Typography>
       <Typography variant="h6">Round {round}</Typography>
-      <CubInAuction>{cubesForRound[round - 1]}</CubInAuction>
-      <Box display="flex" justifyContent="center" mb={2}>
-        <Token
-          sx={{
-            mr: 1,
-          }}
-        />
-        <Typography variant="h6"> X {collectedChips}</Typography>
-      </Box>
-      <Box display="flex" justifyContent="center">
-        <Box
-          display="flex"
-          flexDirection="row"
-          justifyContent="space-around"
-          width="200px"
-          mb={2}
-        >
+      {round === 18 && (
+        <Box display="flex" justifyContent="center" mt={2}>
           <Button
-            size="large"
-            variant="contained"
-            color="error"
-            onClick={handleBid}
-          >
-            낙찰
-          </Button>
-          <Button
-            size="large"
             variant="contained"
             color="primary"
-            onClick={handlePass}
+            onClick={() => {
+              setIsHiddenCubeBidModalOpen(true);
+            }}
           >
-            패스
+            히든큐브 경매
           </Button>
         </Box>
-      </Box>
+      )}
+      {round < 33 && (
+        <>
+          <CubeInAuction>{cubesForRound[round - 1]}</CubeInAuction>
+          <Box display="flex" justifyContent="center" mb={2}>
+            <Token
+              sx={{
+                mr: 1,
+              }}
+            />
+            <Typography variant="h6"> X {collectedChips}</Typography>
+          </Box>
+          <Box display="flex" justifyContent="center">
+            <Box
+              display="flex"
+              flexDirection="row"
+              justifyContent="space-around"
+              width="200px"
+              mb={2}
+            >
+              <Button
+                size="large"
+                variant="contained"
+                color="error"
+                onClick={handleBid}
+              >
+                낙찰
+              </Button>
+              <Button
+                size="large"
+                variant="contained"
+                color="primary"
+                onClick={handlePass}
+              >
+                패스
+              </Button>
+            </Box>
+          </Box>
+        </>
+      )}
 
       <List sx={{ width: "100%", bgcolor: "background.paper" }}>
         {players.map((player) => (
