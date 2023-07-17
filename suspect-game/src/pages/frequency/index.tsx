@@ -48,7 +48,6 @@ export default function Frequency() {
 
       <Typography variant="h5">내 마음의 주파수</Typography>
       <Typography variant="h6">Round {round}</Typography>
-      <Button></Button>
       <Dial isCoverRemoved={phase === "guess_dial"} />
 
       <Box display="flex" justifyContent="center" mt="100px">
