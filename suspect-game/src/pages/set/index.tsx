@@ -1,10 +1,11 @@
 import HomeButton from "@/components/HomeButton";
+import RuleVideoButton from "@/components/RuleVideoButton";
 import useTimer from "@/features/mystery-sign/hooks/useTimer";
 import Scoreboard from "@/features/same-number/components/Scoreboard";
 import ShapePanel from "@/features/set/components/ShapePanel";
 import usePictureSet from "@/features/set/hooks/usePictureSet";
 import { PictureType } from "@/features/set/types";
-import { Help, Restore } from "@mui/icons-material";
+import { Help, QuestionAnswer, Restore } from "@mui/icons-material";
 import {
   Avatar,
   Badge,
@@ -37,7 +38,8 @@ export default function Set() {
   return (
     <Box textAlign="center" pt={3} width="100%" justifyContent="center">
       <HomeButton />
-      <Box position="fixed" top={0} right={0} m={1}>
+      <RuleVideoButton url="https://youtu.be/QUVbVeWz5cs" />
+      <Box position="fixed" top={0} right={7} m={1}>
         <Tooltip
           title={isShowingAnswer ? availableSets.join(" / ") : "정답 보기"}
           placement="left"
@@ -47,7 +49,7 @@ export default function Set() {
               setIsShowingAnswer(!isShowingAnswer);
             }}
           >
-            <Help />
+            <QuestionAnswer />
           </IconButton>
         </Tooltip>
       </Box>
