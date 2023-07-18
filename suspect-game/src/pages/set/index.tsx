@@ -38,7 +38,7 @@ export default function Set() {
   return (
     <Box textAlign="center" pt={3} width="100%" justifyContent="center">
       <HomeButton />
-      <RuleVideoButton url="https://youtu.be/QUVbVeWz5cs" />
+      <RuleVideoButton url="QUVbVeWz5cs" />
       <Box position="fixed" top={0} right={7} m={1}>
         <Tooltip
           title={isShowingAnswer ? availableSets.join(" / ") : "정답 보기"}
