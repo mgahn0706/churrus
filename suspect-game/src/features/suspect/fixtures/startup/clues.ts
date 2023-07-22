@@ -602,7 +602,7 @@ export const startUpClues: ClueType[] = [
     y: 37.528,
     reliability: "high",
     description:
-      "박지혁의 통화기록이다. 5월 25일에 한채원과 통화한 기록이 있다. 그 외의 최근 일주일간 통화기록은 없다.",
+      "박지혁의 통화기록이다. 5월 24일에 한채원과 통화한 기록이 있다. 그 외의 최근 일주일간 통화기록은 없다.",
     type: "additional",
     image: "/Suspect_Logo.png",
     place: 32,
