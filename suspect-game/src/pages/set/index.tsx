@@ -39,7 +39,7 @@ export default function Set() {
     <Box textAlign="center" pt={3} width="100%" justifyContent="center">
       <HomeButton />
       <RuleVideoButton url="QUVbVeWz5cs" />
-      <Box position="fixed" top={0} right="30px" m={1}>
+      <Box position="fixed" top="10px" right="40px" m={1}>
         <Tooltip
           title={isShowingAnswer ? availableSets.join(" / ") : "정답 보기"}
           placement="left"
