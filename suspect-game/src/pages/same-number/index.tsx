@@ -15,6 +15,7 @@ import Scoreboard from "@/features/same-number/components/Scoreboard";
 import { Flip } from "@mui/icons-material";
 import { useResponsiveValue } from "@/hooks/useResponsiveValue";
 import HomeButton from "@/components/HomeButton";
+import RuleVideoButton from "@/components/RuleVideoButton";
 
 const ALPHABETS = [
   "A",
@@ -132,6 +133,7 @@ export default function SameNumber() {
   return (
     <Box>
       <HomeButton />
+      <RuleVideoButton url="nV_NnQwYLHQ" />
       <Box display="flex" justifyContent="center" mt={10}>
         <Typography lineHeight="40px" variant="h5">
           같은 숫자 찾기

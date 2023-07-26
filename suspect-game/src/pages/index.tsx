@@ -10,6 +10,7 @@ import {
   Filter1,
   Help,
   IndeterminateCheckBox,
+  OpenInNew,
   Quiz,
   Route,
   Search,
@@ -160,30 +161,28 @@ const contents: ContentType[] = [
     },
   },
   {
-    category: '보드게임',
-    title: '내 마음의 주파수',
+    category: "보드게임",
+    title: "내 마음의 주파수",
     isAvailable: true,
-    description: '내 마음을 맞춰줘!',
-    icon: <ConnectWithoutContact sx={{ fontSize: 90, opacity: 0.2}}/>,
-    url: 'frequency',
+    description: "내 마음을 맞춰줘!",
+    icon: <ConnectWithoutContact sx={{ fontSize: 90, opacity: 0.2 }} />,
+    url: "frequency",
     color: {
-      main: '#4b9387',
-      light: '#62afa8'
-    }
-
+      main: "#4b9387",
+      light: "#62afa8",
+    },
   },
   {
-    category: '보드게임',
-    title: '코드네임',
+    category: "보드게임",
+    title: "코드네임",
     isAvailable: false,
-    description: '단어를 조심스럽게 설명해주세요',
-    icon: <Sms sx={{ fontSize: 90, opacity: 0.2}}/>,
-    url: 'code-name',
+    description: "단어를 조심스럽게 설명해주세요",
+    icon: <Sms sx={{ fontSize: 90, opacity: 0.2 }} />,
+    url: "code-name",
     color: {
-      main: '#b4aa6f',
-      light: '#D1CBA7'
-    }
-
+      main: "#b4aa6f",
+      light: "#D1CBA7",
+    },
   },
   {
     category: "외부",
@@ -246,7 +245,12 @@ export default function Churrus() {
               height: 200,
             }}
           >
-            <Box display="flex" justifyContent="space-between" mt={1}>
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              mt={1}
+              alignContent="center"
+            >
               <Typography
                 variant="h5"
                 component="div"
@@ -255,6 +259,14 @@ export default function Churrus() {
                 gutterBottom
               >
                 {content.title}
+                {content.category === "외부" && (
+                  <OpenInNew
+                    sx={{
+                      ml: 1,
+                      color: "lightgray",
+                    }}
+                  />
+                )}
               </Typography>
               {!content.isAvailable && (
                 <Box
