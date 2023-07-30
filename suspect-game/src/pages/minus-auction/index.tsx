@@ -1,4 +1,5 @@
 import HomeButton from "@/components/HomeButton";
+import RuleVideoButton from "@/components/RuleVideoButton";
 import CubeInAuction from "@/features/minus-auction/components/CubeInAuction";
 import HiddenCubeBidModal from "@/features/minus-auction/components/HiddenCudeBidModal";
 import PlayerSetModal from "@/features/minus-auction/components/PlayerSetModal";
@@ -96,6 +97,7 @@ export default function MinusAuction() {
   return (
     <Box textAlign="center" pt={4}>
       <HomeButton />
+      <RuleVideoButton url="d_h2m4FdoL4" />
       <PlayerSetModal
         isOpen={isPlayerSetModalOpen}
         onEnterPlayer={setPlayers}
