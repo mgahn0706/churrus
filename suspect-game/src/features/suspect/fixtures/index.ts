@@ -10,6 +10,7 @@ export const scenarios: ScenarioType[] = [
     cardImage: "/Suspect_Logo.png",
     keyword: "startup",
     isInDevelopment: false,
+    history: "2023년 7월 정기모임",
     bgmURL: "https://www.youtube.com/watch?v=qMwzWk81tVM",
     places: ["lounge", "office"],
   },
