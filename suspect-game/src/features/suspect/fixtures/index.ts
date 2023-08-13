@@ -58,6 +58,6 @@ export const scenarios: ScenarioType[] = [
     cardImage: "/Suspect_Logo.png",
     keyword: "highschool",
     isInDevelopment: true,
-    places: ["2-1", "3-1"],
+    places: ["lab", "classroom"],
   },
 ];
