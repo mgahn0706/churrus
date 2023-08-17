@@ -22,10 +22,12 @@ export default function StockMarket() {
   const [players, setPlayers] = useState<PlayerType[]>([]);
 
   return (
-    <Box textAlign="center" pt={4}>
+    <Box textAlign="center" pt={4} bgcolor="black">
       <HomeButton />
 
-      <Typography variant="h5">폭풍의 증권시장</Typography>
+      <Typography variant="h5" color="white">
+        폭풍의 증권시장
+      </Typography>
       <Typography variant="h6">Round {round}</Typography>
     </Box>
   );
