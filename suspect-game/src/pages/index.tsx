@@ -17,8 +17,6 @@ import {
   ShowChart,
   Shuffle,
   Sms,
-  Storefront,
-  StorefrontOutlined,
 } from "@mui/icons-material";
 import Image from "next/image";
 
@@ -40,6 +38,7 @@ const contents: ContentType[] = [
     category: "정기모임",
     title: "문제적 추러스",
     description: "창의적이고 어려운 문제들을 풀어보세요",
+    isAvailable: true,
     icon: <Quiz sx={{ fontSize: 90, opacity: 0.2 }} />,
     url: "quiz",
     color: {
