@@ -8,19 +8,13 @@ import {
 } from "@mui/material";
 import { QuizType } from "../types";
 
-export default function QuizCard({
-  quiz,
-  meeting,
-}: {
-  quiz: QuizType;
-  meeting: string;
-}) {
+export default function QuizCard({ quiz }: { quiz: QuizType }) {
   return (
     <Grid item xs={2}>
       <Card variant="outlined">
         <CardContent>
           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-            {meeting}
+            #{quiz.quizNumber}
           </Typography>
           <Typography
             variant="h5"
@@ -35,8 +29,13 @@ export default function QuizCard({
             {quiz.madeBy && `BY ${quiz.madeBy}`}
           </Typography>
         </CardContent>
-        <CardActions>
-          <Button size="small">풀어보기</Button>
+        <CardActions
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
+          <Button size="medium">풀어보기</Button>
           <Button size="small">정답</Button>
         </CardActions>
       </Card>
