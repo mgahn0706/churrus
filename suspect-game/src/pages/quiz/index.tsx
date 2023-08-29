@@ -1,13 +1,18 @@
 import HomeButton from "@/components/HomeButton";
 import QuizCard from "@/features/quiz/components/QuizCard";
 import { QuizData } from "@/features/quiz/fixtures";
+import { useResponsiveValue } from "@/hooks/useResponsiveValue";
 import { Box, Divider, Grid, Typography } from "@mui/material";
 
-const Meetings: string[] = ["2022년 7월 정기모임", "2022년 6월 정기모임"];
+const Meetings: string[] = [
+  "2022년 9월 정기모임",
+  "2022년 7월 정기모임",
+  "2022년 6월 정기모임",
+];
 
 export default function Quiz() {
   return (
-    <Box pt="24px" px="120px">
+    <Box pt="24px" px="12px">
       <HomeButton />
       <Typography
         sx={{
@@ -18,14 +23,16 @@ export default function Quiz() {
         문제적 추러스
       </Typography>
 
-      <Box mt="12px">
+      <Box mt="12px" height="80vh" overflow="scroll">
         {Meetings.map((meeting) => (
           <Box>
             <Divider
               textAlign="left"
               sx={{
                 color: "gray",
-                my: 2,
+                mb: 3,
+                mt: 10,
+                fontSize: "1.2rem",
               }}
             >
               {meeting}
