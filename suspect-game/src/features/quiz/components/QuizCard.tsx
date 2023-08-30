@@ -26,7 +26,8 @@ export default function QuizCard({ quiz }: { quiz: QuizType }) {
             variant="h5"
             component="div"
             sx={{
-              minHeight: 60,
+              minHeight: 90,
+              wordBreak: "keep-all",
             }}
           >
             {quiz.title}
@@ -36,7 +37,7 @@ export default function QuizCard({ quiz }: { quiz: QuizType }) {
           </Typography>
 
           <Box display="flex" justifyContent="center">
-            <IconButton>
+            <IconButton size="large">
               <PlayCircleFilled fontSize="large" />
             </IconButton>
           </Box>

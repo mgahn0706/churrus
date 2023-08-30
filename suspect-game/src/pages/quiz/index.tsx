@@ -12,8 +12,14 @@ const Meetings: string[] = [
 ];
 
 export default function Quiz() {
+  const responsivePX = useResponsiveValue([12, 60, 120]);
   return (
-    <Box pt="24px" px="12px">
+    <Box
+      pt="24px"
+      px={`
+      ${responsivePX}px
+      `}
+    >
       <HomeButton />
       <Typography
         sx={{

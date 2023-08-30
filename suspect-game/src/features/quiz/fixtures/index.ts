@@ -228,7 +228,7 @@ export const QuizData: Record<string, QuizType[]> = {
     {
       id: "2022-9-1",
       quizNumber: 1,
-      title: "연쇄도난사건의 범인",
+      title: "연쇄 도난 사건의 범인",
       madeBy: null,
       quizImgSrc: "/image/quiz/2022-9-1.png",
       answer: "2",
