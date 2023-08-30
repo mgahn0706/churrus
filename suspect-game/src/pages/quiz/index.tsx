@@ -1,4 +1,3 @@
-import HomeButton from "@/components/HomeButton";
 import QuizCard from "@/features/quiz/components/QuizCard";
 import { QuizData } from "@/features/quiz/fixtures";
 import { useResponsiveValue } from "@/hooks/useResponsiveValue";
