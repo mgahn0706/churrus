@@ -8,6 +8,7 @@ const Meetings: string[] = [
   "2022년 9월 정기모임",
   "2022년 7월 정기모임",
   "2022년 6월 정기모임",
+  "2019년 11월 정기모임",
 ];
 
 export default function Quiz() {
