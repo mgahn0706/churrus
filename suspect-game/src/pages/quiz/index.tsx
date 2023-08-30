@@ -2,6 +2,7 @@ import HomeButton from "@/components/HomeButton";
 import QuizCard from "@/features/quiz/components/QuizCard";
 import { QuizData } from "@/features/quiz/fixtures";
 import { useResponsiveValue } from "@/hooks/useResponsiveValue";
+import { Search } from "@mui/icons-material";
 import { Box, Divider, Grid, Typography } from "@mui/material";
 
 const Meetings: string[] = [
@@ -16,27 +17,47 @@ export default function Quiz() {
   return (
     <Box
       pt="24px"
+      height="100vh"
+      bgcolor="black"
       px={`
       ${responsivePX}px
       `}
     >
-      <HomeButton />
-      <Typography
+      <Box
+        color="white"
+        display="flex"
+        justifyContent="flex-start"
+        alignItems={"center"}
+        position="fixed"
+        top={0}
+        left={0}
+        width="100%"
+        px="24px"
+        height="60px"
+        zIndex={100}
+        bgcolor={"rgba(0, 0, 0, 0)"}
         sx={{
-          mb: 2,
+          backdropFilter: "blur(60px)",
         }}
-        variant="h3"
       >
-        문제적 추러스
-      </Typography>
+        <Typography variant="h4" fontWeight={600}>
+          문제적 추러스
+          <Search
+            sx={{
+              ml: 2,
+            }}
+          />
+        </Typography>
+      </Box>
 
-      <Box mt="12px" height="80vh" overflow="scroll" px="12px">
+      <Box height="100vh" overflow="scroll" px="12px">
         {Meetings.map((meeting) => (
-          <Box>
+          <Box mb="100px">
             <Divider
               textAlign="left"
+              light
               sx={{
-                color: "gray",
+                color: "white",
                 mb: 3,
                 mt: 10,
                 fontSize: "1.2rem",

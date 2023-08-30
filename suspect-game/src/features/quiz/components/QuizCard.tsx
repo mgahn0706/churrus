@@ -10,9 +10,9 @@ import {
   Typography,
 } from "@mui/material";
 import { QuizType } from "../types";
-import { PlayCircleFilled } from "@mui/icons-material";
 import { useResponsiveValue } from "@/hooks/useResponsiveValue";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 export default function QuizCard({ quiz }: { quiz: QuizType }) {
   const responsiveXS = useResponsiveValue([6, 4, 2]);
@@ -23,7 +23,12 @@ export default function QuizCard({ quiz }: { quiz: QuizType }) {
       <Card
         variant="outlined"
         sx={{
-          boxShadow: "0 7px 30px -10px rgba(150,170,180,0.5)",
+          background: "rgba(255, 255, 255, 0.2)",
+          borderRadius: "16px",
+          boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+          backdropFilter: "blur(5px)",
+          WebkitBackdropFilter: "blur(5px)",
+          border: "1px solid rgba(255, 255, 255, 0.3)",
           "&:hover": {
             boxShadow: "0 7px 30px -10px rgb(57, 188, 253)",
             border: "1px solid #4bc1fc",
@@ -31,18 +36,25 @@ export default function QuizCard({ quiz }: { quiz: QuizType }) {
         }}
       >
         <CardContent
+          onClick={() => {
+            router.push(`/quiz/${quiz.id}`);
+          }}
           sx={{
+            cursor: "pointer",
             minHeight: "200px",
           }}
         >
-          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+          <Typography sx={{ fontSize: 14 }} color="lightgray" gutterBottom>
             #{quiz.quizNumber}
           </Typography>
           <Typography
+            color="white"
             variant="h5"
             component="div"
             sx={{
               wordBreak: "keep-all",
+              minHeight: 70,
+              verticalAlign: "middle",
             }}
             fontWeight={700}
             fontFamily={"NanumSquareEB"}
@@ -54,14 +66,12 @@ export default function QuizCard({ quiz }: { quiz: QuizType }) {
           </Typography>
 
           <Box display="flex" justifyContent="center">
-            <IconButton
-              size="large"
-              onClick={() => {
-                router.push(`/quiz/${quiz.id}`);
-              }}
-            >
-              <PlayCircleFilled fontSize="large" />
-            </IconButton>
+            <Image
+              alt="quiz icon"
+              src="/image/quiz/icon/default.png"
+              width={100}
+              height={120}
+            />
           </Box>
         </CardContent>
         <Divider />
