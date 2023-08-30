@@ -30,7 +30,7 @@ export default function Quiz() {
         문제적 추러스
       </Typography>
 
-      <Box mt="12px" height="80vh" overflow="scroll">
+      <Box mt="12px" height="80vh" overflow="scroll" px="12px">
         {Meetings.map((meeting) => (
           <Box>
             <Divider
