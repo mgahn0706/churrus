@@ -13,25 +13,37 @@ import { QuizType } from "../types";
 import { useResponsiveValue } from "@/hooks/useResponsiveValue";
 import { useRouter } from "next/router";
 import Image from "next/image";
+import { CardStyle } from "../fixtures";
 
-export default function QuizCard({ quiz }: { quiz: QuizType }) {
+export default function QuizCard({
+  quiz,
+  month,
+}: {
+  quiz: QuizType;
+  month: string;
+}) {
   const responsiveXS = useResponsiveValue([6, 4, 2]);
   const router = useRouter();
+
+  const { baseColor, lightColor } = CardStyle[month] ?? {
+    baseColor: "rgba(255, 255, 255, 0.2)",
+    lightColor: "rgba(255, 255, 255, 0.3)",
+  };
 
   return (
     <Grid item xs={responsiveXS}>
       <Card
         variant="outlined"
         sx={{
-          background: "rgba(255, 255, 255, 0.2)",
+          background: lightColor,
           borderRadius: "16px",
-          boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+          boxShadow: "0 4px 30px rgba(255, 255, 255, 0.1)",
           backdropFilter: "blur(5px)",
           WebkitBackdropFilter: "blur(5px)",
           border: "1px solid rgba(255, 255, 255, 0.3)",
           "&:hover": {
-            boxShadow: "0 7px 30px -10px rgb(57, 188, 253)",
-            border: "1px solid #4bc1fc",
+            boxShadow: `0 10px 30px -10px ${baseColor}`,
+            border: `1px solid ${baseColor}`,
           },
         }}
       >
@@ -44,7 +56,7 @@ export default function QuizCard({ quiz }: { quiz: QuizType }) {
             minHeight: "200px",
           }}
         >
-          <Typography sx={{ fontSize: 14 }} color="lightgray" gutterBottom>
+          <Typography sx={{ fontSize: 14 }} color={baseColor} gutterBottom>
             #{quiz.quizNumber}
           </Typography>
           <Typography
@@ -60,12 +72,21 @@ export default function QuizCard({ quiz }: { quiz: QuizType }) {
             fontFamily={"NanumSquareEB"}
           >
             {quiz.title}
-            <Typography sx={{ mb: 1.5 }} color="text.secondary">
+            <Typography sx={{ mb: 1.5 }} color="lightgray">
               {quiz.madeBy && `by ${quiz.madeBy}`}
             </Typography>
           </Typography>
 
-          <Box display="flex" justifyContent="center">
+          <Box
+            display="flex"
+            justifyContent="center"
+            sx={{
+              "&:hover": {
+                transform: "scale(1.1)",
+                transition: "all 0.3s ease-in-out",
+              },
+            }}
+          >
             <Image
               alt="quiz icon"
               src="/image/quiz/icon/default.png"
@@ -78,6 +99,9 @@ export default function QuizCard({ quiz }: { quiz: QuizType }) {
         <CardActions>
           <Button
             size="small"
+            sx={{
+              color: "white",
+            }}
             onClick={() => {
               router.push(`/quiz/${quiz.id}/answer`);
             }}

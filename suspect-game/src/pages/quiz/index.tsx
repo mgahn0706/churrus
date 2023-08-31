@@ -2,7 +2,7 @@ import QuizCard from "@/features/quiz/components/QuizCard";
 import { QuizData } from "@/features/quiz/fixtures";
 import { useResponsiveValue } from "@/hooks/useResponsiveValue";
 import { Search } from "@mui/icons-material";
-import { Box, Divider, Grid, Typography } from "@mui/material";
+import { Box, Divider, Grid, Typography, keyframes } from "@mui/material";
 
 const Meetings: string[] = [
   "2022년 9월 정기모임",
@@ -17,7 +17,9 @@ export default function Quiz() {
     <Box
       pt="24px"
       height="100vh"
-      bgcolor="black"
+      sx={{
+        backgroundColor: "black",
+      }}
       px={`
       ${responsivePX}px
       `}
@@ -60,13 +62,20 @@ export default function Quiz() {
                 mb: 3,
                 mt: 10,
                 fontSize: "1.2rem",
+                "&::before, &::after": {
+                  borderColor: "white",
+                },
               }}
             >
               {meeting}
             </Divider>
             <Grid container spacing={3}>
               {QuizData[meeting].map((quiz) => (
-                <QuizCard key={quiz.id} quiz={quiz} />
+                <QuizCard
+                  key={quiz.id}
+                  quiz={quiz}
+                  month={meeting.split(" ")[1]}
+                />
               ))}
             </Grid>
           </Box>

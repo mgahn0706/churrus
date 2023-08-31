@@ -6,6 +6,63 @@ const MEETING_JUN_2022 = {
   month: 6,
 };
 
+export const CardStyle: Record<
+  string,
+  {
+    baseColor: string;
+    lightColor: string;
+  }
+> = {
+  "1월": {
+    baseColor: "rgba(241, 87, 33, 0.7)",
+    lightColor: "rgba(241, 87, 33, 0.3)",
+  },
+  "2월": {
+    baseColor: "rgba(252, 152, 249, 0.7)",
+    lightColor: "rgba(252, 152, 249, 0.3)",
+  },
+  "3월": {
+    baseColor: "rgba(156, 224, 254, 0.7)",
+    lightColor: "rgba(255, 255, 0, 0.3)",
+  },
+  "4월": {
+    baseColor: "rgba(255, 255, 255, 0.7)",
+    lightColor: "rgba(255, 255, 255, 0.3)",
+  },
+  "5월": {
+    baseColor: "rgba(20, 248, 165, 0.7)",
+    lightColor: "rgba(20, 248, 165, 0.3)",
+  },
+  "6월": {
+    baseColor: "rgba(166, 92, 215)",
+    lightColor: "rgba(166, 92, 215, 0.3)",
+  },
+  "7월": {
+    baseColor: "rgba(253, 70, 126)",
+    lightColor: "rgba(253, 70, 126, 0.3)",
+  },
+  "8월": {
+    baseColor: "rgba(191, 253, 40, 0.7)",
+    lightColor: "rgba(191, 253, 40, 0.3)",
+  },
+  "9월": {
+    baseColor: "rgba(48, 174, 251)",
+    lightColor: "rgba(48, 174, 251, 0.3)",
+  },
+  "10월": {
+    baseColor: "rgba(44, 162, 175)",
+    lightColor: "rgba(44, 162, 175, 0.3)",
+  },
+  "11월": {
+    baseColor: "rgba(241, 97, 10)",
+    lightColor: "rgba(241, 97, 10, 0.3)",
+  },
+  "12월": {
+    baseColor: "rgba(72, 228, 229)",
+    lightColor: "rgba(72, 228, 229, 0.3)",
+  },
+};
+
 export const QuizData: Record<string, QuizType[]> = {
   "2019년 11월 정기모임": [
     {
