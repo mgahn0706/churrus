@@ -18,7 +18,7 @@ export default function Quiz() {
       pt="24px"
       height="100vh"
       sx={{
-        backgroundColor: "black",
+        background: `linear-gradient(50deg, rgba(0,0,0,1) 0%, rgba(31,31,31,1) 36%, rgba(21,21,21,1) 38%, rgba(0,0,0,1) 100%)`,
       }}
       px={`
       ${responsivePX}px

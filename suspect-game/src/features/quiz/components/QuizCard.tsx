@@ -38,12 +38,14 @@ export default function QuizCard({
           background: lightColor,
           borderRadius: "16px",
           boxShadow: "0 4px 30px rgba(255, 255, 255, 0.1)",
-          backdropFilter: "blur(5px)",
-          WebkitBackdropFilter: "blur(5px)",
+          backdropFilter: "blur(10px)",
+          WebkitBackdropFilter: "blur(10px)",
           border: "1px solid rgba(255, 255, 255, 0.3)",
+          transition: "all 0.3s ease-in-out",
           "&:hover": {
             boxShadow: `0 10px 30px -10px ${baseColor}`,
             border: `1px solid ${baseColor}`,
+            transform: "scale(1.1)",
           },
         }}
       >
@@ -77,16 +79,7 @@ export default function QuizCard({
             </Typography>
           </Typography>
 
-          <Box
-            display="flex"
-            justifyContent="center"
-            sx={{
-              "&:hover": {
-                transform: "scale(1.1)",
-                transition: "all 0.3s ease-in-out",
-              },
-            }}
-          >
+          <Box display="flex" justifyContent="center">
             <Image
               alt="quiz icon"
               src="/image/quiz/icon/default.png"
