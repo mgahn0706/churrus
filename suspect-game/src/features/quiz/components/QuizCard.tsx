@@ -6,7 +6,6 @@ import {
   CardContent,
   Divider,
   Grid,
-  IconButton,
   Typography,
 } from "@mui/material";
 import { QuizType } from "../types";
@@ -67,7 +66,7 @@ export default function QuizCard({
             component="div"
             sx={{
               wordBreak: "keep-all",
-              minHeight: 70,
+              minHeight: 100,
               verticalAlign: "middle",
             }}
             fontWeight={700}

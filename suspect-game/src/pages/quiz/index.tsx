@@ -1,28 +1,19 @@
 import QuizCard from "@/features/quiz/components/QuizCard";
-import { QuizData } from "@/features/quiz/fixtures";
+import { MEETINGS, QuizData } from "@/features/quiz/fixtures";
 import { useResponsiveValue } from "@/hooks/useResponsiveValue";
 import { Search } from "@mui/icons-material";
 import { Box, Divider, Grid, Typography, keyframes } from "@mui/material";
 
-const Meetings: string[] = [
-  "2022년 9월 정기모임",
-  "2022년 7월 정기모임",
-  "2022년 6월 정기모임",
-  "2019년 11월 정기모임",
-];
-
 export default function Quiz() {
-  const responsivePX = useResponsiveValue([12, 60, 120]);
+  const responsivePX = useResponsiveValue([24, 60, 220]);
   return (
     <Box
-      pt="24px"
       height="100vh"
       sx={{
         background: `linear-gradient(50deg, rgba(0,0,0,1) 0%, rgba(31,31,31,1) 36%, rgba(21,21,21,1) 38%, rgba(0,0,0,1) 100%)`,
+        backgroundImage: `url("https://i.pinimg.com/564x/d3/b9/24/d3b9245271777a8004a26f529fed7cfc.jpg")`,
+        backgroundSize: "cover",
       }}
-      px={`
-      ${responsivePX}px
-      `}
     >
       <Box
         color="white"
@@ -51,8 +42,14 @@ export default function Quiz() {
         </Typography>
       </Box>
 
-      <Box height="100vh" overflow="scroll" px="12px">
-        {Meetings.map((meeting) => (
+      <Box
+        height="100vh"
+        overflow="scroll"
+        px={`
+      ${responsivePX}px
+      `}
+      >
+        {MEETINGS.map((meeting) => (
           <Box mb="100px">
             <Divider
               textAlign="left"
