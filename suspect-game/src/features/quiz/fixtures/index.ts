@@ -776,7 +776,7 @@ export const QuizData: Record<string, QuizType[]> = {
     {
       id: "2023-4-7",
       quizNumber: 7,
-      title: "ERROR_MESSAGE",
+      title: "ERROR MESSAGE",
       madeBy: "김현준",
       quizImgSrc: "/image/quiz/2023-4-7.png",
       answer: "추러스",
