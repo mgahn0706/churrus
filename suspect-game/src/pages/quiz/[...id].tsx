@@ -45,6 +45,7 @@ export default function QuizPage() {
   const handleSolvedQuiz = () => {
     const solvedQuiz = JSON.parse(localStorage.getItem("quiz") ?? "[]");
     localStorage.setItem("quiz", JSON.stringify([...solvedQuiz, quiz.id]));
+    return;
   };
 
   const handleAnswerSubmit = () => {
