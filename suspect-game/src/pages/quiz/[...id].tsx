@@ -43,9 +43,15 @@ export default function QuizPage() {
 
   const [year, month, _] = quiz.id.split("-");
 
+  const handleSolvedQuiz = () => {
+    const solvedQuiz = JSON.parse(localStorage.getItem("quiz") ?? "[]");
+    localStorage.setItem("quiz", JSON.stringify([...solvedQuiz, quiz.id]));
+  };
+
   const handleAnswerSubmit = () => {
     if (inputAnswer === quiz.answer) {
       window.alert("정답입니다!");
+      handleSolvedQuiz();
       router.push(`/quiz/${quiz.id}/answer`);
       return;
     }
@@ -234,6 +240,7 @@ export default function QuizPage() {
               }}
               size="small"
               onClick={() => {
+                handleSolvedQuiz();
                 router.push(`/quiz/${quiz.id}/answer`);
               }}
             >

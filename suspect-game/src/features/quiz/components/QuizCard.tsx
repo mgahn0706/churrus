@@ -13,13 +13,16 @@ import { useResponsiveValue } from "@/hooks/useResponsiveValue";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { CardStyle } from "../fixtures";
+import { Star } from "@mui/icons-material";
 
 export default function QuizCard({
   quiz,
   month,
+  isSolved,
 }: {
   quiz: QuizType;
   month: string;
+  isSolved: boolean;
 }) {
   const responsiveXS = useResponsiveValue([6, 4, 2]);
   const router = useRouter();
@@ -57,8 +60,23 @@ export default function QuizCard({
             minHeight: "200px",
           }}
         >
-          <Typography sx={{ fontSize: 14 }} color={baseColor} gutterBottom>
+          <Typography
+            sx={{ fontSize: 14 }}
+            color={baseColor}
+            gutterBottom
+            position="relative"
+          >
             #{quiz.quizNumber}
+            {isSolved && (
+              <Star
+                sx={{
+                  verticalAlign: "middle",
+                  position: "absolute",
+                  right: 0,
+                  fontSize: "1rem",
+                }}
+              />
+            )}
           </Typography>
           <Typography
             color="white"

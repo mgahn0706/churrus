@@ -2,10 +2,13 @@ import QuizCard from "@/features/quiz/components/QuizCard";
 import { MEETINGS, QuizData } from "@/features/quiz/fixtures";
 import { useResponsiveValue } from "@/hooks/useResponsiveValue";
 import { Search } from "@mui/icons-material";
-import { Box, Divider, Grid, Typography, keyframes } from "@mui/material";
+import { Box, Divider, Grid, Typography } from "@mui/material";
 
 export default function Quiz() {
   const responsivePX = useResponsiveValue([24, 60, 220]);
+
+  const solvedQuiz = JSON.parse(localStorage.getItem("quiz") ?? "[]");
+
   return (
     <Box
       height="100vh"
@@ -69,6 +72,7 @@ export default function Quiz() {
             <Grid container spacing={3}>
               {QuizData[meeting].map((quiz) => (
                 <QuizCard
+                  isSolved={solvedQuiz.includes(quiz.id)}
                   key={quiz.id}
                   quiz={quiz}
                   month={meeting.split(" ")[1]}
