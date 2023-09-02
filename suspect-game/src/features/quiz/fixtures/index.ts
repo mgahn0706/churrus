@@ -31,7 +31,7 @@ export const CardStyle: Record<
   },
   "3월": {
     baseColor: "rgba(156, 224, 254, 0.7)",
-    lightColor: "rgba(255, 255, 0, 0.3)",
+    lightColor: "rgba(156, 224, 254, 0.3)",
   },
   "4월": {
     baseColor: "rgba(255, 255, 255, 0.7)",
@@ -749,7 +749,7 @@ export const QuizData: Record<string, QuizType[]> = {
       title: "날짜는 언제인가요",
       madeBy: "안민규",
       quizImgSrc: "/image/quiz/2023-4-4.png",
-      answer: "2023-4-29",
+      answer: "TODAY",
       shouldWarn: true,
       isAnswerable: true,
     },

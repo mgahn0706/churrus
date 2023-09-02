@@ -1,11 +1,10 @@
 import { QuizData } from "@/features/quiz/fixtures";
 import {
+  Alert,
   Box,
   Button,
   IconButton,
-  Input,
   Skeleton,
-  Snackbar,
   TextField,
   Typography,
 } from "@mui/material";
@@ -14,10 +13,10 @@ import Image from "next/image";
 import { ArrowBack } from "@mui/icons-material";
 import { useState } from "react";
 
-const uppercaseRegex = /^[A-Z]+$/;
-const lowercaseRegex = /^[a-z]+$/;
-const numericRegex = /^[0-9]+$/;
-const koreanRegex = /^[가-힣]+$/;
+const uppercaseRegex = /^[A-Z\s]+$/;
+const lowercaseRegex = /^[a-z\s]+$/;
+const numericRegex = /^[0-9\s]+$/;
+const koreanRegex = /^[가-힣\s]+$/;
 
 export default function QuizPage() {
   const router = useRouter();
@@ -145,6 +144,12 @@ export default function QuizPage() {
         >
           {quiz.madeBy && `by ${quiz.madeBy}`}
         </Typography>
+        {quiz.shouldWarn && (
+          <Alert severity="warning" sx={{ mt: 2 }}>
+            이 문제는 당시 정기모임에 참석해야만 풀 수 있는 요소를 포함하고
+            있어요.
+          </Alert>
+        )}
 
         <Box
           minWidth="350px"

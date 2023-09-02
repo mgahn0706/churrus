@@ -3,9 +3,12 @@ import { MEETINGS, QuizData } from "@/features/quiz/fixtures";
 import { useResponsiveValue } from "@/hooks/useResponsiveValue";
 import { Search } from "@mui/icons-material";
 import { Box, Divider, Grid, Typography } from "@mui/material";
+import { useRouter } from "next/router";
 
 export default function Quiz() {
   const responsivePX = useResponsiveValue([24, 60, 220]);
+
+  const router = useRouter();
 
   const solvedQuiz = JSON.parse(localStorage.getItem("quiz") ?? "[]");
 
@@ -35,13 +38,17 @@ export default function Quiz() {
           backdropFilter: "blur(60px)",
         }}
       >
-        <Typography variant="h4" fontWeight={600}>
-          문제적 추러스
-          <Search
-            sx={{
-              ml: 2,
-            }}
-          />
+        <Typography
+          variant="h5"
+          fontWeight={500}
+          onClick={() => {
+            router.push("/");
+          }}
+          sx={{
+            cursor: "pointer",
+          }}
+        >
+          CHURRUS
         </Typography>
       </Box>
 
@@ -52,6 +59,20 @@ export default function Quiz() {
       ${responsivePX}px
       `}
       >
+        <Box width="100%" textAlign="center" color="white" mt="80px">
+          <Typography variant="h3" fontWeight={600} fontFamily="NanumSquareEB">
+            문제적 추러스
+          </Typography>
+          <Typography variant="h6" fontFamily={"NanumSquareEB"}>
+            역대 정기모임에 있었던 문제들을 풀어볼 수 있어요.
+          </Typography>
+          <Typography variant="h6">
+            추러스에서 진행된{" "}
+            {Object.values(QuizData).reduce((acc, cur) => acc + cur.length, 0)}
+            개의 문제 중, 현재 {solvedQuiz.length}개의 문제를 풀었어요!
+          </Typography>
+        </Box>
+
         {MEETINGS.map((meeting) => (
           <Box mb="100px">
             <Divider
