@@ -15,7 +15,7 @@ import { useState } from "react";
 
 const uppercaseRegex = /^[A-Z\s]+$/;
 const lowercaseRegex = /^[a-z\s]+$/;
-const numericRegex = /^[0-9\s]+$/;
+const numericRegex = /^[0-9.\s]+$/;
 const koreanRegex = /^[가-힣\s]+$/;
 
 export default function QuizPage() {

@@ -1,7 +1,6 @@
 import QuizCard from "@/features/quiz/components/QuizCard";
 import { MEETINGS, QuizData } from "@/features/quiz/fixtures";
 import { useResponsiveValue } from "@/hooks/useResponsiveValue";
-import { Search } from "@mui/icons-material";
 import { Box, Divider, Grid, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
