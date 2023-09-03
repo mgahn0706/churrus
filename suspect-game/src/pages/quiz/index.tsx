@@ -4,13 +4,18 @@ import { useResponsiveValue } from "@/hooks/useResponsiveValue";
 import { Search } from "@mui/icons-material";
 import { Box, Divider, Grid, Typography } from "@mui/material";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 export default function Quiz() {
   const responsivePX = useResponsiveValue([24, 60, 220]);
+  const [solvedQuiz, setSolvedQuiz] = useState<string[]>([]);
 
   const router = useRouter();
 
-  const solvedQuiz = JSON.parse(localStorage.getItem("quiz") ?? "[]");
+  useEffect(() => {
+    const solvedQuizzes = JSON.parse(localStorage.getItem("quiz") ?? "[]");
+    setSolvedQuiz(solvedQuizzes);
+  }, []);
 
   return (
     <Box
