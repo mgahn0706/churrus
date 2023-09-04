@@ -153,8 +153,8 @@ export default function QuizPage() {
         )}
 
         <Box
-          minWidth="350px"
-          minHeight="210px"
+          minWidth={isImageLoading ? 0 : "350px"}
+          minHeight={isImageLoading ? 0 : "210px"}
           width={isImageLoading ? 0 : "50vw"}
           height={isImageLoading ? 0 : "30vw"}
           display="flex"
@@ -177,11 +177,13 @@ export default function QuizPage() {
         </Box>
         {isImageLoading && (
           <Skeleton
+            variant="rectangular"
             width="50vw"
             height="30vw"
             sx={{
               minWidth: "350px",
               minHeight: "210px",
+              bgcolor: "rgba(255, 255, 255, 0.7)",
             }}
           />
         )}
