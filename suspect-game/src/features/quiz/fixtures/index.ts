@@ -602,7 +602,7 @@ export const QuizData: Record<string, QuizType[]> = {
       id: "2023-1-7",
       quizNumber: 7,
       title: "구역을 나눠라",
-      madeBy: "고재준",
+      madeBy: "강재호",
       quizImgSrc: "/image/quiz/2023-1-7.png",
       answer: null,
       shouldWarn: false,
