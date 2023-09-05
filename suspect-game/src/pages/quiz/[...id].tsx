@@ -84,7 +84,7 @@ export default function QuizPage() {
         alignItems="center"
         display="flex"
         flexDirection="column"
-        py={10}
+        py={5}
         px={7}
         textAlign="center"
         sx={{
@@ -103,7 +103,7 @@ export default function QuizPage() {
             color: "white",
           }}
           onClick={() => {
-            router.push("/quiz");
+            router.push("/quiz", undefined, { scroll: false });
           }}
         >
           <ArrowBack />
