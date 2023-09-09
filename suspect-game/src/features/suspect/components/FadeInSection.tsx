@@ -7,7 +7,13 @@ import {
   useState,
 } from "react";
 
-export function FadeInSection(props: { children: ReactNode }) {
+export function FadeInSection({
+  children,
+  transform,
+}: {
+  children: ReactNode;
+  transform?: string;
+}) {
   const [isVisible, setVisible] = useState(false);
   const domRef = useRef() as MutableRefObject<HTMLDivElement>;
   useEffect(() => {
@@ -26,7 +32,7 @@ export function FadeInSection(props: { children: ReactNode }) {
         color: "white",
         padding: "16px",
         opacity: isVisible ? 1 : 0,
-        transform: isVisible ? "none" : "translate(0, 50%)",
+        transform: isVisible ? "none" : transform || "translate(0, 50%)",
         visibility: isVisible ? "visible" : "hidden",
         transition: "opacity 2000ms ease-out, transform 1000ms ease-out",
         willChange: "opacity, visibility",
@@ -34,7 +40,7 @@ export function FadeInSection(props: { children: ReactNode }) {
       }}
       ref={domRef}
     >
-      {props.children}
+      {children}
     </Box>
   );
 }
