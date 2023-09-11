@@ -317,12 +317,12 @@ export default function Churrus() {
             WebkitTextFillColor: "transparent",
           }}
         >
-          CHURRUS
+          GAMES
         </Typography>
       </Box>
 
       <Box display="flex" justifyContent="center">
-        <Typography>서울대학교 추리 중앙 동아리</Typography>
+        <Typography>추러스에서 해왔던 게임들을 즐길 수 있어요</Typography>
       </Box>
       <Box mt={10} mx="auto" px="1rem" maxWidth="1020px">
         <Box width="100%" mb={5}>

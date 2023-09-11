@@ -19,16 +19,12 @@ import ScenarioCard from "@/features/suspect/components/ScenarioSelect/ScenarioC
 import { scenarios } from "@/features/suspect/fixtures";
 import { useMobileWidth } from "@/hooks/useMobileWIdth";
 
-export default function Home() {
+export default function Suspect() {
   const [selectedScenario, setSelectedScenario] = useState<ScenarioType | null>(
     null
   );
 
   const { isMobileWidth } = useMobileWidth();
-
-  if (isMobileWidth) {
-    return <MobileWidthAlertModal />;
-  }
 
   const glitch = keyframes`
   2%,64%{

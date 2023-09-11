@@ -100,6 +100,41 @@ export default function ChurrusMain() {
           생각보다 퀄리티 높은 활동들이 많이 준비되어 있어요. 한 번 살펴볼까요?
         </Typography>
       </Box>
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        py="150px"
+        flexDirection="column"
+      >
+        <Box display="flex" justifyContent="center" alignItems="center">
+          <Box>
+            <Typography
+              variant="h6"
+              component="div"
+              fontWeight={700}
+              fontFamily="NanumSquareEB"
+              px={2}
+            >
+              정기모임
+            </Typography>
+            <Typography
+              mt={2}
+              variant="h4"
+              component="div"
+              fontWeight={600}
+              fontFamily="NanumSquareB"
+              sx={{
+                wordBreak: "keep-all",
+              }}
+              px="20px"
+              lineHeight={1.5}
+            >
+              매주 금요일 7시에 정기모임을 진행합니다. <br />
+            </Typography>
+          </Box>
+        </Box>
+      </Box>
     </Box>
   );
 }
