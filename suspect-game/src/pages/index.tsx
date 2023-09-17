@@ -1,387 +1,303 @@
+import GlobalHeader from "@/components/GlobalHeader";
 import { useResponsiveValue } from "@/hooks/useResponsiveValue";
-import { Box, Card, CardContent, Grid, Icon, Typography } from "@mui/material";
-import { useRouter } from "next/router";
-import { ReactNode } from "react";
-import {
-  AutoStories,
-  Category,
-  ConnectWithoutContact,
-  DirectionsRun,
-  Filter1,
-  Help,
-  IndeterminateCheckBox,
-  OpenInNew,
-  Quiz,
-  Route,
-  Search,
-  ShowChart,
-  Shuffle,
-  Sms,
-} from "@mui/icons-material";
+import { Box, Typography } from "@mui/material";
 import Image from "next/image";
+import { TypeAnimation } from "react-type-animation";
 
-interface ContentType {
-  category: string;
-  title: string;
-  description: string;
-  icon: ReactNode;
-  isAvailable?: boolean;
-  url: string;
-  color: {
-    main: string;
-    light: string;
-  };
-}
-
-const contents: ContentType[] = [
-  {
-    category: "정기모임",
-    title: "문제적 추러스",
-    description: "창의적이고 어려운 문제들을 풀어보세요",
-    isAvailable: true,
-    icon: <Quiz sx={{ fontSize: 90, opacity: 0.2 }} />,
-    url: "quiz",
-    color: {
-      main: "red",
-      light: "#EF4444",
-    },
-  },
-  {
-    category: "정기모임",
-    title: "장편 추리 문제",
-    description: "소설로 된 추리 문제를 읽으며 범인을 추리하세요",
-    icon: <AutoStories sx={{ fontSize: 90, opacity: 0.2 }} />,
-    url: "novel",
-    color: {
-      main: "green",
-      light: "#10B981",
-    },
-  },
-  {
-    category: "정기모임",
-    title: "협동 크라임씬",
-    description: "단서들을 바탕으로 함께 범인을 추리하세요",
-    isAvailable: true,
-    icon: <Search sx={{ fontSize: 90, opacity: 0.2 }} />,
-    url: "suspect",
-    color: {
-      main: "blue",
-      light: "#3B82F6",
-    },
-  },
-  {
-    category: "더 지니어스",
-    title: "미스터리 사인",
-    description: "힌트를 바탕으로 미스터리 사인의 규칙을 맞춰보세요",
-    icon: <Help sx={{ fontSize: 90, opacity: 0.2 }} />,
-    url: "mystery-sign",
-    isAvailable: true,
-    color: {
-      main: "purple",
-      light: "#8B5CF6",
-    },
-  },
-  {
-    category: "더 지니어스",
-    title: "마이너스 경매",
-    description: "경매를 통해 점수 감점을 최소화하세요",
-    icon: <IndeterminateCheckBox sx={{ fontSize: 90, opacity: 0.2 }} />,
-    url: "minus-auction",
-    isAvailable: true,
-    color: {
-      main: "gold",
-      light: "#EAB308",
-    },
-  },
-  {
-    category: "더 지니어스",
-    title: "같은 숫자 찾기",
-    description: "숫자를 기억해서 타겟 넘버를 완성하세요",
-    icon: <Filter1 sx={{ fontSize: 90, opacity: 0.2 }} />,
-    url: "same-number",
-    isAvailable: true,
-    color: {
-      main: "orange",
-      light: "#F97316",
-    },
-  },
-  {
-    category: "더 지니어스",
-    title: "결! 합!",
-    description: "도형들의 속성을 보고 결! 또는 합!을 외치세요",
-    icon: <Category sx={{ fontSize: 90, opacity: 0.2 }} />,
-    url: "set",
-    isAvailable: true,
-    color: {
-      main: "pink",
-      light: "#EC4899",
-    },
-  },
-  {
-    category: "더 지니어스",
-    title: "중간 달리기",
-    description: "능력을 사용해 최대한 중간으로 골인하세요",
-    icon: <DirectionsRun sx={{ fontSize: 90, opacity: 0.2 }} />,
-    url: "middle-race",
-    color: {
-      main: "lightgreen",
-      light: "#c4d87c",
-    },
-  },
-  {
-    category: "더 지니어스",
-    title: "폭풍의 증권시장",
-    description: "폭등과 폭락의 증권시장에서 최고의 수익을 내보세요",
-    icon: <ShowChart sx={{ fontSize: 90, opacity: 0.2 }} />,
-    url: "stock-market",
-    color: {
-      main: "darkblue",
-      light: "#9bb8ed",
-    },
-  },
-  {
-    category: "외부",
-    title: "꼬맨틀",
-    isAvailable: true,
-    description: "단어의 유사도를 바탕으로 정답 단어를 맞추세요",
-    icon: (
-      <Image
-        src="https://semantle-ko.newsjel.ly/assets/icon.svg"
-        alt="logo"
-        width={90}
-        height={90}
-        style={{ opacity: 0.2 }}
-      />
-    ),
-    url: "https://semantle-ko.newsjel.ly/",
-    color: {
-      main: "#00a8e0",
-      light: "#02b5ef",
-    },
-  },
-  {
-    category: "보드게임",
-    title: "내 마음의 주파수",
-    isAvailable: true,
-    description: "내 마음을 맞춰줘!",
-    icon: <ConnectWithoutContact sx={{ fontSize: 90, opacity: 0.2 }} />,
-    url: "frequency",
-    color: {
-      main: "#4b9387",
-      light: "#62afa8",
-    },
-  },
-  {
-    category: "보드게임",
-    title: "코드네임",
-    isAvailable: false,
-    description: "단어를 조심스럽게 설명해주세요",
-    icon: <Sms sx={{ fontSize: 90, opacity: 0.2 }} />,
-    url: "code-name",
-    color: {
-      main: "#b4aa6f",
-      light: "#D1CBA7",
-    },
-  },
-  {
-    category: "외부",
-    title: "랜덤 단어 생성기",
-    description: "랜덤 단어를 생성해주는 사이트에요",
-    icon: <Shuffle sx={{ fontSize: 90, opacity: 0.2 }} />,
-    url: "https://jungdolp.synology.me/word/index.html",
-    isAvailable: true,
-    color: {
-      main: "#fbbf24",
-      light: "#fcd34d",
-    },
-  },
-
-  {
-    category: "외부",
-    title: "더 라비린스",
-    description: "추러스에서 만든 미궁게임을 플레이 할 수 있어요",
-    icon: <Route sx={{ fontSize: 90, opacity: 0.2 }} />,
-    url: "https://www.thelabyrinth.co.kr/labyrinth/",
-    color: {
-      main: "black",
-      light: "gray",
-    },
-  },
-];
-
-export default function Churrus() {
-  const responsiveXS = useResponsiveValue([12, 6, 4]);
-
-  const ContentCard = ({ content }: { content: ContentType }) => {
-    const router = useRouter();
-    return (
-      <Grid item xs={responsiveXS}>
-        <Card
-          variant="outlined"
-          sx={{
-            cursor: "pointer",
-            transition: "all 0.2s",
-            height: 200,
-            boxShadow: content.isAvailable
-              ? `${content.color.light} 0px 3px 8px`
-              : "none",
-            "&:hover": {
-              border: `${content.color.main} solid 1px`,
-            },
-          }}
-        >
-          <CardContent
-            onClick={() => {
-              if (content.isAvailable) {
-                content.category === "외부"
-                  ? window.open(content.url, "_blank", "noopener noreferrer")
-                  : router.push(`/${content.url}`);
-                return;
-              }
-              window.alert("아직 준비 중인 게임입니다.");
-            }}
-            sx={{
-              height: 200,
-            }}
-          >
-            <Box
-              display="flex"
-              justifyContent="space-between"
-              mt={1}
-              alignContent="center"
-            >
-              <Typography
-                variant="h5"
-                component="div"
-                color={content.color.light}
-                fontWeight="bold"
-                gutterBottom
-              >
-                {content.title}
-                {content.category === "외부" && (
-                  <OpenInNew
-                    sx={{
-                      ml: 1,
-                      color: "lightgray",
-                    }}
-                  />
-                )}
-              </Typography>
-              {!content.isAvailable && (
-                <Box
-                  fontWeight="bold"
-                  color="white"
-                  fontSize="12px"
-                  py="4px"
-                  height="16px"
-                  px="8px"
-                  bgcolor={content.color.light}
-                  textAlign="center"
-                  lineHeight="16px"
-                >
-                  개발 중
-                </Box>
-              )}
-            </Box>
-            <Typography
-              variant="body2"
-              color={content.color.light}
-              gutterBottom
-            >
-              {content.description}
-            </Typography>
-            <Box
-              display="flex"
-              justifyContent="flex-end"
-              color={content.color.light}
-            >
-              {content.icon}
-            </Box>
-          </CardContent>
-        </Card>
-      </Grid>
-    );
-  };
+export default function ChurrusMain() {
+  const responsiveFontSize = useResponsiveValue([2, 2, 3]);
 
   return (
-    <Box mb={20}>
-      <Box display="flex" justifyContent="center" mt={10}>
-        <Typography
-          fontWeight="bolder"
-          variant="h2"
-          sx={{
-            background: "linear-gradient(to right, #59b8ff, #0f0f70)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
+    <Box>
+      <GlobalHeader />
+      <Box
+        width="100vw"
+        height="40vw"
+        position="relative"
+        minHeight="300px"
+        overflow="hidden"
+      >
+        <Image
+          src="/image/churrus_main.png"
+          fill
+          alt="추러스_메인"
+          style={{
+            filter: "brightness(0.5)",
+            overflow: "hidden",
           }}
+        />
+        <TypeAnimation
+          preRenderFirstString
+          sequence={[
+            "추러스에서는 추리소설을 읽어요",
+            1000,
+            "추러스에서는 방탈출을 해요",
+            1000,
+            "추러스에서는 보드게임을 하러가요",
+            1000,
+            "추러스에서는 정기모임을 해요",
+            1000,
+            "추러스에서는 더 지니어스의 게임을 해요",
+            1000,
+            "추러스에서는 MT 장소를 추리해서 가요",
+            1000,
+            "추러스에서는 홀덤을 해요",
+            1000,
+            "추러스에서는 크라임씬을 즐겨요",
+            1000,
+            "추러스에서는 문제를 직접 만들어요",
+            1000,
+            "추러스에서는 바다거북스프 문제를 풀어요",
+            1000,
+            "추러스에서는 서스펙트 게임을 해요",
+            1000,
+          ]}
+          speed={10}
+          style={{
+            fontSize: `${responsiveFontSize}em`,
+            fontWeight: 700,
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            color: "white",
+            transform: "translate(-50%, -50%)",
+          }}
+          repeat={Infinity}
+        />
+      </Box>
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        py="150px"
+        flexDirection="column"
+        bgcolor={"#eeeeee"}
+      >
+        <Typography
+          variant="h3"
+          component="div"
+          fontWeight={700}
+          fontFamily="NanumSquareEB"
         >
-          CHURRUS
+          추러스
+        </Typography>
+
+        <Typography
+          mt={2}
+          variant="h5"
+          component="div"
+          fontWeight={600}
+          fontFamily="NanumSquareB"
+          sx={{
+            wordBreak: "keep-all",
+          }}
+          px="20px"
+          lineHeight={1.5}
+          textAlign="center"
+        >
+          추리소설, 추리문제, 방탈출 등등 추리를 사랑하는 서울대생들의
+          모임입니다. <br />
+          생각보다 퀄리티 높은 활동들이 많이 준비되어 있어요. 한 번 살펴볼까요?
         </Typography>
       </Box>
-
-      <Box display="flex" justifyContent="center">
-        <Typography>서울대학교 추리 중앙 동아리</Typography>
-      </Box>
-      <Box mt={10} mx="auto" px="1rem" maxWidth="1020px">
-        <Box width="100%" mb={5}>
-          <Typography variant="h5" gutterBottom>
-            정기모임
-          </Typography>
-
-          <Grid container spacing={3}>
-            {contents
-              .filter((content) => {
-                return content.category === "정기모임";
-              })
-              .map((content) => (
-                <ContentCard key={content.title} content={content} />
-              ))}
-          </Grid>
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        py="150px"
+        gap="250px"
+        flexDirection="column"
+      >
+        <Box display="flex" justifyContent="center" alignItems="center">
+          <Box maxWidth="50vw">
+            <Typography
+              variant="h6"
+              component="div"
+              fontWeight={700}
+              fontFamily="NanumSquareEB"
+            >
+              정기모임
+            </Typography>
+            <Typography
+              mt={2}
+              variant="h2"
+              component="div"
+              fontWeight={600}
+              fontFamily="NanumSquareB"
+              sx={{
+                wordBreak: "keep-all",
+              }}
+              lineHeight={1.5}
+            >
+              매월 넷째 주 토요일, <br />
+              추러스를 위해 준비된 고퀄리티 문제들.
+            </Typography>
+            <Typography
+              mt={2}
+              variant="h6"
+              component="div"
+              fontWeight={600}
+              fontFamily="NanumSquareB"
+              sx={{
+                wordBreak: "keep-all",
+              }}
+              lineHeight={1.5}
+            >
+              매월 넷째 주 토요일에는 추러스 정기모임이 열려요. 정기모임에서는
+              문제팀이 준비한 다양한 문제들은 물론, 더 지니어스나 크라임씬 같은
+              재미있는 활동을 즐길 수 있어요. 정기모임이 끝난 뒤 저녁을 먹고
+              방탈출을 하거나 보드게임을 하러 간답니다.
+            </Typography>
+          </Box>
         </Box>
-        <Box width="100%" mb={5}>
-          <Typography variant="h5" gutterBottom>
-            더 지니어스
-          </Typography>
 
-          <Grid container spacing={3}>
-            {contents
-              .filter((content) => {
-                return content.category === "더 지니어스";
-              })
-              .map((content) => (
-                <ContentCard key={content.title} content={content} />
-              ))}
-          </Grid>
+        <Box display="flex" justifyContent="center" alignItems="center">
+          <Box maxWidth="50vw">
+            <Typography
+              variant="h6"
+              component="div"
+              fontWeight={700}
+              fontFamily="NanumSquareEB"
+            >
+              MT 대이동
+            </Typography>
+            <Typography
+              mt={2}
+              variant="h2"
+              component="div"
+              fontWeight={600}
+              fontFamily="NanumSquareB"
+              sx={{
+                wordBreak: "keep-all",
+              }}
+              lineHeight={1.5}
+            >
+              내일은 MT 날입니다. <br />
+              장소는 추리해서 오세요.
+            </Typography>
+            <Typography
+              mt={2}
+              variant="h6"
+              component="div"
+              fontWeight={600}
+              fontFamily="NanumSquareB"
+              sx={{
+                wordBreak: "keep-all",
+              }}
+              lineHeight={1.5}
+            >
+              저희 동아리는 엠티 장소를 알려드리지 않습니다! 서울 곳곳에 숨겨진
+              추리 퀴즈를 풀고, 정답에 해당되는 장소에 가서 또 다른 추리 퀴즈를
+              풀어가면서 직접 찾아오셔야 합니다!
+            </Typography>
+          </Box>
         </Box>
-        <Box width="100%" mb={5}>
-          <Typography variant="h5" gutterBottom>
-            보드게임
-          </Typography>
 
-          <Grid container spacing={3}>
-            {contents
-              .filter((content) => {
-                return content.category === "보드게임";
-              })
-              .map((content) => (
-                <ContentCard key={content.title} content={content} />
-              ))}
-          </Grid>
+        <Box display="flex" justifyContent="center" alignItems="center">
+          <Box maxWidth="50vw">
+            <Typography
+              variant="h6"
+              component="div"
+              fontWeight={700}
+              fontFamily="NanumSquareEB"
+            >
+              추리소설
+            </Typography>
+            <Typography
+              mt={2}
+              variant="h2"
+              component="div"
+              fontWeight={600}
+              fontFamily="NanumSquareB"
+              sx={{
+                wordBreak: "keep-all",
+              }}
+              lineHeight={1.5}
+            >
+              진짜 추리를 좋아하는 사람과 읽는 <br />
+              진짜 추리소설
+            </Typography>
+            <Typography
+              mt={2}
+              variant="h6"
+              component="div"
+              fontWeight={600}
+              fontFamily="NanumSquareB"
+              sx={{
+                wordBreak: "keep-all",
+              }}
+              lineHeight={1.5}
+            >
+              평소에 추리소설을 좋아하지만 시간이 없어서, 귀찮아서 읽지 못했던
+              분들, 이참에 같이 읽어보는거 어떨까요? 애거서 크리스티, 엘러리 퀸,
+              아리스가와 아리스 등 여러 본격 추리소설 작가들의 책을 딱 결말
+              전까지 읽어본 후 다같이 토론하며 범인을 직접 맞춰봐요! 방학때는
+              2주에 한번, 학기중에는 2달에 한 번 진행할 예정입니다.
+            </Typography>
+          </Box>
         </Box>
-        <Box width="100%" mb={5}>
-          <Typography variant="h5" gutterBottom>
-            외부 사이트
-          </Typography>
 
-          <Grid container spacing={3}>
-            {contents
-              .filter((content) => {
-                return content.category === "외부";
-              })
-              .map((content) => (
-                <ContentCard key={content.title} content={content} />
-              ))}
-          </Grid>
+        <Box display="flex" justifyContent="center" alignItems="center">
+          <Box maxWidth="50vw">
+            <Typography
+              variant="h6"
+              component="div"
+              fontWeight={700}
+              fontFamily="NanumSquareEB"
+            >
+              방탈출/보드게임 번개
+            </Typography>
+            <Typography
+              mt={2}
+              variant="h2"
+              component="div"
+              fontWeight={600}
+              fontFamily="NanumSquareB"
+              sx={{
+                wordBreak: "keep-all",
+              }}
+              lineHeight={1.5}
+            >
+              더이상 방탈출, 보드게임 <br />
+              영업 안해도 됩니다.
+            </Typography>
+            <Typography
+              mt={2}
+              variant="h6"
+              component="div"
+              fontWeight={600}
+              fontFamily="NanumSquareB"
+              sx={{
+                wordBreak: "keep-all",
+              }}
+              lineHeight={1.5}
+            >
+              한달에 1~2회 정도 열리는 방탈출 번개에서는 제로월드, 키이스케이프,
+              포인트나인 등과 같은 방탈출을 주로 진행합니다. 또한 보드게임
+              번개도 마찬가지로 한달에 1~2회 정도 개최하여 티켓 투 라이드, 카탄,
+              테라포밍 마스 등 다양한 보드게임을 함께 플레이합니다. 방탈출을
+              하고 싶었지만 예약하기 힘들었던 분들, 혹은 방탈출이나 보드게임을
+              하고 싶지만 사람 모으기 분들, 추러스에서 같이 플레이해 보아요!
+            </Typography>
+          </Box>
+        </Box>
+
+        <Box display="flex" justifyContent="center" alignItems="center">
+          <Box maxWidth="50vw">
+            <Typography
+              mt={2}
+              variant="h2"
+              component="div"
+              fontWeight={600}
+              fontFamily="NanumSquareB"
+              sx={{
+                wordBreak: "keep-all",
+              }}
+              lineHeight={1.5}
+            >
+              당신이 좋아할 소모임은?
+            </Typography>
+          </Box>
         </Box>
       </Box>
     </Box>

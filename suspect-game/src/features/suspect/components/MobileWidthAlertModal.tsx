@@ -1,10 +1,10 @@
 import { Box, Modal, Typography } from "@mui/material";
 
-export default function MobileWidthAlertModal() {
+export default function MobileWidthAlertModal({ open }: { open: boolean }) {
   return (
     <Box>
       <Modal
-        open
+        open={open}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >

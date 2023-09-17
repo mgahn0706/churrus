@@ -76,10 +76,21 @@ export default function Quiz() {
             >
               문제적 추러스
             </Typography>
-            <Typography variant="h6" fontFamily={"NanumSquareEB"}>
+            <Typography
+              variant="h6"
+              fontFamily={"NanumSquareEB"}
+              sx={{
+                wordBreak: "keep-all",
+              }}
+            >
               역대 정기모임에 있었던 문제들을 풀어볼 수 있어요.
             </Typography>
-            <Typography variant="h6">
+            <Typography
+              variant="h6"
+              sx={{
+                wordBreak: "keep-all",
+              }}
+            >
               추러스에서 진행된{" "}
               {Object.values(QuizData).reduce(
                 (acc, cur) => acc + cur.length,
