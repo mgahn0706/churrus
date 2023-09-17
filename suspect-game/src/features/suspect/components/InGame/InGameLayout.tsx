@@ -82,7 +82,7 @@ export default function InGameLayout({
 
   const { isMobileWidth } = useMobileWidth();
   if (isMobileWidth) {
-    return <MobileWidthAlertModal />;
+    return <MobileWidthAlertModal open />;
   }
 
   return (
