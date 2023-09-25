@@ -37,6 +37,8 @@ export default function QuizCard({
       <Card
         variant="outlined"
         sx={{
+          minWidth: "150px",
+          maxWidth: "300px",
           background: lightColor,
           borderRadius: "16px",
           boxShadow: "0 4px 30px rgba(255, 255, 255, 0.1)",
