@@ -131,8 +131,7 @@ export default function Connections() {
             각 그룹을 맞추면 그룹의 난이도에 맞는 색깔이 나타납니다. <br />
             🟨 쉬움 <br />
             🟩 <br />
-            🟦
-            <br />
+            🟦 <br />
             🟪 어려움
           </DialogContentText>
         </DialogContent>

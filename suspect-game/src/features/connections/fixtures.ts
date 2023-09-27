@@ -113,7 +113,7 @@ export const KoreanConnections: ConnectionsType[] = [
         description: "추러스 활동",
       },
       {
-        words: ["얼음", "김", "눈", "깅"],
+        words: ["얼음", "김", "눈", "강"],
         description: "물의 형태",
       },
       {
@@ -180,8 +180,8 @@ export const KoreanConnections: ConnectionsType[] = [
         description: "유기물로 만들어진 보석",
       },
       {
-        words: ["톳", "보루", "판", "축"],
-        description: "단위",
+        words: ["톳", "보루", "판", "쌍"],
+        description: "한국의 단위",
       },
       {
         words: ["마지막", "밥", "손", "홀"],
@@ -376,6 +376,48 @@ export const KoreanConnections: ConnectionsType[] = [
       {
         words: ["문어", "네모", "후라이", "나비"],
         description: "___의 꿈 (노래)",
+      },
+    ],
+  },
+  {
+    id: 19,
+    quiz: [
+      {
+        words: ["비트", "근대", "사탕무", "시금치"],
+        description: "비름과 채소",
+      },
+      {
+        words: ["킹", "더블", "싱글", "퀸"],
+        description: "침대 사이즈",
+      },
+      {
+        words: ["탭", "버즈", "워치", "노트"],
+        description: "삼성 갤럭시 제품 시리즈",
+      },
+      {
+        words: ["커피", "박스", "스터디", "바이트"],
+        description: "메가___",
+      },
+    ],
+  },
+  {
+    id: 20,
+    quiz: [
+      {
+        words: ["시장", "허기", "공복", "출출"],
+        description: "배고픔",
+      },
+      {
+        words: ["단풍", "싸리", "모란", "국화"],
+        description: "화투 패의 그림",
+      },
+      {
+        words: ["묘수", "불계", "무리수", "포석"],
+        description: "바둑 용어",
+      },
+      {
+        words: ["향유", "돌", "북극", "대왕"],
+        description: "___고래",
       },
     ],
   },
