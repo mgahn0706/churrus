@@ -14,7 +14,6 @@ import "swiper/css/pagination";
 
 import { ScenarioType } from "@/features/suspect/types";
 import Header from "@/features/suspect/components/Header";
-import MobileWidthAlertModal from "@/features/suspect/components/MobileWidthAlertModal";
 import ScenarioCard from "@/features/suspect/components/ScenarioSelect/ScenarioCard";
 import { scenarios } from "@/features/suspect/fixtures";
 import { useMobileWidth } from "@/hooks/useMobileWIdth";
