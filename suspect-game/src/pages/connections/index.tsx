@@ -8,12 +8,9 @@ import {
   AllInclusive,
   Favorite,
   FavoriteBorder,
-  FavoriteBorderOutlined,
+  HelpOutline,
   NavigateBefore,
   NavigateNext,
-  QuestionAnswer,
-  SwipeLeft,
-  SwipeRight,
 } from "@mui/icons-material";
 import {
   Box,
@@ -26,6 +23,10 @@ import {
   Rating,
   Select,
   Switch,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 
@@ -36,6 +37,7 @@ export default function Connections() {
   const [selectedWords, setSelectedWords] = useState<string[]>([]);
   const [panels, setPanels] = useState<string[]>([]);
   const [solvedGroups, setSolvedGroups] = useState<number[]>([]);
+  const [isRuleModalOpen, setIsRuleModalOpen] = useState(false);
 
   const connectionsAnswers = KoreanConnections[connectionsId - 1].quiz.map(
     (quiz) => {
@@ -81,6 +83,48 @@ export default function Connections() {
     );
   };
 
+  const RuleModal = ({
+    isOpen,
+    onClose,
+  }: {
+    isOpen: boolean;
+    onClose: () => void;
+  }) => {
+    return (
+      <Dialog open={isOpen} onClose={onClose}>
+        <DialogTitle>게임 방법</DialogTitle>
+        <DialogContent>
+          <DialogContentText
+            sx={{ whiteSpace: "pre-line" }}
+            color="black"
+            fontWeight="bold"
+          >
+            공통된 주제를 가진 단어 4개를 묶어 그룹 4개를 만드세요.
+          </DialogContentText>
+          <DialogContentText mb={2}>
+            4개의 단어를 고르고, 제출 버튼을 누르면 정답인지 확인할 수 있습니다.
+          </DialogContentText>
+          <DialogContentText mb={2}>
+            예시: 버스, 지하철, 택시, 자전거 → 교통수단 <br /> 사랑, 슬픔, 기쁨,
+            분노 → 감정
+          </DialogContentText>
+          <DialogContentText mb={2}>
+            각 커넥션 퍼즐은 유일한 정답만이 존재합니다. 여러 그룹에 속해보이는
+            단어에 주의하세요!
+          </DialogContentText>
+          <DialogContentText mb={2}>
+            각 그룹을 맞추면 그룹의 난이도에 맞는 색깔이 나타납니다. <br />
+            🟨 쉬움 <br />
+            🟩 <br />
+            🟦
+            <br />
+            🟪 어려움
+          </DialogContentText>
+        </DialogContent>
+      </Dialog>
+    );
+  };
+
   return (
     <Box
       textAlign="center"
@@ -90,7 +134,29 @@ export default function Connections() {
       justifyContent="center"
     >
       <HomeButton />
-      <IconButton></IconButton>
+      <Box
+        sx={{
+          position: "fixed",
+          right: 0,
+          top: 0,
+          p: 2,
+        }}
+      >
+        <IconButton
+          onClick={() => {
+            setIsRuleModalOpen(true);
+          }}
+        >
+          <HelpOutline />
+        </IconButton>
+      </Box>
+      <RuleModal
+        isOpen={isRuleModalOpen}
+        onClose={() => {
+          setIsRuleModalOpen(false);
+        }}
+      />
+
       <Typography variant="h4" mb={1} fontWeight="bold" mt={4}>
         추러스 커넥션
       </Typography>
