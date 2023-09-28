@@ -66,7 +66,7 @@ export default function Connections() {
           <NavigateBefore />
         </IconButton>
         <Typography variant="h6" mx="2px">
-          {connectionsId}번째 커넥션
+          {connectionsId} / {KoreanConnections.length}
         </Typography>
         <IconButton
           color="primary"
@@ -90,7 +90,7 @@ export default function Connections() {
       justifyContent="center"
     >
       <HomeButton />
-      <RuleVideoButton url="QUVbVeWz5cs" />
+      <IconButton></IconButton>
       <Typography variant="h4" mb={1} fontWeight="bold" mt={4}>
         추러스 커넥션
       </Typography>
@@ -206,28 +206,35 @@ export default function Connections() {
             }}
             disabled={selectedWords.length !== 4}
             onClick={() => {
-              connectionsAnswers.some((answer, answerIdx) => {
-                if (answer.every((word) => selectedWords.includes(word))) {
-                  const removedPanel = panels.filter(
-                    (panel) => !selectedWords.includes(panel)
-                  );
-                  setPanels(removedPanel);
-                  setSolvedGroups(
-                    solvedGroups.includes(answerIdx)
-                      ? solvedGroups
-                      : [...solvedGroups, answerIdx]
-                  );
+              if (
+                connectionsAnswers.some((answer) => {
+                  return answer.every((word) => selectedWords.includes(word));
+                })
+              ) {
+                const answerIdx = connectionsAnswers.findIndex((answer) => {
+                  return answer.every((word) => selectedWords.includes(word));
+                });
+                const removedPanel = panels.filter(
+                  (panel) => !selectedWords.includes(panel)
+                );
+                setPanels(removedPanel);
+                setSolvedGroups(
+                  solvedGroups.includes(answerIdx)
+                    ? solvedGroups
+                    : [...solvedGroups, answerIdx]
+                );
+                return;
+              }
+
+              if (!isInfiniteMode) {
+                setLives(lives - 1);
+                if (lives === 1) {
+                  setSolvedGroups([0, 1, 2, 3]);
+                  setPanels([]);
+                  setLives(4);
                   return;
                 }
-                if (!isInfiniteMode) {
-                  setLives(lives - 1);
-                  if (lives === 1) {
-                    setSolvedGroups([0, 1, 2, 3]);
-                    setPanels([]);
-                    return;
-                  }
-                }
-              });
+              }
               setSelectedWords([]);
             }}
           >
