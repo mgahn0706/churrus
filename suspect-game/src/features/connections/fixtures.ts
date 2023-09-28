@@ -421,6 +421,49 @@ export const KoreanConnections: ConnectionsType[] = [
       },
     ],
   },
+  {
+    id: 21,
+    quiz: [
+      {
+        words: ["북극", "대서", "태평", "인도"],
+        description: "바다",
+      },
+      {
+        words: ["백로", "하지", "청명", "대설"],
+        description: "24절기",
+      },
+      {
+        words: ["점검", "검토", "조사", "검정"],
+        description: "분석하여 따짐",
+      },
+      {
+        words: ["소개", "관리", "계발", "역전"],
+        description: "자기___",
+      },
+    ],
+  },
+  {
+    id: 22,
+    quiz: [
+      {
+        words: ["샤베트", "젤라토", "하드", "슬러쉬"],
+        description: "빙과류 디저트",
+      },
+      {
+        words: ["페어", "탑", "트리플", "스트레이트"],
+        description: "포커 족보",
+      },
+
+      {
+        words: ["리프팅", "필러", "보톡스", "인모드"],
+        description: "피부과 시술",
+      },
+      {
+        words: ["카지노", "루시", "파이란", "올드보이"],
+        description: "최민식 출연 영화",
+      },
+    ],
+  },
 ];
 
 interface ConnectionsType {
