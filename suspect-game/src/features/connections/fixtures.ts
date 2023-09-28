@@ -358,6 +358,27 @@ export const KoreanConnections: ConnectionsType[] = [
       },
     ],
   },
+  {
+    id: 18,
+    quiz: [
+      {
+        words: ["철학", "종교", "언어", "미학"],
+        description: "인문학 분야",
+      },
+      {
+        words: ["사냥", "낚시", "채집", "농사"],
+        description: "먹을 것을 얻는 방법",
+      },
+      {
+        words: ["지레", "미리", "시잔", "먼저"],
+        description: "시간상으로 이전의",
+      },
+      {
+        words: ["문어", "네모", "후라이", "나비"],
+        description: "___의 꿈 (노래)",
+      },
+    ],
+  },
 ];
 
 interface ConnectionsType {
