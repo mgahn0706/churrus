@@ -32,7 +32,7 @@ import { useEffect, useState } from "react";
 
 export default function Connections() {
   const [lives, setLives] = useState(4);
-  const [isInfiniteMode, setIsInfiniteMode] = useState(false);
+  const [isInfiniteMode, setIsInfiniteMode] = useState(true);
   const [connectionsId, setConnectionsId] = useState(1);
   const [selectedWords, setSelectedWords] = useState<string[]>([]);
   const [panels, setPanels] = useState<string[]>([]);
@@ -289,6 +289,7 @@ export default function Connections() {
                     ? solvedGroups
                     : [...solvedGroups, answerIdx]
                 );
+                setSelectedWords([]);
                 return;
               }
 
