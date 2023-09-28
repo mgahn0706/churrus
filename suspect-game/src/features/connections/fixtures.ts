@@ -315,6 +315,49 @@ export const KoreanConnections: ConnectionsType[] = [
       },
     ],
   },
+  {
+    id: 16,
+    quiz: [
+      {
+        words: ["캐모마일", "루이보스", "히비스커스", "페퍼민트"],
+        description: "차",
+      },
+
+      {
+        words: ["스매시", "커트", "서브", "드라이브"],
+        description: "탁구 용어",
+      },
+      {
+        words: ["시스루", "보브", "리프", "바가지"],
+        description: "헤어스타일",
+      },
+      {
+        words: ["올리브", "코발트", "크림슨", "아이보리"],
+        description: "색",
+      },
+    ],
+  },
+  {
+    id: 17,
+    quiz: [
+      {
+        words: ["스톡홀름", "마드리드", "오슬로", "코펜하겐"],
+        description: "유럽 국가의 수도",
+      },
+      {
+        words: ["안단테", "알레그로", "라르고", "비바체"],
+        description: "음악 빠르기 용어",
+      },
+      {
+        words: ["이오", "유로파", "칼리스토", "가니메데"],
+        description: "목성의 갈릴레이 위성",
+      },
+      {
+        words: ["와칸다", "소코비아", "뉴욕", "타이탄"],
+        description: "어벤져스 전투 지역",
+      },
+    ],
+  },
 ];
 
 interface ConnectionsType {
