@@ -6,6 +6,7 @@ import {
   AutoStories,
   Category,
   ConnectWithoutContact,
+  Dashboard,
   DirectionsRun,
   Filter1,
   Help,
@@ -27,6 +28,7 @@ interface ContentType {
   description: string;
   icon: ReactNode;
   isAvailable?: boolean;
+  isNew?: boolean;
   url: string;
   color: {
     main: string;
@@ -47,17 +49,7 @@ const contents: ContentType[] = [
       light: "#EF4444",
     },
   },
-  {
-    category: "정기모임",
-    title: "장편 추리 문제",
-    description: "소설로 된 추리 문제를 읽으며 범인을 추리하세요",
-    icon: <AutoStories sx={{ fontSize: 90, opacity: 0.2 }} />,
-    url: "novel",
-    color: {
-      main: "green",
-      light: "#10B981",
-    },
-  },
+
   {
     category: "정기모임",
     title: "협동 크라임씬",
@@ -68,6 +60,19 @@ const contents: ContentType[] = [
     color: {
       main: "blue",
       light: "#3B82F6",
+    },
+  },
+  {
+    category: "정기모임",
+    title: "추러스 커넥션",
+    isAvailable: true,
+    description: "공통된 맥락을 가진 4개의 단어를 묶어주세요",
+    icon: <Dashboard sx={{ fontSize: 90, opacity: 0.2 }} />,
+    url: "connections",
+    isNew: true,
+    color: {
+      main: "green",
+      light: "#10B981",
     },
   },
   {
@@ -281,6 +286,21 @@ export default function Churrus() {
                   lineHeight="16px"
                 >
                   개발 중
+                </Box>
+              )}
+              {content.isNew && (
+                <Box
+                  fontWeight="bold"
+                  color="white"
+                  fontSize="12px"
+                  py="4px"
+                  height="16px"
+                  px="8px"
+                  bgcolor={content.color.main}
+                  textAlign="center"
+                  lineHeight="16px"
+                >
+                  NEW
                 </Box>
               )}
             </Box>
