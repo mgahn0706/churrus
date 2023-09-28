@@ -27,6 +27,7 @@ import {
   DialogTitle,
   DialogContent,
   DialogContentText,
+  MenuItem,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 
@@ -67,8 +68,22 @@ export default function Connections() {
         >
           <NavigateBefore />
         </IconButton>
-        <Typography variant="h6" mx="2px">
-          {connectionsId} / {KoreanConnections.length}
+        <Select
+          sx={{
+            width: "70px",
+            fontSize: "1.2rem",
+          }}
+          value={connectionsId}
+          onChange={(e) => {
+            setConnectionsId(Number(e.target.value));
+          }}
+        >
+          {KoreanConnections.map((connection, idx) => (
+            <MenuItem value={idx + 1}>{idx + 1}</MenuItem>
+          ))}
+        </Select>
+        <Typography variant="h6" ml={2}>
+          / {KoreanConnections.length}
         </Typography>
         <IconButton
           color="primary"

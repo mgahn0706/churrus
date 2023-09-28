@@ -370,7 +370,7 @@ export const KoreanConnections: ConnectionsType[] = [
         description: "먹을 것을 얻는 방법",
       },
       {
-        words: ["지레", "미리", "시잔", "먼저"],
+        words: ["지레", "미리", "사전", "먼저"],
         description: "시간상으로 이전의",
       },
       {
