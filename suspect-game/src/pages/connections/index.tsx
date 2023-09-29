@@ -73,6 +73,8 @@ export default function Connections() {
           onClick={() => {
             setConnectionsId(connectionsId - 1);
             setSelectedWords([]);
+            setSolvedGroups([]);
+            setTriedCount([0, 0, 0, 0]);
           }}
         >
           <NavigateBefore />
@@ -86,6 +88,8 @@ export default function Connections() {
           onChange={(e) => {
             setConnectionsId(Number(e.target.value));
             setSelectedWords([]);
+            setSolvedGroups([]);
+            setTriedCount([0, 0, 0, 0]);
           }}
         >
           {KoreanConnections.map((connection, idx) => {
@@ -102,6 +106,9 @@ export default function Connections() {
           color="primary"
           onClick={() => {
             setConnectionsId(connectionsId + 1);
+            setSelectedWords([]);
+            setSolvedGroups([]);
+            setTriedCount([0, 0, 0, 0]);
           }}
           disabled={connectionsId === maxOpenedId}
         >
