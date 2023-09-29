@@ -295,7 +295,7 @@ export default function Connections() {
                 borderRadius: "50px",
                 fontSize: "1.2rem",
               }}
-              disabled={selectedWords.length === 4}
+              disabled={selectedWords.length !== 4}
               onClick={() => {
                 setTriedCount(
                   triedCount.map((count, idx) => {
