@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "dayjs": "^1.11.10",
     "sass": "^1.64.1"
   }
 }

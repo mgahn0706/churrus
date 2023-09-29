@@ -260,7 +260,7 @@ export const KoreanConnections: ConnectionsType[] = [
         description: "현대 무기",
       },
       {
-        words: ["루피", "페티", "로디", "해리"],
+        words: ["루피", "패티", "로디", "해리"],
         description: "뽀로로의 캐릭터",
       },
       {
@@ -437,7 +437,7 @@ export const KoreanConnections: ConnectionsType[] = [
         description: "분석하여 따짐",
       },
       {
-        words: ["소개", "관리", "계발", "역전"],
+        words: ["소개", "관리", "계발", "자랑"],
         description: "자기___",
       },
     ],
@@ -455,12 +455,55 @@ export const KoreanConnections: ConnectionsType[] = [
       },
 
       {
+        words: ["카지노", "루시", "파이란", "올드보이"],
+        description: "최민식 출연 영화",
+      },
+
+      {
         words: ["리프팅", "필러", "보톡스", "인모드"],
         description: "피부과 시술",
       },
+    ],
+  },
+  {
+    id: 23,
+    quiz: [
       {
-        words: ["카지노", "루시", "파이란", "올드보이"],
-        description: "최민식 출연 영화",
+        words: ["부아", "화", "골", "노여움"],
+        description: "분노",
+      },
+      {
+        words: ["쇄신", "개벽", "혁명", "변경"],
+        description: "개혁",
+      },
+      {
+        words: ["맹장", "충수", "직장", "결장"],
+        description: "큰 창자의 부위",
+      },
+      {
+        words: ["관수", "개관", "관개", "급수"],
+        description: "논밭에 물을 대는 것",
+      },
+    ],
+  },
+  {
+    id: 24,
+    quiz: [
+      {
+        words: ["외향", "감각", "사고", "즉흥"],
+        description: "MBTI",
+      },
+      {
+        words: ["마늘", "와사비", "마라", "겨자"],
+        description: "매운맛의 소스",
+      },
+      {
+        words: ["고수", "공유", "주원", "현빈"],
+        description: "한국 남자배우",
+      },
+      {
+        words: ["콩", "소시지", "햄", "사리"],
+        description: "부대찌개 재료",
       },
     ],
   },

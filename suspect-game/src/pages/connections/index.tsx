@@ -11,6 +11,7 @@ import {
   HelpOutline,
   NavigateBefore,
   NavigateNext,
+  Share,
 } from "@mui/icons-material";
 import {
   Box,
@@ -29,16 +30,22 @@ import {
   DialogContentText,
   MenuItem,
 } from "@mui/material";
+import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 
 export default function Connections() {
+  const today = dayjs();
+
+  const maxOpenedId = today.diff("2023-9-10", "day");
+
   const [lives, setLives] = useState(4);
   const [isInfiniteMode, setIsInfiniteMode] = useState(true);
-  const [connectionsId, setConnectionsId] = useState(1);
+  const [connectionsId, setConnectionsId] = useState(maxOpenedId);
   const [selectedWords, setSelectedWords] = useState<string[]>([]);
   const [panels, setPanels] = useState<string[]>([]);
   const [solvedGroups, setSolvedGroups] = useState<number[]>([]);
   const [isRuleModalOpen, setIsRuleModalOpen] = useState(false);
+  const [triedCount, setTriedCount] = useState([0, 0, 0, 0]);
 
   const connectionsAnswers = KoreanConnections[connectionsId - 1].quiz.map(
     (quiz) => {
@@ -70,7 +77,7 @@ export default function Connections() {
         </IconButton>
         <Select
           sx={{
-            width: "70px",
+            width: "170px",
             fontSize: "1.2rem",
           }}
           value={connectionsId}
@@ -78,19 +85,22 @@ export default function Connections() {
             setConnectionsId(Number(e.target.value));
           }}
         >
-          {KoreanConnections.map((connection, idx) => (
-            <MenuItem value={idx + 1}>{idx + 1}</MenuItem>
-          ))}
+          {KoreanConnections.map((connection, idx) => {
+            if (idx < maxOpenedId) {
+              return (
+                <MenuItem value={idx + 1}>
+                  {dayjs("2023-09-11").add(idx, "day").format("YY년 M월 D일")}
+                </MenuItem>
+              );
+            }
+          })}
         </Select>
-        <Typography variant="h6" ml={2}>
-          / {KoreanConnections.length}
-        </Typography>
         <IconButton
           color="primary"
           onClick={() => {
             setConnectionsId(connectionsId + 1);
           }}
-          disabled={connectionsId === KoreanConnections.length}
+          disabled={connectionsId === maxOpenedId}
         >
           <NavigateNext />
         </IconButton>
@@ -253,12 +263,91 @@ export default function Connections() {
           ))}
         </Grid>
       </Box>
-      <Box width="100vw" display="flex" justifyContent="center">
+
+      {solvedGroups.length < 4 && (
+        <Box width="100vw" display="flex" justifyContent="center">
+          <Box
+            display="flex"
+            justifyContent="space-around"
+            alignItems="center"
+            width="400px"
+          >
+            <Button
+              variant="outlined"
+              sx={{
+                height: "50px",
+                width: "100px",
+                borderRadius: "50px",
+                fontSize: "1.2rem",
+              }}
+              onClick={() => {
+                setSelectedWords([]);
+                const shuffledPanel = panels.sort(() => Math.random() - 0.5);
+                setPanels(shuffledPanel);
+              }}
+            >
+              섞기
+            </Button>
+            <Button
+              variant="outlined"
+              sx={{
+                height: "50px",
+                width: "100px",
+                borderRadius: "50px",
+                fontSize: "1.2rem",
+              }}
+              disabled={selectedWords.length === 4}
+              onClick={() => {
+                setTriedCount(
+                  triedCount.map((count, idx) => {
+                    return idx === solvedGroups.length ? count + 1 : count;
+                  })
+                );
+                if (
+                  connectionsAnswers.some((answer) => {
+                    return answer.every((word) => selectedWords.includes(word));
+                  })
+                ) {
+                  const answerIdx = connectionsAnswers.findIndex((answer) => {
+                    return answer.every((word) => selectedWords.includes(word));
+                  });
+                  const removedPanel = panels.filter(
+                    (panel) => !selectedWords.includes(panel)
+                  );
+                  setPanels(removedPanel);
+                  setSolvedGroups(
+                    solvedGroups.includes(answerIdx)
+                      ? solvedGroups
+                      : [...solvedGroups, answerIdx]
+                  );
+                  setSelectedWords([]);
+                  return;
+                }
+
+                if (!isInfiniteMode) {
+                  setLives(lives - 1);
+                  if (lives === 1) {
+                    setSolvedGroups([0, 1, 2, 3]);
+                    setPanels([]);
+                    setLives(4);
+                    return;
+                  }
+                }
+                setSelectedWords([]);
+              }}
+            >
+              제출
+            </Button>
+          </Box>
+        </Box>
+      )}
+      {solvedGroups.length === 4 && (
         <Box
           display="flex"
-          justifyContent="space-around"
+          justifyContent="center"
           alignItems="center"
-          width="400px"
+          flexDirection="column"
+          mt={3}
         >
           <Button
             variant="outlined"
@@ -269,60 +358,40 @@ export default function Connections() {
               fontSize: "1.2rem",
             }}
             onClick={() => {
-              setSelectedWords([]);
-              const shuffledPanel = panels.sort(() => Math.random() - 0.5);
-              setPanels(shuffledPanel);
-            }}
-          >
-            섞기
-          </Button>
-          <Button
-            variant="outlined"
-            sx={{
-              height: "50px",
-              width: "100px",
-              borderRadius: "50px",
-              fontSize: "1.2rem",
-            }}
-            disabled={selectedWords.length !== 4}
-            onClick={() => {
-              if (
-                connectionsAnswers.some((answer) => {
-                  return answer.every((word) => selectedWords.includes(word));
-                })
-              ) {
-                const answerIdx = connectionsAnswers.findIndex((answer) => {
-                  return answer.every((word) => selectedWords.includes(word));
+              if (navigator.share) {
+                navigator.share({
+                  title: `추러스 커넥션 ${dayjs("2023-09-11")
+                    .add(connectionsId - 1, "day")
+                    .format("YYYY년 M월 D일")},`,
+                  text: `각 묶음 당${triedCount.join("-")}번만에 풀었어요!`,
+                  url: "https://churrus.vercel.app/connections",
                 });
-                const removedPanel = panels.filter(
-                  (panel) => !selectedWords.includes(panel)
-                );
-                setPanels(removedPanel);
-                setSolvedGroups(
-                  solvedGroups.includes(answerIdx)
-                    ? solvedGroups
-                    : [...solvedGroups, answerIdx]
-                );
-                setSelectedWords([]);
                 return;
               }
-
-              if (!isInfiniteMode) {
-                setLives(lives - 1);
-                if (lives === 1) {
-                  setSolvedGroups([0, 1, 2, 3]);
-                  setPanels([]);
-                  setLives(4);
-                  return;
-                }
+              if (navigator.clipboard) {
+                navigator.clipboard.writeText(`추러스 커넥션 ${dayjs(
+                  "2023-09-11"
+                )
+                  .add(connectionsId - 1, "day")
+                  .format("YYYY년 M월 D일")}
+                각 묶음 당${triedCount.join("-")}번만에 풀었어요!
+                https://churrus.vercel.app/connections`);
+                window.alert("결과가 클립보드에 복사되었습니다.");
               }
-              setSelectedWords([]);
             }}
           >
-            제출
+            공유
+            <Share
+              sx={{
+                ml: 1,
+              }}
+            />
           </Button>
+          <Typography variant="h6" fontWeight="bold" my={2}>
+            🎉 축하합니다! 🎉
+          </Typography>
         </Box>
-      </Box>
+      )}
 
       <Box>
         <Switch
