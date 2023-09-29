@@ -1,5 +1,4 @@
 import HomeButton from "@/components/HomeButton";
-import RuleVideoButton from "@/components/RuleVideoButton";
 import {
   CONNECTIONS_COLOR,
   KoreanConnections,
