@@ -32,6 +32,8 @@ import {
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 
+const SHARE_GRUOP_IMOJI = ["🟨", "🟩", "🟦", "🟪"];
+
 export default function Connections() {
   const today = dayjs();
 
@@ -70,6 +72,7 @@ export default function Connections() {
           color="primary"
           onClick={() => {
             setConnectionsId(connectionsId - 1);
+            setSelectedWords([]);
           }}
         >
           <NavigateBefore />
@@ -82,6 +85,7 @@ export default function Connections() {
           value={connectionsId}
           onChange={(e) => {
             setConnectionsId(Number(e.target.value));
+            setSelectedWords([]);
           }}
         >
           {KoreanConnections.map((connection, idx) => {
@@ -346,7 +350,6 @@ export default function Connections() {
           justifyContent="center"
           alignItems="center"
           flexDirection="column"
-          mt={3}
         >
           <Button
             variant="outlined"
@@ -362,20 +365,30 @@ export default function Connections() {
                   title: `추러스 커넥션 ${dayjs("2023-09-11")
                     .add(connectionsId - 1, "day")
                     .format("YYYY년 M월 D일")},`,
-                  text: `각 묶음 당${triedCount.join("-")}번만에 풀었어요!`,
+                  text: `${solvedGroups
+                    .map((group, index) => {
+                      return `${SHARE_GRUOP_IMOJI[group]}: ${triedCount[index]}`;
+                    })
+                    .join(" ")}`,
                   url: "https://churrus.vercel.app/connections",
                 });
                 return;
               }
               if (navigator.clipboard) {
-                navigator.clipboard.writeText(`추러스 커넥션 ${dayjs(
-                  "2023-09-11"
-                )
-                  .add(connectionsId - 1, "day")
-                  .format("YYYY년 M월 D일")}
-                각 묶음 당${triedCount.join("-")}번만에 풀었어요!
-                https://churrus.vercel.app/connections`);
-                window.alert("결과가 클립보드에 복사되었습니다.");
+                navigator.clipboard
+                  .writeText(
+                    `추러스 커넥션 ${dayjs("2023-09-11")
+                      .add(connectionsId - 1, "day")
+                      .format("YYYY년 M월 D일")}, ${solvedGroups
+                      .map((group, index) => {
+                        return `${SHARE_GRUOP_IMOJI[group]}: ${triedCount[index]}`;
+                      })
+                      .join(" ")} : https://churrus.vercel.app/connections
+                    `
+                  )
+                  .then(() => {
+                    alert("클립보드에 복사되었습니다.");
+                  });
               }
             }}
           >
