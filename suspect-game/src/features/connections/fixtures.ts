@@ -735,6 +735,28 @@ export const KoreanConnections: ConnectionsType[] = [
       },
     ],
   },
+  {
+    id: 36,
+    quiz: [
+      {
+        words: ["해마", "불가사리", "해삼", "거북"],
+        description: "바다 동물",
+      },
+      {
+        words: ["나방", "늑대", "올빼미", "박쥐"],
+        description: "야행성 동물",
+      },
+      {
+        words: ["호랑이", "곰", "공룡", "독수리"],
+        description: "한국 야구 구단 마스코트",
+      },
+
+      {
+        words: ["말", "소", "돼지", "개"],
+        description: "부여의 사출도",
+      },
+    ],
+  },
 ];
 
 interface ConnectionsType {
