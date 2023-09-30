@@ -37,7 +37,10 @@ const SHARE_GRUOP_IMOJI = ["🟨", "🟩", "🟦", "🟪"];
 export default function Connections() {
   const today = dayjs();
 
-  const maxOpenedId = today.diff("2023-9-10", "day");
+  const maxOpenedId = Math.min(
+    today.diff("2023-9-10", "day"),
+    KoreanConnections.length
+  );
 
   const [lives, setLives] = useState(4);
   const [isInfiniteMode, setIsInfiniteMode] = useState(true);
@@ -81,7 +84,7 @@ export default function Connections() {
         </IconButton>
         <Select
           sx={{
-            width: "170px",
+            width: "180px",
             fontSize: "1.2rem",
           }}
           value={connectionsId}

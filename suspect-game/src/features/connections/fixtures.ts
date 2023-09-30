@@ -243,7 +243,7 @@ export const KoreanConnections: ConnectionsType[] = [
         description: "바지 팟",
       },
       {
-        words: ["벤치", "짐볼", "이령", "랙"],
+        words: ["벤치", "짐볼", "아령", "랙"],
         description: "운동기구",
       },
       {
@@ -490,10 +490,6 @@ export const KoreanConnections: ConnectionsType[] = [
     id: 24,
     quiz: [
       {
-        words: ["외향", "감각", "사고", "즉흥"],
-        description: "MBTI",
-      },
-      {
         words: ["마늘", "와사비", "마라", "겨자"],
         description: "매운맛의 소스",
       },
@@ -502,8 +498,240 @@ export const KoreanConnections: ConnectionsType[] = [
         description: "한국 남자배우",
       },
       {
+        words: ["대추", "사과", "포", "밤"],
+        description: "차례상 음식",
+      },
+      {
         words: ["콩", "소시지", "햄", "사리"],
         description: "부대찌개 재료",
+      },
+    ],
+  },
+  {
+    id: 25,
+    quiz: [
+      {
+        words: ["철인", "군자", "신사", "히아로"],
+        description: "훌륭한 사람",
+      },
+      {
+        words: ["불", "바람", "꽃", "게으름"],
+        description: "피울 수 있는 것",
+      },
+      {
+        words: ["보살", "포일", "배터리", "배트"],
+        description: "야구 용어",
+      },
+      {
+        words: ["볼", "강아지", "인재", "물"],
+        description: "___풀",
+      },
+    ],
+  },
+  {
+    id: 26,
+    quiz: [
+      {
+        words: ["공정", "합당", "정당", "당연"],
+        description: "마땅한 것",
+      },
+      {
+        words: ["녹말", "섬유소", "키토산", "올리고당"],
+        description: "탄수화물",
+      },
+      {
+        words: ["유과", "강정", "엿", "옥춘당"],
+        description: "한과",
+      },
+      {
+        words: ["레버", "구미", "입맛", "약속"],
+        description: "당길 수 있는 것",
+      },
+    ],
+  },
+  {
+    id: 27,
+    quiz: [
+      {
+        words: ["집합", "정수", "함수", "도형"],
+        description: "수학 용어",
+      },
+      {
+        words: ["오찬", "중식", "끼니", "진지"],
+        description: "식사",
+      },
+      { words: ["안전", "불안", "회피", "혼란"], description: "애착유형" },
+      {
+        words: ["기사", "신임", "기미", "기묘"],
+        description: "육십갑자",
+      },
+    ],
+  },
+  {
+    id: 28,
+    quiz: [
+      {
+        words: ["개", "늑대", "여우", "자칼"],
+        description: "개과 동물",
+      },
+      {
+        words: ["진로", "이슬", "새로", "처음"],
+        description: "소주",
+      },
+      {
+        words: ["돼지", "조개", "계란", "새우"],
+        description: "껍데기가 있는 것",
+      },
+      {
+        words: ["딸기", "두부", "고래", "지하철"],
+        description: "술게임",
+      },
+    ],
+  },
+  {
+    id: 29,
+    quiz: [
+      {
+        description: "머리 관리용품",
+        words: ["샴푸", "린스", "트리트먼트", "에센스"],
+      },
+      {
+        words: ["구글", "아이폰", "핵실험", "달착륙"],
+        description: "미국이 최초인 것",
+      },
+      {
+        description: "스파클링 와인",
+        words: ["샴페인", "카바", "프로세코", "크레망"],
+      },
+      {
+        words: ["달러", "별", "골뱅이", "퍼센트"],
+        description: "Shift + 숫자로 입력할 수 있는 것",
+      },
+    ],
+  },
+  {
+    id: 30,
+    quiz: [
+      {
+        words: ["UV", "X", "라디오", "적외선"],
+        description: "전자기파",
+      },
+      {
+        words: ["F", "옥상", "지하", "플로어"],
+        description: "건물의 층",
+      },
+      {
+        words: ["라이트닝", "썬더볼트", "HDMI", "C"],
+        description: "입출력 단자",
+      },
+      {
+        words: ["엔진", "S", "바디", "올리브"],
+        description: "___오일",
+      },
+    ],
+  },
+  {
+    id: 31,
+    quiz: [
+      {
+        words: ["빙하", "우박", "눈", "서리"],
+        description: "얼음의 종류",
+      },
+      {
+        words: ["만", "섬", "빈도", "곶"],
+        description: "지형",
+      },
+      {
+        words: ["냄새", "연기", "열", "사이렌"],
+        description: "불이 난 것을 알리는 것",
+      },
+      {
+        words: ["방해", "터키", "감람", "석류"],
+        description: "___석 (암석)",
+      },
+    ],
+  },
+  {
+    id: 32,
+    quiz: [
+      {
+        words: ["베이스", "일토", "테너", "바리톤"],
+        description: "성악 음역대",
+      },
+      {
+        words: ["파이선", "맘바", "보아", "코브라"],
+        description: "뱀",
+      },
+      {
+        words: ["드릴", "트랩", "크렁크", "래칫"],
+        description: "힙합 음악 장르",
+      },
+      {
+        words: ["허드슨", "미시시피", "아마존", "라플라타"],
+        description: "아메리카의 강",
+      },
+    ],
+  },
+  {
+    id: 33,
+    quiz: [
+      {
+        words: ["공책", "가위", "각도기", "연필"],
+        description: "학용품",
+      },
+      {
+        words: ["삼각", "복직", "광배", "대퇴"],
+        description: "근육의 분류",
+      },
+      {
+        words: ["시건", "차단", "쇄문", "관쇄"],
+        description: "잠금",
+      },
+      {
+        words: ["해", "벽", "모래", "원자"],
+        description: "__시계",
+      },
+    ],
+  },
+  {
+    id: 34,
+    quiz: [
+      {
+        words: ["편지", "비둘기", "전화", "봉화"],
+        description: "통신 수단",
+      },
+      {
+        words: ["소설", "무리", "죄", "매듭"],
+        description: "지을 수 있는 것",
+      },
+      {
+        words: ["추락", "질식", "감전", "굶주림"],
+        description: "사망 원인",
+      },
+      {
+        words: ["전지", "세계대전", "집단", "대사산물"],
+        description: "1차와 2차로 나누어지는 것",
+      },
+    ],
+  },
+  {
+    id: 35,
+    quiz: [
+      {
+        words: ["틱톡", "릴스", "쇼츠", "프럽"],
+        description: "숏폼 동영상 플랫폼",
+      },
+      {
+        words: ["알레", "플뢰레", "에페", "사브르"],
+        description: "펜싱 용어",
+      },
+      {
+        words: ["스파오", "자라", "갭", "미쏘"],
+        description: "의류 브랜드",
+      },
+      {
+        words: ["바알", "아가레스", "바사고", "가미긴"],
+        description: "솔로몬의 72악마",
       },
     ],
   },
