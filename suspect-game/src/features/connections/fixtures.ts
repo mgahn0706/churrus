@@ -240,7 +240,7 @@ export const KoreanConnections: ConnectionsType[] = [
       },
       {
         words: ["슬림", "스키니", "테이퍼드", "와이드"],
-        description: "바지 팟",
+        description: "바지 핏",
       },
       {
         words: ["벤치", "짐볼", "아령", "랙"],
@@ -885,7 +885,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 43,
+    id: 43, // 10월 22일
     quiz: [
       {
         words: ["재", "숯", "목탄", "연기"],
@@ -902,6 +902,48 @@ export const KoreanConnections: ConnectionsType[] = [
       {
         words: ["구두", "망토", "마스크", "날"],
         description: "빨간___",
+      },
+    ],
+  },
+  {
+    id: 44,
+    quiz: [
+      {
+        words: ["눈썹", "머리카락", "코털", "수염"],
+        description: "털",
+      },
+      {
+        words: ["다시마", "미역", "곰피", "톳"],
+        description: "해조류",
+      },
+      {
+        words: ["멸치", "면봉", "해골", "나뭇가지"],
+        description: "마른 사람의 별명",
+      },
+      {
+        words: ["십", "교회", "덧셈", "병원"],
+        description: "십자가(+)가 의미할 수 있는 것",
+      },
+    ],
+  },
+  {
+    id: 45,
+    quiz: [
+      {
+        words: ["한", "금", "낙동", "영산"],
+        description: "한국의 강",
+      },
+      {
+        words: ["행주", "살수", "황산", "귀주"],
+        description: "___대첩",
+      },
+      {
+        words: ["휴지", "수면", "절전", "중지"],
+        description: "하던 것을 멈춤",
+      },
+      {
+        words: ["잠", "장난", "말썽", "천덕"],
+        description: "___꾸러기",
       },
     ],
   },
