@@ -757,6 +757,154 @@ export const KoreanConnections: ConnectionsType[] = [
       },
     ],
   },
+  {
+    id: 37,
+    quiz: [
+      {
+        words: ["그리핀도르", "슬리데린", "래번클로", "후플푸프"],
+        description: "해리포터의 기숙사",
+      },
+      {
+        words: ["캐스퍼", "모닝", "다마스", "티코"],
+        description: "경차",
+      },
+      {
+        words: ["레이", "이서", "가을", "리즈"],
+        description: "IVE 멤버",
+      },
+
+      {
+        words: ["슬라이더", "포크", "커브", "스크류"],
+        description: "야구의 구종",
+      },
+    ],
+  },
+  {
+    id: 38,
+    quiz: [
+      {
+        words: ["배지", "견장", "훈장", "완장"],
+        description: "상체 부탁물",
+      },
+      {
+        words: ["교육", "국방", "근로", "납세"],
+        description: "국민의 의무",
+      },
+      {
+        words: ["역병", "전쟁", "기근", "죽음"],
+        description: "묵시록의 4기사",
+      },
+      {
+        words: ["톱", "가락", "금", "바닥"],
+        description: "손___",
+      },
+    ],
+  },
+  {
+    id: 39,
+    quiz: [
+      {
+        words: ["교대", "대치", "신사", "오금"],
+        description: "지하철 3호선 역",
+      },
+      {
+        words: ["설사", "혹", "가령", "암만"],
+        description: "아무리",
+      },
+      {
+        words: ["발단", "위기", "전개", "결말"],
+        description: "소설의 구성요소",
+      },
+      {
+        words: ["관계", "끝", "땀방울", "열매"],
+        description: "맺을 수 있는 것",
+      },
+    ],
+  },
+  {
+    id: 40,
+    quiz: [
+      {
+        words: ["멜론", "벅스", "플로", "스포티파이"],
+        description: "음악 스트리밍 서비스",
+      },
+      {
+        words: ["바질", "캣닙", "민트", "제라늄"],
+        description: "허브",
+      },
+      {
+        words: ["톨", "그란데", "벤티", "트렌타"],
+        description: "스타벅스 음료 사이즈",
+      },
+      {
+        words: ["선", "파일", "맨", "박스"],
+        description: "엑스___",
+      },
+    ],
+  },
+  {
+    id: 41,
+    quiz: [
+      {
+        words: ["동", "서", "남", "북"],
+        description: "방위",
+      },
+      {
+        words: ["희", "노", "애", "락"],
+        description: "사람의 감정",
+      },
+      {
+        words: ["가", "감", "승", "제"],
+        description: "사칙연산",
+      },
+      {
+        words: ["원", "투", "포", "텐"],
+        description: "숫자를 영어로 읽은 것",
+      },
+    ],
+  },
+  {
+    id: 42,
+    quiz: [
+      {
+        words: ["수류탄", "지뢰", "박격포", "클레이모어"],
+        description: "보병의 폭발물",
+      },
+      {
+        words: ["배터리", "뱀장어", "발전소", "번개"],
+        description: "전기를 내는 것",
+      },
+      {
+        words: ["광장", "고소", "환", "물"],
+        description: "공포증",
+      },
+      {
+        words: ["온점", "스타카토", "곱셈", "공란"],
+        description: "점(.)이 의미할 수 있는 것",
+      },
+    ],
+  },
+  {
+    id: 43,
+    quiz: [
+      {
+        words: ["재", "숯", "목탄", "연기"],
+        description: "연소 후 남은 것",
+      },
+      {
+        words: ["탈", "병", "장애", "파손"],
+        description: "고장",
+      },
+      {
+        words: ["지팡이", "맥", "헛다리", "글자"],
+        description: "짚을 수 있는 것",
+      },
+      {
+        words: ["구두", "망토", "마스크", "날"],
+        description: "빨간___",
+      },
+    ],
+  },
 ];
 
 interface ConnectionsType {
