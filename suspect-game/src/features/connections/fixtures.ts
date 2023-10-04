@@ -947,6 +947,69 @@ export const KoreanConnections: ConnectionsType[] = [
       },
     ],
   },
+  {
+    id: 46,
+    quiz: [
+      {
+        words: ["이클립스", "은단", "리콜라", "호올스"],
+        description: "구취 제거 식품",
+      },
+      {
+        words: ["이솝", "딥디크", "조말론", "크리드"],
+        description: "향수 브랜드",
+      },
+      {
+        words: ["사프란", "칸나", "라벤더", "아네모네"],
+        description: "꽃",
+      },
+      {
+        words: ["솔티", "사쿠라", "더티", "트와일라잇"],
+        description: "러쉬 보디 스프레이 향",
+      },
+    ],
+  },
+  {
+    id: 47,
+    quiz: [
+      {
+        words: ["업라이트", "그랜드", "전자", "스퀘어"],
+        description: "피아노 종류",
+      },
+      {
+        words: ["에어팟", "양말", "장갑", "렌즈"],
+        description: "쌍으로 있는 착용품",
+      },
+      {
+        words: ["원자", "비트", "형태소", "픽셀"],
+        description: "최소 단위",
+      },
+      {
+        words: ["그램", "이온", "맥북", "오디세이"],
+        description: "노트북 브랜드",
+      },
+    ],
+  },
+  {
+    id: 48, // 10월 27일
+    quiz: [
+      {
+        words: ["스페이스", "엔터", "탭", "컨트롤"],
+        description: "키보드 키",
+      },
+      {
+        words: ["파노라마", "피에스타", "비올레타", "해바라기"],
+        description: "아이즈원 노래",
+      },
+      {
+        words: ["오디세이", "파티", "카트", "갤럭시"],
+        description: "슈퍼마리오 시리즈",
+      },
+      {
+        words: ["스퀘어", "머신", "라인", "스탬프"],
+        description: "타임___",
+      },
+    ],
+  },
 ];
 
 interface ConnectionsType {
