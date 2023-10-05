@@ -753,8 +753,8 @@ export const KoreanConnections: ConnectionsType[] = [
       },
 
       {
-        words: ["말", "소", "돼지", "개"],
-        description: "부여의 사출도",
+        words: ["두루미", "멧돼지", "사슴", "나비"],
+        description: "화투 패의 동물",
       },
     ],
   },
