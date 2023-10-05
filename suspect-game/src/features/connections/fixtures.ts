@@ -511,7 +511,7 @@ export const KoreanConnections: ConnectionsType[] = [
     id: 25,
     quiz: [
       {
-        words: ["철인", "군자", "신사", "히아로"],
+        words: ["철인", "군자", "신사", "히어로"],
         description: "훌륭한 사람",
       },
       {
@@ -536,7 +536,7 @@ export const KoreanConnections: ConnectionsType[] = [
         description: "마땅한 것",
       },
       {
-        words: ["녹말", "섬유소", "키토산", "올리고당"],
+        words: ["녹말", "섬유소", "설탕", "올리고당"],
         description: "탄수화물",
       },
       {
@@ -617,13 +617,14 @@ export const KoreanConnections: ConnectionsType[] = [
         description: "전자기파",
       },
       {
-        words: ["F", "옥상", "지하", "플로어"],
-        description: "건물의 층",
-      },
-      {
         words: ["라이트닝", "썬더볼트", "HDMI", "C"],
         description: "입출력 단자",
       },
+      {
+        words: ["F", "옥상", "지하", "플로어"],
+        description: "건물의 층",
+      },
+
       {
         words: ["엔진", "S", "바디", "올리브"],
         description: "___오일",
@@ -709,7 +710,7 @@ export const KoreanConnections: ConnectionsType[] = [
         description: "사망 원인",
       },
       {
-        words: ["전지", "세계대전", "집단", "대사산물"],
+        words: ["전지", "세계대전", "집단", "면역"],
         description: "1차와 2차로 나누어지는 것",
       },
     ],
@@ -1007,6 +1008,27 @@ export const KoreanConnections: ConnectionsType[] = [
       {
         words: ["스퀘어", "머신", "라인", "스탬프"],
         description: "타임___",
+      },
+    ],
+  },
+  {
+    id: 49,
+    quiz: [
+      {
+        words: ["솔개", "독수리", "부엉이", "황조롱이"],
+        description: "맹금류",
+      },
+      {
+        words: ["잎", "코", "아가미", "피부"],
+        description: "생물의 호흡기관",
+      },
+      {
+        words: ["장미", "눈", "밤", "버섯"],
+        description: "송이로 셀 수 있는 것",
+      },
+      {
+        words: ["태풍", "호루스", "솔", "매"],
+        description: "___의 눈",
       },
     ],
   },
