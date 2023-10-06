@@ -1032,6 +1032,69 @@ export const KoreanConnections: ConnectionsType[] = [
       },
     ],
   },
+  {
+    id: 50,
+    quiz: [
+      {
+        words: ["순대", "베이컨", "족발", "햄"],
+        description: "돼지고기로 만드는 것",
+      },
+      {
+        words: ["고다", "스모크", "스트링", "체다"],
+        description: "치즈",
+      },
+      {
+        words: ["빵", "몽쉘", "루", "뷔페"],
+        description: "음식 관련 프랑스어",
+      },
+      {
+        words: ["회", "샐러드", "타르타르", "카르파초"],
+        description: "날(raw) 식재료가 들어가는 요리",
+      },
+    ],
+  },
+  {
+    id: 51,
+    quiz: [
+      {
+        words: ["슬기", "현명", "셈", "지략"],
+        description: "사리분별이 뛰어남",
+      },
+      {
+        words: ["예리", "정확", "날카로움", "뾰족"],
+        description: "정확하고 치밀함",
+      },
+      {
+        words: ["아이린", "에이미", "오스틴", "유진"],
+        description: "알파벳 모음으로 시작하는 이름",
+      },
+      {
+        words: ["조이", "키", "포", "참깨"],
+        description: "___스틱",
+      },
+    ],
+  },
+  {
+    id: 52, // 10월 31일
+    quiz: [
+      {
+        words: ["호박", "유령", "거미", "사탕"],
+        description: "핼러윈",
+      },
+      {
+        words: ["그것", "링", "디센트", "죠스"],
+        description: "호러 영화",
+      },
+      {
+        words: ["흡혈귀", "고블린", "인어", "유니콘"],
+        description: "상상속의 동물",
+      },
+      {
+        words: ["마녀", "더위", "총", "덫"],
+        description: "___사냥",
+      },
+    ],
+  },
 ];
 
 interface ConnectionsType {
