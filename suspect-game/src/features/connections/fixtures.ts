@@ -1095,6 +1095,48 @@ export const KoreanConnections: ConnectionsType[] = [
       },
     ],
   },
+  {
+    id: 53,
+    quiz: [
+      {
+        words: ["쌀", "보리", "피", "줄"],
+        description: "곡물",
+      },
+      {
+        words: ["힘", "일", "에너지", "운동"],
+        description: "물리학 관련 용어",
+      },
+      {
+        words: ["조", "경", "해", "자"],
+        description: "큰 수의 단위",
+      },
+      {
+        words: ["맥", "포도", "청", "탁"],
+        description: "___주 (술)",
+      },
+    ],
+  },
+  {
+    id: 54,
+    quiz: [
+      {
+        words: ["강아지", "올챙이", "소년", "병아리"],
+        description: "어린 동물",
+      },
+      {
+        words: ["댐", "조류", "석탄", "바람"],
+        description: "에너지 생산 원천",
+      },
+      {
+        words: ["태양", "당신", "대한민국", "달"],
+        description: "온 우주에서 유일한 것",
+      },
+      {
+        words: ["동아리", "골프채", "포커", "유흥"],
+        description: "클럽과 관련된 단어",
+      },
+    ],
+  },
 ];
 
 interface ConnectionsType {
