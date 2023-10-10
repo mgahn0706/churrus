@@ -1137,6 +1137,66 @@ export const KoreanConnections: ConnectionsType[] = [
       },
     ],
   },
+  {
+    id: 55,
+    quiz: [
+      { words: ["매매", "거래", "고판", "흥정"], description: "사고 팖" },
+      {
+        words: ["커피", "초콜릿", "약", "녹차"],
+        description: "카페인이 들어있는 것",
+      },
+      {
+        words: ["고속", "마을", "전세", "광역"],
+        description: "___버스",
+      },
+      {
+        words: ["예약", "카페", "부동산", "블로그"],
+        description: "네이버 하위 서비스",
+      },
+    ],
+  },
+  {
+    id: 56,
+    quiz: [
+      {
+        words: ["영화", "드라마", "예능", "다큐"],
+        description: "텔레비전 프로그램",
+      },
+      {
+        words: ["휴지", "빨대", "기저귀", "이쑤시개"],
+        description: "일회용품",
+      },
+      {
+        words: ["카카오", "스몰", "페이스", "선"],
+        description: "___톡",
+      },
+      {
+        words: ["밥줄", "가스", "필름", "대화"],
+        description: "끊길 수 있는 것",
+      },
+    ],
+  },
+  {
+    id: 57, // 11월 5일
+    quiz: [
+      {
+        words: ["지지", "응원", "유지", "부지"],
+        description: "뒷받침",
+      },
+      {
+        words: ["왕왕", "종종", "가끔", "때때"],
+        description: "이따금",
+      },
+      {
+        words: ["미미", "모모", "나나", "비비"],
+        description: "연예인",
+      },
+      {
+        words: ["구구", "삐삐", "쥬쥬", "아보"],
+        description: "포켓몬스터",
+      },
+    ],
+  },
 ];
 
 interface ConnectionsType {
