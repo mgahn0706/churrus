@@ -639,7 +639,7 @@ export const KoreanConnections: ConnectionsType[] = [
         description: "얼음의 종류",
       },
       {
-        words: ["만", "섬", "빈도", "곶"],
+        words: ["만", "섬", "반도", "곶"],
         description: "지형",
       },
       {
@@ -656,7 +656,7 @@ export const KoreanConnections: ConnectionsType[] = [
     id: 32,
     quiz: [
       {
-        words: ["베이스", "일토", "테너", "바리톤"],
+        words: ["베이스", "알토", "테너", "바리톤"],
         description: "성악 음역대",
       },
       {
@@ -1194,6 +1194,27 @@ export const KoreanConnections: ConnectionsType[] = [
       {
         words: ["구구", "삐삐", "쥬쥬", "아보"],
         description: "포켓몬스터",
+      },
+    ],
+  },
+  {
+    id: 58,
+    quiz: [
+      {
+        words: ["파파야", "자탁", "카카오", "망고"],
+        description: "수입 과일",
+      },
+      {
+        words: ["조사", "조문", "국화", "향"],
+        description: "죽은 사람을 기리는 것",
+      },
+      {
+        words: ["홍옥", "아오리", "감홍", "부사"],
+        description: "사과의 종류",
+      },
+      {
+        words: ["꼬리", "광대", "복숭아", "목"],
+        description: "___뼈",
       },
     ],
   },
