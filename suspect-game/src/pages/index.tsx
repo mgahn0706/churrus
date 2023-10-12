@@ -7,8 +7,6 @@ import { TypeAnimation } from "react-type-animation";
 export default function ChurrusMain() {
   const responsiveFontSize = useResponsiveValue([2, 2, 3]);
 
-  const responsiveTitle = useResponsiveValue([
-
   return (
     <Box>
       <GlobalHeader />
@@ -145,9 +143,8 @@ export default function ChurrusMain() {
               }}
               lineHeight={1.5}
             >
-              매월 넷째 주 토요일에 열리는 정기모임에서는
-              다양한 문제들은 물론, 더 지니어스나 크라임씬 같은
-              재미있는 활동을 즐길 수 있어요. 
+              매월 넷째 주 토요일에 열리는 정기모임에서는 다양한 문제들은 물론,
+              더 지니어스나 크라임씬 같은 재미있는 활동을 즐길 수 있어요.
             </Typography>
           </Box>
         </Box>
@@ -187,8 +184,8 @@ export default function ChurrusMain() {
               }}
               lineHeight={1.5}
             >
-              추러스는 엠티 장소를 알려드리지 않습니다! 서울 곳곳에 숨겨진
-              추리 퀴즈를 풀어가면서 직접 찾아오셔야 합니다!
+              추러스는 엠티 장소를 알려드리지 않습니다! 서울 곳곳에 숨겨진 추리
+              퀴즈를 풀어가면서 직접 찾아오셔야 합니다!
             </Typography>
           </Box>
         </Box>
@@ -229,7 +226,8 @@ export default function ChurrusMain() {
               lineHeight={1.5}
             >
               평소에 추리소설을 좋아하지만 시간이 없어서, 귀찮아서 읽지 못했던
-              분들, 이참에 같이 읽어보는거 어떨까요? 다같이 토론하며 범인을 직접 맞춰봐요!
+              분들, 이참에 같이 읽어보는거 어떨까요? 다같이 토론하며 범인을 직접
+              맞춰봐요!
             </Typography>
           </Box>
         </Box>
@@ -269,8 +267,9 @@ export default function ChurrusMain() {
               }}
               lineHeight={1.5}
             >
-           방탈출을 하고 싶었지만 예약하기 힘들었던 분들, 혹은 방탈출이나 보드게임을
-              하고 싶지만 사람 모으기 분들, 추러스에서 같이 플레이해 보아요!
+              방탈출을 하고 싶었지만 예약하기 힘들었던 분들, 혹은 방탈출이나
+              보드게임을 하고 싶지만 사람 모으기 분들, 추러스에서 같이 플레이해
+              보아요!
             </Typography>
           </Box>
         </Box>
