@@ -1218,6 +1218,48 @@ export const KoreanConnections: ConnectionsType[] = [
       },
     ],
   },
+  {
+    id: 59,
+    quiz: [
+      {
+        words: ["시나몬", "바닐라", "헤이즐넛", "카라멜"],
+        description: "커피 시럽",
+      },
+      {
+        words: ["마인", "스타", "워", "조지아"],
+        description: "___크래프트",
+      },
+      {
+        words: ["매직", "에어", "아이", "애플"],
+        description: "애플 제품의 접두사",
+      },
+      {
+        words: ["풀", "셰어", "비닐", "모델"],
+        description: "___하우스",
+      },
+    ],
+  },
+  {
+    id: 60,
+    quiz: [
+      {
+        words: ["일층", "보다", "한결", "더"],
+        description: "어떤 수준에 비해 한층 더",
+      },
+      {
+        words: ["귀소", "회귀", "유희", "사회"],
+        description: "인간의 본능",
+      },
+      {
+        words: ["화해", "증여", "구두", "고용"],
+        description: "계약의 종류",
+      },
+      {
+        words: ["구멍", "방", "혼자", "소수"],
+        description: "'홀'이 의미할 수 있는 것",
+      },
+    ],
+  },
 ];
 
 interface ConnectionsType {

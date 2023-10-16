@@ -2,10 +2,12 @@ import { ThemeProvider } from "@emotion/react";
 import {
   Box,
   Button,
+  Chip,
   Divider,
   IconButton,
   InputBase,
   LinearProgress,
+  ListItem,
   Paper,
   Tooltip,
   Typography,
@@ -32,7 +34,7 @@ const ProgressBar = ({ checkedCount }: { checkedCount: number }) => {
     <Tooltip title="조사 진행도">
       <Box
         position="absolute"
-        bottom={5}
+        top={5}
         right={4}
         display="flex"
         alignItems="center"
@@ -59,6 +61,7 @@ export default function InTextGame() {
   >("PROLOGUE");
   const [searchKeyword, setSearchKeyword] = useState<string>("");
   const [searchedClues, setSearchedClues] = useState<ClueData[] | null>([]);
+  const [searchHistory, setSearchHistory] = useState<string[]>([]);
   const [recentlySearchedKeywords, setRecentlySearchedKeywords] = useState<
     string[]
   >([]);
@@ -68,7 +71,7 @@ export default function InTextGame() {
 
   return (
     <ThemeProvider theme={darkTheme}>
-      <Box width="80vw" height="100vh" bgcolor="black" py="60px" px="10vw">
+      <Box width="100%" height="120vh" bgcolor="black" py="60px" px="10vw">
         <TextGameHeader />
         {currentStep === "PROLOGUE" && (
           <Box color="white" lineHeight={"2rem"}>
@@ -121,6 +124,11 @@ export default function InTextGame() {
                     [...recentlySearchedKeywords, searchKeyword].slice(-5)
                   );
                   if (clues) {
+                    if (!searchHistory.includes(searchKeyword)) {
+                      setSearchHistory(
+                        [searchKeyword, ...searchHistory].slice(0, 10)
+                      );
+                    }
                     setCheckedClues(
                       checkedClues.map((isChecked, index) => {
                         return (
@@ -139,6 +147,25 @@ export default function InTextGame() {
                 <History />
               </IconButton>
             </Paper>
+            <Box
+              display="flex"
+              width={400}
+              mt={2}
+              justifyContent="flex-start"
+              gap={1}
+            >
+              {searchHistory.map((keyword) => {
+                return (
+                  <Chip
+                    label={keyword}
+                    clickable
+                    onClick={() => {
+                      setSearchKeyword(keyword);
+                    }}
+                  />
+                );
+              })}
+            </Box>
             <Box
               display="flex"
               justifyContent="center"
