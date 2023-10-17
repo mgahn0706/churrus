@@ -69,13 +69,35 @@ export default function InTextGame() {
     new Array(TOTAL_CLUE_COUNT).fill(false)
   );
 
+  const handleSearch = async () => {
+    setSearchedClues([]);
+    const response = await fetch(
+      `/api/getCluesWithKeyword?keyword=${searchKeyword}`
+    );
+    const clues = (await response.json()) as ClueData[] | null;
+    setSearchedClues(clues);
+    setRecentlySearchedKeywords(
+      [...recentlySearchedKeywords, searchKeyword].slice(-5)
+    );
+    if (clues) {
+      if (!searchHistory.includes(searchKeyword)) {
+        setSearchHistory([searchKeyword, ...searchHistory].slice(0, 10));
+      }
+      setCheckedClues(
+        checkedClues.map((isChecked, index) => {
+          return clues.some((clue) => clue.id === index + 1) || isChecked;
+        })
+      );
+    }
+  };
+
   return (
     <ThemeProvider theme={darkTheme}>
-      <Box width="100%" height="120vh" bgcolor="black" py="60px" px="10vw">
+      <Box bgcolor="black" height="100vh" py="60px" px="10vw">
         <TextGameHeader />
         {currentStep === "PROLOGUE" && (
-          <Box color="white" lineHeight={"2rem"}>
-            <SchoolPrologue />
+          <Box color="white" lineHeight={"2rem"} width="90vw">
+            <Typography>와부고에서 발생한 살인 사건.</Typography>
             <Button
               variant="contained"
               onClick={() => setCurrentStep("INVESTIGATE")}
@@ -99,11 +121,16 @@ export default function InTextGame() {
                 p: "6px 12px",
                 display: "flex",
                 alignItems: "center",
-                width: 400,
+                width: "350px",
                 mt: "60px",
               }}
             >
               <InputBase
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    handleSearch();
+                  }
+                }}
                 sx={{ ml: 1, flex: 1, fontSize: "1.5rem", fontWeight: "bold" }}
                 placeholder="조사 키워드를 입력하세요."
                 value={searchKeyword}
@@ -113,38 +140,9 @@ export default function InTextGame() {
                 type="button"
                 sx={{ p: "10px" }}
                 aria-label="search"
-                onClick={async () => {
-                  setSearchedClues([]);
-                  const response = await fetch(
-                    `/api/getCluesWithKeyword?keyword=${searchKeyword}`
-                  );
-                  const clues = (await response.json()) as ClueData[] | null;
-                  setSearchedClues(clues);
-                  setRecentlySearchedKeywords(
-                    [...recentlySearchedKeywords, searchKeyword].slice(-5)
-                  );
-                  if (clues) {
-                    if (!searchHistory.includes(searchKeyword)) {
-                      setSearchHistory(
-                        [searchKeyword, ...searchHistory].slice(0, 10)
-                      );
-                    }
-                    setCheckedClues(
-                      checkedClues.map((isChecked, index) => {
-                        return (
-                          clues.some((clue) => clue.id === index + 1) ||
-                          isChecked
-                        );
-                      })
-                    );
-                  }
-                }}
+                onClick={handleSearch}
               >
                 <Search />
-              </IconButton>
-              <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-              <IconButton sx={{ p: "10px" }} aria-label="directions">
-                <History />
               </IconButton>
             </Paper>
             <Box
@@ -161,6 +159,7 @@ export default function InTextGame() {
                     clickable
                     onClick={() => {
                       setSearchKeyword(keyword);
+                      handleSearch();
                     }}
                   />
                 );
