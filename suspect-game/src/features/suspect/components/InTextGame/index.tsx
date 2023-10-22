@@ -72,6 +72,7 @@ export default function InTextGame() {
   );
 
   const handleSearch = async () => {
+    if (!searchKeyword) return;
     setSearchedClues([]);
     const response = await fetch(
       `/api/getCluesWithKeyword?keyword=${searchKeyword}`
@@ -147,14 +148,22 @@ export default function InTextGame() {
                 value={searchKeyword}
                 onChange={(e) => setSearchKeyword(e.target.value)}
               />
-              <IconButton
-                type="button"
-                sx={{ p: "10px" }}
-                aria-label="search"
-                onClick={handleSearch}
+              <Tooltip
+                title="'시체'를 검색해보세요."
+                open={searchHistory.length === 0}
+                sx={{
+                  backgroundColor: "white",
+                }}
               >
-                <Search />
-              </IconButton>
+                <IconButton
+                  type="button"
+                  sx={{ p: "10px" }}
+                  aria-label="search"
+                  onClick={handleSearch}
+                >
+                  <Search />
+                </IconButton>
+              </Tooltip>
             </Paper>
             <Box
               display="flex"
