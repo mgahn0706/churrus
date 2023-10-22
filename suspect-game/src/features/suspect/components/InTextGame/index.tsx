@@ -16,10 +16,10 @@ import {
 
 import { useState } from "react";
 import TextGameHeader from "./TextGameHeader";
-import { SchoolPrologue } from "../../fixtures/school/prologue";
 import { History, Search } from "@mui/icons-material";
 import { ClueData, schoolClues } from "@/pages/api/getCluesWithKeyword";
 import { FadeInSection } from "../FadeInSection";
+import { schoolPrologue } from "../../fixtures/school/prologue";
 
 const darkTheme = createTheme({
   palette: {
@@ -56,6 +56,8 @@ const ProgressBar = ({ checkedCount }: { checkedCount: number }) => {
 };
 
 export default function InTextGame() {
+  const [prolougeStep, setProlougeStep] = useState(0);
+
   const [currentStep, setCurrentStep] = useState<
     "PROLOGUE" | "INTERROGATE" | "INVESTIGATE"
   >("PROLOGUE");
@@ -96,13 +98,22 @@ export default function InTextGame() {
       <Box bgcolor="black" height="100vh" py="60px" px="10vw">
         <TextGameHeader />
         {currentStep === "PROLOGUE" && (
-          <Box color="white" lineHeight={"2rem"} width="90vw">
-            <Typography>와부고에서 발생한 살인 사건.</Typography>
+          <Box mt={6} color="white">
+            <Typography mr={1} variant="h5" color="white">
+              {schoolPrologue[prolougeStep]}
+            </Typography>
             <Button
-              variant="contained"
-              onClick={() => setCurrentStep("INVESTIGATE")}
+              variant="text"
+              size="large"
+              onClick={() => {
+                if (prolougeStep === schoolPrologue.length - 1) {
+                  setCurrentStep("INVESTIGATE");
+                  return;
+                }
+                setProlougeStep(prolougeStep + 1);
+              }}
             >
-              조사하기
+              {"다음 >"}
             </Button>
           </Box>
         )}
