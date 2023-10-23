@@ -17,6 +17,7 @@ import TextGameHeader from "./TextGameHeader";
 import { Search } from "@mui/icons-material";
 import { ClueData, schoolClues } from "@/pages/api/getCluesWithKeyword";
 import { FadeInSection } from "../FadeInSection";
+import { schoolPrologue } from "../../fixtures/school/prologue";
 
 const darkTheme = createTheme({
   palette: {
@@ -53,6 +54,8 @@ const ProgressBar = ({ checkedCount }: { checkedCount: number }) => {
 };
 
 export default function InTextGame() {
+  const [prolougeStep, setProlougeStep] = useState(0);
+
   const [currentStep, setCurrentStep] = useState<
     "PROLOGUE" | "INTERROGATE" | "INVESTIGATE"
   >("PROLOGUE");
@@ -67,6 +70,7 @@ export default function InTextGame() {
   );
 
   const handleSearch = async () => {
+    if (!searchKeyword) return;
     setSearchedClues([]);
     const response = await fetch(
       `/api/getCluesWithKeyword?keyword=${searchKeyword}`
@@ -93,13 +97,22 @@ export default function InTextGame() {
       <Box bgcolor="black" height="100vh" py="60px" px="10vw">
         <TextGameHeader />
         {currentStep === "PROLOGUE" && (
-          <Box color="white" lineHeight={"2rem"} width="90vw">
-            <Typography>와부고에서 발생한 살인 사건.</Typography>
+          <Box mt={6} color="white">
+            <Typography mr={1} variant="h5" color="white">
+              {schoolPrologue[prolougeStep]}
+            </Typography>
             <Button
-              variant="contained"
-              onClick={() => setCurrentStep("INVESTIGATE")}
+              variant="text"
+              size="large"
+              onClick={() => {
+                if (prolougeStep === schoolPrologue.length - 1) {
+                  setCurrentStep("INVESTIGATE");
+                  return;
+                }
+                setProlougeStep(prolougeStep + 1);
+              }}
             >
-              조사하기
+              {"다음 >"}
             </Button>
           </Box>
         )}
@@ -133,14 +146,22 @@ export default function InTextGame() {
                 value={searchKeyword}
                 onChange={(e) => setSearchKeyword(e.target.value)}
               />
-              <IconButton
-                type="button"
-                sx={{ p: "10px" }}
-                aria-label="search"
-                onClick={handleSearch}
+              <Tooltip
+                title="'시체'를 검색해보세요."
+                open={searchHistory.length === 0}
+                sx={{
+                  backgroundColor: "white",
+                }}
               >
-                <Search />
-              </IconButton>
+                <IconButton
+                  type="button"
+                  sx={{ p: "10px" }}
+                  aria-label="search"
+                  onClick={handleSearch}
+                >
+                  <Search />
+                </IconButton>
+              </Tooltip>
             </Paper>
             <Box
               display="flex"
