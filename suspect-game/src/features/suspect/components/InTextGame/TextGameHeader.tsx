@@ -2,11 +2,14 @@ import { Box, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import MapModal from "./MapModal";
+import SuspectsInfoCard from "../InGame/SuspectsInfoCard";
+import { schoolSuspects, schoolVictim } from "../../fixtures/school/suspects";
+import MemoModal from "../InGame/MemoModal";
 
 export default function TextGameHeader() {
   const router = useRouter();
   const [modalState, setModalState] = useState<
-    "MAP" | "SUSPECT" | "MEMO" | null
+    "MAP" | "SUSPECT" | "SUBMIT" | null
   >(null);
 
   return (
@@ -17,6 +20,24 @@ export default function TextGameHeader() {
           setModalState(null);
         }}
         places={["school-3F", "school-2F"]}
+      />
+      <SuspectsInfoCard
+        victim={schoolVictim}
+        suspects={schoolSuspects}
+        isOpen={modalState === "SUSPECT"}
+        onClose={() => {
+          setModalState(null);
+        }}
+      />
+      <MemoModal
+        isOpen={modalState === "SUBMIT"}
+        isAllClueSearched
+        onClose={() => {
+          setModalState(null);
+        }}
+        suspects={schoolSuspects}
+        questions={[]}
+        scenarioKeyword={"school"}
       />
       <Box
         color="white"
@@ -70,7 +91,7 @@ export default function TextGameHeader() {
                 backgroundColor: "rgb(60, 60, 60)",
               },
             }}
-            onClick={() => router.push("/suspect/investigate")}
+            onClick={() => setModalState("SUSPECT")}
           >
             <Typography fontWeight="bolder" fontSize={16}>
               인물
@@ -86,10 +107,10 @@ export default function TextGameHeader() {
                 backgroundColor: "rgb(60, 60, 60)",
               },
             }}
-            onClick={() => router.push("/suspect/quiz")}
+            onClick={() => setModalState("SUBMIT")}
           >
             <Typography fontWeight="bolder" fontSize={16}>
-              메모
+              추리 노트
             </Typography>
           </Box>
         </Box>

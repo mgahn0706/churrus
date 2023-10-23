@@ -56,7 +56,7 @@ export const schoolInterview: Record<
 export const schoolSuspects: SuspectType[] = [
   {
     name: "손민혜",
-    image: "/image/profile/son_mh.jpeg",
+    image: "",
     age: 19,
     gender: "female",
     job: "3-1, 화학실험 동아리 기장",

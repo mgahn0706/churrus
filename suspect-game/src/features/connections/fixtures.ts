@@ -1260,6 +1260,27 @@ export const KoreanConnections: ConnectionsType[] = [
       },
     ],
   },
+  {
+    id: 61,
+    quiz: [
+      {
+        words: ["물", "침", "피", "땀"],
+        description: "체액",
+      },
+      {
+        words: ["춤", "음악", "무대", "연기"],
+        description: "뮤지컬의 요소",
+      },
+      {
+        words: ["산", "바늘", "성게", "장미"],
+        description: "뾰족한 것",
+      },
+      {
+        words: ["들", "참", "고추", "개"],
+        description: "___기름",
+      },
+    ],
+  },
 ];
 
 interface ConnectionsType {
