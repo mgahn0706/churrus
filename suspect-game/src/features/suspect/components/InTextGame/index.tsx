@@ -3,11 +3,9 @@ import {
   Box,
   Button,
   Chip,
-  Divider,
   IconButton,
   InputBase,
   LinearProgress,
-  ListItem,
   Paper,
   Tooltip,
   Typography,
@@ -16,8 +14,7 @@ import {
 
 import { useState } from "react";
 import TextGameHeader from "./TextGameHeader";
-import { SchoolPrologue } from "../../fixtures/school/prologue";
-import { History, Search } from "@mui/icons-material";
+import { Search } from "@mui/icons-material";
 import { ClueData, schoolClues } from "@/pages/api/getCluesWithKeyword";
 import { FadeInSection } from "../FadeInSection";
 
