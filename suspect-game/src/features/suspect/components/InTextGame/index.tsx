@@ -68,9 +68,11 @@ export default function InTextGame() {
   const [checkedClues, setCheckedClues] = useState<boolean[]>(
     new Array(TOTAL_CLUE_COUNT).fill(false)
   );
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleSearch = async () => {
     if (!searchKeyword) return;
+    setIsLoading(true);
     setSearchedClues([]);
     const response = await fetch(
       `/api/getCluesWithKeyword?keyword=${searchKeyword}`
@@ -80,6 +82,7 @@ export default function InTextGame() {
     setRecentlySearchedKeywords(
       [...recentlySearchedKeywords, searchKeyword].slice(-5)
     );
+    setIsLoading(false);
     if (clues) {
       if (!searchHistory.includes(searchKeyword)) {
         setSearchHistory([searchKeyword, ...searchHistory].slice(0, 10));
