@@ -237,7 +237,6 @@ export default function MemoModal({
             disabled={!isAllRequiredFilled}
             onClick={() => {
               setIsFinalConfirmModalOpen(true);
-              console.log(scenarioKeyword);
             }}
           >
             최종 제출

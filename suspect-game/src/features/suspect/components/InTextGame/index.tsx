@@ -90,6 +90,7 @@ export default function InTextGame() {
         })
       );
     }
+    setSearchKeyword("");
   };
 
   return (

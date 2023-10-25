@@ -1,10 +1,21 @@
-import { Box, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  List,
+  ListItem,
+  Typography,
+} from "@mui/material";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import MapModal from "./MapModal";
 import SuspectsInfoCard from "../InGame/SuspectsInfoCard";
 import { schoolSuspects, schoolVictim } from "../../fixtures/school/suspects";
-import MemoModal from "../InGame/MemoModal";
+import { ErrorOutline, Warning } from "@mui/icons-material";
 
 export default function TextGameHeader() {
   const router = useRouter();
@@ -29,16 +40,47 @@ export default function TextGameHeader() {
           setModalState(null);
         }}
       />
-      <MemoModal
-        isOpen={modalState === "SUBMIT"}
-        isAllClueSearched
-        onClose={() => {
-          setModalState(null);
-        }}
-        suspects={schoolSuspects}
-        questions={[]}
-        scenarioKeyword={"school"}
-      />
+      <Dialog open={modalState === "SUBMIT"}>
+        <DialogTitle alignItems="center" variant="h5">
+          <ErrorOutline
+            sx={{
+              mr: 1,
+            }}
+          />
+          최종 제출 안내
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            최종 제출 단계에서는 다시 조사를 진행할 수 없습니다. <br />
+            충분한 단서를 탐색한 후 진행해주세요.
+          </DialogContentText>
+          <DialogContentText>
+            최종 제출 단계에서는 아래의 질문들에 대한 답변을 제출해야합니다.
+          </DialogContentText>
+          <List>
+            <ListItem>범인은 누구인가요?</ListItem>
+            <ListItem>살해 방법은 무엇인가요?</ListItem>
+            <ListItem>살해 동기는 무엇인가요?</ListItem>
+            <ListItem>...외 다른 인물들의 숨은 이야기에 관한 질문 4개</ListItem>
+          </List>
+          <DialogActions>
+            <Button
+              onClick={() => {
+                setModalState(null);
+              }}
+            >
+              닫기
+            </Button>
+            <Button
+              onClick={() => {
+                router.push("/suspect/school/submit");
+              }}
+            >
+              최종 제출
+            </Button>
+          </DialogActions>
+        </DialogContent>
+      </Dialog>
       <Box
         color="white"
         display="flex"
@@ -110,7 +152,7 @@ export default function TextGameHeader() {
             onClick={() => setModalState("SUBMIT")}
           >
             <Typography fontWeight="bolder" fontSize={16}>
-              추리 노트
+              최종 제출
             </Typography>
           </Box>
         </Box>

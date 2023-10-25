@@ -105,7 +105,9 @@ export default function SchoolAnswer() {
 
       <FadeInSection>
         <Typography variant="h1" color="white" mt={70} mb={100}>
-          박현성을 살해한 범인이
+          {submittedAnswer.accusedSuspect === "자살"
+            ? "박현성의 사인이"
+            : "박현성을 살해한 범인이"}
         </Typography>
       </FadeInSection>
       <FadeInSection>
@@ -211,7 +213,9 @@ export default function SchoolAnswer() {
             막고, 목숨을 구할 방법이라고 생각했거든요. 그래서 박현성을 석식 후
             생명실로 유인해 마취한 후, 평소 투약에 사용하던 의료용 고무줄로
             교살했어요. 그러고는 교실로 옮겨 자살로 위장했죠. 전 완벽했다고
-            생각했어요. 물컵을 빼 놓은 것 말고요.
+            생각했어요. <br />
+            지금도 손이 떨려요. 금단증상인지, 후회인지, 아니면 내 자신에 대한
+            경멸때문일지는 모르겠어요.
           </Typography>
         </TabPanel>
         <TabPanel value={tabValue} index="additional">
@@ -220,7 +224,7 @@ export default function SchoolAnswer() {
               <ListItemText
                 primary={
                   <Typography variant="h6" mb={2}>
-                    Q1. 내일자 위클리 와부 십자말풀이의 가로 3번의 정답은
+                    Q1. 9월 2일자 위클리 와부 십자말풀이의 가로 3번의 정답은
                     무엇인가요?
                   </Typography>
                 }
