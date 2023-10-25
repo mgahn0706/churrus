@@ -1281,6 +1281,27 @@ export const KoreanConnections: ConnectionsType[] = [
       },
     ],
   },
+  {
+    id: 62,
+    quiz: [
+      {
+        words: ["음정", "멜로디", "리듬", "조화"],
+        description: "음악의 구성요소",
+      },
+      {
+        words: ["설하", "경구", "피하", "점막"],
+        description: "약의 투여 경로",
+      },
+      {
+        words: ["파도타기", "환호", "구호", "노래"],
+        description: "응원",
+      },
+      {
+        words: ["도포", "박수", "과용", "디오"],
+        description: "거꾸로하면 과일인 단어",
+      },
+    ],
+  },
 ];
 
 interface ConnectionsType {
