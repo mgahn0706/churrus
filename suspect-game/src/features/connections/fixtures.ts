@@ -1302,6 +1302,27 @@ export const KoreanConnections: ConnectionsType[] = [
       },
     ],
   },
+  {
+    id: 63,
+    quiz: [
+      {
+        words: ["엔트리", "미들", "퍼포먼스", "하이엔드"],
+        description: "제품의 등급",
+      },
+      {
+        words: ["아이템", "지옥", "무빙", "아일랜드"],
+        description: "웹툰 원작 드라마",
+      },
+      {
+        words: ["볼더링", "콤바인", "스피드", "리드"],
+        description: "클라이밍 종목",
+      },
+      {
+        words: ["식스", "도그", "스팟", "픽스"],
+        description: "핫___",
+      },
+    ],
+  },
 ];
 
 interface ConnectionsType {
