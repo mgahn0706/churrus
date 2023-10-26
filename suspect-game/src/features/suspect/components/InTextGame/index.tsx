@@ -174,18 +174,20 @@ export default function InTextGame() {
               justifyContent="flex-start"
               gap={1}
             >
-              {searchHistory.map((keyword) => {
-                return (
-                  <Chip
-                    label={keyword}
-                    clickable
-                    onClick={() => {
-                      setSearchKeyword(keyword);
-                      handleSearch();
-                    }}
-                  />
-                );
-              })}
+              {searchHistory
+                .slice(0, searchHistory.length > 5 ? 5 : searchHistory.length)
+                .map((keyword) => {
+                  return (
+                    <Chip
+                      label={keyword}
+                      clickable
+                      onClick={() => {
+                        setSearchKeyword(keyword);
+                        handleSearch();
+                      }}
+                    />
+                  );
+                })}
             </Box>
             <Box
               display="flex"
