@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Chip,
+  CircularProgress,
   IconButton,
   InputBase,
   LinearProgress,
@@ -198,6 +199,7 @@ export default function InTextGame() {
               gap={2}
               mt={7}
             >
+              {isLoading && <CircularProgress />}
               {searchedClues?.map((clue) => {
                 return (
                   <FadeInSection>
