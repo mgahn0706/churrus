@@ -99,7 +99,7 @@ export default function InTextGame() {
 
   return (
     <ThemeProvider theme={darkTheme}>
-      <Box bgcolor="black" height="100vh" py="60px" px="10vw">
+      <Box bgcolor="black" minHeight="100vh" py="60px" px="10vw">
         <TextGameHeader />
         {currentStep === "PROLOGUE" && (
           <Box mt={6} color="white">
@@ -176,7 +176,7 @@ export default function InTextGame() {
               gap={1}
             >
               {searchHistory
-                .slice(0, searchHistory.length > 5 ? 5 : searchHistory.length)
+                .slice(0, searchHistory.length > 6 ? 6 : searchHistory.length)
                 .map((keyword) => {
                   return (
                     <Chip
@@ -185,7 +185,6 @@ export default function InTextGame() {
                       key={keyword}
                       onClick={() => {
                         setSearchKeyword(keyword);
-                        handleSearch();
                       }}
                     />
                   );
