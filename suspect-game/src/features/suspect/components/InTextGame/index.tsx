@@ -32,8 +32,8 @@ const ProgressBar = ({ checkedCount }: { checkedCount: number }) => {
     <Tooltip title="조사 진행도">
       <Box
         position="absolute"
-        top={5}
-        right={4}
+        top="60px"
+        right="20px"
         display="flex"
         alignItems="center"
         width="200px"
@@ -181,6 +181,7 @@ export default function InTextGame() {
                     <Chip
                       label={keyword}
                       clickable
+                      key={keyword}
                       onClick={() => {
                         setSearchKeyword(keyword);
                         handleSearch();
