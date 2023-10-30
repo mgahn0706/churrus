@@ -1,5 +1,13 @@
 import { useResponsiveValue } from "@/hooks/useResponsiveValue";
-import { Box, Card, CardContent, Grid, Icon, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Grid,
+  Icon,
+  Typography,
+} from "@mui/material";
 import { useRouter } from "next/router";
 import { ReactNode } from "react";
 import {
@@ -325,24 +333,25 @@ export default function Churrus() {
   };
 
   return (
-    <Box mb={20}>
+    <Box bgcolor="black" minHeight="100vh" minWidth="100vw" pt={10}>
       <GlobalHeader />
-      <Box display="flex" justifyContent="center" mt={10}>
-        <Typography
-          fontWeight="bolder"
-          variant="h2"
-          sx={{
-            background: "linear-gradient(to right, #59b8ff, #0f0f70)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-          }}
-        >
-          GAMES
-        </Typography>
-      </Box>
 
-      <Box display="flex" justifyContent="center">
-        <Typography>추러스에서 해왔던 게임들을 즐길 수 있어요</Typography>
+      <Box display="flex" justifyContent="center" width="100vw" height="100px">
+        <Box display="flex" flexDirection="column">
+          <Typography color="white" fontWeight="medium">
+            2023년 10월 정기모임
+          </Typography>
+          <Typography color="white" fontWeight="bold" fontSize="2rem">
+            계급 체스 & 와부고 살인사건
+          </Typography>
+          <Button onClick={() => {}}>Play</Button>
+        </Box>
+        <Image
+          src="/image/devilsplan.png"
+          alt={"추러스 대문 이미지"}
+          width={100}
+          height={100}
+        />
       </Box>
       <Box mt={10} mx="auto" px="1rem" maxWidth="1020px">
         <Box width="100%" mb={5}>
