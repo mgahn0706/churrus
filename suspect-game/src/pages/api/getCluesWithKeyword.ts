@@ -9,7 +9,7 @@ export interface ClueData {
 }
 
 const schoolKeywordIds: Record<string, number[]> = {
-  가방: [40, 47, 55, 41, 77, 82, 93],
+  가방: [40, 47, 55, 77, 93],
   가족: [58, 76],
   가족관계: [58, 76],
   강도: [83, 82, 99],
