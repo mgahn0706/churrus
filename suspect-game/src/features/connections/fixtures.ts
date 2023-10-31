@@ -1178,7 +1178,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 57, // 11월 5일
+    id: 57, // 11월 6일
     quiz: [
       {
         words: ["지지", "응원", "유지", "부지"],
@@ -1324,6 +1324,13 @@ export const KoreanConnections: ConnectionsType[] = [
       },
     ],
   },
+  {
+    id: 64, // 11월 13일
+    quiz: [
+      {
+        words: ['']
+      }
+  }
 ];
 
 interface ConnectionsType {

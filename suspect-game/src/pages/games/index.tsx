@@ -4,6 +4,7 @@ import {
   Button,
   Card,
   CardContent,
+  Chip,
   Grid,
   Icon,
   Typography,
@@ -31,389 +32,199 @@ import Image from "next/image";
 import GlobalHeader from "@/components/GlobalHeader";
 
 interface ContentType {
-  category: string;
   title: string;
   description: string;
   icon: ReactNode;
-  isAvailable?: boolean;
-  isNew?: boolean;
+  label: string;
   url: string;
   color: {
     main: string;
-    light: string;
+    dark: string;
   };
 }
 
-const contents: ContentType[] = [
+const CONTENTS: ContentType[] = [
   {
-    category: "정기모임",
     title: "문제적 추러스",
-    description: "창의적이고 어려운 문제들을 풀어보세요",
-    isAvailable: true,
-    icon: <Quiz sx={{ fontSize: 90, opacity: 0.2 }} />,
-    url: "quiz",
-    color: {
-      main: "red",
-      light: "#EF4444",
-    },
-  },
-
-  {
-    category: "정기모임",
-    title: "협동 크라임씬",
-    description: "단서들을 바탕으로 함께 범인을 추리하세요",
-    isAvailable: true,
-    icon: <Search sx={{ fontSize: 90, opacity: 0.2 }} />,
-    url: "suspect",
-    color: {
-      main: "blue",
-      light: "#3B82F6",
-    },
-  },
-  {
-    category: "정기모임",
-    title: "추러스 커넥션",
-    isAvailable: true,
-    description: "공통된 맥락을 가진 4개의 단어를 묶어주세요",
-    icon: <Dashboard sx={{ fontSize: 90, opacity: 0.2 }} />,
-    url: "connections",
-    isNew: true,
-    color: {
-      main: "green",
-      light: "#10B981",
-    },
-  },
-  {
-    category: "더 지니어스",
-    title: "미스터리 사인",
-    description: "힌트를 바탕으로 미스터리 사인의 규칙을 맞춰보세요",
-    icon: <Help sx={{ fontSize: 90, opacity: 0.2 }} />,
-    url: "mystery-sign",
-    isAvailable: true,
-    color: {
-      main: "purple",
-      light: "#8B5CF6",
-    },
-  },
-  {
-    category: "더 지니어스",
-    title: "마이너스 경매",
-    description: "경매를 통해 점수 감점을 최소화하세요",
-    icon: <IndeterminateCheckBox sx={{ fontSize: 90, opacity: 0.2 }} />,
-    url: "minus-auction",
-    isAvailable: true,
-    color: {
-      main: "gold",
-      light: "#EAB308",
-    },
-  },
-  {
-    category: "더 지니어스",
-    title: "같은 숫자 찾기",
-    description: "숫자를 기억해서 타겟 넘버를 완성하세요",
-    icon: <Filter1 sx={{ fontSize: 90, opacity: 0.2 }} />,
-    url: "same-number",
-    isAvailable: true,
-    color: {
-      main: "orange",
-      light: "#F97316",
-    },
-  },
-  {
-    category: "더 지니어스",
-    title: "결! 합!",
-    description: "도형들의 속성을 보고 결! 또는 합!을 외치세요",
-    icon: <Category sx={{ fontSize: 90, opacity: 0.2 }} />,
-    url: "set",
-    isAvailable: true,
-    color: {
-      main: "pink",
-      light: "#EC4899",
-    },
-  },
-  {
-    category: "더 지니어스",
-    title: "중간 달리기",
-    description: "능력을 사용해 최대한 중간으로 골인하세요",
-    icon: <DirectionsRun sx={{ fontSize: 90, opacity: 0.2 }} />,
-    url: "middle-race",
-    color: {
-      main: "lightgreen",
-      light: "#c4d87c",
-    },
-  },
-  {
-    category: "더 지니어스",
-    title: "폭풍의 증권시장",
-    description: "폭등과 폭락의 증권시장에서 최고의 수익을 내보세요",
-    icon: <ShowChart sx={{ fontSize: 90, opacity: 0.2 }} />,
-    url: "stock-market",
-    color: {
-      main: "darkblue",
-      light: "#9bb8ed",
-    },
-  },
-  {
-    category: "외부",
-    title: "꼬맨틀",
-    isAvailable: true,
-    description: "단어의 유사도를 바탕으로 정답 단어를 맞추세요",
+    description: "창의적이고 어려운 문제들",
     icon: (
-      <Image
-        src="https://semantle-ko.newsjel.ly/assets/icon.svg"
-        alt="logo"
-        width={90}
-        height={90}
-        style={{ opacity: 0.2 }}
+      <Quiz
+        sx={{
+          fontSize: 120,
+          opacity: 0.8,
+        }}
       />
     ),
-    url: "https://semantle-ko.newsjel.ly/",
+    label: "정기모임",
+    url: "quiz",
     color: {
-      main: "#00a8e0",
-      light: "#02b5ef",
+      main: "#ea0650",
+      dark: "#b10b35",
     },
   },
   {
-    category: "보드게임",
-    title: "내 마음의 주파수",
-    isAvailable: true,
-    description: "내 마음을 맞춰줘!",
-    icon: <ConnectWithoutContact sx={{ fontSize: 90, opacity: 0.2 }} />,
-    url: "frequency",
+    title: "협동 크라임씬",
+    description: "범인을 추리하라",
+    icon: (
+      <Search
+        sx={{
+          fontSize: 120,
+          opacity: 0.8,
+        }}
+      />
+    ),
+    label: "정기모임",
+    url: "suspect",
     color: {
-      main: "#4b9387",
-      light: "#62afa8",
+      main: "#7615bb",
+      dark: "#5d0894",
     },
   },
   {
-    category: "보드게임",
-    title: "코드네임",
-    isAvailable: false,
-    description: "단어를 조심스럽게 설명해주세요",
-    icon: <Sms sx={{ fontSize: 90, opacity: 0.2 }} />,
-    url: "code-name",
+    title: "추러스 커넥션",
+    description: "네 개씩 네 그룹으로",
+    icon: (
+      <Dashboard
+        sx={{
+          fontSize: 120,
+          opacity: 0.8,
+        }}
+      />
+    ),
+    label: "NEW",
+    url: "connections",
     color: {
-      main: "#b4aa6f",
-      light: "#D1CBA7",
-    },
-  },
-  {
-    category: "외부",
-    title: "랜덤 단어 생성기",
-    description: "랜덤 단어를 생성해주는 사이트에요",
-    icon: <Shuffle sx={{ fontSize: 90, opacity: 0.2 }} />,
-    url: "https://jungdolp.synology.me/word/index.html",
-    isAvailable: true,
-    color: {
-      main: "#fbbf24",
-      light: "#fcd34d",
-    },
-  },
-
-  {
-    category: "외부",
-    title: "더 라비린스",
-    description: "추러스에서 만든 미궁게임을 플레이 할 수 있어요",
-    icon: <Route sx={{ fontSize: 90, opacity: 0.2 }} />,
-    url: "https://www.thelabyrinth.co.kr/labyrinth/",
-    color: {
-      main: "black",
-      light: "gray",
+      main: "#1ba713",
+      dark: "#149d0f",
     },
   },
 ];
 
+const BACKGROUND_COLOR = "#202125";
+
 export default function Churrus() {
   const responsiveXS = useResponsiveValue([12, 6, 4]);
 
+  const router = useRouter();
+
   const ContentCard = ({ content }: { content: ContentType }) => {
-    const router = useRouter();
     return (
-      <Grid item xs={responsiveXS}>
-        <Card
-          variant="outlined"
+      <Card
+        sx={{
+          borderRadius: "4px",
+          height: 200,
+          color: "white",
+          backgroundColor: content.color.main,
+          background: `linear-gradient(45deg, ${content.color.dark} 5%, ${content.color.main} 50%, ${content.color.dark} 95%)`,
+        }}
+      >
+        <CardContent
           sx={{
-            cursor: "pointer",
-            transition: "all 0.2s",
-            height: 200,
-            boxShadow: content.isAvailable
-              ? `${content.color.light} 0px 3px 8px`
-              : "none",
-            "&:hover": {
-              border: `${content.color.main} solid 1px`,
-            },
+            pt: 3,
           }}
         >
-          <CardContent
-            onClick={() => {
-              if (content.isAvailable) {
-                content.category === "외부"
-                  ? window.open(content.url, "_blank", "noopener noreferrer")
-                  : router.push(`/${content.url}`);
-                return;
-              }
-              window.alert("아직 준비 중인 게임입니다.");
-            }}
-            sx={{
-              height: 200,
-            }}
-          >
+          <Box display="flex" flexDirection="column">
             <Box
-              display="flex"
-              justifyContent="space-between"
-              mt={1}
-              alignContent="center"
+              bgcolor="transparent"
+              border="1px solid rgba(255, 255, 255, 0.5)"
+              borderRadius="4px"
+              width="fit-content"
+              height="fit-content"
+              px={1}
+              py={0.5}
+              fontSize={8}
+              fontWeight={300}
+              mb={1}
             >
-              <Typography
-                variant="h5"
-                component="div"
-                color={content.color.light}
-                fontWeight="bold"
-                gutterBottom
-              >
-                {content.title}
-                {content.category === "외부" && (
-                  <OpenInNew
-                    sx={{
-                      ml: 1,
-                      color: "lightgray",
-                    }}
-                  />
-                )}
-              </Typography>
-              {!content.isAvailable && (
-                <Box
-                  fontWeight="bold"
-                  color="white"
-                  fontSize="12px"
-                  py="4px"
-                  height="16px"
-                  px="8px"
-                  bgcolor={content.color.light}
-                  textAlign="center"
-                  lineHeight="16px"
-                >
-                  개발 중
-                </Box>
-              )}
-              {content.isNew && (
-                <Box
-                  fontWeight="bold"
-                  color="white"
-                  fontSize="12px"
-                  py="4px"
-                  height="16px"
-                  px="8px"
-                  bgcolor={content.color.main}
-                  textAlign="center"
-                  lineHeight="16px"
-                >
-                  NEW
-                </Box>
-              )}
+              {content.label}
             </Box>
-            <Typography
-              variant="body2"
-              color={content.color.light}
-              gutterBottom
-            >
-              {content.description}
-            </Typography>
-            <Box
-              display="flex"
-              justifyContent="flex-end"
-              color={content.color.light}
-            >
-              {content.icon}
+            <Box display="flex" justifyContent="space-between">
+              <Box display="flex" flexDirection="column">
+                <Typography fontSize={27} fontWeight={600}>
+                  {content.title}
+                </Typography>
+                <Typography fontSize={16} fontWeight={300}>
+                  {content.description}
+                </Typography>
+                <Button
+                  variant="contained"
+                  sx={{
+                    mt: 4,
+                    color: "white",
+                    px: 5,
+                    width: "fit-content",
+                    backgroundColor: "rgba(255, 255, 255, 0.2)",
+                    "&:hover": {
+                      backgroundColor: "rgba(255, 255, 255, 0.3)",
+                    },
+                  }}
+                  onClick={() => router.push(content.url)}
+                >
+                  시작
+                </Button>
+              </Box>
+
+              <Box display="flex" justifyContent="flex-end">
+                {content.icon}
+              </Box>
             </Box>
-          </CardContent>
-        </Card>
-      </Grid>
+          </Box>
+        </CardContent>
+      </Card>
     );
   };
 
   return (
-    <Box bgcolor="black" minHeight="100vh" minWidth="100vw" pt={10}>
+    <Box bgcolor={BACKGROUND_COLOR} minHeight="100vh" minWidth="100vw" pt={10}>
       <GlobalHeader />
+      <Box display="flex" justifyContent="center">
+        <Box display="flex" justifyContent="center" width="60vw" height="40vh">
+          <Box
+            width="20vw"
+            display="flex"
+            flexDirection="column"
+            px={5}
+            py={5}
+            justifyContent="flex-start"
+            gap={3}
+          >
+            <Typography color="white" variant="h6">
+              2023년 10월 정기모임
+            </Typography>
+            <Typography color="white" fontWeight="bold" variant="h3">
+              계급 체스 <br /> & 와부고 살인사건
+            </Typography>
+            <Button
+              variant="contained"
+              sx={{
+                width: "fit-content",
+              }}
+              onClick={() => {}}
+            >
+              Play
+            </Button>
+          </Box>
 
-      <Box display="flex" justifyContent="center" width="100vw" height="100px">
-        <Box display="flex" flexDirection="column">
-          <Typography color="white" fontWeight="medium">
-            2023년 10월 정기모임
-          </Typography>
-          <Typography color="white" fontWeight="bold" fontSize="2rem">
-            계급 체스 & 와부고 살인사건
-          </Typography>
-          <Button onClick={() => {}}>Play</Button>
+          <Box
+            width="30vw"
+            height="100%"
+            sx={{
+              backgroundSize: "cover",
+              backgroundRepeat: "no-repeat",
+              backgroundImage:
+                'linear-gradient(to bottom, #202125 3%, transparent 20%, transparent 70%, #202125 98%), linear-gradient(to left, #202125 3%, transparent 20%, transparent 70%, #202125 98%), url("/image/devilsplan.png") ',
+            }}
+          />
         </Box>
-        <Image
-          src="/image/devilsplan.png"
-          alt={"추러스 대문 이미지"}
-          width={100}
-          height={100}
-        />
       </Box>
       <Box mt={10} mx="auto" px="1rem" maxWidth="1020px">
         <Box width="100%" mb={5}>
-          <Typography variant="h5" gutterBottom>
-            정기모임
-          </Typography>
-
           <Grid container spacing={3}>
-            {contents
-              .filter((content) => {
-                return content.category === "정기모임" && content.isAvailable;
-              })
-              .map((content) => (
-                <ContentCard key={content.title} content={content} />
-              ))}
-          </Grid>
-        </Box>
-        <Box width="100%" mb={5}>
-          <Typography variant="h5" gutterBottom>
-            더 지니어스
-          </Typography>
-
-          <Grid container spacing={3}>
-            {contents
-              .filter((content) => {
-                return (
-                  content.category === "더 지니어스" && content.isAvailable
-                );
-              })
-              .map((content) => (
-                <ContentCard key={content.title} content={content} />
-              ))}
-          </Grid>
-        </Box>
-        <Box width="100%" mb={5}>
-          <Typography variant="h5" gutterBottom>
-            보드게임
-          </Typography>
-
-          <Grid container spacing={3}>
-            {contents
-              .filter((content) => {
-                return content.category === "보드게임" && content.isAvailable;
-              })
-              .map((content) => (
-                <ContentCard key={content.title} content={content} />
-              ))}
-          </Grid>
-        </Box>
-        <Box width="100%" mb={5}>
-          <Typography variant="h5" gutterBottom>
-            외부 사이트
-          </Typography>
-
-          <Grid container spacing={3}>
-            {contents
-              .filter((content) => {
-                return content.category === "외부";
-              })
-              .map((content) => (
-                <ContentCard key={content.title} content={content} />
-              ))}
+            {CONTENTS.map((content) => (
+              <Grid item xs={4}>
+                <ContentCard content={content} />
+              </Grid>
+            ))}
           </Grid>
         </Box>
       </Box>

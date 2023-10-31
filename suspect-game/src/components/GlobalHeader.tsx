@@ -47,8 +47,8 @@ export default function GlobalHeader() {
     return (
       <AppBar
         sx={{
-          bgcolor: "white",
-          color: "black",
+          bgcolor: "#27282c",
+          color: "white",
         }}
       >
         <Drawer
@@ -100,8 +100,8 @@ export default function GlobalHeader() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
         sx={{
-          bgcolor: "white",
-          color: "black",
+          bgcolor: "#27282c",
+          color: "white",
         }}
       >
         <Toolbar>
@@ -116,7 +116,7 @@ export default function GlobalHeader() {
           </Typography>
           <Button
             sx={{
-              color: "black",
+              color: "white",
               fontWeight: 500,
             }}
             onClick={() => router.push("/")}
@@ -125,7 +125,7 @@ export default function GlobalHeader() {
           </Button>
           <Button
             sx={{
-              color: "black",
+              color: "white",
               fontWeight: 500,
             }}
             onClick={() => router.push("/games")}
@@ -134,7 +134,7 @@ export default function GlobalHeader() {
           </Button>
           <Button
             sx={{
-              color: "black",
+              color: "white",
               fontWeight: 500,
             }}
             onClick={() => router.push("/recruit")}
