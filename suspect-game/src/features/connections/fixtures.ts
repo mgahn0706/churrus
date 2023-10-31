@@ -1053,29 +1053,9 @@ export const KoreanConnections: ConnectionsType[] = [
       },
     ],
   },
+
   {
-    id: 51,
-    quiz: [
-      {
-        words: ["슬기", "현명", "셈", "지략"],
-        description: "사리분별이 뛰어남",
-      },
-      {
-        words: ["예리", "정확", "날카로움", "뾰족"],
-        description: "정확하고 치밀함",
-      },
-      {
-        words: ["아이린", "에이미", "오스틴", "유진"],
-        description: "알파벳 모음으로 시작하는 이름",
-      },
-      {
-        words: ["조이", "키", "포", "참깨"],
-        description: "___스틱",
-      },
-    ],
-  },
-  {
-    id: 52, // 10월 31일
+    id: 51, // 10월 31일
     quiz: [
       {
         words: ["호박", "유령", "거미", "사탕"],
@@ -1092,6 +1072,27 @@ export const KoreanConnections: ConnectionsType[] = [
       {
         words: ["마녀", "더위", "총", "덫"],
         description: "___사냥",
+      },
+    ],
+  },
+  {
+    id: 52,
+    quiz: [
+      {
+        words: ["슬기", "현명", "셈", "지략"],
+        description: "사리분별이 뛰어남",
+      },
+      {
+        words: ["예리", "정확", "날카로움", "뾰족"],
+        description: "정확하고 치밀함",
+      },
+      {
+        words: ["아이린", "에이미", "오스틴", "유진"],
+        description: "알파벳 모음으로 시작하는 이름",
+      },
+      {
+        words: ["조이", "키", "포", "참깨"],
+        description: "___스틱",
       },
     ],
   },
