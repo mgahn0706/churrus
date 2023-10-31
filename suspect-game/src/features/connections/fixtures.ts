@@ -1324,13 +1324,6 @@ export const KoreanConnections: ConnectionsType[] = [
       },
     ],
   },
-  {
-    id: 64, // 11월 13일
-    quiz: [
-      {
-        words: ['']
-      }
-  }
 ];
 
 interface ConnectionsType {
