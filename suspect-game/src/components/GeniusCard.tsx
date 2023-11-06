@@ -29,15 +29,14 @@ export default function GeniusCard({
     <Card
       sx={{
         minHeight: 320,
-        borderRadius: 2,
+        borderRadius: "16px",
       }}
     >
       <CardContent
         sx={{
           height: "100%",
-          bgcolor: content.color,
+          bgcolor: "white",
           color: "white",
-          background: `radial-gradient(circle at center 15%, ${content.color} 0%, rgba(39,40,43,1) 55%);`,
         }}
       >
         <CardMedia
@@ -47,7 +46,7 @@ export default function GeniusCard({
             mb: 2,
           }}
         >
-          <Box>{content.icon}</Box>
+          <Box color={content.color}>{content.icon}</Box>
         </CardMedia>
         <Box display="flex" alignItems="center" mb={2}>
           <Casino
@@ -56,30 +55,18 @@ export default function GeniusCard({
               fontSize: 16,
             }}
           />
-          <Typography fontSize={28} fontWeight={600}>
+          <Typography fontSize={28} fontWeight={600} color="black">
             {content.title}
           </Typography>
         </Box>
         <Typography
           fontSize={12}
           fontWeight={300}
-          color="#dddddd"
+          color="#222222"
           height="40px"
         >
           {content.description}
         </Typography>
-        <Button
-          sx={{
-            mt: 2,
-          }}
-          fullWidth
-          variant="contained"
-          onClick={() => {
-            router.push(`/${content.url}`);
-          }}
-        >
-          시작
-        </Button>
       </CardContent>
     </Card>
   );

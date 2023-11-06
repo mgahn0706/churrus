@@ -47,8 +47,8 @@ export default function GlobalHeader() {
     return (
       <AppBar
         sx={{
-          bgcolor: "#27282c",
-          color: "white",
+          bgcolor: "white",
+          color: "black",
         }}
       >
         <Drawer
@@ -100,8 +100,8 @@ export default function GlobalHeader() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
         sx={{
-          bgcolor: "#27282c",
-          color: "white",
+          bgcolor: "white",
+          color: "black",
         }}
       >
         <Toolbar>
@@ -110,31 +110,31 @@ export default function GlobalHeader() {
             component="div"
             sx={{ flexGrow: 1, cursor: "pointer" }}
             fontWeight={600}
-            onClick={() => router.push("/")}
+            onClick={() => router.push("/games")}
           >
             CHURRUS
           </Typography>
           <Button
             sx={{
-              color: "white",
+              color: "black",
               fontWeight: 500,
             }}
-            onClick={() => router.push("/")}
+            onClick={() => router.push("/games")}
           >
             HOME
           </Button>
           <Button
             sx={{
-              color: "white",
+              color: "black",
               fontWeight: 500,
             }}
-            onClick={() => router.push("/games")}
+            onClick={() => router.push("/")}
           >
-            GAMES
+            ABOUT
           </Button>
           <Button
             sx={{
-              color: "white",
+              color: "black",
               fontWeight: 500,
             }}
             onClick={() => router.push("/recruit")}

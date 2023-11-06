@@ -20,11 +20,17 @@ export default function ({ content }: { content: ContentType }) {
   return (
     <Card
       sx={{
-        borderRadius: "4px",
+        borderRadius: "16px",
         height: 200,
         color: "white",
+        border: `1px solid white`,
         backgroundColor: content.color.main,
-        background: `linear-gradient(45deg, ${content.color.dark} 5%, ${content.color.main} 50%, ${content.color.dark} 95%)`,
+        cursor: "pointer",
+        transition: "all 0.2s ease-in-out",
+        "&:hover": {
+          backgroundColor: content.color.dark,
+          scale: 1.05,
+        },
       }}
     >
       <CardContent
@@ -55,25 +61,9 @@ export default function ({ content }: { content: ContentType }) {
               <Typography fontSize={16} fontWeight={300}>
                 {content.description}
               </Typography>
-              <Button
-                variant="contained"
-                sx={{
-                  mt: 4,
-                  color: "white",
-                  px: 5,
-                  width: "fit-content",
-                  backgroundColor: "rgba(255, 255, 255, 0.2)",
-                  "&:hover": {
-                    backgroundColor: "rgba(255, 255, 255, 0.3)",
-                  },
-                }}
-                onClick={() => router.push(content.url)}
-              >
-                시작
-              </Button>
             </Box>
 
-            <Box display="flex" justifyContent="flex-end">
+            <Box display="flex" justifyContent="flex-end" color="white">
               {content.icon}
             </Box>
           </Box>

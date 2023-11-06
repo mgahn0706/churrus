@@ -34,15 +34,14 @@ const CONTENTS: ContentType[] = [
       <Quiz
         sx={{
           fontSize: 120,
-          opacity: 0.8,
         }}
       />
     ),
     label: "정기모임",
     url: "quiz",
     color: {
+      dark: "#abc4e3",
       main: "#1876d2",
-      dark: "#1e43c8",
     },
   },
   {
@@ -52,15 +51,14 @@ const CONTENTS: ContentType[] = [
       <Search
         sx={{
           fontSize: 120,
-          opacity: 0.8,
         }}
       />
     ),
     label: "정기모임",
     url: "suspect",
     color: {
-      main: "#7615bb",
-      dark: "#5d0894",
+      main: "#bc25f3",
+      dark: "#e6b1dd",
     },
   },
   {
@@ -70,15 +68,14 @@ const CONTENTS: ContentType[] = [
       <Dashboard
         sx={{
           fontSize: 120,
-          opacity: 0.8,
         }}
       />
     ),
     label: "NEW",
     url: "connections",
     color: {
-      main: "#1bb912",
-      dark: "#0d8009",
+      dark: "#b0d59f",
+      main: "#f7c214",
     },
   },
 ];
@@ -247,7 +244,8 @@ const EXTERNAL_CONTENTS: ExternalGameContentType[] = [
   },
 ];
 
-const BACKGROUND_COLOR = "#202125";
+const BACKGROUND_COLOR = "#f6fbff";
+const BANNER_COLOR = "#1876d2";
 
 export default function Churrus() {
   const responsiveXS = useResponsiveValue([12, 6, 4]);
@@ -257,9 +255,18 @@ export default function Churrus() {
     <Box bgcolor={BACKGROUND_COLOR} minHeight="100vh" minWidth="100vw" pt={10}>
       <GlobalHeader />
       <Box display="flex" justifyContent="center">
-        <Box display="flex" justifyContent="center" width="60vw" height="40vh">
+        <Box
+          display="flex"
+          justifyContent="flex-start"
+          width="60vw"
+          height="40vh"
+          borderRadius="16px"
+          sx={{
+            bgcolor: BANNER_COLOR,
+          }}
+        >
           <Box
-            width="30vw"
+            width="25vw"
             display="flex"
             flexDirection="column"
             px={5}
@@ -267,13 +274,13 @@ export default function Churrus() {
             justifyContent="flex-start"
             gap={3}
           >
-            <Typography color="white" variant="h6">
+            <Typography color="black" variant="h6">
               2023년 10월 정기모임
             </Typography>
-            <Typography color="white" fontWeight="bold" variant="h3">
+            <Typography color="black" fontWeight="bold" variant="h3">
               계급 체스 &
             </Typography>
-            <Typography color="#1876d2" fontWeight="bold" variant="h3">
+            <Typography color="#1876d2" fontWeight="bold" variant="h3" mt={-2}>
               와부고 살인사건
             </Typography>
             <Button
@@ -297,8 +304,7 @@ export default function Churrus() {
             sx={{
               backgroundSize: "cover",
               backgroundRepeat: "no-repeat",
-              backgroundImage:
-                'linear-gradient(to bottom, #202125 3%, transparent 20%, transparent 70%, #202125 98%), linear-gradient(to left, #202125 3%, transparent 20%, transparent 80%, #202125 98%), url("/image/devilsplan.png") ',
+              backgroundImage: `linear-gradient(to bottom, ${BANNER_COLOR} 3%, transparent 20%, transparent 70%, ${BANNER_COLOR} 98%), linear-gradient(to left, ${BANNER_COLOR} 3%, transparent 20%, transparent 80%, ${BANNER_COLOR} 98%), url("/image/devilsplan.png") `,
             }}
           />
         </Box>
