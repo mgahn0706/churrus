@@ -18,6 +18,7 @@ import { useRouter } from "next/router";
 import ExternalGameCard, {
   ExternalGameContentType,
 } from "@/components/ExternalGameCard";
+import MainBanner from "@/components/MainBanner";
 
 const CONTENTS: ContentType[] = [
   {
@@ -184,105 +185,46 @@ const EXTERNAL_CONTENTS: ExternalGameContentType[] = [
     url: "https://garticphone.com/ko",
   },
   {
-    title: "방탈출 평점 사이트",
+    title: "방탈출 평점",
     imgSrc: "https://colory.mooo.com/static/img/jb.png",
     color: {
       primary: "#fec740",
       secondary: "#97288f",
     },
-    description: "방탈출 평점 사이트",
+    description: "방탈출 평점",
     url: "https://colory.mooo.com/catalogue",
   },
 ];
 
 const BACKGROUND_COLOR = "#fffef8";
-const BANNER_COLOR = "white";
 
 export default function Churrus() {
-  const responsiveXS = useResponsiveValue([12, 6, 4]);
-  const router = useRouter();
+  const responsiveXS = useResponsiveValue([12, 12, 4]);
+  const responsiveGeniusXs = useResponsiveValue([6, 6, 3]);
+
+  const responsiveMaxWidth = useResponsiveValue([90, 90, 60]);
+  const responsiveExternalXS = useResponsiveValue([6, 6, 2]);
 
   return (
     <Box bgcolor={BACKGROUND_COLOR} minHeight="100vh" minWidth="100vw" pt={10}>
       <GlobalHeader />
-      <Box display="flex" justifyContent="center">
-        <Box
-          display="flex"
-          justifyContent="flex-start"
-          width="60vw"
-          height="40vh"
-          borderRadius="16px"
-          sx={{
-            bgcolor: BANNER_COLOR,
-          }}
-        >
-          <Box
-            width="25vw"
-            display="flex"
-            flexDirection="column"
-            px={5}
-            py={5}
-            justifyContent="flex-start"
-            gap={3}
-          >
-            <Typography color="black" variant="h6" mb={-2}>
-              2023년 10월 정기모임
-            </Typography>
-            <Typography color="black" fontWeight="bold" variant="h3">
-              계급 체스 &
-            </Typography>
-            <Typography color="#f96556" fontWeight="bold" variant="h3" mt={-2}>
-              와부고 살인사건
-            </Typography>
-            <Button
-              variant="contained"
-              sx={{
-                width: "fit-content",
-                backgroundColor: "#f96556",
-                color: "white",
-                fontWeight: "bold",
-                fontSize: "1.2rem",
-                "&:hover": {
-                  backgroundColor: "#da5142",
-                },
-              }}
-              size="large"
-              onClick={() => {
-                router.push("/suspect");
-              }}
-            >
-              시작
-              <PlayArrowSharp />
-            </Button>
-          </Box>
-
-          <Box
-            width="30vw"
-            height="100%"
-            sx={{
-              backgroundSize: "cover",
-              backgroundRepeat: "no-repeat",
-              backgroundImage: `linear-gradient(to bottom, ${BANNER_COLOR} 3%, transparent 20%, transparent 70%, ${BANNER_COLOR} 98%), linear-gradient(to left, ${BANNER_COLOR} 3%, transparent 20%, transparent 80%, ${BANNER_COLOR} 98%), url("/image/devilsplan.png") `,
-            }}
-          />
-        </Box>
-      </Box>
-      <Box my={10} mx="auto" px="1rem" maxWidth="60vw">
+      <MainBanner />
+      <Box my={10} mx="auto" px="1rem" maxWidth={`${responsiveMaxWidth}vw`}>
         <Box width="100%" mb={5}>
           <Grid container spacing={3}>
             {CONTENTS.map((content) => (
-              <Grid item xs={4}>
+              <Grid item xs={responsiveXS}>
                 <ContentCard content={content} />
               </Grid>
             ))}
           </Grid>
         </Box>
       </Box>
-      <Box my={6} mx="auto" px="1rem" maxWidth="60vw">
+      <Box my={6} mx="auto" px="1rem" maxWidth={`${responsiveMaxWidth}vw`}>
         <Box width="100%" mb={5}>
           <Grid container spacing={3}>
             {GENIUS_CONTENTS.map((content) => (
-              <Grid item xs={3}>
+              <Grid item xs={responsiveGeniusXs}>
                 <GeniusCard content={content} />
               </Grid>
             ))}
@@ -293,7 +235,7 @@ export default function Churrus() {
       <Box
         display="flex"
         flexDirection="column"
-        maxWidth="60vw"
+        maxWidth={`${responsiveMaxWidth}vw`}
         mx="auto"
         my={10}
         justifyContent="center"
@@ -313,7 +255,7 @@ export default function Churrus() {
         </Typography>
         <Grid container spacing={3}>
           {EXTERNAL_CONTENTS.map((content) => (
-            <Grid item xs={2}>
+            <Grid item xs={responsiveExternalXS}>
               <ExternalGameCard content={content} />
             </Grid>
           ))}
