@@ -1,7 +1,7 @@
+import { useMobileWidth } from "@/hooks/useMobileWIdth";
 import { Casino } from "@mui/icons-material";
 import {
   Box,
-  Button,
   Card,
   CardActionArea,
   CardContent,
@@ -25,6 +25,7 @@ export default function GeniusCard({
   content: GeniusContentType;
 }) {
   const router = useRouter();
+  const { isMobileWidth } = useMobileWidth();
   return (
     <CardActionArea
       sx={{
@@ -72,7 +73,7 @@ export default function GeniusCard({
                 fontSize: 16,
               }}
             />
-            <Typography fontSize={24} fontWeight={600}>
+            <Typography fontSize={isMobileWidth ? 18 : 24} fontWeight={600}>
               {content.title}
             </Typography>
           </Box>

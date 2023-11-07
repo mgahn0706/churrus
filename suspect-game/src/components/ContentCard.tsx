@@ -66,7 +66,13 @@ export default function ({ content }: { content: ContentType }) {
             </Box>
             <Box display="flex" justifyContent="space-between">
               <Box display="flex" flexDirection="column">
-                <Typography fontSize={27} fontWeight={700}>
+                <Typography
+                  fontSize={27}
+                  fontWeight={700}
+                  sx={{
+                    wordBreak: "keep-all",
+                  }}
+                >
                   {content.title}
                 </Typography>
                 <Typography fontSize={16} fontWeight={300}>

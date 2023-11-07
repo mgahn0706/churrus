@@ -1,3 +1,4 @@
+import { useMobileWidth } from "@/hooks/useMobileWIdth";
 import { HelpOutline } from "@mui/icons-material";
 import {
   Box,
@@ -28,6 +29,7 @@ export default function ExternalGameCard({
 }: {
   content: ExternalGameContentType;
 }) {
+  const { isMobileWidth } = useMobileWidth();
   return (
     <CardActionArea
       sx={{
@@ -44,6 +46,7 @@ export default function ExternalGameCard({
           color: "#202836",
           alignContent: "center",
           borderRadius: "16px",
+          verticalAlign: "middle",
         }}
       >
         <CardMedia
@@ -55,9 +58,18 @@ export default function ExternalGameCard({
             height: 150,
             textAlign: "center",
             justifyContent: "center",
+            borderRadius: "16px",
           }}
         />
-        <Typography color="#202836" textAlign="center" fontSize="18px">
+
+        <Typography
+          color="#202836"
+          textAlign="center"
+          fontSize="18px"
+          sx={{
+            wordBreak: "keep-all",
+          }}
+        >
           {content.title}
         </Typography>
       </Card>
