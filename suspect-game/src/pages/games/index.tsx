@@ -1,22 +1,15 @@
 import { useResponsiveValue } from "@/hooks/useResponsiveValue";
 import { Box, Button, Grid, Typography } from "@mui/material";
 import {
-  Category,
-  Circle,
+  CategoryOutlined,
   Dashboard,
   Filter1,
-  Help,
-  IndeterminateCheckBox,
+  HelpOutlineOutlined,
+  IndeterminateCheckBoxOutlined,
   LaunchOutlined,
-  LockClock,
-  Newspaper,
-  Phone,
   PlayArrowSharp,
   Quiz,
-  Route,
   Search,
-  Shuffle,
-  Translate,
 } from "@mui/icons-material";
 import GlobalHeader from "@/components/GlobalHeader";
 import ContentCard, { ContentType } from "@/components/ContentCard";
@@ -40,8 +33,8 @@ const CONTENTS: ContentType[] = [
     label: "정기모임",
     url: "quiz",
     color: {
-      dark: "#abc4e3",
-      main: "#1876d2",
+      dark: "#e8c0b6",
+      main: "#ffe2db",
     },
   },
   {
@@ -57,8 +50,8 @@ const CONTENTS: ContentType[] = [
     label: "정기모임",
     url: "suspect",
     color: {
-      main: "#bc25f3",
-      dark: "#e6b1dd",
+      dark: "#b8dae9",
+      main: "#cef0ff",
     },
   },
   {
@@ -74,8 +67,8 @@ const CONTENTS: ContentType[] = [
     label: "NEW",
     url: "connections",
     color: {
-      dark: "#b0d59f",
-      main: "#f7c214",
+      main: "#d7f4dd",
+      dark: "#b1dbba",
     },
   },
 ];
@@ -85,28 +78,28 @@ const GENIUS_CONTENTS: GeniusContentType[] = [
     title: "미스터리 사인",
     description: "힌트를 바탕으로 미스터리 사인의 규칙을 맞춰보세요",
     icon: (
-      <Help
+      <HelpOutlineOutlined
         sx={{
-          fontSize: 120,
+          fontSize: 100,
           opacity: 0.8,
         }}
       />
     ),
-    color: "#7615bb",
+    color: "#14d059",
     url: "mystery-sign",
   },
   {
     title: "마이너스 경매",
     description: "경매를 통해 점수 감점을 최소화하세요",
     icon: (
-      <IndeterminateCheckBox
+      <IndeterminateCheckBoxOutlined
         sx={{
-          fontSize: 120,
+          fontSize: 100,
           opacity: 0.8,
         }}
       />
     ),
-    color: "#cd7c1e",
+    color: "#eeb802",
     url: "minus-auction",
   },
   {
@@ -115,26 +108,26 @@ const GENIUS_CONTENTS: GeniusContentType[] = [
     icon: (
       <Filter1
         sx={{
-          fontSize: 120,
+          fontSize: 100,
           opacity: 0.8,
         }}
       />
     ),
-    color: "#15a60e",
+    color: "#83deff",
     url: "same-number",
   },
   {
     title: "결! 합!",
     description: "도형들의 속성들을 보고 결! 또는 합!을 외치세요",
     icon: (
-      <Category
+      <CategoryOutlined
         sx={{
-          fontSize: 120,
+          fontSize: 100,
           opacity: 0.8,
         }}
       />
     ),
-    color: "#ea0650",
+    color: "#f96656",
     url: "set",
   },
 ];
@@ -142,14 +135,7 @@ const GENIUS_CONTENTS: GeniusContentType[] = [
 const EXTERNAL_CONTENTS: ExternalGameContentType[] = [
   {
     title: "꼬맨틀",
-    icon: (
-      <Translate
-        sx={{
-          fontSize: 120,
-          opacity: 0.8,
-        }}
-      />
-    ),
+    imgSrc: "https://semantle-ko.newsjel.ly/assets/icon.svg",
     color: {
       primary: "#efcf19",
       secondary: "#33b693",
@@ -159,14 +145,7 @@ const EXTERNAL_CONTENTS: ExternalGameContentType[] = [
   },
   {
     title: "랜덤 단어 생성기",
-    icon: (
-      <Shuffle
-        sx={{
-          fontSize: 120,
-          opacity: 0.8,
-        }}
-      />
-    ),
+    imgSrc: "/image/card/external/random-word.png",
     color: {
       primary: "#7655a2",
       secondary: "#e21688",
@@ -176,14 +155,7 @@ const EXTERNAL_CONTENTS: ExternalGameContentType[] = [
   },
   {
     title: "더 라비린스",
-    icon: (
-      <Route
-        sx={{
-          fontSize: 120,
-          opacity: 0.8,
-        }}
-      />
-    ),
+    imgSrc: "/image/card/external/labyrinth.png",
     color: {
       primary: "#73cbc8",
       secondary: "#4373b7",
@@ -193,14 +165,7 @@ const EXTERNAL_CONTENTS: ExternalGameContentType[] = [
   },
   {
     title: "NYT Crossword",
-    icon: (
-      <Newspaper
-        sx={{
-          fontSize: 120,
-          opacity: 0.8,
-        }}
-      />
-    ),
+    imgSrc: "/image/card/external/nyt.png",
     color: {
       primary: "#92a9eb",
       secondary: "#fb95a3",
@@ -210,14 +175,7 @@ const EXTERNAL_CONTENTS: ExternalGameContentType[] = [
   },
   {
     title: "갈틱폰",
-    icon: (
-      <Phone
-        sx={{
-          fontSize: 120,
-          opacity: 0.8,
-        }}
-      />
-    ),
+    imgSrc: "/image/card/external/gartic.png",
     color: {
       primary: "#f7a8a8",
       secondary: "#fbc7c7",
@@ -227,14 +185,7 @@ const EXTERNAL_CONTENTS: ExternalGameContentType[] = [
   },
   {
     title: "방탈출 평점 사이트",
-    icon: (
-      <LockClock
-        sx={{
-          fontSize: 120,
-          opacity: 0.8,
-        }}
-      />
-    ),
+    imgSrc: "https://colory.mooo.com/static/img/jb.png",
     color: {
       primary: "#fec740",
       secondary: "#97288f",
@@ -244,8 +195,8 @@ const EXTERNAL_CONTENTS: ExternalGameContentType[] = [
   },
 ];
 
-const BACKGROUND_COLOR = "#f6fbff";
-const BANNER_COLOR = "#1876d2";
+const BACKGROUND_COLOR = "#fffef8";
+const BANNER_COLOR = "white";
 
 export default function Churrus() {
   const responsiveXS = useResponsiveValue([12, 6, 4]);
@@ -274,19 +225,26 @@ export default function Churrus() {
             justifyContent="flex-start"
             gap={3}
           >
-            <Typography color="black" variant="h6">
+            <Typography color="black" variant="h6" mb={-2}>
               2023년 10월 정기모임
             </Typography>
             <Typography color="black" fontWeight="bold" variant="h3">
               계급 체스 &
             </Typography>
-            <Typography color="#1876d2" fontWeight="bold" variant="h3" mt={-2}>
+            <Typography color="#f96556" fontWeight="bold" variant="h3" mt={-2}>
               와부고 살인사건
             </Typography>
             <Button
               variant="contained"
               sx={{
                 width: "fit-content",
+                backgroundColor: "#f96556",
+                color: "white",
+                fontWeight: "bold",
+                fontSize: "1.2rem",
+                "&:hover": {
+                  backgroundColor: "#da5142",
+                },
               }}
               size="large"
               onClick={() => {
@@ -338,14 +296,16 @@ export default function Churrus() {
         maxWidth="60vw"
         mx="auto"
         my={10}
+        justifyContent="center"
       >
         <Typography
-          color="white"
+          color="#2e3545"
           variant="h5"
           sx={{
             alignItems: "center",
             verticalAlign: "middle",
-            my: 2,
+            my: 3,
+            mr: 1,
           }}
         >
           외부 사이트
@@ -364,10 +324,10 @@ export default function Churrus() {
         display="flex"
         justifyContent="center"
         alignItems="center"
-        bgcolor="#27282c"
+        bgcolor="#232937"
         height="10vh"
       >
-        <Typography color="white" variant="body2">
+        <Typography color="#969ca5" variant="body2">
           © 2019-2023 CHURRUS. All rights reserved.
         </Typography>
       </Box>

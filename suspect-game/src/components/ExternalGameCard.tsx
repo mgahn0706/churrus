@@ -3,8 +3,10 @@ import {
   Box,
   Button,
   Card,
+  CardActionArea,
   CardActions,
   CardContent,
+  CardMedia,
   Tooltip,
   Typography,
 } from "@mui/material";
@@ -17,7 +19,7 @@ export interface ExternalGameContentType {
     secondary: string;
   };
   url: string;
-  icon: ReactNode;
+  imgSrc: string;
   description?: string;
 }
 
@@ -27,48 +29,38 @@ export default function ExternalGameCard({
   content: ExternalGameContentType;
 }) {
   return (
-    <Card
+    <CardActionArea
       sx={{
-        minHeight: 200,
-        borderRadius: 2,
+        borderRadius: "16px",
+      }}
+      onClick={() => {
+        window.open(content.url, "_blank", "noopener noreferrer");
       }}
     >
-      <CardContent
+      <Card
         sx={{
-          height: "100%",
-          bgcolor: content.color,
-          color: "white",
-          background: `linear-gradient(45deg, ${content.color.primary} 0%, ${content.color.secondary} 100%)`,
+          pb: 2,
+          minHeight: 180,
+          color: "#202836",
+          alignContent: "center",
+          borderRadius: "16px",
         }}
       >
-        {content.icon}
-      </CardContent>
-      <CardActions
-        sx={{
-          backgroundColor: "#27282b",
-          flexDirection: "column",
-          textAlign: "left",
-        }}
-      >
-        <Typography
+        <CardMedia
+          component="img"
+          image={content.imgSrc}
+          title={content.title}
           sx={{
-            color: "rgba(255,255,255,0.8)",
-            fontWeight: 300,
-            fontSize: 16,
+            mb: 1,
+            height: 150,
+            textAlign: "center",
+            justifyContent: "center",
           }}
-        >
+        />
+        <Typography color="#202836" textAlign="center" fontSize="18px">
           {content.title}
         </Typography>
-
-        <Button
-          fullWidth
-          onClick={() => {
-            window.open(content.url, "_blank", "noopener noreferrer");
-          }}
-        >
-          이동
-        </Button>
-      </CardActions>
-    </Card>
+      </Card>
+    </CardActionArea>
   );
 }
