@@ -1,6 +1,6 @@
 import { useResponsiveValue } from "@/hooks/useResponsiveValue";
 
-import { Mail, Menu, Home, VideogameAsset } from "@mui/icons-material";
+import { Mail, Menu, Home, InfoOutlined } from "@mui/icons-material";
 import {
   AppBar,
   Box,
@@ -25,9 +25,9 @@ const mobileHeaderMenuItems = [
     icon: <Home />,
   },
   {
-    text: "GAMES",
-    url: "/games",
-    icon: <VideogameAsset />,
+    text: "ABOUT",
+    url: "/about",
+    icon: <InfoOutlined />,
   },
   {
     text: "RECRUIT",
@@ -110,7 +110,7 @@ export default function GlobalHeader() {
             component="div"
             sx={{ flexGrow: 1, cursor: "pointer" }}
             fontWeight={600}
-            onClick={() => router.push("/games")}
+            onClick={() => router.push("/")}
           >
             CHURRUS
           </Typography>
@@ -119,7 +119,7 @@ export default function GlobalHeader() {
               color: "#232937",
               fontWeight: 500,
             }}
-            onClick={() => router.push("/games")}
+            onClick={() => router.push("/")}
           >
             HOME
           </Button>
@@ -128,7 +128,7 @@ export default function GlobalHeader() {
               color: "#232937",
               fontWeight: 500,
             }}
-            onClick={() => router.push("/")}
+            onClick={() => router.push("/about")}
           >
             ABOUT
           </Button>
