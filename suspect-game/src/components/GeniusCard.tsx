@@ -73,7 +73,13 @@ export default function GeniusCard({
                 fontSize: 16,
               }}
             />
-            <Typography fontSize={isMobileWidth ? 18 : 24} fontWeight={600}>
+            <Typography
+              fontSize={isMobileWidth ? 18 : 24}
+              fontWeight={600}
+              sx={{
+                wordBreak: "keep-all",
+              }}
+            >
               {content.title}
             </Typography>
           </Box>
