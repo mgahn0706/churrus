@@ -1,4 +1,5 @@
 import GlobalHeader from "@/components/GlobalHeader";
+import { useMobileWidth } from "@/hooks/useMobileWIdth";
 import { ExpandMore } from "@mui/icons-material";
 import {
   Accordion,
@@ -23,19 +24,26 @@ const FAQList: Record<string, string> = {
     "저의 동아리는 원활한 정기모임 진행을 위해 정원을 60명 내외로 제한하고 있습니다.",
 };
 export default function RecruitPage() {
+  const { isMobileWidth } = useMobileWidth();
   return (
     <Box>
       <GlobalHeader />
       <Box bgcolor="#eeeeee" py="150px" px="10vw" mt="56px">
         <Box
           sx={{
-            fontSize: "4rem",
+            fontSize: isMobileWidth ? "2rem" : "4rem",
             fontWeight: 700,
+            wordBreak: "keep-all",
           }}
         >
           지금은 모집기간이 아니에요
         </Box>
-        <Box fontSize={"1.5rem"}>
+        <Box
+          fontSize={isMobileWidth ? "1rem" : "1.5rem"}
+          sx={{
+            wordBreak: "keep-all",
+          }}
+        >
           다음 학기 모집은 2024년 3월에 진행할 예정이에요. <br />
           그래도 어떻게 지원하는지 미리 알아볼까요?
         </Box>
@@ -114,7 +122,7 @@ export default function RecruitPage() {
                   }}
                 >
                   <Typography
-                    fontSize="1.5rem"
+                    fontSize={isMobileWidth ? "1.2rem" : "1.5rem"}
                     fontWeight={500}
                     textAlign={"left"}
                   >
@@ -127,7 +135,10 @@ export default function RecruitPage() {
                     px: 3,
                   }}
                 >
-                  <Typography fontSize="1.3rem" fontWeight={400}>
+                  <Typography
+                    fontSize={isMobileWidth ? "1rem" : "1.2rem"}
+                    fontWeight={400}
+                  >
                     {answer}
                   </Typography>
                 </AccordionDetails>

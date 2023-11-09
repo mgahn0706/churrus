@@ -1,6 +1,6 @@
 import { useResponsiveValue } from "@/hooks/useResponsiveValue";
 
-import { Mail, Menu, Home, VideogameAsset } from "@mui/icons-material";
+import { Mail, Menu, Home, InfoOutlined } from "@mui/icons-material";
 import {
   AppBar,
   Box,
@@ -25,9 +25,9 @@ const mobileHeaderMenuItems = [
     icon: <Home />,
   },
   {
-    text: "GAMES",
-    url: "/games",
-    icon: <VideogameAsset />,
+    text: "ABOUT",
+    url: "/about",
+    icon: <InfoOutlined />,
   },
   {
     text: "RECRUIT",
@@ -48,7 +48,7 @@ export default function GlobalHeader() {
       <AppBar
         sx={{
           bgcolor: "white",
-          color: "black",
+          color: "#232937",
         }}
       >
         <Drawer
@@ -101,7 +101,7 @@ export default function GlobalHeader() {
       <AppBar
         sx={{
           bgcolor: "white",
-          color: "black",
+          color: "#232937",
         }}
       >
         <Toolbar>
@@ -116,7 +116,7 @@ export default function GlobalHeader() {
           </Typography>
           <Button
             sx={{
-              color: "black",
+              color: "#232937",
               fontWeight: 500,
             }}
             onClick={() => router.push("/")}
@@ -125,16 +125,16 @@ export default function GlobalHeader() {
           </Button>
           <Button
             sx={{
-              color: "black",
+              color: "#232937",
               fontWeight: 500,
             }}
-            onClick={() => router.push("/games")}
+            onClick={() => router.push("/about")}
           >
-            GAMES
+            ABOUT
           </Button>
           <Button
             sx={{
-              color: "black",
+              color: "#232937",
               fontWeight: 500,
             }}
             onClick={() => router.push("/recruit")}
