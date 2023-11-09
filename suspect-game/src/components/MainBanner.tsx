@@ -5,7 +5,7 @@ import router from "next/router";
 
 const BANNER_COLOR = "white";
 
-const BANNER_IMAGE = "/image/devilsplan.png";
+const BANNER_IMAGE = "/image/banner/2023-10.png";
 
 const handleClickBannerButton = () => {
   router.push("/suspect");
