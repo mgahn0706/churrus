@@ -19,6 +19,7 @@ export const scenarios: ScenarioType[] = [
     difficulty: 4,
     numberOfSuspects: 3,
     playTime: 150,
+    history: "2023년 10월 정기모임",
     backgroundImage: "/image/scenario/school-main.png",
     cardImage: "/Suspect_Logo.png",
     keyword: "school",

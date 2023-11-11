@@ -9,7 +9,7 @@ export default function RuleVideoButton({ url }: { url: string }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <Box position="fixed" top={0} right={0} zIndex={100} p={2}>
+    <Box position="fixed" top="60px" right={0} zIndex={100} p={2}>
       <IconButton
         onClick={() => {
           setIsModalOpen(true);

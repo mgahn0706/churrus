@@ -1,6 +1,6 @@
 import { useResponsiveValue } from "@/hooks/useResponsiveValue";
 
-import { Mail, Menu, Home, InfoOutlined } from "@mui/icons-material";
+import { Mail, Menu, Home, InfoOutlined, Close } from "@mui/icons-material";
 import {
   AppBar,
   Box,
@@ -17,6 +17,7 @@ import {
 } from "@mui/material";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import LeftDrawer from "./LeftDrawer";
 
 const mobileHeaderMenuItems = [
   {
@@ -83,10 +84,10 @@ export default function GlobalHeader() {
             <Menu />
           </IconButton>
           <Typography
-            variant="h6"
             component="div"
             sx={{ flexGrow: 1, cursor: "pointer" }}
-            fontWeight={600}
+            fontWeight={700}
+            fontSize={24}
             onClick={() => router.push("/")}
           >
             CHURRUS
@@ -102,14 +103,24 @@ export default function GlobalHeader() {
         sx={{
           bgcolor: "white",
           color: "#232937",
+          position: "fixed",
+          zIndex: (theme) => theme.zIndex.drawer + 1,
         }}
       >
         <Toolbar>
+          <IconButton
+            sx={{
+              ml: -1,
+            }}
+            onClick={() => setIsDrawerOpen(!isDrawerOpen)}
+          >
+            {isDrawerOpen ? <Close /> : <Menu />}
+          </IconButton>
           <Typography
-            variant="h6"
             component="div"
             sx={{ flexGrow: 1, cursor: "pointer" }}
-            fontWeight={600}
+            fontWeight={700}
+            fontSize={24}
             onClick={() => router.push("/")}
           >
             CHURRUS
@@ -143,6 +154,7 @@ export default function GlobalHeader() {
           </Button>
         </Toolbar>
       </AppBar>
+      <LeftDrawer isDrawerOpen={isDrawerOpen} />
     </Box>
   );
 }

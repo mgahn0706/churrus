@@ -11,7 +11,7 @@ import {
   Quiz,
   Search,
 } from "@mui/icons-material";
-import GlobalHeader from "@/components/GlobalHeader";
+import GlobalHeader from "@/components/Navigation/GlobalHeader";
 import ContentCard, { ContentType } from "@/components/ContentCard";
 import GeniusCard, { GeniusContentType } from "@/components/GeniusCard";
 import { useRouter } from "next/router";

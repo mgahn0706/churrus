@@ -11,7 +11,7 @@ import {
   Quiz,
   Search,
 } from "@mui/icons-material";
-import GlobalHeader from "@/components/GlobalHeader";
+import GlobalHeader from "@/components/Navigation/GlobalHeader";
 import ContentCard, { ContentType } from "@/components/ContentCard";
 import GeniusCard, { GeniusContentType } from "@/components/GeniusCard";
 import { useRouter } from "next/router";
@@ -19,6 +19,7 @@ import ExternalGameCard, {
   ExternalGameContentType,
 } from "@/components/ExternalGameCard";
 import MainBanner from "@/components/MainBanner";
+import LeftDrawer from "@/components/Navigation/LeftDrawer";
 
 const CONTENTS: ContentType[] = [
   {
@@ -253,7 +254,7 @@ export default function Churrus() {
           외부 사이트
           <LaunchOutlined />
         </Typography>
-        <Grid container spacing={3}>
+        <Grid container spacing={1}>
           {EXTERNAL_CONTENTS.map((content) => (
             <Grid item xs={responsiveExternalXS}>
               <ExternalGameCard content={content} />

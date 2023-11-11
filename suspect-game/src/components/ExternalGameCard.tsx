@@ -29,24 +29,24 @@ export default function ExternalGameCard({
 }: {
   content: ExternalGameContentType;
 }) {
-  const { isMobileWidth } = useMobileWidth();
   return (
     <CardActionArea
       sx={{
         borderRadius: "16px",
       }}
       onClick={() => {
+        if (!content.url) return;
         window.open(content.url, "_blank", "noopener noreferrer");
       }}
     >
       <Card
         sx={{
-          pb: 2,
-          minHeight: 180,
+          minHeight: 60,
           color: "#202836",
-          alignContent: "center",
+          alignItems: "center",
           borderRadius: "16px",
           verticalAlign: "middle",
+          display: "flex",
         }}
       >
         <CardMedia
@@ -54,8 +54,8 @@ export default function ExternalGameCard({
           image={content.imgSrc}
           title={content.title}
           sx={{
-            mb: 1,
-            height: 150,
+            height: 60,
+            width: 60,
             textAlign: "center",
             justifyContent: "center",
             borderRadius: "16px",
@@ -67,6 +67,7 @@ export default function ExternalGameCard({
           textAlign="center"
           fontSize="18px"
           sx={{
+            width: "100%",
             wordBreak: "keep-all",
           }}
         >

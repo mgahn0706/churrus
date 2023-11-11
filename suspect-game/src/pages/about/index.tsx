@@ -1,4 +1,4 @@
-import GlobalHeader from "@/components/GlobalHeader";
+import GlobalHeader from "@/components/Navigation/GlobalHeader";
 import { useResponsiveValue } from "@/hooks/useResponsiveValue";
 import { Box, Typography } from "@mui/material";
 import Image from "next/image";

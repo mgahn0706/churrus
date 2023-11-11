@@ -1,4 +1,4 @@
-import GlobalHeader from "@/components/GlobalHeader";
+import GlobalHeader from "@/components/Navigation/GlobalHeader";
 import { useMobileWidth } from "@/hooks/useMobileWIdth";
 import { ExpandMore } from "@mui/icons-material";
 import {
