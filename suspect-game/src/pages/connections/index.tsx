@@ -95,13 +95,11 @@ export default function Connections() {
             setTriedCount([0, 0, 0, 0]);
           }}
         >
-          {KoreanConnections.map((connection) => {
-            if (connection.id < maxOpenedId) {
+          {KoreanConnections.map((_, idx) => {
+            if (idx < maxOpenedId) {
               return (
-                <MenuItem value={connection.id}>
-                  {dayjs("2023-09-10")
-                    .add(connection.id, "day")
-                    .format("YY년 M월 D일")}
+                <MenuItem value={idx + 1}>
+                  {dayjs("2023-09-10").add(idx, "day").format("YY년 M월 D일")}
                 </MenuItem>
               );
             }

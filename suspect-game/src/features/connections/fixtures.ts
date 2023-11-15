@@ -1349,21 +1349,21 @@ export const KoreanConnections: ConnectionsType[] = [
     id: 67,
     quiz: [
       {
-        words: ["수능", "생일", "추석", "크리스마스"],
-        description: "1년에 한 번씩 있는 것",
+        words: ["서든", "메이플", "카트", "피파"],
+        description: "넥슨 게임의 줄임말들",
       },
       {
-        words: ["포크", "엿", "초콜릿", "찹쌀떡"],
-        description: "수능 선물",
+        words: ["댐퍼", "서스테인", "시프트", "소스테누토"],
+        description: "피아노 페달 종류",
       },
       {
-        words: ["언어", "수리", "영어", "탐구"],
-        description: "수능 과목",
+        words: ["플러시", "젤리", "패밀리", "티"],
+        description: "로열 ___",
       },
 
       {
-        words: ["등급", "리프", "수", "어퍼"],
-        description: "___컷",
+        words: ["스크루볼", "블랙", "블루", "데드팬"],
+        description: "코미디의 종류",
       },
     ],
   },
@@ -1392,21 +1392,21 @@ export const KoreanConnections: ConnectionsType[] = [
     id: 69,
     quiz: [
       {
-        words: ["서든", "메이플", "카트", "피파"],
-        description: "넥슨 게임의 줄임말들",
+        words: ["수능", "생일", "추석", "크리스마스"],
+        description: "1년에 한 번씩 있는 것",
       },
       {
-        words: ["댐퍼", "서스테인", "시프트", "소스테누토"],
-        description: "피아노 페달 종류",
+        words: ["포크", "엿", "초콜릿", "찹쌀떡"],
+        description: "수능 선물",
       },
       {
-        words: ["플러시", "젤리", "패밀리", "티"],
-        description: "로열 ___",
+        words: ["언어", "수리", "영어", "탐구"],
+        description: "수능 과목",
       },
 
       {
-        words: ["스크루볼", "블랙", "블루", "데드팬"],
-        description: "코미디의 종류",
+        words: ["등급", "리프", "수", "어퍼"],
+        description: "___컷",
       },
     ],
   },
