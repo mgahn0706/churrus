@@ -1494,6 +1494,27 @@ export const KoreanConnections: ConnectionsType[] = [
       },
     ],
   },
+  {
+    id: 74,
+    quiz: [
+      {
+        words: ["강점", "약점", "기회", "위협"],
+        description: "SWOT 분석",
+      },
+      {
+        words: ["얼음", "각설탕", "주사위", "큐브"],
+        description: "정육면체",
+      },
+      {
+        words: ["가야금", "시계", "다스", "달력"],
+        description: "12개의 무언가가 있는 것",
+      },
+      {
+        words: ["위기", "대장", "화구", "모자"],
+        description: "분___",
+      },
+    ],
+  },
 ];
 
 interface ConnectionsType {
