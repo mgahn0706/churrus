@@ -1515,6 +1515,70 @@ export const KoreanConnections: ConnectionsType[] = [
       },
     ],
   },
+  {
+    id: 75, // 11월 22일
+    quiz: [
+      {
+        words: ["마이", "믿지", "스윗", "엔써"],
+        description: "4세대 걸그룹 팬덤",
+      },
+
+      {
+        words: ["리프", "깻잎", "사과", "만두"],
+        description: "머리 스타일",
+      },
+      {
+        words: ["아미", "바신", "아몬", "라움"],
+        description: "솔로몬의 72악마",
+      },
+      {
+        words: ["오이", "천사", "사이", "만일"],
+        description: "숫자로 이루어진 단어",
+      },
+    ],
+  },
+  {
+    id: 76,
+    quiz: [
+      {
+        words: ["선", "화살표", "곡선", "자유형"],
+        description: "PPT의 선 종류",
+      },
+      {
+        words: ["타원", "현", "해", "그룹"],
+        description: "PPT의 기본 도형",
+      },
+      {
+        words: ["처리", "문서", "데이터", "준비"],
+        description: "PPT의 순서도 종류",
+      },
+      {
+        words: ["처음", "문서", "홈", "정보"],
+        description: "PPT의 실행 단추",
+      },
+    ],
+  },
+  {
+    id: 77,
+    quiz: [
+      {
+        words: ["보석", "구속", "석방", "배심"],
+        description: "법정 용어",
+      },
+      {
+        words: ["안경", "돌", "왼손", "손"],
+        description: "___잡이",
+      },
+      {
+        words: ["자주", "금", "적", "남"],
+        description: "___색",
+      },
+      {
+        words: ["매일", "매주", "색시", "개"],
+        description: "'ㅐ'를 'ㅔ'로 바꿔도 뜻이 있는 단어",
+      },
+    ],
+  },
 ];
 
 interface ConnectionsType {
