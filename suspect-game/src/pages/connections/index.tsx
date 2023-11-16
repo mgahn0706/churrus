@@ -87,7 +87,7 @@ export default function Connections() {
             width: "180px",
             fontSize: "1.2rem",
           }}
-          value={connectionsId - 1}
+          value={connectionsId}
           onChange={(e) => {
             setConnectionsId(Number(e.target.value));
             setSelectedWords([]);
@@ -95,10 +95,10 @@ export default function Connections() {
             setTriedCount([0, 0, 0, 0]);
           }}
         >
-          {KoreanConnections.map((_, idx) => {
+          {KoreanConnections.map((connection, idx) => {
             if (idx < maxOpenedId) {
               return (
-                <MenuItem value={idx + 1}>
+                <MenuItem value={connection.id}>
                   {dayjs("2023-09-10").add(idx, "day").format("YY년 M월 D일")}
                 </MenuItem>
               );

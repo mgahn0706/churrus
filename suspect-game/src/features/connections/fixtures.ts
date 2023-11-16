@@ -1325,7 +1325,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 66,
+    id: 64,
     quiz: [
       {
         words: ["운동", "수면", "청결", "식사"],
@@ -1346,7 +1346,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 67,
+    id: 65,
     quiz: [
       {
         words: ["서든", "메이플", "카트", "피파"],
@@ -1368,7 +1368,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 68,
+    id: 66,
     quiz: [
       {
         words: ["바통", "부케", "데뷔", "망토"],
@@ -1389,7 +1389,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 69,
+    id: 67,
     quiz: [
       {
         words: ["수능", "생일", "추석", "크리스마스"],
@@ -1411,7 +1411,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 70,
+    id: 68,
     quiz: [
       {
         words: ["복사", "저장", "프린트", "삭제"],
@@ -1432,7 +1432,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 71,
+    id: 69,
     quiz: [
       {
         words: ["조차", "간만", "조금", "사리"],
@@ -1453,7 +1453,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 72,
+    id: 70,
     quiz: [
       {
         words: ["마이크로", "나노", "피코", "펨토"],
@@ -1474,7 +1474,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 73,
+    id: 71,
     quiz: [
       {
         words: ["챕터", "팀", "그룹", "집합"],
@@ -1495,7 +1495,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 74,
+    id: 72,
     quiz: [
       {
         words: ["강점", "약점", "기회", "위협"],
@@ -1516,7 +1516,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 75, // 11월 22일
+    id: 73, // 11월 22일
     quiz: [
       {
         words: ["마이", "믿지", "스윗", "엔써"],
@@ -1538,7 +1538,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 76,
+    id: 74,
     quiz: [
       {
         words: ["선", "화살표", "곡선", "자유형"],
@@ -1559,7 +1559,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 77,
+    id: 75,
     quiz: [
       {
         words: ["보석", "구속", "석방", "배심"],
@@ -1580,7 +1580,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 78, // 11월 25일
+    id: 76, // 11월 25일
     quiz: [
       {
         words: ["유감", "못마땅", "여감", "서운"],
@@ -1602,7 +1602,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 79,
+    id: 77,
     quiz: [
       {
         words: ["라벨", "딱지", "브랜드", "표"],
