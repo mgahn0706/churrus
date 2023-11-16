@@ -87,7 +87,7 @@ export default function Connections() {
             width: "180px",
             fontSize: "1.2rem",
           }}
-          value={connectionsId}
+          value={connectionsId + 1}
           onChange={(e) => {
             setConnectionsId(Number(e.target.value));
             setSelectedWords([]);

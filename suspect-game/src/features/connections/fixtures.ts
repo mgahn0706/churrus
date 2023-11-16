@@ -1579,6 +1579,49 @@ export const KoreanConnections: ConnectionsType[] = [
       },
     ],
   },
+  {
+    id: 78, // 11월 25일
+    quiz: [
+      {
+        words: ["유감", "못마땅", "여감", "서운"],
+        description: "아쉬움",
+      },
+      {
+        words: ["탈옥", "새치기", "사기", "체벌"],
+        description: "불법인 것들",
+      },
+      {
+        words: ["그루", "대", "접", "포기"],
+        description: "식물을 세는 단위",
+      },
+
+      {
+        words: ["탈출", "공황", "모험", "탈주"],
+        description: "대(The Great) ___",
+      },
+    ],
+  },
+  {
+    id: 79,
+    quiz: [
+      {
+        words: ["라벨", "딱지", "브랜드", "표"],
+        description: "상표",
+      },
+      {
+        words: ["마침", "느낌", "물음", "따옴"],
+        description: "___표 (기호)",
+      },
+      {
+        words: ["시가", "상장", "선물", "주주"],
+        description: "증권 관련 단어",
+      },
+      {
+        words: ["줄다리기", "스쿼시", "불", "스모"],
+        description: "올림픽에 없는 스포츠 종목",
+      },
+    ],
+  },
 ];
 
 interface ConnectionsType {
