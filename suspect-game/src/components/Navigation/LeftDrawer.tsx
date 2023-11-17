@@ -1,10 +1,12 @@
 import {
   Category,
+  ConnectWithoutContact,
   Dashboard,
   Filter1,
   Help,
   IndeterminateCheckBox,
   Mail,
+  Public,
   Quiz,
   Search,
 } from "@mui/icons-material";
@@ -69,6 +71,18 @@ const leftNavigationMenuItems: Record<
       text: "결! 합!",
       url: "/set",
       icon: <Category />,
+    },
+  ],
+  보드게임: [
+    {
+      text: "내 마음의 주파수",
+      url: "/frequency",
+      icon: <ConnectWithoutContact />,
+    },
+    {
+      text: "마션 다이스",
+      url: "/martian-dice",
+      icon: <Public />,
     },
   ],
   "추러스 활동": [
