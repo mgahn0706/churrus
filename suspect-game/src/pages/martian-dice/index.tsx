@@ -2,7 +2,9 @@ import GlobalHeader from "@/components/Navigation/GlobalHeader";
 import {
   Box,
   Button,
+  Card,
   CardActionArea,
+  CardContent,
   CardMedia,
   Grid,
   Typography,
@@ -12,6 +14,22 @@ import { useMemo, useState } from "react";
 type DiceType = "ALIEN" | "TANK" | "HUMAN" | "CHICKEN" | "COW";
 
 const DICE: DiceType[] = ["TANK", "ALIEN", "HUMAN", "CHICKEN", "COW"];
+
+const COLOR: Record<DiceType, string> = {
+  TANK: "#DE5E6B",
+  ALIEN: "#89DB96",
+  HUMAN: "#7788F7",
+  CHICKEN: "#F6E26E",
+  COW: "#ffffff",
+};
+
+const DICE_TEXT: Record<DiceType, string> = {
+  TANK: "탱크",
+  ALIEN: "외계인",
+  HUMAN: "인간",
+  CHICKEN: "닭",
+  COW: "소",
+};
 
 const rollDice = (count: number) => {
   const randomInitDices = Array.from({ length: count }, () => {
@@ -44,6 +62,8 @@ export default function MarsDice() {
     COW: 0,
   });
   const [isDiceFixed, setIsDiceFixed] = useState<boolean>(true);
+  const [score, setScore] = useState<number>(0);
+  const [round, setRound] = useState<number>();
 
   const handleRollDice = () => {
     setIsDiceFixed(false);
@@ -85,6 +105,9 @@ export default function MarsDice() {
       <GlobalHeader />
       <Box textAlign="center" pt={11} justifyContent="center" px={9}>
         <Typography variant="h3">마션 다이스</Typography>
+        <Typography variant="body1">
+          {round} 라운드동안 {score}점을 획득했어요.
+        </Typography>
         <Grid container spacing={3} mt={4}>
           <Grid item xs={6} justifyContent="center">
             <Box
@@ -100,6 +123,7 @@ export default function MarsDice() {
                   key={index}
                   width="10%"
                   height="10%"
+                  m={1}
                   border="1px solid white"
                   bgcolor="black"
                   color="white"
@@ -116,22 +140,83 @@ export default function MarsDice() {
                   }}
                 />
               ))}
-              <Box position="absolute" bottom={2}>
+              <Box width="100%" display="flex" justifyContent="center" mt={20}>
                 {!activeDice.includes("TANK") && isDiceFixed ? (
-                  <Button
-                    onClick={handleRollDice}
-                    disabled={activeDice.includes("TANK") || !isDiceFixed}
-                    variant="contained"
-                  >
-                    주사위 굴리기
-                  </Button>
+                  <Box display="flex" gap={2}>
+                    <Button
+                      onClick={handleRollDice}
+                      disabled={
+                        activeDice.includes("TANK") ||
+                        !isDiceFixed ||
+                        Object.values(fixedDice).reduce(
+                          (acc, cur) => acc + cur,
+                          0
+                        ) === 13
+                      }
+                      variant="contained"
+                    >
+                      주사위 굴리기
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        if (fixedDice.ALIEN <= fixedDice.TANK) {
+                          if (
+                            window.confirm(
+                              "이대로 그만두면 납치에 실패하고 점수가 초기화됩니다. 그래도 그만두시겠습니까?"
+                            )
+                          ) {
+                            setScore(0);
+                            setRound(0);
+                            setFixedDice({
+                              ALIEN: 0,
+                              TANK: 0,
+                              HUMAN: 0,
+                              CHICKEN: 0,
+                              COW: 0,
+                            });
+                            setActiveDice([]);
+                            return;
+                          }
+                          return;
+                        }
+                        setScore(currentScore + score);
+                        setRound((prev) => (prev ? prev + 1 : 1));
+                        setActiveDice([]);
+                        setFixedDice({
+                          ALIEN: 0,
+                          TANK: 0,
+                          HUMAN: 0,
+                          CHICKEN: 0,
+                          COW: 0,
+                        });
+                        setIsDiceFixed(true);
+                      }}
+                      color={
+                        fixedDice.ALIEN > fixedDice.TANK ? "success" : "error"
+                      }
+                      variant="outlined"
+                    >
+                      그만하기
+                    </Button>
+                  </Box>
                 ) : (
                   DICE.map((dice) => {
                     return (
                       <CardActionArea
+                        sx={{
+                          verticalAlign: "middle",
+                          display: "flex",
+                          height: "100%",
+                        }}
                         key={dice}
+                        disabled={
+                          !activeDice.includes(dice) ||
+                          (isDiceFixed && dice !== `TANK`)
+                        }
                         onClick={() => {
-                          if (activeDiceCount[dice] === 0) return;
+                          if (!activeDice.includes(dice)) {
+                            return;
+                          }
                           if (dice !== `TANK`) {
                             setIsDiceFixed(true);
                           }
@@ -142,17 +227,63 @@ export default function MarsDice() {
                           setActiveDice(activeDice.filter((d) => d !== dice));
                         }}
                       >
-                        <CardMedia
-                          component="img"
-                          height="100"
-                          image={`/image/dice/${dice.toLocaleLowerCase()}.png`}
-                          alt={dice}
-                        />
+                        <Card
+                          sx={{
+                            borderRadius: "5%",
+                            border: activeDice.includes(dice)
+                              ? `1px solid ${COLOR[dice]}`
+                              : "1px solid gray",
+                            boxShadow: `0 0 10px ${
+                              activeDice.includes(dice) ? COLOR[dice] : "gray"
+                            }`,
+                            display: "flex",
+                          }}
+                        >
+                          <CardMedia
+                            component="img"
+                            height="50px"
+                            width="50px"
+                            sx={{
+                              borderRadius: "5%",
+                              filter: activeDice.includes(dice)
+                                ? "none"
+                                : "grayscale(100%)",
+                            }}
+                            image={`/image/dice/${dice.toLocaleLowerCase()}.png`}
+                            alt={dice}
+                          />
+                          <CardContent
+                            sx={{
+                              height: "10px",
+                              textAlign: "center",
+                              backgroundColor: "black",
+                              fontWeight: "bold",
+                              color: !activeDice.includes(dice)
+                                ? "gray"
+                                : COLOR[dice],
+                            }}
+                          >
+                            <Typography variant="h6">
+                              {activeDice.filter((d) => d === dice).length}
+                            </Typography>
+                          </CardContent>
+                        </Card>
                       </CardActionArea>
                     );
                   })
                 )}
               </Box>
+              {activeDice.includes("TANK") && (
+                <Typography
+                  variant="h6"
+                  color={COLOR.TANK}
+                  sx={{
+                    mt: 2,
+                  }}
+                >
+                  탱크는 항상 고정시켜야 합니다.
+                </Typography>
+              )}
             </Box>
           </Grid>
           <Grid item xs={6} justifyContent="center">
@@ -165,6 +296,8 @@ export default function MarsDice() {
                 mt={5}
                 border="1px solid black"
                 borderRadius={2}
+                bgcolor="black"
+                color="white"
               >
                 {DICE.map((dice) => (
                   <Box
@@ -173,17 +306,28 @@ export default function MarsDice() {
                     alignItems="center"
                     justifyContent="flex-start"
                     width="100%"
-                    gap={2}
+                    gap={1}
                     p={2}
                   >
                     <Typography
-                      variant="h6"
+                      fontWeight="bold"
+                      color={COLOR[dice]}
+                      fontSize="20px"
                       sx={{
                         width: "80px",
                       }}
                     >
-                      {dice}
+                      {DICE_TEXT[dice]}
                     </Typography>
+                    <Typography
+                      sx={{
+                        mr: 2,
+                      }}
+                      variant="h6"
+                    >
+                      {fixedDice[dice]}
+                    </Typography>
+
                     {Array.from({ length: fixedDice[dice] }, (_, index) => (
                       <Box
                         key={index}
@@ -197,8 +341,6 @@ export default function MarsDice() {
                         }}
                       />
                     ))}
-
-                    <Typography variant="h6">{fixedDice[dice]}</Typography>
                   </Box>
                 ))}
                 <Typography variant="h6">
