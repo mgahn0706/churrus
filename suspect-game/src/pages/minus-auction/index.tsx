@@ -4,7 +4,7 @@ import CubeInAuction from "@/features/minus-auction/components/CubeInAuction";
 import HiddenCubeBidModal from "@/features/minus-auction/components/HiddenCudeBidModal";
 import PlayerSetModal from "@/features/minus-auction/components/PlayerSetModal";
 import { PlayerType } from "@/features/minus-auction/types";
-import { Delete, Token } from "@mui/icons-material";
+import { Token } from "@mui/icons-material";
 import {
   Avatar,
   Box,

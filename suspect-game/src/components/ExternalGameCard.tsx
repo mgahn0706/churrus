@@ -1,17 +1,4 @@
-import { useMobileWidth } from "@/hooks/useMobileWIdth";
-import { HelpOutline } from "@mui/icons-material";
-import {
-  Box,
-  Button,
-  Card,
-  CardActionArea,
-  CardActions,
-  CardContent,
-  CardMedia,
-  Tooltip,
-  Typography,
-} from "@mui/material";
-import { ReactNode } from "react";
+import { Card, CardActionArea, CardMedia, Typography } from "@mui/material";
 
 export interface ExternalGameContentType {
   title: string;
