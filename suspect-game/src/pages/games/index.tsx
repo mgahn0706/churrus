@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
 
-export default function Churrus() {
+export default function Games() {
   redirect("/");
 }
