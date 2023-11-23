@@ -1,4 +1,5 @@
 import GlobalHeader from "@/components/Navigation/GlobalHeader";
+import { useResponsiveValue } from "@/hooks/useResponsiveValue";
 import {
   Box,
   Button,
@@ -100,6 +101,9 @@ export default function MarsDice() {
     return kidnapScore + setScore;
   }, [fixedDice]);
 
+  const responsiveXS = useResponsiveValue([12, 12, 6]);
+  const isMobile = useResponsiveValue([true, true, false]);
+
   return (
     <>
       <GlobalHeader />
@@ -108,11 +112,16 @@ export default function MarsDice() {
         <Typography variant="body1">
           {round} 라운드동안 {score}점을 획득했어요.
         </Typography>
-        <Grid container spacing={3} mt={4}>
-          <Grid item xs={6} justifyContent="center">
+        <Grid
+          container
+          spacing={10}
+          mt={4}
+          direction={isMobile ? "column-reverse" : "row"}
+        >
+          <Grid item xs={responsiveXS} justifyContent="center">
             <Box
-              width="38vw"
-              height="38vw"
+              width={isMobile ? "100vw" : "40vw"}
+              height={isMobile ? "100vw" : "40vw"}
               border="1px solid black"
               borderRadius={2}
               position="relative"
@@ -128,7 +137,7 @@ export default function MarsDice() {
                   bgcolor="black"
                   color="white"
                   boxShadow="rgba(149, 157, 165, 0.2) 0px 8px 24px"
-                  borderRadius={4}
+                  borderRadius="20%"
                   display="inline-block"
                   sx={{
                     background: `url(/image/dice/${dice.toLocaleLowerCase()}.png)`,
@@ -200,77 +209,79 @@ export default function MarsDice() {
                     </Button>
                   </Box>
                 ) : (
-                  DICE.map((dice) => {
-                    return (
-                      <CardActionArea
-                        sx={{
-                          verticalAlign: "middle",
-                          display: "flex",
-                          height: "100%",
-                        }}
-                        key={dice}
-                        disabled={
-                          !activeDice.includes(dice) ||
-                          (isDiceFixed && dice !== `TANK`)
-                        }
-                        onClick={() => {
-                          if (!activeDice.includes(dice)) {
-                            return;
-                          }
-                          if (dice !== `TANK`) {
-                            setIsDiceFixed(true);
-                          }
-                          setFixedDice({
-                            ...fixedDice,
-                            [dice]: fixedDice[dice] + activeDiceCount[dice],
-                          });
-                          setActiveDice(activeDice.filter((d) => d !== dice));
-                        }}
-                      >
-                        <Card
+                  <Box display="flex" alignItems="center" gap={2}>
+                    {DICE.map((dice) => {
+                      return (
+                        <CardActionArea
                           sx={{
-                            borderRadius: "5%",
-                            border: activeDice.includes(dice)
-                              ? `1px solid ${COLOR[dice]}`
-                              : "1px solid gray",
-                            boxShadow: `0 0 10px ${
-                              activeDice.includes(dice) ? COLOR[dice] : "gray"
-                            }`,
+                            verticalAlign: "middle",
                             display: "flex",
+                            height: "100%",
+                          }}
+                          key={dice}
+                          disabled={
+                            !activeDice.includes(dice) ||
+                            (isDiceFixed && dice !== `TANK`)
+                          }
+                          onClick={() => {
+                            if (!activeDice.includes(dice)) {
+                              return;
+                            }
+                            if (dice !== `TANK`) {
+                              setIsDiceFixed(true);
+                            }
+                            setFixedDice({
+                              ...fixedDice,
+                              [dice]: fixedDice[dice] + activeDiceCount[dice],
+                            });
+                            setActiveDice(activeDice.filter((d) => d !== dice));
                           }}
                         >
-                          <CardMedia
-                            component="img"
-                            height="50px"
-                            width="50px"
+                          <Card
                             sx={{
                               borderRadius: "5%",
-                              filter: activeDice.includes(dice)
-                                ? "none"
-                                : "grayscale(100%)",
-                            }}
-                            image={`/image/dice/${dice.toLocaleLowerCase()}.png`}
-                            alt={dice}
-                          />
-                          <CardContent
-                            sx={{
-                              height: "10px",
-                              textAlign: "center",
-                              backgroundColor: "black",
-                              fontWeight: "bold",
-                              color: !activeDice.includes(dice)
-                                ? "gray"
-                                : COLOR[dice],
+                              border: activeDice.includes(dice)
+                                ? `1px solid ${COLOR[dice]}`
+                                : "1px solid gray",
+                              boxShadow: `0 0 10px ${
+                                activeDice.includes(dice) ? COLOR[dice] : "gray"
+                              }`,
+                              display: "flex",
                             }}
                           >
-                            <Typography variant="h6">
-                              {activeDice.filter((d) => d === dice).length}
-                            </Typography>
-                          </CardContent>
-                        </Card>
-                      </CardActionArea>
-                    );
-                  })
+                            <CardMedia
+                              component="img"
+                              height="50px"
+                              width="50px"
+                              sx={{
+                                borderRadius: "5%",
+                                filter: activeDice.includes(dice)
+                                  ? "none"
+                                  : "grayscale(100%)",
+                              }}
+                              image={`/image/dice/${dice.toLocaleLowerCase()}.png`}
+                              alt={dice}
+                            />
+                            <CardContent
+                              sx={{
+                                height: "10px",
+                                textAlign: "center",
+                                backgroundColor: "black",
+                                fontWeight: "bold",
+                                color: !activeDice.includes(dice)
+                                  ? "gray"
+                                  : COLOR[dice],
+                              }}
+                            >
+                              <Typography variant="h6">
+                                {activeDice.filter((d) => d === dice).length}
+                              </Typography>
+                            </CardContent>
+                          </Card>
+                        </CardActionArea>
+                      );
+                    })}
+                  </Box>
                 )}
               </Box>
               {activeDice.includes("TANK") && (
@@ -286,7 +297,7 @@ export default function MarsDice() {
               )}
             </Box>
           </Grid>
-          <Grid item xs={6} justifyContent="center">
+          <Grid item xs={responsiveXS} justifyContent="center">
             <Box display="flex" flexDirection="column">
               <Typography variant="h5">SCORE BOARD</Typography>
               <Box
