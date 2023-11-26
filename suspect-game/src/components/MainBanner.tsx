@@ -29,7 +29,7 @@ export default function MainBanner() {
           display="flex"
           justifyContent="flex-start"
           width="90vw"
-          height="40vh"
+          height="350px"
           borderRadius="16px"
           sx={{
             bgcolor: BANNER_COLOR,
@@ -75,7 +75,7 @@ export default function MainBanner() {
               <Box
                 mt={-2}
                 width="75%"
-                height="20vh"
+                height="200px"
                 sx={{
                   backgroundSize: "cover",
                   backgroundRepeat: "no-repeat",
