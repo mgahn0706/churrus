@@ -5,10 +5,18 @@ import router from "next/router";
 
 const BANNER_COLOR = "white";
 
-const BANNER_IMAGE = "/image/banner/2023-10.png";
+const BANNER_IMAGE = "/image/banner/2023-11.png";
+
+const BANNER_TEXT = {
+  subtitle: "장편 추리 문제",
+  title: "일찍 온 크리스마스",
+  ctaURL: "/quiz",
+};
 
 const handleClickBannerButton = () => {
-  router.push("/suspect");
+  router.push(BANNER_TEXT.ctaURL, undefined, {
+    scroll: true,
+  });
 };
 
 export default function MainBanner() {
@@ -37,13 +45,13 @@ export default function MainBanner() {
             gap={3}
           >
             <Typography color="black" variant="body1" mb={-2}>
-              2023년 10월 정기모임
+              2023년 11월 정기모임
             </Typography>
             <Typography color="black" fontWeight="bold" variant="h4">
-              계급 체스 &
+              {BANNER_TEXT.subtitle} &
             </Typography>
             <Typography color="#f96556" fontWeight="bold" variant="h4" mt={-3}>
-              와부고 살인사건
+              {BANNER_TEXT.title}
             </Typography>
             <Box display="flex" justifyContent="space-between">
               <Button
@@ -102,13 +110,13 @@ export default function MainBanner() {
           gap={3}
         >
           <Typography color="black" variant="h6" mb={-2}>
-            2023년 10월 정기모임
+            2023년 11월 정기모임
           </Typography>
           <Typography color="black" fontWeight="bold" variant="h3">
-            계급 체스 &
+            {BANNER_TEXT.subtitle} &
           </Typography>
           <Typography color="#f96556" fontWeight="bold" variant="h3" mt={-3}>
-            와부고 살인사건
+            {BANNER_TEXT.title}
           </Typography>
           <Button
             variant="contained"

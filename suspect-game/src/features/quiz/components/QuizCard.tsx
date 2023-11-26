@@ -60,6 +60,7 @@ export default function QuizCard({
           sx={{
             cursor: "pointer",
             minHeight: "200px",
+            mb: 5,
           }}
         >
           <Typography
@@ -107,20 +108,6 @@ export default function QuizCard({
             />
           </Box>
         </CardContent>
-        <Divider />
-        <CardActions>
-          <Button
-            size="small"
-            sx={{
-              color: "white",
-            }}
-            onClick={() => {
-              router.push(`/quiz/${quiz.id}/answer`);
-            }}
-          >
-            정답
-          </Button>
-        </CardActions>
       </Card>
     </Grid>
   );

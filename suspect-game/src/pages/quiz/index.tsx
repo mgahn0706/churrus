@@ -26,7 +26,7 @@ export default function Quiz() {
         height="100vh"
         sx={{
           backgroundImage:
-            'linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url("http://imgur.com/wEWDADu.jpg")',
+            'linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url("https://i.pinimg.com/564x/d3/b9/24/d3b9245271777a8004a26f529fed7cfc.jpg")',
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
