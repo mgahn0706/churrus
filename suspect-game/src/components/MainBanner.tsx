@@ -79,6 +79,7 @@ export default function MainBanner() {
                 sx={{
                   backgroundSize: "cover",
                   backgroundRepeat: "no-repeat",
+                  backgroundPosition: "center",
                   backgroundImage: `linear-gradient(to bottom, ${BANNER_COLOR} 3%, transparent 20%, transparent 70%, ${BANNER_COLOR} 98%), linear-gradient(to left, ${BANNER_COLOR} 3%, transparent 20%, transparent 80%, ${BANNER_COLOR} 98%), url("${BANNER_IMAGE}") `,
                 }}
               />
@@ -144,6 +145,7 @@ export default function MainBanner() {
           sx={{
             backgroundSize: "cover",
             backgroundRepeat: "no-repeat",
+            backgroundPosition: "center",
             backgroundImage: `linear-gradient(to bottom, ${BANNER_COLOR} 3%, transparent 20%, transparent 70%, ${BANNER_COLOR} 98%), linear-gradient(to left, ${BANNER_COLOR} 3%, transparent 20%, transparent 80%, ${BANNER_COLOR} 98%), url("${BANNER_IMAGE}") `,
           }}
         />
