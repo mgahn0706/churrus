@@ -12,12 +12,14 @@ import {
 } from "@mui/icons-material";
 import GlobalHeader from "@/components/Navigation/GlobalHeader";
 import ContentCard, { ContentType } from "@/components/ContentCard";
+
 import GeniusCard, { GeniusContentType } from "@/components/GeniusCard";
 
 import ExternalGameCard, {
   ExternalGameContentType,
 } from "@/components/ExternalGameCard";
 import MainBanner from "@/components/MainBanner";
+import NewGameBanner from "@/components/NewGameBanner";
 
 const CONTENTS: ContentType[] = [
   {
@@ -205,73 +207,91 @@ export default function Churrus() {
   const responsiveExternalXS = useResponsiveValue([6, 6, 2]);
 
   return (
-    <Box bgcolor={BACKGROUND_COLOR} minHeight="100vh" minWidth="100vw" pt={10}>
-      <GlobalHeader />
-      <MainBanner />
-      <Box my={10} mx="auto" px="1rem" maxWidth={`${responsiveMaxWidth}vw`}>
-        <Box width="100%" mb={5}>
-          <Grid container spacing={3}>
-            {CONTENTS.map((content) => (
-              <Grid item xs={responsiveXS}>
-                <ContentCard content={content} />
-              </Grid>
-            ))}
-          </Grid>
-        </Box>
-      </Box>
-      <Box my={6} mx="auto" px="1rem" maxWidth={`${responsiveMaxWidth}vw`}>
-        <Box width="100%" mb={5}>
-          <Grid container spacing={3}>
-            {GENIUS_CONTENTS.map((content) => (
-              <Grid item xs={responsiveGeniusXs}>
-                <GeniusCard content={content} />
-              </Grid>
-            ))}
-          </Grid>
-        </Box>
-      </Box>
-
+    <>
       <Box
-        display="flex"
-        flexDirection="column"
-        maxWidth={`${responsiveMaxWidth}vw`}
-        mx="auto"
-        my={10}
-        justifyContent="center"
+        bgcolor={BACKGROUND_COLOR}
+        minHeight="100vh"
+        minWidth="100vw"
+        pt={10}
       >
-        <Typography
-          color="#2e3545"
-          variant="h5"
-          sx={{
-            alignItems: "center",
-            verticalAlign: "middle",
-            my: 3,
-            mr: 1,
-          }}
-        >
-          외부 사이트
-          <LaunchOutlined />
-        </Typography>
-        <Grid container spacing={1}>
-          {EXTERNAL_CONTENTS.map((content) => (
-            <Grid item xs={responsiveExternalXS}>
-              <ExternalGameCard content={content} />
+        <GlobalHeader />
+        <MainBanner />
+        <Box my={10} mx="auto" px="1rem" maxWidth={`${responsiveMaxWidth}vw`}>
+          <Box width="100%" mb={5}>
+            <Grid container spacing={3}>
+              {CONTENTS.map((content) => (
+                <Grid item xs={responsiveXS}>
+                  <ContentCard content={content} />
+                </Grid>
+              ))}
             </Grid>
-          ))}
-        </Grid>
-      </Box>
+          </Box>
+        </Box>
+        <Box my={6} mx="auto" px="1rem" maxWidth={`${responsiveMaxWidth}vw`}>
+          <Box width="100%" mb={5}>
+            <Grid container spacing={3}>
+              {GENIUS_CONTENTS.map((content) => (
+                <Grid item xs={responsiveGeniusXs}>
+                  <GeniusCard content={content} />
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
+        </Box>
 
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        bgcolor="#232937"
-        height="10vh"
-      >
-        <Typography color="#969ca5" variant="body2">
-          © 2019-2023 CHURRUS. All rights reserved.
-        </Typography>
+        <Box
+          display="flex"
+          flexDirection="column"
+          maxWidth={`${responsiveMaxWidth}vw`}
+          mx="auto"
+          mt={6}
+          justifyContent="center"
+        >
+          <NewGameBanner />
+        </Box>
+
+        <Box
+          display="flex"
+          flexDirection="column"
+          maxWidth={`${responsiveMaxWidth}vw`}
+          mx="auto"
+          my={10}
+          justifyContent="center"
+        >
+          <Typography
+            color="#2e3545"
+            variant="h5"
+            sx={{
+              alignItems: "center",
+              verticalAlign: "middle",
+              my: 3,
+              mr: 1,
+            }}
+          >
+            외부 사이트
+            <LaunchOutlined />
+          </Typography>
+          <Grid container spacing={1}>
+            {EXTERNAL_CONTENTS.map((content) => (
+              <Grid item xs={responsiveExternalXS}>
+                <ExternalGameCard content={content} />
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
+
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          bgcolor="#232937"
+          height="10vh"
+        >
+          <Typography color="#969ca5" variant="body2">
+            © 2019-2023 CHURRUS. All rights reserved.
+          </Typography>
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 }
