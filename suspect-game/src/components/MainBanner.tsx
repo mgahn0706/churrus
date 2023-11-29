@@ -5,10 +5,18 @@ import router from "next/router";
 
 const BANNER_COLOR = "white";
 
-const BANNER_IMAGE = "/image/banner/2023-10.png";
+const BANNER_IMAGE = "/image/banner/2023-11.png";
+
+const BANNER_TEXT = {
+  subtitle: "장편 추리 문제",
+  title: "일찍 온 크리스마스",
+  ctaURL: "/quiz",
+};
 
 const handleClickBannerButton = () => {
-  router.push("/suspect");
+  router.push(BANNER_TEXT.ctaURL, undefined, {
+    scroll: true,
+  });
 };
 
 export default function MainBanner() {
@@ -21,7 +29,7 @@ export default function MainBanner() {
           display="flex"
           justifyContent="flex-start"
           width="90vw"
-          height="40vh"
+          height="350px"
           borderRadius="16px"
           sx={{
             bgcolor: BANNER_COLOR,
@@ -37,13 +45,13 @@ export default function MainBanner() {
             gap={3}
           >
             <Typography color="black" variant="body1" mb={-2}>
-              2023년 10월 정기모임
+              2023년 11월 정기모임
             </Typography>
             <Typography color="black" fontWeight="bold" variant="h4">
-              계급 체스 &
+              {BANNER_TEXT.subtitle} &
             </Typography>
             <Typography color="#f96556" fontWeight="bold" variant="h4" mt={-3}>
-              와부고 살인사건
+              {BANNER_TEXT.title}
             </Typography>
             <Box display="flex" justifyContent="space-between">
               <Button
@@ -67,10 +75,11 @@ export default function MainBanner() {
               <Box
                 mt={-2}
                 width="75%"
-                height="20vh"
+                height="200px"
                 sx={{
                   backgroundSize: "cover",
                   backgroundRepeat: "no-repeat",
+                  backgroundPosition: "center",
                   backgroundImage: `linear-gradient(to bottom, ${BANNER_COLOR} 3%, transparent 20%, transparent 70%, ${BANNER_COLOR} 98%), linear-gradient(to left, ${BANNER_COLOR} 3%, transparent 20%, transparent 80%, ${BANNER_COLOR} 98%), url("${BANNER_IMAGE}") `,
                 }}
               />
@@ -102,13 +111,13 @@ export default function MainBanner() {
           gap={3}
         >
           <Typography color="black" variant="h6" mb={-2}>
-            2023년 10월 정기모임
+            2023년 11월 정기모임
           </Typography>
           <Typography color="black" fontWeight="bold" variant="h3">
-            계급 체스 &
+            {BANNER_TEXT.subtitle} &
           </Typography>
           <Typography color="#f96556" fontWeight="bold" variant="h3" mt={-3}>
-            와부고 살인사건
+            {BANNER_TEXT.title}
           </Typography>
           <Button
             variant="contained"
@@ -136,6 +145,7 @@ export default function MainBanner() {
           sx={{
             backgroundSize: "cover",
             backgroundRepeat: "no-repeat",
+            backgroundPosition: "center",
             backgroundImage: `linear-gradient(to bottom, ${BANNER_COLOR} 3%, transparent 20%, transparent 70%, ${BANNER_COLOR} 98%), linear-gradient(to left, ${BANNER_COLOR} 3%, transparent 20%, transparent 80%, ${BANNER_COLOR} 98%), url("${BANNER_IMAGE}") `,
           }}
         />
