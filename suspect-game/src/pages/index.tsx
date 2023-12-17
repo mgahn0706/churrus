@@ -64,7 +64,7 @@ const CONTENTS: ContentType[] = [
         }}
       />
     ),
-    label: "NEW",
+    label: "Weekly",
     url: "connections",
     color: {
       main: "#d7f4dd",

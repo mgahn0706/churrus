@@ -46,7 +46,6 @@ const leftNavigationMenuItems: Record<
       text: "추러스 커넥션",
       url: "/connections",
       icon: <Dashboard />,
-      badgeText: "NEW",
     },
   ],
   "더 지니어스": [
