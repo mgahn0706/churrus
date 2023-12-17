@@ -1,5 +1,5 @@
 import { useResponsiveValue } from "@/hooks/useResponsiveValue";
-import { Box, Button, Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import {
   CategoryOutlined,
   Dashboard,
@@ -7,19 +7,17 @@ import {
   HelpOutlineOutlined,
   IndeterminateCheckBoxOutlined,
   LaunchOutlined,
-  PlayArrowSharp,
   Quiz,
   Search,
 } from "@mui/icons-material";
 import GlobalHeader from "@/components/Navigation/GlobalHeader";
 import ContentCard, { ContentType } from "@/components/ContentCard";
 import GeniusCard, { GeniusContentType } from "@/components/GeniusCard";
-import { useRouter } from "next/router";
+
 import ExternalGameCard, {
   ExternalGameContentType,
 } from "@/components/ExternalGameCard";
 import MainBanner from "@/components/MainBanner";
-import LeftDrawer from "@/components/Navigation/LeftDrawer";
 
 const CONTENTS: ContentType[] = [
   {
@@ -66,7 +64,7 @@ const CONTENTS: ContentType[] = [
         }}
       />
     ),
-    label: "NEW",
+    label: "Weekly",
     url: "connections",
     color: {
       main: "#d7f4dd",

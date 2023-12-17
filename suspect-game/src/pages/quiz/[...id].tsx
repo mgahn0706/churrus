@@ -3,6 +3,7 @@ import {
   Alert,
   Box,
   Button,
+  FormControl,
   IconButton,
   Skeleton,
   TextField,
@@ -12,6 +13,9 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import { ArrowBack } from "@mui/icons-material";
 import { useState } from "react";
+import Head from "next/head";
+
+const BACKGROUND_COLOR = "#fffef8";
 
 const uppercaseRegex = /^[A-Z\s]+$/;
 const lowercaseRegex = /^[a-z\s]+$/;
@@ -37,7 +41,8 @@ export default function QuizPage() {
   const isAnswerPage = id[1] === "answer";
 
   if (!quiz) {
-    return <div>loading...</div>;
+    router.back();
+    return;
   }
 
   const [year, month, _] = quiz.id.split("-");
@@ -48,7 +53,8 @@ export default function QuizPage() {
     return;
   };
 
-  const handleAnswerSubmit = () => {
+  const handleAnswerSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (inputAnswer === quiz.answer) {
       window.alert("정답입니다!");
       handleSolvedQuiz();
@@ -79,6 +85,9 @@ export default function QuizPage() {
 
   return (
     <>
+      <Head>
+        <title>문제적 추러스 : {quiz.title}</title>
+      </Head>
       <Box
         height="100vh"
         alignItems="center"
@@ -87,11 +96,7 @@ export default function QuizPage() {
         py={5}
         px={7}
         textAlign="center"
-        sx={{
-          background: `linear-gradient(50deg, rgba(0,0,0,1) 0%, rgba(31,31,31,1) 36%, rgba(21,21,21,1) 38%, rgba(0,0,0,1) 100%)`,
-          backgroundImage: `url("https://i.pinimg.com/564x/d3/b9/24/d3b9245271777a8004a26f529fed7cfc.jpg")`,
-          backgroundSize: "cover",
-        }}
+        bgcolor={BACKGROUND_COLOR}
       >
         <IconButton
           size="large"
@@ -100,47 +105,35 @@ export default function QuizPage() {
             top: 20,
             left: 20,
             zIndex: 100,
-            color: "white",
+            color: "#212837",
           }}
           onClick={() => {
-            router.push("/quiz", undefined, { scroll: false });
+            router.back();
           }}
         >
           <ArrowBack />
         </IconButton>
         <Typography
           variant="body1"
-          color="lightgray"
+          color="#606b80"
           fontWeight={600}
           sx={{
             mb: 1,
-            textShadow:
-              "2px 7px 5px rgba(255,255,255,0.3), 0px -4px 10px rgba(0,0,0,0.3)",
           }}
         >
           {year}년 {month}월 정기모임 #{quiz.quizNumber}
         </Typography>
 
-        <Typography
-          variant="h4"
-          color="white"
-          fontWeight={600}
-          sx={{
-            textShadow:
-              "2px 7px 5px rgba(255,255,255,0.3), 0px -4px 10px rgba(0,0,0,0.3)",
-          }}
-        >
+        <Typography variant="h4" color="#212837" fontWeight={600}>
           {quiz.title}
           {isAnswerPage && (quiz.answer ? ` 정답 : ${quiz.answer}` : ` 정답`)}
         </Typography>
         <Typography
           variant="body2"
-          color="gray"
+          color="#606b80"
           fontWeight={600}
           sx={{
             mb: 1,
-            textShadow:
-              "2px 7px 5px rgba(255,255,255,0.3), 0px -4px 10px rgba(0,0,0,0.3)",
           }}
         >
           {quiz.madeBy && `by ${quiz.madeBy}`}
@@ -188,15 +181,13 @@ export default function QuizPage() {
           />
         )}
         {!isAnswerPage && (
-          <>
+          <form onSubmit={handleAnswerSubmit}>
             <Typography
               variant="body1"
-              color="white"
+              color="#212837"
               fontWeight={400}
               sx={{
                 mt: 2,
-                textShadow:
-                  "2px 7px 5px rgba(255,255,255,0.3), 0px -4px 10px rgba(0,0,0,0.3)",
               }}
             >
               정답 형식: {answerFomat()}
@@ -205,20 +196,15 @@ export default function QuizPage() {
               <Box mt="20px" display="flex" alignContent="center">
                 <TextField
                   variant="outlined"
-                  disabled={!quiz.isAnswerable}
                   value={inputAnswer}
                   onChange={(e) => {
                     setInputAnswer(e.target.value);
                   }}
                   sx={{
-                    border: "gray 1px solid",
                     width: "40vw",
                     mr: 2,
+                    borderRadius: "24px",
                     minWidth: "200px",
-                    backgroundColor: "rgba(255, 255, 255, 0.7)",
-                    borderRadius: "16px",
-                    backdropFilter: "blur(10px)",
-                    WebkitBackdropFilter: "blur(10px)",
                   }}
                   placeholder={
                     quiz.isAnswerable
@@ -229,12 +215,13 @@ export default function QuizPage() {
                 <Button
                   sx={{
                     color: "white",
-
-                    borderRadius: "16px",
-                    backdropFilter: "blur(10px)",
+                    bgcolor: "#fa6556",
+                    borderRadius: "8px",
+                    "&:hover": {
+                      bgcolor: "#ffc7c6",
+                    },
                   }}
-                  onClick={handleAnswerSubmit}
-                  variant="outlined"
+                  type="submit"
                 >
                   제출
                 </Button>
@@ -242,8 +229,14 @@ export default function QuizPage() {
             )}
             <Button
               variant="outlined"
-              color="error"
               sx={{
+                border: "1px solid #eeb801",
+                color: "#eeb801",
+                "&:hover": {
+                  bgcolor: "#fff3d4",
+                  borderColor: "#eeb801",
+                  color: "#eeb801",
+                },
                 mt: "10px",
               }}
               size="small"
@@ -254,7 +247,7 @@ export default function QuizPage() {
             >
               정답 확인
             </Button>
-          </>
+          </form>
         )}
       </Box>
     </>

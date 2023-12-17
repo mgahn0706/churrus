@@ -1,75 +1,64 @@
+import GlobalHeader from "@/components/Navigation/GlobalHeader";
 import QuizCard from "@/features/quiz/components/QuizCard";
-import { MEETINGS, QuizData } from "@/features/quiz/fixtures";
-import { useResponsiveValue } from "@/hooks/useResponsiveValue";
-import { Box, Divider, Grid, Typography } from "@mui/material";
+import { MEETINGS, MeetingData, QuizData } from "@/features/quiz/fixtures";
+import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
+import { Box, Grid, IconButton, Typography } from "@mui/material";
 import Head from "next/head";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/router";
+
+const BACKGROUND_COLOR = "#fffef8";
+
+type MeetingType = (typeof MEETINGS)[number];
 
 export default function Quiz() {
-  const responsivePX = useResponsiveValue([24, 60, 220]);
   const [solvedQuiz, setSolvedQuiz] = useState<string[]>([]);
 
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const selectedMeeting =
+    (searchParams.get("meeting") as MeetingType) ?? MEETINGS[0];
 
   useEffect(() => {
     const solvedQuizzes = JSON.parse(localStorage.getItem("quiz") ?? "[]");
     setSolvedQuiz(solvedQuizzes);
   }, []);
 
+  useEffect(() => {
+    if (!MeetingData[selectedMeeting]) {
+      router.push(`/quiz?meeting=${MEETINGS[0]}`);
+    }
+  }, [selectedMeeting]);
+
   return (
     <>
       <Head>
         <title>문제적 추러스 : 서울대 추리 동아리</title>
       </Head>
+      <GlobalHeader />
       <Box
-        height="100vh"
-        sx={{
-          backgroundImage:
-            'linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url("https://i.pinimg.com/564x/d3/b9/24/d3b9245271777a8004a26f529fed7cfc.jpg")',
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
+        height="100dvh"
+        bgcolor={BACKGROUND_COLOR}
+        display="flex"
+        justifyContent="center"
       >
-        <Box
-          color="white"
-          display="flex"
-          justifyContent="flex-start"
-          alignItems={"center"}
-          position="fixed"
-          top={0}
-          left={0}
-          width="100%"
-          px="24px"
-          height="60px"
-          zIndex={100}
-          bgcolor={"rgba(0, 0, 0, 0)"}
-          sx={{
-            backdropFilter: "blur(60px)",
-          }}
-        >
-          <Typography
-            variant="h5"
-            fontWeight={500}
-            onClick={() => {
-              router.push("/");
-            }}
-            sx={{
-              cursor: "pointer",
-            }}
-          >
-            CHURRUS
-          </Typography>
-        </Box>
-
         <Box
           height="100vh"
           overflow="scroll"
-          px={`
-      ${responsivePX}px
-      `}
+          px={[3, 4, 12]}
+          width="100%"
+          pb={6}
+          bgcolor={BACKGROUND_COLOR}
         >
-          <Box width="100%" textAlign="center" color="white" mt="80px">
+          <Box
+            width="100%"
+            textAlign="center"
+            color="#212837"
+            mt="100px"
+            mb={[3, 4, 6]}
+          >
             <Typography
               variant="h3"
               fontWeight={600}
@@ -78,7 +67,7 @@ export default function Quiz() {
               문제적 추러스
             </Typography>
             <Typography
-              variant="h6"
+              variant="body1"
               fontFamily={"NanumSquareEB"}
               sx={{
                 wordBreak: "keep-all",
@@ -86,50 +75,80 @@ export default function Quiz() {
             >
               역대 정기모임에 있었던 문제들을 풀어볼 수 있어요.
             </Typography>
-            <Typography
-              variant="h6"
-              sx={{
-                wordBreak: "keep-all",
-              }}
-            >
-              추러스에서 진행된{" "}
-              {Object.values(QuizData).reduce(
-                (acc, cur) => acc + cur.length,
-                0
-              )}
-              개의 문제 중, 현재 {solvedQuiz.length}개의 문제를 풀었어요!
-            </Typography>
           </Box>
 
-          {MEETINGS.map((meeting) => (
-            <Box mb="100px">
-              <Divider
-                textAlign="left"
-                light
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            mb={3}
+          >
+            <IconButton
+              disabled={
+                MEETINGS.indexOf(selectedMeeting) === MEETINGS.length - 1
+              }
+              onClick={() => {
+                const index = MEETINGS.indexOf(selectedMeeting);
+                if (index === MEETINGS.length - 1) return;
+                router.push(`/quiz?meeting=${MEETINGS[index + 1]}`);
+              }}
+            >
+              <ArrowBackIos />
+            </IconButton>
+            <Box
+              minHeight="58px"
+              minWidth="250px"
+              justifyContent="center"
+              alignItems="center"
+              lineHeight="58px"
+              display="flex"
+              flexDirection="column"
+            >
+              <Typography
+                variant="h5"
+                fontWeight={600}
+                fontFamily="NanumSquareEB"
                 sx={{
-                  color: "white",
-                  mb: 3,
-                  mt: 10,
-                  fontSize: "1.2rem",
-                  "&::before, &::after": {
-                    borderColor: "white",
-                  },
+                  wordBreak: "keep-all",
                 }}
               >
-                {meeting}
-              </Divider>
-              <Grid container spacing={3}>
-                {QuizData[meeting].map((quiz) => (
-                  <QuizCard
-                    isSolved={solvedQuiz.includes(quiz.id)}
-                    key={quiz.id}
-                    quiz={quiz}
-                    month={meeting.split(" ")[1]}
-                  />
-                ))}
-              </Grid>
+                {MeetingData[selectedMeeting]?.title}
+              </Typography>
+              {MeetingData[selectedMeeting]?.subtitle && (
+                <Typography
+                  textAlign="center"
+                  variant="body1"
+                  fontFamily={"NanumSquareEB"}
+                  sx={{
+                    wordBreak: "keep-all",
+                  }}
+                >
+                  {MeetingData[selectedMeeting].subtitle}
+                </Typography>
+              )}
             </Box>
-          ))}
+            <IconButton
+              disabled={MEETINGS.indexOf(selectedMeeting) === 0}
+              onClick={() => {
+                const index = MEETINGS.indexOf(selectedMeeting);
+                if (index === 0) return;
+                router.push(`/quiz?meeting=${MEETINGS[index - 1]}`);
+              }}
+            >
+              <ArrowForwardIos />
+            </IconButton>
+          </Box>
+
+          <Grid container spacing={3} width="100%">
+            {QuizData[selectedMeeting]?.map((quiz) => (
+              <QuizCard
+                key={quiz.id}
+                quiz={quiz}
+                isSolved={solvedQuiz.includes(quiz.id)}
+                bgColor={MeetingData[selectedMeeting]?.color ?? "#fffef8"}
+              />
+            ))}
+          </Grid>
         </Box>
       </Box>
     </>
