@@ -16,60 +16,57 @@ export const MEETINGS = [
   "2019년 9월 정기모임",
 ] as const;
 
-export const CardStyle: Record<
+export const MeetingData: Record<
   string,
   {
-    baseColor: string;
-    lightColor: string;
+    title?: string;
+    color: string;
   }
 > = {
-  "1월": {
-    baseColor: "rgba(241, 27, 33, 0.7)",
-    lightColor: "rgba(241, 27, 33, 0.3)",
+  "2019년 9월 정기모임": {
+    color: "#ffe2db",
   },
-  "2월": {
-    baseColor: "rgba(252, 152, 249, 0.7)",
-    lightColor: "rgba(252, 152, 249, 0.3)",
+  "2019년 11월 정기모임": {
+    color: "#cef0ff",
   },
-  "3월": {
-    baseColor: "rgba(156, 224, 254, 0.7)",
-    lightColor: "rgba(156, 224, 254, 0.3)",
+  "2022년 6월 정기모임": {
+    color: "#d7f4dd",
   },
-  "4월": {
-    baseColor: "rgba(255, 255, 255, 0.7)",
-    lightColor: "rgba(255, 255, 255, 0.3)",
+  "2022년 7월 정기모임": {
+    color: "#fde2e2",
   },
-  "5월": {
-    baseColor: "rgba(20, 248, 165, 0.7)",
-    lightColor: "rgba(20, 248, 165, 0.3)",
+  "2022년 9월 정기모임": {
+    color: "#e2e2ff",
   },
-  "6월": {
-    baseColor: "rgba(166, 92, 215)",
-    lightColor: "rgba(166, 92, 215, 0.3)",
+  "2022년 11월 정기모임": {
+    color: "#bbd0fc",
+    title: "달나라 너머",
   },
-  "7월": {
-    baseColor: "rgba(253, 70, 126)",
-    lightColor: "rgba(253, 70, 126, 0.3)",
+  "2022년 12월 정기모임": {
+    color: "#fff3d4",
   },
-  "8월": {
-    baseColor: "rgba(191, 253, 40, 0.7)",
-    lightColor: "rgba(191, 253, 40, 0.3)",
+  "2023년 1월 1차 정기모임": {
+    color: "#f4beab",
+    title: "토끼와 거북이",
   },
-  "9월": {
-    baseColor: "rgba(48, 174, 251)",
-    lightColor: "rgba(48, 174, 251, 0.3)",
+  "2023년 3월 정기모임": {
+    color: "#fde2e2",
+    title: "2023 추러스 OT",
   },
-  "10월": {
-    baseColor: "rgba(44, 162, 175)",
-    lightColor: "rgba(44, 162, 175, 0.3)",
+  "2023년 4월 정기모임": {
+    color: "#c3e0f4",
+    title: "게임 속 여행",
   },
-  "11월": {
-    baseColor: "rgba(241, 97, 10)",
-    lightColor: "rgba(241, 97, 10, 0.3)",
+  "2023년 6월 정기모임": {
+    color: "#b1b1b1",
   },
-  "12월": {
-    baseColor: "rgba(72, 228, 229)",
-    lightColor: "rgba(72, 228, 229, 0.3)",
+  "2023년 9월 정기모임": {
+    color: "#fde2e2",
+    title: "Welcome to CHURRUS",
+  },
+  "2023년 11월 정기모임": {
+    color: "#d3f6f6",
+    title: "일찍 온 크리스마스",
   },
 };
 

@@ -1,18 +1,26 @@
 import GlobalHeader from "@/components/Navigation/GlobalHeader";
 import QuizCard from "@/features/quiz/components/QuizCard";
-import { MEETINGS, QuizData } from "@/features/quiz/fixtures";
-import { useResponsiveValue } from "@/hooks/useResponsiveValue";
-import { Box, Divider, Grid, Typography } from "@mui/material";
+import { MEETINGS, MeetingData, QuizData } from "@/features/quiz/fixtures";
+import {
+  ArrowBackIos,
+  ArrowForwardIos,
+  ArrowLeft,
+  ArrowRight,
+} from "@mui/icons-material";
+import { Box, Divider, Grid, IconButton, Typography } from "@mui/material";
 import Head from "next/head";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 const BACKGROUND_COLOR = "#fffef8";
 
+type MeetingType = (typeof MEETINGS)[number];
+
 export default function Quiz() {
   const [solvedQuiz, setSolvedQuiz] = useState<string[]>([]);
 
-  const router = useRouter();
+  const [selectedMeeting, setSelectedMeeting] = useState<MeetingType>(
+    MEETINGS[0]
+  );
 
   useEffect(() => {
     const solvedQuizzes = JSON.parse(localStorage.getItem("quiz") ?? "[]");
@@ -31,8 +39,21 @@ export default function Quiz() {
         display="flex"
         justifyContent="center"
       >
-        <Box height="100vh" overflow="scroll" maxWidth={1200} px={4}>
-          <Box width="100%" textAlign="center" color="#212837" mt="100px">
+        <Box
+          height="100vh"
+          overflow="scroll"
+          px={[3, 4, 12]}
+          width="100%"
+          pb={6}
+          bgcolor={BACKGROUND_COLOR}
+        >
+          <Box
+            width="100%"
+            textAlign="center"
+            color="#212837"
+            mt="100px"
+            mb={[3, 4, 6]}
+          >
             <Typography
               variant="h3"
               fontWeight={600}
@@ -41,7 +62,7 @@ export default function Quiz() {
               문제적 추러스
             </Typography>
             <Typography
-              variant="h6"
+              variant="body1"
               fontFamily={"NanumSquareEB"}
               sx={{
                 wordBreak: "keep-all",
@@ -51,35 +72,78 @@ export default function Quiz() {
             </Typography>
           </Box>
 
-          {MEETINGS.map((meeting) => (
-            <Box mb="100px">
-              <Divider
-                textAlign="left"
-                light
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            mb={3}
+          >
+            <IconButton
+              disabled={
+                MEETINGS.indexOf(selectedMeeting) === MEETINGS.length - 1
+              }
+              onClick={() => {
+                const index = MEETINGS.indexOf(selectedMeeting);
+                if (index === MEETINGS.length - 1) return;
+                setSelectedMeeting(MEETINGS[index + 1]);
+              }}
+            >
+              <ArrowBackIos />
+            </IconButton>
+            <Box
+              minHeight="58px"
+              minWidth="250px"
+              justifyContent="center"
+              alignItems="center"
+              lineHeight="58px"
+              display="flex"
+              flexDirection="column"
+            >
+              <Typography
+                variant="h5"
+                fontWeight={600}
+                fontFamily="NanumSquareEB"
                 sx={{
-                  color: "white",
-                  mb: 3,
-                  mt: 10,
-                  fontSize: "1.2rem",
-                  "&::before, &::after": {
-                    borderColor: "white",
-                  },
+                  wordBreak: "keep-all",
                 }}
               >
-                {meeting}
-              </Divider>
-              <Grid container spacing={3}>
-                {QuizData[meeting].map((quiz) => (
-                  <QuizCard
-                    isSolved={solvedQuiz.includes(quiz.id)}
-                    key={quiz.id}
-                    quiz={quiz}
-                    month={meeting.split(" ")[1]}
-                  />
-                ))}
-              </Grid>
+                {selectedMeeting}
+              </Typography>
+              {MeetingData[selectedMeeting].title && (
+                <Typography
+                  textAlign="center"
+                  variant="body1"
+                  fontFamily={"NanumSquareEB"}
+                  sx={{
+                    wordBreak: "keep-all",
+                  }}
+                >
+                  {MeetingData[selectedMeeting].title}
+                </Typography>
+              )}
             </Box>
-          ))}
+            <IconButton
+              disabled={MEETINGS.indexOf(selectedMeeting) === 0}
+              onClick={() => {
+                const index = MEETINGS.indexOf(selectedMeeting);
+                if (index === 0) return;
+                setSelectedMeeting(MEETINGS[index - 1]);
+              }}
+            >
+              <ArrowForwardIos />
+            </IconButton>
+          </Box>
+
+          <Grid container spacing={3} width="100%">
+            {QuizData[selectedMeeting].map((quiz) => (
+              <QuizCard
+                key={quiz.id}
+                quiz={quiz}
+                isSolved={solvedQuiz.includes(quiz.id)}
+                bgColor={MeetingData[selectedMeeting]?.color ?? "#fffef8"}
+              />
+            ))}
+          </Grid>
         </Box>
       </Box>
     </>
