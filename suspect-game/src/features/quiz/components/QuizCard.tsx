@@ -6,6 +6,7 @@ import {
   CardContent,
   Divider,
   Grid,
+  Icon,
   Typography,
 } from "@mui/material";
 import { QuizType } from "../types";
@@ -13,7 +14,13 @@ import { useResponsiveValue } from "@/hooks/useResponsiveValue";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { CardStyle } from "../fixtures";
-import { Star } from "@mui/icons-material";
+import {
+  CheckCircleOutline,
+  Help,
+  RadioButtonUnchecked,
+  Star,
+} from "@mui/icons-material";
+import { useState } from "react";
 
 export default function QuizCard({
   quiz,
@@ -25,6 +32,7 @@ export default function QuizCard({
   isSolved: boolean;
 }) {
   const responsiveXS = useResponsiveValue([6, 4, 2]);
+  const [isImageLoading, setIsImageLoading] = useState(true);
   const router = useRouter();
 
   const { baseColor, lightColor } = CardStyle[month] ?? {
@@ -35,21 +43,14 @@ export default function QuizCard({
   return (
     <Grid item xs={responsiveXS}>
       <Card
-        variant="outlined"
         sx={{
-          minWidth: "150px",
-          maxWidth: "300px",
           background: lightColor,
-          borderRadius: "16px",
+          borderRadius: "0.75rem",
           boxShadow: "0 4px 30px rgba(255, 255, 255, 0.1)",
-          backdropFilter: "blur(10px)",
-          WebkitBackdropFilter: "blur(10px)",
           border: "1px solid rgba(255, 255, 255, 0.3)",
           transition: "all 0.3s ease-in-out",
           "&:hover": {
-            boxShadow: `0 10px 30px -10px ${baseColor}`,
-            border: `1px solid ${baseColor}`,
-            transform: "scale(1.1)",
+            bgcolor: baseColor,
           },
         }}
       >
@@ -59,52 +60,68 @@ export default function QuizCard({
           }}
           sx={{
             cursor: "pointer",
-            minHeight: "200px",
-            mb: 5,
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
           }}
         >
-          <Typography
-            sx={{ fontSize: 14 }}
-            color={baseColor}
-            gutterBottom
-            position="relative"
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            mb={1}
           >
-            #{quiz.quizNumber}
-            {isSolved && (
-              <Star
-                sx={{
-                  verticalAlign: "middle",
-                  position: "absolute",
-                  right: 0,
-                  fontSize: "1rem",
-                }}
-              />
-            )}
-          </Typography>
-          <Typography
-            color="white"
-            variant="h5"
-            component="div"
-            sx={{
-              wordBreak: "keep-all",
-              minHeight: 100,
-              verticalAlign: "middle",
-            }}
-            fontWeight={700}
-            fontFamily={"NanumSquareEB"}
+            <Box
+              color="#212837"
+              textAlign="left"
+              justifyContent="center"
+              display="flex"
+              flexDirection="column"
+              whiteSpace="nowrap"
+              width="130px"
+            >
+              <Typography
+                fontSize={16}
+                fontFamily={"NanumSquareEB"}
+                fontWeight={700}
+                textOverflow="ellipsis"
+                overflow="hidden"
+              >
+                {quiz.title}
+              </Typography>
+            </Box>
+            <Box display="flex" alignItems="center">
+              {isSolved ? (
+                <CheckCircleOutline
+                  sx={{
+                    fontSize: "1.5rem",
+                  }}
+                />
+              ) : (
+                <RadioButtonUnchecked
+                  sx={{
+                    fontSize: "1.5rem",
+                  }}
+                />
+              )}
+            </Box>
+          </Box>
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            width="100%"
+            height="100%"
           >
-            {quiz.title}
-            <Typography sx={{ mb: 1.5 }} color="lightgray">
-              {quiz.madeBy && `by ${quiz.madeBy}`}
-            </Typography>
-          </Typography>
-
-          <Box display="flex" justifyContent="center">
             <Image
-              alt="quiz icon"
-              src="/image/quiz/icon/default.png"
-              width={100}
-              height={120}
+              src={quiz.quizImgSrc}
+              alt={quiz.title}
+              width={isImageLoading ? 0 : 150}
+              height={isImageLoading ? 0 : 100}
+              priority
+              onLoadingComplete={() => setIsImageLoading(false)}
+              onError={() => setIsImageLoading(false)}
             />
           </Box>
         </CardContent>

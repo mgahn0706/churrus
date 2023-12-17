@@ -1,3 +1,4 @@
+import GlobalHeader from "@/components/Navigation/GlobalHeader";
 import QuizCard from "@/features/quiz/components/QuizCard";
 import { MEETINGS, QuizData } from "@/features/quiz/fixtures";
 import { useResponsiveValue } from "@/hooks/useResponsiveValue";
@@ -6,8 +7,9 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
+const BACKGROUND_COLOR = "#fffef8";
+
 export default function Quiz() {
-  const responsivePX = useResponsiveValue([24, 60, 220]);
   const [solvedQuiz, setSolvedQuiz] = useState<string[]>([]);
 
   const router = useRouter();
@@ -22,54 +24,15 @@ export default function Quiz() {
       <Head>
         <title>문제적 추러스 : 서울대 추리 동아리</title>
       </Head>
+      <GlobalHeader />
       <Box
-        height="100vh"
-        sx={{
-          backgroundImage:
-            'linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url("https://i.pinimg.com/564x/d3/b9/24/d3b9245271777a8004a26f529fed7cfc.jpg")',
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
+        height="100dvh"
+        bgcolor={BACKGROUND_COLOR}
+        display="flex"
+        justifyContent="center"
       >
-        <Box
-          color="white"
-          display="flex"
-          justifyContent="flex-start"
-          alignItems={"center"}
-          position="fixed"
-          top={0}
-          left={0}
-          width="100%"
-          px="24px"
-          height="60px"
-          zIndex={100}
-          bgcolor={"rgba(0, 0, 0, 0)"}
-          sx={{
-            backdropFilter: "blur(60px)",
-          }}
-        >
-          <Typography
-            variant="h5"
-            fontWeight={500}
-            onClick={() => {
-              router.push("/");
-            }}
-            sx={{
-              cursor: "pointer",
-            }}
-          >
-            CHURRUS
-          </Typography>
-        </Box>
-
-        <Box
-          height="100vh"
-          overflow="scroll"
-          px={`
-      ${responsivePX}px
-      `}
-        >
-          <Box width="100%" textAlign="center" color="white" mt="80px">
+        <Box height="100vh" overflow="scroll" maxWidth={1200} px={4}>
+          <Box width="100%" textAlign="center" color="#212837" mt="100px">
             <Typography
               variant="h3"
               fontWeight={600}
@@ -85,19 +48,6 @@ export default function Quiz() {
               }}
             >
               역대 정기모임에 있었던 문제들을 풀어볼 수 있어요.
-            </Typography>
-            <Typography
-              variant="h6"
-              sx={{
-                wordBreak: "keep-all",
-              }}
-            >
-              추러스에서 진행된{" "}
-              {Object.values(QuizData).reduce(
-                (acc, cur) => acc + cur.length,
-                0
-              )}
-              개의 문제 중, 현재 {solvedQuiz.length}개의 문제를 풀었어요!
             </Typography>
           </Box>
 
