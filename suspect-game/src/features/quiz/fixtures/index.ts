@@ -1,77 +1,91 @@
 import { QuizType } from "../types";
 
 export const MEETINGS = [
-  "2023년 11월 정기모임",
-  "2023년 9월 정기모임",
-  "2023년 6월 정기모임",
-  "2023년 4월 정기모임",
-  "2023년 3월 정기모임",
-  "2023년 1월 1차 정기모임",
-  "2022년 12월 정기모임",
-  "2022년 11월 정기모임",
-  "2022년 9월 정기모임",
-  "2022년 7월 정기모임",
-  "2022년 6월 정기모임",
-  "2019년 11월 정기모임",
-  "2019년 9월 정기모임",
+  "2023-11",
+  "2023-9",
+  "2023-6",
+  "2023-4",
+  "2023-3",
+  "2023-1-1",
+  "2022-12",
+  "2022-11",
+  "2022-9",
+  "2022-7",
+  "2022-6",
+  "2019-11",
+  "2019-9",
 ] as const;
 
 export const MeetingData: Record<
   string,
   {
-    title?: string;
+    title: string;
+    subtitle?: string;
     color: string;
   }
 > = {
-  "2019년 9월 정기모임": {
+  "2019-9": {
+    title: "2019년 9월 정기모임",
     color: "#ffe2db",
   },
-  "2019년 11월 정기모임": {
+  "2019-11": {
+    title: "2019년 11월 정기모임",
     color: "#cef0ff",
   },
-  "2022년 6월 정기모임": {
+  "2022-6": {
+    title: "2022년 6월 정기모임",
     color: "#d7f4dd",
   },
-  "2022년 7월 정기모임": {
+  "2022-7": {
+    title: "2022년 7월 정기모임",
     color: "#fde2e2",
   },
-  "2022년 9월 정기모임": {
+  "2022-9": {
+    title: "2022년 9월 정기모임",
     color: "#e2e2ff",
   },
-  "2022년 11월 정기모임": {
+  "2022-11": {
+    title: "2022년 11월 정기모임",
     color: "#bbd0fc",
-    title: "달나라 너머",
+    subtitle: "달나라 너머",
   },
-  "2022년 12월 정기모임": {
+  "2022-12": {
+    title: "2022년 12월 정기모임",
     color: "#fff3d4",
   },
-  "2023년 1월 1차 정기모임": {
+  "2023-1-1": {
+    title: "2023년 1월 1차 정기모임",
     color: "#f4beab",
-    title: "토끼와 거북이",
+    subtitle: "토끼와 거북이",
   },
-  "2023년 3월 정기모임": {
+  "2023-3": {
+    title: "2023년 3월 정기모임",
     color: "#fde2e2",
-    title: "2023 추러스 OT",
+    subtitle: "2023 추러스 OT",
   },
-  "2023년 4월 정기모임": {
+  "2023-4": {
+    title: "2023년 4월 정기모임",
     color: "#c3e0f4",
-    title: "게임 속 여행",
+    subtitle: "게임 속 여행",
   },
-  "2023년 6월 정기모임": {
+  "2023-6": {
+    title: "2023년 6월 정기모임",
     color: "#b1b1b1",
   },
-  "2023년 9월 정기모임": {
+  "2023-9": {
+    title: "2023년 9월 정기모임",
     color: "#fde2e2",
-    title: "Welcome to CHURRUS",
+    subtitle: "Welcome to CHURRUS",
   },
-  "2023년 11월 정기모임": {
+  "2023-11": {
+    title: "2023년 11월 정기모임",
     color: "#d3f6f6",
-    title: "일찍 온 크리스마스",
+    subtitle: "일찍 온 크리스마스",
   },
 };
 
 export const QuizData: Record<string, QuizType[]> = {
-  "2019년 9월 정기모임": [
+  "2019-9": [
     {
       id: "2019-9-1",
       quizNumber: 1,
@@ -153,7 +167,7 @@ export const QuizData: Record<string, QuizType[]> = {
       isAnswerable: true,
     },
   ],
-  "2019년 11월 정기모임": [
+  "2019-11": [
     {
       id: "2019-11-1",
       quizNumber: 1,
@@ -236,7 +250,7 @@ export const QuizData: Record<string, QuizType[]> = {
       isAnswerable: false,
     },
   ],
-  "2022년 6월 정기모임": [
+  "2022-6": [
     {
       id: "2022-6-1",
       quizNumber: 1,
@@ -278,7 +292,7 @@ export const QuizData: Record<string, QuizType[]> = {
       isAnswerable: false,
     },
   ],
-  "2022년 7월 정기모임": [
+  "2022-7": [
     {
       id: "2022-7-1",
       quizNumber: 1,
@@ -370,7 +384,7 @@ export const QuizData: Record<string, QuizType[]> = {
       isAnswerable: true,
     },
   ],
-  "2022년 9월 정기모임": [
+  "2022-9": [
     {
       id: "2022-9-1",
       quizNumber: 1,
@@ -422,7 +436,7 @@ export const QuizData: Record<string, QuizType[]> = {
       isAnswerable: true,
     },
   ],
-  "2022년 11월 정기모임": [
+  "2022-11": [
     {
       id: "2022-11-1",
       quizNumber: 1,
@@ -504,7 +518,7 @@ export const QuizData: Record<string, QuizType[]> = {
       isAnswerable: false,
     },
   ],
-  "2022년 12월 정기모임": [
+  "2022-12": [
     {
       id: "2022-12-1",
       quizNumber: 1,
@@ -536,7 +550,7 @@ export const QuizData: Record<string, QuizType[]> = {
       isAnswerable: true,
     },
   ],
-  "2023년 1월 1차 정기모임": [
+  "2023-1-1": [
     {
       id: "2023-1-1",
       quizNumber: 1,
@@ -629,7 +643,7 @@ export const QuizData: Record<string, QuizType[]> = {
     },
   ],
 
-  "2023년 3월 정기모임": [
+  "2023-3": [
     {
       id: "2023-3-1",
       quizNumber: 1,
@@ -711,7 +725,7 @@ export const QuizData: Record<string, QuizType[]> = {
       isAnswerable: true,
     },
   ],
-  "2023년 4월 정기모임": [
+  "2023-4": [
     {
       id: "2023-4-1",
       quizNumber: 1,
@@ -793,7 +807,7 @@ export const QuizData: Record<string, QuizType[]> = {
       isAnswerable: false,
     },
   ],
-  "2023년 6월 정기모임": [
+  "2023-6": [
     {
       id: "2023-6-1",
       quizNumber: 1,
@@ -835,7 +849,7 @@ export const QuizData: Record<string, QuizType[]> = {
       isAnswerable: true,
     },
   ],
-  "2023년 9월 정기모임": [
+  "2023-9": [
     {
       id: "2023-9-1",
       quizNumber: 1,
@@ -907,7 +921,7 @@ export const QuizData: Record<string, QuizType[]> = {
       isAnswerable: true,
     },
   ],
-  "2023년 11월 정기모임": [
+  "2023-11": [
     {
       id: "2023-11-1",
       quizNumber: 1,

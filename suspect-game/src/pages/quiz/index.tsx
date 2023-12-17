@@ -1,15 +1,12 @@
 import GlobalHeader from "@/components/Navigation/GlobalHeader";
 import QuizCard from "@/features/quiz/components/QuizCard";
 import { MEETINGS, MeetingData, QuizData } from "@/features/quiz/fixtures";
-import {
-  ArrowBackIos,
-  ArrowForwardIos,
-  ArrowLeft,
-  ArrowRight,
-} from "@mui/icons-material";
-import { Box, Divider, Grid, IconButton, Typography } from "@mui/material";
+import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
+import { Box, Grid, IconButton, Typography } from "@mui/material";
 import Head from "next/head";
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/router";
 
 const BACKGROUND_COLOR = "#fffef8";
 
@@ -18,14 +15,22 @@ type MeetingType = (typeof MEETINGS)[number];
 export default function Quiz() {
   const [solvedQuiz, setSolvedQuiz] = useState<string[]>([]);
 
-  const [selectedMeeting, setSelectedMeeting] = useState<MeetingType>(
-    MEETINGS[0]
-  );
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const selectedMeeting =
+    (searchParams.get("meeting") as MeetingType) ?? MEETINGS[0];
 
   useEffect(() => {
     const solvedQuizzes = JSON.parse(localStorage.getItem("quiz") ?? "[]");
     setSolvedQuiz(solvedQuizzes);
   }, []);
+
+  useEffect(() => {
+    if (!MeetingData[selectedMeeting]) {
+      router.push(`/quiz?meeting=${MEETINGS[0]}`);
+    }
+  }, [selectedMeeting]);
 
   return (
     <>
@@ -85,7 +90,7 @@ export default function Quiz() {
               onClick={() => {
                 const index = MEETINGS.indexOf(selectedMeeting);
                 if (index === MEETINGS.length - 1) return;
-                setSelectedMeeting(MEETINGS[index + 1]);
+                router.push(`/quiz?meeting=${MEETINGS[index + 1]}`);
               }}
             >
               <ArrowBackIos />
@@ -107,9 +112,9 @@ export default function Quiz() {
                   wordBreak: "keep-all",
                 }}
               >
-                {selectedMeeting}
+                {MeetingData[selectedMeeting]?.title}
               </Typography>
-              {MeetingData[selectedMeeting].title && (
+              {MeetingData[selectedMeeting]?.subtitle && (
                 <Typography
                   textAlign="center"
                   variant="body1"
@@ -118,7 +123,7 @@ export default function Quiz() {
                     wordBreak: "keep-all",
                   }}
                 >
-                  {MeetingData[selectedMeeting].title}
+                  {MeetingData[selectedMeeting].subtitle}
                 </Typography>
               )}
             </Box>
@@ -127,7 +132,7 @@ export default function Quiz() {
               onClick={() => {
                 const index = MEETINGS.indexOf(selectedMeeting);
                 if (index === 0) return;
-                setSelectedMeeting(MEETINGS[index - 1]);
+                router.push(`/quiz?meeting=${MEETINGS[index - 1]}`);
               }}
             >
               <ArrowForwardIos />
@@ -135,7 +140,7 @@ export default function Quiz() {
           </Box>
 
           <Grid container spacing={3} width="100%">
-            {QuizData[selectedMeeting].map((quiz) => (
+            {QuizData[selectedMeeting]?.map((quiz) => (
               <QuizCard
                 key={quiz.id}
                 quiz={quiz}
