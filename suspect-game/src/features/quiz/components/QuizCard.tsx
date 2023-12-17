@@ -85,6 +85,7 @@ export default function QuizCard({
                 {isSolved ? (
                   <CheckCircleOutline
                     sx={{
+                      color: "#20954f",
                       fontSize: "1.5rem",
                     }}
                   />
