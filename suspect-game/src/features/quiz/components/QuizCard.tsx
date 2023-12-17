@@ -111,8 +111,8 @@ export default function QuizCard({
                 style={{
                   borderRadius: "0.5rem",
                 }}
-                width={isImageLoading ? 0 : 150}
-                height={isImageLoading ? 0 : 100}
+                width={isImageLoading ? 0 : 180}
+                height={isImageLoading ? 0 : 90}
                 priority
                 onLoadingComplete={() => setIsImageLoading(false)}
                 onError={() => setIsImageLoading(false)}
@@ -120,8 +120,8 @@ export default function QuizCard({
               {isImageLoading && (
                 <Skeleton
                   variant="rectangular"
-                  width="150px"
-                  height="100px"
+                  width="180px"
+                  height="90px"
                   sx={{
                     borderRadius: "0.5rem",
                     bgcolor: "rgba(255, 255, 255, 0.7)",
