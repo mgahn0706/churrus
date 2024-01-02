@@ -293,7 +293,7 @@ export default function Connections() {
               섞기
             </Button>
             <Button
-              variant="outlined"
+              variant="contained"
               sx={{
                 height: "50px",
                 width: "100px",
