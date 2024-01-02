@@ -122,7 +122,7 @@ export default function Connections() {
         </IconButton>
         <Select
           sx={{
-            width: "180px",
+            width: "130px",
             fontSize: "1.2rem",
           }}
           value={connectionsId}
@@ -133,9 +133,9 @@ export default function Connections() {
             setTriedCount([0, 0, 0, 0]);
           }}
         >
-          {KoreanConnections.map((connection, idx) => <MenuItem value={connection.id}>#{connection.id}</MenuItem>;)}
-            
-
+          {KoreanConnections.map((connection, idx) => (
+            <MenuItem value={connection.id}>Week {connection.id}</MenuItem>
+          ))}
         </Select>
         <IconButton
           color="primary"
@@ -152,8 +152,6 @@ export default function Connections() {
       </Box>
     );
   };
-
-
 
   return (
     <Box
