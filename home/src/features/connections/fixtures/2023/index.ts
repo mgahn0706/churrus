@@ -1,535 +1,8 @@
-export const KoreanConnections: ConnectionsType[] = [
-  {
-    id: 1,
-    quiz: [
-      {
-        words: ["보석", "수박", "캔디", "돼지"],
-        description: "아이스크림 __바",
-      },
-      {
-        words: ["구리", "용인", "화성", "양주"],
-        description: "경기도의 행정구역",
-      },
-      {
-        words: ["별똥별", "지진", "일식", "번개"],
-        description: "자연현상",
-      },
-      {
-        words: ["더위", "신사", "관심", "소유"],
-        description: "무__",
-      },
-    ],
-  },
+import { ConnectionsType } from "..";
 
+export const CONNECTIONS2023: ConnectionsType[] = [
   {
-    id: 2,
-    quiz: [
-      {
-        words: ["수영", "체조", "유도", "조정"],
-        description: "올림픽 종목",
-      },
-      {
-        words: ["돌", "콩", "숙주", "도라지"],
-        description: "__나물",
-      },
-      {
-        words: ["괴물", "기생충", "해운대", "암살"],
-        description: "대한민국의 천만 관객 영화",
-      },
-      {
-        words: ["복수", "다양", "다중", "곱절"],
-        description: "여러개의",
-      },
-    ],
-  },
-  {
-    id: 3,
-    quiz: [
-      {
-        words: ["꽃", "가지", "뿌리", "열매"],
-        description: "식물의 기관",
-      },
-      {
-        words: ["주사", "겸자", "핀셋", "가위"],
-        description: "수술도구",
-      },
-      {
-        words: ["문신", "볼펜", "만년필", "프린터"],
-        description: "잉크를 사용하는 것",
-      },
-      {
-        words: ["게", "커튼", "와이퍼", "자동문"],
-        description: "옆으로만 움직이는 것",
-      },
-    ],
-  },
-  {
-    id: 4,
-    quiz: [
-      {
-        words: ["자두", "살구", "복숭아", "아보카도"],
-        description: "하나의 큰 씨가 있는 과일",
-      },
-      {
-        words: ["고추장", "케첩", "살사", "베샤멜"],
-        description: "소스",
-      },
-      {
-        words: ["DNA", "다이너마이트", "버터", "아이돌"],
-        description: "BTS의 노래 제목",
-      },
-      {
-        words: ["슈퍼", "포터", "배트", "팩"],
-        description: "___맨",
-      },
-    ],
-  },
-  {
-    id: 5,
-    quiz: [
-      {
-        words: ["위", "간", "이자", "기도"],
-        description: "신체 기관",
-      },
-      {
-        words: ["장구", "북", "공", "오르골"],
-        description: "타악기",
-      },
-      {
-        words: ["시트러스", "머스크", "우디", "허브"],
-        description: "향수의 향",
-      },
-      {
-        words: ["갈라파고스", "솔로몬", "쿡", "카나리아"],
-        description: "제도",
-      },
-    ],
-  },
-  {
-    id: 6,
-    quiz: [
-      {
-        words: ["홀덤", "방탈출", "퀴즈", "소설"],
-        description: "추러스 활동",
-      },
-      {
-        words: ["얼음", "김", "눈", "강"],
-        description: "물의 형태",
-      },
-      {
-        words: ["구설수", "왕위", "산", "궤도"],
-        description: "오를 수 있는 것",
-      },
-      {
-        words: ["컵", "비행기", "빨대", "호랑이"],
-        description: "종이 ___",
-      },
-    ],
-  },
-  {
-    id: 7,
-    quiz: [
-      {
-        words: ["중국", "스페인", "아이티", "수단"],
-        description: "국가",
-      },
-      {
-        words: ["디스코", "스트릿", "포크", "포고"],
-        description: "춤",
-      },
-      {
-        words: ["로퍼", "하이힐", "옥스퍼드", "메리제인"],
-        description: "구두",
-      },
-      {
-        words: ["골", "윙", "크로스", "티키타카"],
-        description: "축구 용어",
-      },
-    ],
-  },
-  {
-    id: 8,
-    quiz: [
-      {
-        words: ["휘발유", "아스팔트", "비닐", "플라스틱"],
-        description: "석유를 원료로 하는 것",
-      },
-      {
-        words: ["비", "피", "오", "아이"],
-        description: "알파벳",
-      },
-      {
-        words: ["붓꽃", "해바라기", "자화상", "모나리자"],
-        description: "명화",
-      },
-      {
-        words: ["심판", "달", "연인", "악마"],
-        description: "타로카드",
-      },
-    ],
-  },
-  {
-    id: 9,
-    quiz: [
-      {
-        words: ["척추", "해골", "갈비", "골반"],
-        description: "인체의 뼈",
-      },
-      {
-        words: ["상아", "진주", "호박", "산호"],
-        description: "유기물로 만들어진 보석",
-      },
-      {
-        words: ["톳", "보루", "판", "쌍"],
-        description: "한국의 단위",
-      },
-      {
-        words: ["마지막", "밥", "손", "홀"],
-        description: "맨___",
-      },
-    ],
-  },
-  {
-    id: 10,
-    quiz: [
-      {
-        words: ["개", "토끼", "원숭이", "용"],
-        description: "십이지신",
-      },
-      {
-        words: ["벽록", "군청", "밤", "갈매"],
-        description: "색",
-      },
-      {
-        words: ["고름", "깃", "소매", "폭"],
-        description: "한복의 부분",
-      },
-      {
-        words: ["생존", "그림", "유전", "화학"],
-        description: "___자",
-      },
-    ],
-  },
-  {
-    id: 11,
-    quiz: [
-      {
-        words: ["무좀", "사마귀", "건선", "티눈"],
-        description: "피부 질환",
-      },
-      {
-        words: ["버섯", "효모", "곰팡이", "동충하초"],
-        description: "균류",
-      },
-      {
-        words: ["비행기", "새", "파리", "선풍기"],
-        description: "날개가 있는 것",
-      },
-      {
-        words: ["전화기", "TV", "텔레파시", "망원경"],
-        description: "영어가 tele___ 인 단어",
-      },
-    ],
-  },
-  {
-    id: 12,
-    quiz: [
-      {
-        words: ["주석", "납", "비소", "수은"],
-        description: "금속 원소",
-      },
-      {
-        words: ["슬림", "스키니", "테이퍼드", "와이드"],
-        description: "바지 핏",
-      },
-      {
-        words: ["벤치", "짐볼", "아령", "랙"],
-        description: "운동기구",
-      },
-      {
-        words: ["아이언", "우드", "웨지", "퍼터"],
-        description: "골프클럽",
-      },
-    ],
-  },
-  {
-    id: 13,
-    quiz: [
-      {
-        words: ["포", "기갑", "총", "리볼버"],
-        description: "현대 무기",
-      },
-      {
-        words: ["루피", "패티", "로디", "해리"],
-        description: "뽀로로의 캐릭터",
-      },
-      {
-        words: ["프랑", "루블", "원", "페소"],
-        description: "통화 단위",
-      },
-      {
-        words: ["푹스", "파인만", "노이만", "보어"],
-        description: "맨해튼 프로젝트의 과학자",
-      },
-    ],
-  },
-  {
-    id: 14,
-    quiz: [
-      {
-        words: ["뱀", "코끼리", "표범", "사자"],
-        description: "바다___ 인 동물",
-      },
-      {
-        words: ["기업", "우리", "하나", "국민"],
-        description: "___은행",
-      },
-      {
-        words: ["동해", "남산", "가을", "기상"],
-        description: "애국가 첫 단어",
-      },
-      {
-        words: ["아파트", "단지", "번지", "호수"],
-        description: "주소",
-      },
-    ],
-  },
-  {
-    id: 15,
-    quiz: [
-      {
-        words: ["강원", "라라", "서울", "디즈니"],
-        description: "___랜드",
-      },
-      {
-        words: ["신", "열", "참깨", "틈새"],
-        description: "___라면",
-      },
-      {
-        words: ["탑", "바다", "유리", "길"],
-        description: "연예인",
-      },
-      {
-        words: ["솔", "파라솔", "도시", "파도"],
-        description: "계이름으로 이루어진 단어",
-      },
-    ],
-  },
-  {
-    id: 16,
-    quiz: [
-      {
-        words: ["캐모마일", "루이보스", "히비스커스", "페퍼민트"],
-        description: "차",
-      },
-
-      {
-        words: ["스매시", "커트", "서브", "드라이브"],
-        description: "탁구 용어",
-      },
-      {
-        words: ["시스루", "보브", "리프", "바가지"],
-        description: "헤어스타일",
-      },
-      {
-        words: ["올리브", "코발트", "크림슨", "아이보리"],
-        description: "색",
-      },
-    ],
-  },
-  {
-    id: 17,
-    quiz: [
-      {
-        words: ["스톡홀름", "마드리드", "오슬로", "코펜하겐"],
-        description: "유럽 국가의 수도",
-      },
-      {
-        words: ["안단테", "알레그로", "라르고", "비바체"],
-        description: "음악 빠르기 용어",
-      },
-      {
-        words: ["이오", "유로파", "칼리스토", "가니메데"],
-        description: "목성의 갈릴레이 위성",
-      },
-      {
-        words: ["와칸다", "소코비아", "뉴욕", "타이탄"],
-        description: "어벤져스 전투 지역",
-      },
-    ],
-  },
-  {
-    id: 18,
-    quiz: [
-      {
-        words: ["철학", "종교", "언어", "미학"],
-        description: "인문학 분야",
-      },
-      {
-        words: ["사냥", "낚시", "채집", "농사"],
-        description: "먹을 것을 얻는 방법",
-      },
-      {
-        words: ["지레", "미리", "사전", "먼저"],
-        description: "시간상으로 이전의",
-      },
-      {
-        words: ["문어", "네모", "후라이", "나비"],
-        description: "___의 꿈 (노래)",
-      },
-    ],
-  },
-  {
-    id: 19,
-    quiz: [
-      {
-        words: ["비트", "근대", "사탕무", "시금치"],
-        description: "비름과 채소",
-      },
-      {
-        words: ["킹", "더블", "싱글", "퀸"],
-        description: "침대 사이즈",
-      },
-      {
-        words: ["탭", "버즈", "워치", "노트"],
-        description: "삼성 갤럭시 제품 시리즈",
-      },
-      {
-        words: ["커피", "박스", "스터디", "바이트"],
-        description: "메가___",
-      },
-    ],
-  },
-  {
-    id: 20,
-    quiz: [
-      {
-        words: ["시장", "허기", "공복", "출출"],
-        description: "배고픔",
-      },
-      {
-        words: ["단풍", "싸리", "모란", "국화"],
-        description: "화투 패의 그림",
-      },
-      {
-        words: ["묘수", "불계", "무리수", "포석"],
-        description: "바둑 용어",
-      },
-      {
-        words: ["향유", "돌", "북극", "대왕"],
-        description: "___고래",
-      },
-    ],
-  },
-  {
-    id: 21,
-    quiz: [
-      {
-        words: ["북극", "대서", "태평", "인도"],
-        description: "바다",
-      },
-      {
-        words: ["백로", "하지", "청명", "대설"],
-        description: "24절기",
-      },
-      {
-        words: ["점검", "검토", "조사", "검정"],
-        description: "분석하여 따짐",
-      },
-      {
-        words: ["소개", "관리", "계발", "자랑"],
-        description: "자기___",
-      },
-    ],
-  },
-  {
-    id: 22,
-    quiz: [
-      {
-        words: ["샤베트", "젤라토", "하드", "슬러쉬"],
-        description: "빙과류 디저트",
-      },
-      {
-        words: ["페어", "탑", "트리플", "스트레이트"],
-        description: "포커 족보",
-      },
-
-      {
-        words: ["카지노", "루시", "파이란", "올드보이"],
-        description: "최민식 출연 영화",
-      },
-
-      {
-        words: ["리프팅", "필러", "보톡스", "인모드"],
-        description: "피부과 시술",
-      },
-    ],
-  },
-  {
-    id: 23,
-    quiz: [
-      {
-        words: ["부아", "화", "골", "노여움"],
-        description: "분노",
-      },
-      {
-        words: ["쇄신", "개벽", "혁명", "변경"],
-        description: "개혁",
-      },
-      {
-        words: ["맹장", "충수", "직장", "결장"],
-        description: "큰 창자의 부위",
-      },
-      {
-        words: ["관수", "개관", "관개", "급수"],
-        description: "논밭에 물을 대는 것",
-      },
-    ],
-  },
-  {
-    id: 24,
-    quiz: [
-      {
-        words: ["마늘", "와사비", "마라", "겨자"],
-        description: "매운맛의 소스",
-      },
-      {
-        words: ["고수", "공유", "주원", "현빈"],
-        description: "한국 남자배우",
-      },
-      {
-        words: ["대추", "사과", "포", "밤"],
-        description: "차례상 음식",
-      },
-      {
-        words: ["콩", "소시지", "햄", "사리"],
-        description: "부대찌개 재료",
-      },
-    ],
-  },
-  {
-    id: 25,
-    quiz: [
-      {
-        words: ["철인", "군자", "신사", "히어로"],
-        description: "훌륭한 사람",
-      },
-      {
-        words: ["불", "바람", "꽃", "게으름"],
-        description: "피울 수 있는 것",
-      },
-      {
-        words: ["보살", "포일", "배터리", "배트"],
-        description: "야구 용어",
-      },
-      {
-        words: ["볼", "강아지", "인재", "물"],
-        description: "___풀",
-      },
-    ],
-  },
-  {
-    id: 26,
+    week: 1,
     quiz: [
       {
         words: ["공정", "합당", "정당", "당연"],
@@ -550,7 +23,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 27,
+    week: 2,
     quiz: [
       {
         words: ["집합", "정수", "함수", "도형"],
@@ -568,7 +41,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 28,
+    week: 3,
     quiz: [
       {
         words: ["개", "늑대", "여우", "자칼"],
@@ -589,7 +62,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 29,
+    week: 4,
     quiz: [
       {
         description: "머리 관리용품",
@@ -610,7 +83,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 30,
+    week: 5,
     quiz: [
       {
         words: ["UV", "X", "라디오", "적외선"],
@@ -632,7 +105,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 31,
+    week: 6,
     quiz: [
       {
         words: ["빙하", "우박", "눈", "서리"],
@@ -653,7 +126,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 32,
+    week: 7,
     quiz: [
       {
         words: ["베이스", "알토", "테너", "바리톤"],
@@ -674,7 +147,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 33,
+    week: 8,
     quiz: [
       {
         words: ["공책", "가위", "각도기", "연필"],
@@ -695,7 +168,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 34,
+    week: 9,
     quiz: [
       {
         words: ["편지", "비둘기", "전화", "봉화"],
@@ -716,7 +189,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 35,
+    week: 10,
     quiz: [
       {
         words: ["틱톡", "릴스", "쇼츠", "프럽"],
@@ -737,7 +210,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 36,
+    week: 11,
     quiz: [
       {
         words: ["해마", "불가사리", "해삼", "거북"],
@@ -759,7 +232,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 37,
+    week: 12,
     quiz: [
       {
         words: ["그리핀도르", "슬리데린", "래번클로", "후플푸프"],
@@ -781,7 +254,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 38,
+    week: 13,
     quiz: [
       {
         words: ["배지", "견장", "훈장", "완장"],
@@ -802,7 +275,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 39,
+    week: 14,
     quiz: [
       {
         words: ["교대", "대치", "신사", "오금"],
@@ -823,7 +296,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 40,
+    week: 15,
     quiz: [
       {
         words: ["멜론", "벅스", "플로", "스포티파이"],
@@ -844,7 +317,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 41,
+    week: 16,
     quiz: [
       {
         words: ["동", "서", "남", "북"],
@@ -865,7 +338,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 42,
+    week: 17,
     quiz: [
       {
         words: ["수류탄", "지뢰", "박격포", "클레이모어"],
@@ -886,7 +359,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 43, // 10월 22일
+    week: 18,
     quiz: [
       {
         words: ["재", "숯", "목탄", "연기"],
@@ -907,7 +380,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 44,
+    week: 19,
     quiz: [
       {
         words: ["눈썹", "머리카락", "코털", "수염"],
@@ -928,7 +401,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 45,
+    week: 20,
     quiz: [
       {
         words: ["한", "금", "낙동", "영산"],
@@ -949,7 +422,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 46,
+    week: 21,
     quiz: [
       {
         words: ["이클립스", "은단", "리콜라", "호올스"],
@@ -970,7 +443,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 47,
+    week: 22,
     quiz: [
       {
         words: ["업라이트", "그랜드", "전자", "스퀘어"],
@@ -991,7 +464,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 48, // 10월 27일
+    week: 23,
     quiz: [
       {
         words: ["스페이스", "엔터", "탭", "컨트롤"],
@@ -1012,7 +485,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 49,
+    week: 24,
     quiz: [
       {
         words: ["솔개", "독수리", "부엉이", "황조롱이"],
@@ -1033,7 +506,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 50,
+    week: 25,
     quiz: [
       {
         words: ["순대", "베이컨", "족발", "햄"],
@@ -1055,7 +528,7 @@ export const KoreanConnections: ConnectionsType[] = [
   },
 
   {
-    id: 51, // 10월 31일
+    week: 26,
     quiz: [
       {
         words: ["호박", "유령", "거미", "사탕"],
@@ -1076,7 +549,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 52,
+    week: 27,
     quiz: [
       {
         words: ["슬기", "현명", "셈", "지략"],
@@ -1097,7 +570,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 53,
+    week: 28,
     quiz: [
       {
         words: ["쌀", "보리", "피", "줄"],
@@ -1118,7 +591,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 54,
+    week: 29,
     quiz: [
       {
         words: ["강아지", "올챙이", "소년", "병아리"],
@@ -1139,7 +612,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 55,
+    week: 30,
     quiz: [
       { words: ["매매", "거래", "고판", "흥정"], description: "사고 팖" },
       {
@@ -1157,7 +630,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 56,
+    week: 31,
     quiz: [
       {
         words: ["영화", "드라마", "예능", "다큐"],
@@ -1178,7 +651,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 57, // 11월 6일
+    week: 32,
     quiz: [
       {
         words: ["지지", "응원", "유지", "부지"],
@@ -1199,7 +672,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 58,
+    week: 33,
     quiz: [
       {
         words: ["파파야", "자탁", "카카오", "망고"],
@@ -1220,7 +693,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 59,
+    week: 34,
     quiz: [
       {
         words: ["시나몬", "바닐라", "헤이즐넛", "카라멜"],
@@ -1241,7 +714,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 60,
+    week: 35,
     quiz: [
       {
         words: ["일층", "보다", "한결", "더"],
@@ -1262,7 +735,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 61,
+    week: 36,
     quiz: [
       {
         words: ["물", "침", "피", "땀"],
@@ -1283,7 +756,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 62,
+    week: 37,
     quiz: [
       {
         words: ["음정", "멜로디", "리듬", "조화"],
@@ -1304,7 +777,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 63,
+    week: 38,
     quiz: [
       {
         words: ["엔트리", "미들", "퍼포먼스", "하이엔드"],
@@ -1325,7 +798,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 64,
+    week: 39,
     quiz: [
       {
         words: ["운동", "수면", "청결", "식사"],
@@ -1346,7 +819,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 65,
+    week: 40,
     quiz: [
       {
         words: ["서든", "메이플", "카트", "피파"],
@@ -1368,7 +841,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 66,
+    week: 41,
     quiz: [
       {
         words: ["바통", "부케", "데뷔", "망토"],
@@ -1389,7 +862,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 67,
+    week: 42,
     quiz: [
       {
         words: ["수능", "생일", "추석", "크리스마스"],
@@ -1411,7 +884,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 68,
+    week: 43,
     quiz: [
       {
         words: ["복사", "저장", "프린트", "삭제"],
@@ -1432,7 +905,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 69,
+    week: 44,
     quiz: [
       {
         words: ["조차", "간만", "조금", "사리"],
@@ -1453,7 +926,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 70,
+    week: 45,
     quiz: [
       {
         words: ["마이크로", "나노", "피코", "펨토"],
@@ -1474,7 +947,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 71,
+    week: 46,
     quiz: [
       {
         words: ["챕터", "팀", "그룹", "집합"],
@@ -1495,7 +968,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 72,
+    week: 47,
     quiz: [
       {
         words: ["강점", "약점", "기회", "위협"],
@@ -1516,7 +989,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 73, // 11월 22일
+    week: 48,
     quiz: [
       {
         words: ["마이", "믿지", "스윗", "엔써"],
@@ -1538,7 +1011,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 74,
+    week: 49,
     quiz: [
       {
         words: ["선", "화살표", "곡선", "자유형"],
@@ -1559,7 +1032,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 75,
+    week: 50,
     quiz: [
       {
         words: ["보석", "구속", "석방", "배심"],
@@ -1580,7 +1053,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 76, // 11월 25일
+    week: 51,
     quiz: [
       {
         words: ["유감", "못마땅", "여감", "서운"],
@@ -1602,7 +1075,7 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
   {
-    id: 77,
+    week: 52,
     quiz: [
       {
         words: ["라벨", "딱지", "브랜드", "표"],
@@ -1623,20 +1096,3 @@ export const KoreanConnections: ConnectionsType[] = [
     ],
   },
 ];
-
-interface ConnectionsType {
-  id: number;
-  quiz: [
-    ConnectionQuizType,
-    ConnectionQuizType,
-    ConnectionQuizType,
-    ConnectionQuizType
-  ];
-}
-
-export const CONNECTIONS_COLOR = ["#f8b703", "#949217", "#89b4c4", "#c1a7b0"];
-
-interface ConnectionQuizType {
-  words: [string, string, string, string];
-  description: string;
-}

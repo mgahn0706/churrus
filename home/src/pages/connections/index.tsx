@@ -1,7 +1,7 @@
 import HomeButton from "@/components/HomeButton";
 import {
   CONNECTIONS_COLOR,
-  KoreanConnections,
+  KOREAN_CONNECTIONS,
 } from "@/features/connections/fixtures";
 import {
   AllInclusive,
@@ -28,137 +28,215 @@ import {
   DialogContent,
   DialogContentText,
   MenuItem,
+  FormControl,
 } from "@mui/material";
 import dayjs from "dayjs";
+import weekOfYear from "dayjs/plugin/weekOfYear";
 import { useEffect, useState } from "react";
 
 const SHARE_GRUOP_IMOJI = ["🟨", "🟩", "🟦", "🟪"];
 
-export default function Connections() {
-  const today = dayjs();
-
-  const maxOpenedId = Math.min(
-    today.diff("2023-9-10", "day"),
-    KoreanConnections.length
+const RuleModal = ({
+  isOpen,
+  onClose,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+}) => {
+  return (
+    <Dialog open={isOpen} onClose={onClose}>
+      <DialogTitle>게임 방법</DialogTitle>
+      <DialogContent>
+        <DialogContentText
+          sx={{ whiteSpace: "pre-line" }}
+          color="black"
+          fontWeight="bold"
+        >
+          공통된 주제를 가진 단어 4개를 묶어 그룹 4개를 만드세요.
+        </DialogContentText>
+        <DialogContentText mb={2}>
+          4개의 단어를 고르고, 제출 버튼을 누르면 정답인지 확인할 수 있습니다.
+        </DialogContentText>
+        <DialogContentText mb={2}>
+          예시: 버스, 지하철, 택시, 자전거 → 교통수단 <br /> 사랑, 슬픔, 기쁨,
+          분노 → 감정
+        </DialogContentText>
+        <DialogContentText mb={2}>
+          각 커넥션 퍼즐은 유일한 정답만이 존재합니다. 여러 그룹에 속해보이는
+          단어에 주의하세요!
+        </DialogContentText>
+        <DialogContentText mb={2}>
+          각 그룹을 맞추면 그룹의 난이도에 맞는 색깔이 나타납니다. <br />
+          🟨 쉬움 <br />
+          🟩 <br />
+          🟦 <br />
+          🟪 어려움
+        </DialogContentText>
+      </DialogContent>
+    </Dialog>
   );
+};
 
+dayjs.extend(weekOfYear);
+
+const today = dayjs();
+
+export default function Connections() {
   const [lives, setLives] = useState(4);
   const [isInfiniteMode, setIsInfiniteMode] = useState(true);
-  const [connectionsId, setConnectionsId] = useState(maxOpenedId);
+
   const [selectedWords, setSelectedWords] = useState<string[]>([]);
   const [panels, setPanels] = useState<string[]>([]);
   const [solvedGroups, setSolvedGroups] = useState<number[]>([]);
   const [isRuleModalOpen, setIsRuleModalOpen] = useState(false);
   const [triedCount, setTriedCount] = useState([0, 0, 0, 0]);
+  const [connectionDate, setConnectionDate] = useState({
+    year: today.get("year"),
+    week: today.week(),
+  });
 
-  const connectionsAnswers = KoreanConnections[connectionsId - 1].quiz.map(
-    (quiz) => {
-      return quiz.words;
-    }
-  );
+  const resetConnection = () => {
+    setSelectedWords([]);
+    setSolvedGroups([]);
+    setLives(4);
+  };
+
+  const selectedConnection =
+    KOREAN_CONNECTIONS[connectionDate.year][
+      Math.min(
+        connectionDate.week - 1,
+        KOREAN_CONNECTIONS[connectionDate.year].length - 1
+      )
+    ];
 
   useEffect(() => {
     setSolvedGroups([]);
     setLives(4);
-    const panels = KoreanConnections[connectionsId - 1].quiz.flatMap(
-      (quiz) => quiz.words
-    );
+    const panels = selectedConnection.quiz.flatMap((quiz) => quiz.words);
     const shuffledPanel = panels.sort(() => Math.random() - 0.5);
     setPanels(shuffledPanel);
-  }, [connectionsId]);
+  }, [connectionDate]);
+
+  if (!selectedConnection) {
+    return null;
+  }
+
+  const connectionAnswers = selectedConnection.quiz.map((quiz) => quiz.words);
 
   const ConnectionStepper = () => {
     return (
-      <Box display="flex" mt={2} alignItems="center" ml="5vw">
+      <Box
+        display="flex"
+        ml={[0, null, 5]}
+        gap={2}
+        mt={[1, null, 3]}
+        justifyContent={["center", null, "flex-start"]}
+        alignContent="center"
+      >
         <IconButton
-          disabled={connectionsId === 1}
+          disabled={
+            selectedConnection.week === 1 && connectionDate.year === 2022
+          }
           color="primary"
           onClick={() => {
-            setConnectionsId(connectionsId - 1);
-            setSelectedWords([]);
-            setSolvedGroups([]);
-            setTriedCount([0, 0, 0, 0]);
+            setConnectionDate(
+              selectedConnection.week === 1
+                ? {
+                    year: connectionDate.year - 1,
+                    week: KOREAN_CONNECTIONS[connectionDate.year - 1].length,
+                  }
+                : {
+                    year: connectionDate.year,
+                    week: connectionDate.week - 1,
+                  }
+            );
+            resetConnection();
           }}
         >
           <NavigateBefore />
         </IconButton>
-        <Select
-          sx={{
-            width: "180px",
-            fontSize: "1.2rem",
-          }}
-          value={connectionsId}
-          onChange={(e) => {
-            setConnectionsId(Number(e.target.value));
-            setSelectedWords([]);
-            setSolvedGroups([]);
-            setTriedCount([0, 0, 0, 0]);
-          }}
+        <Box
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          alignContent="center"
         >
-          {KoreanConnections.map((connection, idx) => {
-            if (idx < maxOpenedId) {
-              return (
-                <MenuItem value={connection.id}>
-                  {dayjs("2023-09-10").add(idx, "day").format("YY년 M월 D일")}
-                </MenuItem>
-              );
-            }
-          })}
-        </Select>
+          <FormControl variant="standard" sx={{ minWidth: 80 }} size="small">
+            <Box display="flex" justifyContent="center" width="100%">
+              <Select
+                onChange={(e) => {
+                  setConnectionDate({
+                    year: Number(e.target.value),
+                    week: 1,
+                  });
+                  resetConnection();
+                }}
+                disableUnderline
+                inputProps={{
+                  IconComponent: () => null,
+                  sx: { padding: "0 !important", border: "0 !important" },
+                }}
+                value={connectionDate.year}
+                sx={{
+                  fontSize: "1rem",
+                }}
+              >
+                {Object.keys(KOREAN_CONNECTIONS).map((year) => (
+                  <MenuItem value={year}>{year}</MenuItem>
+                ))}
+              </Select>
+            </Box>
+          </FormControl>
+          <FormControl variant="standard" sx={{ mt: "2px" }}>
+            <Box display="flex" alignItems="center" justifyContent="center">
+              <Select
+                inputProps={{
+                  IconComponent: () => null,
+                  sx: { padding: "0 !important", border: "0 !important" },
+                }}
+                disableUnderline
+                sx={{
+                  fontSize: "1.2rem",
+                  fontWeight: "bold",
+                }}
+                value={connectionDate.week}
+                onChange={(e) => {
+                  setConnectionDate({
+                    year: connectionDate.year,
+                    week: Number(e.target.value),
+                  });
+                  resetConnection();
+                }}
+              >
+                {KOREAN_CONNECTIONS[connectionDate.year].map((week) => (
+                  <MenuItem value={week.week}>Week {week.week}</MenuItem>
+                ))}
+              </Select>
+            </Box>
+          </FormControl>
+        </Box>
         <IconButton
           color="primary"
           onClick={() => {
-            setConnectionsId(connectionsId + 1);
-            setSelectedWords([]);
-            setSolvedGroups([]);
-            setTriedCount([0, 0, 0, 0]);
+            setConnectionDate(
+              selectedConnection.week ===
+                KOREAN_CONNECTIONS[connectionDate.year].length
+                ? { year: connectionDate.year + 1, week: 1 }
+                : {
+                    year: connectionDate.year,
+                    week: connectionDate.week + 1,
+                  }
+            );
+            resetConnection();
           }}
-          disabled={connectionsId === maxOpenedId}
+          disabled={
+            connectionDate.year === today.get("year") &&
+            connectionDate.week === today.week()
+          }
         >
           <NavigateNext />
         </IconButton>
       </Box>
-    );
-  };
-
-  const RuleModal = ({
-    isOpen,
-    onClose,
-  }: {
-    isOpen: boolean;
-    onClose: () => void;
-  }) => {
-    return (
-      <Dialog open={isOpen} onClose={onClose}>
-        <DialogTitle>게임 방법</DialogTitle>
-        <DialogContent>
-          <DialogContentText
-            sx={{ whiteSpace: "pre-line" }}
-            color="black"
-            fontWeight="bold"
-          >
-            공통된 주제를 가진 단어 4개를 묶어 그룹 4개를 만드세요.
-          </DialogContentText>
-          <DialogContentText mb={2}>
-            4개의 단어를 고르고, 제출 버튼을 누르면 정답인지 확인할 수 있습니다.
-          </DialogContentText>
-          <DialogContentText mb={2}>
-            예시: 버스, 지하철, 택시, 자전거 → 교통수단 <br /> 사랑, 슬픔, 기쁨,
-            분노 → 감정
-          </DialogContentText>
-          <DialogContentText mb={2}>
-            각 커넥션 퍼즐은 유일한 정답만이 존재합니다. 여러 그룹에 속해보이는
-            단어에 주의하세요!
-          </DialogContentText>
-          <DialogContentText mb={2}>
-            각 그룹을 맞추면 그룹의 난이도에 맞는 색깔이 나타납니다. <br />
-            🟨 쉬움 <br />
-            🟩 <br />
-            🟦 <br />
-            🟪 어려움
-          </DialogContentText>
-        </DialogContent>
-      </Dialog>
     );
   };
 
@@ -197,15 +275,15 @@ export default function Connections() {
       <Typography variant="h4" mb={1} fontWeight="bold" mt={4}>
         추러스 커넥션
       </Typography>
-      <Typography variant="body1" mb={3}>
+      <Typography variant="body1" mb={3} px={5}>
         같은 맥락의 단어 4개를 묶어 총 4그룹으로 나눠주세요.
       </Typography>
       <Divider />
       <ConnectionStepper />
-      <Box display="flex" justifyContent="center" px={5} py={5}>
+      <Box display="flex" justifyContent="center" px={5} pb={5} pt={1}>
         <Grid container justifyContent="center" maxWidth="420px" spacing={1}>
           {solvedGroups.map((solvedGroupIdx) => {
-            const solvedGroup = KoreanConnections[connectionsId - 1].quiz;
+            const solvedGroup = selectedConnection.quiz;
             return (
               <Grid item xs={12}>
                 <Box
@@ -302,7 +380,7 @@ export default function Connections() {
               섞기
             </Button>
             <Button
-              variant="outlined"
+              variant="contained"
               sx={{
                 height: "50px",
                 width: "100px",
@@ -317,11 +395,11 @@ export default function Connections() {
                   })
                 );
                 if (
-                  connectionsAnswers.some((answer) => {
+                  connectionAnswers.some((answer) => {
                     return answer.every((word) => selectedWords.includes(word));
                   })
                 ) {
-                  const answerIdx = connectionsAnswers.findIndex((answer) => {
+                  const answerIdx = connectionAnswers.findIndex((answer) => {
                     return answer.every((word) => selectedWords.includes(word));
                   });
                   const removedPanel = panels.filter(
@@ -372,9 +450,7 @@ export default function Connections() {
             onClick={() => {
               if (navigator.share) {
                 navigator.share({
-                  title: `추러스 커넥션 ${dayjs("2023-09-11")
-                    .add(connectionsId - 1, "day")
-                    .format("YYYY년 M월 D일")},`,
+                  title: `추러스 커넥션 ${connectionDate.year}년 Week ${connectionDate.week},`,
                   text: `${solvedGroups
                     .map((group, index) => {
                       return `${SHARE_GRUOP_IMOJI[group]}: ${triedCount[index]}`;
@@ -387,13 +463,14 @@ export default function Connections() {
               if (navigator.clipboard) {
                 navigator.clipboard
                   .writeText(
-                    `추러스 커넥션 ${dayjs("2023-09-11")
-                      .add(connectionsId - 1, "day")
-                      .format("YYYY년 M월 D일")}, ${solvedGroups
+                    `추러스 커넥션 ${connectionDate.year}년 Week ${
+                      connectionDate.week
+                    }, ${solvedGroups
                       .map((group, index) => {
                         return `${SHARE_GRUOP_IMOJI[group]}: ${triedCount[index]}`;
                       })
-                      .join(" ")} : https://churrus.vercel.app/connections
+                      .join(" ")}
+               : https://churrus.vercel.app/connections
                     `
                   )
                   .then(() => {
