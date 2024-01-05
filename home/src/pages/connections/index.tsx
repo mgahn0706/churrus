@@ -1,7 +1,7 @@
 import HomeButton from "@/components/HomeButton";
 import {
   CONNECTIONS_COLOR,
-  KoreanConnections,
+  KOREAN_CONNECTIONS,
 } from "@/features/connections/fixtures";
 import {
   AllInclusive,
@@ -30,6 +30,7 @@ import {
   MenuItem,
 } from "@mui/material";
 import dayjs from "dayjs";
+import weekOfYear from "dayjs/plugin/weekOfYear";
 import { useEffect, useState } from "react";
 
 const SHARE_GRUOP_IMOJI = ["🟨", "🟩", "🟦", "🟪"];
@@ -75,47 +76,63 @@ const RuleModal = ({
   );
 };
 
+dayjs.extend(weekOfYear);
+
+const today = dayjs();
+
 export default function Connections() {
-  const today = dayjs();
-
-  const maxOpenedId = KoreanConnections.length;
-
   const [lives, setLives] = useState(4);
   const [isInfiniteMode, setIsInfiniteMode] = useState(true);
-  const [connectionsId, setConnectionsId] = useState(maxOpenedId);
+
   const [selectedWords, setSelectedWords] = useState<string[]>([]);
   const [panels, setPanels] = useState<string[]>([]);
   const [solvedGroups, setSolvedGroups] = useState<number[]>([]);
   const [isRuleModalOpen, setIsRuleModalOpen] = useState(false);
   const [triedCount, setTriedCount] = useState([0, 0, 0, 0]);
+  const [connectionDate, setConnectionDate] = useState({
+    year: today.get("year"),
+    week: today.week(),
+  });
 
-  const connectionsAnswers = KoreanConnections[connectionsId - 1].quiz.map(
-    (quiz) => {
-      return quiz.words;
-    }
-  );
+  const resetConnection = () => {
+    setSelectedWords([]);
+    setSolvedGroups([]);
+    setLives(4);
+  };
+
+  const selectedConnection =
+    KOREAN_CONNECTIONS[connectionDate.year][connectionDate.week - 1];
+  const connectionAnswers = selectedConnection.quiz.map((quiz) => quiz.words);
 
   useEffect(() => {
     setSolvedGroups([]);
     setLives(4);
-    const panels = KoreanConnections[connectionsId - 1].quiz.flatMap(
-      (quiz) => quiz.words
-    );
+    const panels = selectedConnection.quiz.flatMap((quiz) => quiz.words);
     const shuffledPanel = panels.sort(() => Math.random() - 0.5);
     setPanels(shuffledPanel);
-  }, [connectionsId]);
+  }, [connectionDate]);
 
   const ConnectionStepper = () => {
     return (
       <Box display="flex" mt={2} alignItems="center" ml="5vw">
         <IconButton
-          disabled={connectionsId === 1}
+          disabled={
+            selectedConnection.week === 1 && connectionDate.year === 2022
+          }
           color="primary"
           onClick={() => {
-            setConnectionsId(connectionsId - 1);
-            setSelectedWords([]);
-            setSolvedGroups([]);
-            setTriedCount([0, 0, 0, 0]);
+            setConnectionDate(
+              selectedConnection.week === 1
+                ? {
+                    year: connectionDate.year - 1,
+                    week: KOREAN_CONNECTIONS[connectionDate.year - 1].length,
+                  }
+                : {
+                    year: connectionDate.year,
+                    week: connectionDate.week - 1,
+                  }
+            );
+            resetConnection();
           }}
         >
           <NavigateBefore />
@@ -125,27 +142,36 @@ export default function Connections() {
             width: "130px",
             fontSize: "1.2rem",
           }}
-          value={connectionsId}
+          value={connectionDate.week}
           onChange={(e) => {
-            setConnectionsId(Number(e.target.value));
-            setSelectedWords([]);
-            setSolvedGroups([]);
-            setTriedCount([0, 0, 0, 0]);
+            setConnectionDate({
+              year: connectionDate.year,
+              week: Number(e.target.value),
+            });
+            resetConnection();
           }}
         >
-          {KoreanConnections.map((connection, idx) => (
-            <MenuItem value={connection.id}>Week {connection.id}</MenuItem>
+          {KOREAN_CONNECTIONS[connectionDate.year].map((week) => (
+            <MenuItem value={week.week}>Week {week.week}</MenuItem>
           ))}
         </Select>
         <IconButton
           color="primary"
           onClick={() => {
-            setConnectionsId(connectionsId + 1);
-            setSelectedWords([]);
-            setSolvedGroups([]);
-            setTriedCount([0, 0, 0, 0]);
+            setConnectionDate(
+              selectedConnection.week === 52
+                ? { year: connectionDate.year + 1, week: 1 }
+                : {
+                    year: connectionDate.year,
+                    week: connectionDate.week + 1,
+                  }
+            );
+            resetConnection();
           }}
-          disabled={connectionsId === maxOpenedId}
+          disabled={
+            connectionDate.year === today.get("year") &&
+            connectionDate.week === today.week()
+          }
         >
           <NavigateNext />
         </IconButton>
@@ -196,7 +222,7 @@ export default function Connections() {
       <Box display="flex" justifyContent="center" px={5} py={5}>
         <Grid container justifyContent="center" maxWidth="420px" spacing={1}>
           {solvedGroups.map((solvedGroupIdx) => {
-            const solvedGroup = KoreanConnections[connectionsId - 1].quiz;
+            const solvedGroup = selectedConnection.quiz;
             return (
               <Grid item xs={12}>
                 <Box
@@ -308,11 +334,11 @@ export default function Connections() {
                   })
                 );
                 if (
-                  connectionsAnswers.some((answer) => {
+                  connectionAnswers.some((answer) => {
                     return answer.every((word) => selectedWords.includes(word));
                   })
                 ) {
-                  const answerIdx = connectionsAnswers.findIndex((answer) => {
+                  const answerIdx = connectionAnswers.findIndex((answer) => {
                     return answer.every((word) => selectedWords.includes(word));
                   });
                   const removedPanel = panels.filter(
@@ -363,9 +389,7 @@ export default function Connections() {
             onClick={() => {
               if (navigator.share) {
                 navigator.share({
-                  title: `추러스 커넥션 ${dayjs("2023-09-11")
-                    .add(connectionsId - 1, "day")
-                    .format("YYYY년 M월 D일")},`,
+                  title: `추러스 커넥션 ${connectionDate.year}년 Week ${connectionDate.week},`,
                   text: `${solvedGroups
                     .map((group, index) => {
                       return `${SHARE_GRUOP_IMOJI[group]}: ${triedCount[index]}`;
@@ -378,13 +402,14 @@ export default function Connections() {
               if (navigator.clipboard) {
                 navigator.clipboard
                   .writeText(
-                    `추러스 커넥션 ${dayjs("2023-09-11")
-                      .add(connectionsId - 1, "day")
-                      .format("YYYY년 M월 D일")}, ${solvedGroups
+                    `추러스 커넥션 ${connectionDate.year}년 Week ${
+                      connectionDate.week
+                    }, ${solvedGroups
                       .map((group, index) => {
                         return `${SHARE_GRUOP_IMOJI[group]}: ${triedCount[index]}`;
                       })
-                      .join(" ")} : https://churrus.vercel.app/connections
+                      .join(" ")}
+               : https://churrus.vercel.app/connections
                     `
                   )
                   .then(() => {
