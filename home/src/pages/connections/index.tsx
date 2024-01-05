@@ -208,9 +208,11 @@ export default function Connections() {
                   resetConnection();
                 }}
               >
-                {KOREAN_CONNECTIONS[connectionDate.year].map((week) => (
-                  <MenuItem value={week.week}>Week {week.week}</MenuItem>
-                ))}
+                {KOREAN_CONNECTIONS[connectionDate.year]
+                  .slice(today.week())
+                  .map((week) => (
+                    <MenuItem value={week.week}>Week {week.week}</MenuItem>
+                  ))}
               </Select>
             </Box>
           </FormControl>
