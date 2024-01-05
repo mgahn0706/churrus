@@ -28,6 +28,7 @@ import {
   DialogContent,
   DialogContentText,
   MenuItem,
+  FormControl,
 } from "@mui/material";
 import dayjs from "dayjs";
 import weekOfYear from "dayjs/plugin/weekOfYear";
@@ -101,8 +102,12 @@ export default function Connections() {
   };
 
   const selectedConnection =
-    KOREAN_CONNECTIONS[connectionDate.year][connectionDate.week - 1];
-  const connectionAnswers = selectedConnection.quiz.map((quiz) => quiz.words);
+    KOREAN_CONNECTIONS[connectionDate.year][
+      Math.min(
+        connectionDate.week - 1,
+        KOREAN_CONNECTIONS[connectionDate.year].length - 1
+      )
+    ];
 
   useEffect(() => {
     setSolvedGroups([]);
@@ -112,9 +117,22 @@ export default function Connections() {
     setPanels(shuffledPanel);
   }, [connectionDate]);
 
+  if (!selectedConnection) {
+    return null;
+  }
+
+  const connectionAnswers = selectedConnection.quiz.map((quiz) => quiz.words);
+
   const ConnectionStepper = () => {
     return (
-      <Box display="flex" mt={2} alignItems="center" ml="5vw">
+      <Box
+        display="flex"
+        ml={[0, null, 5]}
+        gap={2}
+        mt={[1, null, 3]}
+        justifyContent={["center", null, "flex-start"]}
+        alignContent="center"
+      >
         <IconButton
           disabled={
             selectedConnection.week === 1 && connectionDate.year === 2022
@@ -137,29 +155,72 @@ export default function Connections() {
         >
           <NavigateBefore />
         </IconButton>
-        <Select
-          sx={{
-            width: "130px",
-            fontSize: "1.2rem",
-          }}
-          value={connectionDate.week}
-          onChange={(e) => {
-            setConnectionDate({
-              year: connectionDate.year,
-              week: Number(e.target.value),
-            });
-            resetConnection();
-          }}
+        <Box
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          alignContent="center"
         >
-          {KOREAN_CONNECTIONS[connectionDate.year].map((week) => (
-            <MenuItem value={week.week}>Week {week.week}</MenuItem>
-          ))}
-        </Select>
+          <FormControl variant="standard" sx={{ minWidth: 80 }} size="small">
+            <Box display="flex" justifyContent="center" width="100%">
+              <Select
+                onChange={(e) => {
+                  setConnectionDate({
+                    year: Number(e.target.value),
+                    week: 1,
+                  });
+                  resetConnection();
+                }}
+                disableUnderline
+                inputProps={{
+                  IconComponent: () => null,
+                  sx: { padding: "0 !important", border: "0 !important" },
+                }}
+                value={connectionDate.year}
+                sx={{
+                  fontSize: "1rem",
+                }}
+              >
+                {Object.keys(KOREAN_CONNECTIONS).map((year) => (
+                  <MenuItem value={year}>{year}</MenuItem>
+                ))}
+              </Select>
+            </Box>
+          </FormControl>
+          <FormControl variant="standard" sx={{ mt: "2px" }}>
+            <Box display="flex" alignItems="center" justifyContent="center">
+              <Select
+                inputProps={{
+                  IconComponent: () => null,
+                  sx: { padding: "0 !important", border: "0 !important" },
+                }}
+                disableUnderline
+                sx={{
+                  fontSize: "1.2rem",
+                  fontWeight: "bold",
+                }}
+                value={connectionDate.week}
+                onChange={(e) => {
+                  setConnectionDate({
+                    year: connectionDate.year,
+                    week: Number(e.target.value),
+                  });
+                  resetConnection();
+                }}
+              >
+                {KOREAN_CONNECTIONS[connectionDate.year].map((week) => (
+                  <MenuItem value={week.week}>Week {week.week}</MenuItem>
+                ))}
+              </Select>
+            </Box>
+          </FormControl>
+        </Box>
         <IconButton
           color="primary"
           onClick={() => {
             setConnectionDate(
-              selectedConnection.week === 52
+              selectedConnection.week ===
+                KOREAN_CONNECTIONS[connectionDate.year].length
                 ? { year: connectionDate.year + 1, week: 1 }
                 : {
                     year: connectionDate.year,
@@ -214,12 +275,12 @@ export default function Connections() {
       <Typography variant="h4" mb={1} fontWeight="bold" mt={4}>
         추러스 커넥션
       </Typography>
-      <Typography variant="body1" mb={3}>
+      <Typography variant="body1" mb={3} px={5}>
         같은 맥락의 단어 4개를 묶어 총 4그룹으로 나눠주세요.
       </Typography>
       <Divider />
       <ConnectionStepper />
-      <Box display="flex" justifyContent="center" px={5} py={5}>
+      <Box display="flex" justifyContent="center" px={5} pb={5} pt={1}>
         <Grid container justifyContent="center" maxWidth="420px" spacing={1}>
           {solvedGroups.map((solvedGroupIdx) => {
             const solvedGroup = selectedConnection.quiz;
