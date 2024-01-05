@@ -209,7 +209,7 @@ export default function Connections() {
                 }}
               >
                 {KOREAN_CONNECTIONS[connectionDate.year]
-                  .slice(today.week())
+                  .slice(0, today.week())
                   .map((week) => (
                     <MenuItem value={week.week}>Week {week.week}</MenuItem>
                   ))}
