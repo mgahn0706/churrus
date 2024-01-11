@@ -162,4 +162,22 @@ export const CONNECTIONS2024: ConnectionsType[] = [
       },
     ],
   },
+  {
+    week: 9,
+    quiz: [
+      { words: ["父", "弟", "夫", "兄"], description: "가족" },
+      {
+        words: ["美", "中", "日", "英"],
+        description: "국가",
+      },
+      {
+        words: ["花", "化", "火", "和"],
+        description: "음이 '화'인 한자",
+      },
+      {
+        words: ["千", "萬", "億", "兆"],
+        description: "숫자의 단위",
+      },
+    ],
+  },
 ];
