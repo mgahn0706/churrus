@@ -1,4 +1,5 @@
 import HomeButton from "@/components/HomeButton";
+import ColorSelectSection from "@/features/hues-and-cues/components/ColorSelectSection";
 import PlayerScoreSection from "@/features/hues-and-cues/components/PlayerScoreSection";
 import { PlayerType } from "@/features/hues-and-cues/types";
 import { Box } from "@mui/material";
@@ -7,8 +8,7 @@ import { useState } from "react";
 
 export default function HuesAndCues() {
   const [phase, setPhase] = useState("PLAYER_SETTING");
-  const [players, setPlayers] = useState<PlayerType[]>([]);
-  const [currentCluer, setCurrentCluer] = useState(0);
+  const [currentCluerId, setCurrentCluerId] = useState(0);
 
   return (
     <>
@@ -17,16 +17,19 @@ export default function HuesAndCues() {
       </Head>
       <Box
         sx={{
-          width: "100%",
+          width: "100dvw",
           height: "100vh",
+          px: 8,
           display: "flex",
-          justifyContent: "center",
+          justifyContent: "space-between",
           alignItems: "center",
-          backgroundColor: "#232937",
+          backgroundColor: "#121212",
         }}
       >
         <HomeButton color="white" />
-        <PlayerScoreSection players={players} />
+        <ColorSelectSection onSelect={() => {}} />
+
+        <PlayerScoreSection currentCluerId={currentCluerId} />
       </Box>
     </>
   );
