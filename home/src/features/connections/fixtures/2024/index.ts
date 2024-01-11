@@ -122,4 +122,44 @@ export const CONNECTIONS2024: ConnectionsType[] = [
       },
     ],
   },
+  {
+    week: 7,
+    quiz: [
+      {
+        words: ["구슬", "지구", "볼링공", "수박"],
+        description: "둥근 모양인 것",
+      },
+      {
+        words: ["뇌동", "진감", "명동", "동요"],
+        description: "흔들림",
+      },
+      {
+        words: ["약수", "신당", "장충", "동화"],
+        description: "___동 (서울시 중구)",
+      },
+      {
+        words: ["동심", "약속", "국경", "침묵"],
+        description: "지킬 수 있는 것",
+      },
+    ],
+  },
+  {
+    week: 8,
+    quiz: [
+      { words: ["이자", "뇌", "충수", "혀"], description: "신체 기관" },
+
+      {
+        words: ["충무", "치즈", "꼬마", "누드"],
+        description: "___김밥",
+      },
+      {
+        words: ["도수", "물리", "심리", "신경"],
+        description: "___치료",
+      },
+      {
+        words: ["대로", "양", "체", "뻔"],
+        description: "부사성 의존명사",
+      },
+    ],
+  },
 ];
