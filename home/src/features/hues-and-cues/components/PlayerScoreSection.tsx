@@ -1,16 +1,13 @@
-import { Box, Button, TextField } from "@mui/material";
+import { Box } from "@mui/material";
 import { PlayerType } from "../types";
-import { useState } from "react";
 
 export default function PlayerScoreSection({
-  currentCluerId,
+  currentOrder,
+  players,
 }: {
-  currentCluerId: number;
+  currentOrder: number;
+  players: PlayerType[];
 }) {
-  const [players, setPlayers] = useState<PlayerType[]>([]);
-  const [isAddingPlayer, setIsAddingPlayer] = useState(false);
-  const [newPlayerName, setNewPlayerName] = useState("");
-
   return (
     <Box
       display="flex"
@@ -22,7 +19,7 @@ export default function PlayerScoreSection({
       width="180px"
       px={2}
       borderRadius="5px"
-      minHeight="760px"
+      height="580px"
     >
       <Box
         display="flex"
@@ -30,13 +27,14 @@ export default function PlayerScoreSection({
         gap={2}
         flexDirection="column"
         alignItems="center"
-        justifyContent="center"
         borderRadius="5px"
+        height="720px"
+        overflow="scroll"
         bgcolor="#313131"
         width="100%"
       >
         {players.length > 0 ? (
-          players.map((player) => (
+          players.map((player, idx) => (
             <Box
               height="50px"
               display="flex"
@@ -45,13 +43,15 @@ export default function PlayerScoreSection({
               alignItems="center"
               key={player.id}
               width="100%"
+              color={idx === currentOrder ? "black" : "white"}
               borderRadius="5px"
-              bgcolor={player.id === currentCluerId ? "#bcbcbc" : "#494949"}
+              bgcolor={idx === currentOrder ? "#bcbcbc" : "#494949"}
             >
               <Box
                 display="flex"
                 alignItems="center"
                 p={1}
+                color="white"
                 width="20px"
                 height="20px"
                 textAlign="center"
@@ -70,72 +70,6 @@ export default function PlayerScoreSection({
           <Box width="15vdw" color="white" my={6}>
             플레이어가 없습니다.
           </Box>
-        )}
-      </Box>
-      <Box
-        height="100px"
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-        my={3}
-        borderRadius="5px"
-        bgcolor="#313131"
-      >
-        {isAddingPlayer ? (
-          <Box
-            display="flex"
-            flexDirection="column"
-            width="100%"
-            gap={1}
-            bgcolor="white"
-            borderRadius="5px"
-            p={2}
-          >
-            <TextField
-              color="primary"
-              label="플레이어 이름"
-              value={newPlayerName}
-              onChange={(e) => setNewPlayerName(e.target.value)}
-            />
-            <Box display="flex" gap={2}>
-              <Button
-                variant="outlined"
-                onClick={() => {
-                  setIsAddingPlayer(false);
-                  setNewPlayerName("");
-                }}
-              >
-                취소
-              </Button>
-              <Button
-                disabled={newPlayerName.length === 0}
-                variant="contained"
-                color="primary"
-                onClick={() => {
-                  setPlayers([
-                    ...players,
-                    {
-                      id: players[players.length - 1]?.id ?? 0 + 1,
-                      name: newPlayerName,
-                      score: 0,
-                    },
-                  ]);
-                  setIsAddingPlayer(false);
-                  setNewPlayerName("");
-                }}
-              >
-                추가
-              </Button>
-            </Box>
-          </Box>
-        ) : (
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => setIsAddingPlayer(true)}
-          >
-            플레이어 추가
-          </Button>
         )}
       </Box>
     </Box>

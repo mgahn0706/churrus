@@ -1,14 +1,20 @@
 import HomeButton from "@/components/HomeButton";
 import ColorSelectSection from "@/features/hues-and-cues/components/ColorSelectSection";
+import GameProgressSection from "@/features/hues-and-cues/components/GameProgressSection";
+import PlayerAddForm from "@/features/hues-and-cues/components/PlayerAddForm";
 import PlayerScoreSection from "@/features/hues-and-cues/components/PlayerScoreSection";
 import { PlayerType } from "@/features/hues-and-cues/types";
 import { Box } from "@mui/material";
 import Head from "next/head";
 import { useState } from "react";
 
+const RECOMMENDED_PLAYER_COUNT = 10;
+
 export default function HuesAndCues() {
   const [phase, setPhase] = useState("PLAYER_SETTING");
-  const [currentCluerId, setCurrentCluerId] = useState(0);
+  const [players, setPlayers] = useState<PlayerType[]>([]);
+  const [currentOrder, setCurrentOrder] = useState(0);
+  const [answerColor, setAnswerColor] = useState<string | null>(null);
 
   return (
     <>
@@ -27,7 +33,32 @@ export default function HuesAndCues() {
       >
         <HomeButton color="white" />
         <ColorSelectSection onSelect={() => {}} />
-        <PlayerScoreSection currentCluerId={currentCluerId} />
+        <Box display="flex" flexDirection="column" alignItems="center" gap={2}>
+          <GameProgressSection
+            currentCluerName={
+              players.length > 0 ? players[currentOrder].name : ""
+            }
+            onGameStart={() => {}}
+          />
+
+          <PlayerScoreSection currentOrder={currentOrder} players={players} />
+          <PlayerAddForm
+            isExceededRecommendedPlayerCount={
+              players.length >= RECOMMENDED_PLAYER_COUNT
+            }
+            onAddPlayer={(name) => {
+              setPlayers([
+                ...players,
+                {
+                  id: players.length,
+                  name,
+                  score: 0,
+                  selectedColors: [],
+                },
+              ]);
+            }}
+          />
+        </Box>
       </Box>
     </>
   );
