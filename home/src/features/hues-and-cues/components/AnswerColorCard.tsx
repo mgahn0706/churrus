@@ -6,7 +6,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
-import { getCharCodeFromNumber, getColorCodeFromNumbers } from "../libs";
+import { getColorCodeFromNumbers } from "../libs";
 import { VisibilityOff } from "@mui/icons-material";
 
 export default function AnswerColorCard({
@@ -22,7 +22,7 @@ export default function AnswerColorCard({
       <Box
         position="fixed"
         top={0}
-        right={65}
+        right={70}
         borderRadius="0 0 5px 5px"
         bgcolor="#313131"
         color="white"
@@ -35,6 +35,7 @@ export default function AnswerColorCard({
         }}
         sx={{
           cursor: "pointer",
+          zIndex: 1,
         }}
         alignItems="center"
         boxShadow="0px 0px 10px 5px rgba(255,255,255,0.25)"

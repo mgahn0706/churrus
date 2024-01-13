@@ -24,7 +24,7 @@ const ColorPanel = ({ color }: { color: string }) => (
 export default function ColorSelectSection({
   onSelect,
 }: {
-  onSelect: (color: string) => void;
+  onSelect: (color: [number, number]) => void;
 }) {
   return (
     <Grid container width="80dvw" spacing={1}>

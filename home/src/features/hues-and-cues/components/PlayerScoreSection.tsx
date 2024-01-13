@@ -9,7 +9,7 @@ export default function PlayerScoreSection({
   players,
 }: {
   currentOrder: number;
-  currentGuessingPlayer: number;
+  currentGuessingPlayer: number | null;
   players: PlayerType[];
 }) {
   return (

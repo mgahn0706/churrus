@@ -4,11 +4,12 @@ import ClueForm from "@/features/hues-and-cues/components/ClueForm";
 import ColorForm from "@/features/hues-and-cues/components/ColorForm";
 import ColorSelectSection from "@/features/hues-and-cues/components/ColorSelectSection";
 import GameProgressSection from "@/features/hues-and-cues/components/GameProgressSection";
+import NextRoundButton from "@/features/hues-and-cues/components/NextRoundButton";
 import PlayerAddForm from "@/features/hues-and-cues/components/PlayerAddForm";
 import PlayerScoreSection from "@/features/hues-and-cues/components/PlayerScoreSection";
 import { NEXT_PHASE } from "@/features/hues-and-cues/fixtures";
 import { GamePhaseType, PlayerType } from "@/features/hues-and-cues/types";
-import { Box, ThemeProvider, createTheme } from "@mui/material";
+import { Box, Slide, ThemeProvider, createTheme } from "@mui/material";
 import Head from "next/head";
 import { useState } from "react";
 
@@ -27,7 +28,24 @@ export default function HuesAndCues() {
   const [answerColor, setAnswerColor] = useState<[number, number]>([0, 0]);
   const [hints, setHints] = useState<[string, string]>(["", ""]);
   const [selectedColor, setSelectedColor] = useState<[number, number]>([0, 0]);
-  const [currentGuessingPlayer, setCurrentGuessingPlayer] = useState(1);
+  const [currentGuessingPlayer, setCurrentGuessingPlayer] = useState<
+    number | null
+  >(null);
+
+  const handleNextRound = () => {
+    setPhase("FIRST_CLUE");
+    setCurrentOrder((currentOrder + 1) % players.length);
+    setAnswerColor([0, 0]);
+    setHints(["", ""]);
+    setSelectedColor([0, 0]);
+    setCurrentGuessingPlayer(null);
+    setPlayers(
+      players.map((player) => ({
+        ...player,
+        selectedColors: [],
+      }))
+    );
+  };
 
   return (
     <>
@@ -46,8 +64,15 @@ export default function HuesAndCues() {
           }}
         >
           <HomeButton color="white" />
-          <AnswerColorCard color={answerColor} />
-          <ColorSelectSection onSelect={() => {}} />
+          {(phase === "FIRST_CLUE" || phase === "SECOND_CLUE") && (
+            <AnswerColorCard color={answerColor} />
+          )}
+
+          <ColorSelectSection
+            onSelect={(color) => {
+              setSelectedColor(color);
+            }}
+          />
           <Box
             display="flex"
             flexDirection="column"
@@ -55,13 +80,14 @@ export default function HuesAndCues() {
             gap={2}
           >
             <GameProgressSection
+              answerColor={answerColor}
               hints={hints}
               disabled={phase === "PLAYER_SETTING" && players.length < 2}
               phase={phase}
               playerName={
                 phase === "FIRST_CLUE" || phase === "SECOND_CLUE"
                   ? players[currentOrder].name
-                  : players[currentGuessingPlayer]?.name
+                  : players[currentGuessingPlayer ?? 0]?.name
               }
               onNextPhase={() => {
                 setPhase(NEXT_PHASE[phase]);
@@ -96,6 +122,7 @@ export default function HuesAndCues() {
               <ClueForm
                 clueWordCount={1}
                 onSubmit={(clue) => {
+                  setCurrentGuessingPlayer(currentOrder === 0 ? 1 : 0);
                   setHints([clue, ""]);
                   setPhase("FIRST_GUESS");
                 }}
@@ -118,14 +145,16 @@ export default function HuesAndCues() {
                       return player;
                     })
                   );
+                  if (currentGuessingPlayer === null) {
+                    return;
+                  }
                   const nextGuesser =
                     currentGuessingPlayer + 1 === currentOrder
                       ? currentGuessingPlayer + 2
                       : currentGuessingPlayer + 1;
                   if (nextGuesser >= players.length) {
-                    setCurrentGuessingPlayer(currentOrder === 0 ? 1 : 0);
+                    setCurrentGuessingPlayer(null);
                     setPhase(NEXT_PHASE[phase]);
-                    return;
                   }
                   setCurrentGuessingPlayer(nextGuesser);
                 }}
@@ -135,10 +164,14 @@ export default function HuesAndCues() {
               <ClueForm
                 clueWordCount={2}
                 onSubmit={(clue) => {
+                  setCurrentGuessingPlayer(currentOrder === 0 ? 1 : 0);
                   setHints([hints[0], clue]);
                   setPhase("SECOND_GUESS");
                 }}
               />
+            )}
+            {phase === "RESULT" && (
+              <NextRoundButton onClick={handleNextRound} />
             )}
           </Box>
         </Box>
