@@ -1,13 +1,22 @@
 import HomeButton from "@/components/HomeButton";
+import AnswerColorCard from "@/features/hues-and-cues/components/AnswerColorCard";
+import ClueForm from "@/features/hues-and-cues/components/ClueForm";
+import ColorForm from "@/features/hues-and-cues/components/ColorForm";
 import ColorSelectSection from "@/features/hues-and-cues/components/ColorSelectSection";
 import GameProgressSection from "@/features/hues-and-cues/components/GameProgressSection";
 import PlayerAddForm from "@/features/hues-and-cues/components/PlayerAddForm";
 import PlayerScoreSection from "@/features/hues-and-cues/components/PlayerScoreSection";
 import { NEXT_PHASE } from "@/features/hues-and-cues/fixtures";
 import { GamePhaseType, PlayerType } from "@/features/hues-and-cues/types";
-import { Box } from "@mui/material";
+import { Box, ThemeProvider, createTheme } from "@mui/material";
 import Head from "next/head";
 import { useState } from "react";
+
+const darkTheme = createTheme({
+  palette: {
+    mode: "dark",
+  },
+});
 
 const RECOMMENDED_PLAYER_COUNT = 10;
 
@@ -16,58 +25,117 @@ export default function HuesAndCues() {
   const [players, setPlayers] = useState<PlayerType[]>([]);
   const [currentOrder, setCurrentOrder] = useState(0);
   const [answerColor, setAnswerColor] = useState<[number, number]>([0, 0]);
+  const [hints, setHints] = useState<[string, string]>(["", ""]);
+  const [selectedColor, setSelectedColor] = useState<[number, number]>([0, 0]);
+  const [currentGuessingPlayer, setCurrentGuessingPlayer] = useState(0);
 
   return (
     <>
       <Head>
         <title>추러스 : HUES AND CUES</title>
       </Head>
-      <Box
-        sx={{
-          height: "100vh",
-          px: 8,
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          backgroundColor: "#121212",
-        }}
-      >
-        <HomeButton color="white" />
-
-        <ColorSelectSection onSelect={() => {}} />
-        <Box display="flex" flexDirection="column" alignItems="center" gap={2}>
-          <GameProgressSection
-            disabled={phase === "PLAYER_SETTING" && players.length < 2}
-            phase={phase}
-            currentCluerName={
-              players.length > 0 ? players[currentOrder].name : ""
-            }
-            onNextPhase={() => {
-              setPhase(NEXT_PHASE[phase]);
-            }}
-          />
-
-          <PlayerScoreSection currentOrder={currentOrder} players={players} />
-          {phase === "PLAYER_SETTING" && (
-            <PlayerAddForm
-              isExceededRecommendedPlayerCount={
-                players.length >= RECOMMENDED_PLAYER_COUNT
+      <ThemeProvider theme={darkTheme}>
+        <Box
+          sx={{
+            height: "100vh",
+            px: 8,
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            backgroundColor: "#121212",
+          }}
+        >
+          <HomeButton color="white" />
+          <AnswerColorCard color={answerColor} />
+          <ColorSelectSection onSelect={() => {}} />
+          <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            gap={2}
+          >
+            <GameProgressSection
+              disabled={phase === "PLAYER_SETTING" && players.length < 2}
+              phase={phase}
+              currentCluerName={
+                players.length > 0 ? players[currentOrder].name : ""
               }
-              onAddPlayer={(name) => {
-                setPlayers([
-                  ...players,
-                  {
-                    id: players.length,
-                    name,
-                    score: 0,
-                    selectedColors: [],
-                  },
-                ]);
+              onNextPhase={() => {
+                setPhase(NEXT_PHASE[phase]);
               }}
             />
-          )}
+
+            <PlayerScoreSection currentOrder={currentOrder} players={players} />
+
+            {phase === "PLAYER_SETTING" && (
+              <PlayerAddForm
+                isExceededRecommendedPlayerCount={
+                  players.length >= RECOMMENDED_PLAYER_COUNT
+                }
+                onAddPlayer={(name) => {
+                  setPlayers([
+                    ...players,
+                    {
+                      id: players.length,
+                      name,
+                      score: 0,
+                      selectedColors: [],
+                    },
+                  ]);
+                }}
+              />
+            )}
+            {phase === "FIRST_CLUE" && (
+              <ClueForm
+                clueWordCount={1}
+                onSubmit={(clue) => {
+                  setHints([clue, ""]);
+                  setPhase("FIRST_GUESS");
+                }}
+              />
+            )}
+            {["FIRST_GUESS", "SECOND_GUESS"].includes(phase) && (
+              <ColorForm
+                onClick={() => {
+                  setPlayers(
+                    players.map((player, idx) => {
+                      if (idx === currentGuessingPlayer) {
+                        return {
+                          ...player,
+                          selectedColors: [
+                            ...player.selectedColors,
+                            selectedColor,
+                          ],
+                        };
+                      }
+                      return player;
+                    })
+                  );
+                  const nextGuesser =
+                    currentGuessingPlayer + 1 === currentOrder
+                      ? currentGuessingPlayer + 2
+                      : currentGuessingPlayer + 1;
+                  if (nextGuesser >= players.length) {
+                    setCurrentGuessingPlayer(currentOrder === 0 ? 1 : 0);
+                    setPhase(NEXT_PHASE[phase]);
+                    return;
+                  }
+                  setCurrentGuessingPlayer(nextGuesser);
+                }}
+              />
+            )}
+            {phase === "SECOND_CLUE" && (
+              <ClueForm
+                clueWordCount={2}
+                onSubmit={(clue) => {
+                  setHints([hints[0], clue]);
+                  setPhase("SECOND_GUESS");
+                }}
+              />
+            )}
+          </Box>
         </Box>
-      </Box>
+      </ThemeProvider>
     </>
   );
 }
