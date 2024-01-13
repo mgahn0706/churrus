@@ -1,5 +1,7 @@
 import { Box, Grid } from "@mui/material";
 
+const COLOM_HEADERS = Array.from({ length: 30 }, (_, i) => i + 1);
+
 const COLORS = Array.from({ length: 480 }, (_, i) => `#FFFFFF`);
 
 const ColorPanel = ({ color }: { color: string }) => (
@@ -26,6 +28,21 @@ export default function ColorSelectSection({
 }) {
   return (
     <Grid container width="80dvw" spacing={1}>
+      {COLOM_HEADERS.map((colom) => (
+        <Grid
+          item
+          xs={0.4}
+          key={colom}
+          sx={{
+            color: "white",
+            textAlign: "center",
+            fontWeight: "bolder",
+            fontSize: "1.2rem",
+          }}
+        >
+          {colom}
+        </Grid>
+      ))}
       {COLORS.map((color) => {
         return <ColorPanel color={color} />;
       })}

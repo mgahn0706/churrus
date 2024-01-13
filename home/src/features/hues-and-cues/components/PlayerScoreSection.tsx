@@ -15,84 +15,129 @@ export default function PlayerScoreSection({
     <Box
       display="flex"
       flexDirection="column"
-      width="10dvw"
       color="white"
+      justifyContent="space-between"
+      bgcolor="#313131"
       alignItems="center"
-      justifyContent="center"
-      gap={2}
-      mt={6}
+      width="180px"
+      px={2}
+      borderRadius="5px"
+      minHeight="760px"
     >
-      {players.length > 0 ? (
-        players.map((player) => (
-          <Box
-            height="50px"
-            key={player.id}
-            width="90%"
-            borderRadius="5px"
-            bgcolor={player.id === currentCluerId ? "#bebcbc" : "#494949"}
-          >
+      <Box
+        display="flex"
+        p={2}
+        gap={2}
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center"
+        borderRadius="5px"
+        bgcolor="#313131"
+        width="100%"
+      >
+        {players.length > 0 ? (
+          players.map((player) => (
             <Box
+              height="50px"
               display="flex"
-              justifyContent="space-between"
-              alignItems="center"
+              mx={2}
               px={2}
-              mr={2}
-              borderRadius="50%"
+              alignItems="center"
+              key={player.id}
+              width="100%"
+              borderRadius="5px"
+              bgcolor={player.id === currentCluerId ? "#bcbcbc" : "#494949"}
             >
-              {player.score}
+              <Box
+                display="flex"
+                alignItems="center"
+                p={1}
+                width="20px"
+                height="20px"
+                textAlign="center"
+                justifyContent="center"
+                fontWeight="bold"
+                bgcolor="#313131"
+                mr={2}
+                borderRadius="50%"
+              >
+                {player.score}
+              </Box>
+              {player.name}
             </Box>
-            {player.name}
+          ))
+        ) : (
+          <Box width="15vdw" color="white" my={6}>
+            플레이어가 없습니다.
           </Box>
-        ))
-      ) : (
-        <Box width="15vdw" color="white" mt={6}>
-          플레이어가 없습니다.
-        </Box>
-      )}
-      {isAddingPlayer ? (
-        <Box display="flex" flexDirection="column" width="100%">
-          <TextField
-            label="플레이어 이름"
-            value={newPlayerName}
-            onChange={(e) => setNewPlayerName(e.target.value)}
-          />
-          <Box display="flex">
-            <Button
-              variant="outlined"
-              onClick={() => {
-                setIsAddingPlayer(false);
-                setNewPlayerName("");
-              }}
-            >
-              취소
-            </Button>
-            <Button
-              variant="contained"
+        )}
+      </Box>
+      <Box
+        height="100px"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        my={3}
+        borderRadius="5px"
+        bgcolor="#313131"
+      >
+        {isAddingPlayer ? (
+          <Box
+            display="flex"
+            flexDirection="column"
+            width="100%"
+            gap={1}
+            bgcolor="white"
+            borderRadius="5px"
+            p={2}
+          >
+            <TextField
               color="primary"
-              onClick={() =>
-                setPlayers([
-                  ...players,
-                  {
-                    id: players[players.length - 1].id + 1,
-                    name: newPlayerName,
-                    score: 0,
-                  },
-                ])
-              }
-            >
-              추가
-            </Button>
+              label="플레이어 이름"
+              value={newPlayerName}
+              onChange={(e) => setNewPlayerName(e.target.value)}
+            />
+            <Box display="flex" gap={2}>
+              <Button
+                variant="outlined"
+                onClick={() => {
+                  setIsAddingPlayer(false);
+                  setNewPlayerName("");
+                }}
+              >
+                취소
+              </Button>
+              <Button
+                disabled={newPlayerName.length === 0}
+                variant="contained"
+                color="primary"
+                onClick={() => {
+                  setPlayers([
+                    ...players,
+                    {
+                      id: players[players.length - 1]?.id ?? 0 + 1,
+                      name: newPlayerName,
+                      score: 0,
+                    },
+                  ]);
+                  setIsAddingPlayer(false);
+                  setNewPlayerName("");
+                }}
+              >
+                추가
+              </Button>
+            </Box>
           </Box>
-        </Box>
-      ) : (
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => setIsAddingPlayer(true)}
-        >
-          플레이어 추가
-        </Button>
-      )}
+        ) : (
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => setIsAddingPlayer(true)}
+          >
+            플레이어 추가
+          </Button>
+        )}
+      </Box>
     </Box>
   );
 }

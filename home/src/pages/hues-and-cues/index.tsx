@@ -17,7 +17,6 @@ export default function HuesAndCues() {
       </Head>
       <Box
         sx={{
-          width: "100dvw",
           height: "100vh",
           px: 8,
           display: "flex",
@@ -28,7 +27,6 @@ export default function HuesAndCues() {
       >
         <HomeButton color="white" />
         <ColorSelectSection onSelect={() => {}} />
-
         <PlayerScoreSection currentCluerId={currentCluerId} />
       </Box>
     </>
