@@ -6,7 +6,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
-import { getCharCodeFromNumber } from "../libs";
+import { getCharCodeFromNumber, getColorCodeFromNumbers } from "../libs";
 import { VisibilityOff } from "@mui/icons-material";
 
 export default function AnswerColorCard({
@@ -62,8 +62,7 @@ export default function AnswerColorCard({
               <Typography variant="h6">이번 라운드 설명 색깔은</Typography>
               <Box width="50px" height="50px" bgcolor="purple" mt={1} />
               <Typography fontSize="2.5rem" fontWeight="bolder">
-                {getCharCodeFromNumber(color[0])}
-                {color[1] + 1}
+                {getColorCodeFromNumbers(color)}
               </Typography>
               <Typography
                 variant="h6"

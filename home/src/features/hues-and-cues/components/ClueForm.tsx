@@ -49,15 +49,27 @@ export default function ClueForm({
         }}
       >
         <Box p={2} display="flex" flexDirection="column">
-          <TextField
-            color="primary"
-            label={clueWordCount === 1 ? "힌트" : "힌트의 첫 단어"}
-            value={clue}
-            onChange={(e) => {
-              setClue(e.target.value.trim());
-            }}
-          />
-          <Box display="flex" gap={2} mt={1}>
+          <Box display="flex" gap={1}>
+            <TextField
+              color="primary"
+              label={clueWordCount === 1 ? "힌트" : "힌트의 첫 번째 단어"}
+              value={clue}
+              onChange={(e) => {
+                setClue(e.target.value.trim());
+              }}
+            />
+            {clueWordCount === 2 && (
+              <TextField
+                color="primary"
+                label="힌트의 두 번째 단어"
+                value={secondaryClue}
+                onChange={(e) => {
+                  setSecondaryClue(e.target.value.trim());
+                }}
+              />
+            )}
+          </Box>
+          <Box display="flex" gap={2} mt={1} justifyContent="flex-end">
             <Button variant="outlined" onClick={handleClose}>
               취소
             </Button>

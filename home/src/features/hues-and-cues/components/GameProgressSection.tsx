@@ -4,13 +4,15 @@ import { GamePhaseType } from "../types";
 
 export default function GameProgressSection({
   disabled,
+  hints,
   phase,
-  currentCluerName,
+  playerName,
   onNextPhase,
 }: {
   disabled: boolean;
+  hints: [string, string];
   phase: GamePhaseType;
-  currentCluerName: string;
+  playerName: string;
   onNextPhase: () => void;
 }) {
   const content = () => {
@@ -32,7 +34,38 @@ export default function GameProgressSection({
         return (
           <Box>
             <Typography variant="h6" textAlign="center">
-              {currentCluerName}님이 <br />한 단어 힌트를 제시할 차례입니다.
+              {playerName}님이 <br />한 단어 힌트를 제시할 차례입니다.
+            </Typography>
+          </Box>
+        );
+
+      case "SECOND_GUESS":
+        return (
+          <Box
+            sx={{
+              wordBreak: "keep-all",
+            }}
+          >
+            <Typography
+              fontSize="1.5rem"
+              fontWeight="bold"
+              textAlign="center"
+              sx={{
+                wordBreak: "keep-all",
+              }}
+            >
+              {hints[1]}
+            </Typography>
+            <Typography variant="body2" textAlign="center">
+              {playerName}님이 위 단어에 대한 색깔을 맞출 차례입니다.
+            </Typography>
+          </Box>
+        );
+      case "SECOND_CLUE":
+        return (
+          <Box>
+            <Typography variant="h6" textAlign="center">
+              {playerName}님이 <br />두 단어 힌트를 제시할 차례입니다.
             </Typography>
           </Box>
         );

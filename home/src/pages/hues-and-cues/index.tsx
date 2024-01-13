@@ -27,7 +27,7 @@ export default function HuesAndCues() {
   const [answerColor, setAnswerColor] = useState<[number, number]>([0, 0]);
   const [hints, setHints] = useState<[string, string]>(["", ""]);
   const [selectedColor, setSelectedColor] = useState<[number, number]>([0, 0]);
-  const [currentGuessingPlayer, setCurrentGuessingPlayer] = useState(0);
+  const [currentGuessingPlayer, setCurrentGuessingPlayer] = useState(1);
 
   return (
     <>
@@ -55,17 +55,24 @@ export default function HuesAndCues() {
             gap={2}
           >
             <GameProgressSection
+              hints={hints}
               disabled={phase === "PLAYER_SETTING" && players.length < 2}
               phase={phase}
-              currentCluerName={
-                players.length > 0 ? players[currentOrder].name : ""
+              playerName={
+                phase === "FIRST_CLUE" || phase === "SECOND_CLUE"
+                  ? players[currentOrder].name
+                  : players[currentGuessingPlayer]?.name
               }
               onNextPhase={() => {
                 setPhase(NEXT_PHASE[phase]);
               }}
             />
 
-            <PlayerScoreSection currentOrder={currentOrder} players={players} />
+            <PlayerScoreSection
+              currentGuessingPlayer={currentGuessingPlayer}
+              currentOrder={currentOrder}
+              players={players}
+            />
 
             {phase === "PLAYER_SETTING" && (
               <PlayerAddForm
