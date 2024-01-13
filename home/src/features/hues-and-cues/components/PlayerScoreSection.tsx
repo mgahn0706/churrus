@@ -1,13 +1,17 @@
 import { Box } from "@mui/material";
 import { PlayerType } from "../types";
-import { PsychologyAlt, Star } from "@mui/icons-material";
-import { getColorCodeFromNumbers } from "../libs";
+import { Star } from "@mui/icons-material";
+import { getColorCodeFromNumbers, getScore } from "../libs";
 
 export default function PlayerScoreSection({
+  answerColor,
+  showResult,
   currentOrder,
   currentGuessingPlayer,
   players,
 }: {
+  answerColor: [number, number];
+  showResult: boolean;
   currentOrder: number;
   currentGuessingPlayer: number | null;
   players: PlayerType[];
@@ -20,14 +24,13 @@ export default function PlayerScoreSection({
       justifyContent="space-between"
       bgcolor="#313131"
       alignItems="center"
-      width="180px"
-      px={2}
       borderRadius="5px"
       height="580px"
+      width="100%"
     >
       <Box
         display="flex"
-        p={2}
+        py={2}
         gap={2}
         flexDirection="column"
         alignItems="center"
@@ -43,16 +46,14 @@ export default function PlayerScoreSection({
               height="50px"
               display="flex"
               justifyContent="space-between"
-              mx={2}
-              px={2}
               alignItems="center"
-              key={player.id}
               width="100%"
+              key={player.id}
               color={idx === currentGuessingPlayer ? "black" : "white"}
               borderRadius="5px"
               bgcolor={idx === currentGuessingPlayer ? "#bcbcbc" : "#494949"}
             >
-              <Box display="flex" alignItems="center">
+              <Box display="flex" alignItems="center" ml={2}>
                 <Box
                   display="flex"
                   alignItems="center"
@@ -93,12 +94,14 @@ export default function PlayerScoreSection({
                     fontWeight="bold"
                     textAlign="center"
                   >
-                    {getColorCodeFromNumbers(color)}
+                    {showResult
+                      ? `+${getScore(color, answerColor)}`
+                      : getColorCodeFromNumbers(color)}
                   </Box>
                 ))}
               </Box>
 
-              {idx === currentOrder && <Star sx={{ ml: 2 }} fontSize="small" />}
+              {idx === currentOrder && <Star sx={{ mr: 2 }} fontSize="small" />}
             </Box>
           ))
         ) : (

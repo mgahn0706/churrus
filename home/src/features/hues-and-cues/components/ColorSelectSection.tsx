@@ -4,9 +4,16 @@ const COLOM_HEADERS = Array.from({ length: 30 }, (_, i) => i + 1);
 
 const COLORS = Array.from({ length: 480 }, (_, i) => `#FFFFFF`);
 
-const ColorPanel = ({ color }: { color: string }) => (
+const ColorPanel = ({
+  color,
+  onClick,
+}: {
+  color: string;
+  onClick: () => void;
+}) => (
   <Grid item xs={0.4}>
     <Box
+      onClick={onClick}
       bgcolor={color}
       width="40px"
       height="40px"
@@ -43,8 +50,15 @@ export default function ColorSelectSection({
           {colom}
         </Grid>
       ))}
-      {COLORS.map((color) => {
-        return <ColorPanel color={color} />;
+      {COLORS.map((color, idx) => {
+        return (
+          <ColorPanel
+            color={color}
+            onClick={() => {
+              onSelect([idx, idx]);
+            }}
+          />
+        );
       })}
     </Grid>
   );

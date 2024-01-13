@@ -8,3 +8,5 @@ export const NEXT_PHASE: Record<GamePhaseType, GamePhaseType> = {
   SECOND_GUESS: "RESULT",
   RESULT: "FIRST_CLUE",
 };
+
+export const COLORS: string[][] = [[], [], []];

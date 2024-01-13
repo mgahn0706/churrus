@@ -1,6 +1,12 @@
 import { Box, Button } from "@mui/material";
 
-export default function ColorForm({ onClick }: { onClick: () => void }) {
+export default function ColorForm({
+  disabled,
+  onClick,
+}: {
+  disabled: boolean;
+  onClick: () => void;
+}) {
   return (
     <Box
       display="flex"
@@ -14,7 +20,12 @@ export default function ColorForm({ onClick }: { onClick: () => void }) {
       borderRadius="5px"
       height="70px"
     >
-      <Button variant="contained" color="primary" onClick={onClick}>
+      <Button
+        disabled={disabled}
+        variant="contained"
+        color="primary"
+        onClick={onClick}
+      >
         제출
       </Button>
     </Box>

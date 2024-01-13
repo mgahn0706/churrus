@@ -8,6 +8,7 @@ import NextRoundButton from "@/features/hues-and-cues/components/NextRoundButton
 import PlayerAddForm from "@/features/hues-and-cues/components/PlayerAddForm";
 import PlayerScoreSection from "@/features/hues-and-cues/components/PlayerScoreSection";
 import { NEXT_PHASE } from "@/features/hues-and-cues/fixtures";
+import { getScore } from "@/features/hues-and-cues/libs";
 import { GamePhaseType, PlayerType } from "@/features/hues-and-cues/types";
 import { Box, Slide, ThemeProvider, createTheme } from "@mui/material";
 import Head from "next/head";
@@ -25,26 +26,47 @@ export default function HuesAndCues() {
   const [phase, setPhase] = useState<GamePhaseType>("PLAYER_SETTING");
   const [players, setPlayers] = useState<PlayerType[]>([]);
   const [currentOrder, setCurrentOrder] = useState(0);
-  const [answerColor, setAnswerColor] = useState<[number, number]>([0, 0]);
+  const [answerColor, setAnswerColor] = useState<[number, number]>([
+    Math.floor(Math.random() * 16),
+    Math.floor(Math.random() * 30),
+  ]);
   const [hints, setHints] = useState<[string, string]>(["", ""]);
-  const [selectedColor, setSelectedColor] = useState<[number, number]>([0, 0]);
+  const [selectedColor, setSelectedColor] = useState<[number, number] | null>(
+    null
+  );
   const [currentGuessingPlayer, setCurrentGuessingPlayer] = useState<
     number | null
   >(null);
 
   const handleNextRound = () => {
-    setPhase("FIRST_CLUE");
-    setCurrentOrder((currentOrder + 1) % players.length);
-    setAnswerColor([0, 0]);
-    setHints(["", ""]);
-    setSelectedColor([0, 0]);
-    setCurrentGuessingPlayer(null);
+    const playerCountWithinFrame = players.reduce((acc, cur) => {
+      const withinFrameCount = cur.selectedColors.filter(
+        (color) => getScore(color, answerColor) > 1
+      ).length;
+      return acc + withinFrameCount;
+    }, 0);
     setPlayers(
-      players.map((player) => ({
+      players.map((player, idx) => ({
         ...player,
+        score:
+          idx === currentOrder
+            ? player.score + playerCountWithinFrame * 2
+            : player.score +
+              player.selectedColors.reduce((acc, cur) => {
+                return acc + getScore(cur, answerColor);
+              }, 0),
         selectedColors: [],
       }))
     );
+    setPhase("FIRST_CLUE");
+    setCurrentOrder((currentOrder + 1) % players.length);
+    setAnswerColor([
+      Math.floor(Math.random() * 16),
+      Math.floor(Math.random() * 30),
+    ]);
+    setHints(["", ""]);
+    setSelectedColor(null);
+    setCurrentGuessingPlayer(null);
   };
 
   return (
@@ -98,6 +120,8 @@ export default function HuesAndCues() {
               currentGuessingPlayer={currentGuessingPlayer}
               currentOrder={currentOrder}
               players={players}
+              showResult={phase === "RESULT"}
+              answerColor={answerColor}
             />
 
             {phase === "PLAYER_SETTING" && (
@@ -130,7 +154,11 @@ export default function HuesAndCues() {
             )}
             {["FIRST_GUESS", "SECOND_GUESS"].includes(phase) && (
               <ColorForm
+                disabled={!selectedColor}
                 onClick={() => {
+                  if (!selectedColor) {
+                    return;
+                  }
                   setPlayers(
                     players.map((player, idx) => {
                       if (idx === currentGuessingPlayer) {

@@ -1,6 +1,5 @@
-import { Box, Card, CardContent } from "@mui/material";
+import { Box, Card } from "@mui/material";
 import { ConceptType } from "../types";
-import { getRandomColor } from "../libs/color";
 
 export default function ConceptCard({ concept }: { concept: ConceptType }) {
   if (!concept) {
