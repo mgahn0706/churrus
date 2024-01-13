@@ -78,7 +78,7 @@ export default function HuesAndCues() {
         <Box
           sx={{
             height: "100vh",
-            px: 8,
+            px: 6,
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
