@@ -36,7 +36,6 @@ export default function ColorSelectSection({
   return (
     <Grid container width="80dvw" spacing={1}>
       <Grid item xs={0.375} />
-
       {COLOM_HEADERS.map((colomn) => (
         <Grid
           item
@@ -52,6 +51,7 @@ export default function ColorSelectSection({
           {colomn}
         </Grid>
       ))}
+      <Grid item xs={0.375} />
       {Object.values(COLORS).map((colors, row) => {
         return (
           <>
@@ -98,6 +98,7 @@ export default function ColorSelectSection({
           </>
         );
       })}
+      <Grid item xs={0.375} />
       {COLOM_HEADERS.map((colomn) => (
         <Grid
           item
@@ -113,6 +114,7 @@ export default function ColorSelectSection({
           {colomn}
         </Grid>
       ))}
+      <Grid item xs={0.375} />
     </Grid>
   );
 }
