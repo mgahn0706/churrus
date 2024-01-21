@@ -1,7 +1,7 @@
 import { PlayArrow } from "@mui/icons-material";
 import { Box, IconButton, Typography } from "@mui/material";
 import { GamePhaseType } from "../types";
-import { getColorCodeFromNumbers } from "../libs";
+import { getColorCodeFromNumbers, getColorFromNumbers } from "../libs";
 
 export default function GameProgressSection({
   disabled,
@@ -105,7 +105,12 @@ export default function GameProgressSection({
               wordBreak: "keep-all",
             }}
           >
-            <Box width="50px" height="50px" bgcolor="purple" my={1} />
+            <Box
+              width="50px"
+              height="50px"
+              bgcolor={getColorFromNumbers(answerColor)}
+              my={1}
+            />
             <Typography fontWeight="bold" textAlign="center">
               정답 색깔: {getColorCodeFromNumbers(answerColor)}
             </Typography>

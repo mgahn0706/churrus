@@ -1,7 +1,12 @@
 import { Box } from "@mui/material";
 import { PlayerType } from "../types";
 import { Star } from "@mui/icons-material";
-import { getColorCodeFromNumbers, getScore } from "../libs";
+import {
+  getColorCodeFromNumbers,
+  getColorFromNumbers,
+  getScore,
+} from "../libs";
+import { COLORS } from "../fixtures";
 
 export default function PlayerScoreSection({
   answerColor,
@@ -87,11 +92,12 @@ export default function PlayerScoreSection({
                     key={color[0]}
                     alignItems="center"
                     sx={{ mr: 1 }}
-                    bgcolor={"#000000"}
+                    bgcolor={getColorFromNumbers(color)}
                     width="24px"
                     height="24px"
                     color="#121212"
-                    fontWeight="bold"
+                    fontWeight="bolder"
+                    fontSize="0.8rem"
                     textAlign="center"
                   >
                     {showResult

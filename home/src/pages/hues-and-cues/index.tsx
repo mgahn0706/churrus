@@ -91,6 +91,7 @@ export default function HuesAndCues() {
           )}
 
           <ColorSelectSection
+            selectedColor={selectedColor}
             onSelect={(color) => {
               setSelectedColor(color);
             }}
@@ -159,6 +160,7 @@ export default function HuesAndCues() {
                   if (!selectedColor) {
                     return;
                   }
+                  setSelectedColor(null);
                   setPlayers(
                     players.map((player, idx) => {
                       if (idx === currentGuessingPlayer) {

@@ -1,9 +1,18 @@
+import { COLORS } from "../fixtures";
+
 export function getCharCodeFromNumber(num: number) {
   return String.fromCharCode(num + "A".charCodeAt(0));
 }
 
 export function getColorCodeFromNumbers(numbers: [number, number]) {
   return getCharCodeFromNumber(numbers[0]) + `${numbers[1] + 1}`;
+}
+
+export function getColorFromNumbers(numbers: [number, number] | null) {
+  if (!numbers) {
+    return "#000000";
+  }
+  return COLORS[getCharCodeFromNumber(numbers[0])][numbers[1]];
 }
 
 export const getScore = (
