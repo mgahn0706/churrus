@@ -1,6 +1,7 @@
 import { QuizType } from "../types";
 
 export const MEETINGS = [
+  "2024-1",
   "2023-11",
   "2023-9",
   "2023-6",
