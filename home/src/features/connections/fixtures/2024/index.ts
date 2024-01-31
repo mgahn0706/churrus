@@ -180,4 +180,46 @@ export const CONNECTIONS2024: ConnectionsType[] = [
       },
     ],
   },
+  {
+    week: 10,
+    quiz: [
+      {
+        words: ["감자", "뭉티기", "땡초", "오메기"],
+        description: "음식의 방언",
+      },
+      {
+        words: ["꼬리", "갈기", "날개", "젤리"],
+        description: "사람에게는 없는 동물의 부위",
+      },
+      {
+        words: ["고래", "다리", "잔치", "하르방"],
+        description: "돌___",
+      },
+      {
+        words: ["이빨", "칼", "코코아", "고추"],
+        description: "갈 수 있는 것",
+      },
+    ],
+  },
+  {
+    week: 11,
+    quiz: [
+      {
+        words: ["피하", "트랜스", "중성", "포화"],
+        description: "___지방",
+      },
+      {
+        words: ["저항", "콘덴서", "스위치", "퓨즈"],
+        description: "전기 부품",
+      },
+      {
+        words: ["스크린", "스틸", "리바운드", "슛"],
+        description: "농구 용어",
+      },
+      {
+        words: ["와트", "몰", "테슬라", "초"],
+        description: "SI 단위",
+      },
+    ],
+  },
 ];
