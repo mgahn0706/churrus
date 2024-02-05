@@ -1,15 +1,6 @@
 import { useResponsiveValue } from "@/hooks/useResponsiveValue";
 import { Box, Grid, Typography } from "@mui/material";
-import {
-  CategoryOutlined,
-  Dashboard,
-  Filter1,
-  HelpOutlineOutlined,
-  IndeterminateCheckBoxOutlined,
-  LaunchOutlined,
-  Quiz,
-  Search,
-} from "@mui/icons-material";
+import { LaunchOutlined } from "@mui/icons-material";
 import GlobalHeader from "@/components/Navigation/GlobalHeader";
 import ContentCard, { ContentType } from "@/components/ContentCard";
 import GeniusCard, { GeniusContentType } from "@/components/GeniusCard";
@@ -145,13 +136,7 @@ export default function Churrus() {
       </Box>
       <Box my={6} mx="auto" px="1rem" maxWidth={`${responsiveMaxWidth}vw`}>
         <Box width="100%" mb={5}>
-          <Grid container spacing={3}>
-            {GENIUS_CONTENTS.map((content) => (
-              <Grid item xs={responsiveGeniusXs}>
-                <GeniusCard content={content} />
-              </Grid>
-            ))}
-          </Grid>
+          <Grid container spacing={3}></Grid>
         </Box>
       </Box>
 

@@ -40,25 +40,31 @@ export default function MainBanner() {
           elevation={4}
           sx={{
             width: "470px",
-            minHeight: "320px",
+            minHeight: "290px",
           }}
         >
           <CardActionArea>
             <CardHeader subheader="2024" />
             <CardContent>
-              <PlayArrowSharp />
-
-              <Typography
-                gutterBottom
-                component="div"
-                fontWeight="bolder"
-                fontSize="36px"
+              <Box
+                flexDirection="column"
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                textAlign="center"
               >
-                1월 정기모임
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                {BANNER_TEXT.title}
-              </Typography>
+                <Typography
+                  gutterBottom
+                  component="div"
+                  fontWeight="bolder"
+                  fontSize="36px"
+                >
+                  1월 정기모임
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {BANNER_TEXT.title}
+                </Typography>
+              </Box>
             </CardContent>
           </CardActionArea>
         </Card>
