@@ -194992,7 +194992,7 @@ const KOREAN_NOUNS: string[] = [
   "힝힝",
 ];
 
-const COMMON_NOUNS = [
+const COMMON_NOUNS: string[] = [
   "가게",
   "가격",
   "가구",
@@ -198416,8 +198416,8 @@ const QUIZ: {
   center: string;
   letters: [string, string, string, string, string, string];
 } = {
-  center: "ㅆ",
-  letters: ["ㅏ", "ㄹ", "ㅁ", "ㅓ", "ㄴ", "ㅣ"],
+  center: "ㄱ",
+  letters: ["ㅏ", "ㄹ", "ㅗ", "ㄷ", "ㅇ", "ㅡ"],
 };
 
 const commonAnswers = findAllAnswers(QUIZ);
