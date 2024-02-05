@@ -16,13 +16,15 @@ const spellingBeeDate = {
 
 const KOREAN_REGEX = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
 
+const TODAY_SPELLING_BEE = SPELLING_BEES[spellingBeeDate.year].find(
+  (spellingBee) => spellingBee.week === spellingBeeDate.week
+);
+
+const rank = [];
+
 export default function SpellingBee() {
   const [input, setInput] = useState<string[]>([]);
   const [yourAnswers, setYourAnswers] = useState<string[]>([]);
-
-  const TODAY_SPELLING_BEE = SPELLING_BEES[spellingBeeDate.year].find(
-    (spellingBee) => spellingBee.week === spellingBeeDate.week
-  );
 
   if (!TODAY_SPELLING_BEE) {
     return <h1>Spelling Bee is not available for today</h1>;
@@ -58,9 +60,15 @@ export default function SpellingBee() {
           제출
         </Button>
         <TextField
+          autoFocus
           variant="standard"
           value={hangul.assemble(input)}
-          onChange={() => {}}
+          onChange={(e) => {
+            const value = e.target.value;
+            if (value.length === 0 || KOREAN_REGEX.test(value)) {
+              setInput([value]);
+            }
+          }}
         />
         {TODAY_SPELLING_BEE.outerLetters.map((letter) => (
           <Button
