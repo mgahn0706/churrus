@@ -198416,8 +198416,8 @@ const QUIZ: {
   center: string;
   letters: [string, string, string, string, string, string];
 } = {
-  center: "ㄱ",
-  letters: ["ㅏ", "ㄹ", "ㅗ", "ㄷ", "ㅇ", "ㅡ"],
+  center: "ㅇ",
+  letters: ["ㄱ", "ㅗ", "ㅁ", "ㅈ", "ㅓ", "ㅌ"],
 };
 
 const commonAnswers = findAllAnswers(QUIZ);
