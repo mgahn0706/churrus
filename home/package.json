@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "bee": "ts-node src/features/spelling-bee/libs/quizMaker.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.10.6",
