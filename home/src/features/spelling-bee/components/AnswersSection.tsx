@@ -46,7 +46,7 @@ export default function AnswersSection({
           >
             {isAnswerAccordionOpen
               ? `${currentAnswers.length}개의 단어를 찾았습니다.`
-              : currentAnswers
+              : [...currentAnswers]
                   .map((answer) => (
                     <Typography
                       sx={{
@@ -71,7 +71,7 @@ export default function AnswersSection({
               flexFlow: "column wrap",
             }}
           >
-            {currentAnswers
+            {[...currentAnswers]
               .sort((a, b) => a.word.localeCompare(b.word))
               .map((answer) => (
                 <Box py="1px" px="12px">
