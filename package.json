@@ -3,5 +3,14 @@
     "dayjs": "^1.11.10",
     "sass": "^1.64.1",
     "yarn": "^1.22.21"
-  }
+  },
+  "name": "suspect-web",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/mgahn0706/suspect-web.git",
+  "author": "Force, Mingyu <mgahn0706@snu.ac.kr>",
+  "license": "MIT",
+  "workspaces": [
+    "home"
+  ]
 }
