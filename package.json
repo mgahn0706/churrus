@@ -9,8 +9,5 @@
   "main": "index.js",
   "repository": "https://github.com/mgahn0706/suspect-web.git",
   "author": "Force, Mingyu <mgahn0706@snu.ac.kr>",
-  "license": "MIT",
-  "workspaces": [
-    "home"
-  ]
+  "license": "MIT"
 }
