@@ -62,10 +62,16 @@ export default function SpellingBee() {
     severity: "warning" | "success" | "error";
   } | null>(null);
   const [isRuleModalOpen, setIsRuleModalOpen] = useState(false);
-  const [currentAnswers, setCurrentAnswers] = useLocalStorage<string[]>(
-    "spelling-bee-answers",
-    []
-  );
+  const [answerData, setCurrentAnswers] = useLocalStorage<{
+    day: number;
+    answers: string[];
+  }>("spelling-bee-answers", {
+    day: spellingBeeDate,
+    answers: [],
+  });
+
+  const currentAnswers =
+    answerData.day === spellingBeeDate ? answerData.answers : [];
 
   const isMobileWidth = useResponsiveValue([true, true, false]);
 
@@ -193,7 +199,10 @@ export default function SpellingBee() {
               }
 
               setValidationMessage(answerMessage(hangul.assemble(input)));
-              setCurrentAnswers([...currentAnswers, hangul.assemble(input)]);
+              setCurrentAnswers({
+                day: spellingBeeDate,
+                answers: [...currentAnswers, hangul.assemble(input)],
+              });
             }}
           />
         </Box>
