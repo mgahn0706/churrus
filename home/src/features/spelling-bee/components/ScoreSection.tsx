@@ -4,7 +4,6 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Divider,
   List,
   ListItem,
   Step,
@@ -68,9 +67,9 @@ const RANK: Record<RankType, number> = {
   잘함: 8,
   "아주 좋음": 15,
   훌륭함: 20,
-  대단함: 28,
-  놀라움: 35,
-  천재: 50,
+  대단함: 33,
+  놀라움: 50,
+  천재: 70,
 };
 
 export default function ScoreSection({
@@ -164,7 +163,7 @@ const RankModal = ({
   isOpen,
   onClose,
 }: RankModalProps) => {
-  const activeRank = minimumScores.findLast(
+  const activeRank = minimumScores.find(
     ([, minimumScore]) => currentScore >= minimumScore
   )?.[0] as string;
 

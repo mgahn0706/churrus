@@ -71,7 +71,7 @@ export default function Hive({
     >
       <Box
         display="flex"
-        mt={3}
+        mt={1}
         justifyContent="center"
         alignItems="center"
         width={1}

@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "bee": "ts-node src/features/spelling-bee/libs/quizMaker.ts"
+    "bee": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ts-node -r tsconfig-paths/register src/features/spelling-bee/libs/quizMaker.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.10.6",

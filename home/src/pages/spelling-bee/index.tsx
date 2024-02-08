@@ -21,19 +21,16 @@ import useLocalStorage from "@/hooks/useLocalStorage";
 import AnswersSection from "@/features/spelling-bee/components/AnswersSection";
 import HomeButton from "@/components/HomeButton";
 import { HelpOutline } from "@mui/icons-material";
+import { KOREAN_NOUNS } from "@/fixtures/koreanNounList";
+import { useResponsiveValue } from "@/hooks/useResponsiveValue";
 
 dayjs.extend(weekOfYear);
 
 const today = dayjs();
 
-const spellingBeeDate = {
-  year: today.get("year"),
-  week: today.week(),
-};
+const spellingBeeDate = today.diff("2024-02-09", "day");
 
-const TODAY_SPELLING_BEE = SPELLING_BEES[spellingBeeDate.year].find(
-  (spellingBee) => spellingBee.week === spellingBeeDate.week
-);
+const TODAY_SPELLING_BEE = SPELLING_BEES[spellingBeeDate];
 
 const answerMessage = (
   answer: string
@@ -55,12 +52,6 @@ const answerMessage = (
   return { message: "놀라워요!", severity: "success" };
 };
 
-const fullScore =
-  (TODAY_SPELLING_BEE?.answers.common.reduce(
-    (acc, answer) => acc + hangul.disassemble(answer).length,
-    0
-  ) ?? 0) + (TODAY_SPELLING_BEE?.answers.uncommon.length ?? 0);
-
 export default function SpellingBee() {
   if (!TODAY_SPELLING_BEE) {
     return <h1>Spelling Bee is not available for today {":("}</h1>;
@@ -71,10 +62,18 @@ export default function SpellingBee() {
     severity: "warning" | "success" | "error";
   } | null>(null);
   const [isRuleModalOpen, setIsRuleModalOpen] = useState(false);
-  const [currentAnswers, setCurrentAnswers] = useLocalStorage<string[]>(
-    "spelling-bee-answers",
-    []
-  );
+  const [answerData, setCurrentAnswers] = useLocalStorage<{
+    day: number;
+    answers: string[];
+  }>("spelling-bee-answers", {
+    day: spellingBeeDate,
+    answers: [],
+  });
+
+  const currentAnswers =
+    answerData.day === spellingBeeDate ? answerData.answers : [];
+
+  const isMobileWidth = useResponsiveValue([true, true, false]);
 
   return (
     <>
@@ -91,7 +90,9 @@ export default function SpellingBee() {
         px="30px"
         minHeight="80dvh"
         onClick={() => {
-          document.getElementById("spelling-bee-input")?.focus();
+          if (!isMobileWidth) {
+            document.getElementById("spelling-bee-input")?.focus();
+          }
         }}
         py="84px"
       >
@@ -105,15 +106,18 @@ export default function SpellingBee() {
           </IconButton>
         </Box>
         <Box display="flex" gap={1} alignItems="center">
+          <Typography color="GrayText" variant="h6">
+            {spellingBeeDate + 1}번째
+          </Typography>
           <Typography fontSize="1.5rem" fontWeight="bold">
             스펠링 비
           </Typography>
         </Box>
-        <Typography color="GrayText" variant="h6">
-          {TODAY_SPELLING_BEE.week}주차
-        </Typography>
 
-        <ScoreSection fullScore={fullScore} currentAnswers={currentAnswers} />
+        <ScoreSection
+          fullScore={TODAY_SPELLING_BEE.fullScore}
+          currentAnswers={currentAnswers}
+        />
         <AnswersSection
           currentAnswers={currentAnswers.map((answer) => {
             return {
@@ -186,14 +190,7 @@ export default function SpellingBee() {
                 });
                 return;
               }
-              if (
-                !TODAY_SPELLING_BEE.answers.common.includes(
-                  hangul.assemble(input)
-                ) &&
-                !TODAY_SPELLING_BEE.answers.uncommon.includes(
-                  hangul.assemble(input)
-                )
-              ) {
+              if (!KOREAN_NOUNS.has(hangul.assemble(input))) {
                 setValidationMessage({
                   severity: "error",
                   message: "표준어사전에 없는 단어입니다. 명사만 가능합니다.",
@@ -202,7 +199,10 @@ export default function SpellingBee() {
               }
 
               setValidationMessage(answerMessage(hangul.assemble(input)));
-              setCurrentAnswers([...currentAnswers, hangul.assemble(input)]);
+              setCurrentAnswers({
+                day: spellingBeeDate,
+                answers: [...currentAnswers, hangul.assemble(input)],
+              });
             }}
           />
         </Box>
