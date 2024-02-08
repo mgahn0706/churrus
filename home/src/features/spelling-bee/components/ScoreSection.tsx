@@ -68,8 +68,8 @@ const RANK: Record<RankType, number> = {
   "아주 좋음": 15,
   훌륭함: 20,
   대단함: 33,
-  놀라움: 40,
-  천재: 60,
+  놀라움: 50,
+  천재: 70,
 };
 
 export default function ScoreSection({
@@ -163,7 +163,7 @@ const RankModal = ({
   isOpen,
   onClose,
 }: RankModalProps) => {
-  const activeRank = minimumScores.findLast(
+  const activeRank = minimumScores.find(
     ([, minimumScore]) => currentScore >= minimumScore
   )?.[0] as string;
 
