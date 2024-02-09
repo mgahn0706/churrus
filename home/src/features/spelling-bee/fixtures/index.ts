@@ -40,12 +40,6 @@ export const SPELLING_BEES: SpellingBeeType[] = [
     pangrams: ["견결성", "녀성력", "연결선"],
   },
   {
-    centerLetter: "ㅅ",
-    outerLetters: ["ㅇ", "ㅕ", "ㄹ", "ㅋ", "ㅜ", "ㅡ"],
-    fullScore: 61,
-    pangrams: ["수크령"],
-  },
-  {
     centerLetter: "ㅣ",
     outerLetters: ["ㅈ", "ㅕ", "ㅡ", "ㅇ", "ㅂ", "ㄱ"],
     fullScore: 268,
@@ -69,12 +63,7 @@ export const SPELLING_BEES: SpellingBeeType[] = [
     fullScore: 8,
     pangrams: ["컨텐츠"],
   },
-  {
-    centerLetter: "ㄸ",
-    outerLetters: ["ㅣ", "ㄹ", "ㅏ", "ㅜ", "ㅍ", "ㄴ"],
-    fullScore: 15,
-    pangrams: ["날뛸판"],
-  },
+
   {
     centerLetter: "ㅓ",
     outerLetters: ["ㅐ", "ㅗ", "ㅊ", "ㅈ", "ㅇ", "ㅂ"],
@@ -130,18 +119,6 @@ export const SPELLING_BEES: SpellingBeeType[] = [
     pangrams: ["로인직", "인조골", "진공로"],
   },
   {
-    centerLetter: "ㅋ",
-    outerLetters: ["ㅉ", "ㄹ", "ㅣ", "ㅓ", "ㄱ", "ㅜ"],
-    fullScore: 18,
-    pangrams: ["쿨찌럭쿨찌럭"],
-  },
-  {
-    centerLetter: "ㅊ",
-    outerLetters: ["ㅍ", "ㄹ", "ㅜ", "ㅓ", "ㄷ", "ㅁ"],
-    fullScore: 20,
-    pangrams: ["더펄춤"],
-  },
-  {
     centerLetter: "ㄴ",
     outerLetters: ["ㅜ", "ㄱ", "ㅗ", "ㅏ", "ㅎ", "ㅇ"],
     fullScore: 769,
@@ -162,12 +139,6 @@ export const SPELLING_BEES: SpellingBeeType[] = [
       "황군",
       "훈광",
     ],
-  },
-  {
-    centerLetter: "ㅡ",
-    outerLetters: ["ㅇ", "ㅓ", "ㄹ", "ㅊ", "ㅏ", "ㄷ"],
-    fullScore: 74,
-    pangrams: ["청아들"],
   },
   {
     centerLetter: "ㅇ",
