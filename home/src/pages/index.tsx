@@ -121,7 +121,7 @@ export default function Churrus() {
                 }}
               >
                 <Image
-                  src="/image/devilsplan.png"
+                  src="/image/card/meeting/suspect-banner.png"
                   fill
                   style={{
                     objectFit: "cover",

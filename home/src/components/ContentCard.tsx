@@ -31,7 +31,7 @@ export default function ({
       <Card elevation={4}>
         <CardContent
           sx={{
-            minHeight: "150px",
+            minHeight: "200px",
           }}
         >
           {children}
@@ -39,6 +39,7 @@ export default function ({
             display="flex"
             width="100%"
             sx={{
+              py: 2,
               bgcolor: "rgba(0, 0, 0, 0.5)",
               color: "white",
               fontSize: "1.5rem",
