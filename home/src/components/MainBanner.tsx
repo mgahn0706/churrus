@@ -1,32 +1,32 @@
 import { MeetingData, QuizData } from "@/features/quiz/fixtures";
 import useLocalStorage from "@/hooks/useLocalStorage";
-import {
-  ArrowCircleLeft,
-  ArrowCircleRight,
-  ArrowLeft,
-  ArrowRight,
-  PlayArrowSharp,
-} from "@mui/icons-material";
+import { ArrowCircleLeft, ArrowCircleRight } from "@mui/icons-material";
 import {
   Box,
   Typography,
   Card,
-  CardHeader,
   CardContent,
-  CardActionArea,
   IconButton,
+  CardMedia,
+  CardActionArea,
 } from "@mui/material";
 import dayjs from "dayjs";
-import router from "next/router";
-import { useEffect, useState } from "react";
-import ImageWithPlaceHolder from "./ImageWithPlaceholder";
 
-const BANNER_COLOR = "#4b89da";
+import { useState } from "react";
+
+import Image from "next/image";
+import { useRouter } from "next/router";
+
+const BANNER_COLOR = "#ffffff";
 
 const today = dayjs().diff(dayjs("2024-01-01"), "day");
+const spellingBeeDate = dayjs().diff("2024-02-09", "day");
 
 export default function MainBanner() {
+  const router = useRouter();
+
   const [solvedQuizzes] = useLocalStorage<string[]>("quiz", []);
+  const [foundWords] = useLocalStorage<string[]>("spelling-bee-answers", []);
 
   const [selectedQuizIndex, setSelectedQuizIndex] = useState(0);
 
@@ -41,112 +41,204 @@ export default function MainBanner() {
     unsolvedQuizzes[(today + selectedQuizIndex) % unsolvedQuizzes.length];
 
   return (
-    <Box display="flex" justifyContent="center" alignItems="center" mt="64px">
+    <Box display="flex" justifyContent="center" alignItems="center" my="64px">
       <Box
         display="flex"
-        justifyContent="center"
+        flexDirection="column"
         width="100%"
-        height="450px"
-        alignItems="center"
+        p={4}
         sx={{
           bgcolor: BANNER_COLOR,
         }}
       >
-        <Card
-          elevation={4}
-          sx={{
-            width: "470px",
-            p: 2,
-            minHeight: "290px",
-          }}
+        <Typography color="black" fontSize={32} fontWeight="bold">
+          오늘의 추러스 콘텐츠
+        </Typography>
+        <Box
+          display="flex"
+          justifyContent="center"
+          width="100%"
+          height="450px"
+          alignItems="center"
         >
-          <CardHeader
+          <Card
+            elevation={3}
             sx={{
-              pb: 0,
+              width: "280px",
+              minHeight: "100px",
+              mr: 10,
+              p: 2,
+              borderRadius: "20px",
             }}
-            titleTypographyProps={{
-              sx: {
-                fontSize: "1.5rem",
-                fontWeight: "bold",
-              },
+          >
+            <CardActionArea
+              onClick={() => {
+                router.push("/spelling-bee");
+              }}
+            >
+              <CardContent>
+                <Box
+                  mb={2}
+                  display="flex"
+                  flexDirection="row"
+                  justifyContent="space-between"
+                  alignItems="center"
+                >
+                  <Box display="flex" flexDirection="column">
+                    <Typography color="black" fontSize={18} fontWeight="bold">
+                      {spellingBeeDate + 1}일째
+                    </Typography>
+                    <Typography color="black" fontSize={18} fontWeight="bold">
+                      스펠링비
+                    </Typography>
+                  </Box>
+                  <Image
+                    src="/image/logo/spellingbee-logo.png"
+                    width={40}
+                    height={40}
+                    alt="spellingbee-logo"
+                  />
+                </Box>
+
+                <Typography variant="body2" color="text.secondary">
+                  {foundWords.length > 0
+                    ? `${foundWords.length}개의 단어를 찾았어요.`
+                    : "아직 시작하지 않았어요."}
+                </Typography>
+              </CardContent>
+            </CardActionArea>
+          </Card>
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            flexDirection="row"
+            color="#c7c7c7"
+            textAlign="center"
+          >
+            <IconButton
+              color="inherit"
+              onClick={() => setSelectedQuizIndex(selectedQuizIndex + 1)}
+            >
+              <ArrowCircleLeft />
+            </IconButton>
+          </Box>
+
+          <Card
+            elevation={6}
+            sx={{
+              borderRadius: "20px",
+              width: "400px",
+              minHeight: "290px",
             }}
-            title="오늘의 추천 퀴즈"
-            subheader="아직 풀지 않은 문제에서 골랐어요."
-          />
-          <CardContent>
-            <Box
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              flexDirection="row"
-              color="#c7c7c7"
-              textAlign="center"
+          >
+            <CardActionArea
+              sx={{
+                p: 2,
+              }}
+              onClick={() => {
+                router.push("/connections");
+              }}
             >
-              <IconButton
-                color="inherit"
-                onClick={() => setSelectedQuizIndex(selectedQuizIndex + 1)}
-              >
-                <ArrowCircleLeft />
-              </IconButton>
+              <CardMedia
+                component="img"
+                height="194"
+                image={todayQuiz.quizImgSrc}
+                alt={todayQuiz.title}
+              />
+              <CardContent>
+                <Typography
+                  color="black"
+                  fontSize={24}
+                  fontWeight="bold"
+                  textAlign="center"
+                >
+                  {todayQuiz.title}
+                </Typography>
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  textAlign="center"
+                >
+                  {
+                    MeetingData[
+                      Object.keys(QuizData).find((meeting) =>
+                        QuizData[meeting].includes(todayQuiz)
+                      ) || ""
+                    ].title
+                  }
+                </Typography>
+              </CardContent>
+            </CardActionArea>
+          </Card>
 
-              <CardActionArea
-                onClick={() => {
-                  router.push(`/quiz/${todayQuiz.id}`);
-                }}
-                sx={{
-                  borderRadius: "0.5rem",
-                }}
-              >
-                <ImageWithPlaceHolder
-                  src={todayQuiz.quizImgSrc}
-                  alt={todayQuiz.title}
-                  width={360}
-                  height={180}
-                  style={{
-                    boxShadow: "0 0 10px 0 rgba(0, 0, 0, 0.5)",
-                    borderRadius: "0.5rem",
-                    margin: "8px",
-                  }}
-                />
-              </CardActionArea>
-
-              <IconButton
-                color="inherit"
-                onClick={() => {
-                  setSelectedQuizIndex(
-                    selectedQuizIndex - 1 < 0
-                      ? unsolvedQuizzes.length - 1
-                      : selectedQuizIndex - 1
-                  );
-                }}
-              >
-                <ArrowCircleRight />
-              </IconButton>
-            </Box>
-
-            <Typography
-              color="black"
-              fontSize={24}
-              fontWeight="bold"
-              textAlign="center"
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            flexDirection="row"
+            color="#c7c7c7"
+            textAlign="center"
+          >
+            <IconButton
+              color="inherit"
+              onClick={() => {
+                setSelectedQuizIndex(
+                  selectedQuizIndex - 1 < 0
+                    ? unsolvedQuizzes.length - 1
+                    : selectedQuizIndex - 1
+                );
+              }}
             >
-              {todayQuiz.title}
-            </Typography>
-            <Typography
-              variant="body2"
-              color="text.secondary"
-              textAlign="center"
+              <ArrowCircleRight />
+            </IconButton>
+          </Box>
+          <Card
+            elevation={3}
+            sx={{
+              width: "280px",
+              minHeight: "100px",
+              ml: 10,
+              p: 2,
+              borderRadius: "20px",
+            }}
+          >
+            <CardActionArea
+              onClick={() => {
+                router.push("/connections");
+              }}
             >
-              {
-                MeetingData[
-                  Object.keys(QuizData).find((meeting) =>
-                    QuizData[meeting].includes(todayQuiz)
-                  ) || ""
-                ].title
-              }
-            </Typography>
-          </CardContent>
-        </Card>
+              <CardContent>
+                <Box
+                  mb={2}
+                  display="flex"
+                  flexDirection="row"
+                  justifyContent="space-between"
+                  alignItems="center"
+                >
+                  <Box display="flex" flexDirection="column">
+                    <Typography color="black" fontSize={18} fontWeight="bold">
+                      Week {dayjs().diff("2024-01-01", "week") + 1}
+                    </Typography>
+                    <Typography color="black" fontSize={18} fontWeight="bold">
+                      추러스 커넥션
+                    </Typography>
+                  </Box>
+                  <Image
+                    src="/image/logo/connections-logo.png"
+                    width={40}
+                    height={40}
+                    alt="spellingbee-logo"
+                  />
+                </Box>
+
+                <Typography variant="body2" color="text.secondary">
+                  네 개씩 네 묶음으로.
+                </Typography>
+              </CardContent>
+            </CardActionArea>
+          </Card>
+        </Box>
       </Box>
     </Box>
   );

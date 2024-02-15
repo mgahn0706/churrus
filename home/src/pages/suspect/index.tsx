@@ -8,9 +8,6 @@ import { Box, IconButton, Rating, Typography, keyframes } from "@mui/material";
 import { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, EffectCoverflow } from "swiper";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
 
 import { ScenarioType } from "@/features/suspect/types";
 import Header from "@/features/suspect/components/Header";
