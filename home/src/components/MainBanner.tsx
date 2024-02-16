@@ -26,7 +26,13 @@ export default function MainBanner() {
   const router = useRouter();
 
   const [solvedQuizzes] = useLocalStorage<string[]>("quiz", []);
-  const [foundWords] = useLocalStorage<string[]>("spelling-bee-answers", []);
+  const [foundWords] = useLocalStorage<{
+    day: number;
+    answers: string[];
+  }>("spelling-bee-answers", {
+    day: 0,
+    answers: [],
+  });
 
   const [selectedQuizIndex, setSelectedQuizIndex] = useState(0);
 
@@ -52,7 +58,7 @@ export default function MainBanner() {
         }}
       >
         <Typography color="black" fontSize={32} fontWeight="bold">
-          오늘의 추러스 콘텐츠
+          오늘의 콘텐츠
         </Typography>
         <Box
           display="flex"
@@ -61,19 +67,22 @@ export default function MainBanner() {
           height="450px"
           alignItems="center"
         >
-          <Card
-            elevation={3}
+          <CardActionArea
             sx={{
               width: "280px",
               minHeight: "100px",
               mr: 10,
-              p: 2,
               borderRadius: "20px",
             }}
+            onClick={() => {
+              router.push("/spelling-bee");
+            }}
           >
-            <CardActionArea
-              onClick={() => {
-                router.push("/spelling-bee");
+            <Card
+              elevation={3}
+              sx={{
+                p: 2,
+                borderRadius: "20px",
               }}
             >
               <CardContent>
@@ -101,13 +110,14 @@ export default function MainBanner() {
                 </Box>
 
                 <Typography variant="body2" color="text.secondary">
-                  {foundWords.length > 0
-                    ? `${foundWords.length}개의 단어를 찾았어요.`
+                  {foundWords.answers.length > 0
+                    ? `${foundWords.answers.length}개의 단어를 찾았어요.`
                     : "아직 시작하지 않았어요."}
                 </Typography>
               </CardContent>
-            </CardActionArea>
-          </Card>
+            </Card>
+          </CardActionArea>
+
           <Box
             display="flex"
             alignItems="center"
@@ -137,7 +147,7 @@ export default function MainBanner() {
                 p: 2,
               }}
               onClick={() => {
-                router.push("/connections");
+                router.push(`/quiz/${todayQuiz.id}`);
               }}
             >
               <CardMedia
@@ -145,6 +155,9 @@ export default function MainBanner() {
                 height="194"
                 image={todayQuiz.quizImgSrc}
                 alt={todayQuiz.title}
+                sx={{
+                  borderRadius: "4px",
+                }}
               />
               <CardContent>
                 <Typography
@@ -193,19 +206,22 @@ export default function MainBanner() {
               <ArrowCircleRight />
             </IconButton>
           </Box>
-          <Card
-            elevation={3}
+          <CardActionArea
             sx={{
               width: "280px",
               minHeight: "100px",
               ml: 10,
-              p: 2,
               borderRadius: "20px",
             }}
+            onClick={() => {
+              router.push("/connections");
+            }}
           >
-            <CardActionArea
-              onClick={() => {
-                router.push("/connections");
+            <Card
+              elevation={3}
+              sx={{
+                p: 2,
+                borderRadius: "20px",
               }}
             >
               <CardContent>
@@ -236,8 +252,8 @@ export default function MainBanner() {
                   네 개씩 네 묶음으로.
                 </Typography>
               </CardContent>
-            </CardActionArea>
-          </Card>
+            </Card>
+          </CardActionArea>
         </Box>
       </Box>
     </Box>

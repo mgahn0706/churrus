@@ -10,6 +10,7 @@ import ExternalGameCard, {
 } from "@/components/ExternalGameCard";
 import MainBanner from "@/components/MainBanner";
 import Image from "next/image";
+import dayjs from "dayjs";
 
 const WORD_PUZZLE_CONTENTS = [{}];
 
@@ -99,37 +100,22 @@ export default function Churrus() {
               <ContentCard
                 content={{
                   title: "문제적 추러스",
+                  description:
+                    "추러스에서 준비한 창의적이고 어려운 문제들을 풀어보세요.",
+                  image: "/image/card/meeting/quiz-banner.png",
                   url: "/quiz",
                 }}
-              >
-                <Image
-                  src="/image/card/meeting/quiz-banner.png"
-                  fill
-                  style={{
-                    objectFit: "cover",
-                    objectPosition: "center",
-                  }}
-                  alt="문제적 추러스"
-                />
-              </ContentCard>
+              />
             </Grid>
             <Grid item xs={responsiveXS}>
               <ContentCard
                 content={{
                   title: "협동 크라임씬",
+                  description: "다같이 협동해서 용의자 중 진범을 찾아보세요.",
+                  image: "/image/card/meeting/suspect-banner.png",
                   url: "/quiz",
                 }}
-              >
-                <Image
-                  src="/image/card/meeting/suspect-banner.png"
-                  fill
-                  style={{
-                    objectFit: "cover",
-                    objectPosition: "center",
-                  }}
-                  alt="협동 크라임씬"
-                />
-              </ContentCard>
+              />
             </Grid>
           </Grid>
         </Box>
@@ -178,7 +164,7 @@ export default function Churrus() {
         height="10vh"
       >
         <Typography color="#969ca5" variant="body2">
-          © 2019-2023 CHURRUS. All rights reserved.
+          © 2019-{dayjs().year()} CHURRUS. All rights reserved.
         </Typography>
       </Box>
     </Box>
