@@ -72,9 +72,55 @@ const GAME_CONTENTS: GameContentType[] = [
       "https://mblogthumb-phinf.pstatic.net/20141226_161/ej2042_1419567622607BBr2y_JPEG/tvN_%B4%F5_%C1%F6%B4%CF%BE%EE%BD%BA-%BA%ED%B7%A2%B0%A1%B3%DD.E12.END.141217.HDTV.H264.720p-WITH.mp4_20141225_195251.964.jpg?type=w420",
     url: "/same-number",
   },
+  {
+    title: "내 마음의 주파수",
+    imgSrc:
+      "https://cf.geekdo-images.com/z4fbPdmJg_5yphJEvql4ZA__itemrep/img/Dnjsh4DWMkiZBsPszNWs8bqtvGY=/fit-in/246x300/filters:strip_icc()/pic4552862.png",
+    url: "/frequency",
+  },
 ];
 
 const BACKGROUND_COLOR = "#f2f3f6";
+
+const MoreGamesButton = ({ onClick }: { onClick: () => void }) => {
+  <CardActionArea
+    sx={{
+      borderRadius: "20px",
+    }}
+    onClick={onClick}
+  >
+    <Card
+      sx={{
+        border: "2px solid #9798a1",
+        bgcolor: "#f2f4f5",
+        minHeight: 60,
+        color: "#121212",
+        alignItems: "center",
+        borderRadius: "20px",
+        verticalAlign: "middle",
+        display: "flex",
+        px: 2,
+      }}
+    >
+      <Typography
+        color="#202836"
+        textAlign="center"
+        fontSize="18px"
+        sx={{
+          width: "100%",
+          wordBreak: "keep-all",
+        }}
+      >
+        더보기
+      </Typography>
+      <ArrowForwardIos
+        sx={{
+          fontSize: "0.8rem",
+        }}
+      />
+    </Card>
+  </CardActionArea>;
+};
 
 export default function Churrus() {
   const router = useRouter();
@@ -151,47 +197,6 @@ export default function Churrus() {
               <GameCard content={content} />
             </Grid>
           ))}
-          <Grid item xs={responsiveExternalXS}>
-            <CardActionArea
-              sx={{
-                borderRadius: "20px",
-              }}
-              onClick={() => {
-                router.push(`/board-games`);
-              }}
-            >
-              <Card
-                sx={{
-                  border: "2px solid #9798a1",
-                  bgcolor: "#f2f4f5",
-                  minHeight: 60,
-                  color: "#121212",
-                  alignItems: "center",
-                  borderRadius: "20px",
-                  verticalAlign: "middle",
-                  display: "flex",
-                  px: 2,
-                }}
-              >
-                <Typography
-                  color="#202836"
-                  textAlign="center"
-                  fontSize="18px"
-                  sx={{
-                    width: "100%",
-                    wordBreak: "keep-all",
-                  }}
-                >
-                  더보기
-                </Typography>
-                <ArrowForwardIos
-                  sx={{
-                    fontSize: "0.8rem",
-                  }}
-                />
-              </Card>
-            </CardActionArea>
-          </Grid>
         </Grid>
       </Box>
 
