@@ -59,19 +59,20 @@ export default function ContentCard({ content }: { content: ContentType }) {
         >
           <CardMedia
             component="img"
-            height="194"
+            height="194px"
             image={content.image}
             alt={content.title}
             className="content-image"
           />
           <Box
             display="flex"
-            width="100%"
+            maxWidth={300}
             flexDirection="column"
             gap={1}
             sx={{
               py: 2,
               top: 20,
+              wordBreak: "keep-all",
               left: 40,
               position: "absolute",
             }}
