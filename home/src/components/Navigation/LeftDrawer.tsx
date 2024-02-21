@@ -3,6 +3,7 @@ import {
   Dashboard,
   Filter1,
   Help,
+  Hexagon,
   IndeterminateCheckBox,
   Mail,
   Quiz,
@@ -42,32 +43,17 @@ const leftNavigationMenuItems: Record<
       url: "/suspect",
       icon: <Search />,
     },
+  ],
+  "정기 퍼즐": [
     {
       text: "추러스 커넥션",
       url: "/connections",
       icon: <Dashboard />,
     },
-  ],
-  "더 지니어스": [
     {
-      text: "미스터리 사인",
-      url: "/mystery-sign",
-      icon: <Help />,
-    },
-    {
-      text: "마이너스 경매",
-      url: "/minus-auction",
-      icon: <IndeterminateCheckBox />,
-    },
-    {
-      text: "같은 숫자 찾기",
-      url: "/same-number",
-      icon: <Filter1 />,
-    },
-    {
-      text: "결! 합!",
-      url: "/set",
-      icon: <Category />,
+      text: "스펠링 비",
+      url: "/spelling-bee",
+      icon: <Hexagon />,
     },
   ],
   "추러스 활동": [
