@@ -57,8 +57,8 @@ export default function TodayQuizCard() {
         elevation={6}
         sx={{
           borderRadius: "20px",
-          width: "400px",
-          minHeight: isMobileWidth ? "180px" : "290px",
+          width: isMobileWidth ? "225px" : "400px",
+          minHeight: isMobileWidth ? "150px" : "290px",
         }}
       >
         <CardActionArea

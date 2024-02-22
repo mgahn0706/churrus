@@ -69,7 +69,17 @@ export default function MainBanner() {
             justifyContent="space-between"
             alignItems="center"
             px={3}
+            sx={{
+              "&:hover": {
+                cursor: "pointer",
+                backgroundColor: "rgba(0, 0, 0, 0.04)",
+                transition: "0.1s",
+              },
+            }}
             mt={4}
+            onClick={() => {
+              router.push("/spelling-bee");
+            }}
           >
             <Box display="flex" flexDirection="row" alignItems="center" gap={3}>
               <Image
@@ -83,7 +93,8 @@ export default function MainBanner() {
                   {spellingBeeDate + 1}일째 스펠링 비
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  {foundWords.answers.length > 0
+                  {foundWords.answers.length > 0 &&
+                  foundWords.day === spellingBeeDate
                     ? `${foundWords.answers.length}개의 단어를 찾았어요.`
                     : "아직 시작하지 않았어요."}
                 </Typography>
@@ -98,6 +109,16 @@ export default function MainBanner() {
             alignItems="center"
             px={3}
             mt={4}
+            sx={{
+              "&:hover": {
+                cursor: "pointer",
+                backgroundColor: "rgba(0, 0, 0, 0.04)",
+                transition: "0.1s",
+              },
+            }}
+            onClick={() => {
+              router.push("/connections");
+            }}
           >
             <Box display="flex" flexDirection="row" alignItems="center" gap={3}>
               <Image
@@ -186,7 +207,8 @@ export default function MainBanner() {
                 </Box>
 
                 <Typography variant="body2" color="text.secondary">
-                  {foundWords.answers.length > 0
+                  {foundWords.answers.length > 0 &&
+                  foundWords.day === spellingBeeDate
                     ? `${foundWords.answers.length}개의 단어를 찾았어요.`
                     : "아직 시작하지 않았어요."}
                 </Typography>
