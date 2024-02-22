@@ -74,11 +74,8 @@ export default function AnswersSection({
             {[...currentAnswers]
               .sort((a, b) => a.word.localeCompare(b.word))
               .map((answer) => (
-                <Box py="1px" px="12px">
-                  <Typography
-                    fontWeight={answer.isPangram ? "bold" : "normal"}
-                    key={answer.word}
-                  >
+                <Box py="1px" px="12px" key={answer.word}>
+                  <Typography fontWeight={answer.isPangram ? "bold" : "normal"}>
                     {answer.word}
                   </Typography>
                   <Divider />

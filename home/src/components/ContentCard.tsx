@@ -1,10 +1,11 @@
+import { AddCircleOutline, PlayCircleOutline } from "@mui/icons-material";
 import {
   Card,
   CardContent,
+  CardActionArea,
+  CardMedia,
   Box,
   Typography,
-  Button,
-  CardActionArea,
 } from "@mui/material";
 import { useRouter } from "next/router";
 import { ReactNode } from "react";
@@ -12,85 +13,101 @@ import { ReactNode } from "react";
 export interface ContentType {
   title: string;
   description: string;
-  icon: ReactNode;
-  label: string;
+  image: string;
   url: string;
-  color: {
-    main: string;
-    dark: string;
-  };
 }
 
-export default function ({ content }: { content: ContentType }) {
+export default function ContentCard({ content }: { content: ContentType }) {
   const router = useRouter();
 
   return (
     <CardActionArea
-      sx={{
-        borderRadius: "16px",
-      }}
       onClick={() => {
         router.push(`/${content.url}`);
+      }}
+      sx={{
+        borderRadius: "20px",
       }}
     >
       <Card
         elevation={4}
         sx={{
-          borderRadius: "16px",
-          height: 200,
-          color: "#212937",
-          backgroundColor: content.color.main,
-          cursor: "pointer",
-          transition: "all 0.2s ease-in-out",
+          borderRadius: "20px",
+          "&:hover": {
+            "& .content-description-text": {
+              display: "block",
+            },
+            "& .content-image": {
+              filter: "blur(30px)",
+              transform: "scale(1.2)",
+              transition: "all 0.1s ease-in",
+            },
+            "& .content-title-text": {
+              fontSize: "1.5rem",
+            },
+            "& .play-icon": {
+              display: "none",
+            },
+          },
         }}
       >
         <CardContent
           sx={{
-            pt: 3,
+            minHeight: "200px",
+            borderRadius: "20px",
           }}
         >
-          <Box display="flex" flexDirection="column">
-            <Box
-              bgcolor="transparent"
-              border="1px solid #5f6a80"
-              borderRadius="4px"
-              width="fit-content"
-              height="fit-content"
-              px={1}
-              py={0.5}
-              fontSize={8}
-              fontWeight={400}
-              mb={1}
+          <CardMedia
+            component="img"
+            height="194px"
+            image={content.image}
+            alt={content.title}
+            className="content-image"
+          />
+          <Box
+            display="flex"
+            maxWidth={300}
+            flexDirection="column"
+            gap={1}
+            sx={{
+              py: 2,
+              top: 20,
+              wordBreak: "keep-all",
+              left: 40,
+              position: "absolute",
+            }}
+          >
+            <Typography
+              color="#333d4b"
+              fontSize="2rem"
+              sx={{
+                transition: "all 0.3s ease-in-out",
+              }}
+              fontWeight="bold"
+              display="block"
+              className="content-title-text"
             >
-              {content.label}
-            </Box>
-            <Box display="flex" justifyContent="space-between">
-              <Box display="flex" flexDirection="column">
-                <Typography
-                  fontSize={27}
-                  fontWeight={700}
-                  sx={{
-                    wordBreak: "keep-all",
-                  }}
-                >
-                  {content.title}
-                </Typography>
-                <Typography fontSize={16} fontWeight={300}>
-                  {content.description}
-                </Typography>
-              </Box>
-
-              <Box
-                display="flex"
-                justifyContent="flex-end"
-                color="#212937"
-                sx={{
-                  opacity: 0.1,
-                }}
-              >
-                {content.icon}
-              </Box>
-            </Box>
+              {content.title}
+            </Typography>
+            <PlayCircleOutline
+              className="play-icon"
+              sx={{
+                transition: "all 0.3s ease-in-out",
+                color: "#333d4b",
+                fontSize: "2rem",
+              }}
+            />
+            <Typography
+              className="content-description-text"
+              color="#333d4b"
+              fontSize={18}
+              display="none"
+              sx={{
+                transition: "all 0.3s ease-in-out",
+              }}
+            >
+              {content.description}
+            </Typography>
           </Box>
         </CardContent>
       </Card>

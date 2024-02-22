@@ -1,154 +1,272 @@
-import { useMobileWidth } from "@/hooks/useMobileWIdth";
-import { PlayArrowSharp } from "@mui/icons-material";
-import { Box, Typography, Button } from "@mui/material";
-import router from "next/router";
+import { MeetingData, QuizData } from "@/features/quiz/fixtures";
+import useLocalStorage from "@/hooks/useLocalStorage";
+import {
+  ArrowCircleLeft,
+  ArrowCircleRight,
+  ArrowForward,
+  ArrowForwardIos,
+} from "@mui/icons-material";
+import {
+  Box,
+  Typography,
+  Card,
+  CardContent,
+  IconButton,
+  CardMedia,
+  CardActionArea,
+} from "@mui/material";
+import dayjs from "dayjs";
 
-const BANNER_COLOR = "white";
+import { useState } from "react";
 
-const BANNER_IMAGE = "/image/banner/2023-11.png";
+import Image from "next/image";
+import { useRouter } from "next/router";
+import { useResponsiveValue } from "@/hooks/useResponsiveValue";
+import TodayQuizCard from "./MainBanner/TodayQuizCard";
 
-const BANNER_TEXT = {
-  subtitle: "장편 추리 문제",
-  title: "일찍 온 크리스마스",
-  ctaURL: "/quiz",
-};
+const BANNER_COLOR = "#ffffff";
 
-const handleClickBannerButton = () => {
-  router.push(BANNER_TEXT.ctaURL, undefined, {
-    scroll: true,
-  });
-};
+const spellingBeeDate = dayjs().diff("2024-02-09", "day");
 
 export default function MainBanner() {
-  const { isMobileWidth } = useMobileWidth();
+  const router = useRouter();
+  const isMobileWidth = useResponsiveValue([true, true, false]);
 
-  if (isMobileWidth)
+  const [foundWords] = useLocalStorage<{
+    day: number;
+    answers: string[];
+  }>("spelling-bee-answers", {
+    day: 0,
+    answers: [],
+  });
+
+  if (isMobileWidth) {
     return (
-      <Box display="flex" justifyContent="center">
+      <Box display="flex" justifyContent="center" alignItems="center" my="64px">
         <Box
           display="flex"
-          justifyContent="flex-start"
-          width="90vw"
-          height="350px"
-          borderRadius="16px"
+          flexDirection="column"
+          width="100%"
+          p={4}
           sx={{
             bgcolor: BANNER_COLOR,
           }}
+          justifyContent="center"
         >
-          <Box
-            width="100vw"
-            display="flex"
-            flexDirection="column"
-            pl={4}
-            py={5}
-            justifyContent="flex-start"
-            gap={3}
+          <Typography
+            color="black"
+            fontSize={32}
+            fontWeight="bold"
+            sx={{
+              mb: 4,
+            }}
           >
-            <Typography color="black" variant="body1" mb={-2}>
-              2023년 11월 정기모임
-            </Typography>
-            <Typography color="black" fontWeight="bold" variant="h4">
-              {BANNER_TEXT.subtitle} &
-            </Typography>
-            <Typography color="#f96556" fontWeight="bold" variant="h4" mt={-3}>
-              {BANNER_TEXT.title}
-            </Typography>
-            <Box display="flex" justifyContent="space-between">
-              <Button
-                variant="contained"
-                sx={{
-                  width: "fit-content",
-                  height: "fit-content",
-                  backgroundColor: "#f96556",
-                  color: "white",
-                  fontWeight: "bold",
-                  "&:hover": {
-                    backgroundColor: "#da5142",
-                  },
-                }}
-                size="small"
-                onClick={handleClickBannerButton}
-              >
-                시작
-                <PlayArrowSharp />
-              </Button>
-              <Box
-                mt={-2}
-                width="75%"
-                height="200px"
-                sx={{
-                  backgroundSize: "cover",
-                  backgroundRepeat: "no-repeat",
-                  backgroundPosition: "center",
-                  backgroundImage: `linear-gradient(to bottom, ${BANNER_COLOR} 3%, transparent 20%, transparent 70%, ${BANNER_COLOR} 98%), linear-gradient(to left, ${BANNER_COLOR} 3%, transparent 20%, transparent 80%, ${BANNER_COLOR} 98%), url("${BANNER_IMAGE}") `,
-                }}
+            오늘의 콘텐츠
+          </Typography>
+          <TodayQuizCard />
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            px={3}
+            sx={{
+              "&:hover": {
+                cursor: "pointer",
+                backgroundColor: "rgba(0, 0, 0, 0.04)",
+                transition: "0.1s",
+              },
+            }}
+            mt={4}
+            onClick={() => {
+              router.push("/spelling-bee");
+            }}
+          >
+            <Box display="flex" flexDirection="row" alignItems="center" gap={3}>
+              <Image
+                src="/image/logo/spellingbee-logo.png"
+                width={40}
+                height={40}
+                alt="spellingbee-logo"
               />
+              <Box display="flex" flexDirection="column">
+                <Typography color="black" fontSize={18} fontWeight="bold">
+                  {spellingBeeDate + 1}일째 스펠링 비
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {foundWords.answers.length > 0 &&
+                  foundWords.day === spellingBeeDate
+                    ? `${foundWords.answers.length}개의 단어를 찾았어요.`
+                    : "아직 시작하지 않았어요."}
+                </Typography>
+              </Box>
             </Box>
+            <ArrowForwardIos color="action" />
+          </Box>
+
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            px={3}
+            mt={4}
+            sx={{
+              "&:hover": {
+                cursor: "pointer",
+                backgroundColor: "rgba(0, 0, 0, 0.04)",
+                transition: "0.1s",
+              },
+            }}
+            onClick={() => {
+              router.push("/connections");
+            }}
+          >
+            <Box display="flex" flexDirection="row" alignItems="center" gap={3}>
+              <Image
+                src="/image/logo/connections-logo.png"
+                width={40}
+                height={40}
+                alt="spellingbee-logo"
+              />
+              <Box display="flex" flexDirection="column">
+                <Typography color="black" fontSize={18} fontWeight="bold">
+                  Week {dayjs().diff("2024-01-01", "week") + 1} 추러스 커넥션
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  네 개씩 네 묶음으로.
+                </Typography>
+              </Box>
+            </Box>
+            <ArrowForwardIos color="action" />
           </Box>
         </Box>
       </Box>
     );
+  }
 
   return (
-    <Box display="flex" justifyContent="center">
+    <Box display="flex" justifyContent="center" alignItems="center" my="64px">
       <Box
         display="flex"
-        justifyContent="flex-start"
-        width="60vw"
-        height="40vh"
-        borderRadius="16px"
+        flexDirection="column"
+        width="100%"
+        p={4}
         sx={{
           bgcolor: BANNER_COLOR,
         }}
       >
+        <Typography color="black" fontSize={32} fontWeight="bold">
+          오늘의 콘텐츠
+        </Typography>
         <Box
-          width="25vw"
           display="flex"
-          flexDirection="column"
-          px={5}
-          py={5}
-          justifyContent="flex-start"
-          gap={3}
+          justifyContent="center"
+          width="100%"
+          height="450px"
+          alignItems="center"
         >
-          <Typography color="black" variant="h6" mb={-2}>
-            2023년 11월 정기모임
-          </Typography>
-          <Typography color="black" fontWeight="bold" variant="h3">
-            {BANNER_TEXT.subtitle} &
-          </Typography>
-          <Typography color="#f96556" fontWeight="bold" variant="h3" mt={-3}>
-            {BANNER_TEXT.title}
-          </Typography>
-          <Button
-            variant="contained"
+          <CardActionArea
             sx={{
-              width: "fit-content",
-              backgroundColor: "#f96556",
-              color: "white",
-              fontWeight: "bold",
-              fontSize: "1.2rem",
-              "&:hover": {
-                backgroundColor: "#da5142",
-              },
+              width: "280px",
+              minHeight: "100px",
+              mr: 10,
+              borderRadius: "20px",
             }}
-            size="large"
-            onClick={handleClickBannerButton}
+            onClick={() => {
+              router.push("/spelling-bee");
+            }}
           >
-            시작
-            <PlayArrowSharp />
-          </Button>
-        </Box>
+            <Card
+              elevation={3}
+              sx={{
+                p: 2,
+                borderRadius: "20px",
+              }}
+            >
+              <CardContent>
+                <Box
+                  mb={2}
+                  display="flex"
+                  flexDirection="row"
+                  justifyContent="space-between"
+                  alignItems="center"
+                >
+                  <Box display="flex" flexDirection="column">
+                    <Typography color="black" fontSize={18} fontWeight="bold">
+                      {spellingBeeDate + 1}일째
+                    </Typography>
+                    <Typography color="black" fontSize={18} fontWeight="bold">
+                      스펠링비
+                    </Typography>
+                  </Box>
+                  <Image
+                    src="/image/logo/spellingbee-logo.png"
+                    width={40}
+                    height={40}
+                    alt="spellingbee-logo"
+                  />
+                </Box>
 
-        <Box
-          width="30vw"
-          height="100%"
-          sx={{
-            backgroundSize: "cover",
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "center",
-            backgroundImage: `linear-gradient(to bottom, ${BANNER_COLOR} 3%, transparent 20%, transparent 70%, ${BANNER_COLOR} 98%), linear-gradient(to left, ${BANNER_COLOR} 3%, transparent 20%, transparent 80%, ${BANNER_COLOR} 98%), url("${BANNER_IMAGE}") `,
-          }}
-        />
+                <Typography variant="body2" color="text.secondary">
+                  {foundWords.answers.length > 0 &&
+                  foundWords.day === spellingBeeDate
+                    ? `${foundWords.answers.length}개의 단어를 찾았어요.`
+                    : "아직 시작하지 않았어요."}
+                </Typography>
+              </CardContent>
+            </Card>
+          </CardActionArea>
+
+          <TodayQuizCard />
+
+          <CardActionArea
+            sx={{
+              width: "280px",
+              minHeight: "100px",
+              ml: 10,
+              borderRadius: "20px",
+            }}
+            onClick={() => {
+              router.push("/connections");
+            }}
+          >
+            <Card
+              elevation={3}
+              sx={{
+                p: 2,
+                borderRadius: "20px",
+              }}
+            >
+              <CardContent>
+                <Box
+                  mb={2}
+                  display="flex"
+                  flexDirection="row"
+                  justifyContent="space-between"
+                  alignItems="center"
+                >
+                  <Box display="flex" flexDirection="column">
+                    <Typography color="black" fontSize={18} fontWeight="bold">
+                      Week {dayjs().diff("2024-01-01", "week") + 1}
+                    </Typography>
+                    <Typography color="black" fontSize={18} fontWeight="bold">
+                      추러스 커넥션
+                    </Typography>
+                  </Box>
+                  <Image
+                    src="/image/logo/connections-logo.png"
+                    width={40}
+                    height={40}
+                    alt="spellingbee-logo"
+                  />
+                </Box>
+
+                <Typography variant="body2" color="text.secondary">
+                  네 개씩 네 묶음으로.
+                </Typography>
+              </CardContent>
+            </Card>
+          </CardActionArea>
+        </Box>
       </Box>
     </Box>
   );

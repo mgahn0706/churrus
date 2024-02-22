@@ -107,7 +107,7 @@ export default function SpellingBee() {
         </Box>
         <Box display="flex" gap={1} alignItems="center">
           <Typography color="GrayText" variant="h6">
-            {spellingBeeDate + 1}번째
+            {spellingBeeDate + 1}일째
           </Typography>
           <Typography fontSize="1.5rem" fontWeight="bold">
             스펠링 비
