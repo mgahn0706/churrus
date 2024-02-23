@@ -146,19 +146,21 @@ export const CONNECTIONS2024: ConnectionsType[] = [
   {
     week: 8,
     quiz: [
-      { words: ["이자", "뇌", "충수", "혀"], description: "신체 기관" },
-
       {
-        words: ["충무", "치즈", "꼬마", "누드"],
-        description: "___김밥",
+        words: ["계", "학회", "회식", "동아리"],
+        description: "모임",
       },
       {
-        words: ["도수", "물리", "심리", "신경"],
-        description: "___치료",
+        words: ["참", "칸", "판", "난간"],
+        description: "계단의 부분",
       },
       {
-        words: ["대로", "양", "체", "뻔"],
-        description: "부사성 의존명사",
+        words: ["아이", "지성", "테마", "미로"],
+        description: "___-Park",
+      },
+      {
+        words: ["선생님", "어이", "아", "선생님"],
+        description: "사람을 부를 때 사용하는 단어",
       },
     ],
   },
@@ -219,6 +221,24 @@ export const CONNECTIONS2024: ConnectionsType[] = [
       {
         words: ["와트", "몰", "테슬라", "초"],
         description: "SI 단위",
+      },
+    ],
+  },
+  {
+    week: 12,
+    quiz: [
+      { words: ["이자", "뇌", "충수", "혀"], description: "신체 기관" },
+      {
+        words: ["충무", "치즈", "꼬마", "누드"],
+        description: "___김밥",
+      },
+      {
+        words: ["도수", "물리", "심리", "신경"],
+        description: "___치료",
+      },
+      {
+        words: ["대로", "양", "체", "뻔"],
+        description: "부사성 의존명사",
       },
     ],
   },
