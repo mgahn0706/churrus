@@ -159,7 +159,7 @@ export const CONNECTIONS2024: ConnectionsType[] = [
         description: "___-Park",
       },
       {
-        words: ["선생님", "어이", "아", "선생님"],
+        words: ["선생님", "어이", "아", "야"],
         description: "사람을 부를 때 사용하는 단어",
       },
     ],
