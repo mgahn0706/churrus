@@ -13,6 +13,7 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import { CheckCircleOutline, RadioButtonUnchecked } from "@mui/icons-material";
 import { useState } from "react";
+import ImageWithPlaceHolder from "@/components/ImageWithPlaceholder";
 
 export default function QuizCard({
   quiz,
@@ -33,7 +34,7 @@ export default function QuizCard({
     <Grid item xs={responsiveXS}>
       <Card
         sx={{
-          backgroundColor: bgColor ?? lightColor,
+          backgroundColor: "#f0f4f9",
           minWidth: "150px",
           borderRadius: "0.75rem",
           boxShadow: "0 4px 30px rgba(255, 255, 255, 0.1)",
@@ -85,8 +86,8 @@ export default function QuizCard({
                 {isSolved ? (
                   <CheckCircleOutline
                     sx={{
-                      color: "#20954f",
                       fontSize: "1.5rem",
+                      color: "#4285f5",
                     }}
                   />
                 ) : (
@@ -105,29 +106,12 @@ export default function QuizCard({
               width="100%"
               height="100%"
             >
-              <Image
+              <ImageWithPlaceHolder
                 src={quiz.quizImgSrc}
                 alt={quiz.title}
-                style={{
-                  borderRadius: "0.5rem",
-                }}
-                width={isImageLoading ? 0 : 180}
-                height={isImageLoading ? 0 : 90}
-                priority
-                onLoadingComplete={() => setIsImageLoading(false)}
-                onError={() => setIsImageLoading(false)}
+                width={200}
+                height={100}
               />
-              {isImageLoading && (
-                <Skeleton
-                  variant="rectangular"
-                  width="180px"
-                  height="90px"
-                  sx={{
-                    borderRadius: "0.5rem",
-                    bgcolor: "rgba(255, 255, 255, 0.7)",
-                  }}
-                />
-              )}
             </Box>
           </CardContent>
         </CardActionArea>

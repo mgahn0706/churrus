@@ -54,20 +54,20 @@ export default function Quiz() {
         >
           <Box
             width="100%"
-            textAlign="center"
+            textAlign="left"
             color="#212837"
-            mt="100px"
-            mb={[3, 4, 6]}
+            mt="80px"
+            mb={[2, 3, 4]}
           >
             <Typography
-              variant="h3"
+              fontSize={["1.5rem", "2rem", "2rem"]}
               fontWeight={600}
               fontFamily="NanumSquareEB"
             >
               문제적 추러스
             </Typography>
             <Typography
-              variant="body1"
+              color="gray"
               fontFamily={"NanumSquareEB"}
               sx={{
                 wordBreak: "keep-all",
