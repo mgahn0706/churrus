@@ -14,6 +14,9 @@ import Header from "@/features/suspect/components/Header";
 import ScenarioCard from "@/features/suspect/components/ScenarioSelect/ScenarioCard";
 import { scenarios } from "@/features/suspect/fixtures";
 import { useMobileWidth } from "@/hooks/useMobileWIdth";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 export default function Suspect() {
   const [selectedScenario, setSelectedScenario] = useState<ScenarioType | null>(

@@ -242,4 +242,47 @@ export const CONNECTIONS2024: ConnectionsType[] = [
       },
     ],
   },
+  {
+    week: 13,
+    quiz: [
+      {
+        words: ["안개", "미세먼지", "온도", "태풍"],
+        description: "일기예보에서 알 수 있는 것",
+      },
+      {
+        words: ["사막", "해변", "모래시계", "놀이터"],
+        description: "모래를 볼 수 있는 것",
+      },
+      {
+        words: ["높새", "산들", "칼", "꽃"],
+        description: "___바람",
+      },
+      {
+        words: ["책상", "양반", "구름", "무지개"],
+        description: "___다리",
+      },
+    ],
+  },
+  {
+    week: 14,
+    quiz: [
+      {
+        words: ["바이러스", "프리온", "곰팡이", "세균"],
+        description: "병원체",
+      },
+      {
+        words: ["아바타", "베테랑", "알라딘", "기생충"],
+        description: "대한민국 천만 관객 영화",
+      },
+      {
+        words: ["로", "파이", "뉴", "오메가"],
+        description: "그리스 알파벳",
+      },
+
+      {
+        words: ["월드", "종이", "에그", "계량"],
+        description: "___컵",
+      },
+    ],
+  },
 ];

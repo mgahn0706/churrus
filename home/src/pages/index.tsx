@@ -158,7 +158,7 @@ export default function Churrus() {
                   title: "협동 크라임씬",
                   description: "다같이 협동해서 용의자 중 진범을 찾아보세요.",
                   image: "/image/card/meeting/suspect-banner.png",
-                  url: "/quiz",
+                  url: "/suspect",
                 }}
               />
             </Grid>
