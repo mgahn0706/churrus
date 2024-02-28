@@ -88,11 +88,11 @@ export default function QuizPage() {
         <title>문제적 추러스 : {quiz.title}</title>
       </Head>
       <Box
-        height="100vh"
         alignItems="center"
         display="flex"
+        height="100dvh"
         flexDirection="column"
-        py={5}
+        py={4}
         px={7}
         textAlign="center"
         bgcolor={BACKGROUND_COLOR}
