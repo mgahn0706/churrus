@@ -3,17 +3,36 @@ import {
   Card,
   CardActionArea,
   CardContent,
+  CardMedia,
+  Chip,
   Grid,
-  Skeleton,
   Typography,
 } from "@mui/material";
 import { QuizType } from "../types";
 import { useResponsiveValue } from "@/hooks/useResponsiveValue";
 import { useRouter } from "next/router";
-import Image from "next/image";
-import { CheckCircleOutline, RadioButtonUnchecked } from "@mui/icons-material";
-import { useState } from "react";
+import {
+  CheckCircleOutline,
+  HelpOutline,
+  RadioButtonUnchecked,
+} from "@mui/icons-material";
 import ImageWithPlaceHolder from "@/components/ImageWithPlaceholder";
+import { MeetingData } from "../fixtures";
+
+const difficultyLabel = {
+  easy: {
+    label: "쉬움",
+    color: "#e1fae2",
+  },
+  normal: {
+    label: "보통",
+    color: "#ffefd8",
+  },
+  hard: {
+    label: "어려움",
+    color: "#f9cdca",
+  },
+};
 
 export default function QuizCard({
   quiz,
@@ -25,21 +44,20 @@ export default function QuizCard({
   bgColor?: string;
 }) {
   const responsiveXS = useResponsiveValue([6, 4, 2]);
-  const [isImageLoading, setIsImageLoading] = useState(true);
   const router = useRouter();
 
-  const lightColor = "#ffe2db";
+  const cardHeight = useResponsiveValue([100, 150, 200]) as number;
 
   return (
     <Grid item xs={responsiveXS}>
       <Card
+        elevation={3}
         sx={{
-          backgroundColor: "#f0f4f9",
+          backgroundColor: "#ffffff",
           minWidth: "150px",
-          borderRadius: "0.75rem",
-          boxShadow: "0 4px 30px rgba(255, 255, 255, 0.1)",
-          border: "1px solid rgba(255, 255, 255, 0.3)",
-          transition: "all 0.3s ease-in-out",
+          borderRadius: "20px",
+          boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+          border: "1px solid rgba(0,0,0,0.1)",
         }}
       >
         <CardActionArea
@@ -47,70 +65,69 @@ export default function QuizCard({
             router.push(`/quiz/${quiz.id}`);
           }}
         >
+          <CardMedia sx={{ height: cardHeight }}>
+            <ImageWithPlaceHolder
+              src={quiz.quizImgSrc}
+              alt={quiz.title}
+              width={cardHeight * 1.8}
+              height={cardHeight}
+            />
+          </CardMedia>
           <CardContent
             sx={{
-              cursor: "pointer",
-              height: "100%",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
+              py: 1,
+              borderTop: "1px solid rgba(0,0,0,0.1)",
             }}
           >
             <Box
               display="flex"
+              fontSize="12px"
               justifyContent="space-between"
-              alignItems="center"
-              mb={1}
+              mb="6px"
+              width={1}
+              whiteSpace="nowrap"
             >
-              <Box
+              <Typography
+                fontSize="18px"
                 color="#212837"
-                textAlign="left"
-                justifyContent="center"
-                display="flex"
-                flexDirection="column"
-                whiteSpace="nowrap"
-                overflow="hidden"
-                width="100%"
+                fontWeight={500}
+                textOverflow={"ellipsis"}
+                overflow={"hidden"}
               >
-                <Typography
-                  fontSize={16}
-                  fontFamily={"NanumSquareEB"}
-                  fontWeight={700}
-                  textOverflow="ellipsis"
-                  overflow="hidden"
-                >
-                  {quiz.title}
-                </Typography>
-              </Box>
-              <Box display="flex" alignItems="center">
-                {isSolved ? (
-                  <CheckCircleOutline
-                    sx={{
-                      fontSize: "1.5rem",
-                      color: "#4285f5",
-                    }}
-                  />
-                ) : (
-                  <RadioButtonUnchecked
-                    sx={{
-                      fontSize: "1.5rem",
-                    }}
-                  />
-                )}
-              </Box>
+                {quiz.title}
+              </Typography>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              ></Box>
             </Box>
             <Box
               display="flex"
-              justifyContent="center"
-              alignItems="center"
-              width="100%"
-              height="100%"
+              gap={1}
+              overflow="hidden"
+              flexWrap="nowrap"
+              width={1}
             >
-              <ImageWithPlaceHolder
-                src={quiz.quizImgSrc}
-                alt={quiz.title}
-                width={200}
-                height={100}
+              <Chip
+                label={difficultyLabel[quiz.difficulty ?? "easy"].label}
+                sx={{
+                  py: 0,
+                  height: "18px",
+                  backgroundColor:
+                    difficultyLabel[quiz.difficulty ?? "easy"].color,
+                  fontSize: "12px",
+                }}
+              />
+              <Chip
+                label={isSolved ? "✅ 풀었음" : "❓ 풀지 않음"}
+                sx={{
+                  py: 0,
+                  height: "18px",
+                  backgroundColor: isSolved ? "#e1fae2" : "#f9cdca",
+                  fontSize: "12px",
+                }}
               />
             </Box>
           </CardContent>

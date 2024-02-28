@@ -1,12 +1,25 @@
 import GlobalHeader from "@/components/Navigation/GlobalHeader";
 import QuizCard from "@/features/quiz/components/QuizCard";
 import { MEETINGS, MeetingData, QuizData } from "@/features/quiz/fixtures";
-import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
-import { Box, Grid, IconButton, Typography } from "@mui/material";
+import {
+  ArrowBackIos,
+  ArrowForwardIos,
+  NavigateBefore,
+  NavigateNext,
+} from "@mui/icons-material";
+import {
+  Box,
+  Grid,
+  IconButton,
+  MenuItem,
+  Select,
+  Typography,
+} from "@mui/material";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 const BACKGROUND_COLOR = "#ffffff";
 
@@ -64,8 +77,18 @@ export default function Quiz() {
               fontWeight={600}
               fontFamily="NanumSquareEB"
             >
+              <Image
+                src="/image/logo/quiz-logo.png"
+                width={25}
+                height={25}
+                alt="quiz logo"
+                style={{
+                  marginRight: "4px",
+                }}
+              />
               문제적 추러스
             </Typography>
+
             <Typography
               color="gray"
               fontFamily={"NanumSquareEB"}
@@ -79,8 +102,9 @@ export default function Quiz() {
 
           <Box
             display="flex"
-            justifyContent="center"
+            justifyContent={["center", "flex-start"]}
             alignItems="center"
+            minWidth="250px"
             mb={3}
           >
             <IconButton
@@ -93,39 +117,33 @@ export default function Quiz() {
                 router.push(`/quiz?meeting=${MEETINGS[index + 1]}`);
               }}
             >
-              <ArrowBackIos />
+              <NavigateBefore />
             </IconButton>
             <Box
               minHeight="58px"
-              minWidth="250px"
+              minWidth="200px"
               justifyContent="center"
               alignItems="center"
               lineHeight="58px"
               display="flex"
               flexDirection="column"
             >
-              <Typography
-                variant="h5"
-                fontWeight={600}
-                fontFamily="NanumSquareEB"
+              <Select
+                variant="standard"
                 sx={{
-                  wordBreak: "keep-all",
+                  fontSize: "1.2rem",
+                }}
+                value={selectedMeeting}
+                onChange={(e) => {
+                  router.push(`/quiz?meeting=${e.target.value}`);
                 }}
               >
-                {MeetingData[selectedMeeting]?.title}
-              </Typography>
-              {MeetingData[selectedMeeting]?.subtitle && (
-                <Typography
-                  textAlign="center"
-                  variant="body1"
-                  fontFamily={"NanumSquareEB"}
-                  sx={{
-                    wordBreak: "keep-all",
-                  }}
-                >
-                  {MeetingData[selectedMeeting].subtitle}
-                </Typography>
-              )}
+                {MEETINGS.map((meeting) => (
+                  <MenuItem key={meeting} value={meeting}>
+                    {MeetingData[meeting]?.title}
+                  </MenuItem>
+                ))}
+              </Select>
             </Box>
             <IconButton
               disabled={MEETINGS.indexOf(selectedMeeting) === 0}
@@ -135,7 +153,7 @@ export default function Quiz() {
                 router.push(`/quiz?meeting=${MEETINGS[index - 1]}`);
               }}
             >
-              <ArrowForwardIos />
+              <NavigateNext />
             </IconButton>
           </Box>
 
