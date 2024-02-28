@@ -73,19 +73,10 @@ export default function Quiz() {
             mb={[2, 3, 4]}
           >
             <Typography
-              fontSize={["1.5rem", "2rem", "2rem"]}
+              fontSize={["1.5rem", "1.8rem", "2rem"]}
               fontWeight={600}
               fontFamily="NanumSquareEB"
             >
-              <Image
-                src="/image/logo/quiz-logo.png"
-                width={25}
-                height={25}
-                alt="quiz logo"
-                style={{
-                  marginRight: "4px",
-                }}
-              />
               문제적 추러스
             </Typography>
 

@@ -75,7 +75,9 @@ export default function QuizCard({
           </CardMedia>
           <CardContent
             sx={{
-              py: 1,
+              pt: 1,
+
+              px: 2,
               borderTop: "1px solid rgba(0,0,0,0.1)",
             }}
           >
@@ -110,16 +112,17 @@ export default function QuizCard({
               flexWrap="nowrap"
               width={1}
             >
-              <Chip
-                label={difficultyLabel[quiz.difficulty ?? "easy"].label}
-                sx={{
-                  py: 0,
-                  height: "18px",
-                  backgroundColor:
-                    difficultyLabel[quiz.difficulty ?? "easy"].color,
-                  fontSize: "12px",
-                }}
-              />
+              {quiz.difficulty && (
+                <Chip
+                  label={difficultyLabel[quiz.difficulty].label}
+                  sx={{
+                    py: 0,
+                    height: "18px",
+                    backgroundColor: difficultyLabel[quiz.difficulty].color,
+                    fontSize: "12px",
+                  }}
+                />
+              )}
               <Chip
                 label={isSolved ? "✅ 풀었음" : "❓ 풀지 않음"}
                 sx={{

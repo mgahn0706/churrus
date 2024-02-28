@@ -102,6 +102,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "9293191",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "easy",
     },
     {
       id: "2019-9-2",
@@ -113,6 +114,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "art",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "normal",
     },
     {
       id: "2019-9-3",
@@ -124,6 +126,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "TRUTH",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "normal",
     },
     {
       id: "2019-9-4",
@@ -135,6 +138,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "3",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "easy",
     },
     {
       id: "2019-9-5",
@@ -146,6 +150,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "3",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "easy",
     },
     {
       id: "2019-9-6",
@@ -157,6 +162,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: null,
       shouldWarn: false,
       isAnswerable: false,
+      difficulty: "normal",
     },
     {
       id: "2019-9-7",
@@ -168,6 +174,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "5",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "normal",
     },
     {
       id: "2019-9-8",
@@ -179,6 +186,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "매듭",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "easy",
     },
   ],
   "2019-11": [
@@ -192,6 +200,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "36",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "easy",
     },
     {
       id: "2019-11-2",
@@ -203,6 +212,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "BD",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "normal",
     },
 
     {
@@ -215,6 +225,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "0221",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "easy",
     },
     {
       id: "2019-11-4",
@@ -226,6 +237,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "LOGIC",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "hard",
     },
     {
       id: "2019-11-5",
@@ -237,6 +249,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: null,
       shouldWarn: false,
       isAnswerable: false,
+      difficulty: "easy",
     },
     {
       id: "2019-11-6",
@@ -248,6 +261,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "AMSTERDAM",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "normal",
     },
     {
       id: "2019-11-7",
@@ -259,6 +273,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "3",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "easy",
     },
     {
       id: "2019-11-8",
@@ -270,6 +285,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: null,
       shouldWarn: false,
       isAnswerable: false,
+      difficulty: "hard",
     },
   ],
   "2022-6": [
@@ -329,6 +345,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: null,
       shouldWarn: false,
       isAnswerable: false,
+      difficulty: "easy",
     },
     {
       id: "2022-7-2",
@@ -340,6 +357,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "123",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "normal",
     },
     {
       id: "2022-7-3",
@@ -351,6 +369,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "0",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "hard",
     },
     {
       id: "2022-7-4",
@@ -362,6 +381,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "9",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "normal",
     },
     {
       id: "2022-7-5",
@@ -373,6 +393,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "detective",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "hard",
     },
     {
       id: "2022-7-6",
@@ -384,6 +405,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "lookbehindyou",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "normal",
     },
     {
       id: "2022-7-7",
@@ -395,6 +417,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "7",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "easy",
     },
     {
       id: "2022-7-8",
@@ -406,6 +429,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "6",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "easy",
     },
     {
       id: "2022-7-9",
@@ -417,6 +441,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "1106",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "easy",
     },
   ],
   "2022-9": [
@@ -430,6 +455,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "2",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "normal",
     },
     {
       id: "2022-9-2",
@@ -441,6 +467,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: null,
       shouldWarn: false,
       isAnswerable: false,
+      difficulty: "easy",
     },
     {
       id: "2022-9-3",
@@ -452,6 +479,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "Y",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "easy",
     },
     {
       id: "2022-9-4",
@@ -463,6 +491,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "8",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "normal",
     },
     {
       id: "2022-9-5",
@@ -474,6 +503,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "1",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "normal",
     },
   ],
   "2022-11": [
@@ -487,6 +517,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "입술",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "easy",
     },
     {
       id: "2022-11-2",
@@ -498,6 +529,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "2",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "easy",
     },
     {
       id: "2022-11-3",
@@ -509,6 +541,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: null,
       shouldWarn: false,
       isAnswerable: false,
+      difficulty: "easy",
     },
     {
       id: "2022-11-4",
@@ -520,6 +553,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "1",
       shouldWarn: true,
       isAnswerable: true,
+      difficulty: "hard",
     },
     {
       id: "2022-11-5",
@@ -531,6 +565,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "game",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "normal",
     },
     {
       id: "2022-11-6",
@@ -542,6 +577,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "Jj",
       shouldWarn: true,
       isAnswerable: true,
+      difficulty: "normal",
     },
     {
       id: "2022-11-7",
@@ -553,6 +589,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "02",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "hard",
     },
     {
       id: "2022-11-8",
@@ -564,6 +601,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: null,
       shouldWarn: false,
       isAnswerable: false,
+      difficulty: "hard",
     },
   ],
   "2022-12": [
@@ -577,6 +615,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: null,
       shouldWarn: false,
       isAnswerable: false,
+      difficulty: "easy",
     },
     {
       id: "2022-12-2",
@@ -588,6 +627,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "9",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "easy",
     },
     {
       id: "2022-12-3",
@@ -599,6 +639,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "0.5",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "normal",
     },
   ],
   "2023-1-1": [
@@ -612,6 +653,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "피노키오",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "easy",
     },
     {
       id: "2023-1-2",
@@ -623,6 +665,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: null,
       shouldWarn: false,
       isAnswerable: false,
+      difficulty: "normal",
     },
     {
       id: "2023-1-3",
@@ -634,6 +677,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "6",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "hard",
     },
     {
       id: "2023-1-4",
@@ -645,6 +689,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "침대",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "hard",
     },
     {
       id: "2023-1-5",
@@ -656,6 +701,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "말이 없는",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "normal",
     },
     {
       id: "2023-1-6",
@@ -667,6 +713,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "12",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "normal",
     },
     {
       id: "2023-1-7",
@@ -678,6 +725,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: null,
       shouldWarn: false,
       isAnswerable: false,
+      difficulty: "normal",
     },
     {
       id: "2023-1-8",
@@ -689,6 +737,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: null,
       shouldWarn: false,
       isAnswerable: false,
+      difficulty: "normal",
     },
     {
       id: "2023-1-9",
@@ -700,6 +749,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "1",
       shouldWarn: true,
       isAnswerable: true,
+      difficulty: "normal",
     },
   ],
 
@@ -714,6 +764,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "4",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "normal",
     },
     {
       id: "2023-3-2",
@@ -725,6 +776,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: null,
       shouldWarn: false,
       isAnswerable: false,
+      difficulty: "easy",
     },
     {
       id: "2023-3-3",
@@ -736,6 +788,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: null,
       shouldWarn: false,
       isAnswerable: false,
+      difficulty: "hard",
     },
     {
       id: "2023-3-4",
@@ -747,6 +800,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "0/100/0",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "normal",
     },
     {
       id: "2023-3-5",
@@ -758,6 +812,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "4",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "normal",
     },
     {
       id: "2023-3-6",
@@ -769,6 +824,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: null,
       shouldWarn: false,
       isAnswerable: false,
+      difficulty: "hard",
     },
     {
       id: "2023-3-7",
@@ -780,6 +836,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: null,
       shouldWarn: true,
       isAnswerable: false,
+      difficulty: "easy",
     },
     {
       id: "2023-3-8",
@@ -791,6 +848,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "BLACK",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "normal",
     },
   ],
   "2023-4": [
@@ -804,6 +862,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: null,
       shouldWarn: false,
       isAnswerable: false,
+      difficulty: "normal",
     },
     {
       id: "2023-4-2",
@@ -815,6 +874,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "21-7-3",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "easy",
     },
     {
       id: "2023-4-3",
@@ -826,6 +886,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: null,
       shouldWarn: false,
       isAnswerable: false,
+      difficulty: "normal",
     },
     {
       id: "2023-4-4",
@@ -837,6 +898,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "TODAY",
       shouldWarn: true,
       isAnswerable: true,
+      difficulty: "normal",
     },
     {
       id: "2023-4-5",
@@ -848,6 +910,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: null,
       shouldWarn: false,
       isAnswerable: false,
+      difficulty: "hard",
     },
     {
       id: "2023-4-6",
@@ -859,6 +922,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: null,
       shouldWarn: false,
       isAnswerable: false,
+      difficulty: "easy",
     },
     {
       id: "2023-4-7",
@@ -870,6 +934,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "추러스",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "normal",
     },
     {
       id: "2023-4-8",
@@ -881,6 +946,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: null,
       shouldWarn: false,
       isAnswerable: false,
+      difficulty: "hard",
     },
   ],
   "2023-6": [
@@ -894,6 +960,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "google",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "normal",
     },
     {
       id: "2023-6-2",
@@ -905,6 +972,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "DBE",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "normal",
     },
     {
       id: "2023-6-3",
@@ -916,6 +984,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "ABRACADABRA",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "normal",
     },
     {
       id: "2023-6-4",
@@ -927,6 +996,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "BCF",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "hard",
     },
   ],
   "2023-9": [
@@ -940,6 +1010,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: null,
       shouldWarn: false,
       isAnswerable: false,
+      difficulty: "easy",
     },
     {
       id: "2023-9-2",
@@ -951,6 +1022,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: null,
       shouldWarn: false,
       isAnswerable: false,
+      difficulty: "easy",
     },
     {
       id: "2023-9-3",
@@ -962,6 +1034,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "NOCOIN",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "easy",
     },
     {
       id: "2023-9-4",
@@ -973,6 +1046,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "1/2",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "normal",
     },
     {
       id: "2023-9-5",
@@ -984,6 +1058,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "snowman",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "normal",
     },
     {
       id: "2023-9-6",
@@ -995,6 +1070,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: null,
       shouldWarn: false,
       isAnswerable: false,
+      difficulty: "easy",
     },
     {
       id: "2023-9-7",
@@ -1006,6 +1082,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "아이린",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "hard",
     },
   ],
   "2023-11": [
@@ -1019,6 +1096,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "ILOVEYOU",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "normal",
     },
     {
       id: "2023-11-2",
@@ -1030,6 +1108,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "한글날",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "easy",
     },
     {
       id: "2023-11-3",
@@ -1041,6 +1120,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "twelve + one",
       shouldWarn: false,
       isAnswerable: false,
+      difficulty: "normal",
     },
     {
       id: "2023-11-4",
@@ -1052,6 +1132,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "6",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "normal",
     },
     {
       id: "2023-11-5",
@@ -1063,6 +1144,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "BLACK",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "easy",
     },
     {
       id: "2023-11-6",
@@ -1074,6 +1156,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "CHURRUS",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "normal",
     },
     {
       id: "2023-11-7",
@@ -1085,6 +1168,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "KOREA",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "easy",
     },
     {
       id: "2023-11-8",
@@ -1096,6 +1180,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "MY LIFE BEGAN WHEN WE MET",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "normal",
     },
     {
       id: "2023-11-9",
@@ -1107,6 +1192,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "ㅡ",
       shouldWarn: false,
       isAnswerable: false,
+      difficulty: "hard",
     },
     {
       id: "2023-11-10",
@@ -1118,6 +1204,7 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "태극기",
       shouldWarn: false,
       isAnswerable: true,
+      difficulty: "normal",
     },
   ],
   "2024-1": [
