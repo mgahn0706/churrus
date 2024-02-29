@@ -116,6 +116,7 @@ export default function QuizCard({
                 <Chip
                   label={difficultyLabel[quiz.difficulty].label}
                   sx={{
+                    color: "rgba(0,0,0,0.7)",
                     py: 0,
                     height: "18px",
                     backgroundColor: difficultyLabel[quiz.difficulty].color,
