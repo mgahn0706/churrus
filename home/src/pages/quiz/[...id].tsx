@@ -107,6 +107,10 @@ export default function QuizPage() {
             color: "#212837",
           }}
           onClick={() => {
+            if (isAnswerPage) {
+              router.push(`/quiz?meeting=${quiz.meetingId}`);
+              return;
+            }
             router.back();
           }}
         >
