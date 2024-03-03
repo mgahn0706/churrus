@@ -80,18 +80,6 @@ export default function QuizCard({
               borderTop: "1px solid rgba(0,0,0,0.1)",
             }}
           >
-            <Typography
-              fontSize="12px"
-              color="#808080"
-              fontWeight={400}
-              textOverflow={"ellipsis"}
-              overflow={"hidden"}
-              sx={{
-                mb: "-2px",
-              }}
-            >
-              {MeetingData[quiz.meetingId]?.title}
-            </Typography>
             <Box
               display="flex"
               fontSize="12px"
@@ -109,6 +97,18 @@ export default function QuizCard({
               >
                 {quiz.title}
               </Typography>
+              <Typography
+                fontSize="12px"
+                color="#808080"
+                fontWeight={400}
+                textOverflow={"ellipsis"}
+                overflow={"hidden"}
+                sx={{
+                  mt: "-2px",
+                }}
+              >
+                {quiz.madeBy}
+              </Typography>
             </Box>
             <Box
               display="flex"
@@ -121,6 +121,7 @@ export default function QuizCard({
                 <Chip
                   label={difficultyLabel[quiz.difficulty].label}
                   sx={{
+                    bgcolor: difficultyLabel[quiz.difficulty].color,
                     color: "rgba(0,0,0,0.7)",
                     py: 0,
                     height: "18px",
