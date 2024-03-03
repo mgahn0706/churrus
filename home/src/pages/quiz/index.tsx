@@ -1,12 +1,7 @@
 import GlobalHeader from "@/components/Navigation/GlobalHeader";
 import QuizCard from "@/features/quiz/components/QuizCard";
 import { MEETINGS, MeetingData, QuizData } from "@/features/quiz/fixtures";
-import {
-  ArrowBackIos,
-  ArrowForwardIos,
-  NavigateBefore,
-  NavigateNext,
-} from "@mui/icons-material";
+import { NavigateBefore, NavigateNext } from "@mui/icons-material";
 import {
   Box,
   Grid,
@@ -19,7 +14,6 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
-import Image from "next/image";
 
 const BACKGROUND_COLOR = "#ffffff";
 
@@ -60,7 +54,7 @@ export default function Quiz() {
         <Box
           height="100vh"
           overflow="scroll"
-          px={[3, 4, 12]}
+          px={[6, 8, 30]}
           width="100%"
           pb={6}
           bgcolor={BACKGROUND_COLOR}
@@ -90,74 +84,105 @@ export default function Quiz() {
               역대 정기모임에 있었던 문제들을 풀어볼 수 있어요.
             </Typography>
           </Box>
-
           <Box
             display="flex"
-            justifyContent={["center", "flex-start"]}
+            justifyContent="space-between"
             alignItems="center"
-            minWidth="250px"
+            mt={[3, 4, 5]}
             mb={3}
+            flexDirection={["column-reverse", "row"]}
           >
-            <IconButton
-              disabled={
-                MEETINGS.indexOf(selectedMeeting) === MEETINGS.length - 1
-              }
-              onClick={() => {
-                const index = MEETINGS.indexOf(selectedMeeting);
-                if (index === MEETINGS.length - 1) return;
-                router.push(`/quiz?meeting=${MEETINGS[index + 1]}`);
-              }}
-            >
-              <NavigateBefore />
-            </IconButton>
             <Box
-              minHeight="58px"
-              minWidth="200px"
-              justifyContent="center"
-              alignItems="center"
-              lineHeight="58px"
               display="flex"
-              flexDirection="column"
+              justifyContent={["center", "flex-start"]}
+              alignItems="center"
+              minWidth="300px"
             >
-              <Select
-                variant="standard"
-                sx={{
-                  fontSize: "1.2rem",
-                }}
-                value={selectedMeeting}
-                onChange={(e) => {
-                  router.push(`/quiz?meeting=${e.target.value}`);
+              <IconButton
+                disabled={
+                  MEETINGS.indexOf(selectedMeeting) === MEETINGS.length - 1
+                }
+                onClick={() => {
+                  const index = MEETINGS.indexOf(selectedMeeting);
+                  if (index === MEETINGS.length - 1) return;
+                  router.push(`/quiz?meeting=${MEETINGS[index + 1]}`);
                 }}
               >
-                {MEETINGS.map((meeting) => (
-                  <MenuItem key={meeting} value={meeting}>
-                    {MeetingData[meeting]?.title}
-                  </MenuItem>
-                ))}
-              </Select>
+                <NavigateBefore />
+              </IconButton>
+              <Box
+                minHeight="58px"
+                minWidth="220px"
+                justifyContent="center"
+                alignItems="center"
+                lineHeight="58px"
+                display="flex"
+                flexDirection="column"
+              >
+                <Select
+                  variant="standard"
+                  sx={{
+                    fontSize: "1.2rem",
+                  }}
+                  value={selectedMeeting}
+                  onChange={(e) => {
+                    router.push(`/quiz?meeting=${e.target.value}`);
+                  }}
+                >
+                  {MEETINGS.map((meeting) => (
+                    <MenuItem key={meeting} value={meeting}>
+                      {MeetingData[meeting]?.title}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </Box>
+              <IconButton
+                disabled={MEETINGS.indexOf(selectedMeeting) === 0}
+                onClick={() => {
+                  const index = MEETINGS.indexOf(selectedMeeting);
+                  if (index === 0) return;
+                  router.push(`/quiz?meeting=${MEETINGS[index - 1]}`);
+                }}
+              >
+                <NavigateNext />
+              </IconButton>
             </Box>
-            <IconButton
-              disabled={MEETINGS.indexOf(selectedMeeting) === 0}
-              onClick={() => {
-                const index = MEETINGS.indexOf(selectedMeeting);
-                if (index === 0) return;
-                router.push(`/quiz?meeting=${MEETINGS[index - 1]}`);
-              }}
-            >
-              <NavigateNext />
-            </IconButton>
+            <Box display="flex" alignItems="center" mr={2}>
+              <Typography
+                fontSize="1.2rem"
+                fontWeight={400}
+                fontFamily="NanumSquareEB"
+                color="gray"
+              >
+                푼 문제
+              </Typography>
+              <Typography
+                fontSize="1.2rem"
+                fontWeight={600}
+                fontFamily="NanumSquareEB"
+                color="#212837"
+                ml={2}
+              >
+                {solvedQuiz.length} / {Object.values(QuizData).flat().length}
+              </Typography>
+            </Box>
           </Box>
-
-          <Grid container spacing={3} width="100%">
-            {QuizData[selectedMeeting]?.map((quiz) => (
-              <QuizCard
-                key={quiz.id}
-                quiz={quiz}
-                isSolved={solvedQuiz.includes(quiz.id)}
-                bgColor={MeetingData[selectedMeeting]?.color ?? "#fffef8"}
-              />
-            ))}
-          </Grid>
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            mb={3}
+          >
+            <Grid container spacing={3} width="100%">
+              {QuizData[selectedMeeting]?.map((quiz) => (
+                <QuizCard
+                  key={quiz.id}
+                  quiz={quiz}
+                  isSolved={solvedQuiz.includes(quiz.id)}
+                />
+              ))}
+            </Grid>
+          </Box>
         </Box>
       </Box>
     </>
