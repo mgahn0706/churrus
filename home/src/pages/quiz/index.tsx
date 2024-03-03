@@ -1,8 +1,15 @@
 import GlobalHeader from "@/components/Navigation/GlobalHeader";
 import QuizCard from "@/features/quiz/components/QuizCard";
 import { MEETINGS, MeetingData, QuizData } from "@/features/quiz/fixtures";
-import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
-import { Box, Grid, IconButton, Typography } from "@mui/material";
+import { NavigateBefore, NavigateNext } from "@mui/icons-material";
+import {
+  Box,
+  Grid,
+  IconButton,
+  MenuItem,
+  Select,
+  Typography,
+} from "@mui/material";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
@@ -47,27 +54,28 @@ export default function Quiz() {
         <Box
           height="100vh"
           overflow="scroll"
-          px={[3, 4, 12]}
+          px={[6, 8, 30]}
           width="100%"
           pb={6}
           bgcolor={BACKGROUND_COLOR}
         >
           <Box
             width="100%"
-            textAlign="center"
+            textAlign="left"
             color="#212837"
-            mt="100px"
-            mb={[3, 4, 6]}
+            mt="80px"
+            mb={[2, 3, 4]}
           >
             <Typography
-              variant="h3"
+              fontSize={["1.5rem", "1.8rem", "2rem"]}
               fontWeight={600}
               fontFamily="NanumSquareEB"
             >
               문제적 추러스
             </Typography>
+
             <Typography
-              variant="body1"
+              color="gray"
               fontFamily={"NanumSquareEB"}
               sx={{
                 wordBreak: "keep-all",
@@ -76,79 +84,105 @@ export default function Quiz() {
               역대 정기모임에 있었던 문제들을 풀어볼 수 있어요.
             </Typography>
           </Box>
-
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            mt={[3, 4, 5]}
+            mb={3}
+            flexDirection={["column-reverse", "row"]}
+          >
+            <Box
+              display="flex"
+              justifyContent={["center", "flex-start"]}
+              alignItems="center"
+              minWidth="300px"
+            >
+              <IconButton
+                disabled={
+                  MEETINGS.indexOf(selectedMeeting) === MEETINGS.length - 1
+                }
+                onClick={() => {
+                  const index = MEETINGS.indexOf(selectedMeeting);
+                  if (index === MEETINGS.length - 1) return;
+                  router.push(`/quiz?meeting=${MEETINGS[index + 1]}`);
+                }}
+              >
+                <NavigateBefore />
+              </IconButton>
+              <Box
+                minHeight="58px"
+                minWidth="220px"
+                justifyContent="center"
+                alignItems="center"
+                lineHeight="58px"
+                display="flex"
+                flexDirection="column"
+              >
+                <Select
+                  variant="standard"
+                  sx={{
+                    fontSize: "1.2rem",
+                  }}
+                  value={selectedMeeting}
+                  onChange={(e) => {
+                    router.push(`/quiz?meeting=${e.target.value}`);
+                  }}
+                >
+                  {MEETINGS.map((meeting) => (
+                    <MenuItem key={meeting} value={meeting}>
+                      {MeetingData[meeting]?.title}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </Box>
+              <IconButton
+                disabled={MEETINGS.indexOf(selectedMeeting) === 0}
+                onClick={() => {
+                  const index = MEETINGS.indexOf(selectedMeeting);
+                  if (index === 0) return;
+                  router.push(`/quiz?meeting=${MEETINGS[index - 1]}`);
+                }}
+              >
+                <NavigateNext />
+              </IconButton>
+            </Box>
+            <Box display="flex" alignItems="center" mr={2}>
+              <Typography
+                fontSize="1.2rem"
+                fontWeight={400}
+                fontFamily="NanumSquareEB"
+                color="gray"
+              >
+                푼 문제
+              </Typography>
+              <Typography
+                fontSize="1.2rem"
+                fontWeight={600}
+                fontFamily="NanumSquareEB"
+                color="#212837"
+                ml={2}
+              >
+                {solvedQuiz.length} / {Object.values(QuizData).flat().length}
+              </Typography>
+            </Box>
+          </Box>
           <Box
             display="flex"
             justifyContent="center"
             alignItems="center"
             mb={3}
           >
-            <IconButton
-              disabled={
-                MEETINGS.indexOf(selectedMeeting) === MEETINGS.length - 1
-              }
-              onClick={() => {
-                const index = MEETINGS.indexOf(selectedMeeting);
-                if (index === MEETINGS.length - 1) return;
-                router.push(`/quiz?meeting=${MEETINGS[index + 1]}`);
-              }}
-            >
-              <ArrowBackIos />
-            </IconButton>
-            <Box
-              minHeight="58px"
-              minWidth="250px"
-              justifyContent="center"
-              alignItems="center"
-              lineHeight="58px"
-              display="flex"
-              flexDirection="column"
-            >
-              <Typography
-                variant="h5"
-                fontWeight={600}
-                fontFamily="NanumSquareEB"
-                sx={{
-                  wordBreak: "keep-all",
-                }}
-              >
-                {MeetingData[selectedMeeting]?.title}
-              </Typography>
-              {MeetingData[selectedMeeting]?.subtitle && (
-                <Typography
-                  textAlign="center"
-                  variant="body1"
-                  fontFamily={"NanumSquareEB"}
-                  sx={{
-                    wordBreak: "keep-all",
-                  }}
-                >
-                  {MeetingData[selectedMeeting].subtitle}
-                </Typography>
-              )}
-            </Box>
-            <IconButton
-              disabled={MEETINGS.indexOf(selectedMeeting) === 0}
-              onClick={() => {
-                const index = MEETINGS.indexOf(selectedMeeting);
-                if (index === 0) return;
-                router.push(`/quiz?meeting=${MEETINGS[index - 1]}`);
-              }}
-            >
-              <ArrowForwardIos />
-            </IconButton>
+            <Grid container spacing={3} width="100%">
+              {QuizData[selectedMeeting]?.map((quiz) => (
+                <QuizCard
+                  key={quiz.id}
+                  quiz={quiz}
+                  isSolved={solvedQuiz.includes(quiz.id)}
+                />
+              ))}
+            </Grid>
           </Box>
-
-          <Grid container spacing={3} width="100%">
-            {QuizData[selectedMeeting]?.map((quiz) => (
-              <QuizCard
-                key={quiz.id}
-                quiz={quiz}
-                isSolved={solvedQuiz.includes(quiz.id)}
-                bgColor={MeetingData[selectedMeeting]?.color ?? "#fffef8"}
-              />
-            ))}
-          </Grid>
         </Box>
       </Box>
     </>

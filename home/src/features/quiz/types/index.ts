@@ -1,5 +1,6 @@
 export interface QuizType {
   id: string;
+  meetingId: string;
   quizNumber: number;
   title: string;
   madeBy: string | null;
@@ -7,4 +8,5 @@ export interface QuizType {
   answer: string | null;
   shouldWarn: boolean;
   isAnswerable: boolean;
+  difficulty?: "easy" | "normal" | "hard";
 }

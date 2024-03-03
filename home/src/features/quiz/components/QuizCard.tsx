@@ -3,42 +3,61 @@ import {
   Card,
   CardActionArea,
   CardContent,
+  CardHeader,
+  CardMedia,
+  Chip,
   Grid,
-  Skeleton,
   Typography,
 } from "@mui/material";
 import { QuizType } from "../types";
 import { useResponsiveValue } from "@/hooks/useResponsiveValue";
 import { useRouter } from "next/router";
-import Image from "next/image";
-import { CheckCircleOutline, RadioButtonUnchecked } from "@mui/icons-material";
-import { useState } from "react";
+
+import ImageWithPlaceHolder from "@/components/ImageWithPlaceholder";
+import { MeetingData } from "../fixtures";
+
+const difficultyLabel = {
+  easy: {
+    label: "쉬움",
+    color: "#e1fae2",
+  },
+  normal: {
+    label: "보통",
+    color: "#ffefd8",
+  },
+  hard: {
+    label: "어려움",
+    color: "#f9cdca",
+  },
+};
 
 export default function QuizCard({
   quiz,
   isSolved,
-  bgColor,
 }: {
   quiz: QuizType;
   isSolved: boolean;
-  bgColor?: string;
 }) {
-  const responsiveXS = useResponsiveValue([6, 4, 2]);
-  const [isImageLoading, setIsImageLoading] = useState(true);
+  const responsiveXS = useResponsiveValue([12, 4, 3]);
   const router = useRouter();
 
-  const lightColor = "#ffe2db";
+  const cardHeight = useResponsiveValue([170, 150, 200]) as number;
 
   return (
     <Grid item xs={responsiveXS}>
       <Card
+        elevation={3}
         sx={{
-          backgroundColor: bgColor ?? lightColor,
+          backgroundColor: "#ffffff",
           minWidth: "150px",
-          borderRadius: "0.75rem",
-          boxShadow: "0 4px 30px rgba(255, 255, 255, 0.1)",
-          border: "1px solid rgba(255, 255, 255, 0.3)",
-          transition: "all 0.3s ease-in-out",
+          borderRadius: "20px",
+          boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+          border: "1px solid rgba(0,0,0,0.1)",
+          "&:hover": {
+            transform: "translateY(-5px)",
+            boxShadow: "0px 8px 8px rgba(0, 0, 0, 0.25)",
+            transition: "all 0.3s",
+          },
         }}
       >
         <CardActionArea
@@ -46,88 +65,79 @@ export default function QuizCard({
             router.push(`/quiz/${quiz.id}`);
           }}
         >
+          <CardMedia sx={{ height: cardHeight }}>
+            <ImageWithPlaceHolder
+              src={quiz.quizImgSrc}
+              alt={quiz.title}
+              width={cardHeight * 1.8}
+              height={cardHeight}
+            />
+          </CardMedia>
+
           <CardContent
             sx={{
-              cursor: "pointer",
-              height: "100%",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
+              px: 2,
+              borderTop: "1px solid rgba(0,0,0,0.1)",
             }}
           >
             <Box
               display="flex"
+              fontSize="12px"
               justifyContent="space-between"
-              alignItems="center"
-              mb={1}
+              width={1}
+              mb="4px"
+              whiteSpace="nowrap"
             >
-              <Box
+              <Typography
+                fontSize="20px"
                 color="#212837"
-                textAlign="left"
-                justifyContent="center"
-                display="flex"
-                flexDirection="column"
-                whiteSpace="nowrap"
-                overflow="hidden"
-                width="100%"
+                fontWeight={700}
+                textOverflow={"ellipsis"}
+                overflow={"hidden"}
               >
-                <Typography
-                  fontSize={16}
-                  fontFamily={"NanumSquareEB"}
-                  fontWeight={700}
-                  textOverflow="ellipsis"
-                  overflow="hidden"
-                >
-                  {quiz.title}
-                </Typography>
-              </Box>
-              <Box display="flex" alignItems="center">
-                {isSolved ? (
-                  <CheckCircleOutline
-                    sx={{
-                      color: "#20954f",
-                      fontSize: "1.5rem",
-                    }}
-                  />
-                ) : (
-                  <RadioButtonUnchecked
-                    sx={{
-                      fontSize: "1.5rem",
-                    }}
-                  />
-                )}
-              </Box>
+                {quiz.title}
+              </Typography>
+              <Typography
+                fontSize="12px"
+                color="#808080"
+                fontWeight={400}
+                textOverflow={"ellipsis"}
+                overflow={"hidden"}
+                sx={{
+                  mt: "-2px",
+                }}
+              >
+                {quiz.madeBy}
+              </Typography>
             </Box>
             <Box
               display="flex"
-              justifyContent="center"
-              alignItems="center"
-              width="100%"
-              height="100%"
+              gap={1}
+              overflow="hidden"
+              flexWrap="nowrap"
+              width={1}
             >
-              <Image
-                src={quiz.quizImgSrc}
-                alt={quiz.title}
-                style={{
-                  borderRadius: "0.5rem",
-                }}
-                width={isImageLoading ? 0 : 180}
-                height={isImageLoading ? 0 : 90}
-                priority
-                onLoadingComplete={() => setIsImageLoading(false)}
-                onError={() => setIsImageLoading(false)}
-              />
-              {isImageLoading && (
-                <Skeleton
-                  variant="rectangular"
-                  width="180px"
-                  height="90px"
+              {quiz.difficulty && (
+                <Chip
+                  label={difficultyLabel[quiz.difficulty].label}
                   sx={{
-                    borderRadius: "0.5rem",
-                    bgcolor: "rgba(255, 255, 255, 0.7)",
+                    bgcolor: difficultyLabel[quiz.difficulty].color,
+                    color: "rgba(0,0,0,0.7)",
+                    py: 0,
+                    height: "18px",
+                    fontSize: "12px",
                   }}
                 />
               )}
+              <Chip
+                label={isSolved ? "✅ 풀었음" : "❓ 풀지 않음"}
+                sx={{
+                  bgcolor: isSolved ? "#e1fae2" : "#f9cdca",
+                  py: 0,
+                  height: "18px",
+                  fontSize: "12px",
+                }}
+              />
             </Box>
           </CardContent>
         </CardActionArea>

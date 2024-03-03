@@ -88,11 +88,11 @@ export default function QuizPage() {
         <title>문제적 추러스 : {quiz.title}</title>
       </Head>
       <Box
-        height="100vh"
         alignItems="center"
         display="flex"
+        height="100dvh"
         flexDirection="column"
-        py={5}
+        py={4}
         px={7}
         textAlign="center"
         bgcolor={BACKGROUND_COLOR}
@@ -107,6 +107,10 @@ export default function QuizPage() {
             color: "#212837",
           }}
           onClick={() => {
+            if (isAnswerPage) {
+              router.push(`/quiz?meeting=${quiz.meetingId}`);
+              return;
+            }
             router.back();
           }}
         >
@@ -214,10 +218,10 @@ export default function QuizPage() {
                 <Button
                   sx={{
                     color: "white",
-                    bgcolor: "#fa6556",
+                    bgcolor: "#0c57d1",
                     borderRadius: "8px",
                     "&:hover": {
-                      bgcolor: "#ffc7c6",
+                      bgcolor: "#083989",
                     },
                   }}
                   type="submit"
@@ -229,12 +233,12 @@ export default function QuizPage() {
             <Button
               variant="outlined"
               sx={{
-                border: "1px solid #eeb801",
-                color: "#eeb801",
+                border: "1px solid #ea4335",
+                color: "#ea4335",
                 "&:hover": {
-                  bgcolor: "#fff3d4",
-                  borderColor: "#eeb801",
-                  color: "#eeb801",
+                  bgcolor: "#fa978d",
+                  borderColor: "#ea4335",
+                  color: "#ea4335",
                 },
                 mt: "10px",
               }}

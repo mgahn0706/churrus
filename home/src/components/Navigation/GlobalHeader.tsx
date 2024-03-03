@@ -21,17 +21,17 @@ import LeftDrawer from "./LeftDrawer";
 
 const mobileHeaderMenuItems = [
   {
-    text: "HOME",
+    text: "홈",
     url: "/",
     icon: <Home />,
   },
   {
-    text: "ABOUT",
+    text: "소개",
     url: "/about",
     icon: <InfoOutlined />,
   },
   {
-    text: "RECRUIT",
+    text: "지원",
     url: "/recruit",
     icon: <Mail />,
   },
@@ -90,7 +90,7 @@ export default function GlobalHeader() {
             fontSize={24}
             onClick={() => router.push("/")}
           >
-            CHURRUS
+            추러스
           </Typography>
         </Toolbar>
       </AppBar>
@@ -111,6 +111,7 @@ export default function GlobalHeader() {
           <IconButton
             sx={{
               ml: -1,
+              mr: 1,
             }}
             onClick={() => setIsDrawerOpen(!isDrawerOpen)}
           >
@@ -123,34 +124,37 @@ export default function GlobalHeader() {
             fontSize={24}
             onClick={() => router.push("/")}
           >
-            CHURRUS
+            추러스
           </Typography>
           <Button
             sx={{
               color: "#232937",
               fontWeight: 500,
+              fontSize: 18,
             }}
             onClick={() => router.push("/")}
           >
-            HOME
+            홈
           </Button>
           <Button
             sx={{
               color: "#232937",
               fontWeight: 500,
+              fontSize: 18,
             }}
             onClick={() => router.push("/about")}
           >
-            ABOUT
+            소개
           </Button>
           <Button
             sx={{
               color: "#232937",
               fontWeight: 500,
+              fontSize: 18,
             }}
             onClick={() => router.push("/recruit")}
           >
-            RECRUIT
+            지원
           </Button>
         </Toolbar>
       </AppBar>
