@@ -101,8 +101,6 @@ export default function QuizCard({
                 fontSize="12px"
                 color="#808080"
                 fontWeight={400}
-                textOverflow={"ellipsis"}
-                overflow={"hidden"}
                 sx={{
                   mt: "-2px",
                 }}
