@@ -28,15 +28,20 @@ export default function RecruitPage() {
   return (
     <Box>
       <GlobalHeader />
-      <Box bgcolor="#eeeeee" py="150px" px="10vw" mt="56px">
+      <Box
+        bgcolor="#d9efed"
+        py={["100px", "120px", "150px"]}
+        px="10vw"
+        mt="56px"
+      >
         <Box
           sx={{
-            fontSize: isMobileWidth ? "2rem" : "4rem",
+            fontSize: ["2em", "3rem", "3rem"],
             fontWeight: 700,
             wordBreak: "keep-all",
           }}
         >
-          지금은 모집기간이 아니에요
+          24-1 추러스 신입회원을 모집합니다!
         </Box>
         <Box
           fontSize={isMobileWidth ? "1rem" : "1.5rem"}
@@ -44,14 +49,13 @@ export default function RecruitPage() {
             wordBreak: "keep-all",
           }}
         >
-          다음 학기 모집은 2024년 3월에 진행할 예정이에요. <br />
-          그래도 어떻게 지원하는지 미리 알아볼까요?
+          3/5(화 ) ~3/19(화) 23:59까지
         </Box>
       </Box>
-      <Box textAlign="center" py="150px" px="10vw">
+      <Box textAlign="center" py={["100px", "120px", "150px"]} px="10vw">
         <Box
           sx={{
-            fontSize: "2rem",
+            fontSize: ["2em", "3rem", "3rem"],
             fontWeight: 700,
           }}
           mb="20px"
@@ -67,31 +71,40 @@ export default function RecruitPage() {
         >
           <Box
             sx={{
-              fontSize: "1.5rem",
+              fontSize: ["1.5rem", "2rem", "2rem"],
               fontWeight: 400,
             }}
           >
             아래의 버튼을 눌러 지원서를 작성할 수 있어요.
           </Box>
-          <Box
+          <Button
             sx={{
               color: "white",
               borderRadius: "10px",
               mt: 4,
-              bgcolor: "#aaaaaa",
+              bgcolor: "#009688",
               textAlign: "center",
-              cursor: "not-allowed",
               px: 4,
               py: 2,
               fontWeight: 700,
+              "&:hover": {
+                bgcolor: "#00796b",
+              },
+            }}
+            onClick={() => {
+              window.open(
+                "https://forms.gle/tD4X5XPXaDcjJzer8",
+                "_blank",
+                "noopener noreferrer"
+              );
             }}
           >
             지원하기
-          </Box>
+          </Button>
         </Box>
       </Box>
       <Divider />
-      <Box textAlign="center" py="150px" px="10vw" bgcolor="#eeeeee">
+      <Box textAlign="center" py="150px" px="10vw" bgcolor="#d9efed">
         <Box
           display="flex"
           sx={{

@@ -63,7 +63,7 @@ const leftNavigationMenuItems: Record<
       icon: <Help />,
     },
     {
-      text: "모집",
+      text: "지원하기",
       url: "/recruit",
       icon: <Mail />,
     },
