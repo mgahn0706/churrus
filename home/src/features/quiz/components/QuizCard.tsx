@@ -46,13 +46,12 @@ export default function QuizCard({
   return (
     <Grid item xs={responsiveXS}>
       <Card
-        elevation={3}
+        elevation={0}
         sx={{
           backgroundColor: "#ffffff",
           minWidth: "150px",
           borderRadius: "20px",
-          boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
-          border: "1px solid rgba(0,0,0,0.1)",
+          border: "2px solid #e0e0e0",
           "&:hover": {
             transform: "translateY(-5px)",
             boxShadow: "0px 8px 8px rgba(0, 0, 0, 0.25)",
@@ -77,7 +76,7 @@ export default function QuizCard({
           <CardContent
             sx={{
               px: 2,
-              borderTop: "1px solid rgba(0,0,0,0.1)",
+              borderTop: "1px solid #e0e0e0",
             }}
           >
             <Box

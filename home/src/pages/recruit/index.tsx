@@ -49,7 +49,8 @@ export default function RecruitPage() {
             wordBreak: "keep-all",
           }}
         >
-          3/5(화 ) ~3/19(화) 23:59까지
+          3/5(화) ~3/19(화) 23:59까지 <br />
+          📢 (3/7) 인원이 정원을 초과하면 조기마감될 수 있습니다! 📢
         </Box>
       </Box>
       <Box textAlign="center" py={["100px", "120px", "150px"]} px="10vw">
