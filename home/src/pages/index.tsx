@@ -46,7 +46,6 @@ const GAME_CONTENTS: GameContentType[] = [
     imgSrc:
       "https://cf.geekdo-images.com/jdR8WW75HkaoHGMTCIx9lA__imagepage/img/n2OeBC_N0lqSHG_0_fbta1jgeWs=/fit-in/900x600/filters:no_upscale():strip_icc()/pic5390676.jpg",
     url: "/hues-and-cues",
-    isNew: true,
   },
   {
     title: "마션 다이스",

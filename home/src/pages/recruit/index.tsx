@@ -29,7 +29,7 @@ export default function RecruitPage() {
     <Box>
       <GlobalHeader />
       <Box
-        bgcolor="#d9efed"
+        bgcolor="#eeeeee"
         py={["100px", "120px", "150px"]}
         px="10vw"
         mt="56px"
@@ -41,7 +41,7 @@ export default function RecruitPage() {
             wordBreak: "keep-all",
           }}
         >
-          24-1 추러스 신입회원을 모집합니다!
+          지금은 모집 기간이 아니에요.
         </Box>
         <Box
           fontSize={isMobileWidth ? "1rem" : "1.5rem"}
@@ -49,8 +49,8 @@ export default function RecruitPage() {
             wordBreak: "keep-all",
           }}
         >
-          3/5(화) ~3/19(화) 23:59까지 <br />
-          📢 (3/7) 인원이 정원을 초과하면 조기마감될 수 있습니다! 📢
+          다음 학기 모집은 2024년 9월에 진행할 예정이에요. <br />
+          그래도 어떻게 지원하는지 미리 알아볼까요?
         </Box>
       </Box>
       <Box textAlign="center" py={["100px", "120px", "150px"]} px="10vw">
@@ -79,25 +79,16 @@ export default function RecruitPage() {
             아래의 버튼을 눌러 지원서를 작성할 수 있어요.
           </Box>
           <Button
+            disabled
             sx={{
               color: "white",
               borderRadius: "10px",
               mt: 4,
-              bgcolor: "#009688",
+              bgcolor: "#aaaaaa",
               textAlign: "center",
               px: 4,
               py: 2,
               fontWeight: 700,
-              "&:hover": {
-                bgcolor: "#00796b",
-              },
-            }}
-            onClick={() => {
-              window.open(
-                "https://forms.gle/tD4X5XPXaDcjJzer8",
-                "_blank",
-                "noopener noreferrer"
-              );
             }}
           >
             지원하기
@@ -105,7 +96,7 @@ export default function RecruitPage() {
         </Box>
       </Box>
       <Divider />
-      <Box textAlign="center" py="150px" px="10vw" bgcolor="#d9efed">
+      <Box textAlign="center" py="150px" px="10vw" bgcolor="#eeeeee">
         <Box
           display="flex"
           sx={{

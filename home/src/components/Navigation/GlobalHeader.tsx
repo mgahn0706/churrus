@@ -3,7 +3,6 @@ import { useResponsiveValue } from "@/hooks/useResponsiveValue";
 import { Mail, Menu, Home, InfoOutlined, Close } from "@mui/icons-material";
 import {
   AppBar,
-  Badge,
   Box,
   Button,
   Drawer,
@@ -34,11 +33,7 @@ const mobileHeaderMenuItems = [
   {
     text: "지원하기",
     url: "/recruit",
-    icon: (
-      <Badge variant="dot" color="error">
-        <Mail />
-      </Badge>
-    ),
+    icon: <Mail />,
   },
 ];
 
@@ -159,9 +154,7 @@ export default function GlobalHeader() {
             }}
             onClick={() => router.push("/recruit")}
           >
-            <Badge color="error" variant="dot">
-              지원하기
-            </Badge>
+            지원하기
           </Button>
         </Toolbar>
       </AppBar>
