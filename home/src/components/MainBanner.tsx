@@ -5,6 +5,7 @@ import {
   ArrowCircleRight,
   ArrowForward,
   ArrowForwardIos,
+  Mail,
 } from "@mui/icons-material";
 import {
   Box,
@@ -14,6 +15,7 @@ import {
   IconButton,
   CardMedia,
   CardActionArea,
+  Icon,
 } from "@mui/material";
 import dayjs from "dayjs";
 
@@ -24,7 +26,12 @@ import { useRouter } from "next/router";
 import { useResponsiveValue } from "@/hooks/useResponsiveValue";
 import TodayQuizCard from "./MainBanner/TodayQuizCard";
 
-const BANNER_COLOR = "#ffffff";
+const BANNER_COLOR = "#318AE1";
+
+const BANNER_TEXT = {
+  title: "추러스 24-1기 모집 종료",
+  subtitle: "결과 안내: 3/24(일)",
+};
 
 const spellingBeeDate = dayjs().diff("2024-02-09", "day");
 
@@ -42,101 +49,45 @@ export default function MainBanner() {
 
   if (isMobileWidth) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" my="64px">
+      <Box display="flex" justifyContent="center" alignItems="center">
         <Box
           display="flex"
           flexDirection="column"
           width="100%"
           p={4}
+          borderRadius="20px"
+          minHeight="100px"
           sx={{
-            bgcolor: BANNER_COLOR,
+            background: `linear-gradient(180deg, rgba(49,138,225,1) 0%, rgba(27,75,123,1) 100%)`,
           }}
-          justifyContent="center"
+          justifyContent="flex-end"
         >
-          <Typography
-            color="black"
-            fontSize={32}
-            fontWeight="bold"
-            sx={{
-              mb: 4,
-            }}
-          >
-            오늘의 콘텐츠
+          <Typography color="white" fontSize={24} fontWeight="bold" zIndex={2}>
+            {BANNER_TEXT.title}
           </Typography>
-          <TodayQuizCard />
+          <Typography
+            color="white"
+            fontSize={18}
+            fontWeight="medium"
+            zIndex={2}
+          >
+            {BANNER_TEXT.subtitle}
+          </Typography>
           <Box
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-            px={3}
+            position="absolute"
+            color="#11283D"
             sx={{
-              "&:hover": {
-                cursor: "pointer",
-                backgroundColor: "rgba(0, 0, 0, 0.04)",
-                transition: "0.1s",
-              },
-            }}
-            mt={4}
-            onClick={() => {
-              router.push("/spelling-bee");
+              width: 100,
+              filter: "blur(3px)",
+              transform: "rotate(-12deg)",
+              right: 0,
             }}
           >
-            <Box display="flex" flexDirection="row" alignItems="center" gap={3}>
-              <Image
-                src="/image/logo/spellingbee-logo.png"
-                width={40}
-                height={40}
-                alt="spellingbee-logo"
-              />
-              <Box display="flex" flexDirection="column">
-                <Typography color="black" fontSize={18} fontWeight="bold">
-                  {spellingBeeDate + 1}일째 스펠링 비
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {foundWords.answers.length > 0 &&
-                  foundWords.day === spellingBeeDate
-                    ? `${foundWords.answers.length}개의 단어를 찾았어요.`
-                    : "아직 시작하지 않았어요."}
-                </Typography>
-              </Box>
-            </Box>
-            <ArrowForwardIos color="action" />
-          </Box>
-
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-            px={3}
-            mt={4}
-            sx={{
-              "&:hover": {
-                cursor: "pointer",
-                backgroundColor: "rgba(0, 0, 0, 0.04)",
-                transition: "0.1s",
-              },
-            }}
-            onClick={() => {
-              router.push("/connections");
-            }}
-          >
-            <Box display="flex" flexDirection="row" alignItems="center" gap={3}>
-              <Image
-                src="/image/logo/connections-logo.png"
-                width={40}
-                height={40}
-                alt="spellingbee-logo"
-              />
-              <Box display="flex" flexDirection="column">
-                <Typography color="black" fontSize={18} fontWeight="bold">
-                  Week {dayjs().diff("2024-01-01", "week") + 1} 추러스 커넥션
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  네 개씩 네 묶음으로.
-                </Typography>
-              </Box>
-            </Box>
-            <ArrowForwardIos color="action" />
+            <Mail
+              sx={{
+                fontSize: 100,
+              }}
+            />
           </Box>
         </Box>
       </Box>
