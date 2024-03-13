@@ -104,7 +104,7 @@ export default function Churrus() {
         bgcolor={BACKGROUND_COLOR}
         minWidth="100vw"
         minHeight="100vh"
-        pt={[6, 6, 0]}
+        py={[4, 4, 0]}
       >
         <Box
           mx={2}
