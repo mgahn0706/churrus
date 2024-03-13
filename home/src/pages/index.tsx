@@ -1,14 +1,24 @@
 import { useResponsiveValue } from "@/hooks/useResponsiveValue";
-import { Box, Card, CardActionArea, Grid, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  CardActionArea,
+  Grid,
+  Typography,
+} from "@mui/material";
 import GlobalHeader from "@/components/Navigation/GlobalHeader";
 import ContentCard from "@/components/ContentCard";
 
 import MainBanner from "@/components/MainBanner";
 import dayjs from "dayjs";
 import PuzzleCard from "@/components/PuzzleCard";
-import GameCard from "@/components/GameCard";
 import { useRouter } from "next/router";
-import { ArrowForwardIos } from "@mui/icons-material";
+import { ArrowForward, ArrowForwardIos } from "@mui/icons-material";
+import MobilePuzzleCard from "@/components/MobilePuzzleCard";
+import useLocalStorage from "@/hooks/useLocalStorage";
+import { QuizData } from "@/features/quiz/fixtures";
+import HomeQuizCard from "@/components/HomeQuizCard";
 
 const WORD_PUZZLE_CONTENTS = [
   {
@@ -81,79 +91,93 @@ const MoreGamesButton = ({ onClick }: { onClick: () => void }) => {
   </CardActionArea>;
 };
 
+const spellingBeeDate = dayjs().diff("2024-02-09", "day");
+
 export default function Churrus() {
+  const router = useRouter();
+
   const responsiveXS = useResponsiveValue([12, 12, 6]);
   const responsiveGeniusXs = useResponsiveValue([6, 6, 3]);
 
   const responsiveMaxWidth = useResponsiveValue([90, 90, 60]);
 
+  const [foundWords] = useLocalStorage<{
+    day: number;
+    answers: string[];
+  }>("spelling-bee-answers", {
+    day: 0,
+    answers: [],
+  });
+
   return (
     <Box
       bgcolor={BACKGROUND_COLOR}
-      minHeight="100vh"
-      minWidth="100vw"
-      px={[7, 7, 0]}
+      minHeight="100dvh"
+      minWidth="100dvw"
+      px={[8, 8, 0]}
       pt={[6, 6, 0]}
     >
-      <Typography color="#121212" fontWeight="700" fontSize={36} mb={3}>
+      <Typography
+        color="#121212"
+        fontWeight="700"
+        fontSize={36}
+        mb={2}
+        display={["block", "block", "none"]}
+      >
         추러스
       </Typography>
+      <GlobalHeader />
       <MainBanner />
-      <Box my={10} mx="auto" px="1rem" maxWidth={`${responsiveMaxWidth}vw`}>
-        <Box width="100%" mb={5}>
-          <Typography color="#4b89da" fontWeight="600" fontSize="18px" mb={3}>
-            정기모임
-          </Typography>
-          <Grid container spacing={3}>
-            <Grid item xs={responsiveXS}>
-              <ContentCard
-                content={{
-                  title: "문제적 추러스",
-                  description:
-                    "추러스에서 준비한 창의적이고 어려운 문제들을 풀어보세요.",
-                  image: "/image/card/meeting/quiz-banner.png",
-                  url: "/quiz",
-                }}
-              />
-            </Grid>
-            <Grid item xs={responsiveXS}>
-              <ContentCard
-                content={{
-                  title: "협동 크라임씬",
-                  description: "다같이 협동해서 용의자 중 진범을 찾아보세요.",
-                  image: "/image/card/meeting/suspect-banner.png",
-                  url: "/suspect",
-                }}
-              />
-            </Grid>
-          </Grid>
-        </Box>
+      <Box display={["block", "block", "none"]} mt="24px">
+        <MobilePuzzleCard
+          src="/image/logo/spellingbee-logo.png"
+          title={`${spellingBeeDate + 1}일째 스펠링비`}
+          subtitle={
+            foundWords.answers.length > 0 && foundWords.day === spellingBeeDate
+              ? `${foundWords.answers.length}개의 단어를 찾았어요.`
+              : "아직 시작하지 않았어요."
+          }
+          sx={{ mb: 1 }}
+          onClick={() => router.push("/spelling-bee")}
+        />
+        <MobilePuzzleCard
+          src="/image/logo/connections-logo.png"
+          title="추러스 커넥션"
+          subtitle="네 단어씩 네 묶음으로."
+          onClick={() => router.push("/connections")}
+        />
       </Box>
-      <Box my={6} mx="auto" px="1rem" maxWidth={`${responsiveMaxWidth}vw`}>
+      <Box mx="auto" mt="52px" width="100%">
         <Box width="100%" mb={5}>
-          <Typography color="#4b89da" fontWeight="600" fontSize="18px" mb={3}>
-            정기 퍼즐
-          </Typography>
-          <Grid container spacing={3}>
-            {WORD_PUZZLE_CONTENTS.map((content) => (
-              <Grid item xs={responsiveGeniusXs}>
-                <PuzzleCard {...content} />
-              </Grid>
-            ))}
-          </Grid>
+          <Box
+            display="flex"
+            width={1}
+            justifyContent="space-between"
+            alignItems="center"
+            mb={2}
+          >
+            <Typography color="#121212" fontWeight="700" fontSize={18}>
+              정기모임
+            </Typography>
+            <Button
+              variant="text"
+              onClick={() => router.push("/quiz")}
+              sx={{
+                fontSize: "18px",
+              }}
+            >
+              전체 보기
+              <ArrowForward />
+            </Button>
+          </Box>
+          <Box display="flex" flexDirection="row" width="100%" overflow="auto">
+            {Object.values(QuizData).flatMap((quiz, idx) => {
+              if (idx < 8) {
+                return <HomeQuizCard key={quiz[0].id} quiz={quiz[0]} />;
+              }
+            })}
+          </Box>
         </Box>
-      </Box>
-
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        bgcolor="#232937"
-        height="10vh"
-      >
-        <Typography color="#969ca5" variant="body2">
-          © 2019-{dayjs().year()} CHURRUS. All rights reserved.
-        </Typography>
       </Box>
     </Box>
   );
