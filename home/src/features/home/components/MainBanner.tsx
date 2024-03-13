@@ -41,7 +41,7 @@ export default function MainBanner() {
               width: 100,
               filter: "blur(3px)",
               transform: "rotate(-12deg)",
-              right: 0,
+              right: "10%",
             }}
           >
             <Mail
