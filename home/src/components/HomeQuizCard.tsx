@@ -1,6 +1,7 @@
 import { MeetingData } from "@/features/quiz/fixtures";
 import { QuizType } from "@/features/quiz/types";
 import {
+  Box,
   Card,
   CardActionArea,
   CardContent,
@@ -37,11 +38,30 @@ export default function HomeQuizCard({ quiz }: { quiz: QuizType }) {
             height: 120,
           }}
         />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
+        <CardContent
+          sx={{
+            pt: "2px",
+            px: "12px",
+            whiteSpace: "nowrap",
+            width: "100%",
+          }}
+        >
+          <Typography
+            fontWeight={500}
+            fontSize={18}
+            color="#121212"
+            textOverflow={"ellipsis"}
+            overflow={"hidden"}
+          >
             {quiz.title}
           </Typography>
-          <Typography variant="body2" color="text.secondary">
+
+          <Typography
+            fontSize={12}
+            color="#767676"
+            textOverflow={"ellipsis"}
+            overflow={"hidden"}
+          >
             {MeetingData[quiz.meetingId].title}
           </Typography>
         </CardContent>

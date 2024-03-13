@@ -154,15 +154,16 @@ export default function Churrus() {
             width={1}
             justifyContent="space-between"
             alignItems="center"
-            mb={2}
+            mb={1}
           >
             <Typography color="#121212" fontWeight="700" fontSize={18}>
-              정기모임
+              문제적 추러스
             </Typography>
             <Button
               variant="text"
               onClick={() => router.push("/quiz")}
               sx={{
+                color: "#318AE1",
                 fontSize: "18px",
               }}
             >
@@ -170,7 +171,13 @@ export default function Churrus() {
               <ArrowForward />
             </Button>
           </Box>
-          <Box display="flex" flexDirection="row" width="100%" overflow="auto">
+          <Box
+            display="flex"
+            flexDirection="row"
+            width="100%"
+            overflow="auto"
+            py={1}
+          >
             {Object.values(QuizData).flatMap((quiz, idx) => {
               if (idx < 8) {
                 return <HomeQuizCard key={quiz[0].id} quiz={quiz[0]} />;
