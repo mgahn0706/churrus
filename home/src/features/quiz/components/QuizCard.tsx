@@ -42,12 +42,11 @@ export default function QuizCard({
   const responsiveXS = useResponsiveValue([6, 4, 3]);
   const router = useRouter();
 
-  const cardWidth = useResponsiveValue([178, 178, 200]) as number;
-
   return (
     <Grid item xs={responsiveXS}>
       <CardActionArea
         sx={{
+          width: "100%",
           borderRadius: "20px",
         }}
         onClick={() => {
@@ -60,55 +59,61 @@ export default function QuizCard({
             backgroundColor: "#ffffff",
             minWidth: "150px",
             borderRadius: "20px",
-            border: "2px solid #e0e0e0",
             "&:hover": {
-              transform: "translateY(-5px)",
-              boxShadow: "0px 8px 8px rgba(0, 0, 0, 0.25)",
+              transform: "translateY(-1px)",
+              boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
               transition: "all 0.3s",
             },
           }}
         >
-          <CardMedia sx={{ width: cardWidth }}>
+          <CardMedia>
             <ImageWithPlaceHolder
               src={quiz.quizImgSrc}
               alt={quiz.title}
-              width={cardWidth}
-              height={cardWidth}
+              width="100%"
+              height="178px"
             />
           </CardMedia>
         </Card>
-        <Box
-          display="flex"
-          justifyContent="space-between"
-          p={1}
-          alignItems="center"
-          width="100%"
-        >
-          <Box display="flex" flexDirection="column">
+        <Box display="flex" justifyContent="space-between" py={1} width="100%">
+          <Box
+            display="flex"
+            flexDirection="column"
+            width="100%"
+            overflow="hidden"
+          >
             <Typography fontSize={10} color="#606B80">
               {quiz.madeBy}
             </Typography>
-            <Box display="flex" justifyContent="space-between" width="100%">
-              <Box>
-                <Typography
-                  color="#202837"
-                  fontWeight={700}
-                  overflow="hidden"
-                  textOverflow="ellipsis"
-                >
-                  {quiz.title}
-                </Typography>
-              </Box>
-              <Box>
-                <Lightbulb
-                  sx={{
-                    width: "20px",
-                    height: "20px",
-                    color: isSolved ? "#318AE1" : "#6B6B6B",
-                  }}
-                />
-              </Box>
-            </Box>
+
+            <Typography
+              color="#202837"
+              fontWeight={700}
+              width="100%"
+              overflow="hidden"
+              textOverflow="ellipsis"
+            >
+              {quiz.title}
+            </Typography>
+            <Typography fontSize={10} color="#606B80">
+              #{difficultyLabel[quiz.difficulty ?? "easy"].label}
+            </Typography>
+          </Box>
+          <Box
+            width="20px"
+            height="20px"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            mt={2}
+          >
+            <Lightbulb
+              sx={{
+                width: "20px",
+                height: "20px",
+                color: isSolved ? "#318AE1" : "#ababab",
+              }}
+            />
           </Box>
         </Box>
       </CardActionArea>

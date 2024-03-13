@@ -11,6 +11,7 @@ import useLocalStorage from "@/hooks/useLocalStorage";
 import { QuizData } from "@/features/quiz/fixtures";
 import HomeQuizCard from "@/features/home/components/HomeQuizCard";
 import PuzzleButton from "@/features/home/components/PuzzleButton";
+import useRecommendedQuiz from "@/features/home/components/hooks/useRecommendedQuiz";
 
 const WORD_PUZZLE_CONTENTS = [
   {
@@ -96,6 +97,10 @@ export default function Churrus() {
     answers: [],
   });
 
+  const recommendedQuiz = useRecommendedQuiz({
+    recommendCount: 8,
+  });
+
   return (
     <>
       <GlobalHeader />
@@ -107,7 +112,8 @@ export default function Churrus() {
         py={[4, 4, 0]}
       >
         <Box
-          mx={2}
+          mx={[2, 2, 0]}
+          mt={[0, 0, "60px"]}
           display="flex"
           justifyContent="center"
           flexDirection="column"
@@ -173,11 +179,9 @@ export default function Churrus() {
                 overflow="auto"
                 py={1}
               >
-                {Object.values(QuizData).flatMap((quiz, idx) => {
-                  if (idx < 8) {
-                    return <HomeQuizCard key={quiz[0].id} quiz={quiz[0]} />;
-                  }
-                })}
+                {recommendedQuiz.map((quiz) => (
+                  <HomeQuizCard key={quiz.id} quiz={quiz} />
+                ))}
               </Box>
             </Box>
           </Box>
