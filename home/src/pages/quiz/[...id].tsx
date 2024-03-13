@@ -128,7 +128,7 @@ export default function QuizPage() {
           <Typography fontSize={24} fontWeight={700} color="#202837">
             {quiz.title}
           </Typography>
-          <Typography fontSize={12} color="#606B80">
+          <Typography fontSize={12} color="#606B80" mt={1}>
             {quiz.madeBy}
           </Typography>
         </Box>
