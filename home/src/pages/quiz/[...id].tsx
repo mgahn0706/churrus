@@ -1,4 +1,4 @@
-import { QuizData } from "@/features/quiz/fixtures";
+import { MeetingData, QuizData } from "@/features/quiz/fixtures";
 import {
   Alert,
   Box,
@@ -92,55 +92,47 @@ export default function QuizPage() {
         display="flex"
         height="100dvh"
         flexDirection="column"
-        py={4}
-        px={7}
-        textAlign="center"
+        px={3}
         bgcolor={BACKGROUND_COLOR}
       >
-        <IconButton
-          size="large"
+        <Box
+          display="flex"
+          alignItems="center"
+          height={60}
+          width="100%"
+          position="fixed"
           sx={{
-            position: "fixed",
-            top: 20,
-            left: 20,
-            zIndex: 100,
-            color: "#212837",
-          }}
-          onClick={() => {
-            if (isAnswerPage) {
-              router.push(`/quiz?meeting=${quiz.meetingId}`);
-              return;
-            }
-            router.back();
+            backdropFilter: "blur(2px)",
           }}
         >
-          <ArrowBack />
-        </IconButton>
-        <Typography
-          variant="body1"
-          color="#606b80"
-          fontWeight={600}
-          sx={{
-            mb: 1,
-          }}
-        >
-          {year}년 {month}월 정기모임 #{quiz.quizNumber}
-        </Typography>
+          <IconButton
+            size="large"
+            sx={{
+              color: "#212837",
+            }}
+            onClick={() => {
+              if (isAnswerPage) {
+                router.push(`/quiz?meeting=${quiz.meetingId}`);
+                return;
+              }
+              router.back();
+            }}
+          >
+            <ArrowBack />
+          </IconButton>
+        </Box>
+        <Box display="flex" flexDirection="column" mt="60px" width="100%">
+          <Typography fontSize={12} fontWeight={700} color="#606B80">
+            {MeetingData[quiz.meetingId].title} - {quiz.quizNumber}
+          </Typography>
+          <Typography fontSize={24} fontWeight={700} color="#202837">
+            {quiz.title}
+          </Typography>
+          <Typography fontSize={12} color="#606B80">
+            {quiz.madeBy}
+          </Typography>
+        </Box>
 
-        <Typography variant="h4" color="#212837" fontWeight={600}>
-          {quiz.title}
-          {isAnswerPage && (quiz.answer ? ` 정답 : ${quiz.answer}` : ` 정답`)}
-        </Typography>
-        <Typography
-          variant="body2"
-          color="#606b80"
-          fontWeight={600}
-          sx={{
-            mb: 1,
-          }}
-        >
-          {quiz.madeBy && `by ${quiz.madeBy}`}
-        </Typography>
         {quiz.shouldWarn && (
           <Alert severity="warning" sx={{ mt: 2 }}>
             이 문제는 당시 정기모임에 참석해야만 풀 수 있는 요소를 포함하고
