@@ -1,24 +1,15 @@
 import { useResponsiveValue } from "@/hooks/useResponsiveValue";
-import {
-  Box,
-  Button,
-  Card,
-  CardActionArea,
-  Grid,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Card, CardActionArea, Typography } from "@mui/material";
 import GlobalHeader from "@/components/Navigation/GlobalHeader";
-import ContentCard from "@/components/ContentCard";
 
-import MainBanner from "@/components/MainBanner";
+import MainBanner from "@/features/home/components/MainBanner";
 import dayjs from "dayjs";
-import PuzzleCard from "@/components/PuzzleCard";
 import { useRouter } from "next/router";
 import { ArrowForward, ArrowForwardIos } from "@mui/icons-material";
-import MobilePuzzleCard from "@/components/MobilePuzzleCard";
+import MobilePuzzleCard from "@/features/home/components/MobilePuzzleCard";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { QuizData } from "@/features/quiz/fixtures";
-import HomeQuizCard from "@/components/HomeQuizCard";
+import HomeQuizCard from "@/features/home/components/HomeQuizCard";
 
 const WORD_PUZZLE_CONTENTS = [
   {

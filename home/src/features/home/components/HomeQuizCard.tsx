@@ -24,6 +24,7 @@ export default function HomeQuizCard({ quiz }: { quiz: QuizType }) {
       }}
     >
       <Card
+        elevation={0}
         sx={{
           width: 150,
           borderRadius: "20px",
