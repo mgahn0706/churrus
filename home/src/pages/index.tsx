@@ -1,4 +1,3 @@
-import { useResponsiveValue } from "@/hooks/useResponsiveValue";
 import { Box, Button, Card, CardActionArea, Typography } from "@mui/material";
 import GlobalHeader from "@/components/Navigation/GlobalHeader";
 
@@ -8,7 +7,6 @@ import { useRouter } from "next/router";
 import { ArrowForward, ArrowForwardIos } from "@mui/icons-material";
 import MobilePuzzleCard from "@/features/home/components/MobilePuzzleCard";
 import useLocalStorage from "@/hooks/useLocalStorage";
-import { QuizData } from "@/features/quiz/fixtures";
 import HomeQuizCard from "@/features/home/components/HomeQuizCard";
 import PuzzleButton from "@/features/home/components/PuzzleButton";
 import useRecommendedQuiz from "@/features/home/components/hooks/useRecommendedQuiz";
@@ -84,7 +82,7 @@ const MoreGamesButton = ({ onClick }: { onClick: () => void }) => {
   </CardActionArea>;
 };
 
-const spellingBeeDate = dayjs().diff("2024-02-09", "day");
+const spellingBeeDate = dayjs().diff("2024-02-09", "day") + 1;
 
 export default function Churrus() {
   const router = useRouter();
@@ -131,7 +129,7 @@ export default function Churrus() {
           <Box display={["block", "block", "none"]} mt="24px">
             <MobilePuzzleCard
               src="/image/logo/spellingbee-logo.png"
-              title={`${spellingBeeDate + 1}일째 스펠링비`}
+              title={`${spellingBeeDate}일째 스펠링비`}
               subtitle={
                 foundWords.answers.length > 0 &&
                 foundWords.day === spellingBeeDate
@@ -143,7 +141,7 @@ export default function Churrus() {
             />
             <MobilePuzzleCard
               src="/image/logo/connections-logo.png"
-              title="추러스 커넥션"
+              title={`Week ${dayjs().week()} 추러스 커넥션`}
               subtitle="네 단어씩 네 묶음으로."
               onClick={() => router.push("/connections")}
             />

@@ -56,7 +56,7 @@ export default function Quiz() {
         <Box
           height="100vh"
           overflow="scroll"
-          px={[1, 6, 8]}
+          px={[2, 6, 8]}
           width="100%"
           pb={6}
           bgcolor={BACKGROUND_COLOR}
