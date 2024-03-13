@@ -15,7 +15,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 
-const BACKGROUND_COLOR = "#ffffff";
+const BACKGROUND_COLOR = "#f2f3f6";
 
 type MeetingType = (typeof MEETINGS)[number];
 
@@ -54,7 +54,7 @@ export default function Quiz() {
         <Box
           height="100vh"
           overflow="scroll"
-          px={[6, 8, 30]}
+          px={[2, 3, 4]}
           width="100%"
           pb={6}
           bgcolor={BACKGROUND_COLOR}
@@ -63,25 +63,15 @@ export default function Quiz() {
             width="100%"
             textAlign="left"
             color="#212837"
-            mt="80px"
+            mt={5}
             mb={[2, 3, 4]}
           >
             <Typography
-              fontSize={["1.5rem", "1.8rem", "2rem"]}
-              fontWeight={600}
+              fontSize={24}
+              fontWeight={700}
               fontFamily="NanumSquareEB"
             >
               문제적 추러스
-            </Typography>
-
-            <Typography
-              color="gray"
-              fontFamily={"NanumSquareEB"}
-              sx={{
-                wordBreak: "keep-all",
-              }}
-            >
-              역대 정기모임에 있었던 문제들을 풀어볼 수 있어요.
             </Typography>
           </Box>
           <Box
@@ -123,6 +113,9 @@ export default function Quiz() {
                   variant="standard"
                   sx={{
                     fontSize: "1.2rem",
+                  }}
+                  inputProps={{
+                    fontSize: 18,
                   }}
                   value={selectedMeeting}
                   onChange={(e) => {

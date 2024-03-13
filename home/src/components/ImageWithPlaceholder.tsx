@@ -40,8 +40,8 @@ export default function ImageWithPlaceHolder({
       {isImageLoading && (
         <Skeleton
           variant="rectangular"
-          width="180px"
-          height="90px"
+          width={width}
+          height={height}
           sx={{
             borderRadius: "0.5rem",
             bgcolor: "rgba(255, 255, 255, 0.7)",
