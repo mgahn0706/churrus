@@ -141,7 +141,7 @@ export default function Churrus() {
             />
             <MobilePuzzleCard
               src="/image/logo/connections-logo.png"
-              title={`Week ${dayjs().week()} 추러스 커넥션`}
+              title={`Week ${dayjs().week} 추러스 커넥션`}
               subtitle="네 단어씩 네 묶음으로."
               onClick={() => router.push("/connections")}
             />

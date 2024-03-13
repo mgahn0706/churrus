@@ -44,8 +44,6 @@ export default function QuizPage() {
     return;
   }
 
-  const [year, month, _] = quiz.id.split("-");
-
   const handleSolvedQuiz = () => {
     const solvedQuiz = JSON.parse(localStorage.getItem("quiz") ?? "[]");
     localStorage.setItem("quiz", JSON.stringify([...solvedQuiz, quiz.id]));
@@ -92,7 +90,6 @@ export default function QuizPage() {
         display="flex"
         height="100dvh"
         flexDirection="column"
-        px={3}
         bgcolor={BACKGROUND_COLOR}
       >
         <Box
@@ -100,6 +97,7 @@ export default function QuizPage() {
           alignItems="center"
           height={60}
           width="100%"
+          justifyContent="space-between"
           position="fixed"
           sx={{
             backdropFilter: "blur(2px)",
@@ -120,8 +118,28 @@ export default function QuizPage() {
           >
             <ArrowBack />
           </IconButton>
+          {!isAnswerPage && (
+            <Button
+              sx={{
+                color: "#202837",
+                fontWeight: 700,
+                fontSize: 18,
+              }}
+              variant="text"
+              onClick={() => router.push(`/quiz/${quiz.id}/answer`)}
+            >
+              정답 보기
+            </Button>
+          )}
         </Box>
-        <Box display="flex" flexDirection="column" mt="60px" width="100%">
+        <Box
+          display="flex"
+          flexDirection="column"
+          mt="60px"
+          width="100%"
+          pl={4}
+          textAlign={["left", "left", "center"]}
+        >
           <Typography fontSize={12} fontWeight={700} color="#606B80">
             {MeetingData[quiz.meetingId].title} - {quiz.quizNumber}
           </Typography>
@@ -141,10 +159,12 @@ export default function QuizPage() {
         )}
 
         <Box
-          minWidth={isImageLoading ? 0 : "350px"}
-          minHeight={isImageLoading ? 0 : "210px"}
-          width={isImageLoading ? 0 : "50vw"}
-          height={isImageLoading ? 0 : "30vw"}
+          width="100%"
+          sx={{
+            aspectRatio: "16 / 9",
+          }}
+          maxWidth={isImageLoading ? 0 : "856px"}
+          maxHeight={isImageLoading ? 0 : "474px"}
           display="flex"
           justifyContent="center"
           mt={4}
@@ -157,6 +177,9 @@ export default function QuizPage() {
                 : quiz.quizImgSrc
             }
             alt={quiz.title}
+            style={{
+              borderRadius: "20px",
+            }}
             fill
             priority
             onLoadingComplete={() => setIsImageLoading(false)}
@@ -178,8 +201,8 @@ export default function QuizPage() {
         {!isAnswerPage && (
           <form onSubmit={handleAnswerSubmit}>
             <Typography
-              variant="body1"
               color="#212837"
+              fontSize={12}
               fontWeight={400}
               sx={{
                 mt: 2,
@@ -188,18 +211,28 @@ export default function QuizPage() {
               정답 형식: {answerFomat()}
             </Typography>
             {quiz.isAnswerable && (
-              <Box mt="20px" display="flex" alignContent="center">
+              <Box
+                display="flex"
+                width={1}
+                alignItems="center"
+                justifyContent="center"
+                gap={3}
+                flexDirection={["column", "column", "row"]}
+              >
                 <TextField
                   variant="outlined"
                   value={inputAnswer}
                   onChange={(e) => {
                     setInputAnswer(e.target.value);
                   }}
+                  InputProps={{
+                    sx: {
+                      borderRadius: "20px",
+                    },
+                  }}
                   sx={{
-                    width: "40vw",
-                    mr: 2,
-                    borderRadius: "24px",
-                    minWidth: "200px",
+                    height: "40px",
+                    minWidth: 1,
                   }}
                   placeholder={
                     quiz.isAnswerable
@@ -210,10 +243,11 @@ export default function QuizPage() {
                 <Button
                   sx={{
                     color: "white",
-                    bgcolor: "#0c57d1",
-                    borderRadius: "8px",
+                    bgcolor: "#318AE1",
+                    height: "40px",
+                    borderRadius: "20px",
                     "&:hover": {
-                      bgcolor: "#083989",
+                      bgcolor: "#1B4B7B",
                     },
                   }}
                   type="submit"
@@ -222,26 +256,6 @@ export default function QuizPage() {
                 </Button>
               </Box>
             )}
-            <Button
-              variant="outlined"
-              sx={{
-                border: "1px solid #ea4335",
-                color: "#ea4335",
-                "&:hover": {
-                  bgcolor: "#fa978d",
-                  borderColor: "#ea4335",
-                  color: "#ea4335",
-                },
-                mt: "10px",
-              }}
-              size="small"
-              onClick={() => {
-                handleSolvedQuiz();
-                router.push(`/quiz/${quiz.id}/answer`);
-              }}
-            >
-              정답 확인
-            </Button>
           </form>
         )}
       </Box>

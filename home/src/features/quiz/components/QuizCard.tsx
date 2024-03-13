@@ -44,26 +44,30 @@ export default function QuizCard({
 
   return (
     <Grid item xs={responsiveXS}>
-      <CardActionArea
+      <Box
         sx={{
           width: "100%",
           borderRadius: "20px",
+          cursor: "pointer",
+          ":hover": {
+            ".quiz-card": {
+              transform: "translateY(-1px)",
+              boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
+              transition: "all 0.3s",
+            },
+          },
         }}
         onClick={() => {
           router.push(`/quiz/${quiz.id}`);
         }}
       >
         <Card
+          className="quiz-card"
           elevation={0}
           sx={{
             backgroundColor: "#ffffff",
             minWidth: "150px",
             borderRadius: "20px",
-            "&:hover": {
-              transform: "translateY(-1px)",
-              boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
-              transition: "all 0.3s",
-            },
           }}
         >
           <CardMedia>
@@ -116,7 +120,7 @@ export default function QuizCard({
             />
           </Box>
         </Box>
-      </CardActionArea>
+      </Box>
     </Grid>
   );
 }

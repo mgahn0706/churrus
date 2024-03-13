@@ -65,7 +65,7 @@ export default function Quiz() {
             width="100%"
             textAlign="left"
             color="#212837"
-            mt={[5, 7, "100px"]}
+            mt={[3, 4, "100px"]}
             mb={[2, 3, 4]}
           >
             <Box
