@@ -1,17 +1,19 @@
 import { useResponsiveValue } from "@/hooks/useResponsiveValue";
 
-import { Mail, Menu, Home, InfoOutlined, Close } from "@mui/icons-material";
+import {
+  Mail,
+  Menu,
+  Home,
+  InfoOutlined,
+  Close,
+  HouseRounded,
+  HomeRounded,
+} from "@mui/icons-material";
 import {
   AppBar,
   Box,
   Button,
-  Drawer,
   IconButton,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
   Toolbar,
   Typography,
 } from "@mui/material";
@@ -23,7 +25,7 @@ const mobileHeaderMenuItems = [
   {
     text: "홈",
     url: "/",
-    icon: <Home />,
+    icon: <HomeRounded />,
   },
   {
     text: "소개",
@@ -47,51 +49,35 @@ export default function GlobalHeader() {
   if (isMobile) {
     return (
       <AppBar
+        position="fixed"
         sx={{
           bgcolor: "white",
           color: "#232937",
+          top: "auto",
+          bottom: 0,
+          height: "60px",
+          minWidth: "100vw",
+          borderTopLeftRadius: "20px",
+          borderTopRightRadius: "20px",
         }}
       >
-        <Drawer
-          open={isDrawerOpen}
-          anchor="top"
-          onClose={() => setIsDrawerOpen(false)}
+        <Toolbar
+          sx={{
+            alignItems: "center",
+            justifyContent: "space-around",
+          }}
         >
-          <List>
-            {mobileHeaderMenuItems.map((item) => (
-              <ListItem
-                key={item.text}
-                disablePadding
-                onClick={() => {
-                  router.push(item.url);
-                  setIsDrawerOpen(false);
-                }}
-              >
-                <ListItemButton>
-                  <ListItemIcon>{item.icon}</ListItemIcon>
-                  <ListItemText primary={item.text} />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
-        </Drawer>
-        <Toolbar>
-          <IconButton
-            onClick={() => {
-              setIsDrawerOpen(true);
-            }}
-          >
-            <Menu />
-          </IconButton>
-          <Typography
-            component="div"
-            sx={{ flexGrow: 1, cursor: "pointer" }}
-            fontWeight={700}
-            fontSize={24}
-            onClick={() => router.push("/")}
-          >
-            추러스
-          </Typography>
+          {mobileHeaderMenuItems.map((item, index) => (
+            <IconButton
+              key={index}
+              onClick={() => router.push(item.url)}
+              sx={{
+                color: router.pathname === item.url ? "#232937" : "#767676",
+              }}
+            >
+              {item.icon}
+            </IconButton>
+          ))}
         </Toolbar>
       </AppBar>
     );

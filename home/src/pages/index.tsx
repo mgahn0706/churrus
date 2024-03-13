@@ -10,6 +10,7 @@ import MobilePuzzleCard from "@/features/home/components/MobilePuzzleCard";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { QuizData } from "@/features/quiz/fixtures";
 import HomeQuizCard from "@/features/home/components/HomeQuizCard";
+import PuzzleButton from "@/features/home/components/PuzzleButton";
 
 const WORD_PUZZLE_CONTENTS = [
   {
@@ -87,11 +88,6 @@ const spellingBeeDate = dayjs().diff("2024-02-09", "day");
 export default function Churrus() {
   const router = useRouter();
 
-  const responsiveXS = useResponsiveValue([12, 12, 6]);
-  const responsiveGeniusXs = useResponsiveValue([6, 6, 3]);
-
-  const responsiveMaxWidth = useResponsiveValue([90, 90, 60]);
-
   const [foundWords] = useLocalStorage<{
     day: number;
     answers: string[];
@@ -101,44 +97,84 @@ export default function Churrus() {
   });
 
   return (
-    <Box
-      bgcolor={BACKGROUND_COLOR}
-      minHeight="100dvh"
-      minWidth="100dvw"
-      px={[8, 8, 0]}
-      pt={[6, 6, 0]}
-    >
-      <Typography
-        color="#121212"
-        fontWeight="700"
-        fontSize={36}
-        mb={2}
-        display={["block", "block", "none"]}
-      >
-        추러스
-      </Typography>
+    <>
       <GlobalHeader />
-      <MainBanner />
-      <Box display={["block", "block", "none"]} mt="24px">
-        <MobilePuzzleCard
-          src="/image/logo/spellingbee-logo.png"
-          title={`${spellingBeeDate + 1}일째 스펠링비`}
-          subtitle={
-            foundWords.answers.length > 0 && foundWords.day === spellingBeeDate
-              ? `${foundWords.answers.length}개의 단어를 찾았어요.`
-              : "아직 시작하지 않았어요."
-          }
-          sx={{ mb: 1 }}
-          onClick={() => router.push("/spelling-bee")}
-        />
-        <MobilePuzzleCard
-          src="/image/logo/connections-logo.png"
-          title="추러스 커넥션"
-          subtitle="네 단어씩 네 묶음으로."
-          onClick={() => router.push("/connections")}
-        />
-      </Box>
-      <Box mx="auto" mt="52px" width="100%">
+
+      <Box
+        bgcolor={BACKGROUND_COLOR}
+        minWidth="100dvw"
+        px={[8, 8, 0]}
+        pt={[6, 6, 0]}
+      >
+        <Typography
+          color="#121212"
+          fontWeight="700"
+          fontSize={36}
+          mb={2}
+          display={["block", "block", "none"]}
+        >
+          추러스
+        </Typography>
+        <MainBanner />
+        <Box display={["block", "block", "none"]} mt="24px">
+          <MobilePuzzleCard
+            src="/image/logo/spellingbee-logo.png"
+            title={`${spellingBeeDate + 1}일째 스펠링비`}
+            subtitle={
+              foundWords.answers.length > 0 &&
+              foundWords.day === spellingBeeDate
+                ? `${foundWords.answers.length}개의 단어를 찾았어요.`
+                : "아직 시작하지 않았어요."
+            }
+            sx={{ mb: 1 }}
+            onClick={() => router.push("/spelling-bee")}
+          />
+          <MobilePuzzleCard
+            src="/image/logo/connections-logo.png"
+            title="추러스 커넥션"
+            subtitle="네 단어씩 네 묶음으로."
+            onClick={() => router.push("/connections")}
+          />
+        </Box>
+        <Box mx="auto" mt="52px" width="100%">
+          <Box width="100%" mb={5}>
+            <Box
+              display="flex"
+              width={1}
+              justifyContent="space-between"
+              alignItems="center"
+              mb={1}
+            >
+              <Typography color="#121212" fontWeight="700" fontSize={18}>
+                문제적 추러스
+              </Typography>
+              <Button
+                variant="text"
+                onClick={() => router.push("/quiz")}
+                sx={{
+                  color: "#318AE1",
+                  fontSize: "18px",
+                }}
+              >
+                전체 보기
+                <ArrowForward />
+              </Button>
+            </Box>
+            <Box
+              display="flex"
+              flexDirection="row"
+              width="100%"
+              overflow="auto"
+              py={1}
+            >
+              {Object.values(QuizData).flatMap((quiz, idx) => {
+                if (idx < 8) {
+                  return <HomeQuizCard key={quiz[0].id} quiz={quiz[0]} />;
+                }
+              })}
+            </Box>
+          </Box>
+        </Box>
         <Box width="100%" mb={5}>
           <Box
             display="flex"
@@ -148,35 +184,28 @@ export default function Churrus() {
             mb={1}
           >
             <Typography color="#121212" fontWeight="700" fontSize={18}>
-              문제적 추러스
+              정기 퍼즐
             </Typography>
-            <Button
-              variant="text"
-              onClick={() => router.push("/quiz")}
-              sx={{
-                color: "#318AE1",
-                fontSize: "18px",
-              }}
-            >
-              전체 보기
-              <ArrowForward />
-            </Button>
           </Box>
           <Box
             display="flex"
             flexDirection="row"
             width="100%"
+            gap="24px"
             overflow="auto"
             py={1}
           >
-            {Object.values(QuizData).flatMap((quiz, idx) => {
-              if (idx < 8) {
-                return <HomeQuizCard key={quiz[0].id} quiz={quiz[0]} />;
-              }
-            })}
+            {WORD_PUZZLE_CONTENTS.map((content, idx) => (
+              <PuzzleButton
+                key={idx}
+                label={content.title}
+                src={content.src}
+                onClick={() => router.push(content.url)}
+              />
+            ))}
           </Box>
         </Box>
       </Box>
-    </Box>
+    </>
   );
 }
