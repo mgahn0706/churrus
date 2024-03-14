@@ -28,12 +28,7 @@ export default function RecruitPage() {
   return (
     <Box>
       <GlobalHeader />
-      <Box
-        bgcolor="#eeeeee"
-        py={["100px", "120px", "150px"]}
-        px="10vw"
-        mt="56px"
-      >
+      <Box bgcolor="#eeeeee" py={["100px", "120px", "150px"]} px="10vw">
         <Box
           sx={{
             fontSize: ["2em", "3rem", "3rem"],

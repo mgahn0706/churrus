@@ -74,7 +74,6 @@ export default function MainBanner() {
           alignItems="center"
         >
           <Box display="flex" flexDirection="column" width="300px">
-            ₩
             <Typography color="white" fontSize={48} fontWeight="bold">
               {BANNER_TEXT.title}
             </Typography>

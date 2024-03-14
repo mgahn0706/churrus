@@ -106,6 +106,7 @@ export default function QuizPage() {
           <IconButton
             size="large"
             sx={{
+              ml: [2, 3, 5],
               color: "#212837",
             }}
             onClick={() => {
@@ -124,6 +125,7 @@ export default function QuizPage() {
                 color: "#202837",
                 fontWeight: 700,
                 fontSize: 18,
+                mr: [2, 3, 5],
               }}
               variant="text"
               onClick={() => router.push(`/quiz/${quiz.id}/answer`)}
@@ -143,15 +145,23 @@ export default function QuizPage() {
           <Typography fontSize={12} fontWeight={700} color="#606B80">
             {MeetingData[quiz.meetingId].title} - {quiz.quizNumber}
           </Typography>
+
           <Typography fontSize={24} fontWeight={700} color="#202837">
             {quiz.title}
+            {isAnswerPage && " 정답"}
           </Typography>
+          {isAnswerPage && (
+            <Typography fontSize={24} fontWeight={700} color="#318AE1">
+              {quiz.answer}
+            </Typography>
+          )}
+
           <Typography fontSize={12} color="#606B80" mt={1}>
             {quiz.madeBy}
           </Typography>
         </Box>
 
-        {quiz.shouldWarn && (
+        {quiz.shouldWarn && !isAnswerPage && (
           <Alert severity="warning" sx={{ mt: 2 }}>
             이 문제는 당시 정기모임에 참석해야만 풀 수 있는 요소를 포함하고
             있어요.

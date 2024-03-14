@@ -110,11 +110,10 @@ export default function Quiz() {
             alignItems="center"
             mt={[3, 4, 5]}
             mb={3}
-            flexDirection={["column-reverse", "row"]}
           >
             <Box
               display="flex"
-              justifyContent={["center", "flex-start"]}
+              justifyContent="flex-start"
               alignItems="center"
               minWidth="300px"
             >
