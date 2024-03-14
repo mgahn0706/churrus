@@ -200,62 +200,93 @@ export default function QuizPage() {
         )}
         {!isAnswerPage && (
           <form onSubmit={handleAnswerSubmit}>
-            <Typography
-              color="#212837"
-              fontSize={12}
-              fontWeight={400}
-              sx={{
-                mt: 2,
-              }}
+            <Box
+              display="flex"
+              flexDirection="column"
+              justifyContent="center"
+              mt={4}
+              minWidth={300}
+              maxWidth={856}
+              width="70vw"
+              mx="auto"
             >
-              정답 형식: {answerFomat()}
-            </Typography>
-            {quiz.isAnswerable && (
-              <Box
-                display="flex"
-                width={1}
-                alignItems="center"
-                justifyContent="center"
-                gap={3}
-                flexDirection={["column", "column", "row"]}
+              <Typography
+                color="#212837"
+                fontSize={12}
+                fontWeight={400}
+                sx={{
+                  ml: 2,
+                  width: "100%",
+                }}
               >
-                <TextField
-                  variant="outlined"
-                  value={inputAnswer}
-                  onChange={(e) => {
-                    setInputAnswer(e.target.value);
-                  }}
-                  InputProps={{
-                    sx: {
-                      borderRadius: "20px",
-                    },
-                  }}
-                  sx={{
-                    height: "40px",
-                    minWidth: 1,
-                  }}
-                  placeholder={
-                    quiz.isAnswerable
-                      ? "정답을 입력해주세요."
-                      : "정답을 입력할 수 없는 문제입니다."
-                  }
-                />
-                <Button
-                  sx={{
-                    color: "white",
-                    bgcolor: "#318AE1",
-                    height: "40px",
-                    borderRadius: "20px",
-                    "&:hover": {
-                      bgcolor: "#1B4B7B",
-                    },
-                  }}
-                  type="submit"
+                정답 형식: {answerFomat()}
+              </Typography>
+              {quiz.isAnswerable && (
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  gap={3}
+                  flexDirection={["column", "column", "row"]}
                 >
-                  제출
-                </Button>
-              </Box>
-            )}
+                  <TextField
+                    variant="outlined"
+                    value={inputAnswer}
+                    onChange={(e) => {
+                      setInputAnswer(e.target.value);
+                    }}
+                    InputProps={{
+                      sx: {
+                        maxWidth: 700,
+                        borderRadius: "20px",
+                        py: "2px",
+                        height: "40px",
+                      },
+                    }}
+                    sx={{
+                      width: "100%",
+                    }}
+                    placeholder={
+                      quiz.isAnswerable
+                        ? "정답을 입력해주세요."
+                        : "정답을 입력할 수 없는 문제입니다."
+                    }
+                  />
+                  <Button
+                    fullWidth
+                    sx={{
+                      display: ["block", "block", "none"],
+                      color: "white",
+                      bgcolor: "#318AE1",
+                      height: "40px",
+                      borderRadius: "20px",
+                      "&:hover": {
+                        bgcolor: "#1B4B7B",
+                      },
+                    }}
+                    type="submit"
+                  >
+                    제출
+                  </Button>
+                  <Button
+                    sx={{
+                      minWidth: "220px",
+                      display: ["none", "none", "block"],
+                      color: "white",
+                      bgcolor: "#318AE1",
+                      height: "40px",
+                      borderRadius: "20px",
+                      "&:hover": {
+                        bgcolor: "#1B4B7B",
+                      },
+                    }}
+                    type="submit"
+                  >
+                    제출
+                  </Button>
+                </Box>
+              )}
+            </Box>
           </form>
         )}
       </Box>
