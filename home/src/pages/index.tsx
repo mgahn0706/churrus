@@ -4,12 +4,13 @@ import GlobalHeader from "@/components/Navigation/GlobalHeader";
 import MainBanner from "@/features/home/components/MainBanner";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
-import { ArrowForward, ArrowForwardIos } from "@mui/icons-material";
+import { ArrowForward, ArrowForwardIos, Search } from "@mui/icons-material";
 import MobilePuzzleCard from "@/features/home/components/MobilePuzzleCard";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import HomeQuizCard from "@/features/home/components/HomeQuizCard";
 import PuzzleButton from "@/features/home/components/PuzzleButton";
 import useRecommendedQuiz from "@/features/home/components/hooks/useRecommendedQuiz";
+import weekOfYear from "dayjs/plugin/weekOfYear";
 
 const WORD_PUZZLE_CONTENTS = [
   {
@@ -39,6 +40,8 @@ const WORD_PUZZLE_CONTENTS = [
     disabled: true,
   },
 ];
+
+dayjs.extend(weekOfYear);
 
 const BACKGROUND_COLOR = "#f2f3f6";
 
@@ -141,13 +144,19 @@ export default function Churrus() {
             />
             <MobilePuzzleCard
               src="/image/logo/connections-logo.png"
-              title={`Week ${dayjs().week} 추러스 커넥션`}
+              title={`Week ${dayjs().week()} 추러스 커넥션`}
               subtitle="네 단어씩 네 묶음으로."
               onClick={() => router.push("/connections")}
             />
           </Box>
-          <Box mx="auto" mt="52px" width="100%">
-            <Box width="100%" mb={5}>
+          <Box
+            mx="auto"
+            mt="52px"
+            width="100%"
+            display="flex"
+            justifyContent="center"
+          >
+            <Box width={["100%", "100%", "60%"]} mb={5}>
               <Box
                 display="flex"
                 width={1}
@@ -183,34 +192,103 @@ export default function Churrus() {
               </Box>
             </Box>
           </Box>
-          <Box width="100%" mb={5}>
+          <Box
+            width="100%"
+            mb={5}
+            alignItems="center"
+            display={["flex", "flex", "none"]}
+            justifyContent="center"
+            flexDirection="column"
+          >
             <Box
+              width={["100%", "100%", "60%"]}
               display="flex"
-              width={1}
-              justifyContent="space-between"
-              alignItems="center"
+              flexDirection="column"
               mb={1}
             >
               <Typography color="#121212" fontWeight="700" fontSize={18}>
                 정기 퍼즐
               </Typography>
+
+              <Box
+                display="flex"
+                flexDirection="row"
+                justifyContent={["flex-start", "flex-start", "space-evenly"]}
+                width="100%"
+                gap="24px"
+                overflow="auto"
+                py={1}
+              >
+                {WORD_PUZZLE_CONTENTS.map((content, idx) => (
+                  <PuzzleButton
+                    key={idx}
+                    label={content.title}
+                    src={content.src}
+                    onClick={() => router.push(content.url)}
+                  />
+                ))}
+              </Box>
             </Box>
+          </Box>
+          <Box
+            my={8}
+            width={1}
+            display={["none", "none", "flex"]}
+            justifyContent="center"
+          >
             <Box
+              width="60%"
               display="flex"
-              flexDirection="row"
-              width="100%"
-              gap="24px"
-              overflow="auto"
-              py={1}
+              justifyContent="space-between"
+              color="white"
+              height="140px"
+              alignItems="center"
+              position="relative"
+              borderRadius="20px"
+              sx={{
+                background: `linear-gradient(90deg, #161C26 0%, #51658C 100%)`,
+              }}
             >
-              {WORD_PUZZLE_CONTENTS.map((content, idx) => (
-                <PuzzleButton
-                  key={idx}
-                  label={content.title}
-                  src={content.src}
-                  onClick={() => router.push(content.url)}
+              <Box display="flex" flexDirection="column" ml={5}>
+                <Typography fontWeight={600} fontSize={32} mb={1}>
+                  협동 크라임씬
+                </Typography>
+                <Typography fontSize={18} fontWeight={400}>
+                  살인사건의 진범을 찾아라!
+                </Typography>
+              </Box>
+              <Box display="flex" justifyContent="center" mr={5}>
+                <Search
+                  sx={{
+                    fontSize: 100,
+                  }}
                 />
-              ))}
+              </Box>
+              <Button
+                sx={{
+                  borderColor: "white",
+                  border: "1px solid",
+                  position: "absolute",
+                  backdropFilter: "blur(8px)",
+                  right: "5%",
+                  bottom: "15%",
+                  color: "white",
+                  ":hover": {
+                    borderColor: "white",
+                    color: "white",
+                    backdropFilter: "blur(12px)",
+                    backgroundColor: "rgba(255, 255, 255, 0.1)",
+                  },
+                }}
+                onClick={() => router.push("/suspect")}
+              >
+                진범 찾으러 가기
+                <ArrowForwardIos
+                  sx={{
+                    fontSize: "1rem",
+                  }}
+                />
+              </Button>
             </Box>
           </Box>
         </Box>
