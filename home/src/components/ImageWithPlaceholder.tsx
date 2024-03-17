@@ -12,8 +12,8 @@ export default function ImageWithPlaceHolder({
 }: {
   src: string;
   alt: string;
-  width: number | string;
-  height: number | string;
+  width: number;
+  height: number;
   style?: CSSProperties;
 }) {
   const [isImageLoading, setIsImageLoading] = useState(true);
@@ -32,7 +32,8 @@ export default function ImageWithPlaceHolder({
         style={{
           ...style,
         }}
-        fill
+        width={isImageLoading ? 0 : width}
+        height={isImageLoading ? 0 : height}
         priority
         onLoadingComplete={() => setIsImageLoading(false)}
         onError={() => setIsImageLoading(false)}

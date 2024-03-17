@@ -11,6 +11,7 @@ import HomeQuizCard from "@/features/home/components/HomeQuizCard";
 import PuzzleButton from "@/features/home/components/PuzzleButton";
 import useRecommendedQuiz from "@/features/home/components/hooks/useRecommendedQuiz";
 import weekOfYear from "dayjs/plugin/weekOfYear";
+import Image from "next/image";
 
 const WORD_PUZZLE_CONTENTS = [
   {
@@ -119,15 +120,22 @@ export default function Churrus() {
           justifyContent="center"
           flexDirection="column"
         >
-          <Typography
-            color="#121212"
-            fontWeight="700"
-            fontSize={36}
-            mb={2}
-            display={["block", "block", "none"]}
-          >
-            추러스
-          </Typography>
+          <Box display={["flex", "flex", "none"]} mb={3} alignItems="center">
+            <Image
+              alt="churrus-logo"
+              width={36}
+              height={30}
+              src="/image/churrus-icon.svg"
+            />
+            <Box display="flex" flexDirection="column" ml="8px">
+              <Typography color="#6B6B6B" fontSize={12}>
+                서울대학교 중앙 추리동아리
+              </Typography>
+              <Typography fontWeight={700} color="#121212" fontSize={18}>
+                추러스
+              </Typography>
+            </Box>
+          </Box>
           <MainBanner />
           <Box display={["block", "block", "none"]} mt="24px">
             <MobilePuzzleCard
@@ -172,11 +180,15 @@ export default function Churrus() {
                   onClick={() => router.push("/quiz")}
                   sx={{
                     color: "#318AE1",
-                    fontSize: "18px",
+                    fontSize: "16px",
                   }}
                 >
                   전체 보기
-                  <ArrowForward />
+                  <ArrowForward
+                    sx={{
+                      fontSize: "16px",
+                    }}
+                  />
                 </Button>
               </Box>
               <Box
@@ -215,7 +227,7 @@ export default function Churrus() {
                 flexDirection="row"
                 justifyContent={["flex-start", "flex-start", "space-evenly"]}
                 width="100%"
-                gap="24px"
+                gap="32px"
                 overflow="auto"
                 py={1}
               >

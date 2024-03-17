@@ -14,8 +14,8 @@ export default function PuzzleButton({
     <Box display="flex" flexDirection="column" alignItems="center">
       <Box
         onClick={onClick}
-        width={100}
-        height={100}
+        width={80}
+        height={80}
         display="flex"
         justifyContent="center"
         alignItems="center"
@@ -26,11 +26,11 @@ export default function PuzzleButton({
           bgcolor: "white",
         }}
       >
-        <Image src={src} width={48} height={48} alt={label} />
+        <Image src={src} width={32} height={32} alt={label} />
       </Box>
       <Box
         textAlign="center"
-        fontSize={18}
+        fontSize={12}
         fontWeight={600}
         sx={{
           wordBreak: "keep-all",

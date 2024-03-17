@@ -39,7 +39,7 @@ export default function MobilePuzzleCard({
       <Box display="flex" flexDirection="row" alignItems="center" gap={3}>
         <Image src={src} width={32} height={32} alt={title} />
         <Box display="flex" flexDirection="column">
-          <Typography color="black" fontSize={18} fontWeight="bold">
+          <Typography color="black" fontSize={16} fontWeight={500}>
             {title}
           </Typography>
           <Typography fontSize={12} color="text.secondary">

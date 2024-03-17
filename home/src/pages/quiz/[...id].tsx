@@ -137,26 +137,49 @@ export default function QuizPage() {
         <Box
           display="flex"
           flexDirection="column"
-          mt="60px"
-          width="100%"
-          pl={4}
+          width={1}
           textAlign={["left", "left", "center"]}
         >
-          <Typography fontSize={12} fontWeight={700} color="#606B80">
+          <Typography
+            fontSize={12}
+            fontWeight={700}
+            color="#606B80"
+            width="fit-content"
+            mt="60px"
+            ml={4}
+          >
             {MeetingData[quiz.meetingId].title} - {quiz.quizNumber}
           </Typography>
 
-          <Typography fontSize={24} fontWeight={700} color="#202837">
+          <Typography
+            fontSize={24}
+            fontWeight={700}
+            color="#202837"
+            width="fit-content"
+            ml={4}
+          >
             {quiz.title}
             {isAnswerPage && " 정답"}
           </Typography>
           {isAnswerPage && (
-            <Typography fontSize={24} fontWeight={700} color="#318AE1">
+            <Typography
+              fontSize={24}
+              fontWeight={700}
+              color="#318AE1"
+              width="fit-content"
+              ml={4}
+            >
               {quiz.answer}
             </Typography>
           )}
 
-          <Typography fontSize={12} color="#606B80" mt={1}>
+          <Typography
+            fontSize={12}
+            color="#606B80"
+            mt={1}
+            width="fit-content"
+            ml={4}
+          >
             {quiz.madeBy}
           </Typography>
         </Box>
@@ -170,8 +193,9 @@ export default function QuizPage() {
 
         <Box
           width="100%"
+          minHeight="170px"
           sx={{
-            aspectRatio: "16 / 9",
+            aspectRatio: 16 / 9,
           }}
           maxWidth={isImageLoading ? 0 : "856px"}
           maxHeight={isImageLoading ? 0 : "474px"}

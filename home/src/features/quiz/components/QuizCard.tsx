@@ -16,6 +16,7 @@ import { useRouter } from "next/router";
 import ImageWithPlaceHolder from "@/components/ImageWithPlaceholder";
 import { MeetingData } from "../fixtures";
 import { Lightbulb } from "@mui/icons-material";
+import Image from "next/image";
 
 const difficultyLabel = {
   easy: {
@@ -70,13 +71,22 @@ export default function QuizCard({
             borderRadius: "20px",
           }}
         >
-          <CardMedia>
-            <ImageWithPlaceHolder
-              src={quiz.quizImgSrc}
-              alt={quiz.title}
-              width="100%"
-              height="178px"
-            />
+          <CardMedia
+            title={quiz.title}
+            sx={{
+              height: 178,
+            }}
+          >
+            <Box width={1} height={1} position="relative" overflow="hidden">
+              <Image
+                alt={quiz.title}
+                fill
+                src={quiz.quizImgSrc}
+                style={{
+                  objectFit: "cover",
+                }}
+              />
+            </Box>
           </CardMedia>
         </Card>
         <Box display="flex" justifyContent="space-between" py={1} width="100%">
