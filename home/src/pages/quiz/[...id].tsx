@@ -124,7 +124,7 @@ export default function QuizPage() {
               sx={{
                 color: "#202837",
                 fontWeight: 700,
-                fontSize: 18,
+                fontSize: 14,
                 mr: [2, 3, 5],
               }}
               variant="text"

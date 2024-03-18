@@ -26,20 +26,20 @@ const WORD_PUZZLE_CONTENTS = [
     color: "#bda9b0",
     url: "/connections",
   },
-  {
-    title: "추로스워드",
-    src: "/image/logo/crossword-logo.png",
-    color: "#4b89da",
-    url: "/crossword",
-    disabled: true,
-  },
-  {
-    title: "추로스워드 미니",
-    src: "/image/logo/crosswordmini-logo.png",
-    color: "#73b1f4",
-    url: "/crossword-mini",
-    disabled: true,
-  },
+  // {
+  //   title: "추로스워드",
+  //   src: "/image/logo/crossword-logo.png",
+  //   color: "#4b89da",
+  //   url: "/crossword",
+  //   disabled: true,
+  // },
+  // {
+  //   title: "추로스워드 미니",
+  //   src: "/image/logo/crosswordmini-logo.png",
+  //   color: "#73b1f4",
+  //   url: "/crossword-mini",
+  //   disabled: true,
+  // },
 ];
 
 dayjs.extend(weekOfYear);
@@ -115,7 +115,7 @@ export default function Churrus() {
       >
         <Box
           mx={[2, 2, 0]}
-          mt={[0, 0, "60px"]}
+          mt={[0, 0, "48px"]}
           display="flex"
           justifyContent="center"
           flexDirection="column"
@@ -197,6 +197,7 @@ export default function Churrus() {
                 width="100%"
                 overflow="auto"
                 py={1}
+                position="relative"
               >
                 {recommendedQuiz.map((quiz) => (
                   <HomeQuizCard key={quiz.id} quiz={quiz} />
