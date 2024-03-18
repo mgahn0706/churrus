@@ -128,7 +128,10 @@ export default function QuizPage() {
                 mr: [2, 3, 5],
               }}
               variant="text"
-              onClick={() => router.push(`/quiz/${quiz.id}/answer`)}
+              onClick={() => {
+                handleSolvedQuiz();
+                router.push(`/quiz/${quiz.id}/answer`);
+              }}
             >
               정답 보기
             </Button>
