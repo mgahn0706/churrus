@@ -9,9 +9,10 @@ import MobilePuzzleCard from "@/features/home/components/MobilePuzzleCard";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import HomeQuizCard from "@/features/home/components/HomeQuizCard";
 import PuzzleButton from "@/features/home/components/PuzzleButton";
-import useRecommendedQuiz from "@/features/home/components/hooks/useRecommendedQuiz";
+import useRecommendedQuiz from "@/features/home/hooks/useRecommendedQuiz";
 import weekOfYear from "dayjs/plugin/weekOfYear";
 import Image from "next/image";
+import DesktopPuzzleCard from "@/features/home/components/DesktopPuzzleCard";
 
 const WORD_PUZZLE_CONTENTS = [
   {
@@ -137,6 +138,49 @@ export default function Churrus() {
             </Box>
           </Box>
           <MainBanner />
+          <Box
+            display={["none", "none", "flex"]}
+            bgcolor="#ffffff"
+            justifyContent="center"
+            width="100%"
+            py={6}
+          >
+            <Box
+              display="flex"
+              width={["100%", "100%", "60%"]}
+              flexDirection="column"
+            >
+              <Typography
+                color="#121212"
+                fontWeight="700"
+                fontSize={18}
+                sx={{
+                  mb: 1,
+                }}
+              >
+                정기 퍼즐
+              </Typography>
+              <Box display="flex" justifyContent="space-between">
+                <DesktopPuzzleCard
+                  src="/image/logo/spellingbee-logo.png"
+                  title={`${spellingBeeDate}일째 스펠링비`}
+                  subtitle={
+                    foundWords.answers.length > 0 &&
+                    foundWords.day === spellingBeeDate
+                      ? `${foundWords.answers.length}개의 단어를 찾았어요.`
+                      : "아직 시작하지 않았어요."
+                  }
+                  onClick={() => router.push("/spelling-bee")}
+                />
+                <DesktopPuzzleCard
+                  src="/image/logo/connections-logo.png"
+                  title={`Week ${dayjs().week()} 추러스 커넥션`}
+                  subtitle="네 단어씩 네 묶음으로."
+                  onClick={() => router.push("/connections")}
+                />
+              </Box>
+            </Box>
+          </Box>
           <Box display={["block", "block", "none"]} mt="24px">
             <MobilePuzzleCard
               src="/image/logo/spellingbee-logo.png"

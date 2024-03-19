@@ -48,7 +48,13 @@ export default function AllServicesPage() {
         flexDirection="column"
         bgcolor="#f2f3f6"
       >
-        <Box display="flex" flexDirection="column" mx={[2, 4, 8]} mb={3}>
+        <Box
+          display="flex"
+          flexDirection="column"
+          mx={[2, 4, 8]}
+          mb={3}
+          mt={[0, 0, "40px"]}
+        >
           <Typography color="#121212" fontSize={24} fontWeight={700} mt={4}>
             전체 서비스
           </Typography>
