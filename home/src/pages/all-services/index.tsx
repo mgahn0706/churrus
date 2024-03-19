@@ -1,3 +1,4 @@
+import GlobalHeader from "@/components/Navigation/GlobalHeader";
 import ServiceButton from "@/components/ServiceButton";
 import {
   CasinoRounded,
@@ -40,6 +41,7 @@ export default function AllServicesPage() {
       <Head>
         <title>추러스: 전체 서비스</title>
       </Head>
+      <GlobalHeader />
       <Box
         display="flex"
         minHeight="100dvh"

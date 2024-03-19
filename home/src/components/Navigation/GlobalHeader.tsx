@@ -7,6 +7,9 @@ import {
   Close,
   HomeRounded,
   Quiz,
+  ListRounded,
+  QuizRounded,
+  MailRounded,
 } from "@mui/icons-material";
 import { AppBar, Box, Button, IconButton, Toolbar } from "@mui/material";
 import { useRouter } from "next/router";
@@ -23,12 +26,18 @@ const mobileHeaderMenuItems = [
   {
     text: "문제적 추러스",
     url: "/quiz",
-    icon: <Quiz />,
+    icon: <QuizRounded />,
   },
+
   {
     text: "지원하기",
     url: "/recruit",
-    icon: <Mail />,
+    icon: <MailRounded />,
+  },
+  {
+    text: "전체",
+    url: "/all-services",
+    icon: <ListRounded />,
   },
 ];
 
