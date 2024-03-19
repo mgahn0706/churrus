@@ -5,6 +5,7 @@ import {
   Help,
   Hexagon,
   IndeterminateCheckBox,
+  ListRounded,
   Mail,
   Quiz,
   Search,
@@ -154,6 +155,32 @@ export default function LeftDrawer({
             </>
           );
         })}
+        <ListItem
+          alignItems="flex-start"
+          disablePadding
+          onClick={() => {
+            router.push("/all-services");
+          }}
+        >
+          <ListItemButton
+            sx={{
+              py: "4px",
+              width: "100%",
+              justifyContent: "flex-start",
+            }}
+          >
+            <ListItemIcon
+              color="#232937"
+              sx={{
+                minWidth: "unset",
+                marginRight: "0.5rem",
+              }}
+            >
+              <ListRounded />
+            </ListItemIcon>
+            <ListItemText primary="전체 서비스" />
+          </ListItemButton>
+        </ListItem>
       </List>
     </Drawer>
   );

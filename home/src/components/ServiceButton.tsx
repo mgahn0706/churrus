@@ -5,17 +5,20 @@ interface ServiceButtonProps {
   label: string;
   url: string;
   icon: React.ReactNode;
+  color?: string;
 }
 
 export default function ServiceButton({
   label,
   url,
   icon,
+  color = "#318AE1",
 }: ServiceButtonProps) {
   const router = useRouter();
   return (
     <Button
       sx={{
+        color: color,
         justifyContent: "flex-start",
       }}
       onClick={() => router.push(url)}

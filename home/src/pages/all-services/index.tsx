@@ -12,6 +12,7 @@ import {
   IndeterminateCheckBoxRounded,
   InfoRounded,
   MailRounded,
+  PublicRounded,
   QuizRounded,
   RadioRounded,
   SearchRounded,
@@ -120,7 +121,7 @@ export default function AllServicesPage() {
             <ServiceButton
               label="마션 다이스"
               url="/martian-dice"
-              icon={<CasinoRounded />}
+              icon={<PublicRounded />}
             />
             <ServiceButton
               label="마이너스 경매"
