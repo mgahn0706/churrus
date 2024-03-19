@@ -88,7 +88,7 @@ export default function QuizPage() {
       <Box
         alignItems="center"
         display="flex"
-        height="100dvh"
+        minHeight="100dvh"
         flexDirection="column"
         bgcolor={BACKGROUND_COLOR}
       >
