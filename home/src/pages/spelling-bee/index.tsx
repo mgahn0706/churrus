@@ -19,7 +19,6 @@ import hangul from "hangul-js";
 import ScoreSection from "@/features/spelling-bee/components/ScoreSection";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import AnswersSection from "@/features/spelling-bee/components/AnswersSection";
-import HomeButton from "@/components/HomeButton";
 import { HelpOutline } from "@mui/icons-material";
 import { KOREAN_NOUNS } from "@/fixtures/koreanNounList";
 import { useResponsiveValue } from "@/hooks/useResponsiveValue";

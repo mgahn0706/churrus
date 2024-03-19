@@ -15,6 +15,8 @@ import { useRouter } from "next/router";
 
 import ImageWithPlaceHolder from "@/components/ImageWithPlaceholder";
 import { MeetingData } from "../fixtures";
+import { Lightbulb } from "@mui/icons-material";
+import Image from "next/image";
 
 const difficultyLabel = {
   easy: {
@@ -38,107 +40,97 @@ export default function QuizCard({
   quiz: QuizType;
   isSolved: boolean;
 }) {
-  const responsiveXS = useResponsiveValue([12, 4, 3]);
+  const responsiveXS = useResponsiveValue([6, 4, 3]);
   const router = useRouter();
-
-  const cardHeight = useResponsiveValue([170, 150, 200]) as number;
 
   return (
     <Grid item xs={responsiveXS}>
-      <Card
-        elevation={0}
+      <Box
         sx={{
-          backgroundColor: "#ffffff",
-          minWidth: "150px",
+          width: "100%",
           borderRadius: "20px",
-          border: "2px solid #e0e0e0",
-          "&:hover": {
-            transform: "translateY(-5px)",
-            boxShadow: "0px 8px 8px rgba(0, 0, 0, 0.25)",
-            transition: "all 0.3s",
+          cursor: "pointer",
+          ":hover": {
+            ".quiz-card": {
+              transform: "translateY(-1px)",
+              boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
+              transition: "all 0.3s",
+            },
           },
         }}
+        onClick={() => {
+          router.push(`/quiz/${quiz.id}`);
+        }}
       >
-        <CardActionArea
-          onClick={() => {
-            router.push(`/quiz/${quiz.id}`);
+        <Card
+          className="quiz-card"
+          elevation={0}
+          sx={{
+            backgroundColor: "#ffffff",
+            minWidth: "150px",
+            borderRadius: "20px",
           }}
         >
-          <CardMedia sx={{ height: cardHeight }}>
-            <ImageWithPlaceHolder
-              src={quiz.quizImgSrc}
-              alt={quiz.title}
-              width={cardHeight * 1.8}
-              height={cardHeight}
-            />
-          </CardMedia>
-
-          <CardContent
+          <CardMedia
+            title={quiz.title}
             sx={{
-              px: 2,
-              borderTop: "1px solid #e0e0e0",
+              height: 178,
             }}
           >
-            <Box
-              display="flex"
-              fontSize="12px"
-              justifyContent="space-between"
-              width={1}
-              mb="4px"
-              whiteSpace="nowrap"
-            >
-              <Typography
-                fontSize="20px"
-                color="#212837"
-                fontWeight={700}
-                textOverflow={"ellipsis"}
-                overflow={"hidden"}
-              >
-                {quiz.title}
-              </Typography>
-              <Typography
-                fontSize="12px"
-                color="#808080"
-                fontWeight={400}
-                sx={{
-                  mt: "-2px",
-                }}
-              >
-                {quiz.madeBy}
-              </Typography>
-            </Box>
-            <Box
-              display="flex"
-              gap={1}
-              overflow="hidden"
-              flexWrap="nowrap"
-              width={1}
-            >
-              {quiz.difficulty && (
-                <Chip
-                  label={difficultyLabel[quiz.difficulty].label}
-                  sx={{
-                    bgcolor: difficultyLabel[quiz.difficulty].color,
-                    color: "rgba(0,0,0,0.7)",
-                    py: 0,
-                    height: "18px",
-                    fontSize: "12px",
-                  }}
-                />
-              )}
-              <Chip
-                label={isSolved ? "✅ 풀었음" : "❓ 풀지 않음"}
-                sx={{
-                  bgcolor: isSolved ? "#e1fae2" : "#f9cdca",
-                  py: 0,
-                  height: "18px",
-                  fontSize: "12px",
+            <Box width={1} height={1} position="relative" overflow="hidden">
+              <Image
+                alt={quiz.title}
+                fill
+                src={quiz.quizImgSrc}
+                style={{
+                  objectFit: "cover",
                 }}
               />
             </Box>
-          </CardContent>
-        </CardActionArea>
-      </Card>
+          </CardMedia>
+        </Card>
+        <Box display="flex" justifyContent="space-between" py={1} width="100%">
+          <Box
+            display="flex"
+            flexDirection="column"
+            width="100%"
+            overflow="hidden"
+          >
+            <Typography fontSize={10} color="#606B80">
+              {quiz.madeBy}
+            </Typography>
+
+            <Typography
+              color="#202837"
+              fontWeight={700}
+              width="100%"
+              overflow="hidden"
+              textOverflow="ellipsis"
+            >
+              {quiz.title}
+            </Typography>
+            <Typography fontSize={10} color="#606B80">
+              #{difficultyLabel[quiz.difficulty ?? "easy"].label}
+            </Typography>
+          </Box>
+          <Box
+            width="20px"
+            height="20px"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            mt={2}
+          >
+            <Lightbulb
+              sx={{
+                width: "20px",
+                height: "20px",
+                color: isSolved ? "#318AE1" : "#ababab",
+              }}
+            />
+          </Box>
+        </Box>
+      </Box>
     </Grid>
   );
 }

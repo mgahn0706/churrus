@@ -1,4 +1,4 @@
-import { QuizData } from "@/features/quiz/fixtures";
+import { MeetingData, QuizData } from "@/features/quiz/fixtures";
 import {
   Alert,
   Box,
@@ -44,8 +44,6 @@ export default function QuizPage() {
     return;
   }
 
-  const [year, month, _] = quiz.id.split("-");
-
   const handleSolvedQuiz = () => {
     const solvedQuiz = JSON.parse(localStorage.getItem("quiz") ?? "[]");
     localStorage.setItem("quiz", JSON.stringify([...solvedQuiz, quiz.id]));
@@ -90,58 +88,106 @@ export default function QuizPage() {
       <Box
         alignItems="center"
         display="flex"
-        height="100dvh"
+        minHeight="100dvh"
         flexDirection="column"
-        py={4}
-        px={7}
-        textAlign="center"
         bgcolor={BACKGROUND_COLOR}
       >
-        <IconButton
-          size="large"
+        <Box
+          display="flex"
+          alignItems="center"
+          height={60}
+          width="100%"
+          justifyContent="space-between"
+          position="fixed"
           sx={{
-            position: "fixed",
-            top: 20,
-            left: 20,
-            zIndex: 100,
-            color: "#212837",
-          }}
-          onClick={() => {
-            if (isAnswerPage) {
-              router.push(`/quiz?meeting=${quiz.meetingId}`);
-              return;
-            }
-            router.back();
+            backdropFilter: "blur(2px)",
           }}
         >
-          <ArrowBack />
-        </IconButton>
-        <Typography
-          variant="body1"
-          color="#606b80"
-          fontWeight={600}
-          sx={{
-            mb: 1,
-          }}
+          <IconButton
+            size="large"
+            sx={{
+              ml: [2, 3, 5],
+              color: "#212837",
+            }}
+            onClick={() => {
+              if (isAnswerPage) {
+                router.push(`/quiz?meeting=${quiz.meetingId}`);
+                return;
+              }
+              router.back();
+            }}
+          >
+            <ArrowBack />
+          </IconButton>
+          {!isAnswerPage && (
+            <Button
+              sx={{
+                color: "#202837",
+                fontWeight: 700,
+                fontSize: 14,
+                mr: [2, 3, 5],
+              }}
+              variant="text"
+              onClick={() => {
+                handleSolvedQuiz();
+                router.push(`/quiz/${quiz.id}/answer`);
+              }}
+            >
+              정답 보기
+            </Button>
+          )}
+        </Box>
+        <Box
+          display="flex"
+          flexDirection="column"
+          width={1}
+          textAlign={["left", "left", "center"]}
         >
-          {year}년 {month}월 정기모임 #{quiz.quizNumber}
-        </Typography>
+          <Typography
+            fontSize={12}
+            fontWeight={700}
+            color="#606B80"
+            width="fit-content"
+            mt="60px"
+            ml={4}
+          >
+            {MeetingData[quiz.meetingId].title} - {quiz.quizNumber}
+          </Typography>
 
-        <Typography variant="h4" color="#212837" fontWeight={600}>
-          {quiz.title}
-          {isAnswerPage && (quiz.answer ? ` 정답 : ${quiz.answer}` : ` 정답`)}
-        </Typography>
-        <Typography
-          variant="body2"
-          color="#606b80"
-          fontWeight={600}
-          sx={{
-            mb: 1,
-          }}
-        >
-          {quiz.madeBy && `by ${quiz.madeBy}`}
-        </Typography>
-        {quiz.shouldWarn && (
+          <Typography
+            fontSize={24}
+            fontWeight={700}
+            color="#202837"
+            width="fit-content"
+            ml={4}
+          >
+            {quiz.title}
+            {isAnswerPage && " 정답"}
+          </Typography>
+          {isAnswerPage && (
+            <Typography
+              fontSize={24}
+              fontWeight={700}
+              color="#318AE1"
+              width="fit-content"
+              ml={4}
+            >
+              {quiz.answer}
+            </Typography>
+          )}
+
+          <Typography
+            fontSize={12}
+            color="#606B80"
+            mt={1}
+            width="fit-content"
+            ml={4}
+          >
+            {quiz.madeBy}
+          </Typography>
+        </Box>
+
+        {quiz.shouldWarn && !isAnswerPage && (
           <Alert severity="warning" sx={{ mt: 2 }}>
             이 문제는 당시 정기모임에 참석해야만 풀 수 있는 요소를 포함하고
             있어요.
@@ -149,10 +195,13 @@ export default function QuizPage() {
         )}
 
         <Box
-          minWidth={isImageLoading ? 0 : "350px"}
-          minHeight={isImageLoading ? 0 : "210px"}
-          width={isImageLoading ? 0 : "50vw"}
-          height={isImageLoading ? 0 : "30vw"}
+          width="100%"
+          minHeight="170px"
+          sx={{
+            aspectRatio: 16 / 9,
+          }}
+          maxWidth={isImageLoading ? 0 : "856px"}
+          maxHeight={isImageLoading ? 0 : "474px"}
           display="flex"
           justifyContent="center"
           mt={4}
@@ -165,6 +214,9 @@ export default function QuizPage() {
                 : quiz.quizImgSrc
             }
             alt={quiz.title}
+            style={{
+              borderRadius: "20px",
+            }}
             fill
             priority
             onLoadingComplete={() => setIsImageLoading(false)}
@@ -185,71 +237,93 @@ export default function QuizPage() {
         )}
         {!isAnswerPage && (
           <form onSubmit={handleAnswerSubmit}>
-            <Typography
-              variant="body1"
-              color="#212837"
-              fontWeight={400}
-              sx={{
-                mt: 2,
-              }}
+            <Box
+              display="flex"
+              flexDirection="column"
+              justifyContent="center"
+              mt={4}
+              minWidth={300}
+              maxWidth={856}
+              width="70vw"
+              mx="auto"
             >
-              정답 형식: {answerFomat()}
-            </Typography>
-            {quiz.isAnswerable && (
-              <Box mt="20px" display="flex" alignContent="center">
-                <TextField
-                  variant="outlined"
-                  value={inputAnswer}
-                  onChange={(e) => {
-                    setInputAnswer(e.target.value);
-                  }}
-                  sx={{
-                    width: "40vw",
-                    mr: 2,
-                    borderRadius: "24px",
-                    minWidth: "200px",
-                  }}
-                  placeholder={
-                    quiz.isAnswerable
-                      ? "정답을 입력해주세요."
-                      : "정답을 입력할 수 없는 문제입니다."
-                  }
-                />
-                <Button
-                  sx={{
-                    color: "white",
-                    bgcolor: "#0c57d1",
-                    borderRadius: "8px",
-                    "&:hover": {
-                      bgcolor: "#083989",
-                    },
-                  }}
-                  type="submit"
+              <Typography
+                color="#212837"
+                fontSize={12}
+                fontWeight={400}
+                sx={{
+                  ml: 2,
+                  width: "100%",
+                }}
+              >
+                정답 형식: {answerFomat()}
+              </Typography>
+              {quiz.isAnswerable && (
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  gap={3}
+                  flexDirection={["column", "column", "row"]}
                 >
-                  제출
-                </Button>
-              </Box>
-            )}
-            <Button
-              variant="outlined"
-              sx={{
-                border: "1px solid #ea4335",
-                color: "#ea4335",
-                "&:hover": {
-                  bgcolor: "#fa978d",
-                  borderColor: "#ea4335",
-                  color: "#ea4335",
-                },
-                mt: "10px",
-              }}
-              size="small"
-              onClick={() => {
-                handleSolvedQuiz();
-                router.push(`/quiz/${quiz.id}/answer`);
-              }}
-            >
-              정답 확인
-            </Button>
+                  <TextField
+                    variant="outlined"
+                    value={inputAnswer}
+                    onChange={(e) => {
+                      setInputAnswer(e.target.value);
+                    }}
+                    InputProps={{
+                      sx: {
+                        maxWidth: 700,
+                        borderRadius: "20px",
+                        py: "2px",
+                        height: "40px",
+                      },
+                    }}
+                    sx={{
+                      width: "100%",
+                    }}
+                    placeholder={
+                      quiz.isAnswerable
+                        ? "정답을 입력해주세요."
+                        : "정답을 입력할 수 없는 문제입니다."
+                    }
+                  />
+                  <Button
+                    fullWidth
+                    sx={{
+                      display: ["block", "block", "none"],
+                      color: "white",
+                      bgcolor: "#318AE1",
+                      height: "40px",
+                      borderRadius: "20px",
+                      "&:hover": {
+                        bgcolor: "#1B4B7B",
+                      },
+                    }}
+                    type="submit"
+                  >
+                    제출
+                  </Button>
+                  <Button
+                    sx={{
+                      minWidth: "220px",
+                      display: ["none", "none", "block"],
+                      color: "white",
+                      bgcolor: "#318AE1",
+                      height: "40px",
+                      borderRadius: "20px",
+                      "&:hover": {
+                        bgcolor: "#1B4B7B",
+                      },
+                    }}
+                    type="submit"
+                  >
+                    제출
+                  </Button>
+                </Box>
+              )}
+            </Box>
           </form>
         )}
       </Box>

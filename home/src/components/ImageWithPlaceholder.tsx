@@ -22,8 +22,9 @@ export default function ImageWithPlaceHolder({
       display="flex"
       justifyContent="center"
       alignItems="center"
-      width="100%"
-      height="100%"
+      position="relative"
+      width={width}
+      height={height}
     >
       <Image
         src={src}
@@ -40,8 +41,8 @@ export default function ImageWithPlaceHolder({
       {isImageLoading && (
         <Skeleton
           variant="rectangular"
-          width="180px"
-          height="90px"
+          width={width}
+          height={height}
           sx={{
             borderRadius: "0.5rem",
             bgcolor: "rgba(255, 255, 255, 0.7)",
