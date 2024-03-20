@@ -53,7 +53,7 @@ export default function AllServicesPage() {
           display="flex"
           flexDirection="column"
           mx={[2, 4, 8]}
-          mb={3}
+          mb={5}
           mt={[0, 0, "40px"]}
         >
           <Typography color="#121212" fontSize={24} fontWeight={700} mt={4}>
