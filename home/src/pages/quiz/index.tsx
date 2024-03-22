@@ -1,7 +1,13 @@
 import GlobalHeader from "@/components/Navigation/GlobalHeader";
 import QuizCard from "@/features/quiz/components/QuizCard";
 import { MEETINGS, MeetingData, QuizData } from "@/features/quiz/fixtures";
-import { Lightbulb, NavigateBefore, NavigateNext } from "@mui/icons-material";
+import {
+  Lightbulb,
+  NavigateBefore,
+  NavigateBeforeRounded,
+  NavigateNext,
+  NavigateNextRounded,
+} from "@mui/icons-material";
 import {
   Box,
   Grid,
@@ -118,6 +124,9 @@ export default function Quiz() {
               minWidth="300px"
             >
               <IconButton
+                sx={{
+                  backgroundColor: "white",
+                }}
                 disabled={
                   MEETINGS.indexOf(selectedMeeting) === MEETINGS.length - 1
                 }
@@ -127,7 +136,11 @@ export default function Quiz() {
                   router.push(`/quiz?meeting=${MEETINGS[index + 1]}`);
                 }}
               >
-                <NavigateBefore />
+                <NavigateBeforeRounded
+                  sx={{
+                    fontSize: "2rem",
+                  }}
+                />
               </IconButton>
               <Box
                 minHeight="58px"
@@ -159,6 +172,9 @@ export default function Quiz() {
                 </Select>
               </Box>
               <IconButton
+                sx={{
+                  backgroundColor: "white",
+                }}
                 disabled={MEETINGS.indexOf(selectedMeeting) === 0}
                 onClick={() => {
                   const index = MEETINGS.indexOf(selectedMeeting);
@@ -166,7 +182,11 @@ export default function Quiz() {
                   router.push(`/quiz?meeting=${MEETINGS[index - 1]}`);
                 }}
               >
-                <NavigateNext />
+                <NavigateNextRounded
+                  sx={{
+                    fontSize: "2rem",
+                  }}
+                />
               </IconButton>
             </Box>
           </Box>
