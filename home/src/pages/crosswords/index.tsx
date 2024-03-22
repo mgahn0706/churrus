@@ -1,34 +1,18 @@
 import GlobalHeader from "@/components/Navigation/GlobalHeader";
 import CrosswordCard from "@/features/crosswords/components/CrosswordCard";
-import { CROSSWORDS } from "@/features/crosswords/fixtures";
-import QuizCard from "@/features/quiz/components/QuizCard";
-import { MEETINGS, MeetingData, QuizData } from "@/features/quiz/fixtures";
-import {
-  ArrowBackRounded,
-  Lightbulb,
-  NavigateBefore,
-  NavigateBeforeRounded,
-  NavigateNext,
-} from "@mui/icons-material";
-import {
-  Box,
-  Card,
-  Grid,
-  Icon,
-  IconButton,
-  MenuItem,
-  Select,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { CROSSWORDS, MINI_CROSSWORDS } from "@/features/crosswords/fixtures";
+
+import { Box, Grid, Tab, Tabs } from "@mui/material";
 import Head from "next/head";
 
-import { useRouter } from "next/router";
+import { useState } from "react";
 
 const BACKGROUND_COLOR = "#f2f3f6";
 
 export default function Crosswords() {
-  const router = useRouter();
+  const [selectedVariant, setSelectedVariant] = useState<"BASIC" | "MINI">(
+    "BASIC"
+  );
 
   return (
     <>
@@ -56,18 +40,16 @@ export default function Crosswords() {
             color="#212837"
             mt={[3, 4, "100px"]}
             mb={[2, 3, 4]}
+            borderBottom={`1px solid #e0e0e0`}
           >
-            <Box
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
+            <Tabs
+              value={selectedVariant}
+              onChange={(e, value) => setSelectedVariant(value)}
             >
-              <IconButton onClick={() => router.push("/")}>
-                <ArrowBackRounded />
-              </IconButton>
-            </Box>
+              <Tab label="BASIC" value="BASIC" />
+              <Tab label="MINI" value="MINI" />
+            </Tabs>
           </Box>
-
           <Box
             display="flex"
             justifyContent="center"
@@ -75,9 +57,13 @@ export default function Crosswords() {
             mb={3}
           >
             <Grid container spacing={[3, 4, 6]} width="100%">
-              {CROSSWORDS.toReversed().map((crossword) => (
-                <CrosswordCard {...crossword} />
-              ))}
+              {selectedVariant === "BASIC"
+                ? CROSSWORDS.map((crossword) => (
+                    <CrosswordCard {...crossword} />
+                  ))
+                : MINI_CROSSWORDS.map((crossword) => (
+                    <CrosswordCard {...crossword} />
+                  ))}
             </Grid>
           </Box>
         </Box>

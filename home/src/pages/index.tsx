@@ -34,13 +34,6 @@ const WORD_PUZZLE_CONTENTS = [
     color: "#4b89da",
     url: "/crosswords",
   },
-  // {
-  //   title: "추로스워드 미니",
-  //   src: "/image/logo/crosswordmini-logo.png",
-  //   color: "#73b1f4",
-  //   url: "/crossword-mini",
-  //   disabled: true,
-  // },
 ];
 
 dayjs.extend(weekOfYear);
@@ -183,8 +176,8 @@ export default function Churrus() {
                 <DesktopPuzzleCard
                   src="/image/logo/crossword-logo.png"
                   title={`
-                    ${recentCrosswordDate.year}년 ${recentCrosswordDate.month}월 추러스워드`}
-                  subtitle="매달 새로운 십자말풀이."
+                    ${recentCrosswordDate.year}년 ${recentCrosswordDate.month}월 추로스워드`}
+                  subtitle="창의적인 십자말풀이."
                   onClick={() => router.push("/crosswords")}
                 />
               </Box>

@@ -54,7 +54,7 @@ export default function CrosswordCard({
             >
               <Typography
                 color="#121212"
-                fontSize={16}
+                fontSize={[16, 18, 24]}
                 fontWeight={700}
                 sx={{
                   width: 1,

@@ -12,7 +12,11 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import { ArrowBack } from "@mui/icons-material";
 import Head from "next/head";
-import { CROSSWORDS, monthFormatter } from "@/features/crosswords/fixtures";
+import {
+  CROSSWORDS,
+  MINI_CROSSWORDS,
+  monthFormatter,
+} from "@/features/crosswords/fixtures";
 
 const BACKGROUND_COLOR = "#f2f3f6";
 
@@ -25,9 +29,13 @@ export default function CrosswordPage() {
     return <div>loading...</div>;
   }
 
-  const crossword = Object.values(CROSSWORDS).find(
+  const isMini = id.includes("mini");
+
+  const crossword = [...CROSSWORDS, ...MINI_CROSSWORDS].find(
     (crossword) => crossword.id === id[0]
   );
+
+  console.log(crossword, id);
 
   if (!crossword) {
     router.back();
@@ -37,7 +45,9 @@ export default function CrosswordPage() {
   return (
     <>
       <Head>
-        <title>추로스워드 : {crossword.title}</title>
+        <title>
+          추로스워드 {isMini ? "미니" : ""} : {crossword.title}
+        </title>
       </Head>
       <Box
         alignItems="center"
