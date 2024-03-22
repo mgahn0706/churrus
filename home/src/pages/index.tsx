@@ -13,6 +13,7 @@ import useRecommendedQuiz from "@/features/home/hooks/useRecommendedQuiz";
 import weekOfYear from "dayjs/plugin/weekOfYear";
 import Image from "next/image";
 import DesktopPuzzleCard from "@/features/home/components/DesktopPuzzleCard";
+import { CROSSWORDS } from "@/features/crosswords/fixtures";
 
 const WORD_PUZZLE_CONTENTS = [
   {
@@ -27,13 +28,12 @@ const WORD_PUZZLE_CONTENTS = [
     color: "#bda9b0",
     url: "/connections",
   },
-  // {
-  //   title: "추로스워드",
-  //   src: "/image/logo/crossword-logo.png",
-  //   color: "#4b89da",
-  //   url: "/crossword",
-  //   disabled: true,
-  // },
+  {
+    title: "추로스워드",
+    src: "/image/logo/crossword-logo.png",
+    color: "#4b89da",
+    url: "/crosswords",
+  },
   // {
   //   title: "추로스워드 미니",
   //   src: "/image/logo/crosswordmini-logo.png",
@@ -103,6 +103,8 @@ export default function Churrus() {
   const recommendedQuiz = useRecommendedQuiz({
     recommendCount: 8,
   });
+
+  const recentCrosswordDate = CROSSWORDS[CROSSWORDS.length - 1].date;
 
   return (
     <>
@@ -177,6 +179,13 @@ export default function Churrus() {
                   title={`Week ${dayjs().week()} 추러스 커넥션`}
                   subtitle="네 단어씩 네 묶음으로."
                   onClick={() => router.push("/connections")}
+                />
+                <DesktopPuzzleCard
+                  src="/image/logo/crossword-logo.png"
+                  title={`
+                    ${recentCrosswordDate.year}년 ${recentCrosswordDate.month}월 추러스워드`}
+                  subtitle="매달 새로운 십자말풀이."
+                  onClick={() => router.push("/crosswords")}
                 />
               </Box>
             </Box>
