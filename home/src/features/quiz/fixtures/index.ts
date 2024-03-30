@@ -1,6 +1,7 @@
 import { QuizType } from "../types";
 
 export const MEETINGS = [
+  "2024-3",
   "2024-2",
   "2024-1",
   "2023-11",
@@ -114,6 +115,10 @@ export const MeetingData: Record<
   "2024-2": {
     title: "2024 겨울 대이동",
     color: "#fde2e2",
+  },
+  "2024-3": {
+    title: "2024년 1학기 OT",
+    color: "#d3f6f6",
   },
 };
 
@@ -1724,6 +1729,41 @@ export const QuizData: Record<string, QuizType[]> = {
       shouldWarn: false,
       isAnswerable: true,
       difficulty: "hard",
+    },
+  ],
+  "2024-3": [
+    {
+      id: "2024-3-1",
+      meetingId: "2024-3",
+      quizNumber: 1,
+      title: "그저 그런 사람",
+      madeBy: "정해찬",
+      quizImgSrc: "/image/quiz/2024-3-1.png",
+      answer: "꽃",
+      shouldWarn: false,
+      isAnswerable: true,
+    },
+    {
+      id: "2024-3-2",
+      meetingId: "2024-3",
+      quizNumber: 2,
+      title: "쪽지 속 좌표",
+      madeBy: "김태연",
+      quizImgSrc: "/image/quiz/2024-3-2.png",
+      answer: "83동",
+      shouldWarn: false,
+      isAnswerable: true,
+    },
+    {
+      id: "2024-3-3",
+      meetingId: "2024-3",
+      quizNumber: 3,
+      title: "너무 슬프다",
+      madeBy: "김태연",
+      quizImgSrc: "/image/quiz/2024-3-3.png",
+      answer: null,
+      shouldWarn: false,
+      isAnswerable: false,
     },
   ],
 };
