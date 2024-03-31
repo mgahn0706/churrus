@@ -38,7 +38,7 @@ const WORD_PUZZLE_CONTENTS = [
 
 dayjs.extend(weekOfYear);
 
-const BACKGROUND_COLOR = "#f2f3f6";
+const BACKGROUND_COLOR = "#F7F9FC";
 
 const MoreGamesButton = ({ onClick }: { onClick: () => void }) => {
   <CardActionArea

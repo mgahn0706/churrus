@@ -47,7 +47,7 @@ export default function AllServicesPage() {
         display="flex"
         minHeight="100dvh"
         flexDirection="column"
-        bgcolor="#f2f3f6"
+        bgcolor="#F7F9FC"
       >
         <Box
           display="flex"

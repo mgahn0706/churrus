@@ -15,7 +15,7 @@ import { useRouter } from "next/router";
 
 import ImageWithPlaceHolder from "@/components/ImageWithPlaceholder";
 import { MeetingData } from "../fixtures";
-import { Lightbulb } from "@mui/icons-material";
+import { Lightbulb, TaskAltRounded } from "@mui/icons-material";
 import Image from "next/image";
 
 const difficultyLabel = {
@@ -121,7 +121,7 @@ export default function QuizCard({
             alignItems="center"
             mt={2}
           >
-            <Lightbulb
+            <TaskAltRounded
               sx={{
                 width: "20px",
                 height: "20px",

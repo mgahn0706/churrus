@@ -7,6 +7,7 @@ import {
   NavigateBeforeRounded,
   NavigateNext,
   NavigateNextRounded,
+  TaskAltRounded,
 } from "@mui/icons-material";
 import {
   Box,
@@ -23,7 +24,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 
-const BACKGROUND_COLOR = "#f2f3f6";
+const BACKGROUND_COLOR = "#F7F9FC";
 
 type MeetingType = (typeof MEETINGS)[number];
 
@@ -93,13 +94,13 @@ export default function Quiz() {
                   px="20px"
                   borderRadius="20px"
                   display="flex"
-                  bgcolor="#DEDEDE"
+                  bgcolor="#d6e7f8"
                   alignItems="center"
                   justifyContent="space-between"
                 >
-                  <Lightbulb
+                  <TaskAltRounded
                     sx={{
-                      color: "#6B6B6B",
+                      color: "#318AE1",
                     }}
                   />
                   <Typography fontSize={14} color="#121212" fontWeight={700}>
