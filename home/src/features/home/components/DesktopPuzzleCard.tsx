@@ -26,7 +26,7 @@ export default function DesktopPuzzleCard({
       <Card
         elevation={0}
         sx={{
-          backgroundColor: "#F7F9FC",
+          backgroundColor: "#F5F6FA",
           borderRadius: "20px",
           minHeight: "90px",
           alignItems: "center",

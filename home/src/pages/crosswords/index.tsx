@@ -7,7 +7,7 @@ import Head from "next/head";
 
 import { useState } from "react";
 
-const BACKGROUND_COLOR = "#F7F9FC";
+const BACKGROUND_COLOR = "#F5F6FA";
 
 export default function Crosswords() {
   const [selectedVariant, setSelectedVariant] = useState<"BASIC" | "MINI">(

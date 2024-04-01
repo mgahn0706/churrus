@@ -24,7 +24,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 
-const BACKGROUND_COLOR = "#F7F9FC";
+const BACKGROUND_COLOR = "#F5F6FA";
 
 type MeetingType = (typeof MEETINGS)[number];
 

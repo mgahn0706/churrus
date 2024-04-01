@@ -14,7 +14,7 @@ import { ArrowBack } from "@mui/icons-material";
 import { useState } from "react";
 import Head from "next/head";
 
-const BACKGROUND_COLOR = "#F7F9FC";
+const BACKGROUND_COLOR = "#F5F6FA";
 
 const uppercaseRegex = /^[A-Z\s]+$/;
 const lowercaseRegex = /^[a-z\s]+$/;

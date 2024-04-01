@@ -18,7 +18,7 @@ import {
   monthFormatter,
 } from "@/features/crosswords/fixtures";
 
-const BACKGROUND_COLOR = "#F7F9FC";
+const BACKGROUND_COLOR = "#F5F6FA";
 
 export default function CrosswordPage() {
   const router = useRouter();
