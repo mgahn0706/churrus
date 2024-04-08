@@ -285,4 +285,67 @@ export const CONNECTIONS2024: ConnectionsType[] = [
       },
     ],
   },
+  {
+    week: 15,
+    quiz: [
+      {
+        words: ["교육", "근로", "납세", "국방"],
+        description: "국민의 의무",
+      },
+      {
+        words: ["국가", "타령", "군가", "동요"],
+        description: "노래의 종류",
+      },
+      {
+        words: ["면세", "장단", "요", "본"],
+        description: "___점",
+      },
+      {
+        words: ["지도", "계", "명태", "환경"],
+        description: "'생태'와 관련된 단어",
+      },
+    ],
+  },
+  {
+    week: 16,
+    quiz: [
+      {
+        words: ["수소", "산소", "질소", "네온"],
+        description: "상온에서 기체인 원소",
+      },
+      {
+        words: ["낫", "대패", "도끼", "칼"],
+        description: "연장",
+      },
+      {
+        words: ["가오리", "방패", "인", "금"],
+        description: "___연",
+      },
+      {
+        words: ["고드름", "나트륨", "스트론튬", "달걀"],
+        description: "끝말잇기 한방단어",
+      },
+    ],
+  },
+  {
+    week: 17,
+    quiz: [
+      {
+        words: ["무", "냉이", "콩", "갓"],
+        description: "채소",
+      },
+      {
+        words: ["눈", "얼음", "김", "서리"],
+        description: "겨울에 볼 수 있는 것들",
+      },
+      {
+        words: ["담배", "메소드", "발", "즉흥"],
+        description: "___연기",
+      },
+      {
+        words: ["개그맨", "콘도", "원샷", "패딩"],
+        description: "콩글리시",
+      },
+    ],
+  },
 ];
