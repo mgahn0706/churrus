@@ -348,4 +348,25 @@ export const CONNECTIONS2024: ConnectionsType[] = [
       },
     ],
   },
+  {
+    week: 18,
+    quiz: [
+      {
+        words: ["사진기", "돋보기", "안경", "망원경"],
+        description: "렌즈가 들어간 것",
+      },
+      {
+        words: ["스크린", "좌석", "계단", "팝콘"],
+        description: "영화관에서 볼 수 있는 것들",
+      },
+      {
+        words: ["옥좌", "소파", "스툴", "벤치"],
+        description: "앉을 수 있는 것",
+      },
+      {
+        words: ["방귀", "사슴", "풀", "좀"],
+        description: "___벌레",
+      },
+    ],
+  },
 ];

@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "bee": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ts-node -r tsconfig-paths/register src/features/spelling-bee/libs/quizMaker.ts"
+    "bee": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ts-node -r tsconfig-paths/register src/features/spelling-bee/libs/quizMaker.ts",
+    "anagram": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ts-node -r tsconfig-paths/register src/features/spelling-bee/libs/anagramFinder.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.10.6",
