@@ -369,4 +369,46 @@ export const CONNECTIONS2024: ConnectionsType[] = [
       },
     ],
   },
+  {
+    week: 19,
+    quiz: [
+      {
+        words: ["적중", "부합", "소통", "일치"],
+        description: "맞음",
+      },
+      {
+        words: ["파일", "수정", "보기", "북마크"],
+        description: "웹 브라우저의 탭",
+      },
+      {
+        words: ["공소", "보석", "자백", "기소"],
+        description: "형사소송법 용어",
+      },
+      {
+        words: ["레코드", "지구본", "팽이", "풍차"],
+        description: "회전하는 것",
+      },
+    ],
+  },
+  {
+    week: 20,
+    quiz: [
+      {
+        words: ["햇빛", "백반", "코로나", "흑점"],
+        description: "태양 관련 단어",
+      },
+      {
+        words: ["체인", "페달", "핸들", "바퀴"],
+        description: "자전거 부품",
+      },
+      {
+        words: ["도장", "비자", "이름", "사진"],
+        description: "여권에 있는 것",
+      },
+      {
+        words: ["귀", "기름", "나이", "밥"],
+        description: "먹을 수 있는 것",
+      },
+    ],
+  },
 ];
