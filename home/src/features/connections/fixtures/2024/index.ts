@@ -411,4 +411,25 @@ export const CONNECTIONS2024: ConnectionsType[] = [
       },
     ],
   },
+  {
+    week: 21,
+    quiz: [
+      {
+        words: ["밤양갱", "아메리카노", "잔치국수", "우유생크림빵"],
+        description: "음식",
+      },
+      {
+        words: ["미움받을용기", "언어의온도", "역행자", "불편한편의점"],
+        description: "베스트셀러 책",
+      },
+      {
+        words: ["블랙홀", "사건의지평선", "중력렌즈", "스파게티화"],
+        description: "블랙홀 관련 현상",
+      },
+      {
+        words: ["순결", "아름다운정신", "정신적사랑", "중간고사"],
+        description: "벚꽃의 꽃말",
+      },
+    ],
+  },
 ];
