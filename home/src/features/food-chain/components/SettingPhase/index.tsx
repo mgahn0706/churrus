@@ -18,7 +18,6 @@ import { ANIMALS } from "../../fixtures/animal";
 import {
   CheckCircleOutlineRounded,
   CheckCircleRounded,
-  Folder,
 } from "@mui/icons-material";
 
 export default function SettingPhase({
@@ -26,7 +25,7 @@ export default function SettingPhase({
 }: {
   onNextPhase: () => void;
 }) {
-  const { addPlayer, playerStatus, deletePlayer, randomizePlayerRole } =
+  const { addPlayer, playerStatus, deletePlayer, submitSelectedAnimals } =
     useFoodChainPlayerContext();
 
   const [newPlayerName, setNewPlayerName] = useState("");
@@ -55,6 +54,10 @@ export default function SettingPhase({
         <form
           onSubmit={(e) => {
             e.preventDefault();
+
+            if (!newPlayerName) {
+              return;
+            }
             addPlayer(newPlayerName);
             setNewPlayerName("");
           }}
@@ -158,7 +161,7 @@ export default function SettingPhase({
           }
           variant="contained"
           onClick={() => {
-            randomizePlayerRole();
+            submitSelectedAnimals(selectedAnimals);
             onNextPhase();
           }}
         >

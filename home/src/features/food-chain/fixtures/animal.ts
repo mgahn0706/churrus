@@ -162,8 +162,8 @@ export const ANIMALS: Record<AnimalId, Animal> = {
     },
     onVictoryCheck: (player) => player.hasEaten.every((eaten) => eaten),
   },
-  CHARMELEON: {
-    id: "CHARMELEON",
+  CHAMELEON: {
+    id: "CHAMELEON",
     type: "PREY",
     name: "카멜레온",
     mainHabitat: "FOREST",

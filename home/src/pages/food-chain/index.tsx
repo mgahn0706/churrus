@@ -2,6 +2,7 @@ import RoleRevealPhase from "@/features/food-chain/components/RoleRevealPhase";
 import SettingPhase from "@/features/food-chain/components/SettingPhase";
 import { PlayerContextProvider } from "@/features/food-chain/context";
 import useGamePhase from "@/features/food-chain/hooks/useGamePhase";
+import usePreventUnload from "@/hooks/usePreventUnload";
 import { Box } from "@mui/material";
 import Head from "next/head";
 
@@ -9,6 +10,8 @@ const BACKGROUND_COLOR = "#F9FAFC";
 
 export default function FoodChain() {
   const { phase, moveToNextPhase } = useGamePhase();
+
+  usePreventUnload();
 
   return (
     <>

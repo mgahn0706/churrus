@@ -5,6 +5,8 @@ export interface Player {
   biomeHistory: Array<Biome | null>;
   status: "ALIVE" | "DEAD";
   hasEaten: Array<boolean | null>;
+  camouflagedTo?: AnimalId;
+  predictedWinner?: AnimalId;
 }
 
 export type Biome = "RIVER" | "FIELD" | "FOREST" | "SKY";
@@ -34,6 +36,6 @@ export type AnimalId =
   | "MALLARD"
   | "EGYPTEAN_PLOVER"
   | "RAT"
-  | "CHARMELEON"
+  | "CHAMELEON"
   | "SNAKE"
   | "CROW";

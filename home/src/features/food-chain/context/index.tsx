@@ -6,9 +6,21 @@ interface PlayerContextValue {
   playerStatus: Player[];
   addPlayer: (name: string) => void;
   deletePlayer: (id: number) => void;
-  randomizePlayerRole: () => void;
-  setSelectedAnimals: (animals: AnimalId[]) => void;
-  selectedAnimals: AnimalId[];
+  submitSelectedAnimals: (animals: AnimalId[]) => void;
+  predictWinner: ({
+    playerId,
+    animalId,
+  }: {
+    playerId: number;
+    animalId: AnimalId;
+  }) => void;
+  camouflage: ({
+    playerId,
+    animalId,
+  }: {
+    playerId: number;
+    animalId: AnimalId;
+  }) => void;
 }
 const PlayerContext = createContext({} as PlayerContextValue);
 
@@ -29,9 +41,18 @@ export const PlayerContextProvider = ({
 }: {
   children: ReactNode;
 }) => {
-  const [selectedAnimals, setSelectedAnimals] = useState<AnimalId[]>([]);
-  const { playerStatus, addPlayer, deletePlayer, randomizePlayerRole } =
-    usePlayerStatus({ selectedAnimals });
+  const {
+    playerStatus,
+    addPlayer,
+    deletePlayer,
+    randomizePlayerRole,
+    predictWinner,
+    camouflage,
+  } = usePlayerStatus();
+
+  const submitSelectedAnimals = (animals: AnimalId[]) => {
+    randomizePlayerRole(animals);
+  };
 
   return (
     <PlayerContext.Provider
@@ -39,9 +60,9 @@ export const PlayerContextProvider = ({
         playerStatus,
         addPlayer,
         deletePlayer,
-        randomizePlayerRole,
-        selectedAnimals,
-        setSelectedAnimals,
+        submitSelectedAnimals,
+        predictWinner,
+        camouflage,
       }}
     >
       {children}

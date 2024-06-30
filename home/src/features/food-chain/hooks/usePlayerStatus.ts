@@ -1,13 +1,7 @@
 import { useState } from "react";
 import { AnimalId, Player } from "../types";
 
-interface UsePlayerStatusProps {
-  selectedAnimals: AnimalId[];
-}
-
-export default function usePlayerStatus({
-  selectedAnimals,
-}: UsePlayerStatusProps) {
+export default function usePlayerStatus() {
   const [playerStatus, setPlayerStatus] = useState<Player[]>([]);
 
   const addPlayer = (name: string) => {
@@ -32,8 +26,9 @@ export default function usePlayerStatus({
     );
   };
 
-  const randomizePlayerRole = () => {
+  const randomizePlayerRole = (selectedAnimals: AnimalId[]) => {
     const randomizedAnimalIds = selectedAnimals.sort(() => Math.random() - 0.5);
+
     setPlayerStatus((prev) =>
       prev.map((player, index) => ({
         ...player,
@@ -42,5 +37,54 @@ export default function usePlayerStatus({
     );
   };
 
-  return { playerStatus, addPlayer, deletePlayer, randomizePlayerRole };
+  const predictWinner = ({
+    playerId,
+    animalId,
+  }: {
+    playerId: number;
+    animalId: AnimalId;
+  }) => {
+    const targetPlayer = playerStatus.find((player) => player.id === playerId);
+    if (!targetPlayer) return;
+    if (targetPlayer.role !== "CROW") {
+      console.error("Only CROW can predict winner");
+      return;
+    }
+    setPlayerStatus((prev) =>
+      prev.map((player) =>
+        player.id === playerId
+          ? { ...player, predictedWinner: animalId }
+          : player
+      )
+    );
+  };
+
+  const camouflage = ({
+    playerId,
+    animalId,
+  }: {
+    playerId: number;
+    animalId: AnimalId;
+  }) => {
+    const targetPlayer = playerStatus.find((player) => player.id === playerId);
+    if (!targetPlayer) return;
+    if (targetPlayer.role !== "CHAMELEON") {
+      console.error("Only CHAMELEON can camouflage");
+      return;
+    }
+    setPlayerStatus((prev) =>
+      prev.map((player) =>
+        player.id === playerId ? { ...player, camouflagedTo: animalId } : player
+      )
+    );
+  };
+
+  return {
+    playerStatus,
+    addPlayer,
+    deletePlayer,
+    randomizePlayerRole,
+    predictWinner,
+    camouflage,
+  };
 }
