@@ -138,7 +138,7 @@ export default function RoleRevealPhase({
           disabled={hasNotPredicted || hasNotCamouflaged}
           onClick={() => {
             if (currentPlayerId === playerStatus.length) {
-              moveToNextPhase();
+              onNextPhase();
               return;
             }
             setCurrentPlayerId((prev) => prev + 1);
