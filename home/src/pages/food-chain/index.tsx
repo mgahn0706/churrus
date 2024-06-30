@@ -1,0 +1,31 @@
+import useGamePhase from "@/features/food-chain/hooks/useGamePhase";
+import { Box } from "@mui/material";
+import Head from "next/head";
+
+const BACKGROUND_COLOR = "#F9FAFC";
+
+export default function FoodChain() {
+  const { phase } = useGamePhase();
+  return (
+    <>
+      <Head>
+        <title>먹이사슬</title>
+      </Head>
+      <Box
+        minHeight="100dvh"
+        bgcolor={BACKGROUND_COLOR}
+        display="flex"
+        justifyContent="center"
+      >
+        <Box
+          height="100vh"
+          overflow="scroll"
+          px={[2, 6, 10]}
+          width="100%"
+          maxWidth={1000}
+          pb={6}
+        ></Box>
+      </Box>
+    </>
+  );
+}
