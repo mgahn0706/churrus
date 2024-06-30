@@ -5,7 +5,11 @@ import Image from "next/image";
 import { ANIMALS } from "../../fixtures/animal";
 import { AnimalId } from "../../types";
 
-export default function RoleRevealPhase() {
+export default function RoleRevealPhase({
+  onNextPhase,
+}: {
+  onNextPhase: () => void;
+}) {
   const [currentPlayerId, setCurrentPlayerId] = useState(1);
 
   const [camouflageTarget, setCamouflageTarget] = useState<AnimalId | null>(
@@ -132,7 +136,13 @@ export default function RoleRevealPhase() {
             borderRadius: "50px",
           }}
           disabled={hasNotPredicted || hasNotCamouflaged}
-          onClick={() => setCurrentPlayerId((prev) => prev + 1)}
+          onClick={() => {
+            if (currentPlayerId === playerStatus.length) {
+              moveToNextPhase();
+              return;
+            }
+            setCurrentPlayerId((prev) => prev + 1);
+          }}
         >
           {currentPlayer.name}님이 확인했어요
         </Button>

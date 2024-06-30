@@ -29,7 +29,9 @@ export default function FoodChain() {
             {phase === "SETTING" && (
               <SettingPhase onNextPhase={moveToNextPhase} />
             )}
-            {phase === "ROLE_REVEAL" && <RoleRevealPhase />}
+            {phase === "ROLE_REVEAL" && (
+              <RoleRevealPhase moveToNextPhase={moveToNextPhase} />
+            )}
           </PlayerContextProvider>
         </Box>
       </Box>
