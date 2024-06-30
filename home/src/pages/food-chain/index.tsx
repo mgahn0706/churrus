@@ -1,3 +1,5 @@
+import SettingPhase from "@/features/food-chain/components/SettingPhase";
+import { PlayerContextProvider } from "@/features/food-chain/context";
 import useGamePhase from "@/features/food-chain/hooks/useGamePhase";
 import { Box } from "@mui/material";
 import Head from "next/head";
@@ -6,6 +8,7 @@ const BACKGROUND_COLOR = "#F9FAFC";
 
 export default function FoodChain() {
   const { phase } = useGamePhase();
+
   return (
     <>
       <Head>
@@ -23,8 +26,12 @@ export default function FoodChain() {
           px={[2, 6, 10]}
           width="100%"
           maxWidth={1000}
-          pb={6}
-        ></Box>
+          py="48px"
+        >
+          <PlayerContextProvider>
+            {phase === "SETTING" && <SettingPhase />}
+          </PlayerContextProvider>
+        </Box>
       </Box>
     </>
   );

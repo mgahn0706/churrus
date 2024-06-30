@@ -10,15 +10,11 @@ export default function usePlayerStatus({
 }: UsePlayerStatusProps) {
   const [playerStatus, setPlayerStatus] = useState<Player[]>([]);
 
-  if (selectedAnimals.length < playerStatus.length) {
-    throw new Error("The number of players and animals should be the same.");
-  }
-
   const addPlayer = (name: string) => {
     setPlayerStatus((prev) => [
       ...prev,
       {
-        id: prev.length,
+        id: prev.length + 1,
         name,
         biomeHistory: [],
         status: "ALIVE",
@@ -28,7 +24,11 @@ export default function usePlayerStatus({
   };
 
   const deletePlayer = (id: number) => {
-    setPlayerStatus((prev) => prev.filter((player) => player.id !== id));
+    setPlayerStatus((prev) =>
+      prev
+        .filter((player) => player.id !== id)
+        .map((player, index) => ({ ...player, id: index + 1 }))
+    );
   };
 
   const randomizePlayerRole = () => {
