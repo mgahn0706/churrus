@@ -1,3 +1,4 @@
+import RoleRevealPhase from "@/features/food-chain/components/RoleRevealPhase";
 import SettingPhase from "@/features/food-chain/components/SettingPhase";
 import { PlayerContextProvider } from "@/features/food-chain/context";
 import useGamePhase from "@/features/food-chain/hooks/useGamePhase";
@@ -7,7 +8,7 @@ import Head from "next/head";
 const BACKGROUND_COLOR = "#F9FAFC";
 
 export default function FoodChain() {
-  const { phase } = useGamePhase();
+  const { phase, moveToNextPhase } = useGamePhase();
 
   return (
     <>
@@ -20,16 +21,12 @@ export default function FoodChain() {
         display="flex"
         justifyContent="center"
       >
-        <Box
-          height="100vh"
-          overflow="scroll"
-          px={[2, 6, 10]}
-          width="100%"
-          maxWidth={1000}
-          py="48px"
-        >
+        <Box px={[4, 8, 12]} width="100%" maxWidth={1000} py="48px">
           <PlayerContextProvider>
-            {phase === "SETTING" && <SettingPhase />}
+            {phase === "SETTING" && (
+              <SettingPhase onNextPhase={moveToNextPhase} />
+            )}
+            {phase === "ROLE_REVEAL" && <RoleRevealPhase />}
           </PlayerContextProvider>
         </Box>
       </Box>

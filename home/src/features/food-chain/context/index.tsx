@@ -7,6 +7,8 @@ interface PlayerContextValue {
   addPlayer: (name: string) => void;
   deletePlayer: (id: number) => void;
   randomizePlayerRole: () => void;
+  setSelectedAnimals: (animals: AnimalId[]) => void;
+  selectedAnimals: AnimalId[];
 }
 const PlayerContext = createContext({} as PlayerContextValue);
 
@@ -38,6 +40,8 @@ export const PlayerContextProvider = ({
         addPlayer,
         deletePlayer,
         randomizePlayerRole,
+        selectedAnimals,
+        setSelectedAnimals,
       }}
     >
       {children}

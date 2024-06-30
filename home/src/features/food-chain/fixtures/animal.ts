@@ -3,6 +3,7 @@ import { Animal, AnimalId } from "../types";
 export const ANIMALS: Record<AnimalId, Animal> = {
   LION: {
     id: "LION",
+    icon: "/image/icon/foodChain/LION.png",
     type: "PREDATOR",
     name: "사자",
     mainHabitat: "FIELD",
@@ -132,7 +133,7 @@ export const ANIMALS: Record<AnimalId, Animal> = {
   EGYPTEAN_PLOVER: {
     id: "EGYPTEAN_PLOVER",
     type: "PREY",
-    name: "물떼새",
+    name: "악어새",
     mainHabitat: "RIVER",
     maximumStarvingCount: 4,
     peekingCount: 2,

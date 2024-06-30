@@ -1,6 +1,7 @@
 export interface Player {
   id: number;
   name: string;
+  role: AnimalId | null;
   biomeHistory: Array<Biome | null>;
   status: "ALIVE" | "DEAD";
   hasEaten: Array<boolean | null>;
@@ -10,6 +11,7 @@ export type Biome = "RIVER" | "FIELD" | "FOREST" | "SKY";
 
 export interface Animal {
   id: AnimalId;
+  icon?: string;
   type: "PREDATOR" | "PREY";
   name: string;
   mainHabitat: Biome;

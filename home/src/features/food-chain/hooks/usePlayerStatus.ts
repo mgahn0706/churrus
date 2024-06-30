@@ -15,6 +15,7 @@ export default function usePlayerStatus({
       ...prev,
       {
         id: prev.length + 1,
+        role: null,
         name,
         biomeHistory: [],
         status: "ALIVE",
