@@ -1,4 +1,4 @@
-import { LocalFloristRounded } from "@mui/icons-material";
+import { VaccinesRounded } from "@mui/icons-material";
 import { Box, Typography } from "@mui/material";
 
 import { useResponsiveValue } from "@/hooks/useResponsiveValue";
@@ -6,8 +6,8 @@ import { useResponsiveValue } from "@/hooks/useResponsiveValue";
 const BANNER_COLOR = `linear-gradient(180deg, rgba(49,138,225,1) 0%, rgba(27,75,123,1) 100%)`;
 
 const BANNER_TEXT = {
-  title: "4월 정기모임",
-  subtitle: "4/27(토) 오후 3시",
+  title: "5월 정기모임",
+  subtitle: "5/25(토) 오후 3시",
 };
 
 export default function MainBanner() {
@@ -44,7 +44,7 @@ export default function MainBanner() {
               right: "10%",
             }}
           >
-            <LocalFloristRounded
+            <VaccinesRounded
               sx={{
                 fontSize: 100,
               }}
@@ -89,7 +89,7 @@ export default function MainBanner() {
               transform: "rotate(-12deg)",
             }}
           >
-            <LocalFloristRounded
+            <VaccinesRounded
               sx={{
                 fontSize: 200,
               }}
