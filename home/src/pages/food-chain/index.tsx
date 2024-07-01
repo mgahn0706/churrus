@@ -1,3 +1,4 @@
+import PeekingPhase from "@/features/food-chain/components/PeekingPhase";
 import RoleRevealPhase from "@/features/food-chain/components/RoleRevealPhase";
 import SettingPhase from "@/features/food-chain/components/SettingPhase";
 import { PlayerContextProvider } from "@/features/food-chain/context";
@@ -30,8 +31,9 @@ export default function FoodChain() {
               <SettingPhase onNextPhase={moveToNextPhase} />
             )}
             {phase === "ROLE_REVEAL" && (
-              <RoleRevealPhase moveToNextPhase={moveToNextPhase} />
+              <RoleRevealPhase onNextPhase={moveToNextPhase} />
             )}
+            {phase === "PEEKING" && <PeekingPhase />}
           </PlayerContextProvider>
         </Box>
       </Box>
