@@ -52,7 +52,7 @@ export default function RoleRevealPhase({
             style={{
               borderRadius: "24px",
             }}
-            src={`/image/icon/food-chain/${currentPlayer.role}.png`}
+            src={`/image/icon/food-chain/${currentPlayer.role}.svg`}
             alt={currentPlayer.role ?? "animal role"}
           />
         </Box>

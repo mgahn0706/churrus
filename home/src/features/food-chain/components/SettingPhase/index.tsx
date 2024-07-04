@@ -202,7 +202,7 @@ const AnimalSelectListItem = ({
     >
       <Box display="flex" alignItems="center">
         <ListItemIcon>
-          <Avatar src={`/image/icon/food-chain/${animal.id}.png`} />
+          <Avatar src={`/image/icon/food-chain/${animal.id}.svg`} />
         </ListItemIcon>
         <ListItemText primary={animal.name} />
       </Box>
