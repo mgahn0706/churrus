@@ -4,15 +4,14 @@ import {
   Button,
   Card,
   Chip,
+  Grid,
   Input,
-  List,
-  ListItem,
   ListItemIcon,
   ListItemText,
   Typography,
 } from "@mui/material";
 import useFoodChainPlayerContext from "../../context";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Animal, AnimalId } from "../../types";
 import { ANIMALS } from "../../fixtures/animal";
 import {
@@ -29,7 +28,9 @@ export default function SettingPhase({
     useFoodChainPlayerContext();
 
   const [newPlayerName, setNewPlayerName] = useState("");
-  const [selectedAnimals, setSelectedAnimals] = useState<AnimalId[]>([]);
+  const [selectedAnimals, setSelectedAnimals] = useState<AnimalId[]>(
+    Object.values(ANIMALS).map((animal) => animal.id)
+  );
 
   return (
     <Box width={1}>
@@ -66,6 +67,9 @@ export default function SettingPhase({
             size="medium"
             name="newPlayerName"
             autoFocus
+            sx={{
+              width: "250px",
+            }}
             placeholder="추가할 플레이어 이름을 입력하세요."
             onChange={(e) => setNewPlayerName(e.target.value)}
             value={newPlayerName}
@@ -73,11 +77,12 @@ export default function SettingPhase({
         </form>
 
         <Card
+          elevation={0}
           sx={{
             mt: 2,
+            borderRadius: "12px",
             p: 2,
-            width: "100%",
-            height: "200px",
+            minHeight: "150px",
             overflow: "scroll",
             display: "flex",
             flexDirection: "column",
@@ -85,18 +90,37 @@ export default function SettingPhase({
             gap: "8px",
           }}
         >
-          {playerStatus.map((player) => (
-            <Chip
-              size="medium"
-              variant="outlined"
-              key={player.id}
-              label={player.name}
-              avatar={<Avatar>{player.id}</Avatar>}
-              onDelete={() => {
-                deletePlayer(player.id);
-              }}
-            />
-          ))}
+          <Grid container spacing={2}>
+            {playerStatus.map((player) => (
+              <Grid item xs={4} key={player.id} spacing={2}>
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  bgcolor="#f5f5f5"
+                  flexDirection="column"
+                  px={1}
+                  sx={{
+                    "&:hover": {
+                      cursor: "pointer",
+                      backgroundColor: "#e0e0e0",
+                    },
+                  }}
+                  borderRadius="12px"
+                  onClick={() => {
+                    deletePlayer(player.id);
+                  }}
+                >
+                  <Typography color="#121212" fontSize="14px">
+                    {player.id}번
+                  </Typography>
+                  <Typography color="#121212" fontSize="18px" fontWeight={500}>
+                    {player.name}
+                  </Typography>
+                </Box>
+              </Grid>
+            ))}
+          </Grid>
         </Card>
       </Box>
       <Box mt={5} display="flex" justifyContent="center" flexDirection="column">
@@ -131,7 +155,7 @@ export default function SettingPhase({
           )}
         </Box>
         <Box display="flex" mt={2} gap={2} flexDirection="column">
-          <List dense>
+          <Grid container spacing={2}>
             {Object.entries(ANIMALS).map(([key, value]) => (
               <AnimalSelectListItem
                 key={key}
@@ -146,7 +170,7 @@ export default function SettingPhase({
                 }}
               />
             ))}
-          </List>
+          </Grid>
         </Box>
       </Box>
       <Box mt={5} display="flex" justifyContent="center">
@@ -183,7 +207,9 @@ const AnimalSelectListItem = ({
   isSelected,
   onClick,
 }: AnimalSelectListItemProps) => (
-  <ListItem
+  <Grid
+    item
+    xs={6}
     key={animal.id}
     onClick={onClick}
     sx={{
@@ -220,5 +246,5 @@ const AnimalSelectListItem = ({
         />
       )}
     </Box>
-  </ListItem>
+  </Grid>
 );
