@@ -111,10 +111,10 @@ export default function SettingPhase({
                     deletePlayer(player.id);
                   }}
                 >
-                  <Typography color="#121212" fontSize="14px">
+                  <Typography color="#121212" fontSize="12px">
                     {player.id}번
                   </Typography>
-                  <Typography color="#121212" fontSize="18px" fontWeight={500}>
+                  <Typography color="#121212" fontSize="16px" fontWeight={500}>
                     {player.name}
                   </Typography>
                 </Box>

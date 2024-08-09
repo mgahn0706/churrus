@@ -114,6 +114,27 @@ const PeekingInput = ({ playerId }: { playerId: number }) => {
           </Box>
           <ExpandMoreRounded />
         </Box>
+        {selectedPlayer && selectedPlayer.role && (
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="space-between"
+            mt={2}
+          >
+            <Typography color="#121212" fontSize="18px">
+              {selectedPlayer.id}번 {selectedPlayer.name}님은
+            </Typography>
+            <Typography color="#121212" fontSize="18px">
+              {
+                ANIMALS[selectedPlayer.camouflagedTo || selectedPlayer.role]
+                  .name
+              }
+            </Typography>
+            <Typography color="#121212" fontSize="18px">
+              입니다.
+            </Typography>
+          </Box>
+        )}
       </Box>
       <Drawer
         anchor="bottom"
