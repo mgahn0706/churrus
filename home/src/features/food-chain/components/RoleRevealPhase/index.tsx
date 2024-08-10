@@ -12,13 +12,8 @@ export default function RoleRevealPhase({
 }) {
   const [currentPlayerId, setCurrentPlayerId] = useState(1);
 
-  const [camouflageTarget, setCamouflageTarget] = useState<AnimalId | null>(
-    null
-  );
-
-  const [predictTarget, setPredictTarget] = useState<AnimalId | null>(null);
-
-  const { playerStatus } = useFoodChainPlayerContext();
+  const { playerStatus, camouflage, predictWinner } =
+    useFoodChainPlayerContext();
 
   const currentPlayer = playerStatus.find(
     (player) => player.id === currentPlayerId
@@ -28,9 +23,10 @@ export default function RoleRevealPhase({
     return null;
   }
 
-  const hasNotPredicted = currentPlayer.role === "CROW" && !predictTarget;
+  const hasNotPredicted =
+    currentPlayer.role === "CROW" && !currentPlayer.predictedWinner;
   const hasNotCamouflaged =
-    currentPlayer.role === "CHAMELEON" && !camouflageTarget;
+    currentPlayer.role === "CHAMELEON" && !currentPlayer.camouflagedTo;
 
   return (
     <Box width={1}>
@@ -83,8 +79,13 @@ export default function RoleRevealPhase({
             위장할 동물을 선택해주세요
           </Typography>
           <Select
-            value={camouflageTarget}
-            onChange={(e) => setCamouflageTarget(e.target.value as AnimalId)}
+            value={currentPlayer.camouflagedTo}
+            onChange={(e) =>
+              camouflage({
+                playerId: currentPlayerId,
+                animalId: e.target.value as AnimalId,
+              })
+            }
             sx={{
               width: "100%",
               borderRadius: "50px",
@@ -110,8 +111,13 @@ export default function RoleRevealPhase({
             우승할 것으로 예상하는 동물을 선택해주세요
           </Typography>
           <Select
-            value={predictTarget}
-            onChange={(e) => setPredictTarget(e.target.value as AnimalId)}
+            value={currentPlayer.predictedWinner}
+            onChange={(e) =>
+              predictWinner({
+                playerId: currentPlayerId,
+                animalId: e.target.value as AnimalId,
+              })
+            }
             sx={{
               width: "100%",
               borderRadius: "50px",

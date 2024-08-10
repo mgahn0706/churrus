@@ -79,6 +79,8 @@ const PeekingInput = ({ playerId }: { playerId: number }) => {
   const selectedPlayer =
     playerStatus.find((player) => player.id === selectedPlayerId) || null;
 
+  console.log(selectedPlayer);
+
   return (
     <>
       <Box display="flex" flexDirection="column" maxWidth="300px">
