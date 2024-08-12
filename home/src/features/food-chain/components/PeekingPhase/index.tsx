@@ -5,19 +5,18 @@ import {
   Chip,
   Drawer,
   Grid,
-  IconButton,
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import useFoodChainPlayerContext from "../../context";
 import { ANIMALS } from "../../fixtures/animal";
-import {
-  ChevronLeftRounded,
-  ChevronRightRounded,
-  ExpandMoreRounded,
-} from "@mui/icons-material";
+import { ExpandMoreRounded } from "@mui/icons-material";
 
-export default function PeekingPhase() {
+interface PeekingPhaseProps {
+  onNextPhase: () => void;
+}
+
+export default function PeekingPhase({ onNextPhase }: PeekingPhaseProps) {
   const [peekingPlayerId, setPeekingPlayerId] = useState(1);
 
   const { playerStatus } = useFoodChainPlayerContext();
@@ -90,20 +89,34 @@ export default function PeekingPhase() {
             width={1}
             gap={2}
           >
-            <Button
-              fullWidth
-              variant="contained"
-              color="primary"
-              sx={{
-                borderRadius: "50px",
-              }}
-              disabled={peekingPlayerId === playerStatus.length}
-              onClick={() => {
-                setPeekingPlayerId((prev) => prev + 1);
-              }}
-            >
-              다음 플레이어
-            </Button>
+            {peekingPlayerId < playerStatus.length && (
+              <Button
+                fullWidth
+                variant="outlined"
+                color="primary"
+                sx={{
+                  borderRadius: "50px",
+                }}
+                onClick={() => {
+                  setPeekingPlayerId((prev) => prev + 1);
+                }}
+              >
+                다음 플레이어
+              </Button>
+            )}
+            {peekingPlayerId === playerStatus.length && (
+              <Button
+                fullWidth
+                variant="contained"
+                color="primary"
+                sx={{
+                  borderRadius: "50px",
+                }}
+                onClick={onNextPhase}
+              >
+                장소 이동 단계 시작하기
+              </Button>
+            )}
             <Button
               fullWidth
               color="primary"

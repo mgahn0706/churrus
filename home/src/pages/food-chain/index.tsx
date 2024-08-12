@@ -1,3 +1,4 @@
+import MoveBiomePhase from "@/features/food-chain/components/MoveBiomePhase";
 import PeekingPhase from "@/features/food-chain/components/PeekingPhase";
 import RoleRevealPhase from "@/features/food-chain/components/RoleRevealPhase";
 import SettingPhase from "@/features/food-chain/components/SettingPhase";
@@ -10,7 +11,7 @@ import Head from "next/head";
 const BACKGROUND_COLOR = "#F9FAFC";
 
 export default function FoodChain() {
-  const { phase, moveToNextPhase } = useGamePhase();
+  const { round, phase, moveToNextPhase } = useGamePhase();
 
   usePreventUnload();
 
@@ -33,7 +34,12 @@ export default function FoodChain() {
             {phase === "ROLE_REVEAL" && (
               <RoleRevealPhase onNextPhase={moveToNextPhase} />
             )}
-            {phase === "PEEKING" && <PeekingPhase />}
+            {phase === "PEEKING" && (
+              <PeekingPhase onNextPhase={moveToNextPhase} />
+            )}
+            {phase === "MOVE_BIOME" && (
+              <MoveBiomePhase round={round} onNextPhase={moveToNextPhase} />
+            )}
           </PlayerContextProvider>
         </Box>
       </Box>

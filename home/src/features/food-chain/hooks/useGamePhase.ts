@@ -39,6 +39,7 @@ export default function useGamePhase() {
 
   return {
     phase,
+    round,
     moveToNextPhase,
   };
 }
