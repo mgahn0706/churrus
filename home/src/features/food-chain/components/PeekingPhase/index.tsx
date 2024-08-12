@@ -1,4 +1,13 @@
-import { Box, Drawer, Grid, IconButton, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Button,
+  Chip,
+  Drawer,
+  Grid,
+  IconButton,
+  Typography,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import useFoodChainPlayerContext from "../../context";
 import { ANIMALS } from "../../fixtures/animal";
@@ -31,24 +40,19 @@ export default function PeekingPhase() {
             <Typography color="#121212" fontSize="24px" fontWeight="bold">
               엿보기
             </Typography>
-            <Typography color="#121212" fontSize="16px" mt="4px">
-              {currentPlayer.id}번 플레이어 {currentPlayer.name}님이 엿보는
-              중입니다.
-            </Typography>
-          </Box>
-          <Box display="flex" alignItems="center">
-            <IconButton
-              disabled={peekingPlayerId === 1}
-              onClick={() => setPeekingPlayerId(peekingPlayerId - 1)}
-            >
-              <ChevronLeftRounded />
-            </IconButton>
-            <IconButton
-              disabled={peekingPlayerId === playerStatus.length}
-              onClick={() => setPeekingPlayerId(peekingPlayerId + 1)}
-            >
-              <ChevronRightRounded />
-            </IconButton>
+            <Box display="flex" alignItems="center" gap={1} mt={1}>
+              <Chip
+                avatar={
+                  <Avatar
+                    src={`/image/icon/food-chain/${currentPlayer.role}.svg`}
+                  />
+                }
+                label={`${currentPlayer.name}`}
+              />
+              <Typography color="#121212" fontSize="16px">
+                님이 엿보는 중입니다.
+              </Typography>
+            </Box>
           </Box>
         </Box>
         <Box
@@ -78,6 +82,43 @@ export default function PeekingPhase() {
               <PeekingInput playerId={peekingPlayerId} />
             </Box>
           ))}
+          <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            mt={6}
+            width={1}
+            gap={2}
+          >
+            <Button
+              fullWidth
+              variant="contained"
+              color="primary"
+              sx={{
+                borderRadius: "50px",
+              }}
+              disabled={peekingPlayerId === playerStatus.length}
+              onClick={() => {
+                setPeekingPlayerId((prev) => prev + 1);
+              }}
+            >
+              다음 플레이어
+            </Button>
+            <Button
+              fullWidth
+              color="primary"
+              variant="text"
+              sx={{
+                borderRadius: "50px",
+              }}
+              disabled={peekingPlayerId === 1}
+              onClick={() => {
+                setPeekingPlayerId((prev) => prev - 1);
+              }}
+            >
+              이전 플레이어
+            </Button>
+          </Box>
         </Box>
       </Box>
     </Box>
