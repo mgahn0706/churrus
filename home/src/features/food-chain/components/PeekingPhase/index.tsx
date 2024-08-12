@@ -1,16 +1,12 @@
-import {
-  Box,
-  Drawer,
-  Grid,
-  Icon,
-  MenuItem,
-  Select,
-  Typography,
-} from "@mui/material";
-import { useState } from "react";
+import { Box, Drawer, Grid, IconButton, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
 import useFoodChainPlayerContext from "../../context";
 import { ANIMALS } from "../../fixtures/animal";
-import { ArrowDownwardOutlined, ExpandMoreRounded } from "@mui/icons-material";
+import {
+  ChevronLeftRounded,
+  ChevronRightRounded,
+  ExpandMoreRounded,
+} from "@mui/icons-material";
 
 export default function PeekingPhase() {
   const [peekingPlayerId, setPeekingPlayerId] = useState(1);
@@ -30,13 +26,31 @@ export default function PeekingPhase() {
   return (
     <Box width={1}>
       <Box display="flex" flexDirection="column">
-        <Typography color="#121212" fontSize="24px" fontWeight="bold">
-          엿보기
-        </Typography>
-        <Typography color="#121212" fontSize="16px" mt="8px">
-          {currentPlayer.id}번 플레이어 {currentPlayer.name}님이 엿보는
-          중입니다.
-        </Typography>
+        <Box display="flex" alignItems="center" justifyContent="space-between">
+          <Box display="flex" flexDirection="column">
+            <Typography color="#121212" fontSize="24px" fontWeight="bold">
+              엿보기
+            </Typography>
+            <Typography color="#121212" fontSize="16px" mt="4px">
+              {currentPlayer.id}번 플레이어 {currentPlayer.name}님이 엿보는
+              중입니다.
+            </Typography>
+          </Box>
+          <Box display="flex" alignItems="center">
+            <IconButton
+              disabled={peekingPlayerId === 1}
+              onClick={() => setPeekingPlayerId(peekingPlayerId - 1)}
+            >
+              <ChevronLeftRounded />
+            </IconButton>
+            <IconButton
+              disabled={peekingPlayerId === playerStatus.length}
+              onClick={() => setPeekingPlayerId(peekingPlayerId + 1)}
+            >
+              <ChevronRightRounded />
+            </IconButton>
+          </Box>
+        </Box>
         <Box
           display="flex"
           justifyContent="center"
@@ -79,7 +93,9 @@ const PeekingInput = ({ playerId }: { playerId: number }) => {
   const selectedPlayer =
     playerStatus.find((player) => player.id === selectedPlayerId) || null;
 
-  console.log(selectedPlayer);
+  useEffect(() => {
+    setSelectedPlayerId(null);
+  }, [playerId]);
 
   return (
     <>
@@ -117,16 +133,11 @@ const PeekingInput = ({ playerId }: { playerId: number }) => {
           <ExpandMoreRounded />
         </Box>
         {selectedPlayer && selectedPlayer.role && (
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="space-between"
-            mt={2}
-          >
+          <Box display="flex" alignItems="center" gap={1} mt={2}>
             <Typography color="#121212" fontSize="18px">
               {selectedPlayer.id}번 {selectedPlayer.name}님은
             </Typography>
-            <Typography color="#121212" fontSize="18px">
+            <Typography fontSize="18px" fontWeight="bold" color="#318AE1">
               {
                 ANIMALS[selectedPlayer.camouflagedTo || selectedPlayer.role]
                   .name
@@ -155,7 +166,6 @@ const PeekingInput = ({ playerId }: { playerId: number }) => {
                 py={2}
                 sx={{
                   width: "100%",
-
                   "&:hover": {
                     cursor: "pointer",
                     backgroundColor: "#e0e0e0",
