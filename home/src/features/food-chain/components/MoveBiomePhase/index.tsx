@@ -12,6 +12,7 @@ import {
 import { BIOMES } from "../../fixtures/biome";
 import { AnimalId, BiomeId } from "../../types";
 import { ChevronRightRounded } from "@mui/icons-material";
+import { ANIMALS } from "../../fixtures/animal";
 
 interface MoveBiomePhaseProps {
   round: number;
@@ -135,6 +136,7 @@ export default function MoveBiomePhase({
             disabled={alivePlayers.some(
               (player) => !player.biomeHistory[round - 1]
             )}
+            onClick={onNextPhase}
           >
             장소 이동 종료
           </Button>
@@ -191,25 +193,16 @@ const MoveBiomeInputDrawer = ({
       <Grid container p={2} spacing={2}>
         {playerStatus.map((player) => {
           const isSelected = player.biomeHistory[round - 1] === biomeId;
+          if (!player.role || !biomeId) {
+            return null;
+          }
           return (
             <Grid item xs={4} key={player.id}>
-              <Box
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-                color={isSelected ? "white" : "#121212"}
-                bgcolor={isSelected ? "#318AE1" : "#f5f5f5"}
-                flexDirection="column"
-                py={2}
-                sx={{
-                  width: "100%",
-                  "&:hover": {
-                    cursor: "pointer",
-                    backgroundColor: isSelected ? "#194bac" : "#e0e0e0",
-                  },
-                  transition: "background-color 0.3s",
-                }}
-                borderRadius="12px"
+              <PlayerPanel
+                disabled={
+                  player.status !== "ALIVE" ||
+                  ANIMALS[player.role].unacceptableBiomes.includes(biomeId)
+                }
                 onClick={() => {
                   if (!biomeId) return;
                   moveBiome({
@@ -218,16 +211,74 @@ const MoveBiomeInputDrawer = ({
                     round,
                   });
                 }}
+                selected={isSelected}
               >
                 <Typography fontSize="14px">{player.id}번</Typography>
                 <Typography fontSize="18px" fontWeight={500}>
                   {player.name}
                 </Typography>
-              </Box>
+              </PlayerPanel>
             </Grid>
           );
         })}
       </Grid>
     </Drawer>
+  );
+};
+
+const PlayerPanel = ({
+  children,
+  disabled,
+  selected,
+  onClick,
+}: {
+  children: React.ReactNode;
+  disabled?: boolean;
+  selected?: boolean;
+  onClick?: () => void;
+}) => {
+  if (disabled) {
+    return (
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        color="#9E9E9E"
+        bgcolor="#f5f5f5"
+        flexDirection="column"
+        py={2}
+        sx={{
+          width: "100%",
+          borderRadius: "12px",
+          cursor: "not-allowed",
+        }}
+      >
+        {children}
+      </Box>
+    );
+  }
+
+  return (
+    <Box
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+      color={selected ? "white" : "#121212"}
+      bgcolor={selected ? "#318AE1" : "#f5f5f5"}
+      flexDirection="column"
+      py={2}
+      sx={{
+        width: "100%",
+        "&:hover": {
+          cursor: "pointer",
+          backgroundColor: selected ? "#194bac" : "#e0e0e0",
+        },
+        transition: "background-color 0.3s",
+      }}
+      borderRadius="12px"
+      onClick={onClick}
+    >
+      {children}
+    </Box>
   );
 };
