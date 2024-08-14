@@ -30,6 +30,7 @@ interface PlayerContextValue {
     biomeId: BiomeId | null;
     round: number;
   }) => void;
+  killPlayer: (id: number) => void;
 }
 const PlayerContext = createContext({} as PlayerContextValue);
 
@@ -58,6 +59,7 @@ export const PlayerContextProvider = ({
     predictWinner,
     camouflage,
     moveBiome,
+    killPlayer,
   } = usePlayerStatus();
 
   const submitSelectedAnimals = (animals: AnimalId[]) => {
@@ -74,6 +76,7 @@ export const PlayerContextProvider = ({
         predictWinner,
         camouflage,
         moveBiome,
+        killPlayer,
       }}
     >
       {children}

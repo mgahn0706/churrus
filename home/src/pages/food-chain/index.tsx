@@ -1,3 +1,4 @@
+import AttackPhase from "@/features/food-chain/components/AttackPhase";
 import MoveBiomePhase from "@/features/food-chain/components/MoveBiomePhase";
 import PeekingPhase from "@/features/food-chain/components/PeekingPhase";
 import RoleRevealPhase from "@/features/food-chain/components/RoleRevealPhase";
@@ -39,6 +40,9 @@ export default function FoodChain() {
             )}
             {phase === "MOVE_BIOME" && (
               <MoveBiomePhase round={round} onNextPhase={moveToNextPhase} />
+            )}
+            {phase === "ATTACK" && (
+              <AttackPhase round={round} onNextPhase={moveToNextPhase} />
             )}
           </PlayerContextProvider>
         </Box>

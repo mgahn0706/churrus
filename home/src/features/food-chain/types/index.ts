@@ -14,6 +14,7 @@ export type BiomeId = "RIVER" | "FIELD" | "FOREST" | "SKY";
 export interface Biome {
   id: BiomeId;
   name: string;
+  color: string;
 }
 
 export interface Animal {
@@ -26,7 +27,6 @@ export interface Animal {
   peekingCount: 1 | 2;
   rank: number;
   unacceptableBiomes: BiomeId[];
-  onSurviveCheck: (player: Player, round: number) => void;
   onVictoryCheck: (player: Player) => boolean;
 }
 

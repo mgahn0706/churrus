@@ -10,11 +10,6 @@ export const ANIMALS: Record<AnimalId, Animal> = {
     peekingCount: 1,
     rank: 1,
     unacceptableBiomes: ["SKY"],
-    onSurviveCheck: (player, round) => {
-      if (round % 2 === 0) {
-        player.hasEaten[round] = true;
-      }
-    },
     onVictoryCheck: (player) => player.hasEaten.every((eaten) => eaten),
   },
   CROCODILE: {
@@ -26,11 +21,6 @@ export const ANIMALS: Record<AnimalId, Animal> = {
     peekingCount: 1,
     rank: 2,
     unacceptableBiomes: ["SKY"],
-    onSurviveCheck: (player, round) => {
-      if (round % 2 === 0) {
-        player.hasEaten[round] = true;
-      }
-    },
     onVictoryCheck: (player) => player.hasEaten.every((eaten) => eaten),
   },
   EAGLE: {
@@ -42,11 +32,6 @@ export const ANIMALS: Record<AnimalId, Animal> = {
     peekingCount: 1,
     rank: 3,
     unacceptableBiomes: [],
-    onSurviveCheck: (player, round) => {
-      if (round % 2 === 0) {
-        player.hasEaten[round] = true;
-      }
-    },
     onVictoryCheck: (player) => player.hasEaten.every((eaten) => eaten),
   },
   HYENA: {
@@ -58,11 +43,6 @@ export const ANIMALS: Record<AnimalId, Animal> = {
     peekingCount: 1,
     rank: 4,
     unacceptableBiomes: ["SKY"],
-    onSurviveCheck: (player, round) => {
-      if (round % 2 === 0) {
-        player.hasEaten[round] = true;
-      }
-    },
     onVictoryCheck: (player) => player.hasEaten.every((eaten) => eaten),
   },
   DEER: {
@@ -74,11 +54,6 @@ export const ANIMALS: Record<AnimalId, Animal> = {
     peekingCount: 1,
     rank: 5,
     unacceptableBiomes: ["SKY"],
-    onSurviveCheck: (player, round) => {
-      if (round % 2 === 0) {
-        player.hasEaten[round] = true;
-      }
-    },
     onVictoryCheck: (player) => player.hasEaten.every((eaten) => eaten),
   },
   HARE: {
@@ -90,11 +65,6 @@ export const ANIMALS: Record<AnimalId, Animal> = {
     peekingCount: 1,
     rank: 5,
     unacceptableBiomes: ["SKY"],
-    onSurviveCheck: (player, round) => {
-      if (round % 2 === 0) {
-        player.hasEaten[round] = true;
-      }
-    },
     onVictoryCheck: (player) => player.hasEaten.every((eaten) => eaten),
   },
   OTTER: {
@@ -106,11 +76,6 @@ export const ANIMALS: Record<AnimalId, Animal> = {
     peekingCount: 1,
     rank: 5,
     unacceptableBiomes: ["SKY"],
-    onSurviveCheck: (player, round) => {
-      if (round % 2 === 0) {
-        player.hasEaten[round] = true;
-      }
-    },
     onVictoryCheck: (player) => player.hasEaten.every((eaten) => eaten),
   },
   MALLARD: {
@@ -122,11 +87,6 @@ export const ANIMALS: Record<AnimalId, Animal> = {
     peekingCount: 1,
     rank: 5,
     unacceptableBiomes: [],
-    onSurviveCheck: (player, round) => {
-      if (round % 2 === 0) {
-        player.hasEaten[round] = true;
-      }
-    },
     onVictoryCheck: (player) => player.hasEaten.every((eaten) => eaten),
   },
   EGYPTEAN_PLOVER: {
@@ -138,11 +98,6 @@ export const ANIMALS: Record<AnimalId, Animal> = {
     peekingCount: 2,
     rank: 5,
     unacceptableBiomes: [],
-    onSurviveCheck: (player, round) => {
-      if (round % 2 === 0) {
-        player.hasEaten[round] = true;
-      }
-    },
     onVictoryCheck: (player) => player.hasEaten.every((eaten) => eaten),
   },
   RAT: {
@@ -154,11 +109,6 @@ export const ANIMALS: Record<AnimalId, Animal> = {
     peekingCount: 2,
     rank: 5,
     unacceptableBiomes: ["SKY"],
-    onSurviveCheck: (player, round) => {
-      if (round % 2 === 0) {
-        player.hasEaten[round] = true;
-      }
-    },
     onVictoryCheck: (player) => player.hasEaten.every((eaten) => eaten),
   },
   CHAMELEON: {
@@ -170,11 +120,6 @@ export const ANIMALS: Record<AnimalId, Animal> = {
     peekingCount: 1,
     rank: 5,
     unacceptableBiomes: ["SKY"],
-    onSurviveCheck: (player, round) => {
-      if (round % 2 === 0) {
-        player.hasEaten[round] = true;
-      }
-    },
     onVictoryCheck: (player) => player.hasEaten.every((eaten) => eaten),
   },
   SNAKE: {
@@ -186,11 +131,6 @@ export const ANIMALS: Record<AnimalId, Animal> = {
     peekingCount: 1,
     rank: 5,
     unacceptableBiomes: ["SKY"],
-    onSurviveCheck: (player, round) => {
-      if (round % 2 === 0) {
-        player.hasEaten[round] = true;
-      }
-    },
     onVictoryCheck: (player) => player.hasEaten.every((eaten) => eaten),
   },
   CROW: {
@@ -202,11 +142,6 @@ export const ANIMALS: Record<AnimalId, Animal> = {
     peekingCount: 2,
     rank: 5,
     unacceptableBiomes: [],
-    onSurviveCheck: (player, round) => {
-      if (round % 2 === 0) {
-        player.hasEaten[round] = true;
-      }
-    },
     onVictoryCheck: (player) => player.hasEaten.every((eaten) => eaten),
   },
 };

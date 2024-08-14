@@ -1,8 +1,115 @@
 import { useState } from "react";
 import { AnimalId, BiomeId, Player } from "../types";
 
+const DUMMY: Array<Player> = [
+  {
+    id: 1,
+    role: null,
+    name: "안민규",
+    biomeHistory: [],
+    status: "ALIVE",
+    hasEaten: [null, null, null, null],
+  },
+  {
+    id: 2,
+    role: null,
+    name: "이연호",
+    biomeHistory: [],
+    status: "ALIVE",
+    hasEaten: [null, null, null, null],
+  },
+  {
+    id: 3,
+    role: null,
+    name: "김태연",
+    biomeHistory: [],
+    status: "ALIVE",
+    hasEaten: [null, null, null, null],
+  },
+  {
+    id: 4,
+    role: null,
+    name: "홍경아",
+    biomeHistory: [],
+    status: "ALIVE",
+    hasEaten: [null, null, null, null],
+  },
+  {
+    id: 5,
+    role: null,
+    name: "김민석",
+    biomeHistory: [],
+    status: "ALIVE",
+    hasEaten: [null, null, null, null],
+  },
+  {
+    id: 6,
+    role: null,
+    name: "김현준",
+    biomeHistory: [],
+    status: "ALIVE",
+    hasEaten: [null, null, null, null],
+  },
+  {
+    id: 7,
+    role: null,
+    name: "강재호",
+    biomeHistory: [],
+    status: "ALIVE",
+    hasEaten: [null, null, null, null],
+  },
+  {
+    id: 8,
+    role: null,
+    name: "최유섭",
+    biomeHistory: [],
+    status: "ALIVE",
+    hasEaten: [null, null, null, null],
+  },
+  {
+    id: 9,
+    role: null,
+    name: "송가현",
+    biomeHistory: [],
+    status: "ALIVE",
+    hasEaten: [null, null, null, null],
+  },
+  {
+    id: 10,
+    role: null,
+    name: "고재준",
+    biomeHistory: [],
+    status: "ALIVE",
+    hasEaten: [null, null, null, null],
+  },
+  {
+    id: 11,
+    role: null,
+    name: "김수인",
+    biomeHistory: [],
+    status: "ALIVE",
+    hasEaten: [null, null, null, null],
+  },
+  {
+    id: 12,
+    role: null,
+    name: "김진하",
+    biomeHistory: [],
+    status: "ALIVE",
+    hasEaten: [null, null, null, null],
+  },
+  {
+    id: 13,
+    role: null,
+    name: "우진백",
+    biomeHistory: [],
+    status: "ALIVE",
+    hasEaten: [null, null, null, null],
+  },
+];
+
 export default function usePlayerStatus() {
-  const [playerStatus, setPlayerStatus] = useState<Player[]>([]);
+  const [playerStatus, setPlayerStatus] = useState<Player[]>(DUMMY);
 
   const addPlayer = (name: string) => {
     setPlayerStatus((prev) => [
@@ -103,6 +210,14 @@ export default function usePlayerStatus() {
     );
   };
 
+  const killPlayer = (id: number) => {
+    setPlayerStatus((prev) =>
+      prev.map((player) =>
+        player.id === id ? { ...player, status: "DEAD" } : player
+      )
+    );
+  };
+
   return {
     playerStatus,
     addPlayer,
@@ -111,5 +226,6 @@ export default function usePlayerStatus() {
     predictWinner,
     camouflage,
     moveBiome,
+    killPlayer,
   };
 }
