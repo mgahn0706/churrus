@@ -27,7 +27,7 @@ interface PlayerContextValue {
     round,
   }: {
     playerId: number;
-    biomeId: BiomeId;
+    biomeId: BiomeId | null;
     round: number;
   }) => void;
 }

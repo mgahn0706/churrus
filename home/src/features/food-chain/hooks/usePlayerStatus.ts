@@ -86,7 +86,7 @@ export default function usePlayerStatus() {
   }: {
     playerId: number;
     round: number;
-    biomeId: BiomeId;
+    biomeId: BiomeId | null;
   }) => {
     setPlayerStatus((prev) =>
       prev.map((player) =>

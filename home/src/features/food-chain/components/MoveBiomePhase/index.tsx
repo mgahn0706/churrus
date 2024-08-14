@@ -165,6 +165,7 @@ const PlayerChip = ({
   }
   return (
     <Chip
+      key={id}
       avatar={<Avatar src={`/image/icon/food-chain/${role}.svg`} />}
       label={name}
     />
@@ -182,47 +183,50 @@ const MoveBiomeInputDrawer = ({
 }) => {
   const { playerStatus, moveBiome } = useFoodChainPlayerContext();
 
-  if (!biomeId) {
-    return null;
-  }
-
   return (
     <Drawer anchor="bottom" open={!!biomeId} onClose={onClose}>
+      <Typography color="#121212" fontSize="24px" fontWeight={500} p={2}>
+        {BIOMES[biomeId ?? "FIELD"].name}
+      </Typography>
       <Grid container p={2} spacing={2}>
-        {playerStatus.map((player) => (
-          <Grid item xs={4} key={player.id}>
-            <Box
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              bgcolor="#f5f5f5"
-              flexDirection="column"
-              py={2}
-              sx={{
-                width: "100%",
-                "&:hover": {
-                  cursor: "pointer",
-                  backgroundColor: "#e0e0e0",
-                },
-              }}
-              borderRadius="12px"
-              onClick={() => {
-                moveBiome({
-                  playerId: player.id,
-                  biomeId,
-                  round,
-                });
-              }}
-            >
-              <Typography color="#121212" fontSize="14px">
-                {player.id}번
-              </Typography>
-              <Typography color="#121212" fontSize="18px" fontWeight={500}>
-                {player.name}
-              </Typography>
-            </Box>
-          </Grid>
-        ))}
+        {playerStatus.map((player) => {
+          const isSelected = player.biomeHistory[round - 1] === biomeId;
+          return (
+            <Grid item xs={4} key={player.id}>
+              <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                color={isSelected ? "white" : "#121212"}
+                bgcolor={isSelected ? "#318AE1" : "#f5f5f5"}
+                flexDirection="column"
+                py={2}
+                sx={{
+                  width: "100%",
+                  "&:hover": {
+                    cursor: "pointer",
+                    backgroundColor: isSelected ? "#194bac" : "#e0e0e0",
+                  },
+                  transition: "background-color 0.3s",
+                }}
+                borderRadius="12px"
+                onClick={() => {
+                  if (!biomeId) return;
+                  moveBiome({
+                    playerId: player.id,
+                    biomeId: isSelected ? null : biomeId,
+                    round,
+                  });
+                }}
+              >
+                <Typography fontSize="14px">{player.id}번</Typography>
+                <Typography fontSize="18px" fontWeight={500}>
+                  {player.name}
+                </Typography>
+              </Box>
+            </Grid>
+          );
+        })}
       </Grid>
     </Drawer>
   );
