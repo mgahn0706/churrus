@@ -4,15 +4,14 @@ import {
   Avatar,
   Box,
   Button,
-  Card,
   Chip,
+  Drawer,
   Grid,
-  ListItem,
-  Paper,
   Typography,
 } from "@mui/material";
 import { BIOMES } from "../../fixtures/biome";
-import { AnimalId } from "../../types";
+import { AnimalId, BiomeId } from "../../types";
+import { ChevronRightRounded } from "@mui/icons-material";
 
 interface MoveBiomePhaseProps {
   round: number;
@@ -32,6 +31,8 @@ export default function MoveBiomePhase({
   const unselectedAlivePlayers = alivePlayers.filter(
     (player) => !player.biomeHistory[round - 1]
   );
+
+  const [selectedBiomeId, setSelectedBiomeId] = useState<BiomeId | null>(null);
 
   return (
     <Box width={1}>
@@ -56,6 +57,15 @@ export default function MoveBiomePhase({
             );
             return (
               <Box
+                onClick={() => {
+                  setSelectedBiomeId(biome.id);
+                }}
+                sx={{
+                  "&:hover": {
+                    cursor: "pointer",
+                    backgroundColor: "#f5f5f5",
+                  },
+                }}
                 mt={2}
                 key={biome.id}
                 bgcolor="white"
@@ -66,18 +76,27 @@ export default function MoveBiomePhase({
                 flexDirection="column"
                 justifyContent="space-between"
               >
-                <Box display="flex" gap={1}>
-                  <Typography color="#121212" fontSize="16px">
-                    {biome.name}
-                  </Typography>
-                  <Typography color="#318AE1">
-                    {selectedPlayers.length}
-                  </Typography>
-                </Box>
-                <Box gap={1} display="flex" flexWrap="wrap" mt={1}>
-                  {selectedPlayers.map((player) => (
-                    <PlayerChip {...player} />
-                  ))}
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="space-between"
+                >
+                  <Box display="flex" gap={1} flexDirection="column">
+                    <Box display="flex" gap={1}>
+                      <Typography color="#121212" fontSize="16px">
+                        {biome.name}
+                      </Typography>
+                      <Typography color="#318AE1">
+                        {selectedPlayers.length}
+                      </Typography>
+                    </Box>
+                    <Box gap={1} display="flex" flexWrap="wrap" mt={1}>
+                      {selectedPlayers.map((player) => (
+                        <PlayerChip {...player} />
+                      ))}
+                    </Box>
+                  </Box>
+                  <ChevronRightRounded />
                 </Box>
               </Box>
             );
@@ -121,6 +140,13 @@ export default function MoveBiomePhase({
           </Button>
         </Box>
       </Box>
+      <MoveBiomeInputDrawer
+        round={round}
+        biomeId={selectedBiomeId}
+        onClose={() => {
+          setSelectedBiomeId(null);
+        }}
+      />
     </Box>
   );
 }
@@ -142,5 +168,62 @@ const PlayerChip = ({
       avatar={<Avatar src={`/image/icon/food-chain/${role}.svg`} />}
       label={name}
     />
+  );
+};
+
+const MoveBiomeInputDrawer = ({
+  biomeId,
+  round,
+  onClose,
+}: {
+  biomeId: BiomeId | null;
+  round: number;
+  onClose: () => void;
+}) => {
+  const { playerStatus, moveBiome } = useFoodChainPlayerContext();
+
+  if (!biomeId) {
+    return null;
+  }
+
+  return (
+    <Drawer anchor="bottom" open={!!biomeId} onClose={onClose}>
+      <Grid container p={2} spacing={2}>
+        {playerStatus.map((player) => (
+          <Grid item xs={4} key={player.id}>
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              bgcolor="#f5f5f5"
+              flexDirection="column"
+              py={2}
+              sx={{
+                width: "100%",
+                "&:hover": {
+                  cursor: "pointer",
+                  backgroundColor: "#e0e0e0",
+                },
+              }}
+              borderRadius="12px"
+              onClick={() => {
+                moveBiome({
+                  playerId: player.id,
+                  biomeId,
+                  round,
+                });
+              }}
+            >
+              <Typography color="#121212" fontSize="14px">
+                {player.id}번
+              </Typography>
+              <Typography color="#121212" fontSize="18px" fontWeight={500}>
+                {player.name}
+              </Typography>
+            </Box>
+          </Grid>
+        ))}
+      </Grid>
+    </Drawer>
   );
 };

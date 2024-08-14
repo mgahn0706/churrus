@@ -1,6 +1,6 @@
 import { ReactNode, createContext, useContext, useState } from "react";
 import usePlayerStatus from "../hooks/usePlayerStatus";
-import { AnimalId, Player } from "../types";
+import { AnimalId, BiomeId, Player } from "../types";
 
 interface PlayerContextValue {
   playerStatus: Player[];
@@ -20,6 +20,15 @@ interface PlayerContextValue {
   }: {
     playerId: number;
     animalId: AnimalId;
+  }) => void;
+  moveBiome: ({
+    playerId,
+    biomeId,
+    round,
+  }: {
+    playerId: number;
+    biomeId: BiomeId;
+    round: number;
   }) => void;
 }
 const PlayerContext = createContext({} as PlayerContextValue);
@@ -48,6 +57,7 @@ export const PlayerContextProvider = ({
     randomizePlayerRole,
     predictWinner,
     camouflage,
+    moveBiome,
   } = usePlayerStatus();
 
   const submitSelectedAnimals = (animals: AnimalId[]) => {
@@ -63,6 +73,7 @@ export const PlayerContextProvider = ({
         submitSelectedAnimals,
         predictWinner,
         camouflage,
+        moveBiome,
       }}
     >
       {children}

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { AnimalId, Player } from "../types";
+import { AnimalId, BiomeId, Player } from "../types";
 
 export default function usePlayerStatus() {
   const [playerStatus, setPlayerStatus] = useState<Player[]>([]);
@@ -79,6 +79,30 @@ export default function usePlayerStatus() {
     );
   };
 
+  const moveBiome = ({
+    playerId,
+    round,
+    biomeId,
+  }: {
+    playerId: number;
+    round: number;
+    biomeId: BiomeId;
+  }) => {
+    setPlayerStatus((prev) =>
+      prev.map((player) =>
+        player.id === playerId
+          ? {
+              ...player,
+              biomeHistory: [
+                ...player.biomeHistory.slice(0, round - 1),
+                biomeId,
+              ],
+            }
+          : player
+      )
+    );
+  };
+
   return {
     playerStatus,
     addPlayer,
@@ -86,5 +110,6 @@ export default function usePlayerStatus() {
     randomizePlayerRole,
     predictWinner,
     camouflage,
+    moveBiome,
   };
 }
