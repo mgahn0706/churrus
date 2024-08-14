@@ -196,12 +196,22 @@ const MoveBiomeInputDrawer = ({
           if (!player.role || !biomeId) {
             return null;
           }
+
+          const isPlayerDead = player.status !== "ALIVE";
+          const isBiomeUnavailable =
+            ANIMALS[player.role].unacceptableBiomes.includes(biomeId);
+          const hadLeftMainHabitat =
+            round !== 1 &&
+            player.biomeHistory[round - 2] !== ANIMALS[player.role].mainHabitat;
+
           return (
             <Grid item xs={4} key={player.id}>
               <PlayerPanel
                 disabled={
-                  player.status !== "ALIVE" ||
-                  ANIMALS[player.role].unacceptableBiomes.includes(biomeId)
+                  isPlayerDead ||
+                  isBiomeUnavailable ||
+                  (hadLeftMainHabitat &&
+                    ANIMALS[player.role].mainHabitat !== biomeId)
                 }
                 onClick={() => {
                   if (!biomeId) return;
