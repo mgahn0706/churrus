@@ -242,8 +242,8 @@ const MoveBiomeInputDrawer = ({
                   !isBiomeUnavailable &&
                   shouldReturnToMainHabitat && (
                     <Typography fontSize="12px" color="#a80e0a">
-                      {BIOMES[ANIMALS[player.role].mainHabitat].name}로
-                      이동해야함
+                      주 서식시로 이동해야 함{" "}
+                      {`(${BIOMES[ANIMALS[player.role].mainHabitat].name})`}
                     </Typography>
                   )}
               </PlayerPanel>
@@ -275,7 +275,7 @@ const PlayerPanel = ({
         color="#9E9E9E"
         bgcolor="#f5f5f5"
         flexDirection="column"
-        height="80px"
+        height="65px"
         py={2}
         sx={{
           width: "100%",
@@ -292,7 +292,7 @@ const PlayerPanel = ({
     <Box
       display="flex"
       alignItems="center"
-      height="80px"
+      height="65px"
       justifyContent="center"
       color={selected ? "white" : "#121212"}
       bgcolor={selected ? "#318AE1" : "#f5f5f5"}

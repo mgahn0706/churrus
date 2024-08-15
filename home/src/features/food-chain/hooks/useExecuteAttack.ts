@@ -1,12 +1,17 @@
 import useFoodChainPlayerContext from "../context";
 import { ANIMALS } from "../fixtures/animal";
+import { AnimalId } from "../types";
+
+const MAYBE_INVINCIBLE_PREYS: AnimalId[] = ["MALLARD", "HARE", "DEER", "OTTER"];
 
 export default function useExecuteAttack({
   attackerId,
   defenderId,
+  round,
 }: {
   attackerId: number | null;
   defenderId: number | null;
+  round: number;
 }) {
   const { playerStatus, killPlayer } = useFoodChainPlayerContext();
 
@@ -39,6 +44,24 @@ export default function useExecuteAttack({
       };
     }
 
+    if (MAYBE_INVINCIBLE_PREYS.includes(defender.role)) {
+      const invinciblePlayers = playerStatus.filter(
+        (player) =>
+          player.role &&
+          MAYBE_INVINCIBLE_PREYS.includes(player.role) &&
+          player.status === "ALIVE"
+      );
+      const isInAllSameBiome = invinciblePlayers.every(
+        (player) =>
+          player.biomeHistory[round - 1] === attacker.biomeHistory[round - 1]
+      );
+
+      if (isInAllSameBiome) {
+        return {
+          message: "아무 일도 일어나지 않았습니다. (무적)",
+        };
+      }
+    }
     if (ANIMALS[attacker.role].rank === ANIMALS[defender.role].rank) {
       return {
         message: "아무 일도 일어나지 않았습니다.",

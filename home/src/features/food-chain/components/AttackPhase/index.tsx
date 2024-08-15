@@ -6,7 +6,7 @@ import { DoubleArrowRounded, PersonAddAlt1Rounded } from "@mui/icons-material";
 import useValidateAttack from "../../hooks/useValidateAttack";
 import useExecuteAttack from "../../hooks/useExecuteAttack";
 import { BIOMES } from "../../fixtures/biome";
-import { BiomeId } from "../../types";
+import { BiomeId, Player } from "../../types";
 
 interface AttackPhaseProps {
   round: number;
@@ -28,6 +28,7 @@ export default function AttackPhase({ round, onNextPhase }: AttackPhaseProps) {
   const { executeAttack } = useExecuteAttack({
     attackerId: attackerPlayerId,
     defenderId: defenderPlayerId,
+    round: round,
   });
 
   return (
@@ -59,7 +60,10 @@ export default function AttackPhase({ round, onNextPhase }: AttackPhaseProps) {
           >
             <AttackerInput
               attackerPlayerId={attackerPlayerId}
-              onSelect={setAttackerPlayerId}
+              onSelect={(id) => {
+                setAttackerPlayerId(id);
+                setDefenderPlayerId(null);
+              }}
             />
             <DoubleArrowRounded
               sx={{
@@ -67,6 +71,7 @@ export default function AttackPhase({ round, onNextPhase }: AttackPhaseProps) {
               }}
             />
             <DefenderInput
+              attackerPlayerId={attackerPlayerId}
               defenderPlayerId={defenderPlayerId}
               onSelect={setDefenderPlayerId}
             />
@@ -137,8 +142,7 @@ const AttackerInput = ({
           {playerStatus.map((player) => (
             <Grid item xs={4} key={player.id}>
               <PlayerPanel
-                disabled={player.status !== "ALIVE"}
-                biome={player.biomeHistory[player.biomeHistory.length - 1]}
+                disabled={player.status !== "ALIVE" || player.role === "SNAKE"}
                 onClick={() => {
                   onSelect(player.id);
                   setIsDrawerOpen(false);
@@ -148,12 +152,16 @@ const AttackerInput = ({
                 <Typography fontSize="18px" fontWeight={500}>
                   {player.name}
                 </Typography>
-                <Typography
-                  fontSize="12px"
-                  color={player.status === "ALIVE" ? "#4caf50" : "#a80e0a"}
-                >
-                  {player.status === "ALIVE" ? "생존" : "죽음"}
-                </Typography>
+                {player.status !== "ALIVE" && (
+                  <Typography fontSize="12px" color="#a80e0a">
+                    죽음
+                  </Typography>
+                )}
+                {player.status === "ALIVE" && player.role === "SNAKE" && (
+                  <Typography fontSize="12px" color="#a80e0a">
+                    뱀은 공격 불가
+                  </Typography>
+                )}
               </PlayerPanel>
             </Grid>
           ))}
@@ -221,14 +229,20 @@ const AttackerInput = ({
 };
 
 const DefenderInput = ({
+  attackerPlayerId,
   defenderPlayerId,
   onSelect,
 }: {
+  attackerPlayerId: number | null;
   defenderPlayerId: number | null;
   onSelect: (playerId: number) => void;
 }) => {
   const { playerStatus } = useFoodChainPlayerContext();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  const attackerPlayer = playerStatus.find(
+    (player) => player.id === attackerPlayerId
+  );
 
   const defenderPlayer = playerStatus.find(
     (player) => player.id === defenderPlayerId
@@ -242,30 +256,49 @@ const DefenderInput = ({
         onClose={() => setIsDrawerOpen(false)}
       >
         <Grid container p={2} spacing={2}>
-          {playerStatus.map((player) => (
-            <Grid item xs={4} key={player.id}>
-              <PlayerPanel
-                disabled={player.status !== "ALIVE"}
-                biome={player.biomeHistory[player.biomeHistory.length - 1]}
-                onClick={() => {
-                  onSelect(player.id);
-                  setIsDrawerOpen(false);
-                }}
-              >
-                <Typography fontSize="14px">{player.id}번</Typography>
-                <Typography fontSize="18px" fontWeight={500}>
-                  {player.name}
-                </Typography>
+          {playerStatus.map((player) => {
+            const isPlayerDead = player.status !== "ALIVE";
+            const isSameBiome =
+              player.biomeHistory[player.biomeHistory.length - 1] ===
+              attackerPlayer?.biomeHistory[
+                attackerPlayer.biomeHistory.length - 1
+              ];
 
-                <Typography
-                  fontSize="12px"
-                  color={player.status === "ALIVE" ? "#4caf50" : "#a80e0a"}
+            const isAttacker = player.id === attackerPlayerId;
+            return (
+              <Grid item xs={4} key={player.id}>
+                <PlayerPanel
+                  disabled={
+                    player.status !== "ALIVE" || !isSameBiome || isAttacker
+                  }
+                  onClick={() => {
+                    onSelect(player.id);
+                    setIsDrawerOpen(false);
+                  }}
                 >
-                  {player.status === "ALIVE" ? "생존" : "죽음"}
-                </Typography>
-              </PlayerPanel>
-            </Grid>
-          ))}
+                  <Typography fontSize="14px">{player.id}번</Typography>
+                  <Typography fontSize="18px" fontWeight={500}>
+                    {player.name}
+                  </Typography>
+                  {isPlayerDead && (
+                    <Typography fontSize="12px" color="#a80e0a">
+                      죽음
+                    </Typography>
+                  )}
+                  {!isPlayerDead && !isSameBiome && (
+                    <Typography fontSize="12px" color="#a80e0a">
+                      다른 지역에 있음
+                    </Typography>
+                  )}
+                  {!isPlayerDead && isSameBiome && isAttacker && (
+                    <Typography fontSize="12px" color="#a80e0a">
+                      자기 자신 공격 불가
+                    </Typography>
+                  )}
+                </PlayerPanel>
+              </Grid>
+            );
+          })}
         </Grid>
       </Drawer>
       {defenderPlayerId ? (
@@ -330,12 +363,10 @@ const DefenderInput = ({
 const PlayerPanel = ({
   children,
   disabled,
-  biome,
   onClick,
 }: {
   children: React.ReactNode;
   disabled?: boolean;
-  biome: BiomeId | null;
   onClick?: () => void;
 }) => {
   if (disabled) {
@@ -345,6 +376,7 @@ const PlayerPanel = ({
         alignItems="center"
         justifyContent="center"
         color="#9E9E9E"
+        height="65px"
         bgcolor="#f5f5f5"
         flexDirection="column"
         py={2}
@@ -365,6 +397,7 @@ const PlayerPanel = ({
       alignItems="center"
       justifyContent="center"
       color={"#121212"}
+      height="65px"
       bgcolor={"#f5f5f5"}
       position="relative"
       flexDirection="column"
@@ -381,16 +414,6 @@ const PlayerPanel = ({
       onClick={onClick}
     >
       {children}
-      <Typography
-        fontSize="16px"
-        fontWeight={500}
-        color={biome ? BIOMES[biome].color : "#121212"}
-        position="absolute"
-        bottom="3px"
-        right="12px"
-      >
-        {biome && BIOMES[biome].name}
-      </Typography>
     </Box>
   );
 };
