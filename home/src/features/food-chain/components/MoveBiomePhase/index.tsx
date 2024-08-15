@@ -200,9 +200,11 @@ const MoveBiomeInputDrawer = ({
           const isPlayerDead = player.status !== "ALIVE";
           const isBiomeUnavailable =
             ANIMALS[player.role].unacceptableBiomes.includes(biomeId);
-          const hadLeftMainHabitat =
+          const shouldReturnToMainHabitat =
             round !== 1 &&
-            player.biomeHistory[round - 2] !== ANIMALS[player.role].mainHabitat;
+            player.biomeHistory[round - 2] !==
+              ANIMALS[player.role].mainHabitat &&
+            ANIMALS[player.role].mainHabitat !== biomeId;
 
           return (
             <Grid item xs={4} key={player.id}>
@@ -210,8 +212,7 @@ const MoveBiomeInputDrawer = ({
                 disabled={
                   isPlayerDead ||
                   isBiomeUnavailable ||
-                  (hadLeftMainHabitat &&
-                    ANIMALS[player.role].mainHabitat !== biomeId)
+                  shouldReturnToMainHabitat
                 }
                 onClick={() => {
                   if (!biomeId) return;
@@ -227,6 +228,24 @@ const MoveBiomeInputDrawer = ({
                 <Typography fontSize="18px" fontWeight={500}>
                   {player.name}
                 </Typography>
+                {isPlayerDead && (
+                  <Typography fontSize="12px" color="#a80e0a">
+                    죽음
+                  </Typography>
+                )}
+                {!isPlayerDead && isBiomeUnavailable && (
+                  <Typography fontSize="12px" color="#a80e0a">
+                    {BIOMES[biomeId].name} 이동 불가{" "}
+                  </Typography>
+                )}
+                {!isPlayerDead &&
+                  !isBiomeUnavailable &&
+                  shouldReturnToMainHabitat && (
+                    <Typography fontSize="12px" color="#a80e0a">
+                      {BIOMES[ANIMALS[player.role].mainHabitat].name}로
+                      이동해야함
+                    </Typography>
+                  )}
               </PlayerPanel>
             </Grid>
           );
@@ -256,6 +275,7 @@ const PlayerPanel = ({
         color="#9E9E9E"
         bgcolor="#f5f5f5"
         flexDirection="column"
+        height="80px"
         py={2}
         sx={{
           width: "100%",
@@ -272,6 +292,7 @@ const PlayerPanel = ({
     <Box
       display="flex"
       alignItems="center"
+      height="80px"
       justifyContent="center"
       color={selected ? "white" : "#121212"}
       bgcolor={selected ? "#318AE1" : "#f5f5f5"}
