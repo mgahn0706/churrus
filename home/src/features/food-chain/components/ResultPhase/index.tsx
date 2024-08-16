@@ -7,11 +7,10 @@ import {
   Select,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
 import useFoodChainPlayerContext from "../../context";
 import Image from "next/image";
 import { ANIMALS } from "../../fixtures/animal";
-import { AnimalId, Player } from "../../types";
+import { Player } from "../../types";
 import { EmojiEventsRounded } from "@mui/icons-material";
 import { useResponsiveValue } from "@/hooks/useResponsiveValue";
 import useCheckVictory from "../../hooks/useCheckVictory";
@@ -21,7 +20,7 @@ export default function ResultPhase({
 }: {
   onNextPhase: () => void;
 }) {
-  const { playerStatus } = useFoodChainPlayerContext();
+  const { playerStatus, resetPlayers } = useFoodChainPlayerContext();
 
   useCheckVictory();
 
@@ -47,7 +46,7 @@ export default function ResultPhase({
             }}
           >
             {playerStatus
-              .filter((player) => player.status === "ALIVE")
+              .filter((player) => player.result === "WIN")
               .map((player) => (
                 <PlayerCard key={player.id} player={player} hasWon={true} />
               ))}
@@ -62,7 +61,7 @@ export default function ResultPhase({
             }}
           >
             {playerStatus
-              .filter((player) => player.status === "DEAD")
+              .filter((player) => player.result === "LOSE")
               .map((player) => (
                 <PlayerCard key={player.id} player={player} hasWon={false} />
               ))}
@@ -76,6 +75,7 @@ export default function ResultPhase({
           }}
           fullWidth
           onClick={() => {
+            resetPlayers();
             onNextPhase();
           }}
         >
