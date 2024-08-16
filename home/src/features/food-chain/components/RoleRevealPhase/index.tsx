@@ -31,9 +31,14 @@ export default function RoleRevealPhase({
   return (
     <Box width={1}>
       <Box display="flex" flexDirection="column">
-        <Typography color="#121212" fontSize="18px">
-          동물 공개
-        </Typography>
+        <Box display="flex" alignItems="center" justifyContent="space-between">
+          <Typography color="#121212" fontSize="18px">
+            동물 공개
+          </Typography>
+          <Button variant="text" color="primary" onClick={onNextPhase}>
+            공개 스킵
+          </Button>
+        </Box>
         <Box
           display="flex"
           justifyContent="center"

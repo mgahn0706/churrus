@@ -8,7 +8,7 @@ const DUMMY: Array<Player> = [
     name: "안민규",
     biomeHistory: [],
     status: "ALIVE",
-    hasEaten: [],
+    hasEaten: [false, false, false, false],
   },
   {
     id: 2,
@@ -16,7 +16,7 @@ const DUMMY: Array<Player> = [
     name: "이연호",
     biomeHistory: [],
     status: "ALIVE",
-    hasEaten: [],
+    hasEaten: [false, false, false, false],
   },
   {
     id: 3,
@@ -24,7 +24,7 @@ const DUMMY: Array<Player> = [
     name: "김태연",
     biomeHistory: [],
     status: "ALIVE",
-    hasEaten: [],
+    hasEaten: [false, false, false, false],
   },
   {
     id: 4,
@@ -32,7 +32,7 @@ const DUMMY: Array<Player> = [
     name: "홍경아",
     biomeHistory: [],
     status: "ALIVE",
-    hasEaten: [],
+    hasEaten: [false, false, false, false],
   },
   {
     id: 5,
@@ -40,7 +40,7 @@ const DUMMY: Array<Player> = [
     name: "김민석",
     biomeHistory: [],
     status: "ALIVE",
-    hasEaten: [],
+    hasEaten: [false, false, false, false],
   },
   {
     id: 6,
@@ -48,7 +48,7 @@ const DUMMY: Array<Player> = [
     name: "김현준",
     biomeHistory: [],
     status: "ALIVE",
-    hasEaten: [],
+    hasEaten: [false, false, false, false],
   },
   {
     id: 7,
@@ -56,7 +56,7 @@ const DUMMY: Array<Player> = [
     name: "강재호",
     biomeHistory: [],
     status: "ALIVE",
-    hasEaten: [],
+    hasEaten: [false, false, false, false],
   },
   {
     id: 8,
@@ -64,7 +64,7 @@ const DUMMY: Array<Player> = [
     name: "최유섭",
     biomeHistory: [],
     status: "ALIVE",
-    hasEaten: [],
+    hasEaten: [false, false, false, false],
   },
   {
     id: 9,
@@ -72,7 +72,7 @@ const DUMMY: Array<Player> = [
     name: "송가현",
     biomeHistory: [],
     status: "ALIVE",
-    hasEaten: [],
+    hasEaten: [false, false, false, false],
   },
   {
     id: 10,
@@ -80,7 +80,7 @@ const DUMMY: Array<Player> = [
     name: "고재준",
     biomeHistory: [],
     status: "ALIVE",
-    hasEaten: [],
+    hasEaten: [false, false, false, false],
   },
   {
     id: 11,
@@ -88,7 +88,7 @@ const DUMMY: Array<Player> = [
     name: "김수인",
     biomeHistory: [],
     status: "ALIVE",
-    hasEaten: [],
+    hasEaten: [false, false, false, false],
   },
   {
     id: 12,
@@ -96,7 +96,7 @@ const DUMMY: Array<Player> = [
     name: "김진하",
     biomeHistory: [],
     status: "ALIVE",
-    hasEaten: [],
+    hasEaten: [false, false, false, false],
   },
   {
     id: 13,
@@ -104,7 +104,7 @@ const DUMMY: Array<Player> = [
     name: "우진백",
     biomeHistory: [],
     status: "ALIVE",
-    hasEaten: [],
+    hasEaten: [false, false, false, false],
   },
 ];
 
@@ -120,7 +120,7 @@ export default function usePlayerStatus() {
         name,
         biomeHistory: [],
         status: "ALIVE",
-        hasEaten: [],
+        hasEaten: [null, null, null, null],
       },
     ]);
   };

@@ -5,8 +5,7 @@ import Image from "next/image";
 import { DoubleArrowRounded, PersonAddAlt1Rounded } from "@mui/icons-material";
 import useValidateAttack from "../../hooks/useValidateAttack";
 import useExecuteAttack from "../../hooks/useExecuteAttack";
-import { BIOMES } from "../../fixtures/biome";
-import { BiomeId, Player } from "../../types";
+import useCheckHasEaten from "../../hooks/useCheckHasEaten";
 
 interface AttackPhaseProps {
   round: number;
@@ -18,6 +17,7 @@ export default function AttackPhase({ round, onNextPhase }: AttackPhaseProps) {
   const [defenderPlayerId, setDefenderPlayerId] = useState<number | null>(null);
 
   const [snackbarMessage, setSnackbarMessage] = useState<string | false>(false);
+  const [starveMessage, setStarveMessage] = useState<string | false>(false);
 
   const { canAttack, errorMessage } = useValidateAttack({
     attackerId: attackerPlayerId,
@@ -31,6 +31,10 @@ export default function AttackPhase({ round, onNextPhase }: AttackPhaseProps) {
     round: round,
   });
 
+  const { checkHasEaten } = useCheckHasEaten({
+    round: round,
+  });
+
   return (
     <>
       <Snackbar
@@ -41,6 +45,16 @@ export default function AttackPhase({ round, onNextPhase }: AttackPhaseProps) {
         }}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
         message={snackbarMessage}
+      />
+      <Snackbar
+        open={!!starveMessage}
+        autoHideDuration={5000}
+        onClose={() => {
+          setStarveMessage(false);
+          onNextPhase();
+        }}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        message={starveMessage}
       />
       <Box width={1}>
         <Box display="flex" flexDirection="column" my={2}>
@@ -106,7 +120,11 @@ export default function AttackPhase({ round, onNextPhase }: AttackPhaseProps) {
                 borderRadius: "50px",
               }}
               fullWidth
-              onClick={onNextPhase}
+              onClick={() => {
+                const { message } = checkHasEaten();
+
+                setStarveMessage(message);
+              }}
             >
               공격 시간 종료
             </Button>
