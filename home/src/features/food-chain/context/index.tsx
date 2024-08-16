@@ -32,6 +32,8 @@ interface PlayerContextValue {
   }) => void;
   killPlayer: (id: number) => void;
   eatPlayer: (predatorId: number, preyId: number, round: number) => void;
+  resetPlayers: () => void;
+  setVictory: (playerId: number, result: "WIN" | "LOSE") => void;
 }
 const PlayerContext = createContext({} as PlayerContextValue);
 
@@ -62,6 +64,8 @@ export const PlayerContextProvider = ({
     moveBiome,
     killPlayer,
     eatPlayer,
+    setVictory,
+    resetPlayers,
   } = usePlayerStatus();
 
   const submitSelectedAnimals = (animals: AnimalId[]) => {
@@ -80,6 +84,8 @@ export const PlayerContextProvider = ({
         moveBiome,
         killPlayer,
         eatPlayer,
+        setVictory,
+        resetPlayers,
       }}
     >
       {children}

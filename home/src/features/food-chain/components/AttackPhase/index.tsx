@@ -116,6 +116,7 @@ export default function AttackPhase({ round, onNextPhase }: AttackPhaseProps) {
 
           <Box position="fixed" bottom="12px" right="12px">
             <Button
+              disabled={!!starveMessage}
               sx={{
                 borderRadius: "50px",
               }}

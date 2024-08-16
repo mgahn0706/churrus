@@ -33,6 +33,7 @@ export default function useGamePhase() {
         break;
       case "RESULT":
         setPhase("SETTING");
+        setRound(0);
         break;
     }
   };

@@ -9,6 +9,7 @@ const DUMMY: Array<Player> = [
     biomeHistory: [],
     status: "ALIVE",
     hasEaten: [false, false, false, false],
+    result: null,
   },
   {
     id: 2,
@@ -17,6 +18,7 @@ const DUMMY: Array<Player> = [
     biomeHistory: [],
     status: "ALIVE",
     hasEaten: [false, false, false, false],
+    result: null,
   },
   {
     id: 3,
@@ -25,6 +27,7 @@ const DUMMY: Array<Player> = [
     biomeHistory: [],
     status: "ALIVE",
     hasEaten: [false, false, false, false],
+    result: null,
   },
   {
     id: 4,
@@ -33,6 +36,7 @@ const DUMMY: Array<Player> = [
     biomeHistory: [],
     status: "ALIVE",
     hasEaten: [false, false, false, false],
+    result: null,
   },
   {
     id: 5,
@@ -40,6 +44,7 @@ const DUMMY: Array<Player> = [
     name: "김민석",
     biomeHistory: [],
     status: "ALIVE",
+    result: null,
     hasEaten: [false, false, false, false],
   },
   {
@@ -49,6 +54,7 @@ const DUMMY: Array<Player> = [
     biomeHistory: [],
     status: "ALIVE",
     hasEaten: [false, false, false, false],
+    result: null,
   },
   {
     id: 7,
@@ -57,6 +63,7 @@ const DUMMY: Array<Player> = [
     biomeHistory: [],
     status: "ALIVE",
     hasEaten: [false, false, false, false],
+    result: null,
   },
   {
     id: 8,
@@ -65,6 +72,7 @@ const DUMMY: Array<Player> = [
     biomeHistory: [],
     status: "ALIVE",
     hasEaten: [false, false, false, false],
+    result: null,
   },
   {
     id: 9,
@@ -73,6 +81,7 @@ const DUMMY: Array<Player> = [
     biomeHistory: [],
     status: "ALIVE",
     hasEaten: [false, false, false, false],
+    result: null,
   },
   {
     id: 10,
@@ -81,6 +90,7 @@ const DUMMY: Array<Player> = [
     biomeHistory: [],
     status: "ALIVE",
     hasEaten: [false, false, false, false],
+    result: null,
   },
   {
     id: 11,
@@ -89,6 +99,7 @@ const DUMMY: Array<Player> = [
     biomeHistory: [],
     status: "ALIVE",
     hasEaten: [false, false, false, false],
+    result: null,
   },
   {
     id: 12,
@@ -97,6 +108,7 @@ const DUMMY: Array<Player> = [
     biomeHistory: [],
     status: "ALIVE",
     hasEaten: [false, false, false, false],
+    result: null,
   },
   {
     id: 13,
@@ -105,6 +117,7 @@ const DUMMY: Array<Player> = [
     biomeHistory: [],
     status: "ALIVE",
     hasEaten: [false, false, false, false],
+    result: null,
   },
 ];
 
@@ -121,6 +134,7 @@ export default function usePlayerStatus() {
         biomeHistory: [],
         status: "ALIVE",
         hasEaten: [null, null, null, null],
+        result: null,
       },
     ]);
   };
@@ -236,6 +250,18 @@ export default function usePlayerStatus() {
     );
   };
 
+  const resetPlayers = () => {
+    setPlayerStatus(DUMMY);
+  };
+
+  const setVictory = (playerId: number, result: "WIN" | "LOSE") => {
+    setPlayerStatus((prev) =>
+      prev.map((player) =>
+        player.id === playerId ? { ...player, result } : player
+      )
+    );
+  };
+
   return {
     playerStatus,
     addPlayer,
@@ -246,5 +272,7 @@ export default function usePlayerStatus() {
     moveBiome,
     killPlayer,
     eatPlayer,
+    resetPlayers,
+    setVictory,
   };
 }

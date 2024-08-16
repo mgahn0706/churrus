@@ -7,6 +7,7 @@ export interface Player {
   hasEaten: Array<boolean | null>;
   camouflagedTo?: AnimalId;
   predictedWinner?: AnimalId;
+  result: "WIN" | "LOSE" | null;
 }
 
 export type BiomeId = "RIVER" | "FIELD" | "FOREST" | "SKY";
@@ -27,7 +28,7 @@ export interface Animal {
   peekingCount: 1 | 2;
   rank: number;
   unacceptableBiomes: BiomeId[];
-  onVictoryCheck: (player: Player) => boolean;
+  onVictoryCheck: (players: Player[]) => boolean;
 }
 
 export type AnimalId =

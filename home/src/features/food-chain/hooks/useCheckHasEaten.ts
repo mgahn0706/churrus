@@ -28,7 +28,9 @@ export default function useCheckHasEaten({ round }: { round: number }) {
       killPlayer(predator.id);
     });
     if (starvedPredator.length === 0) {
-      return "아무도 굶어죽지 않았습니다.";
+      return {
+        message: "아무도 사망하지 않았습니다.",
+      };
     }
 
     return {
