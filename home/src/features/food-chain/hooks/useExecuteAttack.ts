@@ -13,7 +13,7 @@ export default function useExecuteAttack({
   defenderId: number | null;
   round: number;
 }) {
-  const { playerStatus, killPlayer } = useFoodChainPlayerContext();
+  const { playerStatus, killPlayer, eatPlayer } = useFoodChainPlayerContext();
 
   const executeAttack = () => {
     if (!attackerId || !defenderId) {
@@ -68,14 +68,16 @@ export default function useExecuteAttack({
       };
     }
 
-    const killedPlayer =
-      ANIMALS[attacker.role].rank < ANIMALS[defender.role].rank
-        ? defender
-        : attacker;
+    if (ANIMALS[attacker.role].rank < ANIMALS[defender.role].rank) {
+      eatPlayer(attacker.id, defender.id, round);
+      return {
+        message: `${defender.name}님 사망`,
+      };
+    }
 
-    killPlayer(killedPlayer.id);
+    killPlayer(attacker.id);
     return {
-      message: `${killedPlayer.name}님 사망`,
+      message: `${attacker.name}님 사망`,
     };
   };
 

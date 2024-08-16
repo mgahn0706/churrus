@@ -53,6 +53,9 @@ export default function PeekingPhase({ onNextPhase }: PeekingPhaseProps) {
               </Typography>
             </Box>
           </Box>
+          <Button variant="text" color="primary" onClick={onNextPhase}>
+            엿보기 스킵
+          </Button>
         </Box>
         <Box
           display="flex"
