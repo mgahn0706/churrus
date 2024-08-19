@@ -214,10 +214,6 @@ const AnimalSelectListItem = ({
     onClick={onClick}
     sx={{
       width: "100%",
-      "&:hover": {
-        cursor: "pointer",
-        backgroundColor: "#f3f3f3",
-      },
     }}
   >
     <Box
@@ -225,6 +221,13 @@ const AnimalSelectListItem = ({
       width={1}
       justifyContent="space-between"
       alignItems="center"
+      borderRadius="12px"
+      sx={{
+        "&:hover": {
+          cursor: "pointer",
+          backgroundColor: "#f3f3f3",
+        },
+      }}
     >
       <Box display="flex" alignItems="center">
         <ListItemIcon>

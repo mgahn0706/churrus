@@ -29,7 +29,7 @@ export default function useCheckHasEaten({ round }: { round: number }) {
     });
     if (starvedPredator.length === 0) {
       return {
-        message: "아무도 사망하지 않았습니다.",
+        message: "아무도 굶어 죽지 않았습니다.",
       };
     }
 

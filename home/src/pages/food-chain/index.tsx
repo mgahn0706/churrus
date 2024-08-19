@@ -28,7 +28,7 @@ export default function FoodChain() {
         display="flex"
         justifyContent="center"
       >
-        <Box px={[4, 8, 12]} width="100%" maxWidth={1000} py="48px">
+        <Box px={[4, 8, 12]} width="100%" maxWidth={1000} py="52px">
           <PlayerContextProvider>
             {phase === "SETTING" && (
               <SettingPhase onNextPhase={moveToNextPhase} />

@@ -241,9 +241,15 @@ const MoveBiomeInputDrawer = ({
                 {!isPlayerDead &&
                   !isBiomeUnavailable &&
                   shouldReturnToMainHabitat && (
-                    <Typography fontSize="12px" color="#a80e0a">
-                      주 서식시로 이동해야 함{" "}
-                      {`(${BIOMES[ANIMALS[player.role].mainHabitat].name})`}
+                    <Typography
+                      fontSize="12px"
+                      color="#a80e0a"
+                      sx={{
+                        wordBreak: "keep-all",
+                      }}
+                    >
+                      {`(${BIOMES[ANIMALS[player.role].mainHabitat].name})`}{" "}
+                      이동 필요
                     </Typography>
                   )}
               </PlayerPanel>
