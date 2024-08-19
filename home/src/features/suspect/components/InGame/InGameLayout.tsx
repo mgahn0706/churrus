@@ -24,6 +24,7 @@ import MovePlaceButton from "./MovePlaceButton";
 import PasswordInputModal from "./PasswordInputModal";
 import PrologueModal from "./PrologueModal";
 import SuspectsInfoCard from "./SuspectsInfoCard";
+import usePreventUnload from "@/hooks/usePreventUnload";
 
 interface InGameLayoutProps {
   clues: ClueType[];
@@ -56,26 +57,13 @@ export default function InGameLayout({
     setOpenedModal(null);
   };
 
-  const preventClose = (e: BeforeUnloadEvent) => {
-    e.preventDefault();
-    e.returnValue = ""; // Chrome에서 동작하도록;
-  };
-
   useEffect(() => {
     if (!currentPlace) {
       setCurrentPlace(scenario.places[0]);
     }
   }, [scenario]);
 
-  useEffect(() => {
-    (() => {
-      window.addEventListener("beforeunload", preventClose);
-    })();
-
-    return () => {
-      window.removeEventListener("beforeunload", preventClose);
-    };
-  }, []);
+  usePreventUnload();
 
   const openedClue: ClueType | null =
     clues.find((clue) => clue.id === openedClueId) ?? null;
