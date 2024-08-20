@@ -432,4 +432,403 @@ export const CONNECTIONS2024: ConnectionsType[] = [
       },
     ],
   },
+  {
+    week: 22,
+    quiz: [
+      {
+        words: ["커피", "초콜릿", "케이크", "아이스크림"],
+        description: "디저트",
+      },
+      {
+        words: ["치즈", "김치", "요구르트", "빵"],
+        description: "발효식품",
+      },
+      {
+        words: ["사이다", "삭회암", "활명수", "맥주"],
+        description: "탄산이 포함된 것",
+      },
+      {
+        words: ["설탕", "막", "기사", "백"],
+        description: "흑___",
+      },
+    ],
+  },
+  {
+    week: 23,
+    quiz: [
+      {
+        words: ["팽이", "지구", "풍차", "레코드"],
+        description: "회전하는 것",
+      },
+      {
+        words: ["칼", "산들", "산", "봄"],
+        description: "___ 바람",
+      },
+      {
+        words: ["양", "사자", "물고기", "천칭"],
+        description: "별자리",
+      },
+      {
+        words: ["물", "바닥", "대", "화장실"],
+        description: "___ 청소",
+      },
+    ],
+  },
+  {
+    week: 24,
+    quiz: [
+      {
+        words: ["회피", "도망", "탈출", "모면"],
+        description: "피함",
+      },
+      {
+        words: ["경주", "오산", "안성", "지평"],
+        description: "지명",
+      },
+      {
+        words: ["껌", "풀", "젤리", "본드"],
+        description: "끈적한 것",
+      },
+      {
+        words: ["바닥", "걸음", "냄새", "등"],
+        description: "발___",
+      },
+    ],
+  },
+  {
+    week: 25,
+    quiz: [
+      {
+        words: ["CITY", "TOWN", "VILLAGE", "COUNTRY"],
+        description: "MUNICIPALITIES",
+      },
+      {
+        words: ["HIDDEN", "SECRET", "REMOTE", "PRIVATE"],
+        description: "SECULDED",
+      },
+      {
+        words: ["CAPITAL", "EQUITY", "INTEREST", "STOCK"],
+        description: "FINANCAL TERMS",
+      },
+      {
+        words: ["IVY", "PREMIER", "MINOR", "JUSTICE"],
+        description: "___ LEAGUE",
+      },
+    ],
+  },
+  {
+    week: 26,
+    quiz: [
+      {
+        words: ["전원", "채널", "음소거", "볼륨"],
+        description: "리모컨의 버튼",
+      },
+      {
+        words: ["클럽", "메이스", "창", "검"],
+        description: "중세 무기",
+      },
+      {
+        words: ["스케치", "스탠드", "블랙", "프랍"],
+        description: "___코미디",
+      },
+      {
+        words: ["수영", "발목", "마우스", "아이"],
+        description: "___ 패드",
+      },
+    ],
+  },
+  {
+    week: 27,
+    quiz: [
+      {
+        words: ["샌달", "돗자리", "파라솔", "비치볼"],
+        description: "해변에서 볼 수 있는 것",
+      },
+      {
+        words: ["답장", "포워딩", "전송", "참조"],
+        description: "이메일 기능",
+      },
+      {
+        words: ["캠프", "챕터", "그룹", "팀"],
+        description: "모임",
+      },
+      {
+        words: ["유니폼", "바이시클", "트릴로지", "펜타그램"],
+        description: "숫자 접두사가 붙은 단어",
+      },
+    ],
+  },
+  {
+    week: 28,
+    quiz: [
+      {
+        words: ["튜브", "관", "호스", "빨대"],
+        description: "실린더",
+      },
+      {
+        words: ["이만", "안녕", "수고", "그럼"],
+        description: "헤어지는 인사",
+      },
+      {
+        words: ["뉴스", "데이터", "정보", "알림"],
+        description: "정보",
+      },
+      {
+        words: ["제품", "담배", "시계", "현미경"],
+        description: "전자 ___",
+      },
+    ],
+  },
+  {
+    week: 29,
+    quiz: [
+      {
+        words: ["가", "로", "길", "거리"],
+        description: "길에 붙는 단어",
+      },
+      {
+        words: ["표지", "장", "갈피", "페이지"],
+        description: "책의 부분",
+      },
+      {
+        words: ["십", "오", "천", "백"],
+        description: "숫자",
+      },
+      {
+        words: ["오른쪽", "반지름", "반대", "후진"],
+        description: "R이 의미할 수 있는 것",
+      },
+    ],
+  },
+  {
+    week: 30,
+    quiz: [
+      {
+        words: ["점토", "파피루스", "밀랍", "종이"],
+        description: "고대 문서가 쓰인 것",
+      },
+      {
+        words: ["밥", "풀", "죽", "라이스페이퍼"],
+        description: "쌀로 만든 것",
+      },
+      {
+        words: ["나머지", "몫", "로그", "지수"],
+        description: "수학 용어",
+      },
+      {
+        words: ["월남쌈", "부리또", "미라", "선물"],
+        description: "싸여진 것",
+      },
+    ],
+  },
+  {
+    week: 31,
+    quiz: [
+      {
+        words: ["마당", "플라자", "광장", "코트"],
+        description: "열려있는 공간",
+      },
+      {
+        words: ["디스", "비난", "모욕", "비판"],
+        description: "비난",
+      },
+      {
+        words: ["자연", "멋", "원망", "능청"],
+        description: "___스럽다",
+      },
+      {
+        words: ["주기", "구역", "족", "원소"],
+        description: "주기율표의 구성 요소",
+      },
+    ],
+  },
+  {
+    week: 32,
+    quiz: [
+      {
+        words: ["원자", "세포", "분자", "단백질"],
+        description: "생물학적 단위",
+      },
+      {
+        words: ["검정", "빨강", "짝수", "홀수"],
+        description: "룰렛에서 베팅할 수 있는 것",
+      },
+      {
+        words: ["다리", "알", "집", "렌즈"],
+        description: "안경에 달린 것",
+      },
+      {
+        words: ["깻잎", "숫자", "칫솔", "바닷물"],
+        description: "사이시옷이 들어간 단어",
+      },
+    ],
+  },
+  {
+    week: 33,
+    quiz: [
+      {
+        words: ["비행기", "기차", "우주선", "배"],
+        description: "교통수단",
+      },
+      {
+        words: ["국밥", "보일러", "차", "마음"],
+        description: "따뜻한 것",
+      },
+      {
+        words: ["폐", "심장", "직장", "뇌"],
+        description: "인체의 기관",
+      },
+      {
+        words: ["식당", "노래방", "카페", "롯데월드"],
+        description: "데이트 코스",
+      },
+    ],
+  },
+  {
+    week: 34,
+    quiz: [
+      {
+        words: ["사격", "펜싱", "유도", "탁구"],
+        description: "올림픽 종목",
+      },
+      {
+        words: ["종교", "철학", "총류", "예술"],
+        description: "도서의 십진분류법",
+      },
+      {
+        words: ["현대", "소녀", "선사", "철기"],
+        description: "___ 시대",
+      },
+      {
+        words: ["멀미", "아픔", "신자", "수구"],
+        description: "배 ___",
+      },
+    ],
+  },
+  {
+    week: 35,
+    quiz: [
+      {
+        words: ["유모차", "스케이트보드", "기차", "비행기"],
+        description: "바퀴가 달린 것",
+      },
+      {
+        words: ["거름종이", "고무튜브", "라텍스장갑", "핀셋"],
+        description: "실험 도구",
+      },
+      {
+        words: ["화장품", "생선", "썬크림", "예의"],
+        description: "바를 수 있는 것",
+      },
+      {
+        words: ["기저귀", "티눈", "두발", "돼지코"],
+        description: "신체 기관으로 끝나는 단어",
+      },
+    ],
+  },
+  {
+    week: 36,
+    quiz: [
+      {
+        words: ["금", "은", "동", "철"],
+        description: "금속",
+      },
+      {
+        words: ["구", "일", "영", "팔"],
+        description: "숫자",
+      },
+      {
+        words: ["헌", "형", "민", "세"],
+        description: "___ 법",
+      },
+      {
+        words: ["풋", "화", "엄", "순"],
+        description: "___ 살",
+      },
+    ],
+  },
+  {
+    week: 37,
+    quiz: [
+      {
+        words: ["슈팅", "패스", "태클", "경고"],
+        description: "축구 용어",
+      },
+      {
+        words: ["운동", "공부", "패션", "아침"],
+        description: "자기 관리",
+      },
+      {
+        words: ["노래", "안", "채팅", "빨래"],
+        description: "___방",
+      },
+      {
+        words: ["치팅", "먼", "빼뺴로", "좋은"],
+        description: "___데이",
+      },
+    ],
+  },
+  {
+    week: 38,
+    quiz: [
+      {
+        words: ["선수", "스님", "검사", "앵커"],
+        description: "직업",
+      },
+      {
+        words: ["고깔", "밀짚", "야구", "공"],
+        description: "___모자",
+      },
+      {
+        words: ["부적", "굿", "돌탑", "해돋이"],
+        description: "소원을 비는 것",
+      },
+      {
+        words: ["소피", "마녀", "허수아비", "불"],
+        description: "하울의 움직이는 성에서 나오는 캐릭터",
+      },
+    ],
+  },
+  {
+    week: 39,
+    quiz: [
+      {
+        words: ["바위", "락", "암", "석"],
+        description: "돌",
+      },
+      {
+        words: ["따봉", "베란다", "빵", "보사노바"],
+        description: "포르투갈어에서 유래된 단어",
+      },
+      {
+        words: ["보", "타", "자포", "전"],
+        description: "___자기",
+      },
+      {
+        words: ["가위", "냄비", "코", "안경테"],
+        description: "구멍이 두 개인 것",
+      },
+    ],
+  },
+  {
+    week: 40,
+    quiz: [
+      {
+        words: ["물음", "느낌", "따옴", "쉼"],
+        description: "___표 (문장부호)",
+      },
+      {
+        words: ["회의", "불신", "의구", "문제"],
+        description: "의문",
+      },
+      {
+        words: ["자신", "우울", "기대", "권태"],
+        description: "___감 (감정)",
+      },
+      {
+        words: ["게임", "공", "질문", "시험"],
+        description: "던질 수 있는 것",
+      },
+    ],
+  },
 ];
