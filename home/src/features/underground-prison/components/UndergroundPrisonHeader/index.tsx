@@ -12,6 +12,7 @@ export default function UndergroundPrisonHeader({
   return (
     <Box
       display="flex"
+      zIndex={2}
       justifyContent="space-between"
       position="absolute"
       top={0}
@@ -31,7 +32,7 @@ export default function UndergroundPrisonHeader({
       <Typography color="#FFFFFF" fontSize="18px" fontWeight="bold">
         {round ? `${round} 라운드` : "게임 준비"}
       </Typography>
-      <Button variant="text" onClick={onNextRoundClick}>
+      <Button variant="contained" onClick={onNextRoundClick}>
         카드 제시
       </Button>
     </Box>

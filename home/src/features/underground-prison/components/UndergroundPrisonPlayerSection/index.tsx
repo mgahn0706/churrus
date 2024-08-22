@@ -18,10 +18,11 @@ export default function UndergroundPrisonPlayerSection({
       height="120px"
       alignItems="center"
       bottom="0"
+      zIndex={2}
       position="absolute"
       width="calc(100% - 124px)"
     >
-      <Grid xs={12} container columnSpacing={2}>
+      <Grid container columnSpacing={2}>
         {players.map((player) => (
           <Grid xs={12 / players.length} key={player.id} item>
             <Box
