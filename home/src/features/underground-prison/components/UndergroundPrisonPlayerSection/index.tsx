@@ -38,7 +38,7 @@ export default function UndergroundPrisonPlayerSection({
                 {player.name}
               </Typography>
               <Typography color="#E4E4E5" fontSize="24px" fontWeight="bold">
-                {player.scoreHistory[round]}
+                {player.scoreHistory[round] ?? 0}
               </Typography>
               <ScoreChange
                 scoreChange={

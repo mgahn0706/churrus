@@ -32,9 +32,16 @@ export default function UndergroundPrisonHeader({
       <Typography color="#FFFFFF" fontSize="18px" fontWeight="bold">
         {round ? `${round} 라운드` : "게임 준비"}
       </Typography>
-      <Button variant="contained" onClick={onNextRoundClick}>
-        카드 제시
-      </Button>
+      {round > 0 && (
+        <Button variant="contained" onClick={onNextRoundClick}>
+          카드 제시
+        </Button>
+      )}
+      {round === 0 && (
+        <Button variant="contained" onClick={onNextRoundClick}>
+          게임 시작
+        </Button>
+      )}
     </Box>
   );
 }

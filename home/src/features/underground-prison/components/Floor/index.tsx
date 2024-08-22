@@ -25,10 +25,10 @@ export default function Floor({ floor, players }: FloorProps) {
         mr="4px"
         flexDirection="column"
       >
-        <Typography color="#9E9EA5" fontWeight="bold">
-          {floor}F
+        <Typography color="#9E9EA5" fontSize="18px" fontWeight="bold">
+          {floor}층
         </Typography>
-        <Typography color="#9E9EA5" fontSize="12px">
+        <Typography color="#9E9EA5" fontSize="16px">
           {`(${floor % 10})`}
         </Typography>
       </Box>
