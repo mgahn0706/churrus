@@ -62,6 +62,7 @@ export default function UndergroundPrisonHeader({
         {round > 0 && (
           <Button
             variant="contained"
+            disabled={hasGameEnded}
             onClick={() => setIsCardSubmitModalOpen(true)}
           >
             카드 제시
