@@ -15,7 +15,7 @@ export default function HomeQuizCard({ quiz }: { quiz: QuizType }) {
   return (
     <CardActionArea
       sx={{
-        borderRadius: "20px",
+        borderRadius: "12px",
         width: 150,
         mr: 2,
       }}
@@ -27,7 +27,7 @@ export default function HomeQuizCard({ quiz }: { quiz: QuizType }) {
         elevation={0}
         sx={{
           width: 150,
-          borderRadius: "20px",
+          borderRadius: "12px",
           height: 170,
         }}
       >

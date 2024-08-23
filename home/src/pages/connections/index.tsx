@@ -277,10 +277,20 @@ export default function Connections() {
         }}
       />
 
-      <Typography variant="h4" mb={1} fontWeight="bold" mt={4}>
+      <Typography
+        fontSize={["1.5rem", "2rem", "2.5rem"]}
+        fontWeight="bold"
+        color="#121212"
+        mt={4}
+      >
         추러스 커넥션
       </Typography>
-      <Typography variant="body1" mb={3} px={5}>
+      <Typography
+        fontSize={["12px", "14px", "18px"]}
+        color="#121212"
+        mb={3}
+        px={5}
+      >
         같은 맥락의 단어 4개를 묶어 총 4그룹으로 나눠주세요.
       </Typography>
       <Divider />

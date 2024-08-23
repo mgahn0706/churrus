@@ -20,14 +20,14 @@ export default function DesktopPuzzleCard({
       sx={{
         maxWidth: "270px",
         minHeight: "127px",
-        borderRadius: "20px",
+        borderRadius: "12px",
       }}
     >
       <Card
         elevation={0}
         sx={{
           backgroundColor: "#F5F6FA",
-          borderRadius: "20px",
+          borderRadius: "12px",
           minHeight: "90px",
           alignItems: "center",
           p: 3,

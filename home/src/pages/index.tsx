@@ -132,7 +132,6 @@ export default function Churrus() {
               </Typography>
             </Box>
           </Box>
-          <MainBanner />
           <Box
             display={["none", "none", "flex"]}
             bgcolor="#ffffff"
@@ -303,7 +302,7 @@ export default function Churrus() {
               height="140px"
               alignItems="center"
               position="relative"
-              borderRadius="20px"
+              borderRadius="12px"
               sx={{
                 background: `linear-gradient(90deg, #161C26 0%, #51658C 100%)`,
               }}

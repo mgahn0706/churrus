@@ -215,7 +215,7 @@ export default function QuizPage() {
             }
             alt={quiz.title}
             style={{
-              borderRadius: "20px",
+              borderRadius: "12px",
             }}
             fill
             priority

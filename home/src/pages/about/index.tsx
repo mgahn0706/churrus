@@ -12,7 +12,7 @@ export default function ChurrusMain() {
       <GlobalHeader />
       <Box
         width="100vw"
-        height="40vw"
+        height="20vw"
         position="relative"
         minHeight="300px"
         overflow="hidden"
@@ -69,7 +69,7 @@ export default function ChurrusMain() {
         display="flex"
         justifyContent="center"
         alignItems="center"
-        py="150px"
+        py="120px"
         flexDirection="column"
         bgcolor={"#eeeeee"}
       >
