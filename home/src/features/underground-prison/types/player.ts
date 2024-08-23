@@ -4,3 +4,9 @@ export interface Player {
   scoreHistory: number[];
   floor: number;
 }
+
+export interface CardSubmission {
+  id: number;
+  card: number;
+}
+[];

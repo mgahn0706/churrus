@@ -19,6 +19,8 @@ export default function UndergroundPrison() {
   const [round, setRound] = useState(0);
   const [player, setPlayer] = useState<Player[]>([]);
 
+  console.log(player);
+
   const visibleFloors = useMemo(() => {
     const { deepestFloor, shallowestFloor } = player.reduce(
       (acc, cur) => {
@@ -54,6 +56,8 @@ export default function UndergroundPrison() {
       >
         <Box width="100%" position="relative">
           <UndergroundPrisonHeader
+            players={player}
+            onCardSubmit={() => {}}
             round={round}
             onNextRoundClick={() => setRound(round + 1)}
           />
@@ -77,7 +81,6 @@ export default function UndergroundPrison() {
                     },
                   ])
                 }
-                onGameStart={() => setRound(1)}
               />
             </Box>
           ) : (

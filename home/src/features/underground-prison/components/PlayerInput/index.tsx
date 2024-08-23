@@ -10,7 +10,6 @@ import { useState } from "react";
 
 interface PlayerInputProps {
   onAddPlayer: (name: string) => void;
-  onGameStart: () => void;
 }
 
 const darkTheme = createTheme({
@@ -19,7 +18,7 @@ const darkTheme = createTheme({
   },
 });
 
-export function PlayerInput({ onAddPlayer, onGameStart }: PlayerInputProps) {
+export function PlayerInput({ onAddPlayer }: PlayerInputProps) {
   const [playerName, setPlayerName] = useState("");
   return (
     <ThemeProvider theme={darkTheme}>
@@ -35,6 +34,8 @@ export function PlayerInput({ onAddPlayer, onGameStart }: PlayerInputProps) {
         <form
           onSubmit={(e) => {
             e.preventDefault();
+
+            if (!playerName) return;
             onAddPlayer(playerName);
             setPlayerName("");
           }}
@@ -51,13 +52,7 @@ export function PlayerInput({ onAddPlayer, onGameStart }: PlayerInputProps) {
                 width: "90%",
               }}
             />
-            <Button
-              variant="outlined"
-              onClick={() => {
-                setPlayerName("");
-                onAddPlayer(playerName);
-              }}
-            >
+            <Button disabled={!playerName} variant="outlined" type="submit">
               추가
             </Button>
           </Box>
