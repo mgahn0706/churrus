@@ -3,13 +3,12 @@ import { Player } from "../../types/player";
 
 interface UndergroundPrisonPlayerSectionProps {
   players: Player[];
-  round: number;
 }
 
 export default function UndergroundPrisonPlayerSection({
   players,
-  round,
 }: UndergroundPrisonPlayerSectionProps) {
+  console.log(players);
   return (
     <Box
       display="flex"
@@ -38,13 +37,9 @@ export default function UndergroundPrisonPlayerSection({
                 {player.name}
               </Typography>
               <Typography color="#E4E4E5" fontSize="24px" fontWeight="bold">
-                {player.scoreHistory[round] ?? 0}
+                {player.score.current}
               </Typography>
-              <ScoreChange
-                scoreChange={
-                  player.scoreHistory[round] - player.scoreHistory[round - 1]
-                }
-              />
+              <ScoreChange scoreChange={player.score.changed} />
             </Box>
           </Grid>
         ))}

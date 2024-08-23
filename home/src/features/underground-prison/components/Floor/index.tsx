@@ -21,12 +21,12 @@ export default function Floor({ floor, players }: FloorProps) {
         justifyContent="center"
         width="58px"
         borderRight="1px solid #2C2C35"
-        height="84px"
+        height={floor === 0 ? "180px" : "84px"}
         mr="4px"
         flexDirection="column"
       >
         <Typography color="#9E9EA5" fontSize="18px" fontWeight="bold">
-          {floor}층
+          {floor === 0 ? "지상" : floor}층
         </Typography>
         <Typography color="#9E9EA5" fontSize="16px">
           {`(${floor % 10})`}

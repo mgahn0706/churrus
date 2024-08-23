@@ -1,7 +1,10 @@
 export interface Player {
   id: number;
   name: string;
-  scoreHistory: number[];
+  score: {
+    current: number;
+    changed: number;
+  };
   floor: number;
 }
 
@@ -9,4 +12,3 @@ export interface CardSubmission {
   id: number;
   card: number;
 }
-[];
