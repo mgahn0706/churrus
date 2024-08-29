@@ -51,7 +51,7 @@ export default function Quiz() {
             width="100%"
             textAlign="left"
             color="#212837"
-            mt={[4, 8, "120px"]}
+            mt={[3, 8, "80px"]}
             mb={[2, 3, 4]}
           >
             <Box
@@ -97,7 +97,7 @@ export default function Quiz() {
             alignItems="center"
             my={7}
           >
-            <Grid container spacing={[4, 6, 8]} width="100%">
+            <Grid container rowSpacing={1} width="100%">
               {MEETING_IDS.map((meetingId) => (
                 <Grid item xs={12}>
                   <MeetingCard meetingId={meetingId} key={meetingId} />
