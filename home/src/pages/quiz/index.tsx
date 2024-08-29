@@ -1,22 +1,14 @@
 import GlobalHeader from "@/components/Navigation/GlobalHeader";
 import QuizCard from "@/features/quiz/components/QuizCard";
+import { QuizData } from "@/features/quiz/fixtures/quizzes";
 import {
-  MEETINGS,
-  MeetingData,
-  QuizData,
-} from "@/features/quiz/fixtures/quizzes";
-import {
-  Lightbulb,
-  NavigateBefore,
   NavigateBeforeRounded,
-  NavigateNext,
   NavigateNextRounded,
   TaskAltRounded,
 } from "@mui/icons-material";
 import {
   Box,
   Grid,
-  Icon,
   IconButton,
   MenuItem,
   Select,
@@ -27,30 +19,19 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
+import { MEETINGS, MEETING_IDS } from "@/features/quiz/fixtures/meetings";
 
 const BACKGROUND_COLOR = "#F5F6FA";
-
-type MeetingType = (typeof MEETINGS)[number];
 
 export default function Quiz() {
   const [solvedQuiz, setSolvedQuiz] = useState<string[]>([]);
 
   const router = useRouter();
-  const searchParams = useSearchParams();
-
-  const selectedMeeting =
-    (searchParams.get("meeting") as MeetingType) ?? MEETINGS[0];
 
   useEffect(() => {
     const solvedQuizzes = JSON.parse(localStorage.getItem("quiz") ?? "[]");
     setSolvedQuiz(solvedQuizzes);
   }, []);
-
-  useEffect(() => {
-    if (!MeetingData[selectedMeeting]) {
-      router.push(`/quiz?meeting=${MEETINGS[0]}`);
-    }
-  }, [selectedMeeting]);
 
   return (
     <>
@@ -115,86 +96,7 @@ export default function Quiz() {
               </Tooltip>
             </Box>
           </Box>
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-            mt={[3, 4, 5]}
-            mb={3}
-          >
-            <Box
-              display="flex"
-              justifyContent="flex-start"
-              alignItems="center"
-              minWidth="300px"
-            >
-              <IconButton
-                sx={{
-                  backgroundColor: "white",
-                }}
-                disabled={
-                  MEETINGS.indexOf(selectedMeeting) === MEETINGS.length - 1
-                }
-                onClick={() => {
-                  const index = MEETINGS.indexOf(selectedMeeting);
-                  if (index === MEETINGS.length - 1) return;
-                  router.push(`/quiz?meeting=${MEETINGS[index + 1]}`);
-                }}
-              >
-                <NavigateBeforeRounded
-                  sx={{
-                    fontSize: "2rem",
-                  }}
-                />
-              </IconButton>
-              <Box
-                minHeight="58px"
-                minWidth="220px"
-                justifyContent="center"
-                alignItems="center"
-                lineHeight="58px"
-                display="flex"
-                flexDirection="column"
-              >
-                <Select
-                  variant="standard"
-                  sx={{
-                    fontSize: "1.2rem",
-                  }}
-                  inputProps={{
-                    fontSize: 18,
-                  }}
-                  value={selectedMeeting}
-                  onChange={(e) => {
-                    router.push(`/quiz?meeting=${e.target.value}`);
-                  }}
-                >
-                  {MEETINGS.map((meeting) => (
-                    <MenuItem key={meeting} value={meeting}>
-                      {MeetingData[meeting]?.title}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </Box>
-              <IconButton
-                sx={{
-                  backgroundColor: "white",
-                }}
-                disabled={MEETINGS.indexOf(selectedMeeting) === 0}
-                onClick={() => {
-                  const index = MEETINGS.indexOf(selectedMeeting);
-                  if (index === 0) return;
-                  router.push(`/quiz?meeting=${MEETINGS[index - 1]}`);
-                }}
-              >
-                <NavigateNextRounded
-                  sx={{
-                    fontSize: "2rem",
-                  }}
-                />
-              </IconButton>
-            </Box>
-          </Box>
+
           <Box
             display="flex"
             justifyContent="center"
@@ -202,13 +104,7 @@ export default function Quiz() {
             mb={3}
           >
             <Grid container spacing={[3, 4, 6]} width="100%">
-              {QuizData[selectedMeeting]?.map((quiz) => (
-                <QuizCard
-                  key={quiz.id}
-                  quiz={quiz}
-                  isSolved={solvedQuiz.includes(quiz.id)}
-                />
-              ))}
+              {MEETING_IDS.map((meetingId) => MEETINGS[meetingId].title)}
             </Grid>
           </Box>
         </Box>

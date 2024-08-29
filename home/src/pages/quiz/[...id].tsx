@@ -1,4 +1,4 @@
-import { MeetingData, QuizData } from "@/features/quiz/fixtures/quizzes";
+import { QuizData } from "@/features/quiz/fixtures/quizzes";
 import {
   Alert,
   Box,
@@ -13,6 +13,7 @@ import Image from "next/image";
 import { ArrowBack } from "@mui/icons-material";
 import { useState } from "react";
 import Head from "next/head";
+import { MEETINGS } from "@/features/quiz/fixtures/meetings";
 
 const BACKGROUND_COLOR = "#F5F6FA";
 
@@ -151,7 +152,7 @@ export default function QuizPage() {
             mt="60px"
             ml={4}
           >
-            {MeetingData[quiz.meetingId].title} - {quiz.quizNumber}
+            {MEETINGS[quiz.meetingId].title} - {quiz.quizNumber}
           </Typography>
 
           <Typography
@@ -183,11 +184,11 @@ export default function QuizPage() {
             width="fit-content"
             ml={4}
           >
-            {quiz.madeBy}
+            {quiz.creator}
           </Typography>
         </Box>
 
-        {quiz.shouldWarn && !isAnswerPage && (
+        {quiz.tags.includes("ONLY_FOR_MEEING") && !isAnswerPage && (
           <Alert severity="warning" sx={{ mt: 2 }}>
             이 문제는 당시 정기모임에 참석해야만 풀 수 있는 요소를 포함하고
             있어요.
@@ -211,7 +212,7 @@ export default function QuizPage() {
             src={
               isAnswerPage
                 ? `/image/quiz/${quiz.id}-answer.png`
-                : quiz.quizImgSrc
+                : quiz.quizImageSource
             }
             alt={quiz.title}
             style={{
@@ -258,7 +259,7 @@ export default function QuizPage() {
               >
                 정답 형식: {answerFomat()}
               </Typography>
-              {quiz.isAnswerable && (
+              {quiz.answer && (
                 <Box
                   display="flex"
                   alignItems="center"
@@ -284,7 +285,7 @@ export default function QuizPage() {
                       width: "100%",
                     }}
                     placeholder={
-                      quiz.isAnswerable
+                      quiz.answer
                         ? "정답을 입력해주세요."
                         : "정답을 입력할 수 없는 문제입니다."
                     }
