@@ -17,11 +17,11 @@ export default function MeetingCard({ meetingId }: { meetingId: string }) {
   return (
     <Box
       display="flex"
-      justifyContent="space-between"
-      height={80}
+      height={100}
       width={1}
       alignItems="center"
       py={2}
+      gap={2}
       borderRadius="12px"
       sx={{
         cursor: "pointer",
@@ -34,35 +34,50 @@ export default function MeetingCard({ meetingId }: { meetingId: string }) {
       }}
     >
       <Box
+        width={100}
+        height={100}
+        overflow="hidden"
+        borderRadius="12px"
         display="flex"
-        flexDirection="column"
-        justifyContent="space-between"
-        height={1}
+        justifyContent="center"
       >
-        <Box display="flex" flexDirection="column">
-          <Typography color="#121212" fontSize="18px" fontWeight="bold">
-            {meeting.title}
-          </Typography>
-          <Typography color="#606B80" fontSize="12px">
-            {creators.join(", ")}
-          </Typography>
-        </Box>
-        <Typography color="#606B80" fontSize="12px">
-          문제 {meeting.quizIds.length}개
-        </Typography>
-      </Box>
-      <Box width={160} height={90} overflow="hidden" borderRadius="12px">
         <Image
           className="meeting-card-image"
-          width={160}
-          height={90}
-          src={meeting.imageSource ?? "/image/logo/quiz-logo.png"}
+          width={170}
+          height={100}
+          src={meeting.imageSource ?? QuizData[meetingId][0].quizImageSource}
           alt={meeting.title}
           style={{
             paddingRight: "12px",
             borderRadius: "12px",
           }}
         />
+      </Box>
+      <Box
+        display="flex"
+        flexDirection="column"
+        justifyContent="space-between"
+        height={1}
+      >
+        <Box
+          display="flex"
+          flexDirection="column"
+          maxWidth={["200px", "300px", "500px"]}
+          sx={{
+            wordBreak: "keep-all",
+          }}
+          py={1}
+        >
+          <Typography color="#121212" fontSize="18px" fontWeight={500}>
+            {meeting.title}
+          </Typography>
+          <Typography color="#606B80" fontSize="12px">
+            {creators.join(", ")}
+          </Typography>
+        </Box>
+        <Typography color="#606B80" fontSize="12px" sx={{ mb: 1 }}>
+          문제 {meeting.quizIds.length}개
+        </Typography>
       </Box>
     </Box>
   );

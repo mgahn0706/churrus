@@ -1,31 +1,20 @@
 import GlobalHeader from "@/components/Navigation/GlobalHeader";
-import QuizCard from "@/features/quiz/components/QuizCard";
 import { QuizData } from "@/features/quiz/fixtures/quizzes";
-import {
-  NavigateBeforeRounded,
-  NavigateNextRounded,
-  TaskAltRounded,
-} from "@mui/icons-material";
-import {
-  Box,
-  Grid,
-  IconButton,
-  MenuItem,
-  Select,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { TaskAltRounded } from "@mui/icons-material";
+import { Box, Grid, Tooltip, Typography } from "@mui/material";
 import Head from "next/head";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
-import { MEETINGS, MEETING_IDS } from "@/features/quiz/fixtures/meetings";
+import { MEETING_IDS } from "@/features/quiz/fixtures/meetings";
 import MeetingCard from "@/features/quiz/components/MeetingCard";
+import { useResponsiveValue } from "@/hooks/useResponsiveValue";
 
 const BACKGROUND_COLOR = "#F5F6FA";
 
 export default function Quiz() {
   const [solvedQuiz, setSolvedQuiz] = useState<string[]>([]);
+
+  const cardXs = useResponsiveValue([12, 12, 6]);
 
   const router = useRouter();
 
@@ -46,13 +35,19 @@ export default function Quiz() {
         display="flex"
         justifyContent="center"
       >
-        <Box mx={[4, 6, 8]} width={1} mb={6} bgcolor={BACKGROUND_COLOR}>
+        <Box
+          mx={[4, 6, 8]}
+          width={1}
+          mb={6}
+          bgcolor={BACKGROUND_COLOR}
+          maxWidth="1200px"
+        >
           <Box
             width="100%"
             textAlign="left"
             color="#212837"
             mt={[3, 8, "80px"]}
-            mb={[2, 3, 4]}
+            mb={[1, 2, 4]}
           >
             <Box
               display="flex"
@@ -97,9 +92,14 @@ export default function Quiz() {
             alignItems="center"
             my={7}
           >
-            <Grid container rowSpacing={1} width="100%">
+            <Grid
+              container
+              rowSpacing={1}
+              columnSpacing={[0, 0, 3]}
+              width="100%"
+            >
               {MEETING_IDS.map((meetingId) => (
-                <Grid item xs={12}>
+                <Grid item xs={cardXs}>
                   <MeetingCard meetingId={meetingId} key={meetingId} />
                 </Grid>
               ))}
