@@ -4,24 +4,17 @@ import { TaskAltRounded } from "@mui/icons-material";
 import { Box, Grid, Tooltip, Typography } from "@mui/material";
 import Head from "next/head";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
 import { MEETING_IDS } from "@/features/quiz/fixtures/meetings";
 import MeetingCard from "@/features/quiz/components/MeetingCard";
 import { useResponsiveValue } from "@/hooks/useResponsiveValue";
+import useLocalStorage from "@/hooks/useLocalStorage";
 
 const BACKGROUND_COLOR = "#F5F6FA";
 
 export default function Quiz() {
-  const [solvedQuiz, setSolvedQuiz] = useState<string[]>([]);
-
   const cardXs = useResponsiveValue([12, 12, 6]);
 
-  const router = useRouter();
-
-  useEffect(() => {
-    const solvedQuizzes = JSON.parse(localStorage.getItem("quiz") ?? "[]");
-    setSolvedQuiz(solvedQuizzes);
-  }, []);
+  const [solvedQuizzes] = useLocalStorage<string[]>("quiz", []);
 
   return (
     <>
@@ -78,7 +71,7 @@ export default function Quiz() {
                     }}
                   />
                   <Typography fontSize={14} color="#121212" fontWeight={700}>
-                    {solvedQuiz.length} /{" "}
+                    {solvedQuizzes.length} /{" "}
                     {Object.values(QuizData).flat().length}
                   </Typography>
                 </Box>

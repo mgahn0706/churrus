@@ -2,8 +2,11 @@ import { Box, Typography } from "@mui/material";
 import { QuizData } from "../../fixtures/quizzes";
 import Image from "next/image";
 import { MEETINGS } from "../../fixtures/meetings";
+import { useRouter } from "next/router";
 
 export default function MeetingCard({ meetingId }: { meetingId: string }) {
+  const router = useRouter();
+
   const meeting = MEETINGS[meetingId];
 
   const creators = Array.from(
@@ -23,6 +26,9 @@ export default function MeetingCard({ meetingId }: { meetingId: string }) {
       py={2}
       gap={2}
       borderRadius="12px"
+      onClick={() => {
+        router.push(`/meetings/${meeting.id}`);
+      }}
       sx={{
         cursor: "pointer",
         ":hover": {

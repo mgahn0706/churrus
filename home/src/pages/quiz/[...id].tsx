@@ -142,6 +142,7 @@ export default function QuizPage() {
           display="flex"
           flexDirection="column"
           width={1}
+          maxWidth="1200px"
           textAlign={["left", "left", "center"]}
         >
           <Typography
@@ -201,8 +202,8 @@ export default function QuizPage() {
           sx={{
             aspectRatio: 16 / 9,
           }}
-          maxWidth={isImageLoading ? 0 : "856px"}
-          maxHeight={isImageLoading ? 0 : "474px"}
+          maxWidth={isImageLoading ? 0 : "1200px"}
+          maxHeight={isImageLoading ? 0 : "900px"}
           display="flex"
           justifyContent="center"
           mt={4}
@@ -244,7 +245,7 @@ export default function QuizPage() {
               justifyContent="center"
               mt={4}
               minWidth={300}
-              maxWidth={856}
+              maxWidth={1200}
               width="70vw"
               mx="auto"
             >
@@ -275,7 +276,7 @@ export default function QuizPage() {
                     }}
                     InputProps={{
                       sx: {
-                        maxWidth: 700,
+                        maxWidth: 950,
                         borderRadius: "20px",
                         py: "2px",
                         height: "40px",
