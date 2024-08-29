@@ -14,7 +14,7 @@ import { useResponsiveValue } from "@/hooks/useResponsiveValue";
 import { useRouter } from "next/router";
 
 import ImageWithPlaceHolder from "@/components/ImageWithPlaceholder";
-import { MeetingData } from "../fixtures";
+import { MeetingData } from "../fixtures/quizzes";
 import { Lightbulb, TaskAltRounded } from "@mui/icons-material";
 import Image from "next/image";
 

@@ -1,6 +1,10 @@
 import GlobalHeader from "@/components/Navigation/GlobalHeader";
 import QuizCard from "@/features/quiz/components/QuizCard";
-import { MEETINGS, MeetingData, QuizData } from "@/features/quiz/fixtures";
+import {
+  MEETINGS,
+  MeetingData,
+  QuizData,
+} from "@/features/quiz/fixtures/quizzes";
 import {
   Lightbulb,
   NavigateBefore,

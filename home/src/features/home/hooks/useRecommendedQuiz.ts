@@ -1,4 +1,4 @@
-import { MEETINGS, QuizData } from "@/features/quiz/fixtures";
+import { MEETINGS, QuizData } from "@/features/quiz/fixtures/quizzes";
 import useLocalStorage from "@/hooks/useLocalStorage";
 
 const ALL_QUIZZES = MEETINGS.flatMap((meeting) => QuizData[meeting]);

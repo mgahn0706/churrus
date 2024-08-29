@@ -1,4 +1,4 @@
-import { MeetingData, QuizData } from "@/features/quiz/fixtures";
+import { MeetingData, QuizData } from "@/features/quiz/fixtures/quizzes";
 import {
   Alert,
   Box,
