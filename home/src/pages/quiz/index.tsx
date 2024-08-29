@@ -20,6 +20,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { MEETINGS, MEETING_IDS } from "@/features/quiz/fixtures/meetings";
+import MeetingCard from "@/features/quiz/components/MeetingCard";
 
 const BACKGROUND_COLOR = "#F5F6FA";
 
@@ -40,24 +41,17 @@ export default function Quiz() {
       </Head>
       <GlobalHeader />
       <Box
-        height="100dvh"
+        height={1}
         bgcolor={BACKGROUND_COLOR}
         display="flex"
         justifyContent="center"
       >
-        <Box
-          height="100vh"
-          overflow="scroll"
-          px={[2, 6, 8]}
-          width="100%"
-          pb={6}
-          bgcolor={BACKGROUND_COLOR}
-        >
+        <Box mx={[4, 6, 8]} width={1} mb={6} bgcolor={BACKGROUND_COLOR}>
           <Box
             width="100%"
             textAlign="left"
             color="#212837"
-            mt={[3, 4, "100px"]}
+            mt={[4, 8, "120px"]}
             mb={[2, 3, 4]}
           >
             <Box
@@ -101,10 +95,14 @@ export default function Quiz() {
             display="flex"
             justifyContent="center"
             alignItems="center"
-            mb={3}
+            my={7}
           >
-            <Grid container spacing={[3, 4, 6]} width="100%">
-              {MEETING_IDS.map((meetingId) => MEETINGS[meetingId].title)}
+            <Grid container spacing={[4, 6, 8]} width="100%">
+              {MEETING_IDS.map((meetingId) => (
+                <Grid item xs={12}>
+                  <MeetingCard meetingId={meetingId} key={meetingId} />
+                </Grid>
+              ))}
             </Grid>
           </Box>
         </Box>
