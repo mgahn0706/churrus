@@ -1,8 +1,8 @@
-import { MEETINGS, QuizData } from "@/features/quiz/fixtures/quizzes";
+import { MEETING_IDS } from "@/features/quiz/fixtures/meetings";
+import { QuizData } from "@/features/quiz/fixtures/quizzes";
 import useLocalStorage from "@/hooks/useLocalStorage";
 
-const ALL_QUIZZES = MEETINGS.flatMap((meeting) => QuizData[meeting]);
-
+const ALL_QUIZZES = MEETING_IDS.flatMap((meetingId) => QuizData[meetingId]);
 export default function useRecommendedQuiz({
   recommendCount = 5,
 }: {
