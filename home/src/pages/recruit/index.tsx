@@ -21,14 +21,14 @@ const FAQList: Record<string, string> = {
   "추리를 못해도 괜찮나요?":
     "괜찮습니다! 저희 동아리에 들어오자마자 추리를 잘 하는 사람은 지금까지 본 적이 없습니다. 하다 보면 문제에 익숙해지면서 추리 실력은 점차 늘게 됩니다. 그리고 추리 문제에 자신이 없더라도 보드게임, 방탈출, 추리소설 등 추리를 즐길 수 있는 여러 가지 활동이 준비되어 있으니 전혀 걱정하지 않으셔도 됩니다.",
   "동아리 규모가 얼마나 되나요?":
-    "저의 동아리는 원활한 정기모임 진행을 위해 정원을 60명 내외로 제한하고 있습니다.",
+    "저의 동아리는 원활한 정기모임 진행을 위해 정원을 70명 내외로 제한하고 있습니다.",
 };
 export default function RecruitPage() {
   const { isMobileWidth } = useMobileWidth();
   return (
     <Box>
       <GlobalHeader />
-      <Box bgcolor="#eeeeee" py={["100px", "120px", "150px"]} px="10vw">
+      <Box bgcolor="#d9efed" py={["100px", "120px", "150px"]} px="10vw">
         <Box
           sx={{
             fontSize: ["2em", "3rem", "3rem"],
@@ -36,7 +36,7 @@ export default function RecruitPage() {
             wordBreak: "keep-all",
           }}
         >
-          지금은 모집 기간이 아니에요.
+          24-2 추러스 신입회원을 모집합니다!
         </Box>
         <Box
           fontSize={isMobileWidth ? "1rem" : "1.5rem"}
@@ -44,8 +44,7 @@ export default function RecruitPage() {
             wordBreak: "keep-all",
           }}
         >
-          다음 학기 모집은 2024년 9월에 진행할 예정이에요. <br />
-          그래도 어떻게 지원하는지 미리 알아볼까요?
+          9/2(월) ~9/9(월) 23:59까지{" "}
         </Box>
       </Box>
       <Box textAlign="center" py={["100px", "120px", "150px"]} px="10vw">
@@ -74,16 +73,25 @@ export default function RecruitPage() {
             아래의 버튼을 눌러 지원서를 작성할 수 있어요.
           </Box>
           <Button
-            disabled
             sx={{
               color: "white",
               borderRadius: "10px",
               mt: 4,
-              bgcolor: "#aaaaaa",
+              bgcolor: "#009688",
               textAlign: "center",
               px: 4,
               py: 2,
               fontWeight: 700,
+              "&:hover": {
+                bgcolor: "#00796b",
+              },
+            }}
+            onClick={() => {
+              window.open(
+                "https://forms.gle/FVfzSKxKrM6WbgS16",
+                "_blank",
+                "noopener noreferrer"
+              );
             }}
           >
             지원하기
@@ -91,7 +99,7 @@ export default function RecruitPage() {
         </Box>
       </Box>
       <Divider />
-      <Box textAlign="center" py="150px" px="10vw" bgcolor="#eeeeee">
+      <Box textAlign="center" py="150px" px="10vw" bgcolor="#d9efed">
         <Box
           display="flex"
           sx={{
