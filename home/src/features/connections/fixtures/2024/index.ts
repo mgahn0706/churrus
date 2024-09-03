@@ -831,4 +831,88 @@ export const CONNECTIONS2024: ConnectionsType[] = [
       },
     ],
   },
+  {
+    week: 41,
+    quiz: [
+      {
+        words: ["소인", "나", "여", "짐"],
+        description: "1인칭",
+      },
+      {
+        words: ["중국", "당", "진", "청"],
+        description: "중국 대륙의 나라 이름",
+      },
+      {
+        words: ["수원", "화투", "한지", "동사"],
+        description: "고등학교 과목의 줄임말",
+      },
+      {
+        words: ["바다", "판", "염기", "안산"],
+        description: "산의 반댓말",
+      },
+    ],
+  },
+  {
+    week: 42,
+    quiz: [
+      {
+        words: ["당", "퍼", "매", "마다"],
+        description: "~마다의 뜻",
+      },
+      {
+        words: ["현", "관", "타", "건반"],
+        description: "___악기",
+      },
+      {
+        words: ["종이", "머리", "고기", "영상"],
+        description: "자를 수 있는 것",
+      },
+      {
+        words: ["논문", "표", "녹", "해우"],
+        description: "180도 회전해도 말이 되는 단어",
+      },
+    ],
+  },
+  {
+    week: 43,
+    quiz: [
+      {
+        words: ["타악", "츄", "챙", "화악"],
+        description: "웹툰 등에서의 효과음(의성어)",
+      },
+      {
+        words: ["샤", "학", "느티나무", "관악"],
+        description: "서울대 상징",
+      },
+      {
+        words: ["은행나무", "고사리", "잠자리", "투구게"],
+        description: "살아있는 화석",
+      },
+      {
+        words: ["사자", "오소리", "독수리", "뱀"],
+        description: "해리포터 기숙사 상징 동물",
+      },
+    ],
+  },
+  {
+    week: 44,
+    quiz: [
+      {
+        words: ["노력", "믿음", "평화", "칭찬"],
+        description: "아름다운 가치 사전에 나오는 가치",
+      },
+      {
+        words: ["도둑", "사서", "오러", "승려"],
+        description: "판타지에 나오는 직업",
+      },
+      {
+        words: ["방정", "접이", "결혼", "보양"],
+        description: "___식",
+      },
+      {
+        words: ["고기", "유행", "리듬", "파도"],
+        description: "탈 수 있는 것",
+      },
+    ],
+  },
 ];
