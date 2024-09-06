@@ -141,8 +141,8 @@ export default function QuizPage() {
         <Box
           display="flex"
           flexDirection="column"
+          maxWidth={1200}
           width={1}
-          maxWidth="1200px"
           textAlign={["left", "left", "center"]}
         >
           <Typography
@@ -188,13 +188,6 @@ export default function QuizPage() {
             {quiz.creator}
           </Typography>
         </Box>
-
-        {quiz.tags.includes("ONLY_FOR_MEEING") && !isAnswerPage && (
-          <Alert severity="warning" sx={{ mt: 2 }}>
-            이 문제는 당시 정기모임에 참석해야만 풀 수 있는 요소를 포함하고
-            있어요.
-          </Alert>
-        )}
 
         <Box
           width="100%"

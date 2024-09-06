@@ -33,14 +33,14 @@ export default function Quiz() {
           width={1}
           mb={6}
           bgcolor={BACKGROUND_COLOR}
-          maxWidth="1200px"
+          maxWidth="938px"
         >
           <Box
             width="100%"
             textAlign="left"
             color="#212837"
             mt={[3, 8, "80px"]}
-            mb={[1, 2, 4]}
+            mb={[1, 2, 3]}
           >
             <Box
               display="flex"
@@ -83,7 +83,7 @@ export default function Quiz() {
             display="flex"
             justifyContent="center"
             alignItems="center"
-            my={7}
+            mb={7}
           >
             <Grid
               container
@@ -92,7 +92,7 @@ export default function Quiz() {
               width="100%"
             >
               {MEETING_IDS.map((meetingId) => (
-                <Grid item xs={cardXs}>
+                <Grid item xs={12}>
                   <MeetingCard meetingId={meetingId} key={meetingId} />
                 </Grid>
               ))}

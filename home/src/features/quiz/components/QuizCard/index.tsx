@@ -67,7 +67,6 @@ export default function QuizCard({ quiz, isSolved }: QuizCardProps) {
           <Box
             display="flex"
             flexDirection="column"
-            maxWidth={["200px", "300px", "500px"]}
             sx={{
               wordBreak: "keep-all",
             }}
@@ -82,17 +81,15 @@ export default function QuizCard({ quiz, isSolved }: QuizCardProps) {
           </Box>
         </Box>
       </Box>
-      {isSolved && (
-        <Box
-          width="fit-content"
-          ml={4}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <CheckCircleRounded sx={{ color: "#318AE1" }} />
-        </Box>
-      )}
+
+      <Box
+        display="flex"
+        alignItems="center"
+        width="28px"
+        justifyContent="center"
+      >
+        {isSolved && <CheckCircleRounded sx={{ color: "#318AE1" }} />}
+      </Box>
     </Box>
   );
 }

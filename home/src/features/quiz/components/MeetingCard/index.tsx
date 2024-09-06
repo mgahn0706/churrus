@@ -77,6 +77,7 @@ export default function MeetingCard({ meetingId }: { meetingId: string }) {
           <Typography color="#121212" fontSize="18px" fontWeight={500}>
             {meeting.title}
           </Typography>
+
           <Typography color="#606B80" fontSize="12px">
             {creators.join(", ")}
           </Typography>

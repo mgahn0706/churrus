@@ -48,17 +48,18 @@ export default function MeetingPage() {
         justifyContent="center"
       >
         <Box
-          mx={[4, 6, 8]}
+          mx={[4, 6, 12]}
           width={1}
           mb={6}
           bgcolor={BACKGROUND_COLOR}
-          maxWidth="1200px"
+          maxWidth="600px"
         >
           <Box
             display="flex"
             alignItems="center"
             height={60}
             width="100%"
+            left={0}
             justifyContent="space-between"
             position="fixed"
             sx={{
@@ -68,7 +69,6 @@ export default function MeetingPage() {
             <IconButton
               size="large"
               sx={{
-                px: 0,
                 color: "#212837",
               }}
               onClick={() => {
@@ -100,7 +100,6 @@ export default function MeetingPage() {
             display="flex"
             flexDirection="column"
             mt={2}
-            width="calc(100% - 48px)"
             maxWidth="1200px"
             alignItems="center"
           >
