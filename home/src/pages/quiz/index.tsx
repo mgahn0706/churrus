@@ -3,16 +3,27 @@ import { QuizData } from "@/features/quiz/fixtures/quizzes";
 import { TaskAltRounded } from "@mui/icons-material";
 import { Box, Grid, Tooltip, Typography } from "@mui/material";
 import Head from "next/head";
-import { useEffect, useState } from "react";
-import { MEETING_IDS } from "@/features/quiz/fixtures/meetings";
+import { MEETINGS, MEETING_IDS } from "@/features/quiz/fixtures/meetings";
 import MeetingCard from "@/features/quiz/components/MeetingCard";
 import { useResponsiveValue } from "@/hooks/useResponsiveValue";
 import useLocalStorage from "@/hooks/useLocalStorage";
 
 const BACKGROUND_COLOR = "#F5F6FA";
 
+const MEETING_CATEGORIZED_BY_YEAR = Object.entries(MEETINGS).reduce(
+  (acc, [meetingId, meeting]) => {
+    const year = meeting.date.year;
+    if (!acc[year]) {
+      acc[year] = [];
+    }
+    acc[year].push(meetingId);
+    return acc;
+  },
+  {} as Record<number, string[]>
+);
+
 export default function Quiz() {
-  const cardXs = useResponsiveValue([12, 12, 6]);
+  const cardXs = useResponsiveValue([12, 6, 4]);
 
   const [solvedQuizzes] = useLocalStorage<string[]>("quiz", []);
 
@@ -78,26 +89,40 @@ export default function Quiz() {
               </Tooltip>
             </Box>
           </Box>
-
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            mb={7}
-          >
-            <Grid
-              container
-              rowSpacing={1}
-              columnSpacing={[0, 0, 3]}
-              width="100%"
-            >
-              {MEETING_IDS.map((meetingId) => (
-                <Grid item xs={12}>
-                  <MeetingCard meetingId={meetingId} key={meetingId} />
+          {Object.entries(MEETING_CATEGORIZED_BY_YEAR)
+            .sort((a, b) => {
+              return Number(b[0]) - Number(a[0]);
+            })
+            .map(([year, meetingIds]) => (
+              <Box key={year}>
+                <Typography
+                  fontSize={20}
+                  fontWeight={700}
+                  fontFamily="NanumSquareEB"
+                  color="#212837"
+                  mt={6}
+                  mb={2}
+                >
+                  {year}
+                </Typography>
+                <Grid
+                  container
+                  rowSpacing={[0, 1, 1]}
+                  columnSpacing={[0, 0, 3]}
+                  width="100%"
+                >
+                  {meetingIds
+                    .sort(
+                      (a, b) => MEETINGS[b].date.month - MEETINGS[a].date.month
+                    )
+                    .map((meetingId) => (
+                      <Grid item xs={cardXs}>
+                        <MeetingCard meetingId={meetingId} key={meetingId} />
+                      </Grid>
+                    ))}
                 </Grid>
-              ))}
-            </Grid>
-          </Box>
+              </Box>
+            ))}
         </Box>
       </Box>
     </>

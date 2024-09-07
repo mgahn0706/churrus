@@ -20,10 +20,10 @@ export default function MeetingCard({ meetingId }: { meetingId: string }) {
   return (
     <Box
       display="flex"
-      height={100}
+      height={72}
       width={1}
       alignItems="center"
-      py={2}
+      py={1}
       gap={2}
       borderRadius="12px"
       onClick={() => {
@@ -40,17 +40,18 @@ export default function MeetingCard({ meetingId }: { meetingId: string }) {
       }}
     >
       <Box
-        width={100}
-        height={100}
+        width={72}
+        height={72}
         overflow="hidden"
         borderRadius="12px"
         display="flex"
+        minWidth={72}
         justifyContent="center"
       >
         <Image
           className="meeting-card-image"
-          width={170}
-          height={100}
+          width={128}
+          height={72}
           src={meeting.imageSource ?? QuizData[meetingId][0].quizImageSource}
           alt={meeting.title}
           style={{
@@ -72,9 +73,8 @@ export default function MeetingCard({ meetingId }: { meetingId: string }) {
           sx={{
             wordBreak: "keep-all",
           }}
-          py={1}
         >
-          <Typography color="#121212" fontSize="18px" fontWeight={500}>
+          <Typography color="#121212" fontSize="16px" fontWeight={500}>
             {meeting.title}
           </Typography>
 

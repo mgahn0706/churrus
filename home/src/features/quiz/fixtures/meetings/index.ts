@@ -91,6 +91,7 @@ export const MEETINGS: Record<string, MeetingType> = {
   },
   "2022-7": {
     id: "2022-7",
+
     date: {
       year: 2022,
       month: 7,
