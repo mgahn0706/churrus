@@ -4,8 +4,16 @@ import Image from "next/image";
 import { MEETINGS } from "../../fixtures/meetings";
 import { useRouter } from "next/router";
 
-export default function MeetingCard({ meetingId }: { meetingId: string }) {
+export default function MeetingCard({
+  meetingId,
+  size = "medium",
+}: {
+  meetingId: string;
+  size?: "small" | "medium";
+}) {
   const router = useRouter();
+
+  const imageHeight = size === "small" ? 40 : 72;
 
   const meeting = MEETINGS[meetingId];
 
@@ -20,11 +28,11 @@ export default function MeetingCard({ meetingId }: { meetingId: string }) {
   return (
     <Box
       display="flex"
-      height={72}
+      height={imageHeight}
       width={1}
       alignItems="center"
       py={1}
-      gap={2}
+      gap={size === "small" ? 1 : 2}
       borderRadius="12px"
       onClick={() => {
         router.push(`/meetings/${meeting.id}`);
@@ -40,23 +48,23 @@ export default function MeetingCard({ meetingId }: { meetingId: string }) {
       }}
     >
       <Box
-        width={72}
-        height={72}
+        width={imageHeight}
+        height={imageHeight}
         overflow="hidden"
-        borderRadius="12px"
+        borderRadius={size === "small" ? "4px" : "12px"}
         display="flex"
-        minWidth={72}
+        minWidth={imageHeight}
         justifyContent="center"
       >
         <Image
           className="meeting-card-image"
-          width={128}
-          height={72}
+          width={(imageHeight * 16) / 9}
+          height={imageHeight}
           src={meeting.imageSource ?? QuizData[meetingId][0].quizImageSource}
           alt={meeting.title}
           style={{
-            paddingRight: "12px",
-            borderRadius: "12px",
+            paddingRight: `${size === "small" ? 4 : 12}px`,
+            borderRadius: `${size === "small" ? "4px" : "12px"}px`,
           }}
         />
       </Box>
@@ -72,16 +80,23 @@ export default function MeetingCard({ meetingId }: { meetingId: string }) {
           maxWidth={["200px", "300px", "500px"]}
           sx={{
             wordBreak: "keep-all",
+            textOverflow: "ellipsis",
           }}
         >
-          <Typography color="#121212" fontSize="16px" fontWeight={500}>
+          <Typography
+            color="#121212"
+            fontSize={size === "small" ? "14px" : "18px"}
+            fontWeight={500}
+          >
             {meeting.title}
           </Typography>
-
-          <Typography color="#606B80" fontSize="12px">
-            {creators.join(", ")}
-          </Typography>
+          {size !== "small" && (
+            <Typography color="#606B80" fontSize="12px">
+              {creators.join(", ")}
+            </Typography>
+          )}
         </Box>
+
         <Typography color="#606B80" fontSize="12px" sx={{ mb: 1 }}>
           문제 {meeting.quizIds.length}개
         </Typography>
