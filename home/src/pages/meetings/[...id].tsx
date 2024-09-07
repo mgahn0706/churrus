@@ -95,11 +95,12 @@ export default function MeetingPage() {
           <Box
             zIndex={2}
             flexDirection="column"
-            justifyContent="flex-end"
+            justifyContent={["center", "center", "flex-end"]}
             alignItems={["center", "center", "start"]}
             display="flex"
             position="absolute"
             width={1}
+            pt={2}
             height={1}
             borderRadius="0 0 12px 12px"
             px={[0, 0, 3]}
