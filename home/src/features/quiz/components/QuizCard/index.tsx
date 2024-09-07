@@ -1,7 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import { QuizData } from "../../fixtures/quizzes";
 import Image from "next/image";
-import { MEETINGS } from "../../fixtures/meetings";
 import { useRouter } from "next/router";
 import { QuizType } from "../../types";
 import { CheckCircleRounded } from "@mui/icons-material";
@@ -9,9 +7,16 @@ import { CheckCircleRounded } from "@mui/icons-material";
 interface QuizCardProps {
   quiz: QuizType;
   isSolved: boolean;
+  isSelected?: boolean;
+  onClick?: () => void;
 }
 
-export default function QuizCard({ quiz, isSolved }: QuizCardProps) {
+export default function QuizCard({
+  quiz,
+  isSolved,
+  isSelected,
+  onClick,
+}: QuizCardProps) {
   const router = useRouter();
 
   return (
@@ -24,8 +29,10 @@ export default function QuizCard({ quiz, isSolved }: QuizCardProps) {
       gap={2}
       py={1}
       borderRadius="12px"
+      bgcolor={isSelected ? "#F5F6FA" : "none"}
       onClick={() => {
         router.push(`/quiz/${quiz.id}`);
+        onClick && onClick();
       }}
       sx={{
         cursor: "pointer",
@@ -39,7 +46,8 @@ export default function QuizCard({ quiz, isSolved }: QuizCardProps) {
     >
       <Box display="flex" alignItems="center">
         <Box
-          width={124}
+          mr={1}
+          width={80}
           height={70}
           overflow="hidden"
           borderRadius="12px"
@@ -52,10 +60,7 @@ export default function QuizCard({ quiz, isSolved }: QuizCardProps) {
             height={70}
             src={quiz.quizImageSource}
             alt={quiz.title}
-            style={{
-              paddingRight: "12px",
-              borderRadius: "12px",
-            }}
+            style={{ objectFit: "cover" }}
           />
         </Box>
         <Box
@@ -72,10 +77,17 @@ export default function QuizCard({ quiz, isSolved }: QuizCardProps) {
             }}
             py={1}
           >
-            <Typography color="#121212" fontSize="18px" fontWeight={500}>
+            <Typography
+              color={isSelected ? "#318AE1" : "#121212"}
+              fontSize="18px"
+              fontWeight={500}
+            >
               {quiz.title}
             </Typography>
-            <Typography color="#606B80" fontSize="12px">
+            <Typography
+              color={isSelected ? "#318AE1" : "#606880"}
+              fontSize="12px"
+            >
               {quiz.creator}
             </Typography>
           </Box>
