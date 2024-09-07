@@ -177,7 +177,7 @@ export default function MeetingPage() {
               pl={2}
             >
               <Box display="flex" flexDirection="column">
-                <Typography color="#121212" fontSize="14px">
+                <Typography color="#121212" fontSize="12px">
                   설명
                 </Typography>
                 <Typography
@@ -187,7 +187,8 @@ export default function MeetingPage() {
                     wordBreak: "keep-all",
                   }}
                 >
-                  {meeting.date.year}년 {meeting.date.month}월에 열림.
+                  {meeting.date.year}년 {meeting.date.month}월에 열린{" "}
+                  {meeting.subtitle ?? meeting.title}에서 진행됨
                 </Typography>
               </Box>
               <Box display="flex" flexDirection="column" mt={4}>
