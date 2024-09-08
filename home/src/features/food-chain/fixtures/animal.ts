@@ -53,7 +53,11 @@ export const ANIMALS: Record<AnimalId, Animal> = {
     rank: 4,
     unacceptableBiomes: ["SKY"],
     onVictoryCheck: (players) => {
-      return !ANIMALS.LION.onVictoryCheck(players);
+      const wolf = players.find((player) => player.role === "WOLF");
+      if (!wolf) {
+        return !ANIMALS.LION.onVictoryCheck(players);
+      }
+      return !ANIMALS.LION.onVictoryCheck(players) && wolf.status === "DEAD";
     },
   },
   DEER: {
@@ -165,7 +169,8 @@ export const ANIMALS: Record<AnimalId, Animal> = {
       const deadPlayerCount = players.filter(
         (player) => player.status === "DEAD"
       ).length;
-      return deadPlayerCount >= 9;
+      const minimumDeadPlayerCount = Math.max(9, players.length * 0.7);
+      return deadPlayerCount >= minimumDeadPlayerCount;
     },
   },
   CROW: {
@@ -183,6 +188,113 @@ export const ANIMALS: Record<AnimalId, Animal> = {
         !!crow?.predictedWinner &&
         ANIMALS[crow.predictedWinner].onVictoryCheck(players)
       );
+    },
+  },
+  ARMADILLO: {
+    id: "ARMADILLO",
+    type: "PREY",
+    name: "아르마딜로",
+    mainHabitat: "FIELD",
+    maximumStarvingCount: 4,
+    peekingCount: 1,
+    rank: 5,
+    unacceptableBiomes: ["SKY"],
+    onVictoryCheck: (players) => {
+      const armadillo = players.find((player) => player.role === "ARMADILLO");
+      return armadillo?.status === "ALIVE";
+    },
+  },
+  TURTLE: {
+    id: "TURTLE",
+    type: "PREY",
+    name: "거북",
+    mainHabitat: "RIVER",
+    maximumStarvingCount: 4,
+    peekingCount: 1,
+    rank: 5,
+    unacceptableBiomes: ["SKY"],
+    onVictoryCheck: (players) => {
+      const turtle = players.find((player) => player.role === "TURTLE");
+      return turtle?.status === "ALIVE";
+    },
+  },
+  WOLF: {
+    id: "WOLF",
+    type: "PREDATOR",
+    name: "늑대",
+    mainHabitat: "FOREST",
+    maximumStarvingCount: 3,
+    peekingCount: 1,
+    rank: 4,
+    unacceptableBiomes: ["SKY"],
+    onVictoryCheck: (players) => {
+      const wolf = players.find((player) => player.role === "WOLF");
+      const hyena = players.find((player) => player.role === "HYENA");
+      if (!hyena) {
+        return !ANIMALS.LION.onVictoryCheck(players);
+      }
+      return !ANIMALS.LION.onVictoryCheck(players) && hyena.status === "DEAD";
+    },
+  },
+  RATTLESNAKE: {
+    id: "RATTLESNAKE",
+    type: "PREY",
+    name: "방울뱀",
+    mainHabitat: "FIELD",
+    maximumStarvingCount: 4,
+    peekingCount: 1,
+    rank: 5,
+    unacceptableBiomes: ["SKY"],
+    onVictoryCheck: (players) => {
+      const alivePlayers = players.filter(
+        (player) => player.status === "ALIVE"
+      );
+      const minimumAlivePlayerCount = Math.max(7, players.length * 0.5);
+      return alivePlayers.length >= minimumAlivePlayerCount;
+    },
+  },
+  FLYING_SQUIRREL: {
+    id: "FLYING_SQUIRREL",
+    type: "PREY",
+    name: "다람쥐",
+    mainHabitat: "FOREST",
+    maximumStarvingCount: 4,
+    peekingCount: 1,
+    rank: 5,
+    unacceptableBiomes: [],
+    onVictoryCheck: (players) => {
+      const flyingSquirrel = players.find(
+        (player) => player.role === "FLYING_SQUIRREL"
+      );
+      return flyingSquirrel?.status === "ALIVE";
+    },
+  },
+  SHEEP: {
+    id: "SHEEP",
+    type: "PREY",
+    name: "양",
+    mainHabitat: "FIELD",
+    maximumStarvingCount: 4,
+    peekingCount: 1,
+    rank: 5,
+    unacceptableBiomes: ["SKY"],
+    onVictoryCheck: (players) => {
+      const sheep = players.find((player) => player.role === "SHEEP");
+      return sheep?.status === "ALIVE";
+    },
+  },
+  PLATYPUS: {
+    id: "PLATYPUS",
+    type: "PREY",
+    name: "오리너구리",
+    mainHabitat: "RIVER",
+    maximumStarvingCount: 4,
+    peekingCount: 1,
+    rank: 5,
+    unacceptableBiomes: ["SKY"],
+    onVictoryCheck: (players) => {
+      const platypus = players.find((player) => player.role === "PLATYPUS");
+      return platypus?.status === "ALIVE";
     },
   },
 };
