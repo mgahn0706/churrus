@@ -1,4 +1,4 @@
-import { MeetingData } from "@/features/quiz/fixtures";
+import { MEETINGS } from "@/features/quiz/fixtures/meetings";
 import { QuizType } from "@/features/quiz/types";
 import {
   Box,
@@ -33,7 +33,7 @@ export default function HomeQuizCard({ quiz }: { quiz: QuizType }) {
       >
         <CardMedia
           component="img"
-          image={quiz.quizImgSrc}
+          image={quiz.quizImageSource}
           title="Quiz"
           sx={{
             height: 120,
@@ -63,7 +63,7 @@ export default function HomeQuizCard({ quiz }: { quiz: QuizType }) {
             textOverflow={"ellipsis"}
             overflow={"hidden"}
           >
-            {MeetingData[quiz.meetingId].title}
+            {MEETINGS[quiz.meetingId].title}
           </Typography>
         </CardContent>
       </Card>

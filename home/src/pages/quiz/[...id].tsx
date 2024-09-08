@@ -1,8 +1,9 @@
-import { MeetingData, QuizData } from "@/features/quiz/fixtures";
+import { QuizData } from "@/features/quiz/fixtures/quizzes";
 import {
-  Alert,
   Box,
   Button,
+  Drawer,
+  Grid,
   IconButton,
   Skeleton,
   TextField,
@@ -10,9 +11,16 @@ import {
 } from "@mui/material";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import { ArrowBack } from "@mui/icons-material";
+import {
+  ChevronLeftRounded,
+  ChevronRightRounded,
+  CloseRounded,
+} from "@mui/icons-material";
 import { useState } from "react";
 import Head from "next/head";
+import { MEETINGS } from "@/features/quiz/fixtures/meetings";
+import { QuizType } from "@/features/quiz/types";
+import QuizCard from "@/features/quiz/components/QuizCard";
 
 const BACKGROUND_COLOR = "#F5F6FA";
 
@@ -26,6 +34,7 @@ export default function QuizPage() {
 
   const [inputAnswer, setInputAnswer] = useState("");
   const [isImageLoading, setIsImageLoading] = useState(true);
+  const [isQuizListDrawerOpen, setIsQuizListDrawerOpen] = useState(false);
 
   const { id } = router.query;
 
@@ -97,69 +106,87 @@ export default function QuizPage() {
           alignItems="center"
           height={60}
           width="100%"
-          justifyContent="space-between"
+          justifyContent="center"
           position="fixed"
           sx={{
             backdropFilter: "blur(2px)",
           }}
         >
-          <IconButton
-            size="large"
-            sx={{
-              ml: [2, 3, 5],
-              color: "#212837",
-            }}
-            onClick={() => {
-              if (isAnswerPage) {
-                router.push(`/quiz?meeting=${quiz.meetingId}`);
-                return;
-              }
-              router.back();
-            }}
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="space-between"
+            maxWidth="1200px"
+            width={1}
           >
-            <ArrowBack />
-          </IconButton>
-          {!isAnswerPage && (
-            <Button
-              sx={{
-                color: "#202837",
-                fontWeight: 700,
-                fontSize: 14,
-                mr: [2, 3, 5],
-              }}
-              variant="text"
-              onClick={() => {
-                handleSolvedQuiz();
-                router.push(`/quiz/${quiz.id}/answer`);
-              }}
-            >
-              정답 보기
-            </Button>
-          )}
+            <Box display="flex" alignItems="center" ml={2}>
+              <ChurrusLogoButton onClick={() => router.push("/")} />
+
+              <Box display="flex" alignItems="center" ml={2}>
+                <HeaderButton onClick={() => setIsQuizListDrawerOpen(true)}>
+                  {MEETINGS[quiz.meetingId].title}
+                </HeaderButton>
+                <IconButton
+                  disabled={quiz.quizNumber === 1}
+                  onClick={() => {
+                    router.push(
+                      `/quiz/${
+                        MEETINGS[quiz.meetingId].quizIds[quiz.quizNumber - 2]
+                      }`
+                    );
+                  }}
+                >
+                  <ChevronLeftRounded />
+                </IconButton>
+                <IconButton
+                  disabled={
+                    quiz.quizNumber === MEETINGS[quiz.meetingId].quizIds.length
+                  }
+                  onClick={() =>
+                    router.push(
+                      `/quiz/${
+                        MEETINGS[quiz.meetingId].quizIds[quiz.quizNumber]
+                      }`
+                    )
+                  }
+                >
+                  <ChevronRightRounded />
+                </IconButton>
+              </Box>
+            </Box>
+            {!isAnswerPage && (
+              <Button
+                sx={{
+                  color: "#202837",
+                  fontWeight: 700,
+                  fontSize: 14,
+                  mr: 2,
+                }}
+                variant="text"
+                onClick={() => {
+                  handleSolvedQuiz();
+                  router.push(`/quiz/${quiz.id}/answer`);
+                }}
+              >
+                정답 보기
+              </Button>
+            )}
+          </Box>
         </Box>
         <Box
           display="flex"
           flexDirection="column"
+          maxWidth={1200}
           width={1}
+          ml={2}
           textAlign={["left", "left", "center"]}
         >
           <Typography
-            fontSize={12}
-            fontWeight={700}
-            color="#606B80"
-            width="fit-content"
-            mt="60px"
-            ml={4}
-          >
-            {MeetingData[quiz.meetingId].title} - {quiz.quizNumber}
-          </Typography>
-
-          <Typography
             fontSize={24}
             fontWeight={700}
+            mt={12}
             color="#202837"
             width="fit-content"
-            ml={4}
           >
             {quiz.title}
             {isAnswerPage && " 정답"}
@@ -170,29 +197,15 @@ export default function QuizPage() {
               fontWeight={700}
               color="#318AE1"
               width="fit-content"
-              ml={4}
             >
               {quiz.answer}
             </Typography>
           )}
 
-          <Typography
-            fontSize={12}
-            color="#606B80"
-            mt={1}
-            width="fit-content"
-            ml={4}
-          >
-            {quiz.madeBy}
+          <Typography fontSize={12} color="#606B80" width="fit-content">
+            {quiz.creator}
           </Typography>
         </Box>
-
-        {quiz.shouldWarn && !isAnswerPage && (
-          <Alert severity="warning" sx={{ mt: 2 }}>
-            이 문제는 당시 정기모임에 참석해야만 풀 수 있는 요소를 포함하고
-            있어요.
-          </Alert>
-        )}
 
         <Box
           width="100%"
@@ -200,18 +213,18 @@ export default function QuizPage() {
           sx={{
             aspectRatio: 16 / 9,
           }}
-          maxWidth={isImageLoading ? 0 : "856px"}
-          maxHeight={isImageLoading ? 0 : "474px"}
+          maxWidth={isImageLoading ? 0 : "1200px"}
+          maxHeight={isImageLoading ? 0 : "900px"}
           display="flex"
           justifyContent="center"
-          mt={4}
+          mt={2}
           position="relative"
         >
           <Image
             src={
               isAnswerPage
                 ? `/image/quiz/${quiz.id}-answer.png`
-                : quiz.quizImgSrc
+                : quiz.quizImageSource
             }
             alt={quiz.title}
             style={{
@@ -243,7 +256,7 @@ export default function QuizPage() {
               justifyContent="center"
               mt={4}
               minWidth={300}
-              maxWidth={856}
+              maxWidth={1200}
               width="70vw"
               mx="auto"
             >
@@ -258,7 +271,7 @@ export default function QuizPage() {
               >
                 정답 형식: {answerFomat()}
               </Typography>
-              {quiz.isAnswerable && (
+              {quiz.answer && (
                 <Box
                   display="flex"
                   alignItems="center"
@@ -274,7 +287,7 @@ export default function QuizPage() {
                     }}
                     InputProps={{
                       sx: {
-                        maxWidth: 700,
+                        maxWidth: 950,
                         borderRadius: "20px",
                         py: "2px",
                         height: "40px",
@@ -284,7 +297,7 @@ export default function QuizPage() {
                       width: "100%",
                     }}
                     placeholder={
-                      quiz.isAnswerable
+                      quiz.answer
                         ? "정답을 입력해주세요."
                         : "정답을 입력할 수 없는 문제입니다."
                     }
@@ -327,6 +340,125 @@ export default function QuizPage() {
           </form>
         )}
       </Box>
+      <QuizListDrawer
+        currentQuizId={quiz.id}
+        isOpen={isQuizListDrawerOpen}
+        onClose={() => setIsQuizListDrawerOpen(false)}
+        quizList={QuizData[quiz.meetingId]}
+        onClickMeeting={() => {
+          router.push(`/meetings/${quiz.meetingId}`);
+        }}
+      />
     </>
   );
 }
+
+interface DesktopTopMenuProps {
+  disabled?: boolean;
+  children: React.ReactNode;
+  onClick: () => void;
+}
+
+const HeaderButton = ({ disabled, children, onClick }: DesktopTopMenuProps) => {
+  return (
+    <Button
+      sx={{
+        color: "#232937",
+        fontWeight: 500,
+        fontSize: 14,
+      }}
+      disabled={disabled}
+      onClick={onClick}
+    >
+      {children}
+    </Button>
+  );
+};
+
+const ChurrusLogoButton = ({ onClick }: { onClick?: () => void }) => (
+  <Image
+    onClick={onClick}
+    style={{
+      cursor: "pointer",
+    }}
+    alt="churrus-logo"
+    width={30}
+    height={25}
+    src="/image/churrus-icon.svg"
+  />
+);
+
+interface QuizListDrawerProps {
+  isOpen: boolean;
+  currentQuizId: string;
+  quizList: QuizType[];
+  onClose: () => void;
+  onClickMeeting: () => void;
+}
+
+const QuizListDrawer = ({
+  isOpen,
+  currentQuizId,
+  onClose,
+  quizList,
+  onClickMeeting,
+}: QuizListDrawerProps) => {
+  return (
+    <Drawer anchor="bottom" open={isOpen} onClose={onClose}>
+      <Box
+        display="flex"
+        alignItems="center"
+        p={2}
+        justifyContent="space-between"
+      >
+        <Box
+          display="flex"
+          alignItems="center"
+          gap={1}
+          onClick={onClickMeeting}
+          sx={{
+            cursor: "pointer",
+            "&:hover": {
+              "& .go-to-quiz-list": {
+                transform: "translateX(4px)",
+                transition: "all 0.3s",
+              },
+            },
+          }}
+        >
+          <Box display="flex" flexDirection="column">
+            <Typography fontSize={18} fontWeight={700} px={2}>
+              {MEETINGS[quizList[0].meetingId].title}
+            </Typography>
+            <Typography fontSize={14} fontWeight={400} px={2}>
+              {MEETINGS[quizList[0].meetingId].subtitle}
+            </Typography>
+          </Box>
+          <ChevronRightRounded
+            className="go-to-quiz-list"
+            sx={{
+              marginLeft: "12px",
+            }}
+          />
+        </Box>
+        <IconButton onClick={onClose}>
+          <CloseRounded />
+        </IconButton>
+      </Box>
+      <Grid container spacing={1} py={2} maxHeight="520px" overflow="scroll">
+        {quizList.map((quiz) => (
+          <Grid item xs={12} key={quiz.id} ml={4}>
+            <QuizCard
+              quiz={quiz}
+              isSolved={false}
+              isSelected={quiz.id === currentQuizId}
+              onClick={() => {
+                onClose();
+              }}
+            />
+          </Grid>
+        ))}
+      </Grid>
+    </Drawer>
+  );
+};

@@ -3,10 +3,37 @@ export interface QuizType {
   meetingId: string;
   quizNumber: number;
   title: string;
-  madeBy: string | null;
-  quizImgSrc: string;
+  creator: string | null;
+  quizImageSource: string;
   answer: string | null;
-  shouldWarn: boolean;
-  isAnswerable: boolean;
-  difficulty?: "easy" | "normal" | "hard";
+  tags: Tags[];
+}
+
+type Tags =
+  | "EASY"
+  | "HARD"
+  | "DEDUCTION"
+  | "PUZZLE"
+  | "MATHEMATICS"
+  | "LATERAL_THINKING"
+  | "KNOWLEDGE"
+  | "PATTERN"
+  | "GEOMETRY"
+  | "ADVENTURE"
+  | "ONLY_FOR_MEEING"
+  | "RIDDLE"
+  | "ENIGMATIC"
+  | "WORD"
+  | "META";
+
+export interface MeetingType {
+  id: string;
+  title: string;
+  subtitle?: string;
+  imageSource?: string;
+  quizIds: string[];
+  date: {
+    year: number;
+    month: number;
+  };
 }

@@ -130,7 +130,7 @@ export default function ChurrusMain() {
               lineHeight={1.5}
             >
               매월 넷째 주 토요일, <br />
-              추러스를 위해 준비된 고퀄리티 문제들.
+              추러스가 직접 만드는 고퀄리티 문제들.
             </Typography>
             <Typography
               mt={2}

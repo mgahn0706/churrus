@@ -1,15 +1,5 @@
-import { MeetingData, QuizData } from "@/features/quiz/fixtures";
-import {
-  Alert,
-  Box,
-  Button,
-  IconButton,
-  Skeleton,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, IconButton, Typography } from "@mui/material";
 import { useRouter } from "next/router";
-import Image from "next/image";
 import { ArrowBack } from "@mui/icons-material";
 import Head from "next/head";
 import {

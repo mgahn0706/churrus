@@ -1,52 +1,31 @@
 import GlobalHeader from "@/components/Navigation/GlobalHeader";
-import QuizCard from "@/features/quiz/components/QuizCard";
-import { MEETINGS, MeetingData, QuizData } from "@/features/quiz/fixtures";
-import {
-  Lightbulb,
-  NavigateBefore,
-  NavigateBeforeRounded,
-  NavigateNext,
-  NavigateNextRounded,
-  TaskAltRounded,
-} from "@mui/icons-material";
-import {
-  Box,
-  Grid,
-  Icon,
-  IconButton,
-  MenuItem,
-  Select,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { QuizData } from "@/features/quiz/fixtures/quizzes";
+import { TaskAltRounded } from "@mui/icons-material";
+import { Box, Grid, Tooltip, Typography } from "@mui/material";
 import Head from "next/head";
-import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/router";
+import { MEETINGS, MEETING_IDS } from "@/features/quiz/fixtures/meetings";
+import MeetingCard from "@/features/quiz/components/MeetingCard";
+import { useResponsiveValue } from "@/hooks/useResponsiveValue";
+import useLocalStorage from "@/hooks/useLocalStorage";
 
 const BACKGROUND_COLOR = "#F5F6FA";
 
-type MeetingType = (typeof MEETINGS)[number];
+const MEETING_CATEGORIZED_BY_YEAR = Object.entries(MEETINGS).reduce(
+  (acc, [meetingId, meeting]) => {
+    const year = meeting.date.year;
+    if (!acc[year]) {
+      acc[year] = [];
+    }
+    acc[year].push(meetingId);
+    return acc;
+  },
+  {} as Record<number, string[]>
+);
 
 export default function Quiz() {
-  const [solvedQuiz, setSolvedQuiz] = useState<string[]>([]);
+  const cardXs = useResponsiveValue([12, 6, 4]);
 
-  const router = useRouter();
-  const searchParams = useSearchParams();
-
-  const selectedMeeting =
-    (searchParams.get("meeting") as MeetingType) ?? MEETINGS[0];
-
-  useEffect(() => {
-    const solvedQuizzes = JSON.parse(localStorage.getItem("quiz") ?? "[]");
-    setSolvedQuiz(solvedQuizzes);
-  }, []);
-
-  useEffect(() => {
-    if (!MeetingData[selectedMeeting]) {
-      router.push(`/quiz?meeting=${MEETINGS[0]}`);
-    }
-  }, [selectedMeeting]);
+  const [solvedQuizzes] = useLocalStorage<string[]>("quiz", []);
 
   return (
     <>
@@ -55,25 +34,24 @@ export default function Quiz() {
       </Head>
       <GlobalHeader />
       <Box
-        height="100dvh"
+        height={1}
         bgcolor={BACKGROUND_COLOR}
         display="flex"
         justifyContent="center"
       >
         <Box
-          height="100vh"
-          overflow="scroll"
-          px={[2, 6, 8]}
-          width="100%"
-          pb={6}
+          mx={[4, 6, 8]}
+          width={1}
+          mb={6}
           bgcolor={BACKGROUND_COLOR}
+          maxWidth="938px"
         >
           <Box
             width="100%"
             textAlign="left"
             color="#212837"
-            mt={[3, 4, "100px"]}
-            mb={[2, 3, 4]}
+            mt={[3, 8, "80px"]}
+            mb={[1, 2, 3]}
           >
             <Box
               display="flex"
@@ -103,110 +81,48 @@ export default function Quiz() {
                       color: "#318AE1",
                     }}
                   />
-                  <Typography fontSize={14} color="#121212" fontWeight={700}>
-                    {solvedQuiz.length} /{" "}
+                  <Typography fontSize={14} color="#121212" fontWeight={500}>
+                    {solvedQuizzes.length} /{" "}
                     {Object.values(QuizData).flat().length}
                   </Typography>
                 </Box>
               </Tooltip>
             </Box>
           </Box>
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-            mt={[3, 4, 5]}
-            mb={3}
-          >
-            <Box
-              display="flex"
-              justifyContent="flex-start"
-              alignItems="center"
-              minWidth="300px"
-            >
-              <IconButton
-                sx={{
-                  backgroundColor: "white",
-                }}
-                disabled={
-                  MEETINGS.indexOf(selectedMeeting) === MEETINGS.length - 1
-                }
-                onClick={() => {
-                  const index = MEETINGS.indexOf(selectedMeeting);
-                  if (index === MEETINGS.length - 1) return;
-                  router.push(`/quiz?meeting=${MEETINGS[index + 1]}`);
-                }}
-              >
-                <NavigateBeforeRounded
-                  sx={{
-                    fontSize: "2rem",
-                  }}
-                />
-              </IconButton>
-              <Box
-                minHeight="58px"
-                minWidth="220px"
-                justifyContent="center"
-                alignItems="center"
-                lineHeight="58px"
-                display="flex"
-                flexDirection="column"
-              >
-                <Select
-                  variant="standard"
-                  sx={{
-                    fontSize: "1.2rem",
-                  }}
-                  inputProps={{
-                    fontSize: 18,
-                  }}
-                  value={selectedMeeting}
-                  onChange={(e) => {
-                    router.push(`/quiz?meeting=${e.target.value}`);
-                  }}
+          {Object.entries(MEETING_CATEGORIZED_BY_YEAR)
+            .sort((a, b) => {
+              return Number(b[0]) - Number(a[0]);
+            })
+            .map(([year, meetingIds]) => (
+              <Box key={year}>
+                <Typography
+                  fontSize={20}
+                  fontWeight={700}
+                  fontFamily="NanumSquareEB"
+                  color="#212837"
+                  mt={6}
+                  mb={2}
                 >
-                  {MEETINGS.map((meeting) => (
-                    <MenuItem key={meeting} value={meeting}>
-                      {MeetingData[meeting]?.title}
-                    </MenuItem>
-                  ))}
-                </Select>
+                  {year}
+                </Typography>
+                <Grid
+                  container
+                  rowSpacing={[0, 1, 1]}
+                  columnSpacing={[0, 0, 3]}
+                  width="100%"
+                >
+                  {meetingIds
+                    .sort(
+                      (a, b) => MEETINGS[b].date.month - MEETINGS[a].date.month
+                    )
+                    .map((meetingId) => (
+                      <Grid item xs={cardXs}>
+                        <MeetingCard meetingId={meetingId} key={meetingId} />
+                      </Grid>
+                    ))}
+                </Grid>
               </Box>
-              <IconButton
-                sx={{
-                  backgroundColor: "white",
-                }}
-                disabled={MEETINGS.indexOf(selectedMeeting) === 0}
-                onClick={() => {
-                  const index = MEETINGS.indexOf(selectedMeeting);
-                  if (index === 0) return;
-                  router.push(`/quiz?meeting=${MEETINGS[index - 1]}`);
-                }}
-              >
-                <NavigateNextRounded
-                  sx={{
-                    fontSize: "2rem",
-                  }}
-                />
-              </IconButton>
-            </Box>
-          </Box>
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            mb={3}
-          >
-            <Grid container spacing={[3, 4, 6]} width="100%">
-              {QuizData[selectedMeeting]?.map((quiz) => (
-                <QuizCard
-                  key={quiz.id}
-                  quiz={quiz}
-                  isSolved={solvedQuiz.includes(quiz.id)}
-                />
-              ))}
-            </Grid>
-          </Box>
+            ))}
         </Box>
       </Box>
     </>
