@@ -81,7 +81,7 @@ export default function Quiz() {
                       color: "#318AE1",
                     }}
                   />
-                  <Typography fontSize={14} color="#121212" fontWeight={700}>
+                  <Typography fontSize={14} color="#121212" fontWeight={500}>
                     {solvedQuizzes.length} /{" "}
                     {Object.values(QuizData).flat().length}
                   </Typography>

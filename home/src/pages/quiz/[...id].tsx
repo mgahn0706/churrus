@@ -445,7 +445,7 @@ const QuizListDrawer = ({
           <CloseRounded />
         </IconButton>
       </Box>
-      <Grid container spacing={1} py={2}>
+      <Grid container spacing={1} py={2} maxHeight="520px" overflow="scroll">
         {quizList.map((quiz) => (
           <Grid item xs={12} key={quiz.id} ml={4}>
             <QuizCard
