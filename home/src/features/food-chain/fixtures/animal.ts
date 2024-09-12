@@ -228,7 +228,6 @@ export const ANIMALS: Record<AnimalId, Animal> = {
     rank: 4,
     unacceptableBiomes: ["SKY"],
     onVictoryCheck: (players) => {
-      const wolf = players.find((player) => player.role === "WOLF");
       const hyena = players.find((player) => player.role === "HYENA");
       if (!hyena) {
         return !ANIMALS.LION.onVictoryCheck(players);
@@ -256,7 +255,7 @@ export const ANIMALS: Record<AnimalId, Animal> = {
   FLYING_SQUIRREL: {
     id: "FLYING_SQUIRREL",
     type: "PREY",
-    name: "다람쥐",
+    name: "날다람쥐",
     mainHabitat: "FOREST",
     maximumStarvingCount: 4,
     peekingCount: 1,
@@ -295,6 +294,93 @@ export const ANIMALS: Record<AnimalId, Animal> = {
     onVictoryCheck: (players) => {
       const platypus = players.find((player) => player.role === "PLATYPUS");
       return platypus?.status === "ALIVE";
+    },
+  },
+  BAT: {
+    id: "BAT",
+    type: "PREY",
+    name: "박쥐",
+    mainHabitat: "SKY",
+    maximumStarvingCount: 4,
+    peekingCount: 1,
+    rank: 5,
+    unacceptableBiomes: [],
+    onVictoryCheck: (players) => {
+      const hasLionWon = ANIMALS.LION.onVictoryCheck(players);
+      const hasCrocodileWon = ANIMALS.CROCODILE.onVictoryCheck(players);
+
+      return (
+        (hasCrocodileWon && !hasLionWon) || (!hasCrocodileWon && hasLionWon)
+      );
+    },
+  },
+  COCK_PHEASANT: {
+    id: "COCK_PHEASANT",
+    type: "PREY",
+    name: "장끼",
+    mainHabitat: "SKY",
+    maximumStarvingCount: 4,
+    peekingCount: 1,
+    rank: 5,
+    unacceptableBiomes: [],
+    onVictoryCheck: (players) => {
+      const cock_pheasant = players.find(
+        (player) => player.role === "COCK_PHEASANT"
+      );
+      return cock_pheasant?.status === "ALIVE";
+    },
+  },
+  HEN_PHEASANT: {
+    id: "COCK_PHEASANT",
+    type: "PREY",
+    name: "까투리",
+    mainHabitat: "SKY",
+    maximumStarvingCount: 4,
+    peekingCount: 1,
+    rank: 5,
+    unacceptableBiomes: [],
+    onVictoryCheck: (players) => {
+      const hen_pheasant = players.find(
+        (player) => player.role === "HEN_PHEASANT"
+      );
+      return hen_pheasant?.status === "ALIVE";
+    },
+  },
+  HAWK: {
+    id: "HAWK",
+    type: "PREDATOR",
+    name: "매",
+    mainHabitat: "SKY",
+    maximumStarvingCount: 2,
+    peekingCount: 1,
+    rank: 3,
+    unacceptableBiomes: [],
+    onVictoryCheck: (players) => {
+      const eagle = players.find((player) => player.role === "EAGLE");
+      const hawk = players.find((player) => player.role === "HAWK");
+      if (!eagle) {
+        return hawk?.status === "ALIVE";
+      }
+      return eagle.status === "DEAD" && hawk?.status === "ALIVE";
+    },
+  },
+  FOX: {
+    id: "FOX",
+    type: "PREY",
+    name: "여우",
+    mainHabitat: "FOREST",
+    maximumStarvingCount: 4,
+    peekingCount: 2,
+    rank: 5,
+    unacceptableBiomes: ["SKY"],
+    onVictoryCheck: (players) => {
+      const predictedWinner = players.find(
+        (player) => player.role === "FOX"
+      )?.predictedWinner;
+
+      return (
+        !!predictedWinner && ANIMALS[predictedWinner].onVictoryCheck(players)
+      );
     },
   },
 };
