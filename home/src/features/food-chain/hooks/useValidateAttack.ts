@@ -35,7 +35,7 @@ export default function useValidateAttack({
     };
   }
 
-  if (attacker?.role === "SNAKE") {
+  if (attacker?.role === "SNAKE" || attacker?.role === "RATTLESNAKE") {
     return {
       canAttack: false,
       errorMessage: "뱀은 공격할 수 없습니다.",

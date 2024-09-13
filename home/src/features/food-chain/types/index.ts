@@ -7,6 +7,8 @@ export interface Player {
   hasEaten: Array<boolean | null>;
   camouflagedTo?: AnimalId;
   predictedWinner?: AnimalId;
+  protectedRound?: number | null;
+  contactedAnimalCount?: number;
   result: "WIN" | "LOSE" | null;
 }
 

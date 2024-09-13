@@ -105,7 +105,7 @@ export default function RoleRevealPhase({
         </Box>
       )}
 
-      {currentPlayer.role === "CROW" && (
+      {(currentPlayer.role === "CROW" || currentPlayer.role === "FOX") && (
         <Box
           display="flex"
           flexDirection="column"

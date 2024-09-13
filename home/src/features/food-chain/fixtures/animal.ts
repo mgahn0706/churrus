@@ -207,7 +207,7 @@ export const ANIMALS: Record<AnimalId, Animal> = {
   TURTLE: {
     id: "TURTLE",
     type: "PREY",
-    name: "거북",
+    name: "거북이",
     mainHabitat: "RIVER",
     maximumStarvingCount: 4,
     peekingCount: 1,
@@ -331,7 +331,7 @@ export const ANIMALS: Record<AnimalId, Animal> = {
     },
   },
   HEN_PHEASANT: {
-    id: "COCK_PHEASANT",
+    id: "HEN_PHEASANT",
     type: "PREY",
     name: "까투리",
     mainHabitat: "SKY",
@@ -381,6 +381,73 @@ export const ANIMALS: Record<AnimalId, Animal> = {
       return (
         !!predictedWinner && ANIMALS[predictedWinner].onVictoryCheck(players)
       );
+    },
+  },
+  LIZARD: {
+    id: "LIZARD",
+    type: "PREY",
+    name: "도마뱀",
+    mainHabitat: "FOREST",
+    maximumStarvingCount: 4,
+    peekingCount: 1,
+    rank: 5,
+    unacceptableBiomes: ["SKY"],
+    onVictoryCheck: (players) => {
+      const lizard = players.find((player) => player.role === "LIZARD");
+      return lizard?.status === "ALIVE";
+    },
+  },
+  CAT: {
+    id: "CAT",
+    type: "PREY",
+    name: "고양이",
+    mainHabitat: "FOREST",
+    maximumStarvingCount: 4,
+    peekingCount: 2,
+    rank: 5,
+    unacceptableBiomes: ["SKY"],
+    onVictoryCheck: (players) => {
+      const predictedLoser = players.find(
+        (player) => player.role === "CAT"
+      )?.predictedWinner;
+
+      return (
+        !!predictedLoser && !ANIMALS[predictedLoser].onVictoryCheck(players)
+      );
+    },
+  },
+  CHEETAH: {
+    id: "CHEETAH",
+    type: "PREDATOR",
+    name: "치타",
+    mainHabitat: "FIELD",
+    maximumStarvingCount: 3,
+    peekingCount: 1,
+    rank: 4,
+    unacceptableBiomes: ["SKY"],
+    onVictoryCheck: (players) => {
+      const cheetah = players.find((player) => player.role === "CHEETAH");
+      const predators = players.filter(
+        (player) => player.role && ANIMALS[player.role].type === "PREDATOR"
+      );
+      return (
+        cheetah?.status === "DEAD" &&
+        predators.filter((predator) => predator.status === "DEAD").length >= 5
+      );
+    },
+  },
+  CAPYBARA: {
+    id: "CAPYBARA",
+    type: "PREY",
+    name: "카피바라",
+    mainHabitat: "RIVER",
+    maximumStarvingCount: 4,
+    peekingCount: 1,
+    rank: 5,
+    unacceptableBiomes: ["SKY"],
+    onVictoryCheck: (players) => {
+      const capybara = players.find((player) => player.role === "CAPYBARA");
+      return (capybara?.contactedAnimalCount ?? 0) >= players.length / 2;
     },
   },
 };

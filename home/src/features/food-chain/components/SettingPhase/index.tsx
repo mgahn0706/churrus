@@ -209,7 +209,7 @@ const AnimalSelectListItem = ({
 }: AnimalSelectListItemProps) => (
   <Grid
     item
-    xs={6}
+    xs={4}
     key={animal.id}
     onClick={onClick}
     sx={{

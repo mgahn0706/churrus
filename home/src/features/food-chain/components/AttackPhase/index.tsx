@@ -161,7 +161,11 @@ const AttackerInput = ({
           {playerStatus.map((player) => (
             <Grid item xs={4} key={player.id}>
               <PlayerPanel
-                disabled={player.status !== "ALIVE" || player.role === "SNAKE"}
+                disabled={
+                  player.status !== "ALIVE" ||
+                  player.role === "SNAKE" ||
+                  player.role === "RATTLESNAKE"
+                }
                 onClick={() => {
                   onSelect(player.id);
                   setIsDrawerOpen(false);
@@ -176,11 +180,13 @@ const AttackerInput = ({
                     죽음
                   </Typography>
                 )}
-                {player.status === "ALIVE" && player.role === "SNAKE" && (
-                  <Typography fontSize="12px" color="#a80e0a">
-                    뱀은 공격 불가
-                  </Typography>
-                )}
+                {player.status === "ALIVE" &&
+                  (player.role === "SNAKE" ||
+                    player.role === "RATTLESNAKE") && (
+                    <Typography fontSize="12px" color="#a80e0a">
+                      뱀은 공격 불가
+                    </Typography>
+                  )}
               </PlayerPanel>
             </Grid>
           ))}

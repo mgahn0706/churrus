@@ -2,32 +2,18 @@ import { KOREAN_NOUNS } from "@/fixtures/koreanNounList";
 
 const Hangul = require("hangul-js");
 
-const RotateMap: Record<string, string> = {
-  ㄱ: "ㄴ",
-  ㄹ: "ㄹ",
-  ㅁ: "ㅁ",
-  ㅇ: "ㅇ",
-  ㅍ: "ㅍ",
-  ㅏ: "ㅓ",
-  ㅑ: "ㅕ",
-  ㅗ: "ㅜ",
-  ㅛ: "ㅠ",
-  ㅡ: "ㅡ",
-  ㅣ: "ㅣ",
-  ㅐ: "ㅐ",
-};
+const answerWords = ["리얼딸기라떼", "국립서울대학교", "두루미"];
+
+const letter = answerWords.map((word) => word.split("")).flat();
 
 Array.from(KOREAN_NOUNS).forEach((noun) => {
-  const rotatedNoun = Hangul.disassemble(noun)
-    .map((letter: string) => RotateMap[letter])
-    .reverse();
-  if (rotatedNoun.some((letter: string) => !letter)) {
+  if (noun.length < 3) {
     return;
   }
 
-  const assembled = Hangul.assemble(rotatedNoun);
-  if (KOREAN_NOUNS.has(assembled)) {
-    console.log(noun, assembled);
-    return;
+  const isAllInAnswer = noun.split("").every((char) => letter.includes(char));
+  if (isAllInAnswer) {
+    console.log(noun);
   }
+  return;
 });

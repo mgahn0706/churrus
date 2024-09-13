@@ -1,5 +1,6 @@
 <svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<rect width="200" height="200" rx="30" fill="#2C763B"/>
+<rect width="200" height="200" rx="30" fill="#17A391"/>
+<rect width="200" height="200" rx="30" fill="#17A391"/>
 <mask id="mask0_537_58" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="30" y="56" width="140" height="89">
 <rect x="30" y="56" width="140" height="88.7805" fill="url(#pattern0_537_58)"/>
 </mask>

@@ -7,11 +7,12 @@ import {
   Chip,
   Drawer,
   Grid,
+  IconButton,
   Typography,
 } from "@mui/material";
 import { BIOMES } from "../../fixtures/biome";
 import { AnimalId, BiomeId } from "../../types";
-import { ChevronRightRounded } from "@mui/icons-material";
+import { ChevronRightRounded, CloseRounded } from "@mui/icons-material";
 import { ANIMALS } from "../../fixtures/animal";
 
 interface MoveBiomePhaseProps {
@@ -187,9 +188,14 @@ const MoveBiomeInputDrawer = ({
 
   return (
     <Drawer anchor="bottom" open={!!biomeId} onClose={onClose}>
-      <Typography color="#121212" fontSize="24px" fontWeight={500} p={2}>
-        {BIOMES[biomeId ?? "FIELD"].name}
-      </Typography>
+      <Box display="flex" justifyContent="space-between" alignItems="center">
+        <Typography color="#121212" fontSize="24px" fontWeight={500} p={2}>
+          {BIOMES[biomeId ?? "FIELD"].name}
+        </Typography>
+        <IconButton onClick={onClose}>
+          <CloseRounded />
+        </IconButton>
+      </Box>
       <Grid container p={2} spacing={2}>
         {playerStatus.map((player) => {
           const isSelected = player.biomeHistory[round - 1] === biomeId;

@@ -4,6 +4,14 @@ import { AnimalId } from "../types";
 
 const MAYBE_INVINCIBLE_PREYS: AnimalId[] = ["MALLARD", "HARE", "DEER", "OTTER"];
 
+const MAYBE_INVINCIBLE_PREYS_EXPANDED: AnimalId[] = [
+  "SHEEP",
+  "PLATYPUS",
+  "FLYING_SQUIRREL",
+];
+
+const PROTECTING_PREYS: AnimalId[] = ["ARMADILLO", "TURTLE", "LIZARD"];
+
 export default function useExecuteAttack({
   attackerId,
   defenderId,
@@ -37,10 +45,16 @@ export default function useExecuteAttack({
       };
     }
 
-    if (defender.role === "SNAKE") {
+    if (defender.role === "SNAKE" || defender.role === "RATTLESNAKE") {
       killPlayer(attacker.id);
       return {
         message: `${attacker.name}님 사망`,
+      };
+    }
+
+    if (defender.protectedRound === round) {
+      return {
+        message: "아무 일도 일어나지 않았습니다. (보호)",
       };
     }
 
@@ -62,6 +76,26 @@ export default function useExecuteAttack({
         };
       }
     }
+
+    if (MAYBE_INVINCIBLE_PREYS_EXPANDED.includes(defender.role)) {
+      const invinciblePlayers = playerStatus.filter(
+        (player) =>
+          player.role &&
+          MAYBE_INVINCIBLE_PREYS_EXPANDED.includes(player.role) &&
+          player.status === "ALIVE"
+      );
+      const isInAllSameBiome = invinciblePlayers.every(
+        (player) =>
+          player.biomeHistory[round - 1] === attacker.biomeHistory[round - 1]
+      );
+
+      if (isInAllSameBiome) {
+        return {
+          message: "아무 일도 일어나지 않았습니다. (무적)",
+        };
+      }
+    }
+
     if (ANIMALS[attacker.role].rank === ANIMALS[defender.role].rank) {
       return {
         message: "아무 일도 일어나지 않았습니다.",
@@ -69,7 +103,32 @@ export default function useExecuteAttack({
     }
 
     if (ANIMALS[attacker.role].rank < ANIMALS[defender.role].rank) {
-      eatPlayer(attacker.id, defender.id, round);
+      if (
+        PROTECTING_PREYS.includes(defender.role) &&
+        !defender.protectedRound
+      ) {
+        return {
+          message: "아무 일도 일어나지 않았습니다. (보호)",
+        };
+      }
+
+      const getEatenPlayerId = () => {
+        if (defender.role === "HEN_PHEASANT") {
+          const cock = playerStatus.find(
+            (player) => player.role === "COCK_PHEASANT"
+          );
+          return cock?.status === "ALIVE" ? cock.id : defender.id;
+        }
+        if (defender.role === "COCK_PHEASANT") {
+          const hen = playerStatus.find(
+            (player) => player.role === "HEN_PHEASANT"
+          );
+          return hen?.status === "ALIVE" ? hen.id : defender.id;
+        }
+        return defender.id;
+      };
+
+      eatPlayer(attacker.id, getEatenPlayerId(), round);
       return {
         message: `${defender.name}님 사망`,
       };
