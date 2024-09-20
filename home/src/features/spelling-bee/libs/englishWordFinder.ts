@@ -2,18 +2,48 @@ import { KOREAN_NOUNS } from "@/fixtures/koreanNounList";
 
 const Hangul = require("hangul-js");
 
-const answerWords = ["리얼딸기라떼", "국립서울대학교", "두루미"];
+const lyrics =
+  "네가 없이 웃을 수 있을까 생각만 해도 눈물이 나 힘든 시간 날 지켜준 사람 이제는 내가 그댈 지킬 테니 너의 품은 항상 따뜻했어 고단했던 나의 하루에 유일한 휴식처 나는 너 하나로 충분해 긴 말 안 해도 눈빛으로 다 아니깐 한 송이의 꽃이 피고 지는 모든 날 모든 순간 함께해 햇살처럼 빛나고 있었지 나를 보는 네 눈빛은 꿈이라고 해도 좋을 만큼 그 모든 순간은 눈부셨다 불안했던 나의 고된 삶에 한줄기 빛처럼 다가와 날 웃게 해준 너 나는 너 하나로 충분해 긴 말 안 해도 눈빛으로 다 아니깐 한 송이의 꽃이 피고 지는 모든 날 모든 순간 함께해 알 수 없는 미래지만 네 품속에 있는 지금 순간 순간이 영원했으면 해 갈게 바람이 좋은 날에 햇살 눈부신 어떤 날에 너에게로 처음 내게 왔던 그날처럼 모든 날 모든 순간 함께해";
 
-const letter = answerWords.map((word) => word.split("")).flat();
+const question =
+  "이 노래를 부른 가수는 누구일까요? 힌트: 이 노래는 발라드입니다.";
 
-Array.from(KOREAN_NOUNS).forEach((noun) => {
-  if (noun.length < 3) {
-    return;
+const JaeumMap: Record<string, string> = {
+  ㄱ: "ㅁ",
+  ㄴ: "ㄱ",
+  ㄷ: "ㅇ",
+  ㄹ: "ㄴ",
+  ㅁ: "ㅎ",
+  ㅂ: "ㄹ",
+  ㅅ: "ㅂ",
+  ㅇ: "ㅅ",
+  ㅈ: "ㅌ",
+  ㅊ: "ㄷ",
+  ㅋ: "ㅊ",
+  ㅌ: "ㅍ",
+  ㅍ: "ㅋ",
+  ㅎ: "ㅈ",
+  ㄲ: "ㅆ",
+  ㄸ: "ㅉ",
+  ㅃ: "ㄸ",
+  ㅉ: "ㅃ",
+  ㅆ: "ㄲ",
+};
+
+const changed = Hangul.disassemble(lyrics).map((char: string) => {
+  if (JaeumMap[char]) {
+    return JaeumMap[char];
   }
-
-  const isAllInAnswer = noun.split("").every((char) => letter.includes(char));
-  if (isAllInAnswer) {
-    console.log(noun);
-  }
-  return;
+  return char;
 });
+
+console.log(Hangul.assemble(changed));
+
+const changedQ = Hangul.disassemble(question).map((char: string) => {
+  if (JaeumMap[char]) {
+    return JaeumMap[char];
+  }
+  return char;
+});
+
+console.log(Hangul.assemble(changedQ));
