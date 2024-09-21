@@ -1066,13 +1066,13 @@ export const CONNECTIONS2024: ConnectionsType[] = [
     week: 52,
     quiz: [
       {
-        words: ['김치','된장','비지','동태'],
-        description: '___ 찌개',
+        words: ["김치", "된장", "비지", "동태"],
+        description: "___ 찌개",
       },
       {
-        words: ['보이드','널','제로','프리'],
-        description: '없다는 뜻을 가지고 있는 단어',
-      }
+        words: ["보이드", "널", "제로", "프리"],
+        description: "없다는 뜻을 가지고 있는 단어",
+      },
       {
         words: ["부대", "데이", "지옥", "가수"],
         description: "솔로 ___",
