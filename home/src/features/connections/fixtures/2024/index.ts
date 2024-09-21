@@ -1020,4 +1020,67 @@ export const CONNECTIONS2024: ConnectionsType[] = [
       },
     ],
   },
+  {
+    week: 50,
+    quiz: [
+      {
+        words: ["정원", "숲", "공원", "밭"],
+        description: "식물이 자라는 곳",
+      },
+      {
+        words: ["풀", "배추", "고춧가루", "소금"],
+        description: "과일",
+      },
+      {
+        words: ["들", "돼지", "참", "개"],
+        description: "___기름",
+      },
+      {
+        words: ["게", "굴", "미역", "키조개"],
+        description: "바다에서 나는 것",
+      },
+    ],
+  },
+  {
+    week: 51,
+    quiz: [
+      {
+        words: ["애플", "삼성", "엘지", "구글"],
+        description: "IT 기업",
+      },
+      {
+        words: ["쿡", "로스트", "다이스", "콩까쎼"],
+        description: "음식 조리법 용어",
+      },
+      {
+        words: ["표준", "메타", "형식", "기호"],
+        description: "___논리학",
+      },
+      {
+        words: ["나이트", "호텔", "이브", "게임"],
+        description: "메스커레이드 시리즈(히가시노 게이고)",
+      },
+    ],
+  },
+  {
+    week: 52,
+    quiz: [
+      {
+        words: ['김치','된장','비지','동태'],
+        description: '___ 찌개',
+      },
+      {
+        words: ['보이드','널','제로','프리'],
+        description: '없다는 뜻을 가지고 있는 단어',
+      }
+      {
+        words: ["부대", "데이", "지옥", "가수"],
+        description: "솔로 ___",
+      },
+      {
+        words: ["인플루언서", "지니어스", "보이즈", "존"],
+        description: "더 ___ (프로그램)",
+      },
+    ],
+  },
 ];
