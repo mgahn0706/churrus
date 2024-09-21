@@ -1,6 +1,48 @@
 import { QuizType } from "../../types";
 
 export const QuizData: Record<string, QuizType[]> = {
+  "2024-OT": [
+    {
+      id: "2024-OT-1",
+      meetingId: "2024-OT",
+      quizNumber: 1,
+      title: "채우고 싶은 충동",
+      creator: "김태연",
+      quizImageSource: "/image/quiz/2024-OT-1.png",
+      answer: "샤",
+      tags: ["EASY", "ENIGMATIC"],
+    },
+    {
+      id: "2024-OT-2",
+      meetingId: "2024-OT",
+      quizNumber: 2,
+      title: "내 시간표 괜찮아?",
+      creator: "안민규",
+      quizImageSource: "/image/quiz/2024-OT-2.png",
+      answer: "학",
+      tags: ["PUZZLE"],
+    },
+    {
+      id: "2024-OT-3",
+      meetingId: "2024-OT",
+      quizNumber: 3,
+      title: "엘리베이터 수리",
+      creator: "김현준",
+      quizImageSource: "/image/quiz/2024-OT-3.png",
+      answer: "느티나무",
+      tags: ["EASY", "LATERAL_THINKING"],
+    },
+    {
+      id: "2024-OT-4",
+      meetingId: "2024-OT",
+      quizNumber: 4,
+      title: "글자야구 특명",
+      creator: "김태연",
+      quizImageSource: "/image/quiz/2024-OT-4.png",
+      answer: "CHURRUS",
+      tags: ["PUZZLE"],
+    },
+  ],
   "2024-8": [
     {
       id: "2024-8-1",
