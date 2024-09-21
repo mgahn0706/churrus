@@ -36,7 +36,7 @@ export const MEETINGS: Record<string, MeetingType> = {
       month: 9,
     },
     title: "2024년 2학기 OT",
-    quizIds: ["2024-OT-1", "2024-OT-2", "2024-OT-3"],
+    quizIds: ["2024-OT-1", "2024-OT-2", "2024-OT-3", "2024-OT-4"],
   },
   "2019-9": {
     id: "2019-9",
