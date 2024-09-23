@@ -1,6 +1,68 @@
 import { QuizType } from "../../types";
 
 export const QuizData: Record<string, QuizType[]> = {
+  "2020-MT": [
+    {
+      id: "2020-MT-1",
+      meetingId: "2020-MT",
+      quizNumber: 1,
+      title: "네번째 살해장소를 찾아라!",
+      creator: "이경희",
+      quizImageSource: "/image/quiz/2020-MT-1.png",
+      answer: null,
+      tags: ["EASY", "ADVENTURE"],
+    },
+    {
+      id: "2020-MT-2",
+      meetingId: "2020-MT",
+      quizNumber: 2,
+      title: "산업스파이",
+      creator: "안준영",
+      quizImageSource: "/image/quiz/2020-MT-2.png",
+      answer: "3732997",
+      tags: ["ADVENTURE"],
+    },
+    {
+      id: "2020-MT-3",
+      meetingId: "2020-MT",
+      quizNumber: 3,
+      title: "사당역 탐정사무소의 위치는?",
+      creator: "이경희",
+      quizImageSource: "/image/quiz/2020-MT-3.png",
+      answer: "사당동1031-27",
+      tags: ["ADVENTURE"],
+    },
+    {
+      id: "2020-MT-4",
+      meetingId: "2020-MT",
+      quizNumber: 4,
+      title: "오늘 일정",
+      creator: "이유빈",
+      quizImageSource: "/image/quiz/2020-MT-4.png",
+      answer: "상수역",
+      tags: ["ADVENTURE"],
+    },
+    {
+      id: "2020-MT-5",
+      meetingId: "2020-MT",
+      quizNumber: 5,
+      title: "거울나라 초대장",
+      creator: "이지원",
+      quizImageSource: "/image/quiz/2020-MT-5.png",
+      answer: "국립중앙박물관",
+      tags: ["ADVENTURE", "ONLY_FOR_MEEING", "HARD"],
+    },
+    {
+      id: "2020-MT-6",
+      meetingId: "2020-MT",
+      quizNumber: 6,
+      title: "아이낮잠",
+      creator: "고재준",
+      quizImageSource: "/image/quiz/2020-MT-6.png",
+      answer: "홍대개미",
+      tags: ["ADVENTURE"],
+    },
+  ],
   "2024-OT": [
     {
       id: "2024-OT-1",

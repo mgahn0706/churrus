@@ -24,6 +24,7 @@ export const MEETING_IDS = [
   "2022-7",
   "2022-6",
   "2020-1",
+  "2020-MT",
   "2019-11",
   "2019-9",
 ] as const;
@@ -37,6 +38,23 @@ export const MEETINGS: Record<string, MeetingType> = {
     },
     title: "2024년 2학기 OT",
     quizIds: ["2024-OT-1", "2024-OT-2", "2024-OT-3", "2024-OT-4"],
+  },
+  "2020-MT": {
+    id: "2020-MT",
+    date: {
+      year: 2020,
+      month: 1,
+    },
+    title: "추링맨",
+    subtitle: "2020년 겨울 대이동",
+    quizIds: [
+      "2020-MT-1",
+      "2020-MT-2",
+      "2020-MT-3",
+      "2020-MT-4",
+      "2020-MT-5",
+      "2020-MT-6",
+    ],
   },
   "2019-9": {
     id: "2019-9",
