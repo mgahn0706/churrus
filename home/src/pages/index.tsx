@@ -1,7 +1,6 @@
 import { Box, Button, Card, CardActionArea, Typography } from "@mui/material";
 import GlobalHeader from "@/components/Navigation/GlobalHeader";
 
-import MainBanner from "@/features/home/components/MainBanner";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { ArrowForward, ArrowForwardIos, Search } from "@mui/icons-material";
