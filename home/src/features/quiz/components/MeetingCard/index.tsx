@@ -60,12 +60,8 @@ export default function MeetingCard({
           className="meeting-card-image"
           width={(imageHeight * 16) / 9}
           height={imageHeight}
-          src={meeting.imageSource ?? QuizData[meetingId][0].quizImageSource}
+          src={meeting.imageSource ?? "/image/quiz/meeting/default.png"}
           alt={meeting.title}
-          style={{
-            paddingRight: `${size === "small" ? 4 : 12}px`,
-            borderRadius: `${size === "small" ? "4px" : "12px"}px`,
-          }}
         />
       </Box>
       <Box

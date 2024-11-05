@@ -40,6 +40,7 @@ export const MEETINGS: Record<string, MeetingType> = {
     },
     title: "춘식이의 대학 생활",
     subtitle: "2024년 10월 정기모임",
+    imageSource: "/image/quiz/meeting/2024-10.png",
     quizIds: [
       "2024-10-1",
       "2024-10-2",
@@ -58,6 +59,7 @@ export const MEETINGS: Record<string, MeetingType> = {
     },
     title: "스포츠",
     subtitle: "2024년 9월 정기모임",
+    imageSource: "/image/quiz/meeting/2024-9.png",
     quizIds: [
       "2024-9-1",
       "2024-9-2",
@@ -75,10 +77,12 @@ export const MEETINGS: Record<string, MeetingType> = {
       month: 9,
     },
     title: "2024년 2학기 OT",
+    imageSource: "/image/quiz/meeting/2024-OT.png",
     quizIds: ["2024-OT-1", "2024-OT-2", "2024-OT-3", "2024-OT-4"],
   },
   "2020-MT": {
     id: "2020-MT",
+    imageSource: "/image/quiz/meeting/2020-MT.png",
     date: {
       year: 2020,
       month: 1,
@@ -183,6 +187,7 @@ export const MEETINGS: Record<string, MeetingType> = {
     },
     title: "토끼를 찾아라",
     subtitle: "2022 여름 대이동",
+    imageSource: "/image/quiz/meeting/2022-8.png",
     quizIds: [
       "2022-8-1",
       "2022-8-2",
@@ -210,6 +215,7 @@ export const MEETINGS: Record<string, MeetingType> = {
     },
     title: "달나라 너머",
     subtitle: "2022년 11월 정기모임",
+    imageSource: "/image/quiz/meeting/2022-11.png",
     quizIds: [
       "2022-11-1",
       "2022-11-2",
@@ -233,6 +239,7 @@ export const MEETINGS: Record<string, MeetingType> = {
   "2023-1-1": {
     subtitle: "2023년 1월 1차 정기모임",
     title: "토끼와 거북이",
+    imageSource: "/image/quiz/meeting/2023-1-1.png",
     id: "2023-1-1",
     date: {
       year: 2023,
@@ -253,6 +260,7 @@ export const MEETINGS: Record<string, MeetingType> = {
   "2023-2": {
     subtitle: "2023 겨울 대이동",
     title: "스폰지밥을 찾아서",
+    imageSource: "/image/quiz/meeting/2023-2.png",
     id: "2023-2",
     date: {
       year: 2023,
@@ -289,6 +297,7 @@ export const MEETINGS: Record<string, MeetingType> = {
   "2023-4": {
     subtitle: "2023년 4월 정기모임",
     title: "게임 속 여행",
+    imageSource: "/image/quiz/meeting/2023-4.png",
     id: "2023-4",
     date: {
       year: 2023,
@@ -307,7 +316,7 @@ export const MEETINGS: Record<string, MeetingType> = {
   },
   "2023-6": {
     title: "2023년 6월 정기모임",
-
+    imageSource: "/image/quiz/meeting/2023-6.png",
     id: "2023-6",
     date: {
       year: 2023,
@@ -317,6 +326,7 @@ export const MEETINGS: Record<string, MeetingType> = {
   },
   "2023-8": {
     title: "2023 여름 대이동",
+    imageSource: "/image/quiz/meeting/2023-8.png",
     id: "2023-8",
     date: {
       year: 2023,
@@ -354,6 +364,7 @@ export const MEETINGS: Record<string, MeetingType> = {
   "2023-11": {
     subtitle: "2023년 11월 정기모임",
     title: "일찍 온 크리스마스",
+    imageSource: "/image/quiz/meeting/2023-11.png",
     id: "2023-11",
     date: {
       year: 2023,
@@ -376,6 +387,7 @@ export const MEETINGS: Record<string, MeetingType> = {
     subtitle: "2024년 1월 정기모임",
     title: "과자나라의 역사를 찾아서",
     id: "2024-1",
+    imageSource: "/image/quiz/meeting/2024-1.png",
     date: {
       year: 2024,
       month: 1,
@@ -388,6 +400,7 @@ export const MEETINGS: Record<string, MeetingType> = {
       year: 2024,
       month: 2,
     },
+    imageSource: "/image/quiz/meeting/2024-2.png",
     title: "2024 겨울 대이동",
     quizIds: [
       "2024-2-1",
@@ -404,6 +417,7 @@ export const MEETINGS: Record<string, MeetingType> = {
   "2024-3": {
     title: "2024년 1학기 OT",
     id: "2024-3",
+    imageSource: "/image/quiz/meeting/2024-3.png",
     date: {
       year: 2024,
       month: 3,
@@ -413,6 +427,7 @@ export const MEETINGS: Record<string, MeetingType> = {
   "2024-4": {
     title: "2024년 4월 정기모임",
     id: "2024-4",
+    imageSource: "/image/quiz/meeting/2024-4.png",
     date: {
       year: 2024,
       month: 4,
@@ -432,6 +447,7 @@ export const MEETINGS: Record<string, MeetingType> = {
     subtitle: "2024년 5월 정기모임",
     title: "요리책",
     id: "2024-5",
+    imageSource: "/image/quiz/meeting/2024-5.png",
     date: {
       year: 2024,
       month: 5,
@@ -450,6 +466,7 @@ export const MEETINGS: Record<string, MeetingType> = {
     subtitle: "2024년 6월 정기모임",
     title: "보드게임",
     id: "2024-6",
+    imageSource: "/image/quiz/meeting/2024-6.png",
     date: {
       year: 2024,
       month: 6,
@@ -470,6 +487,7 @@ export const MEETINGS: Record<string, MeetingType> = {
     title: "지구에 불시착한 선발대",
     subtitle: "2024 여름 대이동",
     id: "2024-8",
+    imageSource: "/image/quiz/meeting/2024-8.png",
     date: {
       year: 2024,
       month: 8,

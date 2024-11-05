@@ -100,25 +100,26 @@ export default function MeetingPage() {
             display="flex"
             position="absolute"
             width={1}
-            pt={2}
             height={1}
+            pt={1}
             borderRadius="0 0 12px 12px"
-            px={[0, 0, 3]}
             sx={{
               backdropFilter: "blur(12px)",
               background:
                 "linear-gradient(180deg, rgba(255,255,255,0) 7%, rgba(255,255,255,1) 90%, rgba(255,255,255,1) 100%)",
             }}
           >
-            <Typography color="#606B80" fontSize="12px" mb={1}>
-              {meeting.subtitle}
-            </Typography>
-            <Typography fontWeight="bold" fontSize="24px">
-              {meeting.title}
-            </Typography>
-            <Typography color="#606B80" fontSize="16px" mb={2}>
-              {creators.join(", ")}
-            </Typography>
+            <Box display="flex" flexDirection="column" px={[0, 0, 3]}>
+              <Typography color="#606B80" fontSize="12px" mb={1}>
+                {meeting.subtitle}
+              </Typography>
+              <Typography fontWeight="bold" fontSize="24px">
+                {meeting.title}
+              </Typography>
+              <Typography color="#606B80" fontSize="16px" mb={2}>
+                {creators.join(", ")}
+              </Typography>
+            </Box>
           </Box>
         </Box>
         <Box
