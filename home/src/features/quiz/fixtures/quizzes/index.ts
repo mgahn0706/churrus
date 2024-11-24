@@ -1,6 +1,68 @@
 import { QuizType } from "../../types";
 
 export const QuizData: Record<string, QuizType[]> = {
+  "2024-11": [
+    {
+      id: "2024-11-1",
+      meetingId: "2024-11",
+      quizNumber: 1,
+      title: "비트 찍기",
+      creator: "안민규",
+      quizImageSource: "/image/quiz/2024-11-1.png",
+      answer: "CHILL KILL",
+      tags: ["ENIGMATIC"],
+    },
+    {
+      id: "2024-11-2",
+      meetingId: "2024-11",
+      quizNumber: 2,
+      title: "도움!",
+      creator: "안민규",
+      quizImageSource: "/image/quiz/2024-11-2.png",
+      answer: "이별길",
+      tags: ["EASY", "KNOWLEDGE"],
+    },
+    {
+      id: "2024-11-3",
+      meetingId: "2024-11",
+      quizNumber: 3,
+      title: "시간을 달려서",
+      creator: "안민규",
+      quizImageSource: "/image/quiz/2024-11-3.png",
+      answer: "오르트 구름",
+      tags: ["HARD", "KNOWLEDGE"],
+    },
+    {
+      id: "2024-11-4",
+      meetingId: "2024-11",
+      quizNumber: 4,
+      title: "어쩜 이다지도 다를까",
+      creator: "안민규",
+      quizImageSource: "/image/quiz/2024-11-4.png",
+      answer: "사건의 지평선",
+      tags: ["ENIGMATIC", "KNOWLEDGE"],
+    },
+    {
+      id: "2024-11-5",
+      meetingId: "2024-11",
+      quizNumber: 5,
+      title: "가사 공식",
+      creator: "안민규",
+      quizImageSource: "/image/quiz/2024-11-5.png",
+      answer: "486",
+      tags: ["META", "KNOWLEDGE"],
+    },
+    {
+      id: "2024-11-6",
+      meetingId: "2024-11",
+      quizNumber: 6,
+      title: "크립틱 발라드",
+      creator: "안민규",
+      quizImageSource: "/image/quiz/2024-11-6.png",
+      answer: "폴킴",
+      tags: ["ENIGMATIC", "PUZZLE", "WORD"],
+    },
+  ],
   "2024-10": [
     {
       id: "2024-10-1",

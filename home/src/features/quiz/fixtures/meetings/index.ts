@@ -32,6 +32,24 @@ export const MEETING_IDS = [
 ] as const;
 
 export const MEETINGS: Record<string, MeetingType> = {
+  "2024-11": {
+    id: "2024-11",
+    date: {
+      year: 2024,
+      month: 11,
+    },
+    title: "Playlist",
+    subtitle: "2024년 11월 정기모임",
+    imageSource: "/image/quiz/meeting/2024-11.png",
+    quizIds: [
+      "2024-11-1",
+      "2024-11-2",
+      "2024-11-3",
+      "2024-11-4",
+      "2024-11-5",
+      "2024-11-6",
+    ],
+  },
   "2024-10": {
     id: "2024-10",
     date: {
