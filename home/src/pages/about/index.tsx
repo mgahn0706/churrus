@@ -120,7 +120,7 @@ export default function ChurrusMain() {
             </Typography>
             <Typography
               mt={2}
-              variant="h2"
+              fontSize="52px"
               component="div"
               fontWeight={600}
               fontFamily="NanumSquareB"
@@ -134,7 +134,7 @@ export default function ChurrusMain() {
             </Typography>
             <Typography
               mt={2}
-              variant="h6"
+              fontSize="18px"
               component="div"
               fontWeight={600}
               fontFamily="NanumSquareB"
@@ -161,7 +161,7 @@ export default function ChurrusMain() {
             </Typography>
             <Typography
               mt={2}
-              variant="h2"
+              fontSize="52px"
               component="div"
               fontWeight={600}
               fontFamily="NanumSquareB"
@@ -175,7 +175,7 @@ export default function ChurrusMain() {
             </Typography>
             <Typography
               mt={2}
-              variant="h6"
+              fontSize="18px"
               component="div"
               fontWeight={600}
               fontFamily="NanumSquareB"
@@ -202,7 +202,7 @@ export default function ChurrusMain() {
             </Typography>
             <Typography
               mt={2}
-              variant="h2"
+              fontSize="52px"
               component="div"
               fontWeight={600}
               fontFamily="NanumSquareB"
@@ -212,11 +212,11 @@ export default function ChurrusMain() {
               lineHeight={1.5}
             >
               진짜 추리를 좋아하는 사람과 읽는 <br />
-              진짜 추리소설
+              진짜 추리소설.
             </Typography>
             <Typography
               mt={2}
-              variant="h6"
+              fontSize="18px"
               component="div"
               fontWeight={600}
               fontFamily="NanumSquareB"
@@ -244,7 +244,7 @@ export default function ChurrusMain() {
             </Typography>
             <Typography
               mt={2}
-              variant="h2"
+              fontSize="52px"
               component="div"
               fontWeight={600}
               fontFamily="NanumSquareB"
@@ -258,7 +258,7 @@ export default function ChurrusMain() {
             </Typography>
             <Typography
               mt={2}
-              variant="h6"
+              fontSize="18px"
               component="div"
               fontWeight={600}
               fontFamily="NanumSquareB"
@@ -278,7 +278,7 @@ export default function ChurrusMain() {
           <Box maxWidth="50vw">
             <Typography
               mt={2}
-              variant="h2"
+              fontSize="52px"
               component="div"
               fontWeight={600}
               fontFamily="NanumSquareB"
