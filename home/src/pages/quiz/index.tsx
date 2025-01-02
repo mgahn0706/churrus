@@ -116,7 +116,7 @@ export default function Quiz() {
                       (a, b) => MEETINGS[b].date.month - MEETINGS[a].date.month
                     )
                     .map((meetingId) => (
-                      <Grid item xs={cardXs}>
+                      <Grid item xs={cardXs} key={meetingId}>
                         <MeetingCard meetingId={meetingId} key={meetingId} />
                       </Grid>
                     ))}

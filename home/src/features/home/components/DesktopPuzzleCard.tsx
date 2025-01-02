@@ -18,7 +18,7 @@ export default function DesktopPuzzleCard({
     <CardActionArea
       onClick={onClick}
       sx={{
-        maxWidth: "270px",
+        maxWidth: "240px",
         minHeight: "127px",
         borderRadius: "12px",
       }}
