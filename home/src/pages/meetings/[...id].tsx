@@ -10,6 +10,7 @@ import QuizCard from "@/features/quiz/components/QuizCard";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import Image from "next/image";
 import MeetingCard from "@/features/quiz/components/MeetingCard";
+import GlobalHeader from "@/components/Navigation/GlobalHeader";
 
 const BACKGROUND_COLOR = "#F9FAFC";
 
@@ -42,41 +43,16 @@ export default function MeetingPage() {
       <Head>
         <title>문제적 추러스 : {meeting.title}</title>
       </Head>
+      <GlobalHeader />
       <Box
         height={1}
+        mt={[0, 0, 6]}
         bgcolor={BACKGROUND_COLOR}
         display="flex"
         flexDirection="column"
         minHeight="100vh"
         alignItems="center"
       >
-        <Box
-          display="flex"
-          alignItems="center"
-          height={60}
-          width="100%"
-          left={0}
-          zIndex={3}
-          justifyContent="center"
-          position="fixed"
-          sx={{
-            backdropFilter: "blur(2px)",
-          }}
-        >
-          <Box width="800px">
-            <IconButton
-              size="large"
-              sx={{
-                color: "#212837",
-              }}
-              onClick={() => {
-                router.push(`/quiz`);
-              }}
-            >
-              <CloseRounded />
-            </IconButton>
-          </Box>
-        </Box>
         <Box
           height={["190px", "270px", "300px"]}
           maxWidth="800px"
@@ -109,7 +85,7 @@ export default function MeetingPage() {
                 "linear-gradient(180deg, rgba(255,255,255,0) 7%, rgba(255,255,255,1) 90%, rgba(255,255,255,1) 100%)",
             }}
           >
-            <Box display="flex" flexDirection="column" px={[0, 0, 3]}>
+            <Box display="flex" flexDirection="column" px={3} mt={2}>
               <Typography color="#606B80" fontSize="12px" mb={1}>
                 {meeting.subtitle}
               </Typography>
@@ -160,7 +136,7 @@ export default function MeetingPage() {
                   width="100%"
                 >
                   {QuizData[meeting.id].map((quiz) => (
-                    <Grid item xs={12}>
+                    <Grid item xs={12} key={quiz.id}>
                       <QuizCard
                         quiz={quiz}
                         isSolved={solvedQuizzes.includes(quiz.id)}
