@@ -212,7 +212,7 @@ export default function QuizPage() {
 
         <Box
           width="100%"
-          minHeight={isImageLoading ? 0 : "170px"}
+          minHeight={isImageLoading ? 0 : "900px"}
           sx={{
             aspectRatio: 16 / 9,
           }}
