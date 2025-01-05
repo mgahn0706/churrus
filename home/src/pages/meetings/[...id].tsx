@@ -1,7 +1,6 @@
 import { QuizData } from "@/features/quiz/fixtures/quizzes";
-import { Box, Button, Grid, IconButton, Typography } from "@mui/material";
+import { Box, Button, Grid, Typography } from "@mui/material";
 import { useRouter } from "next/router";
-import { CloseRounded } from "@mui/icons-material";
 
 import Head from "next/head";
 import { MEETINGS, MEETING_IDS } from "@/features/quiz/fixtures/meetings";

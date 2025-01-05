@@ -104,9 +104,7 @@ export default function Churrus() {
       <Head>
         <title>추러스 : 서울대학교 중앙 추리동아리</title>
       </Head>
-
       <GlobalHeader />
-
       <Box
         bgcolor={BACKGROUND_COLOR}
         minWidth="100vw"
