@@ -105,7 +105,7 @@ export default function Connections() {
     KOREAN_CONNECTIONS[connectionDate.year][
       Math.min(
         connectionDate.week - 1,
-        KOREAN_CONNECTIONS[connectionDate.year].length - 1
+        KOREAN_CONNECTIONS[connectionDate.year]?.length - 1 ?? 0
       )
     ];
 
@@ -295,80 +295,91 @@ export default function Connections() {
       </Typography>
       <Divider />
       <ConnectionStepper />
-      <Box display="flex" justifyContent="center" px={5} pb={5} pt={1}>
-        <Grid container justifyContent="center" maxWidth="420px" spacing={1}>
-          {solvedGroups.map((solvedGroupIdx) => {
-            const solvedGroup = selectedConnection.quiz;
-            return (
-              <Grid item xs={12}>
+      {KOREAN_CONNECTIONS[connectionDate.year]?.length === 0 ? (
+        <Box mt={5}>
+          <Typography variant="h6" fontWeight="bold">
+            {connectionDate.year}년 추러스 커넥션은 제작중입니다. 조금만
+            기다려주세요!
+          </Typography>
+        </Box>
+      ) : (
+        <Box display="flex" justifyContent="center" px={5} pb={5} pt={1}>
+          <Grid container justifyContent="center" maxWidth="420px" spacing={1}>
+            {solvedGroups.map((solvedGroupIdx) => {
+              const solvedGroup = selectedConnection.quiz;
+              return (
+                <Grid item xs={12}>
+                  <Box
+                    height="100px"
+                    bgcolor={CONNECTIONS_COLOR[solvedGroupIdx]}
+                    borderRadius="10px"
+                    textAlign="center"
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                    flexDirection="column"
+                  >
+                    <Typography variant="h6" fontWeight="bold">
+                      {solvedGroup[solvedGroupIdx].description}
+                    </Typography>
+                    <Typography variant="h6">
+                      {solvedGroup[solvedGroupIdx].words.join(", ")}
+                    </Typography>
+                  </Box>
+                </Grid>
+              );
+            })}
+
+            {panels.map((panel) => (
+              <Grid item xs={3}>
                 <Box
-                  height="100px"
-                  bgcolor={CONNECTIONS_COLOR[solvedGroupIdx]}
-                  borderRadius="10px"
-                  textAlign="center"
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="center"
-                  flexDirection="column"
+                  bgcolor={
+                    selectedWords.includes(panel) ? "#555555" : "#eeeeee"
+                  }
+                  color={selectedWords.includes(panel) ? "white" : "black"}
+                  sx={{
+                    height: "100px",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    fontSize: "1.5rem",
+                    fontWeight: "bold",
+                    borderRadius: "10px",
+                    maxWidth: "100px",
+                    transition: "all 0.2s ease-in-out",
+                    "&:hover": {
+                      backgroundColor: selectedWords.includes(panel)
+                        ? "#666666"
+                        : "#dddddd",
+                      cursor:
+                        !selectedWords.includes(panel) &&
+                        selectedWords.length === 4
+                          ? "not-allowed"
+                          : "pointer",
+                    },
+                  }}
+                  onClick={() => {
+                    if (selectedWords.includes(panel)) {
+                      setSelectedWords(
+                        selectedWords.filter((word) => word !== panel)
+                      );
+                      return;
+                    }
+                    if (selectedWords.length === 4) {
+                      return;
+                    }
+                    setSelectedWords([...selectedWords, panel]);
+                  }}
                 >
                   <Typography variant="h6" fontWeight="bold">
-                    {solvedGroup[solvedGroupIdx].description}
-                  </Typography>
-                  <Typography variant="h6">
-                    {solvedGroup[solvedGroupIdx].words.join(", ")}
+                    {panel}
                   </Typography>
                 </Box>
               </Grid>
-            );
-          })}
-
-          {panels.map((panel) => (
-            <Grid item xs={3}>
-              <Box
-                bgcolor={selectedWords.includes(panel) ? "#555555" : "#eeeeee"}
-                color={selectedWords.includes(panel) ? "white" : "black"}
-                sx={{
-                  height: "100px",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  fontSize: "1.5rem",
-                  fontWeight: "bold",
-                  borderRadius: "10px",
-                  maxWidth: "100px",
-                  transition: "all 0.2s ease-in-out",
-                  "&:hover": {
-                    backgroundColor: selectedWords.includes(panel)
-                      ? "#666666"
-                      : "#dddddd",
-                    cursor:
-                      !selectedWords.includes(panel) &&
-                      selectedWords.length === 4
-                        ? "not-allowed"
-                        : "pointer",
-                  },
-                }}
-                onClick={() => {
-                  if (selectedWords.includes(panel)) {
-                    setSelectedWords(
-                      selectedWords.filter((word) => word !== panel)
-                    );
-                    return;
-                  }
-                  if (selectedWords.length === 4) {
-                    return;
-                  }
-                  setSelectedWords([...selectedWords, panel]);
-                }}
-              >
-                <Typography variant="h6" fontWeight="bold">
-                  {panel}
-                </Typography>
-              </Box>
-            </Grid>
-          ))}
-        </Grid>
-      </Box>
+            ))}
+          </Grid>
+        </Box>
+      )}
 
       {solvedGroups.length < 4 && (
         <Box width="100vw" display="flex" justifyContent="center">
