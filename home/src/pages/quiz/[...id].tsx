@@ -54,6 +54,7 @@ export default function QuizPage() {
   }
 
   const handleSolvedQuiz = () => {
+    setIsImageLoading(true);
     const solvedQuiz = JSON.parse(localStorage.getItem("quiz") ?? "[]");
     localStorage.setItem("quiz", JSON.stringify([...solvedQuiz, quiz.id]));
     return;
@@ -129,6 +130,7 @@ export default function QuizPage() {
                 <IconButton
                   disabled={quiz.quizNumber === 1}
                   onClick={() => {
+                    setIsImageLoading(true);
                     router.push(
                       `/quiz/${
                         MEETINGS[quiz.meetingId].quizIds[quiz.quizNumber - 2]
@@ -142,13 +144,14 @@ export default function QuizPage() {
                   disabled={
                     quiz.quizNumber === MEETINGS[quiz.meetingId].quizIds.length
                   }
-                  onClick={() =>
+                  onClick={() => {
+                    setIsImageLoading(true);
                     router.push(
                       `/quiz/${
                         MEETINGS[quiz.meetingId].quizIds[quiz.quizNumber]
                       }`
-                    )
-                  }
+                    );
+                  }}
                 >
                   <ChevronRightRounded />
                 </IconButton>
@@ -209,7 +212,7 @@ export default function QuizPage() {
 
         <Box
           width="100%"
-          minHeight="170px"
+          minHeight={isImageLoading ? 0 : "900px"}
           sx={{
             aspectRatio: 16 / 9,
           }}
@@ -239,11 +242,9 @@ export default function QuizPage() {
         {isImageLoading && (
           <Skeleton
             variant="rectangular"
-            width="50vw"
-            height="30vw"
+            width="1200px"
+            height="900px"
             sx={{
-              minWidth: "350px",
-              minHeight: "210px",
               bgcolor: "rgba(255, 255, 255, 0.7)",
             }}
           />

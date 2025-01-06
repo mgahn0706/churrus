@@ -93,7 +93,7 @@ export default function LeftDrawer({
         {Object.entries(leftNavigationMenuItems).map(([key, value]) => {
           return (
             <>
-              <ListItem>
+              <ListItem key={key}>
                 <Typography
                   variant="h4"
                   sx={{

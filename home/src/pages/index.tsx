@@ -13,6 +13,7 @@ import weekOfYear from "dayjs/plugin/weekOfYear";
 import Image from "next/image";
 import DesktopPuzzleCard from "@/features/home/components/DesktopPuzzleCard";
 import { CROSSWORDS } from "@/features/crosswords/fixtures";
+import Head from "next/head";
 
 const WORD_PUZZLE_CONTENTS = [
   {
@@ -100,8 +101,10 @@ export default function Churrus() {
 
   return (
     <>
+      <Head>
+        <title>추러스 : 서울대학교 중앙 추리동아리</title>
+      </Head>
       <GlobalHeader />
-
       <Box
         bgcolor={BACKGROUND_COLOR}
         minWidth="100vw"
