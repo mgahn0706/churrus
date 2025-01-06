@@ -91,7 +91,7 @@ export default function Connections() {
   const [isRuleModalOpen, setIsRuleModalOpen] = useState(false);
   const [triedCount, setTriedCount] = useState([0, 0, 0, 0]);
   const [connectionDate, setConnectionDate] = useState({
-    year: today.get("year"),
+    year: Math.min(today.get("year"), 2024), // 2024년까지만 제작된 커넥션
     week: today.week(),
   });
 
@@ -165,6 +165,7 @@ export default function Connections() {
           <FormControl variant="standard" sx={{ minWidth: 80 }} size="small">
             <Box display="flex" justifyContent="center" width="100%">
               <Select
+                key={connectionDate.year}
                 onChange={(e) => {
                   setConnectionDate({
                     year: Number(e.target.value),
@@ -305,7 +306,13 @@ export default function Connections() {
         </Box>
       ) : (
         <Box display="flex" justifyContent="center" px={5} pb={5} pt={1}>
-          <Grid container justifyContent="center" maxWidth="420px" spacing={1}>
+          <Grid
+            container
+            justifyContent="center"
+            maxWidth="420px"
+            spacing={1}
+            key={connectionDate.week}
+          >
             {solvedGroups.map((solvedGroupIdx) => {
               const solvedGroup = selectedConnection.quiz;
               return (
