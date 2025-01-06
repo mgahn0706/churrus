@@ -143,7 +143,8 @@ export default function Connections() {
               selectedConnection.week === 1
                 ? {
                     year: connectionDate.year - 1,
-                    week: KOREAN_CONNECTIONS[connectionDate.year - 1].length,
+                    week:
+                      KOREAN_CONNECTIONS[connectionDate.year - 1]?.length ?? 1,
                   }
                 : {
                     year: connectionDate.year,
