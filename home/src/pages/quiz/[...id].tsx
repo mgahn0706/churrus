@@ -212,15 +212,14 @@ export default function QuizPage() {
 
         <Box
           width="100%"
-          minHeight={isImageLoading ? 0 : "900px"}
           sx={{
             aspectRatio: 16 / 9,
           }}
-          maxWidth={isImageLoading ? 0 : "1200px"}
-          maxHeight={isImageLoading ? 0 : "900px"}
-          display="flex"
+          display={isImageLoading ? "none" : "flex"}
           justifyContent="center"
           mt={2}
+          maxWidth={1200}
+          maxHeight={675}
           position="relative"
         >
           <Image
@@ -242,10 +241,16 @@ export default function QuizPage() {
         {isImageLoading && (
           <Skeleton
             variant="rectangular"
-            width="1200px"
-            height="900px"
+            animation="wave"
             sx={{
               bgcolor: "rgba(255, 255, 255, 0.7)",
+              aspectRatio: 16 / 9,
+              marginTop: "16px",
+              maxWidth: 1200,
+              maxHeight: 675,
+              borderRadius: "12px",
+              width: "100%",
+              height: "100%",
             }}
           />
         )}
