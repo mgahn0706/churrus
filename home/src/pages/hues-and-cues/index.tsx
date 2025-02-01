@@ -10,7 +10,7 @@ import PlayerScoreSection from "@/features/hues-and-cues/components/PlayerScoreS
 import { NEXT_PHASE } from "@/features/hues-and-cues/fixtures";
 import { getScore } from "@/features/hues-and-cues/libs";
 import { GamePhaseType, PlayerType } from "@/features/hues-and-cues/types";
-import { Box, Slide, ThemeProvider, createTheme } from "@mui/material";
+import { Box, ThemeProvider, createTheme } from "@mui/material";
 import Head from "next/head";
 import { useState } from "react";
 

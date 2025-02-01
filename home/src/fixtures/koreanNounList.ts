@@ -56991,7 +56991,7 @@ export const KOREAN_NOUNS = new Set<string>([
   "매월",
   "매월당",
   "매유",
-  "매유",
+  "매유",
   "매은",
   "매음",
   "매음굴",
