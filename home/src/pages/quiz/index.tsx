@@ -1,12 +1,12 @@
 import GlobalHeader from "@/components/Navigation/GlobalHeader";
 import { QuizData } from "@/features/quiz/fixtures/quizzes";
-import { TaskAltRounded } from "@mui/icons-material";
-import { Box, Grid, Tooltip, Typography } from "@mui/material";
+import { ShuffleOnRounded } from "@mui/icons-material";
+import { Box, Button, Grid, Typography } from "@mui/material";
 import Head from "next/head";
 import { MEETINGS, MEETING_IDS } from "@/features/quiz/fixtures/meetings";
 import MeetingCard from "@/features/quiz/components/MeetingCard";
 import { useResponsiveValue } from "@/hooks/useResponsiveValue";
-import useLocalStorage from "@/hooks/useLocalStorage";
+import { useRouter } from "next/navigation";
 
 const BACKGROUND_COLOR = "#F5F6FA";
 
@@ -25,7 +25,7 @@ const MEETING_CATEGORIZED_BY_YEAR = Object.entries(MEETINGS).reduce(
 export default function Quiz() {
   const cardXs = useResponsiveValue([12, 6, 4]);
 
-  const [solvedQuizzes] = useLocalStorage<string[]>("quiz", []);
+  const router = useRouter();
 
   return (
     <>
@@ -65,28 +65,37 @@ export default function Quiz() {
               >
                 문제적 추러스
               </Typography>
-              <Tooltip title="푼 문제 수">
-                <Box
-                  width="100px"
-                  height="40px"
-                  px="20px"
-                  borderRadius="20px"
-                  display="flex"
-                  bgcolor="#d6e7f8"
-                  alignItems="center"
-                  justifyContent="space-between"
-                >
-                  <TaskAltRounded
-                    sx={{
-                      color: "#318AE1",
-                    }}
-                  />
-                  <Typography fontSize={14} color="#121212" fontWeight={500}>
-                    {solvedQuizzes.length} /{" "}
-                    {Object.values(QuizData).flat().length}
-                  </Typography>
-                </Box>
-              </Tooltip>
+              <Button
+                variant="outlined"
+                style={{
+                  borderRadius: 20,
+                  borderColor: "#e6e8ea",
+                  padding: "4px 8px",
+                }}
+                onClick={() => {
+                  const randomMeetingId =
+                    MEETING_IDS[Math.floor(Math.random() * MEETING_IDS.length)];
+                  const randomQuizId =
+                    QuizData[randomMeetingId][
+                      Math.floor(
+                        Math.random() * QuizData[randomMeetingId].length
+                      )
+                    ].id;
+
+                  router.push(`/quiz/${randomQuizId}`);
+                }}
+              >
+                <ShuffleOnRounded
+                  sx={{
+                    color: "#318ae1",
+                    marginRight: "4px",
+                    width: "15px",
+                  }}
+                />
+                <Typography fontSize={14} color="#4e5968" fontWeight={500}>
+                  랜덤 문제
+                </Typography>
+              </Button>
             </Box>
           </Box>
           {Object.entries(MEETING_CATEGORIZED_BY_YEAR)

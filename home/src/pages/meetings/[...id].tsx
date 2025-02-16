@@ -40,7 +40,7 @@ export default function MeetingPage() {
   return (
     <>
       <Head>
-        <title>문제적 추러스 : {meeting.title}</title>
+        <title>{meeting.title} : 문제적 추러스 </title>
       </Head>
       <GlobalHeader />
       <Box
