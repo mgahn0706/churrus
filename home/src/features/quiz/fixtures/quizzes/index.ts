@@ -2210,7 +2210,7 @@ export const QuizData: Record<string, QuizType[]> = {
       meetingId: "2024-3",
       quizNumber: 1,
       title: "그저 그런 사람",
-      creator: "정해찬",
+      creator: "윤원준",
       quizImageSource: "/image/quiz/2024-3-1.png",
       answer: "꽃",
       tags: ["WORD", "EASY"],
