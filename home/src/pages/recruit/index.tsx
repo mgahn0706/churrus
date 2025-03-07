@@ -44,8 +44,7 @@ export default function RecruitPage() {
             wordBreak: "keep-all",
           }}
         >
-          3/2 ~ 3/9 23:59까지 지원서를 받아요. 지원자가 많으면 조기마감 될 수
-          있어요!
+          지원자가 많이 몰려 3/8 23:59 까지만 지원서를 받아요.
         </Box>
       </Box>
       <Box textAlign="center" py={["100px", "120px", "150px"]} px="10vw">
@@ -71,7 +70,8 @@ export default function RecruitPage() {
               fontWeight: 400,
             }}
           >
-            아래의 버튼을 눌러 지원서를 작성할 수 있어요.
+            아래의 버튼을 눌러 지원서를 작성할 수 있어요. 서울대 계정 로그인
+            필요해요.
           </Box>
           <Button
             sx={{
