@@ -36,7 +36,7 @@ export default function RecruitPage() {
             wordBreak: "keep-all",
           }}
         >
-          추러스 25-1기를 모집하고 있어요
+          추러스 25-1기 모집이 마감되었습니다.
         </Box>
         <Box
           fontSize={isMobileWidth ? "1rem" : "1.5rem"}
@@ -44,7 +44,7 @@ export default function RecruitPage() {
             wordBreak: "keep-all",
           }}
         >
-          지원자가 많이 몰려 3/8 23:59 까지만 지원서를 받아요.
+          25-2기 모집은 2025년 9월에 시작될 예정입니다.
         </Box>
       </Box>
       <Box textAlign="center" py={["100px", "120px", "150px"]} px="10vw">
@@ -70,7 +70,7 @@ export default function RecruitPage() {
               fontWeight: 400,
             }}
           >
-            아래의 버튼을 눌러 지원서를 작성할 수 있어요. 서울대 계정 로그인
+            아래의 버튼을 눌러 지원서를 작성할 수 있어요. 서울대 계정 로그인이
             필요해요.
           </Box>
           <Button
