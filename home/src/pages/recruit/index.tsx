@@ -10,6 +10,7 @@ import {
   Divider,
   Typography,
 } from "@mui/material";
+import Head from "next/head";
 
 const FAQList: Record<string, string> = {
   "추러스는 교내 동아리인가요?":
@@ -26,136 +27,141 @@ const FAQList: Record<string, string> = {
 export default function RecruitPage() {
   const { isMobileWidth } = useMobileWidth();
   return (
-    <Box>
-      <GlobalHeader />
-      <Box bgcolor="#d9efed" py={["100px", "120px", "150px"]} px="10vw">
-        <Box
-          sx={{
-            fontSize: ["2em", "3rem", "3rem"],
-            fontWeight: 700,
-            wordBreak: "keep-all",
-          }}
-        >
-          추러스 25-1기 모집이 마감되었습니다.
-        </Box>
-        <Box
-          fontSize={isMobileWidth ? "1rem" : "1.5rem"}
-          sx={{
-            wordBreak: "keep-all",
-          }}
-        >
-          25-2기 모집은 2025년 9월에 시작될 예정입니다.
-        </Box>
-      </Box>
-      <Box textAlign="center" py={["100px", "120px", "150px"]} px="10vw">
-        <Box
-          sx={{
-            fontSize: ["2em", "3rem", "3rem"],
-            fontWeight: 700,
-          }}
-          mb="20px"
-        >
-          지원 방법
-        </Box>
-
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          flexDirection="column"
-        >
+    <>
+      <Head>
+        <title>지원하기</title>
+      </Head>
+      <Box>
+        <GlobalHeader />
+        <Box bgcolor="#d9efed" py={["100px", "120px", "150px"]} px="10vw">
           <Box
             sx={{
-              fontSize: ["1.5rem", "2rem", "2rem"],
-              fontWeight: 400,
-            }}
-          >
-            아래의 버튼을 눌러 지원서를 작성할 수 있어요. 서울대 계정 로그인이
-            필요해요.
-          </Box>
-          <Button
-            sx={{
-              color: "white",
-              borderRadius: "10px",
-              mt: 4,
-              bgcolor: "#009688",
-              textAlign: "center",
-              px: 4,
-              py: 2,
+              fontSize: ["2em", "3rem", "3rem"],
               fontWeight: 700,
-              "&:hover": {
-                bgcolor: "#00796b",
-              },
-            }}
-            onClick={() => {
-              window.open(
-                "https://forms.gle/Lv6paJck6HmqSCU98",
-                "_blank",
-                "noopener noreferrer"
-              );
+              wordBreak: "keep-all",
             }}
           >
-            지원하기
-          </Button>
+            추러스 25-1기 모집이 마감되었습니다.
+          </Box>
+          <Box
+            fontSize={isMobileWidth ? "1rem" : "1.5rem"}
+            sx={{
+              wordBreak: "keep-all",
+            }}
+          >
+            25-2기 모집은 2025년 9월에 시작될 예정입니다.
+          </Box>
         </Box>
-      </Box>
-      <Divider />
-      <Box textAlign="center" py="150px" px="10vw" bgcolor="#d9efed">
-        <Box
-          display="flex"
-          sx={{
-            fontSize: "2rem",
-            fontWeight: 700,
-          }}
-          mb="20px"
-        >
-          자주 묻는 질문
+        <Box textAlign="center" py={["100px", "120px", "150px"]} px="10vw">
+          <Box
+            sx={{
+              fontSize: ["2em", "3rem", "3rem"],
+              fontWeight: 700,
+            }}
+            mb="20px"
+          >
+            지원 방법
+          </Box>
+
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            flexDirection="column"
+          >
+            <Box
+              sx={{
+                fontSize: ["1.5rem", "2rem", "2rem"],
+                fontWeight: 400,
+              }}
+            >
+              아래의 버튼을 눌러 지원서를 작성할 수 있어요. 서울대 계정 로그인이
+              필요해요.
+            </Box>
+            <Button
+              sx={{
+                color: "white",
+                borderRadius: "10px",
+                mt: 4,
+                bgcolor: "#009688",
+                textAlign: "center",
+                px: 4,
+                py: 2,
+                fontWeight: 700,
+                "&:hover": {
+                  bgcolor: "#00796b",
+                },
+              }}
+              onClick={() => {
+                window.open(
+                  "https://forms.gle/Lv6paJck6HmqSCU98",
+                  "_blank",
+                  "noopener noreferrer"
+                );
+              }}
+            >
+              지원하기
+            </Button>
+          </Box>
         </Box>
-        <Box display="flex" flexDirection="column">
-          {Object.entries(FAQList).map(([question, answer]) => {
-            return (
-              <Accordion
-                key={question}
-                sx={{
-                  width: "80vw",
-                  textAlign: "left",
-                }}
-              >
-                <AccordionSummary
-                  expandIcon={<ExpandMore />}
-                  aria-controls="panel1a-content"
-                  id="panel1a-header"
+        <Divider />
+        <Box textAlign="center" py="150px" px="10vw" bgcolor="#d9efed">
+          <Box
+            display="flex"
+            sx={{
+              fontSize: "2rem",
+              fontWeight: 700,
+            }}
+            mb="20px"
+          >
+            자주 묻는 질문
+          </Box>
+          <Box display="flex" flexDirection="column">
+            {Object.entries(FAQList).map(([question, answer]) => {
+              return (
+                <Accordion
+                  key={question}
                   sx={{
-                    py: 2,
-                    px: 3,
+                    width: "80vw",
+                    textAlign: "left",
                   }}
                 >
-                  <Typography
-                    fontSize={isMobileWidth ? "1.2rem" : "1.5rem"}
-                    fontWeight={500}
-                    textAlign={"left"}
+                  <AccordionSummary
+                    expandIcon={<ExpandMore />}
+                    aria-controls="panel1a-content"
+                    id="panel1a-header"
+                    sx={{
+                      py: 2,
+                      px: 3,
+                    }}
                   >
-                    {question}
-                  </Typography>
-                </AccordionSummary>
-                <AccordionDetails
-                  sx={{
-                    wordBreak: "keep-all",
-                    px: 3,
-                  }}
-                >
-                  <Typography
-                    fontSize={isMobileWidth ? "1rem" : "1.2rem"}
-                    fontWeight={400}
+                    <Typography
+                      fontSize={isMobileWidth ? "1.2rem" : "1.5rem"}
+                      fontWeight={500}
+                      textAlign={"left"}
+                    >
+                      {question}
+                    </Typography>
+                  </AccordionSummary>
+                  <AccordionDetails
+                    sx={{
+                      wordBreak: "keep-all",
+                      px: 3,
+                    }}
                   >
-                    {answer}
-                  </Typography>
-                </AccordionDetails>
-              </Accordion>
-            );
-          })}
+                    <Typography
+                      fontSize={isMobileWidth ? "1rem" : "1.2rem"}
+                      fontWeight={400}
+                    >
+                      {answer}
+                    </Typography>
+                  </AccordionDetails>
+                </Accordion>
+              );
+            })}
+          </Box>
         </Box>
       </Box>
-    </Box>
+    </>
   );
 }
