@@ -62,7 +62,9 @@ export default function QuizPage() {
 
   const handleAnswerSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (inputAnswer === quiz.answer) {
+    const removedSpaces = inputAnswer.replace(/\s/g, "");
+
+    if (removedSpaces === quiz.answer?.replace(/\s/g, "")) {
       window.alert("정답입니다!");
       handleSolvedQuiz();
       router.push(`/quiz/${quiz.id}/answer`);
