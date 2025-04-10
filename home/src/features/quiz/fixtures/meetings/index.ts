@@ -379,6 +379,7 @@ export const MEETINGS: Record<string, MeetingType> = {
   "2023-3": {
     subtitle: "2023년 3월 정기모임",
     title: "2023 추러스 OT",
+    imageSource: "/image/quiz/meeting/2023-3.png",
     id: "2023-3",
     date: {
       year: 2023,
@@ -447,6 +448,7 @@ export const MEETINGS: Record<string, MeetingType> = {
   "2023-9": {
     subtitle: "2023년 9월 정기모임",
     title: "Welcome to CHURRUS",
+    imageSource: "/image/quiz/meeting/2023-9.png",
     id: "2023-9",
     date: {
       year: 2023,
