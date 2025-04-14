@@ -75,7 +75,7 @@ export default function useExecuteAttack({
       };
     }
 
-    killPlayer(attacker.id);
+    eatPlayer(defender.id, attacker.id, round);
     return {
       message: `${attacker.name}님 사망`,
     };
