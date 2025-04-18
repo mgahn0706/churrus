@@ -1,6 +1,68 @@
 import { QuizType } from "../../types";
 
 export const QuizData: Record<string, QuizType[]> = {
+  "2025-4": [
+    {
+      id: "2025-4-1",
+      meetingId: "2025-4",
+      quizNumber: 1,
+      title: "용감한 쿠키",
+      creator: "안민규",
+      quizImageSource: "/image/quiz/2025-4-1.png",
+      answer: "GINGER BREAD",
+      tags: ["EASY", "ENIGMATIC"],
+    },
+    {
+      id: "2025-4-2",
+      meetingId: "2025-4",
+      quizNumber: 2,
+      title: "달빛술사 쿠키",
+      creator: "안민규",
+      quizImageSource: "/image/quiz/2025-4-2.png",
+      answer: "UNDERCOOKED FISH",
+      tags: ["PUZZLE", "DEDUCTION"],
+    },
+    {
+      id: "2025-4-3",
+      meetingId: "2025-4",
+      quizNumber: 3,
+      title: "라일락맛 쿠키",
+      creator: "안민규",
+      quizImageSource: "/image/quiz/2025-4-3.png",
+      answer: "GARLIC NAAN",
+      tags: ["PUZZLE", "WORD", "HARD"],
+    },
+    {
+      id: "2025-4-4",
+      meetingId: "2025-4",
+      quizNumber: 4,
+      title: "딸기크레페맛 쿠키",
+      creator: "안민규",
+      quizImageSource: "/image/quiz/2025-4-4.png",
+      answer: "BAKING SODA",
+      tags: ["PUZZLE", "WORD", "PATTERN"],
+    },
+    {
+      id: "2025-4-5",
+      meetingId: "2025-4",
+      quizNumber: 5,
+      title: "마녀의 주방",
+      creator: "안민규",
+      quizImageSource: "/image/quiz/2025-4-5.png",
+      answer: "COOKIE RUN OVEN BREAK",
+      tags: ["PUZZLE", "WORD", "META"],
+    },
+    {
+      id: "2025-4-6",
+      meetingId: "2025-4",
+      quizNumber: 6,
+      title: "마녀의 오븐",
+      creator: "안민규",
+      quizImageSource: "/image/quiz/2025-4-6.png",
+      answer: "서울대 추리 마스터 추러스",
+      tags: ["EASY", "KNOWLEDGE"],
+    },
+  ],
   "2025-3": [
     {
       id: "2025-3-1",
