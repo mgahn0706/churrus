@@ -10,6 +10,16 @@ import {
   startUpSuspects,
   startUpVictim,
 } from "@/features/suspect/fixtures/startup/suspects";
+import { createTheme, ThemeProvider } from "@mui/material";
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#3B4CCA",
+      contrastText: "#fafafa",
+    },
+  },
+});
 
 export default function Startup() {
   const startUpScenario = scenarios.find(
@@ -20,14 +30,16 @@ export default function Startup() {
     throw new Error("Scenario not found");
   }
   return (
-    <InGameLayout
-      suspects={startUpSuspects}
-      clues={startUpClues}
-      movePlaceButton={startUpMoveButton}
-      victim={startUpVictim}
-      prologue={<StartUpPrologue />}
-      scenario={startUpScenario}
-      additionalQuestions={startupAdditionalQuestions}
-    />
+    <ThemeProvider theme={theme}>
+      <InGameLayout
+        suspects={startUpSuspects}
+        clues={startUpClues}
+        movePlaceButton={startUpMoveButton}
+        victim={startUpVictim}
+        prologue={<StartUpPrologue />}
+        scenario={startUpScenario}
+        additionalQuestions={startupAdditionalQuestions}
+      />
+    </ThemeProvider>
   );
 }
