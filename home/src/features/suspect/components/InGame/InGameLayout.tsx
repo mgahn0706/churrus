@@ -25,6 +25,7 @@ import PasswordInputModal from "./PasswordInputModal";
 import PrologueModal from "./PrologueModal";
 import SuspectsInfoCard from "./SuspectsInfoCard";
 import usePreventUnload from "@/hooks/usePreventUnload";
+import Head from "next/head";
 
 interface InGameLayoutProps {
   clues: ClueType[];
@@ -74,157 +75,164 @@ export default function InGameLayout({
   }
 
   return (
-    <Box>
-      {scenario && (
-        <Image
-          priority
-          src={`/image/map/${scenario.keyword}-${currentPlace}.png`}
-          alt="맵 이미지"
-          fill
-          style={{
-            zIndex: -1,
-          }}
-          onClick={() => {
-            if (
-              !process.env.NODE_ENV ||
-              process.env.NODE_ENV === "development"
-            ) {
-              document.onclick = (e) => {
-                navigator.clipboard.writeText(
-                  `x: ${((100 * e.pageX) / screen.availWidth).toFixed(
-                    3
-                  )}, y: ${((100 * e.pageY) / screen.availHeight).toFixed(3)},`
-                );
-              };
-            }
-          }}
-        />
-      )}
+    <>
+      <Head>
+        <title>협동 서스펙트:{scenario.title}</title>
+      </Head>
+      <Box>
+        {scenario && (
+          <Image
+            priority
+            src={`/image/map/${scenario.keyword}-${currentPlace}.png`}
+            alt="맵 이미지"
+            fill
+            style={{
+              zIndex: -1,
+            }}
+            onClick={() => {
+              if (
+                !process.env.NODE_ENV ||
+                process.env.NODE_ENV === "development"
+              ) {
+                document.onclick = (e) => {
+                  navigator.clipboard.writeText(
+                    `x: ${((100 * e.pageX) / screen.availWidth).toFixed(
+                      3
+                    )}, y: ${((100 * e.pageY) / screen.availHeight).toFixed(
+                      3
+                    )},`
+                  );
+                };
+              }
+            }}
+          />
+        )}
 
-      <MemoButton onClick={() => setOpenedModal("memo")} />
-      {openedModal === "memo" && (
-        <MemoModal
-          scenarioKeyword={scenario.keyword}
-          isOpen={openedModal === "memo"}
-          onClose={() => setOpenedModal(null)}
-          suspects={suspects}
-          questions={additionalQuestions}
-          isAllClueSearched={checkedClueList.length === clues.length}
-        />
-      )}
+        <MemoButton onClick={() => setOpenedModal("memo")} />
+        {openedModal === "memo" && (
+          <MemoModal
+            scenarioKeyword={scenario.keyword}
+            isOpen={openedModal === "memo"}
+            onClose={() => setOpenedModal(null)}
+            suspects={suspects}
+            questions={additionalQuestions}
+            isAllClueSearched={checkedClueList.length === clues.length}
+          />
+        )}
 
-      {openedClue !== null && (
-        <ClueDetailView
-          scenarioKeyword={scenario.keyword}
-          suspects={suspects}
-          clueData={openedClue}
-          id={openedClueId}
+        {openedClue !== null && (
+          <ClueDetailView
+            scenarioKeyword={scenario.keyword}
+            suspects={suspects}
+            clueData={openedClue}
+            id={openedClueId}
+            onClose={() => {
+              if (
+                openedClue.type === "additional" &&
+                typeof openedClue.place !== "string"
+              ) {
+                setOpenedClueId(openedClue.place);
+                return;
+              }
+              setOpenedClueId(null);
+            }}
+          />
+        )}
+        {clues.map((clue) => {
+          return (
+            (clue.place === currentPlace ||
+              (clue.place === openedClueId && clue.type === "additional")) && (
+              <ClueButton
+                key={clue.id}
+                clue={clue}
+                onClick={() => {
+                  if (clue.type === "locked") {
+                    setOpenedModal("password");
+                    setUnlockingClue(clue);
+                    return;
+                  }
+
+                  setOpenedClueId(clue.id);
+                  if (!checkedClueList.includes(clue.id)) {
+                    setCheckedClueList([...checkedClueList, clue.id]);
+                  }
+                }}
+              />
+            )
+          );
+        })}
+
+        <PasswordInputModal
+          targetClue={unlockingClue}
+          isOpen={openedModal === "password"}
           onClose={() => {
-            if (
-              openedClue.type === "additional" &&
-              typeof openedClue.place !== "string"
-            ) {
-              setOpenedClueId(openedClue.place);
-              return;
+            handleCloseModal();
+            setUnlockingClue(null);
+          }}
+          onSuccess={() => {
+            setOpenedClueId(unlockingClue?.id ?? null);
+            if (!checkedClueList.includes(unlockingClue?.id ?? -1)) {
+              setCheckedClueList([...checkedClueList, unlockingClue?.id ?? -1]);
             }
-            setOpenedClueId(null);
+            setUnlockingClue(null);
           }}
         />
-      )}
-      {clues.map((clue) => {
-        return (
-          (clue.place === currentPlace ||
-            (clue.place === openedClueId && clue.type === "additional")) && (
-            <ClueButton
-              key={clue.id}
-              clue={clue}
-              onClick={() => {
-                if (clue.type === "locked") {
-                  setOpenedModal("password");
-                  setUnlockingClue(clue);
-                  return;
-                }
 
-                setOpenedClueId(clue.id);
-                if (!checkedClueList.includes(clue.id)) {
-                  setCheckedClueList([...checkedClueList, clue.id]);
-                }
-              }}
-            />
-          )
-        );
-      })}
-
-      <PasswordInputModal
-        targetClue={unlockingClue}
-        isOpen={openedModal === "password"}
-        onClose={() => {
-          handleCloseModal();
-          setUnlockingClue(null);
-        }}
-        onSuccess={() => {
-          setOpenedClueId(unlockingClue?.id ?? null);
-          if (!checkedClueList.includes(unlockingClue?.id ?? -1)) {
-            setCheckedClueList([...checkedClueList, unlockingClue?.id ?? -1]);
-          }
-          setUnlockingClue(null);
-        }}
-      />
-
-      {movePlaceButton.map((button) => {
-        return (
-          button.from === currentPlace && (
-            <MovePlaceButton
-              key={`${button.from}-${button.to}}`}
-              direction={button.direction}
-              x={button.x}
-              y={button.y}
-              onClick={() => {
-                setCurrentPlace(button.to);
-              }}
-            />
-          )
-        );
-      })}
-      <ClueDashboardModal
-        clues={clues}
-        isOpen={openedModal === "dashboard"}
-        checkedClueList={checkedClueList}
-        onClose={handleCloseModal}
-      />
-      <SuspectsInfoCard
-        isOpen={openedModal === "suspects"}
-        victim={victim}
-        suspects={suspects}
-        onClose={handleCloseModal}
-      />
-      <PrologueModal
-        prolougeContent={prologue}
-        isOpen={openedModal === "prologue"}
-        onClose={handleCloseModal}
-        onClickSuspects={() => setOpenedModal("suspects")}
-      />
-      <SpeedDial
-        ariaLabel="SpeedDial basic example"
-        sx={{ position: "absolute", bottom: 18, right: 18 }}
-        icon={<SpeedDialIcon />}
-      >
-        <SpeedDialAction
-          icon={<LightBulbIcon />}
-          tooltipTitle={"단서 현황"}
-          onClick={() => setOpenedModal("dashboard")}
+        {movePlaceButton.map((button) => {
+          return (
+            button.from === currentPlace && (
+              <MovePlaceButton
+                key={`${button.from}-${button.to}}`}
+                direction={button.direction}
+                x={button.x}
+                y={button.y}
+                onClick={() => {
+                  setCurrentPlace(button.to);
+                }}
+              />
+            )
+          );
+        })}
+        <ClueDashboardModal
+          clues={clues}
+          isOpen={openedModal === "dashboard"}
+          checkedClueList={checkedClueList}
+          onClose={handleCloseModal}
         />
-        <SpeedDialAction
-          icon={<PersonSearchIcon />}
-          tooltipTitle={"용의자/피해자 정보"}
-          onClick={() => setOpenedModal("suspects")}
+        <SuspectsInfoCard
+          isOpen={openedModal === "suspects"}
+          victim={victim}
+          suspects={suspects}
+          onClose={handleCloseModal}
         />
-        <SpeedDialAction
-          icon={<InfoIcon />}
-          tooltipTitle={"공개된 정보"}
-          onClick={() => setOpenedModal("prologue")}
+        <PrologueModal
+          prolougeContent={prologue}
+          isOpen={openedModal === "prologue"}
+          onClose={handleCloseModal}
+          onClickSuspects={() => setOpenedModal("suspects")}
         />
-      </SpeedDial>
-    </Box>
+        <SpeedDial
+          ariaLabel="SpeedDial basic example"
+          sx={{ position: "absolute", bottom: 18, right: 18 }}
+          icon={<SpeedDialIcon />}
+        >
+          <SpeedDialAction
+            icon={<LightBulbIcon />}
+            tooltipTitle={"단서 현황"}
+            onClick={() => setOpenedModal("dashboard")}
+          />
+          <SpeedDialAction
+            icon={<PersonSearchIcon />}
+            tooltipTitle={"용의자/피해자 정보"}
+            onClick={() => setOpenedModal("suspects")}
+          />
+          <SpeedDialAction
+            icon={<InfoIcon />}
+            tooltipTitle={"공개된 정보"}
+            onClick={() => setOpenedModal("prologue")}
+          />
+        </SpeedDial>
+      </Box>
+    </>
   );
 }
