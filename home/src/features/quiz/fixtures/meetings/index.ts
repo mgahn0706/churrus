@@ -54,6 +54,7 @@ export const MEETINGS: Record<string, MeetingType> = {
       "2025-4-4",
       "2025-4-5",
       "2025-4-6",
+      "2025-4-7",
     ],
   },
   "2025-3": {

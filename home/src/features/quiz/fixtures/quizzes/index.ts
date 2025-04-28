@@ -62,6 +62,16 @@ export const QuizData: Record<string, QuizType[]> = {
       answer: "서울대 추리 마스터 추러스",
       tags: ["EASY", "KNOWLEDGE"],
     },
+    {
+      id: "2025-4-7",
+      meetingId: "2025-4",
+      quizNumber: 7,
+      title: "너와 나 사이",
+      creator: "김태연",
+      quizImageSource: "/image/quiz/2025-4-7.png",
+      answer: "바다거북스프",
+      tags: ["EASY", "KNOWLEDGE", "ENIGMATIC"],
+    },
   ],
   "2025-3": [
     {
