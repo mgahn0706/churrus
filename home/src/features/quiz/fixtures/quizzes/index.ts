@@ -17,7 +17,7 @@ export const QuizData: Record<string, QuizType[]> = {
       meetingId: "2025-8",
       quizNumber: 2,
       title: "첫번째 이야기, 출발",
-      creator: "안민규",
+      creator: "김시영",
       quizImageSource: "/image/quiz/2025-8-2.png",
       answer: "신림역",
       tags: ["ADVENTURE", "LATERAL_THINKING", "KNOWLEDGE", "WORD"],
