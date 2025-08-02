@@ -20,7 +20,7 @@ export const QuizData: Record<string, QuizType[]> = {
       creator: "김시영",
       quizImageSource: "/image/quiz/2025-8-2.png",
       answer: "신림역",
-      tags: ["ADVENTURE", "LATERAL_THINKING", "KNOWLEDGE", "WORD"],
+      tags: ["ADVENTURE", "LATERAL_THINKING", "KNOWLEDGE", "WORD", "HARD"],
     },
     {
       id: "2025-8-3",
@@ -60,7 +60,7 @@ export const QuizData: Record<string, QuizType[]> = {
       creator: "김규민",
       quizImageSource: "/image/quiz/2025-8-6.png",
       answer: "여의도",
-      tags: ["ADVENTURE", "KNOWLEDGE", "WORD"],
+      tags: ["ADVENTURE", "KNOWLEDGE", "WORD", "EASY"],
     },
     {
       id: "2025-8-7",
