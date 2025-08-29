@@ -53,7 +53,7 @@ export default function RecruitPage() {
               wordBreak: "keep-all",
             }}
           >
-            8/30 ~ 9/7 23:59까지 지원서를 받아요. 지원자가 많으면 조기마감 될 수
+            8/31 ~ 9/7 23:59까지 지원서를 받아요. 지원자가 많으면 조기마감 될 수
             있어요!
           </Box>
         </Box>
