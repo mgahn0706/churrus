@@ -40,46 +40,6 @@ dayjs.extend(weekOfYear);
 
 const BACKGROUND_COLOR = "#F5F6FA";
 
-const MoreGamesButton = ({ onClick }: { onClick: () => void }) => {
-  <CardActionArea
-    sx={{
-      borderRadius: "20px",
-    }}
-    onClick={onClick}
-  >
-    <Card
-      sx={{
-        border: "2px solid #9798a1",
-        bgcolor: "#f2f4f5",
-        minHeight: 60,
-        color: "#121212",
-        alignItems: "center",
-        borderRadius: "20px",
-        verticalAlign: "middle",
-        display: "flex",
-        px: 2,
-      }}
-    >
-      <Typography
-        color="#202836"
-        textAlign="center"
-        fontSize="18px"
-        sx={{
-          width: "100%",
-          wordBreak: "keep-all",
-        }}
-      >
-        더보기
-      </Typography>
-      <ArrowForwardIos
-        sx={{
-          fontSize: "0.8rem",
-        }}
-      />
-    </Card>
-  </CardActionArea>;
-};
-
 const spellingBeeDate = dayjs().diff("2024-02-09", "day") + 1;
 
 export default function Churrus() {
