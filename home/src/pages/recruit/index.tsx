@@ -99,7 +99,7 @@ export default function RecruitPage() {
               }}
               onClick={() => {
                 window.open(
-                  "https://forms.gle/Lv6paJck6HmqSCU98",
+                  "https://forms.gle/MX8SfiSePLxrsxgd8",
                   "_blank",
                   "noopener noreferrer"
                 );
