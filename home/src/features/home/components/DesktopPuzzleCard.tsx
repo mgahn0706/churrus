@@ -18,7 +18,7 @@ export default function DesktopPuzzleCard({
     <CardActionArea
       onClick={onClick}
       sx={{
-        maxWidth: "240px",
+        maxWidth: "245px",
         minHeight: "127px",
         borderRadius: "12px",
       }}
@@ -35,12 +35,12 @@ export default function DesktopPuzzleCard({
       >
         <Box display="flex" justifyContent="space-between">
           <Box display="flex" flexDirection="column">
-            <Typography color="#6b6b6b" fontSize={12}>
+            <Typography color="#6b6b6b" fontSize="12px">
               {subtitle}
             </Typography>
             <Typography
               color="#121212"
-              fontSize={24}
+              fontSize="22px"
               fontWeight="bold"
               sx={{
                 width: "150px",

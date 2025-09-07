@@ -53,8 +53,8 @@ export default function RecruitPage() {
               wordBreak: "keep-all",
             }}
           >
-            8/31 ~ 9/7 23:59까지 지원서를 받아요. 지원자가 많으면 조기마감 될 수
-            있어요!
+            추러스 25-2기 신입 회원 모집이 마감되었어요. 다음 모집은 2026년
+            3월이에요.
           </Box>
         </Box>
         <Box textAlign="center" py={["100px", "120px", "150px"]} px="10vw">
