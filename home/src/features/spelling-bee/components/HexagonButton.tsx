@@ -1,4 +1,4 @@
-import { Box, IconButton, SvgIcon, SxProps } from "@mui/material";
+import { Box, SxProps } from "@mui/material";
 
 interface HexagonButtonProps {
   children: React.ReactNode;
@@ -16,20 +16,25 @@ export default function HexagonButton({
   return (
     <Box
       width="100px"
+      height="100px"
       color="black"
       display="flex"
       justifyContent="center"
       alignItems="center"
       fontSize="2.5rem"
       fontWeight={900}
-      height="100px"
       onClick={onClick}
       sx={{
         ...sx,
         cursor: "pointer",
-        transition: "transform 0.2s",
+        userSelect: "none",
+        WebkitTapHighlightColor: "transparent",
+        transition: "transform 80ms ease-out",
         "&:hover": {
-          transform: "scale(1.1)",
+          transform: "none", // no hover enlargement
+        },
+        "&:active": {
+          transform: "scale(0.95)", // boop shrink effect
         },
         backgroundColor: variant === "center" ? "#FECD57" : "#E5E8EC",
         clipPath: "polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0% 50%)",
