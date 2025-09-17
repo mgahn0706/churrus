@@ -49,7 +49,7 @@ export const MEETINGS: Record<string, MeetingType> = {
       year: 2025,
       month: 9,
     },
-    title: "COLOR",
+    title: "Color",
     imageSource: "/image/quiz/meeting/2025-OT-2.png",
     quizIds: [
       "2025-OT-2-1",
