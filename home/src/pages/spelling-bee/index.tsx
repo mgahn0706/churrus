@@ -340,26 +340,14 @@ export default function SpellingBee() {
         <DialogContent>
           {pangrams.length ? (
             <DialogContentText sx={{ whiteSpace: "pre-line" }}>
-              오늘 퍼즐의 팬그램은 총 {pangrams.length}개 입니다.\n 공개를
+              오늘 퍼즐의 팬그램은 총 {pangrams.length}개 입니다. 공개를
               선택하면 <strong>모든 팬그램</strong>이 정답 목록에 자동으로
-              추가됩니다.\n정답을 스스로 찾고 싶다면 취소하세요.
+              추가됩니다. 정답을 스스로 찾고 싶다면 취소하세요.
             </DialogContentText>
           ) : (
             <DialogContentText>
               오늘 퍼즐에는 사전에 등록된 팬그램이 없습니다.
             </DialogContentText>
-          )}
-          {revealData.words && revealData.day === spellingBeeDate && (
-            <Box mt={2} p={1.5} borderRadius={1} sx={{ bgcolor: "#fff7e6" }}>
-              <Typography variant="body2" fontWeight={700} gutterBottom>
-                공개된 팬그램들
-              </Typography>
-              {revealData.words.map((w) => (
-                <Typography key={w} variant="h6" color="#de9f0d">
-                  {w}
-                </Typography>
-              ))}
-            </Box>
           )}
         </DialogContent>
         <DialogActions>
