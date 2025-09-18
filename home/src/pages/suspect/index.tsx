@@ -56,6 +56,7 @@ function useNormalizedScenarios() {
       (sourceScenarios as any[]).map((s, idx) => {
         const image = s.image || s.backgroundImage || "/placeholder.svg";
         return {
+          isInDevelopment: s.isInDevelopment || false,
           id: s.id || `scenario-${idx}`,
           title: s.title ?? "제목 없음",
           description:
@@ -189,7 +190,6 @@ export default function Suspect() {
         >
           <Box sx={{ width: "100%", maxWidth: 1080 }}>
             <Box
-              onClick={() => handleSelect(currentIndex)}
               sx={{
                 width: "100%",
                 height: 540,
@@ -198,7 +198,6 @@ export default function Suspect() {
                 border: "2px solid rgba(255,255,255,0.3)",
                 bgcolor: "rgba(0,0,0,0.6)",
                 backdropFilter: "blur(6px)",
-                cursor: "pointer",
                 transition: "all .7s",
                 "&:hover": {
                   borderColor: "#fff",
@@ -297,6 +296,7 @@ export default function Suspect() {
                     alignItems: "center",
                     flexWrap: "wrap",
                     mb: 1,
+                    mx: 1,
                   }}
                 >
                   <Chip
@@ -351,6 +351,7 @@ export default function Suspect() {
                 <Typography
                   variant="h4"
                   sx={{
+                    mx: 1,
                     color: "#fff",
                     fontFamily: "monospace",
                     fontWeight: 800,
@@ -359,16 +360,23 @@ export default function Suspect() {
                   {scenarios[currentIndex].title}
                 </Typography>
                 <Typography
-                  sx={{ color: "rgba(255,255,255,0.9)", maxWidth: 720, mt: 1 }}
+                  sx={{
+                    color: "rgba(255,255,255,0.9)",
+                    maxWidth: 720,
+                    mt: 1,
+                    mx: 1,
+                  }}
                 >
                   {scenarios[currentIndex].description}
                 </Typography>
 
                 <Button
+                  disabled={scenarios[currentIndex].isInDevelopment}
                   variant="contained"
                   startIcon={<PlayArrowRounded />}
                   sx={{
-                    mt: 2,
+                    my: 2,
+                    mx: 1,
                     bgcolor: "#fff",
                     color: "#000",
                     fontWeight: 800,
@@ -381,7 +389,7 @@ export default function Suspect() {
                     width: "fit-content",
                   }}
                 >
-                  이 시나리오 선택
+                  게임 시작
                 </Button>
               </Box>
             </Box>
