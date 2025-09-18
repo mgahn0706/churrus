@@ -49,6 +49,7 @@ export interface ScenarioType {
   isInDevelopment: boolean;
   bgmURL?: string;
   history?: string;
+  description?: string;
   places: string[];
 }
 

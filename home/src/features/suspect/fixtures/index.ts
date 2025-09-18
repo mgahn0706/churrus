@@ -13,6 +13,7 @@ export const scenarios: ScenarioType[] = [
     history: "2023년 7월 정기모임",
     bgmURL: "https://www.youtube.com/watch?v=qMwzWk81tVM",
     places: ["lounge", "office"],
+    description: "IT 스타트업 '추러스'에서 발생한 살인사건",
   },
   {
     title: "와부고 살인사건",
@@ -25,6 +26,7 @@ export const scenarios: ScenarioType[] = [
     keyword: "school",
     isInDevelopment: false,
     places: ["2F", "3F"],
+    description: "와부고등학교 교실에서 한 학생이 사망한 사건",
   },
   {
     title: "두레문예관 살인사건",
@@ -36,6 +38,7 @@ export const scenarios: ScenarioType[] = [
     keyword: "dure",
     isInDevelopment: true,
     history: "2023년 5월 추러스 문화행사",
+    description: "추리연극 당일 두레문예관에서 발생한 살인사건",
     places: ["3F", "4F"],
   },
   {
@@ -48,17 +51,19 @@ export const scenarios: ScenarioType[] = [
     keyword: "jahayeon",
     isInDevelopment: true,
     history: "2023년 1월 2차 정기모임",
+    description: "한겨울 자하연에서 시체가 발견되었다",
     places: ["pond", "dorm", "house"],
   },
   {
-    title: "추러스 MT 살인사건",
+    title: "케이팝 데몬 헌터스 살인사건",
     difficulty: 1,
     numberOfSuspects: 3,
     playTime: 120,
     backgroundImage: "/image/scenario/mt-main.png",
     cardImage: "/Suspect_Logo.png",
-    keyword: "mt",
+    keyword: "kpop",
     isInDevelopment: true,
-    places: ["room", "terrace"],
+    description: "케이팝 아이돌 그룹 내에서 발생한 살인사건",
+    places: [],
   },
 ];
