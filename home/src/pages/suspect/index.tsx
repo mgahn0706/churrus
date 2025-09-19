@@ -1,227 +1,505 @@
+import { Box, Button, Chip, IconButton, Typography } from "@mui/material";
 import {
-  Circle,
+  ArrowBackIosNewRounded,
+  ArrowForwardIosRounded,
+  PlayArrowRounded,
   PeopleAlt,
   Schedule,
-  VolumeUpRounded,
 } from "@mui/icons-material";
-import { Box, IconButton, Rating, Typography, keyframes } from "@mui/material";
-import { useState } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, EffectCoverflow } from "swiper";
+import { useEffect, useMemo, useState } from "react";
 
-import { ScenarioType } from "@/features/suspect/types";
+import { scenarios as sourceScenarios } from "@/features/suspect/fixtures";
 import Header from "@/features/suspect/components/Header";
-import ScenarioCard from "@/features/suspect/components/ScenarioSelect/ScenarioCard";
-import { scenarios } from "@/features/suspect/fixtures";
-import { useMobileWidth } from "@/hooks/useMobileWIdth";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
+import { useRouter } from "next/navigation";
+
+// --------- helpers ----------
+const getDifficultyLabel = (d: unknown) => {
+  if (typeof d === "string") return d; // "초급/중급/고급" 등
+  if (typeof d === "number") {
+    if (d <= 1.7) return "초급";
+    if (d <= 2.4) return "중급";
+    return "고급";
+  }
+  return "중급";
+};
+
+const difficultySx = (label: string) => {
+  switch (label) {
+    case "초급":
+      return { bgcolor: "rgba(255,255,255,0.2)", color: "#fff" };
+    case "중급":
+      return {
+        bgcolor: "rgba(255,255,255,0.08)",
+        color: "#fff",
+        border: "1px solid rgba(255,255,255,0.3)",
+      };
+    case "고급":
+      return {
+        bgcolor: "rgba(0,0,0,0.7)",
+        color: "#fff",
+        border: "1px solid rgba(255,255,255,0.4)",
+      };
+    default:
+      return { bgcolor: "rgba(255,255,255,0.15)", color: "#fff" };
+  }
+};
 
 export default function Suspect() {
-  const [selectedScenario, setSelectedScenario] = useState<ScenarioType | null>(
-    null
-  );
+  const scenarios = sourceScenarios;
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [glitchText, setGlitchText] = useState("SELECT YOUR CRIME SCENE");
 
-  const { isMobileWidth } = useMobileWidth();
+  const router = useRouter();
 
-  const glitch = keyframes`
-  2%,64%{
-    transform: translate(2px,0) skew(0deg);
-  }
-  4%,60%{
-    transform: translate(-2px,0) skew(0deg);
-  }
-  62%{
-    transform: translate(0,0) skew(5deg); 
-  }
-`;
+  // 글리치 텍스트
+  useEffect(() => {
+    const glitchChars = "█▓▒░▄▀▐▌│┤╡╢╖╕╣║╗╝╜╛┐└┴┬├─┼╞╟╚╔╩╦╠═╬╧╨╤╥╙╘╒╓╫╪┘┌";
+    const original = "SELECT YOUR CRIME SCENE";
+    const id = setInterval(() => {
+      if (Math.random() > 0.92) {
+        const g = original
+          .split("")
+          .map((c) =>
+            Math.random() > 0.7
+              ? glitchChars[Math.floor(Math.random() * glitchChars.length)]
+              : c
+          )
+          .join("");
+        setGlitchText(g);
+        const t = setTimeout(() => setGlitchText(original), 150);
+        return () => clearTimeout(t);
+      }
+    }, 300);
+    return () => clearInterval(id);
+  }, []);
 
-  const glitchTop = keyframes`
-  2%,64%{
-    transform: translate(2px,-2px);
-  }
-  4%,60%{
-    transform: translate(-2px,2px);
-  }
-  62%{
-    transform: translate(13px,-1px) skew(-13deg); 
-  }
-`;
+  const handleSelect = (idx: number) => {
+    router.push(`/suspect/scenario/${scenarios[idx].id}`);
+  };
 
-  const glitchBotom = keyframes`
-    2%,64%{
-      transform: translate(-2px,0);
-    }
-    4%,60%{
-      transform: translate(-2px,0);
-    }
-    62%{
-      transform: translate(-22px,5px) skew(21deg); 
-    }
-  `;
+  const next = () => setCurrentIndex((p) => (p + 1) % scenarios.length);
+  const prev = () =>
+    setCurrentIndex((p) => (p - 1 + scenarios.length) % scenarios.length);
 
+  // -------- 선택 화면(타겟 UI) --------
   return (
     <Box
-      display="flex"
-      flexDirection="column"
-      width="100vw"
-      height="100vh"
-      sx={{ backgroundColor: !!selectedScenario ? "inherit" : "black" }}
+      sx={{
+        height: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        bgcolor: "black",
+        position: "relative",
+        overflow: "hidden",
+      }}
     >
       <Header />
-      {!selectedScenario && (
-        <Box position="absolute" display="flex" width="100vw" height="100vh">
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            sx={{
-              backgroundColor: "black",
-              width: "100%",
-            }}
-          >
-            <Box
-              display="flex"
-              alignContent="center"
-              fontFamily="Gill Sans"
-              sx={{
-                animation: `${glitch} 1s linear infinite`,
-                "&:after, &:before": {
-                  content: '"SELECT YOUR CRIME SCENE"',
-                  position: "absolute",
-                  left: 0,
-                },
-                "&:after": {
-                  animation: `${glitchBotom} 1.5s linear infinite`,
-                  clipPath: "polygon(0 66%, 100% 66%, 100% 100%, 0 100%)",
-                  WebkitClipPath: "polygon(0 66%, 100% 66%, 100% 100%, 0 100%)",
-                },
-                "&:before": {
-                  animation: `${glitchTop} 1s linear infinite`,
-                  clipPath: `polygon(0 0, 100% 0, 100% 33%, 0 33%)`,
-                  WebkitClipPath: `polygon(0 0, 100% 0, 100% 33%, 0 33%)`,
-                },
-              }}
-              fontSize={100}
-              color="white"
-            >
-              SELECT YOUR CRIME SCENE
-            </Box>
-          </Box>
-        </Box>
-      )}
-      {selectedScenario && (
-        <Box height="100vh" display="flex" justifyContent="space-between">
-          <Box
-            p={5}
-            sx={{
-              color: "white",
-              position: "absolute",
-              top: "10%",
-              left: "5%",
-            }}
-          >
-            <Typography variant="h3">{selectedScenario.title}</Typography>
-            <Rating
-              icon={<Circle />}
-              emptyIcon={<Circle />}
-              name="read-only"
-              value={selectedScenario.difficulty}
-              readOnly
-            />
-            <Box display="flex">
-              <PeopleAlt sx={{ mr: 2 }} />
-              <Typography>{selectedScenario.numberOfSuspects}</Typography>
-            </Box>
-            <Box display="flex">
-              <Schedule sx={{ mr: 2 }} />
-              <Typography>약 {selectedScenario.playTime}분</Typography>
-            </Box>
-            {selectedScenario.history && (
-              <Box display="flex" mt={1} color="gray">
-                <Typography fontSize="15px">
-                  {selectedScenario.history}에서 진행됨
-                </Typography>
-              </Box>
-            )}
-          </Box>
-          {selectedScenario.bgmURL && (
-            <a
-              href={selectedScenario.bgmURL}
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              <IconButton
-                size="large"
-                edge="start"
-                sx={{
-                  backgroundColor: "white",
-                  position: "absolute",
-                  right: "5%",
-                  top: "15%",
-                }}
-              >
-                <VolumeUpRounded />
-              </IconButton>
-            </a>
-          )}
+
+      <Box
+        sx={{
+          position: "relative",
+          zIndex: 2,
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        {/* 글리치 타이틀 */}
+        <Box sx={{ textAlign: "center", py: 4, position: "relative" }}>
           <Box
             sx={{
               position: "absolute",
-              margin: 0,
-              width: "100%",
-              height: "100%",
-              backgroundSize: "cover",
-              zIndex: -1,
-              backgroundImage: `linear-gradient(to left, rgba(255, 255, 255, 0) 3%, rgba(0, 0, 0, 0.25) 30%, rgba(0, 0, 0, 0.5) 40%, rgba(0, 0, 0, 0.55) 50%, #000000 85%), url("${selectedScenario.backgroundImage}")`,
-              backgroundRepeat: "no-repeat",
+              inset: 0,
+              background:
+                "linear-gradient(to bottom, rgba(255,255,255,0.05), transparent)",
             }}
           />
+          <Box sx={{ position: "relative", height: 120 }}>
+            <Box
+              sx={{
+                position: "relative",
+                display: "inline-block",
+                color: "#fff",
+                fontFamily: "monospace",
+                fontWeight: 800,
+                letterSpacing: "0.2em",
+                fontSize: { xs: 22, md: 32 },
+                mt: 5,
+                mb: 1.5,
+                "&:before, &:after": {
+                  content: `"${glitchText}"`,
+                  position: "absolute",
+                  left: 0,
+                  color: "#fff",
+                  clipPath: "polygon(0 0, 100% 0, 100% 33%, 0 33%)",
+                },
+              }}
+            >
+              {glitchText}
+            </Box>
+          </Box>
         </Box>
-      )}
-      <Box display="flex" justifyContent="center">
+
+        {/* 중앙 큰 카드 */}
         <Box
-          display="flex"
-          alignItems="center"
-          height="250px"
-          mb={5}
-          mx={4}
-          width="70vw"
-          position="absolute"
-          sx={{ bottom: 3 }}
+          sx={{
+            flex: 1,
+            display: "flex",
+            justifyContent: "center",
+            px: 2,
+          }}
         >
-          <Swiper
-            effect={"coverflow"}
-            preventClicks
-            grabCursor={true}
-            centeredSlides={true}
-            slidesPerView={3}
-            spaceBetween={50}
-            coverflowEffect={{
-              rotate: 20,
-              stretch: 0,
-              depth: 100,
-              modifier: 1,
-              slideShadows: true,
-            }}
-            slideToClickedSlide
-            modules={[Autoplay, EffectCoverflow]}
-          >
-            {scenarios.map((scenario) => (
-              <SwiperSlide key={scenario.title}>
-                <ScenarioCard
-                  key={scenario.title}
-                  scenario={scenario}
-                  isSelected={selectedScenario === scenario}
-                  onDeslect={() => setSelectedScenario(null)}
-                  onClick={() => {
-                    setSelectedScenario(scenario);
+          <Box sx={{ width: "100%", maxWidth: 1080 }}>
+            <Box
+              sx={{
+                width: "100%",
+                height: 540,
+                borderRadius: 3,
+                overflow: "hidden",
+                border: "2px solid rgba(255,255,255,0.3)",
+                bgcolor: "rgba(0,0,0,0.6)",
+                backdropFilter: "blur(6px)",
+                transition: "all .7s",
+                "&:hover": {
+                  borderColor: "#fff",
+                  boxShadow: "0 20px 60px rgba(255,255,255,0.1)",
+                },
+                position: "relative",
+              }}
+            >
+              {/* 배경 이미지 */}
+              <Box
+                component="img"
+                src={scenarios[currentIndex].backgroundImage}
+                alt={scenarios[currentIndex].title}
+                sx={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  transition: "transform 1s",
+                  "&:hover": { transform: "scale(1.03)" },
+                }}
+              />
+              {/* 오버레이들 */}
+              <Box
+                sx={{
+                  position: "absolute",
+                  inset: 0,
+                  background:
+                    "linear-gradient(to top, rgba(0,0,0,0.95), rgba(0,0,0,0.4), transparent)",
+                }}
+              />
+              <Box
+                sx={{
+                  position: "absolute",
+                  inset: 0,
+                  backgroundImage:
+                    "linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px)",
+                  backgroundSize: "40px 40px, 40px 40px",
+                }}
+              />
+              <Box
+                sx={{
+                  position: "absolute",
+                  inset: 0,
+                  backgroundImage:
+                    "radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 1px, transparent 1px)",
+                  backgroundSize: "60px 60px",
+                  opacity: 0.5,
+                }}
+              />
+
+              {/* 코너 브라켓 */}
+              {[
+                { top: 24, left: 24, border: ["t", "l"] },
+                { top: 24, right: 24, border: ["t", "r"] },
+                { bottom: 24, left: 24, border: ["b", "l"] },
+                { bottom: 24, right: 24, border: ["b", "r"] },
+              ].map((pos, i) => (
+                <Box
+                  key={i}
+                  sx={{
+                    position: "absolute",
+                    width: 48,
+                    height: 48,
+                    borderTop: pos.border.includes("t")
+                      ? "2px solid rgba(255,255,255,0.6)"
+                      : "none",
+                    borderLeft: pos.border.includes("l")
+                      ? "2px solid rgba(255,255,255,0.6)"
+                      : "none",
+                    borderRight: pos.border.includes("r")
+                      ? "2px solid rgba(255,255,255,0.6)"
+                      : "none",
+                    borderBottom: pos.border.includes("b")
+                      ? "2px solid rgba(255,255,255,0.6)"
+                      : "none",
+                    ...pos,
                   }}
                 />
-              </SwiperSlide>
-            ))}
-          </Swiper>
+              ))}
+
+              {/* 텍스트/버튼 */}
+              <Box
+                sx={{
+                  position: "absolute",
+                  inset: 0,
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "flex-end",
+                  p: 3,
+                }}
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    gap: 1.5,
+                    alignItems: "center",
+                    flexWrap: "wrap",
+                    mb: 1,
+                    mx: 1,
+                  }}
+                >
+                  <Chip
+                    variant="outlined"
+                    label={
+                      <Box
+                        sx={{ display: "flex", alignItems: "center", gap: 0.5 }}
+                      >
+                        <PeopleAlt fontSize="small" />
+                        <span>{scenarios[currentIndex].numberOfSuspects}</span>
+                      </Box>
+                    }
+                    sx={{
+                      color: "#fff",
+                      borderColor: "rgba(255,255,255,0.4)",
+                      height: 28,
+                      fontFamily: "monospace",
+                    }}
+                  />
+                  <Chip
+                    variant="outlined"
+                    label={
+                      <Box
+                        sx={{ display: "flex", alignItems: "center", gap: 0.5 }}
+                      >
+                        <span>
+                          {scenarios[currentIndex].gameType === "CLUE"
+                            ? "단서 탐색형"
+                            : "단서 검색형"}
+                        </span>
+                      </Box>
+                    }
+                    sx={{
+                      color: "#fff",
+                      borderColor: "rgba(255,255,255,0.4)",
+                      height: 28,
+                      fontFamily: "monospace",
+                    }}
+                  />
+                </Box>
+
+                <Typography
+                  variant="h4"
+                  sx={{
+                    mx: 1,
+                    color: "#fff",
+                    fontFamily: "monospace",
+                    fontWeight: 800,
+                  }}
+                >
+                  {scenarios[currentIndex].title}
+                </Typography>
+                <Typography
+                  sx={{
+                    color: "rgba(255,255,255,0.9)",
+                    maxWidth: 720,
+                    mt: 1,
+                    mx: 1,
+                  }}
+                >
+                  {scenarios[currentIndex].description}
+                </Typography>
+
+                <Button
+                  disabled={scenarios[currentIndex].isInDevelopment}
+                  variant="contained"
+                  onClick={() => handleSelect(currentIndex)}
+                  startIcon={<PlayArrowRounded />}
+                  sx={{
+                    my: 2,
+                    mx: 1,
+                    bgcolor: "#fff",
+                    color: "#000",
+                    fontWeight: 800,
+                    px: 2.5,
+                    "&:hover": {
+                      bgcolor: "#e6e6e6",
+                      transform: "translateY(-1px)",
+                    },
+                    transition: "all .3s",
+                    width: "fit-content",
+                  }}
+                >
+                  게임 시작
+                </Button>
+              </Box>
+            </Box>
+          </Box>
+        </Box>
+
+        {/* 썸네일 바 + 좌우 버튼 */}
+        <Box sx={{ pb: 3 }}>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 2,
+              mb: 1.5,
+            }}
+          >
+            <IconButton
+              onClick={prev}
+              sx={{
+                width: 48,
+                height: 48,
+                color: "#fff",
+                border: "2px solid rgba(255,255,255,0.3)",
+                "&:hover": {
+                  bgcolor: "rgba(255,255,255,0.1)",
+                  transform: "scale(1.05)",
+                },
+                transition: "all .3s",
+              }}
+            >
+              <ArrowBackIosNewRounded />
+            </IconButton>
+
+            <Box sx={{ display: "flex", gap: 1.5, flexWrap: "nowrap" }}>
+              {scenarios.map((s, index) => {
+                const active = index === currentIndex;
+                return (
+                  <Box
+                    key={s.id}
+                    onClick={() => setCurrentIndex(index)}
+                    sx={{
+                      position: "relative",
+                      cursor: "pointer",
+                      transform: active ? "scale(1.08)" : "scale(1)",
+                      transition: "all .4s",
+                      filter: active ? "none" : "grayscale(0.2)",
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        width: 96,
+                        height: 64,
+                        borderRadius: 1.5,
+                        overflow: "hidden",
+                        border: `1px solid ${
+                          active
+                            ? "rgba(255,255,255,0.8)"
+                            : "rgba(255,255,255,0.4)"
+                        }`,
+                        boxShadow: active
+                          ? "0 10px 24px rgba(255,255,255,0.2)"
+                          : "none",
+                        position: "relative",
+                        "&:hover img": { transform: "scale(1.05)" },
+                      }}
+                    >
+                      <Box
+                        component="img"
+                        src={s.backgroundImage}
+                        alt={s.title}
+                        sx={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                          transition: "transform .4s",
+                        }}
+                      />
+                      <Box
+                        sx={{
+                          position: "absolute",
+                          inset: 0,
+                          background:
+                            "linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.2), transparent)",
+                        }}
+                      />
+                      {/* 미세한 그리드 오버레이 */}
+                      <Box
+                        sx={{
+                          position: "absolute",
+                          inset: 0,
+                          opacity: active ? 1 : 0,
+                          transition: "opacity .4s",
+                          backgroundImage:
+                            "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)",
+                          backgroundSize: "10px 10px, 10px 10px",
+                        }}
+                      />
+                      {active && (
+                        <Box
+                          sx={{
+                            position: "absolute",
+                            top: 6,
+                            right: 6,
+                            width: 8,
+                            height: 8,
+                            bgcolor: "#fff",
+                            borderRadius: "50%",
+                            boxShadow: "0 0 12px rgba(255,255,255,0.8)",
+                          }}
+                        />
+                      )}
+                    </Box>
+                  </Box>
+                );
+              })}
+            </Box>
+
+            <IconButton
+              onClick={next}
+              sx={{
+                width: 48,
+                height: 48,
+                color: "#fff",
+                border: "2px solid rgba(255,255,255,0.3)",
+                "&:hover": {
+                  bgcolor: "rgba(255,255,255,0.1)",
+                  transform: "scale(1.05)",
+                },
+                transition: "all .3s",
+              }}
+            >
+              <ArrowForwardIosRounded />
+            </IconButton>
+          </Box>
+
+          {/* 하단 인디케이터 */}
+          <Box sx={{ display: "flex", justifyContent: "center", gap: 1 }}>
+            {scenarios.map((_, i) => {
+              const active = i === currentIndex;
+              return (
+                <Box
+                  key={i}
+                  onClick={() => setCurrentIndex(i)}
+                  sx={{
+                    width: active ? 48 : 8,
+                    height: 8,
+                    borderRadius: active ? 999 : "50%",
+                    bgcolor: active ? "#fff" : "rgba(255,255,255,0.4)",
+                    border: active ? "none" : "1px solid rgba(255,255,255,0.2)",
+                    transition: "all .4s",
+                    cursor: "pointer",
+                    "&:hover": { transform: "scale(1.1)" },
+                  }}
+                />
+              );
+            })}
+          </Box>
         </Box>
       </Box>
     </Box>

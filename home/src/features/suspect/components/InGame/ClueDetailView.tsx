@@ -98,42 +98,7 @@ export function ClueDetailView({
                 심문
               </Button>
             )}
-            <Tooltip
-              placement="left"
-              title={
-                clueData.reliability === "high"
-                  ? "믿을만한 정보입니다."
-                  : clueData.reliability === "medium"
-                  ? "불확실한 정보입니다."
-                  : "거짓말일 수 있는 정보입니다."
-              }
-            >
-              <Circle
-                sx={{
-                  backgroundColor:
-                    clueData.reliability === "high"
-                      ? "#4caf50"
-                      : clueData.reliability === "medium"
-                      ? "#ff9800"
-                      : "#f44336",
-                  borderRadius: "50%",
-                  boxShadow: `0 0 10px 5px ${
-                    clueData.reliability === "high"
-                      ? "#4caf50"
-                      : clueData.reliability === "medium"
-                      ? "#ff9800"
-                      : "#f44336"
-                  }`,
-                }}
-                color={
-                  clueData.reliability === "high"
-                    ? "success"
-                    : clueData.reliability === "medium"
-                    ? "warning"
-                    : "error"
-                }
-              />
-            </Tooltip>
+
             <Menu
               id="basic-menu"
               anchorEl={anchorEl}
@@ -163,10 +128,10 @@ export function ClueDetailView({
             src={`/image/clue/${scenarioKeyword}-${id}.png`}
             alt={`${clueData.id}번째 단서 이미지`}
             width={isImageLoading ? 0 : 600}
-            height={isImageLoading ? 0 : 500}
+            height={isImageLoading ? 0 : 600}
           />
           {isImageLoading && (
-            <Skeleton variant="rectangular" width={600} height={500} />
+            <Skeleton variant="rectangular" width={600} height={600} />
           )}
         </Box>
         <Box display="flex">
