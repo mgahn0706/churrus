@@ -83,7 +83,7 @@ export default function InGameLayout({
         {scenario && (
           <Image
             priority
-            src={`/image/map/${scenario.keyword}-${currentPlace}.png`}
+            src={`/image/map/${scenario.id}-${currentPlace}.png`}
             alt="맵 이미지"
             fill
             style={{
@@ -111,7 +111,7 @@ export default function InGameLayout({
         <MemoButton onClick={() => setOpenedModal("memo")} />
         {openedModal === "memo" && (
           <MemoModal
-            scenarioKeyword={scenario.keyword}
+            scenarioKeyword={scenario.id}
             isOpen={openedModal === "memo"}
             onClose={() => setOpenedModal(null)}
             suspects={suspects}
@@ -122,7 +122,7 @@ export default function InGameLayout({
 
         {openedClue !== null && (
           <ClueDetailView
-            scenarioKeyword={scenario.keyword}
+            scenarioKeyword={scenario.id}
             suspects={suspects}
             clueData={openedClue}
             id={openedClueId}
