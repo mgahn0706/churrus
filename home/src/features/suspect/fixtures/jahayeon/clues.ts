@@ -64,7 +64,6 @@ export const jahayeonClues: ClueType[] = [
       "피해자 김규민의 스마트폰이다. 기종은 갤럭시 노트 10으로, 자하연 데크에 놓여져있었다. 남은 배터리는 14%. 얼굴인식, 지문, PIN 중 하나만 입력하면 잠금이 해제된다.",
     type: "locked",
     place: "pond",
-    reliability: "high",
     password: "0912",
     passwordHint:
       "자하연 데크에 놓여있던 스마트폰. 비밀번호 힌트는 'birthday'라고 표시된다.",
