@@ -3,9 +3,7 @@ import { ScenarioType } from "@/features/suspect/types";
 export const scenarios: ScenarioType[] = [
   {
     title: "스타트업 살인사건",
-    difficulty: 2,
     numberOfSuspects: 3,
-    playTime: 90,
     backgroundImage: "/image/scenario/startup-main.png",
     cardImage: "/Suspect_Logo.png",
     keyword: "startup",
@@ -14,12 +12,12 @@ export const scenarios: ScenarioType[] = [
     bgmURL: "https://www.youtube.com/watch?v=qMwzWk81tVM",
     places: ["lounge", "office"],
     description: "IT 스타트업 '추러스'에서 발생한 살인사건",
+    gameType: "CLUE",
   },
   {
     title: "와부고 살인사건",
-    difficulty: 4,
+    gameType: "TEXT",
     numberOfSuspects: 3,
-    playTime: 150,
     history: "2023년 10월 정기모임",
     backgroundImage: "/image/scenario/school-main.png",
     cardImage: "/Suspect_Logo.png",
@@ -30,9 +28,8 @@ export const scenarios: ScenarioType[] = [
   },
   {
     title: "두레문예관 살인사건",
-    difficulty: 3,
+    gameType: "CLUE",
     numberOfSuspects: 4,
-    playTime: 120,
     backgroundImage: "/image/scenario/dure-main.png",
     cardImage: "/Suspect_Logo.png",
     keyword: "dure",
@@ -43,9 +40,8 @@ export const scenarios: ScenarioType[] = [
   },
   {
     title: "자하연 살인사건",
-    difficulty: 3,
+    gameType: "CLUE",
     numberOfSuspects: 4,
-    playTime: 120,
     backgroundImage: "/image/scenario/jahayeon-main.png",
     cardImage: "/Suspect_Logo.png",
     keyword: "jahayeon",
@@ -56,9 +52,8 @@ export const scenarios: ScenarioType[] = [
   },
   {
     title: "케이팝 데몬 헌터스 살인사건",
-    difficulty: 1,
+    gameType: "CLUE",
     numberOfSuspects: 3,
-    playTime: 120,
     backgroundImage: "/image/scenario/mt-main.png",
     cardImage: "/Suspect_Logo.png",
     keyword: "kpop",

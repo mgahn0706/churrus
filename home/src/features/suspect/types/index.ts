@@ -4,7 +4,6 @@ export interface ClueType {
   title: string;
   x: number;
   y: number;
-  reliability: "low" | "medium" | "high";
   description: string;
   type: "basic" | "additional" | "interrogation" | "locked";
   password?: string;
@@ -18,11 +17,6 @@ export interface MovePlaceButtonType {
   x: number;
   y: number;
   direction: "up" | "down" | "left" | "right";
-}
-
-interface InterrogationType {
-  id: number;
-  statements: string[];
 }
 
 export interface SuspectType {
@@ -40,9 +34,7 @@ export type VictimType = SuspectType;
 
 export interface ScenarioType {
   title: string;
-  difficulty: number;
   numberOfSuspects: number;
-  playTime: number;
   backgroundImage: string;
   cardImage: string;
   keyword: string;
@@ -50,6 +42,7 @@ export interface ScenarioType {
   bgmURL?: string;
   history?: string;
   description?: string;
+  gameType: "TEXT" | "CLUE";
   places: string[];
 }
 

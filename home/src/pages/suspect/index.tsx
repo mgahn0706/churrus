@@ -1,21 +1,16 @@
-// app/(or pages)/Suspect.tsx
-"use client";
-
 import { Box, Button, Chip, IconButton, Typography } from "@mui/material";
 import {
   ArrowBackIosNewRounded,
   ArrowForwardIosRounded,
-  ArrowLeftRounded,
   PlayArrowRounded,
   PeopleAlt,
   Schedule,
-  VolumeUpRounded,
 } from "@mui/icons-material";
-import { use, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { scenarios as sourceScenarios } from "@/features/suspect/fixtures";
 import Header from "@/features/suspect/components/Header";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 // --------- helpers ----------
 const getDifficultyLabel = (d: unknown) => {
@@ -373,6 +368,7 @@ export default function Suspect() {
                 <Button
                   disabled={scenarios[currentIndex].isInDevelopment}
                   variant="contained"
+                  onClick={() => handleSelect(currentIndex)}
                   startIcon={<PlayArrowRounded />}
                   sx={{
                     my: 2,
