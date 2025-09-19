@@ -44,40 +44,8 @@ const difficultySx = (label: string) => {
   }
 };
 
-// 시나리오 정규화: fixtures의 다양한 필드명 흡수
-function useNormalizedScenarios() {
-  return useMemo(
-    () =>
-      (sourceScenarios as any[]).map((s, idx) => {
-        const image = s.image || s.backgroundImage || "/placeholder.svg";
-        return {
-          isInDevelopment: s.isInDevelopment || false,
-          id: s.id || `scenario-${idx}`,
-          title: s.title ?? "제목 없음",
-          description:
-            s.description ||
-            s.synopsis ||
-            "사건 현장을 수사하여 진실을 밝혀내세요.",
-          difficulty: s.difficulty ?? 2,
-          players: s.players || `${s.numberOfSuspects ?? 4}-8명`,
-          duration:
-            typeof s.playTime === "number"
-              ? `${s.playTime}분`
-              : s.duration || "60분",
-          image,
-          bgmURL: s.bgmURL,
-          keyword: s.keyword || "",
-          history: s.history,
-          numberOfSuspects: s.numberOfSuspects,
-          raw: s,
-        };
-      }),
-    []
-  );
-}
-
 export default function Suspect() {
-  const scenarios = useNormalizedScenarios();
+  const scenarios = sourceScenarios;
   const [currentIndex, setCurrentIndex] = useState(0);
   const [glitchText, setGlitchText] = useState("SELECT YOUR CRIME SCENE");
 
@@ -106,9 +74,7 @@ export default function Suspect() {
   }, []);
 
   const handleSelect = (idx: number) => {
-    router.push(
-      `/suspect/scenario/${scenarios[idx].keyword || scenarios[idx].id}`
-    );
+    router.push(`/suspect/scenario/${scenarios[idx].id}`);
   };
 
   const next = () => setCurrentIndex((p) => (p + 1) % scenarios.length);
@@ -204,7 +170,7 @@ export default function Suspect() {
               {/* 배경 이미지 */}
               <Box
                 component="img"
-                src={scenarios[currentIndex].image}
+                src={scenarios[currentIndex].backgroundImage}
                 alt={scenarios[currentIndex].title}
                 sx={{
                   width: "100%",
@@ -295,19 +261,6 @@ export default function Suspect() {
                   }}
                 >
                   <Chip
-                    label={getDifficultyLabel(
-                      scenarios[currentIndex].difficulty
-                    )}
-                    sx={{
-                      ...difficultySx(
-                        getDifficultyLabel(scenarios[currentIndex].difficulty)
-                      ),
-                      px: 1.5,
-                      height: 28,
-                      fontFamily: "monospace",
-                    }}
-                  />
-                  <Chip
                     variant="outlined"
                     label={
                       <Box
@@ -330,8 +283,11 @@ export default function Suspect() {
                       <Box
                         sx={{ display: "flex", alignItems: "center", gap: 0.5 }}
                       >
-                        <Schedule fontSize="small" />
-                        <span>{scenarios[currentIndex].duration}</span>
+                        <span>
+                          {scenarios[currentIndex].gameType === "CLUE"
+                            ? "단서 탐색형"
+                            : "단서 검색형"}
+                        </span>
                       </Box>
                     }
                     sx={{
@@ -455,7 +411,7 @@ export default function Suspect() {
                     >
                       <Box
                         component="img"
-                        src={s.image}
+                        src={s.backgroundImage}
                         alt={s.title}
                         sx={{
                           width: "100%",

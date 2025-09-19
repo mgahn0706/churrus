@@ -37,7 +37,7 @@ export interface ScenarioType {
   numberOfSuspects: number;
   backgroundImage: string;
   cardImage: string;
-  keyword: string;
+  id: string;
   isInDevelopment: boolean;
   bgmURL?: string;
   history?: string;
