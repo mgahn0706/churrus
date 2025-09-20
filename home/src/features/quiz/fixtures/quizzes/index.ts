@@ -1,6 +1,58 @@
 import { QuizType } from "../../types";
 
 export const QuizData: Record<string, QuizType[]> = {
+  "2025-OT-2": [
+    {
+      id: "2025-OT-2-1",
+      meetingId: "2025-OT-2",
+      quizNumber: 1,
+      title: "Color Crossword",
+      creator: "조준호",
+      quizImageSource: "/image/quiz/2025-OT-2-1.png",
+      answer: "올림픽",
+      tags: ["WORD", "PUZZLE"],
+    },
+    {
+      id: "2025-OT-2-2",
+      meetingId: "2025-OT-2",
+      quizNumber: 2,
+      title: "We are in Seoul",
+      creator: "조준호",
+      quizImageSource: "/image/quiz/2025-OT-2-2.png",
+      answer: "여의도",
+      tags: ["KNOWLEDGE"],
+    },
+    {
+      id: "2025-OT-2-3",
+      meetingId: "2025-OT-2",
+      quizNumber: 3,
+      title: "Letter from Cover",
+      creator: "조준호",
+      quizImageSource: "/image/quiz/2025-OT-2-3.png",
+      answer: "CERAMIC",
+      tags: ["HARD", "KNOWLEDGE"],
+    },
+    {
+      id: "2025-OT-2-4",
+      meetingId: "2025-OT-2",
+      quizNumber: 4,
+      title: "Color Command",
+      creator: "김태연",
+      quizImageSource: "/image/quiz/2025-OT-2-4.png",
+      answer: "COLOR",
+      tags: ["WORD", "PUZZLE", "KNOWLEDGE", "META"],
+    },
+    {
+      id: "2025-OT-2-5",
+      meetingId: "2025-OT-2",
+      quizNumber: 5,
+      title: "I'm so sad",
+      creator: "김태연",
+      quizImageSource: "/image/quiz/2025-OT-2-5.png",
+      answer: "WHITE",
+      tags: ["KNOWLEDGE", "LATERAL_THINKING"],
+    },
+  ],
   "2025-8": [
     {
       id: "2025-8-1",
