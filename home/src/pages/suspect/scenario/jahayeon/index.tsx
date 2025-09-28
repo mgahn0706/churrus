@@ -13,7 +13,7 @@ import {
 
 export default function Jahayeon() {
   const jahayeonScenario = scenarios.find(
-    (scenario) => scenario.keyword === "jahayeon"
+    (scenario) => scenario.id === "jahayeon"
   );
 
   if (!jahayeonScenario) {

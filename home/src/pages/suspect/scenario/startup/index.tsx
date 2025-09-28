@@ -23,7 +23,7 @@ const theme = createTheme({
 
 export default function Startup() {
   const startUpScenario = scenarios.find(
-    (scenario) => scenario.keyword === "startup"
+    (scenario) => scenario.id === "startup"
   );
 
   if (!startUpScenario) {
