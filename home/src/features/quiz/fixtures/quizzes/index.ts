@@ -76,7 +76,7 @@ export const QuizData: Record<string, QuizType[]> = {
       id: "2025-9-8",
       meetingId: "2025-9",
       quizNumber: 8,
-      title: "What is <>?",
+      title: "What is < >?",
       creator: "조준호",
       quizImageSource: "/image/quiz/2025-9-8.png",
       answer: "SHIFT",
