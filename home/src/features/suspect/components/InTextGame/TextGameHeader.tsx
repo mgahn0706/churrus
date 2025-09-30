@@ -73,7 +73,7 @@ export default function TextGameHeader() {
             </Button>
             <Button
               onClick={() => {
-                router.push("/suspect/school/submit");
+                router.push("/suspect/scenario/school/submit");
               }}
             >
               최종 제출

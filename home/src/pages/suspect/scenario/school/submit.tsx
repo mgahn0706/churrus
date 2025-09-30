@@ -195,7 +195,7 @@ export default function SchoolSubmit() {
                     memo: "",
                   };
                   localStorage.setItem("school", JSON.stringify(note));
-                  router.push(`/suspect/school/answer`);
+                  router.push(`/suspect/scenario/school/answer`);
                 } else {
                   setQuestionStep(questionStep + 1);
                 }
