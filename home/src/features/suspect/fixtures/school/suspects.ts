@@ -8,7 +8,7 @@ type InterviewType = {
 export const schoolSuspects: SuspectType[] = [
   {
     name: "손민혜",
-    image: "",
+    image: "/image/profile/son_mh.png",
     age: 19,
     gender: "female",
     job: "3-1, 화학실험 동아리 기장",
@@ -22,7 +22,7 @@ export const schoolSuspects: SuspectType[] = [
 
   {
     name: "현태민",
-    image: "/image/profile/hyun_tm.jpeg",
+    image: "/image/profile/hyun_tm.png",
     age: 19,
     gender: "male",
     job: "3-2, 위클리 와부 동아리 기장",
@@ -36,7 +36,7 @@ export const schoolSuspects: SuspectType[] = [
 
   {
     name: "유지현",
-    image: "/image/profile/yu_jh.jpeg",
+    image: "/image/profile/yu_jh.png",
     age: 19,
     gender: "female",
     job: "3-2, 생명 동아리 부원",
@@ -51,7 +51,7 @@ export const schoolSuspects: SuspectType[] = [
 
 export const schoolVictim: VictimType = {
   name: "박현성",
-  image: "/image/profile/park_hs.jpeg",
+  image: "/image/profile/park_hs.png",
   age: 19,
   gender: "male",
   job: "3-1, 생명 동아리 기장",

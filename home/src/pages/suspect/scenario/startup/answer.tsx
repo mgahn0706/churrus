@@ -66,7 +66,7 @@ export default function StartUpAnswer() {
               disabled={isLoading}
               onClick={() => {
                 setIsLoading(true);
-                router.push("/suspect/startup");
+                router.push("/suspect/scenario/startup");
               }}
             >
               확인

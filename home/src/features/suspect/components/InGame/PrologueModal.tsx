@@ -43,6 +43,7 @@ export default function PrologueModal({
           sx={{
             whiteSpace: "pre-line",
             wordSpacing: "1px",
+            lineHeight: "1.6",
             wordBreak: "keep-all",
           }}
         >

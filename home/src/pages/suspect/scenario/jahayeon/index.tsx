@@ -10,6 +10,16 @@ import {
   jahayeonSuspects,
   jahayeonVictim,
 } from "@/features/suspect/fixtures/jahayeon/suspects";
+import { createTheme, ThemeProvider } from "@mui/material";
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#0891b2",
+      contrastText: "#fafafa",
+    },
+  },
+});
 
 export default function Jahayeon() {
   const jahayeonScenario = scenarios.find(
@@ -20,14 +30,16 @@ export default function Jahayeon() {
     throw new Error("Scenario not found");
   }
   return (
-    <InGameLayout
-      suspects={jahayeonSuspects}
-      clues={jahayeonClues}
-      movePlaceButton={jahayeonMoveButton}
-      victim={jahayeonVictim}
-      prologue={<JahayeonPrologue />}
-      scenario={jahayeonScenario}
-      additionalQuestions={jahayeonAdditionalQuestions}
-    />
+    <ThemeProvider theme={theme}>
+      <InGameLayout
+        suspects={jahayeonSuspects}
+        clues={jahayeonClues}
+        movePlaceButton={jahayeonMoveButton}
+        victim={jahayeonVictim}
+        prologue={<JahayeonPrologue />}
+        scenario={jahayeonScenario}
+        additionalQuestions={jahayeonAdditionalQuestions}
+      />
+    </ThemeProvider>
   );
 }

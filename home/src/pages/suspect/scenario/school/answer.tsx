@@ -66,7 +66,7 @@ export default function SchoolAnswer() {
               disabled={isLoading}
               onClick={() => {
                 setIsLoading(true);
-                router.push("/suspect/startup");
+                router.push("/suspect/scenario/school");
               }}
             >
               확인

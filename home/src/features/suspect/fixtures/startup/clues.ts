@@ -4,18 +4,23 @@ export const startupAdditionalQuestions: AdditionalQuestionType[] = [
   {
     no: 1,
     question: "김성균은 피해자를 평소에 어떻게 생각하고 있었나요?",
+    answer: "김성균은 피해자 한채원을 평소에 짝사랑했습니다.",
   },
   {
     no: 2,
     question: "살해 당시 피해자 맞은 편에 앉아있던 사람은 누구인가요?",
+    answer: "살해 당시 피해자 맞은 편에 앉아있던 사람은 박지혁입니다.",
   },
   {
     no: 3,
     question: "박지혁의 연인은 누구인가요?",
+    answer: "박지혁의 연인은 인공지능인 Snack Genius입니다.",
   },
   {
     no: 4,
     question: " 강지혜가 추러스에 입사하게 된 계기는 무엇인가요?",
+    answer:
+      "강지혜는 와플러브에서 온 산업스파이로, 추러스에 입사한 후에도 와플러브의 정보를 빼내려 했습니다.",
   },
 ];
 

@@ -3,19 +3,15 @@ import { AdditionalQuestionType, ClueType } from "@/features/suspect/types";
 export const jahayeonAdditionalQuestions: AdditionalQuestionType[] = [
   {
     no: 1,
-    question: "서경은이 사건 날 학교를 방문하게된 계기는 무엇인가요?",
+    question: "서여친이 사건 날 학교를 방문하게된 계기는 무엇인가요?",
+    answer:
+      "서여친은 사건 당일, 김하연과의 갈등을 해결하기 위해 학교를 방문했습니다. 두 사람은 최근에 오해가 생겨 관계가 소원해졌고, 서여친은 이를 풀기 위해 자하연에서 만나기로 약속했습니다.",
   },
   {
     no: 2,
-    question: "조세현이 술자리",
-  },
-  {
-    no: 3,
-    question: "이강훈이 ",
-  },
-  {
-    no: 4,
-    question: " 박진석은 술자리를 떠난 이후 어디로 갔나요?",
+    question: "박경기는 술자리를 떠난 이후 어디로 갔나요?",
+    answer:
+      "박경기는 술자리를 떠난 후, 지하철과 버스를 이용해 집으로 돌아갔습니다. 그는 남양주시에 거주하고 있어 막차 시간에 맞춰 자리를 일찍 떠날 수밖에 없었습니다.",
   },
 ];
 

@@ -19,8 +19,9 @@ import { useEffect, useState } from "react";
 import { DetectiveNoteType } from "@/features/suspect/types";
 import TabPanel from "@/features/suspect/components/Answer/TabPanel";
 import { FadeInSection } from "@/features/suspect/components/FadeInSection";
+import { jahayeonAdditionalQuestions } from "@/features/suspect/fixtures/jahayeon/clues";
 
-export default function StartUpAnswer() {
+export default function JahayeonAnswer() {
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -35,8 +36,8 @@ export default function StartUpAnswer() {
   useEffect(() => {
     if (
       typeof window === "undefined" ||
-      localStorage.getItem("startup") == null ||
-      !JSON.parse(localStorage.getItem("startup") ?? "").accusedSuspect
+      localStorage.getItem("jahayeon") == null ||
+      !JSON.parse(localStorage.getItem("jahayeon") ?? "").accusedSuspect
     ) {
       setIsSuspectAccused(false);
       return;
@@ -66,7 +67,7 @@ export default function StartUpAnswer() {
               disabled={isLoading}
               onClick={() => {
                 setIsLoading(true);
-                router.push("/suspect/jahayeon");
+                router.push("/suspect/scenario/jahayeon");
               }}
             >
               확인
@@ -78,14 +79,14 @@ export default function StartUpAnswer() {
   }
 
   const submittedAnswer: DetectiveNoteType = JSON.parse(
-    localStorage.getItem("startup") ?? ""
+    localStorage.getItem("jahayeon") ?? ""
   );
 
   return (
     <Box sx={{ backgroundColor: "black" }}>
       <FadeInSection>
         <Typography variant="h1" color="white" mt={40} mb={20}>
-          {submittedAnswer.accusedSuspect}은
+          {submittedAnswer.accusedSuspect}
         </Typography>
       </FadeInSection>
 
@@ -103,8 +104,14 @@ export default function StartUpAnswer() {
       </FadeInSection>
 
       <FadeInSection>
+        <Typography variant="h1" color="white" mt={40} mb={20}>
+          당신은
+        </Typography>
+      </FadeInSection>
+
+      <FadeInSection>
         <Typography variant="h1" color="white" mt={70} mb={100}>
-          김규민을 살해한 범인이
+          김하연을 살해한 범인이
         </Typography>
       </FadeInSection>
       <FadeInSection>
@@ -123,7 +130,7 @@ export default function StartUpAnswer() {
       <FadeInSection>
         <Box display="flex" justifyContent="center">
           <Typography variant="h2" color="white">
-            진범: 조세현
+            진범: 조노원
           </Typography>
         </Box>
       </FadeInSection>
@@ -140,7 +147,7 @@ export default function StartUpAnswer() {
       <FadeInSection>
         <Box textAlign="center">
           <Typography variant="h5" color="white">
-            살해동기:
+            살해동기: 군대 가있는 동안 서여친을 뺏겼다는 생각에 대한 복수심
           </Typography>
           <Typography variant="body2" color="gray">
             내 답변: {submittedAnswer.whyDunnit}
@@ -246,93 +253,29 @@ export default function StartUpAnswer() {
         </TabPanel>
         <TabPanel value={tabValue} index="additional">
           <List>
-            <ListItem sx={{ my: 3 }}>
-              <ListItemText
-                primary={
-                  <Typography variant="h6" mb={2}>
-                    Q1. 김성균은 피해자를 평소에 어떻게 생각하고 있었나요?
-                  </Typography>
-                }
-                secondary={
-                  <>
-                    <Typography variant="body1" color="white">
-                      A. 김성균은 피해자 한채원을 평소에 짝사랑하고 있었습니다.
+            {jahayeonAdditionalQuestions.map((question, index) => (
+              <ListItem key={index} sx={{ my: 3 }}>
+                <ListItemText
+                  primary={
+                    <Typography variant="h6" mb={2}>
+                      Q{question.no}. {question.question}
                     </Typography>
-                    <Typography variant="body2" color="gray">
-                      내 답변:{" "}
-                      {submittedAnswer.additionalQuestionAnswers[0] ??
-                        "입력되지 않음"}
-                    </Typography>
-                  </>
-                }
-              />
-            </ListItem>
-            <ListItem sx={{ my: 3 }}>
-              <ListItemText
-                primary={
-                  <Typography variant="h6" mb={2}>
-                    Q2. 살해 당시 피해자 맞은 편에 앉아있던 사람은 누구인가요?
-                  </Typography>
-                }
-                secondary={
-                  <>
-                    <Typography variant="body1" color="white">
-                      A. 살해 당시 피해자 맞은 편에 앉아있던 사람은
-                      박지혁입니다.
-                    </Typography>
-                    <Typography variant="body2" color="gray">
-                      내 답변:{" "}
-                      {submittedAnswer.additionalQuestionAnswers[1] ??
-                        "입력되지 않음"}
-                    </Typography>
-                  </>
-                }
-              />
-            </ListItem>
-            <ListItem sx={{ my: 3 }}>
-              <ListItemText
-                primary={
-                  <Typography variant="h6" mb={2}>
-                    Q3. 박지혁의 연인은 누구인가요?
-                  </Typography>
-                }
-                secondary={
-                  <>
-                    <Typography variant="body1" color="white">
-                      A. 박지혁의 연인은 추러스에서 개발한 인공지능인 'Snack
-                      Genius'입니다.
-                    </Typography>
-                    <Typography variant="body2" color="gray">
-                      내 답변:{" "}
-                      {submittedAnswer.additionalQuestionAnswers[2] ??
-                        "입력되지 않음"}
-                    </Typography>
-                  </>
-                }
-              />
-            </ListItem>
-            <ListItem sx={{ my: 3 }}>
-              <ListItemText
-                primary={
-                  <Typography variant="h6" mb={2}>
-                    Q4. 강지혜가 추러스에 입사하게 된 계기는 무엇인가요?
-                  </Typography>
-                }
-                secondary={
-                  <>
-                    <Typography variant="body1" color="white">
-                      A. 강지혜는 '와플러브'에서 온 스파이로, 추러스의 기술을
-                      유출하기 위해 입사했습니다.
-                    </Typography>
-                    <Typography variant="body2" color="gray">
-                      내 답변:{" "}
-                      {submittedAnswer.additionalQuestionAnswers[3] ??
-                        "입력되지 않음"}
-                    </Typography>
-                  </>
-                }
-              />
-            </ListItem>
+                  }
+                  secondary={
+                    <>
+                      <Typography variant="body1" color="white">
+                        A. {question.answer}
+                      </Typography>
+                      <Typography variant="body2" color="gray">
+                        내 답변:{" "}
+                        {submittedAnswer.additionalQuestionAnswers[index] ??
+                          "입력되지 않음"}
+                      </Typography>
+                    </>
+                  }
+                />
+              </ListItem>
+            ))}
           </List>
         </TabPanel>
         <TabPanel value={tabValue} index="solution">
