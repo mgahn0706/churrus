@@ -5,7 +5,7 @@ export interface ClueType {
   x: number;
   y: number;
   description: string;
-  type: "basic" | "additional" | "interrogation" | "locked";
+  type: "basic" | "additional" | "locked";
   password?: string;
   passwordHint?: string;
   place: string | number;

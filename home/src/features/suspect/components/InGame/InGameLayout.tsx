@@ -83,7 +83,7 @@ export default function InGameLayout({
         {scenario && (
           <Image
             priority
-            src={`/image/map/${scenario.id}-${currentPlace}.png`}
+            src={`/image/suspect/scenario/${scenario.id}/map/${scenario.id}-${currentPlace}.png`}
             alt="맵 이미지"
             fill
             style={{

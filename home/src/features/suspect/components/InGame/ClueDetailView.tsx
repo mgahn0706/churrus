@@ -125,7 +125,7 @@ export function ClueDetailView({
             priority
             onLoadingComplete={() => setIsImageLoading(false)}
             onError={() => setIsImageLoading(false)}
-            src={`/image/clue/${scenarioKeyword}-${id}.png`}
+            src={`/image/suspect/scenario/${scenarioKeyword}/clues/${scenarioKeyword}-${id}.png`}
             alt={`${clueData.id}번째 단서 이미지`}
             width={isImageLoading ? 0 : 600}
             height={isImageLoading ? 0 : 600}

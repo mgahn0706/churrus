@@ -3,7 +3,7 @@ import { SuspectType, VictimType } from "@/features/suspect/types";
 export const jahayeonSuspects: SuspectType[] = [
   {
     name: "서여친",
-    image: "/image/profile/seo_yc.png",
+    image: "/image/suspect/scenario/jahayeon/profile/seo_yc.png",
     age: 21,
     gender: "female",
     job: "피해자의 여자친구",
@@ -15,7 +15,7 @@ export const jahayeonSuspects: SuspectType[] = [
   },
   {
     name: "조노원",
-    image: "/image/profile/cho_nw.png",
+    image: "/image/suspect/scenario/jahayeon/profile/cho_nw.png",
     age: 23,
     gender: "male",
     job: "일어일문 21학번",
@@ -28,7 +28,7 @@ export const jahayeonSuspects: SuspectType[] = [
 
   {
     name: "이구관",
-    image: "/image/profile/lee_gg.png",
+    image: "/image/suspect/scenario/jahayeon/profile/lee_gg.png",
     age: 23,
     gender: "male",
     job: "일어일문 21학번",
@@ -40,7 +40,7 @@ export const jahayeonSuspects: SuspectType[] = [
   },
   {
     name: "박경기",
-    image: "/image/profile/park_gg.png",
+    image: "/image/suspect/scenario/jahayeon/profile/park_gg.png",
     age: 22,
     gender: "male",
     job: "일어일문 21학번",
@@ -54,7 +54,7 @@ export const jahayeonSuspects: SuspectType[] = [
 
 export const jahayeonVictim: VictimType = {
   name: "김하연",
-  image: "/image/profile/kim_hy.png",
+  image: "/image/suspect/scenario/jahayeon/profile/kim_hy.png",
   age: 22,
   gender: "male",
   job: "일어일문 21학번 과대표",

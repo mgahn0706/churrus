@@ -42,7 +42,7 @@ export default function MapModal({
           height={isMobileWidth ? 160 : 600}
           priority
           alt="맵 이미지"
-          src={`/image/map/${selectedMap}.png`}
+          src={`/image/suspect/scenario/school/map/${selectedMap}.png`}
         />
       </TabPanel>
     </Dialog>

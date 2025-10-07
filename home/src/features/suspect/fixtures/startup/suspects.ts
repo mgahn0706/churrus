@@ -3,7 +3,7 @@ import { SuspectType, VictimType } from "@/features/suspect/types";
 export const startUpSuspects: SuspectType[] = [
   {
     name: "김성균",
-    image: "/image/profile/kim_sg.png",
+    image: "/image/suspect/scenario/startup/profile/kim_sg.png",
     age: 29,
     gender: "male",
     job: "데이터 관리자",
@@ -17,7 +17,7 @@ export const startUpSuspects: SuspectType[] = [
 
   {
     name: "강지혜",
-    image: "/image/profile/kang_jh.png",
+    image: "/image/suspect/scenario/startup/profile/kang_jh.png",
     age: 27,
     gender: "female",
     job: "마케팅 인턴",
@@ -31,7 +31,7 @@ export const startUpSuspects: SuspectType[] = [
 
   {
     name: "박지혁",
-    image: "/image/profile/park_jh.png",
+    image: "/image/suspect/scenario/startup/profile/park_jh.png",
     age: 29,
     gender: "male",
     job: "영업 팀장",
@@ -46,7 +46,7 @@ export const startUpSuspects: SuspectType[] = [
 
 export const startUpVictim: VictimType = {
   name: "한채원",
-  image: "/image/profile/han_cw.png",
+  image: "/image/suspect/scenario/startup/profile/han_cw.png",
   age: 28,
   gender: "female",
   job: "추러스 대표이사",
