@@ -45,7 +45,7 @@ export default function RecruitPage() {
               wordBreak: "keep-all",
             }}
           >
-            추러스 25-2기 모집
+            추러스 25-2기 추가 모집
           </Box>
           <Box
             fontSize={isMobileWidth ? "1rem" : "1.5rem"}
@@ -53,8 +53,7 @@ export default function RecruitPage() {
               wordBreak: "keep-all",
             }}
           >
-            추러스 25-2기 신입 회원 모집이 마감되었어요. 다음 모집은 2026년
-            3월이에요.
+            추러스 25-2기 신입 회원 추가 모집을 시작합니다! ( ~ 10/14)
           </Box>
         </Box>
         <Box textAlign="center" py={["100px", "120px", "150px"]} px="10vw">
@@ -99,7 +98,7 @@ export default function RecruitPage() {
               }}
               onClick={() => {
                 window.open(
-                  "https://forms.gle/MX8SfiSePLxrsxgd8",
+                  "https://forms.gle/RStmfPBFiDthbGoYA",
                   "_blank",
                   "noopener noreferrer"
                 );
