@@ -34,7 +34,7 @@ export const jahayeonClues: ClueType[] = [
     y: 40.149,
     image: "/image/suspect/scenario/jahayeon/clues/jahayeon-1.png",
     description:
-      "피해자 김하연 시체이다. 물에 빠진 채 눈을 감고 죽어있다. 시체 주변은 얼어있어 시체가 움직이지는 않는다.",
+      "피해자 김하연 시체이다. 물에 빠진 채 눈을 감고 죽어있다. 시체 주변은 얼어있어 시체가 움직이지는 않는다. 알코올을 제외하고 다른 약물, 외상, 아나필락시스 반응은 발견되지 않았다.",
     type: "basic",
     place: "pond",
   },
@@ -66,8 +66,8 @@ export const jahayeonClues: ClueType[] = [
   {
     id: 4,
     title: "술자리 사진",
-    x: 53.538,
-    y: 34.149,
+    x: 19.538,
+    y: 23.149,
     image: "/image/suspect/scenario/jahayeon/clues/jahayeon-4.png",
     description:
       "김하연이 찍은 1월 28일 술자리 사진. 찍은 시간은 오후 11시 55분. 만취해있는 이구관과 함께 단 둘이서만 찍혀있다. 책상에는 소주병만 한가득이다.",
@@ -77,7 +77,7 @@ export const jahayeonClues: ClueType[] = [
   {
     id: 5,
     title: "카카오톡: 서여친",
-    x: 58.769,
+    x: 25.769,
     y: 32.149,
     image: "/image/suspect/scenario/jahayeon/clues/jahayeon-5.png",
     description: "김하연이 서여친과 주고받은 카카오톡 대화 내용이다.",
@@ -87,7 +87,7 @@ export const jahayeonClues: ClueType[] = [
   {
     id: 6,
     title: "카카오톡: 이구관",
-    x: 58.769,
+    x: 24.769,
     y: 37.149,
     image: "/image/suspect/scenario/jahayeon/clues/jahayeon-6.png",
     description: "김하연이 이구관과 주고받은 카카오톡 대화 내용이다.",
@@ -97,7 +97,7 @@ export const jahayeonClues: ClueType[] = [
   {
     id: 7,
     title: "카카오톡: 일어일문 21",
-    x: 58.769,
+    x: 23.769,
     y: 42.149,
     image: "/image/suspect/scenario/jahayeon/clues/jahayeon-7.png",
     description: "일어일문학과 21학번 단체 톡방이다.",
@@ -107,7 +107,7 @@ export const jahayeonClues: ClueType[] = [
   {
     id: 8,
     title: "문자메시지: 서여친",
-    x: 58.769,
+    x: 22.769,
     y: 47.149,
     image: "/image/suspect/scenario/jahayeon/clues/jahayeon-8.png",
     description: "김하연이 서여친에게 보낸 문자 메시지 내용이다.",
@@ -117,7 +117,7 @@ export const jahayeonClues: ClueType[] = [
   {
     id: 9,
     title: "통화 기록",
-    x: 58.769,
+    x: 21.769,
     y: 52.149,
     image: "/image/suspect/scenario/jahayeon/clues/jahayeon-9.png",
     description: "김하연의 최근 통화 기록이다.",
@@ -215,8 +215,8 @@ export const jahayeonClues: ClueType[] = [
   {
     id: 18,
     title: "반지",
-    x: 25.769,
-    y: 34.149,
+    x: 10.769,
+    y: 60.149,
     image: "/image/suspect/scenario/jahayeon/clues/jahayeon-18.png",
     description:
       "김하연의 왼손 약지에 끼어있던 반지. 안쪽에는 '22.08.23'이라는 문구가 새겨져 있다.",
@@ -334,7 +334,7 @@ export const jahayeonClues: ClueType[] = [
   {
     id: 29,
     title: "네이버 지도 검색기록",
-    x: 70.769,
+    x: 20.769,
     y: 32.149,
     image: "/image/suspect/scenario/jahayeon/clues/jahayeon-29.png",
     type: "additional",
@@ -344,7 +344,7 @@ export const jahayeonClues: ClueType[] = [
   {
     id: 30,
     title: "카카오톡: 친구",
-    x: 70.769,
+    x: 20.769,
     y: 37.149,
     image: "/image/suspect/scenario/jahayeon/clues/jahayeon-30.png",
     type: "additional",
@@ -355,7 +355,7 @@ export const jahayeonClues: ClueType[] = [
   {
     id: 31,
     title: "기숙사 신청 결과",
-    x: 70.769,
+    x: 20.769,
     y: 42.149,
     image: "/image/suspect/scenario/jahayeon/clues/jahayeon-31.png",
     type: "additional",
@@ -381,7 +381,8 @@ export const jahayeonClues: ClueType[] = [
     image: "/image/suspect/scenario/jahayeon/clues/jahayeon-33.png",
     type: "basic",
     place: "house",
-    description: "낙성대역 지하철 2호선의 첫차와 막차 시간표이다.",
+    description:
+      "낙성대역 지하철 2호선의 첫차와 막차 시간표이다. 노원구와 남양주시로 가는 사당 방면에 해당하는 시간표이다.",
   },
   {
     id: 34,
@@ -418,12 +419,12 @@ export const jahayeonClues: ClueType[] = [
   {
     id: 37,
     title: "네이버 지도 기록",
-    x: 50.769,
+    x: 20.769,
     y: 30.149,
     image: "/image/suspect/scenario/jahayeon/clues/jahayeon-37.png",
     type: "additional",
     place: 36,
-    description: "서경은이 인문대 1동에서 자취방까지의 경로를 검색한 기록이다.",
+    description: "서여친이 인문대 1동에서 자취방까지의 경로를 검색한 기록이다.",
   },
   {
     id: 38,
@@ -447,19 +448,19 @@ export const jahayeonClues: ClueType[] = [
   },
   {
     id: 40,
-    title: "카카오톡: 전조작 교수님",
-    x: 60.769,
-    y: 62.149,
+    title: "카카오톡: 전 교수님",
+    x: 20.769,
+    y: 42.149,
     image: "/image/suspect/scenario/jahayeon/clues/jahayeon-40.png",
     type: "additional",
     place: 39,
-    description: "박경기가 전조작 교수님과 주고받은 카카오톡 대화 내용이다.",
+    description: "박경기가 전 교수님과 주고받은 카카오톡 대화 내용이다.",
   },
   {
     id: 41,
     title: "안전안내문자",
-    x: 60.769,
-    y: 67.149,
+    x: 20.769,
+    y: 47.149,
     image: "/image/suspect/scenario/jahayeon/clues/jahayeon-41.png",
     type: "additional",
     place: 39,
@@ -468,8 +469,8 @@ export const jahayeonClues: ClueType[] = [
   {
     id: 42,
     title: "전화 기록",
-    x: 60.769,
-    y: 72.149,
+    x: 20.769,
+    y: 52.149,
     image: "/image/suspect/scenario/jahayeon/clues/jahayeon-42.png",
     type: "additional",
     place: 39,
@@ -478,8 +479,8 @@ export const jahayeonClues: ClueType[] = [
   {
     id: 43,
     title: "토스 송금 내역",
-    x: 60.769,
-    y: 77.149,
+    x: 20.769,
+    y: 57.149,
     image: "/image/suspect/scenario/jahayeon/clues/jahayeon-43.png",
     type: "additional",
     place: 39,
@@ -498,8 +499,8 @@ export const jahayeonClues: ClueType[] = [
   {
     id: 45,
     title: "갤러리: 카카오택시",
-    x: 70.769,
-    y: 84.149,
+    x: 20.769,
+    y: 34.149,
     image: "/image/suspect/scenario/jahayeon/clues/jahayeon-45.png",
     type: "additional",
     place: 44,
@@ -508,8 +509,8 @@ export const jahayeonClues: ClueType[] = [
   {
     id: 46,
     title: "문자: 010-****-****",
-    x: 70.769,
-    y: 89.149,
+    x: 20.769,
+    y: 39.149,
     image: "/image/suspect/scenario/jahayeon/clues/jahayeon-46.png",
     type: "additional",
     place: 44,
@@ -518,8 +519,8 @@ export const jahayeonClues: ClueType[] = [
   {
     id: 47,
     title: "카카오톡: 김하연",
-    x: 70.769,
-    y: 94.149,
+    x: 20.769,
+    y: 44.149,
     image: "/image/suspect/scenario/jahayeon/clues/jahayeon-47.png",
     type: "additional",
     place: 44,
@@ -528,8 +529,8 @@ export const jahayeonClues: ClueType[] = [
   {
     id: 48,
     title: "출결 변경 신청내역",
-    x: 80.769,
-    y: 12.149,
+    x: 20.769,
+    y: 62.149,
     image: "/image/suspect/scenario/jahayeon/clues/jahayeon-48.png",
     type: "additional",
     place: 39,
@@ -598,5 +599,16 @@ export const jahayeonClues: ClueType[] = [
       "작년 가을, 아버지가 동료 교수에게 선물한 책의 속지. 날짜(2022.09.15)와 아버지 서명이 또렷하다.",
     type: "basic",
     place: "house",
+  },
+  {
+    id: 55,
+    title: "김하연 기숙사 제출 서류",
+    x: 41.2,
+    y: 37.1,
+    image: "/image/suspect/scenario/jahayeon/clues/jahayeon-55.png",
+    description:
+      "2023-1학기 기숙사 신청을 위해 김하연이 제출한 서류. 서류에는 알레르기 정보가 적혀있다.",
+    type: "basic",
+    place: "dorm",
   },
 ];

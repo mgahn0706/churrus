@@ -20,6 +20,7 @@ import { DetectiveNoteType } from "@/features/suspect/types";
 import TabPanel from "@/features/suspect/components/Answer/TabPanel";
 import { FadeInSection } from "@/features/suspect/components/FadeInSection";
 import { jahayeonAdditionalQuestions } from "@/features/suspect/fixtures/jahayeon/clues";
+import { LaunchRounded } from "@mui/icons-material";
 
 export default function JahayeonAnswer() {
   const router = useRouter();
@@ -122,7 +123,7 @@ export default function JahayeonAnswer() {
           mb={50}
           fontWeight="bold"
         >
-          {submittedAnswer.accusedSuspect === "조세현"
+          {submittedAnswer.accusedSuspect === "조노원"
             ? "맞습니다!"
             : "아닙니다!"}
         </Typography>
@@ -183,6 +184,11 @@ export default function JahayeonAnswer() {
             }}
             value="solution"
             label="사건 풀이법"
+          />
+          <Tab
+            sx={{ fontSize: "20px" }}
+            value="culprits"
+            label="용의자 롤카드 PDF"
           />
         </Tabs>
         <TabPanel value={tabValue} index="confess">
@@ -314,6 +320,26 @@ export default function JahayeonAnswer() {
             2시 이전에 걸어나오던 김하연을 빠뜨리는 것은 상상하기 어렵습니다.{" "}
             <br />
           </Typography>
+        </TabPanel>
+        <TabPanel value={tabValue} index="culprits">
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            mt={10}
+          >
+            <Button
+              variant="contained"
+              color="info"
+              href="https://drive.google.com/file/d/127S7glB881imqXyPKi-g5fyL2iWB6s-Q/view?usp=drive_link"
+              target="_blank"
+              rel="noopener noreferrer"
+              sx={{ mb: 10 }}
+            >
+              용의자 롤카드 PDF 다운로드
+              <LaunchRounded sx={{ ml: 1, fontSize: 20 }} />
+            </Button>
+          </Box>
         </TabPanel>
       </Box>
 
