@@ -29,7 +29,7 @@ export const scenarios: ScenarioType[] = [
     numberOfSuspects: 4,
     backgroundImage: "/image/suspect/scenario/jahayeon/jahayeon-main.png",
     id: "jahayeon",
-    isInDevelopment: false,
+    isInDevelopment: true,
     history: "2023년 1월 2차 정기모임",
     description: "한겨울 자하연에서 시체가 발견되었다",
     places: ["pond", "dorm", "house"],
