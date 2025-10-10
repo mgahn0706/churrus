@@ -4,7 +4,7 @@ export const jahayeonMoveButton: MovePlaceButtonType[] = [
   {
     from: "pond",
     to: "dorm",
-    x: 22.859,
+    x: 42.859,
     y: 11.152,
     direction: "up",
   },

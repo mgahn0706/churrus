@@ -1,7 +1,6 @@
-import { Search, VolumeUpRounded, VolumeOffRounded } from "@mui/icons-material";
+import { VolumeUpRounded, VolumeOffRounded } from "@mui/icons-material";
 import { Box, Typography, IconButton, Tooltip } from "@mui/material";
 import { useRouter } from "next/router";
-import { useState } from "react";
 
 function HeaderButton({
   text,
@@ -32,12 +31,14 @@ function HeaderButton({
 
 export default function Header() {
   const router = useRouter();
-  const [bgmOn, setBgmOn] = useState(true);
 
   const toggleBgm = () => {
-    setBgmOn((prev) => !prev);
-    // 여기에서 실제 오디오 컨트롤 로직 연결 가능
-    // 예: audioRef.current?.play() / pause()
+    // Move to youtube link
+    window.open(
+      "https://youtube.com/playlist?list=PLUpIDGJHdYTT19y4F7LxG7MQnDW4PI0VK&si=fO4IV6OuvUg9PIjH",
+      "_blank",
+      "noopener,noreferrer"
+    );
   };
 
   return (
@@ -83,7 +84,7 @@ export default function Header() {
       </Box>
 
       {/* Right: BGM Toggle */}
-      <Tooltip title={bgmOn ? "BGM 끄기" : "BGM 켜기"} arrow>
+      <Tooltip title={"BGM"} arrow>
         <IconButton
           onClick={toggleBgm}
           sx={{
@@ -96,7 +97,7 @@ export default function Header() {
             transition: "all 0.3s ease",
           }}
         >
-          {bgmOn ? <VolumeUpRounded /> : <VolumeOffRounded />}
+          <VolumeUpRounded />
         </IconButton>
       </Tooltip>
     </Box>
