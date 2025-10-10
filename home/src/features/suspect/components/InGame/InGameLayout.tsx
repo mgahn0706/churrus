@@ -77,13 +77,13 @@ export default function InGameLayout({
   return (
     <>
       <Head>
-        <title>협동 크라임씬:{scenario.title}</title>
+        <title>협동 크라임씬: {scenario.title}</title>
       </Head>
       <Box>
         {scenario && (
           <Image
             priority
-            src={`/image/map/${scenario.id}-${currentPlace}.png`}
+            src={`/image/suspect/scenario/${scenario.id}/map/${scenario.id}-${currentPlace}.png`}
             alt="맵 이미지"
             fill
             style={{

@@ -4,45 +4,12 @@ import {
   ArrowForwardIosRounded,
   PlayArrowRounded,
   PeopleAlt,
-  Schedule,
 } from "@mui/icons-material";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { scenarios as sourceScenarios } from "@/features/suspect/fixtures";
 import Header from "@/features/suspect/components/Header";
 import { useRouter } from "next/navigation";
-
-// --------- helpers ----------
-const getDifficultyLabel = (d: unknown) => {
-  if (typeof d === "string") return d; // "초급/중급/고급" 등
-  if (typeof d === "number") {
-    if (d <= 1.7) return "초급";
-    if (d <= 2.4) return "중급";
-    return "고급";
-  }
-  return "중급";
-};
-
-const difficultySx = (label: string) => {
-  switch (label) {
-    case "초급":
-      return { bgcolor: "rgba(255,255,255,0.2)", color: "#fff" };
-    case "중급":
-      return {
-        bgcolor: "rgba(255,255,255,0.08)",
-        color: "#fff",
-        border: "1px solid rgba(255,255,255,0.3)",
-      };
-    case "고급":
-      return {
-        bgcolor: "rgba(0,0,0,0.7)",
-        color: "#fff",
-        border: "1px solid rgba(255,255,255,0.4)",
-      };
-    default:
-      return { bgcolor: "rgba(255,255,255,0.15)", color: "#fff" };
-  }
-};
 
 export default function Suspect() {
   const scenarios = sourceScenarios;
@@ -274,7 +241,6 @@ export default function Suspect() {
                       color: "#fff",
                       borderColor: "rgba(255,255,255,0.4)",
                       height: 28,
-                      fontFamily: "monospace",
                     }}
                   />
                   <Chip
@@ -294,7 +260,6 @@ export default function Suspect() {
                       color: "#fff",
                       borderColor: "rgba(255,255,255,0.4)",
                       height: 28,
-                      fontFamily: "monospace",
                     }}
                   />
                 </Box>
@@ -304,7 +269,6 @@ export default function Suspect() {
                   sx={{
                     mx: 1,
                     color: "#fff",
-                    fontFamily: "monospace",
                     fontWeight: 800,
                   }}
                 >

@@ -5,7 +5,7 @@ export interface ClueType {
   x: number;
   y: number;
   description: string;
-  type: "basic" | "additional" | "interrogation" | "locked";
+  type: "basic" | "additional" | "locked";
   password?: string;
   passwordHint?: string;
   place: string | number;
@@ -36,10 +36,8 @@ export interface ScenarioType {
   title: string;
   numberOfSuspects: number;
   backgroundImage: string;
-  cardImage: string;
   id: string;
   isInDevelopment: boolean;
-  bgmURL?: string;
   history?: string;
   description?: string;
   gameType: "TEXT" | "CLUE";
@@ -49,6 +47,7 @@ export interface ScenarioType {
 export interface AdditionalQuestionType {
   no: number;
   question: string;
+  answer: string;
 }
 
 export interface DetectiveNoteType {
