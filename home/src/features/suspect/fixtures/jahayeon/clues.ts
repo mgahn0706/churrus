@@ -309,7 +309,7 @@ export const jahayeonClues: ClueType[] = [
     type: "basic",
     place: "dorm",
     description:
-      "어딘가에 제출하기 위해 인쇄한 듯한 성적표다. 고급 일본어 II의 성적만 F다.",
+      "이구관이 어딘가에 제출하기 위해 인쇄한 듯한 성적표다. 고급 일본어 II의 성적만 F다.",
   },
   {
     id: 27,
