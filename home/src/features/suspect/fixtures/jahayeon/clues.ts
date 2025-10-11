@@ -127,7 +127,7 @@ export const jahayeonClues: ClueType[] = [
   {
     id: 10,
     title: "술자리 정산 내역",
-    x: 53.538,
+    x: 23.538,
     y: 39.149,
     image: "/image/suspect/scenario/jahayeon/clues/jahayeon-10.png",
     description:
