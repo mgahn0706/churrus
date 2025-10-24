@@ -319,7 +319,8 @@ export default function JahayeonAnswer() {
             김하연을 빠뜨리는 것은 상상하기 어렵습니다. <br />
             가장 결정적인 단서로, 기존 술자리에 존재하지 않았던 고량주가
             있습니다. 이 고량주는 과방 내에서 마셨어야하지만, 11시 55분까지
-            사진에는 보이지 않습니다.
+            사진에는 보이지 않습니다. 자정에는 이구관이 외부에 있었으므로,
+            내부에서 고량주를 김하연에게 먹일 수 있었던 것은 조노원 뿐입니다.
           </Typography>
         </TabPanel>
         <TabPanel value={tabValue} index="culprits">

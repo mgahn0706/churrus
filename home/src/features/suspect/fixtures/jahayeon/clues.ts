@@ -9,7 +9,7 @@ export const jahayeonAdditionalQuestions: AdditionalQuestionType[] = [
   },
   {
     no: 2,
-    question: "‘경기야, 이번엔 네가 처리해야 한다’ 메모는 누가 썼을까요?",
+    question: "‘경기야, 이번엔 너 스스로 해야한다’ 메모는 누가 썼을까요?",
     answer:
       "박경기 본인이 쓴 메모입니다. 박경기는 아버지가 돌아가신 후, 아버지의 재산과 권력을 이용하는 데 양심의 가책을 느끼고 있었습니다. 그래서 스스로를 합리화하기 위해 메모를 쓴 것입니다.",
   },
@@ -610,5 +610,15 @@ export const jahayeonClues: ClueType[] = [
       "2023-1학기 기숙사 신청을 위해 김하연이 제출한 서류. 서류에는 알레르기 정보가 적혀있다.",
     type: "basic",
     place: "dorm",
+  },
+  {
+    id: 56,
+    title: "문자메시지: [동참요청]",
+    x: 20.769,
+    y: 47.149,
+    image: "/image/suspect/scenario/jahayeon/clues/jahayeon-56.png",
+    description: "이구관이 보낸 단체메시지이다.",
+    type: "additional",
+    place: 28,
   },
 ];
