@@ -1,6 +1,68 @@
 import { QuizType } from "../../types";
 
 export const QuizData: Record<string, QuizType[]> = {
+  "2025-10": [
+    {
+      id: "2025-10-1",
+      meetingId: "2025-10",
+      quizNumber: 1,
+      title: "효과가 굉장했다!",
+      creator: "안민규",
+      quizImageSource: "/image/quiz/2025-10-1.png",
+      answer: "목화",
+      tags: ["LATERAL_THINKING", "KNOWLEDGE"],
+    },
+    {
+      id: "2025-10-2",
+      meetingId: "2025-10",
+      quizNumber: 2,
+      title: "이름에 담긴 의미",
+      creator: "안민규",
+      quizImageSource: "/image/quiz/2025-10-2.png",
+      answer: "대왕쥐가오리",
+      tags: ["KNOWLEDGE", "WORD", "HARD"],
+    },
+    {
+      id: "2025-10-3",
+      meetingId: "2025-10",
+      quizNumber: 3,
+      title: "방을 밝혀라",
+      creator: "안민규",
+      quizImageSource: "/image/quiz/2025-10-3.png",
+      answer: "반딧불이",
+      tags: ["PUZZLE"],
+    },
+    {
+      id: "2025-10-4",
+      meetingId: "2025-10",
+      quizNumber: 4,
+      title: "얼음 샛길",
+      creator: "안민규",
+      quizImageSource: "/image/quiz/2025-10-4.png",
+      answer: "동충하초",
+      tags: ["PUZZLE"],
+    },
+    {
+      id: "2025-10-5",
+      meetingId: "2025-10",
+      quizNumber: 5,
+      title: "체육관 배틀",
+      creator: "안민규",
+      quizImageSource: "/image/quiz/2025-10-5.png",
+      answer: "백만볼트",
+      tags: ["META", "KNOWLEDGE"],
+    },
+    {
+      id: "2025-10-6",
+      meetingId: "2025-10",
+      quizNumber: 6,
+      title: "포켓몬의 모습이…?",
+      creator: "김태연",
+      quizImageSource: "/image/quiz/2025-10-6.png",
+      answer: "메가차원러시",
+      tags: ["KNOWLEDGE"],
+    },
+  ],
   "2025-10-mini": [
     {
       id: "2025-10-mini-0",
