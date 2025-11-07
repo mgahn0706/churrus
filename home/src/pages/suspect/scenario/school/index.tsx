@@ -7,5 +7,5 @@ export default function School() {
   if (!schoolScenario) {
     throw new Error("Scenario not found");
   }
-  return <InTextGame />;
+  return <InTextGame scenario={schoolScenario} />;
 }

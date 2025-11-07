@@ -16,9 +16,9 @@ import {
 import { useState } from "react";
 import TextGameHeader from "./TextGameHeader";
 import { Search } from "@mui/icons-material";
-import { ClueData, schoolClues } from "@/pages/api/getCluesWithKeyword";
+import { ClueData } from "@/pages/api/getCluesWithKeyword";
 import { FadeInSection } from "../FadeInSection";
-import { schoolPrologue } from "../../fixtures/school/prologue";
+import { ScenarioType } from "../../types";
 
 const darkTheme = createTheme({
   palette: {
@@ -26,9 +26,13 @@ const darkTheme = createTheme({
   },
 });
 
-const TOTAL_CLUE_COUNT = schoolClues.length;
-
-const ProgressBar = ({ checkedCount }: { checkedCount: number }) => {
+const ProgressBar = ({
+  checkedCount,
+  totalCount,
+}: {
+  checkedCount: number;
+  totalCount: number;
+}) => {
   return (
     <Tooltip title="조사 진행도">
       <Box
@@ -43,18 +47,22 @@ const ProgressBar = ({ checkedCount }: { checkedCount: number }) => {
           <LinearProgress
             color="primary"
             variant="determinate"
-            value={Math.floor((checkedCount / TOTAL_CLUE_COUNT) * 100)}
+            value={Math.floor((checkedCount / totalCount) * 100)}
           />
         </Box>
         <Typography>
-          {Math.floor((checkedCount / TOTAL_CLUE_COUNT) * 100)}%
+          {Math.floor((checkedCount / totalCount) * 100)}%
         </Typography>
       </Box>
     </Tooltip>
   );
 };
 
-export default function InTextGame() {
+interface InTextGameProps {
+  scenario: ScenarioType;
+}
+
+export default function InTextGame({ scenario }: InTextGameProps) {
   const [prolougeStep, setProlougeStep] = useState(0);
 
   const [currentStep, setCurrentStep] = useState<
@@ -67,25 +75,29 @@ export default function InTextGame() {
     string[]
   >([]);
   const [checkedClues, setCheckedClues] = useState<boolean[]>(
-    new Array(TOTAL_CLUE_COUNT).fill(false)
+    new Array(scenario.clues.length).fill(false)
   );
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleSearch = async () => {
     if (!searchKeyword) return;
+
+    // remove spaces from search keyword
+    const trimmedKeyword = searchKeyword.replace(/\s+/g, "");
+
     setIsLoading(true);
     setSearchedClues([]);
     const response = await fetch(
-      `/api/getCluesWithKeyword?keyword=${searchKeyword}`
+      `/api/getCluesWithKeyword?keyword=${trimmedKeyword}&scenarioId=${scenario.id}`
     );
     const clues = (await response.json()) as ClueData[] | null;
     setSearchedClues(clues);
     setRecentlySearchedKeywords(
-      [...recentlySearchedKeywords, searchKeyword].slice(-5)
+      [...recentlySearchedKeywords, trimmedKeyword].slice(-5)
     );
     setIsLoading(false);
     if (clues) {
-      if (!searchHistory.includes(searchKeyword)) {
+      if (!searchHistory.includes(trimmedKeyword)) {
         setSearchHistory([searchKeyword, ...searchHistory].slice(0, 10));
       }
       setCheckedClues(
@@ -100,17 +112,17 @@ export default function InTextGame() {
   return (
     <ThemeProvider theme={darkTheme}>
       <Box bgcolor="black" minHeight="100vh" py="60px" px="10vw">
-        <TextGameHeader />
+        <TextGameHeader scenarioId={scenario.id} />
         {currentStep === "PROLOGUE" && (
           <Box mt={6} color="white">
             <Typography mr={1} variant="h5" color="white">
-              {schoolPrologue[prolougeStep]}
+              {scenario.prologue![prolougeStep]}
             </Typography>
             <Button
               variant="text"
               size="large"
               onClick={() => {
-                if (prolougeStep === schoolPrologue.length - 1) {
+                if (prolougeStep === scenario.prologue!.length - 1) {
                   setCurrentStep("INVESTIGATE");
                   return;
                 }
@@ -130,7 +142,10 @@ export default function InTextGame() {
             alignItems="center"
             flexDirection={"column"}
           >
-            <ProgressBar checkedCount={checkedClues.filter((c) => c).length} />
+            <ProgressBar
+              checkedCount={checkedClues.filter((c) => c).length}
+              totalCount={scenario.clues.length}
+            />
             <Paper
               sx={{
                 p: "6px 12px",

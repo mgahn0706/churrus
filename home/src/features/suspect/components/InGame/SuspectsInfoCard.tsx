@@ -39,7 +39,7 @@ export default function SuspectsInfoCard({
 
   return (
     <>
-      <Dialog open={isOpen} maxWidth="lg" fullWidth>
+      <Dialog open={isOpen} maxWidth="xl" fullWidth>
         <Box display="flex">
           <Box
             sx={{

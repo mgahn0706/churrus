@@ -654,9 +654,25 @@ export const schoolClues: ClueData[] = [
   },
 ];
 
+const dureKeywordIds: Record<string, number[]> = {};
+
+export const dureClues: ClueData[] = [];
+
+type Scenario = {
+  keywordIds: Record<string, number[]>;
+  clues: ClueData[];
+};
+const scenarios: Record<string, Scenario> = {
+  school: { keywordIds: schoolKeywordIds, clues: schoolClues },
+
+  // 예시: 다른 시나리오를 추가하려면 아래처럼 등록
+  //dure: { keywordIds: dureKeywordIds, clues: dureClues },
+};
+
 interface ClueApiRequest extends NextApiRequest {
   query: {
     keyword: string;
+    scenarioId?: string;
   };
 }
 
@@ -664,11 +680,27 @@ export default function handler(
   req: ClueApiRequest,
   res: NextApiResponse<ClueData[] | null>
 ) {
-  if (schoolKeywordIds[req.query.keyword] === undefined) {
+  const { keyword, scenarioId } = req.query;
+
+  // scenarioId가 없으면 기존과 동일하게 school 사용
+  const scenarioKey = scenarioId ?? "school";
+  const scenario = scenarios[scenarioKey];
+
+  if (!scenario) {
     res.status(200).json(null);
     return;
   }
-  res
-    .status(200)
-    .json(schoolKeywordIds[req.query.keyword].map((id) => schoolClues[id - 1]));
+
+  const ids = scenario.keywordIds[keyword];
+  if (!ids || ids.length === 0) {
+    res.status(200).json(null);
+    return;
+  }
+
+  // 방어적으로 인덱스 체크
+  const result = ids
+    .map((id) => scenario.clues[id - 1])
+    .filter((c): c is ClueData => Boolean(c));
+
+  res.status(200).json(result.length ? result : null);
 }

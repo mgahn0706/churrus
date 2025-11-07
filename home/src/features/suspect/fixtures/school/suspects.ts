@@ -1,10 +1,5 @@
 import { SuspectType, VictimType } from "@/features/suspect/types";
 
-type InterviewType = {
-  question: string;
-  answer: string;
-};
-
 export const schoolSuspects: SuspectType[] = [
   {
     name: "손민혜",

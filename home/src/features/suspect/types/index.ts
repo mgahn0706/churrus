@@ -1,3 +1,5 @@
+import { ClueData } from "@/pages/api/getCluesWithKeyword";
+
 export interface ClueType {
   id: number;
   image: string;
@@ -41,7 +43,11 @@ export interface ScenarioType {
   history?: string;
   description?: string;
   gameType: "TEXT" | "CLUE";
+  suspects: SuspectType[];
+  victim: VictimType;
   places: string[];
+  prologue?: string[];
+  clues: ClueType[] | ClueData[];
 }
 
 export interface AdditionalQuestionType {
