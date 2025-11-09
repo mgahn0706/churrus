@@ -34,7 +34,7 @@ export default function MapModal({
     >
       <Tabs value={selectedMap} onChange={handleChange}>
         {places.map((place) => {
-          return <Tab label={place.split("-")[1]} value={place} />;
+          return <Tab label={place} value={place} />;
         })}
       </Tabs>
       <TabPanel value={selectedMap} index={selectedMap}>
@@ -43,7 +43,7 @@ export default function MapModal({
           height={isMobileWidth ? 160 : 600}
           priority
           alt="맵 이미지"
-          src={`/image/suspect/scenario/${scenarioId}/map/${selectedMap}.png`}
+          src={`/image/suspect/scenario/${scenarioId}/map/${scenarioId}-${selectedMap}.png`}
         />
       </TabPanel>
     </Dialog>
