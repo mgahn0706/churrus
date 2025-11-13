@@ -46,24 +46,24 @@ const dureQuestions: {
   },
   {
     id: 4,
-    question: "9월 2일자 위클리 와부 십자말 풀이의 가로 3번 정답은 무엇인가요?",
+    question: "박선재의 주머니 속 목걸이의 구입 자금 출처는 어디인가요?",
     variant: "input",
   },
   {
     id: 5,
-    question: "손민혜가 최근 피로감과 불안 증세를 보인 이유는 무엇인가요?",
+    question: "송가연은 박선재를 어떻게 생각하고 있었나요?",
     variant: "input",
   },
 
   {
     id: 6,
-    question: "유가람과 유지현은 어떤 관계인가요?",
+    question: "고제준이 연구실 자료 사진을 찍은 이유는 무엇인가요?",
     variant: "input",
   },
 
   {
     id: 7,
-    question: "인스타그램의 gusty_d2 계정 주인은 누구인가요?",
+    question: "1년 전 강제호 사건의 진범은 누구인가요?",
     variant: "input",
   },
 ];
@@ -98,7 +98,14 @@ export default function DureSubmit() {
           <Typography variant="body1">
             {currentQuestion.id} / {dureQuestions.length}
           </Typography>
-          <Typography variant="h4" fontWeight="bold" mb={3}>
+          <Typography
+            variant="h4"
+            fontWeight="bold"
+            mb={3}
+            sx={{
+              wordBreak: "keep-all",
+            }}
+          >
             {currentQuestion.question} {currentQuestion.required && "*"}
           </Typography>
 
@@ -162,8 +169,12 @@ export default function DureSubmit() {
 
             <Button
               disabled={
-                answers.includes("") &&
-                questionStep === dureQuestions.length - 1
+                [answers.slice(0, 3)].some((answerGroup, index) =>
+                  answerGroup.some(
+                    (answer) =>
+                      dureQuestions[index].required && answer.trim() === ""
+                  )
+                ) && questionStep === dureQuestions.length - 1
               }
               variant="contained"
               sx={{

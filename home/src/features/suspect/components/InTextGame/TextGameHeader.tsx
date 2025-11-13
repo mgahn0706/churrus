@@ -21,6 +21,11 @@ interface TextGameHeaderProps {
   scenarioId: string;
 }
 
+const emojiMap: Record<string, string> = {
+  dure: "🎭",
+  school: "🏫",
+};
+
 export default function TextGameHeader({ scenarioId }: TextGameHeaderProps) {
   const router = useRouter();
   const [modalState, setModalState] = useState<
@@ -109,13 +114,14 @@ export default function TextGameHeader({ scenarioId }: TextGameHeaderProps) {
       >
         <Box>
           <Typography fontWeight="bolder" fontSize={16}>
-            {title}
+            {title} {emojiMap[scenarioId]}
           </Typography>
         </Box>
         <Box display="flex" justifyContent="space-between" mr={5}>
           <Box
-            mx={2}
+            mx={1}
             py={1}
+            px={2}
             borderRadius="2px"
             sx={{
               cursor: "pointer",
@@ -133,8 +139,9 @@ export default function TextGameHeader({ scenarioId }: TextGameHeaderProps) {
             </Typography>
           </Box>
           <Box
-            mx={2}
+            mx={1}
             py={1}
+            px={2}
             borderRadius="2px"
             sx={{
               cursor: "pointer",
@@ -149,7 +156,8 @@ export default function TextGameHeader({ scenarioId }: TextGameHeaderProps) {
             </Typography>
           </Box>
           <Box
-            mx={2}
+            mx={1}
+            px={2}
             py={1}
             borderRadius="2px"
             sx={{

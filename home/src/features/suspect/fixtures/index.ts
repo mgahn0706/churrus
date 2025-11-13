@@ -6,8 +6,9 @@ import { dureSuspects, dureVictim } from "./dure/suspects";
 import { durePrologue } from "./dure/prologue";
 import { schoolPrologue } from "./school/prologue";
 import { startUpClues } from "./startup/clues";
-import { dureClues, schoolClues } from "@/pages/api/getCluesWithKeyword";
 import { jahayeonClues } from "./jahayeon/clues";
+import { schoolClues } from "./school/clues";
+import { dureClues } from "./dure/clues";
 
 export const scenarios: ScenarioType[] = [
   {
