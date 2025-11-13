@@ -19,6 +19,7 @@ import { useEffect, useState } from "react";
 import { DetectiveNoteType } from "@/features/suspect/types";
 import { FadeInSection } from "@/features/suspect/components/FadeInSection";
 import TabPanel from "@/features/suspect/components/Answer/TabPanel";
+import { LaunchRounded } from "@mui/icons-material";
 
 export default function DureAnswer() {
   const router = useRouter();
@@ -241,7 +242,7 @@ export default function DureAnswer() {
               <ListItemText
                 primary={
                   <Typography variant="h6" mb={2}>
-                    Q1. 박선재의 주머니 속 목걸이의 구입 자금 출처는 무엇인가요?
+                    Q1. 박선재의 주머니 속 목걸이의 구입 자금 출처는 어디인가요?
                   </Typography>
                 }
                 secondary={
@@ -390,6 +391,26 @@ export default function DureAnswer() {
             조작의 완성도, 그리고 동기까지 모두 일치하는 사람은 단 한
             명뿐입니다. 이예진을 살해한 사람은 백장훈입니다.
           </Typography>
+        </TabPanel>
+        <TabPanel value={tabValue} index="culprits">
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            mt={10}
+          >
+            <Button
+              variant="contained"
+              color="info"
+              href="https://drive.google.com/file/d/1QVl9VL2K64-6VGB8okArBc-yTpZ_6bJE/view?usp=drive_link"
+              target="_blank"
+              rel="noopener noreferrer"
+              sx={{ mb: 10 }}
+            >
+              용의자 롤카드 PDF 다운로드
+              <LaunchRounded sx={{ ml: 1, fontSize: 20 }} />
+            </Button>
+          </Box>
         </TabPanel>
       </Box>
 
