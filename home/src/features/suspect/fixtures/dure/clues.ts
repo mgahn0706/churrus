@@ -123,7 +123,7 @@ export const dureKeywordIds: Record<string, number[]> = {
   송금: [48],
   수리: [16],
   수산화나트륨: [63, 75, 95],
-  스마트폰: [2, 15],
+  스마트폰: [2, 15, 52],
   스위치: [24],
   스트레스: [69],
   스펙: [49, 62],
@@ -245,7 +245,7 @@ export const dureKeywordIds: Record<string, number[]> = {
   화상: [104],
   화장실: [44, 85, 108],
   회비: [43, 45],
-  휴대폰: [52],
+  휴대폰: [2, 15, 52],
 };
 
 export const dureClues: ClueData[] = [
