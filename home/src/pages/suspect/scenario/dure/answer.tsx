@@ -183,6 +183,13 @@ export default function DureAnswer() {
             value="solution"
             label="사건 풀이법"
           />
+          <Tab
+            sx={{
+              fontSize: "20px",
+            }}
+            value="culprits"
+            label="용의자 롤카드 PDF"
+          />
         </Tabs>
         <TabPanel value={tabValue} index="confess">
           <Typography
