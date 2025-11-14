@@ -54,7 +54,12 @@ export default function TextGameHeader({ scenarioId }: TextGameHeaderProps) {
           setModalState(null);
         }}
       />
-      <Dialog open={modalState === "SUBMIT"}>
+      <Dialog
+        open={modalState === "SUBMIT"}
+        sx={{
+          zIndex: 1000,
+        }}
+      >
         <DialogTitle alignItems="center" variant="h5">
           <ErrorOutline
             sx={{

@@ -29,6 +29,7 @@ export default function MapModal({
       onClose={onClose}
       sx={{
         p: 1,
+        zIndex: 1000,
       }}
       maxWidth={isMobileWidth ? "xs" : "lg"}
     >

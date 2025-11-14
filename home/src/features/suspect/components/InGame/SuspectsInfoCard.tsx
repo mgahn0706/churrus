@@ -43,6 +43,7 @@ export default function SuspectsInfoCard({
         <Box display="flex">
           <Box
             sx={{
+              zIndex: 1000,
               padding: 3,
               width: 300,
               display: "flex",
