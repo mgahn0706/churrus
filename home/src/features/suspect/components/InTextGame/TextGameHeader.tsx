@@ -14,27 +14,41 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import MapModal from "./MapModal";
 import SuspectsInfoCard from "../InGame/SuspectsInfoCard";
-import { schoolSuspects, schoolVictim } from "../../fixtures/school/suspects";
-import { ErrorOutline, Warning } from "@mui/icons-material";
+import { ErrorOutline } from "@mui/icons-material";
+import { scenarios } from "../../fixtures";
 
-export default function TextGameHeader() {
+interface TextGameHeaderProps {
+  scenarioId: string;
+}
+
+const emojiMap: Record<string, string> = {
+  dure: "🎭",
+  school: "🏫",
+};
+
+export default function TextGameHeader({ scenarioId }: TextGameHeaderProps) {
   const router = useRouter();
   const [modalState, setModalState] = useState<
     "MAP" | "SUSPECT" | "SUBMIT" | null
   >(null);
 
+  const { victim, suspects, places, title } = scenarios.find(
+    (s) => s.id === scenarioId
+  )!;
+
   return (
     <>
       <MapModal
+        scenarioId={scenarioId}
         isOpen={modalState === "MAP"}
         onClose={() => {
           setModalState(null);
         }}
-        places={["school-3F", "school-2F"]}
+        places={places}
       />
       <SuspectsInfoCard
-        victim={schoolVictim}
-        suspects={schoolSuspects}
+        victim={victim}
+        suspects={suspects}
         isOpen={modalState === "SUSPECT"}
         onClose={() => {
           setModalState(null);
@@ -73,7 +87,7 @@ export default function TextGameHeader() {
             </Button>
             <Button
               onClick={() => {
-                router.push("/suspect/scenario/school/submit");
+                router.push(`/suspect/scenario/${scenarioId}/submit`);
               }}
             >
               최종 제출
@@ -100,13 +114,14 @@ export default function TextGameHeader() {
       >
         <Box>
           <Typography fontWeight="bolder" fontSize={16}>
-            와부고 살인사건 🏫
+            {title} {emojiMap[scenarioId]}
           </Typography>
         </Box>
         <Box display="flex" justifyContent="space-between" mr={5}>
           <Box
-            mx={2}
+            mx={1}
             py={1}
+            px={2}
             borderRadius="2px"
             sx={{
               cursor: "pointer",
@@ -124,8 +139,9 @@ export default function TextGameHeader() {
             </Typography>
           </Box>
           <Box
-            mx={2}
+            mx={1}
             py={1}
+            px={2}
             borderRadius="2px"
             sx={{
               cursor: "pointer",
@@ -140,7 +156,8 @@ export default function TextGameHeader() {
             </Typography>
           </Box>
           <Box
-            mx={2}
+            mx={1}
+            px={2}
             py={1}
             borderRadius="2px"
             sx={{

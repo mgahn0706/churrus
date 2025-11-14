@@ -2,15 +2,16 @@ import { Dialog, Tab, Tabs } from "@mui/material";
 import Image from "next/image";
 import { useState } from "react";
 import TabPanel from "../Answer/TabPanel";
-import { useResponsiveValue } from "@/hooks/useResponsiveValue";
 import { useMobileWidth } from "@/hooks/useMobileWIdth";
 
 export default function MapModal({
   isOpen,
+  scenarioId,
   places,
   onClose,
 }: {
   isOpen: boolean;
+  scenarioId: string;
   places: string[];
   onClose: () => void;
 }) {
@@ -33,7 +34,7 @@ export default function MapModal({
     >
       <Tabs value={selectedMap} onChange={handleChange}>
         {places.map((place) => {
-          return <Tab label={place.split("-")[1]} value={place} />;
+          return <Tab label={place} value={place} />;
         })}
       </Tabs>
       <TabPanel value={selectedMap} index={selectedMap}>
@@ -42,7 +43,7 @@ export default function MapModal({
           height={isMobileWidth ? 160 : 600}
           priority
           alt="맵 이미지"
-          src={`/image/suspect/scenario/school/map/${selectedMap}.png`}
+          src={`/image/suspect/scenario/${scenarioId}/map/${scenarioId}-${selectedMap}.png`}
         />
       </TabPanel>
     </Dialog>
