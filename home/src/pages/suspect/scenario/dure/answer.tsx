@@ -313,13 +313,13 @@ export default function DureAnswer() {
               <ListItemText
                 primary={
                   <Typography variant="h6" mb={2}>
-                    Q4. 1년 전 강제호 사건의 진범은 누구인가요?
+                    Q4. 백장훈이 추리극을 취소하려고 한 이유는 무엇인가요?
                   </Typography>
                 }
                 secondary={
                   <>
                     <Typography variant="body1" color="white">
-                      A. 진범은 백장훈입니다.
+                      A. 1년 전 강제호 사건이 다시 수면 위로 떠오르는 것이
                     </Typography>
                     <Typography variant="body2" color="gray">
                       내 답변:{" "}

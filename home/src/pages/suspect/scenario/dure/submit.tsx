@@ -63,7 +63,7 @@ const dureQuestions: {
 
   {
     id: 7,
-    question: "1년 전 강제호 사건의 진범은 누구인가요?",
+    question: "백장훈이 추리극을 취소하려고 한 이유는 무엇인가요?",
     variant: "input",
   },
 ];
