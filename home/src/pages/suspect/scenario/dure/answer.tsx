@@ -319,7 +319,7 @@ export default function DureAnswer() {
                 secondary={
                   <>
                     <Typography variant="body1" color="white">
-                      A. 1년 전 강제호 사건이 다시 수면 위로 떠오르는 것이
+                      A. 1년 전 강제호 사건이 다시 수면 위로 떠오르는 것이 두려웠기 때문입니다.
                     </Typography>
                     <Typography variant="body2" color="gray">
                       내 답변:{" "}
