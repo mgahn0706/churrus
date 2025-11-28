@@ -109,7 +109,7 @@ export const museumClues: ClueType[] = [
     y: 67.89,
     image: "/image/suspect/scenario/museum/clues/museum-8.png",
     description:
-      "박물관의 기념품샵이다. 추리소설부터 영화 굿즈나 캐릭터 상품, 추르 키링까지 여러 종류의 기념품을 팔고 있다.",
+      "2025년 7월에 새로 오픈한 박물관의 기념품샵이다. 추리소설부터 영화 굿즈나 캐릭터 상품, 추르 키링까지 여러 종류의 기념품을 팔고 있다.",
     type: "basic",
     place: "A",
   },
@@ -131,7 +131,7 @@ export const museumClues: ClueType[] = [
     y: 30.123,
     image: "/image/suspect/scenario/museum/clues/museum-10.png",
     description:
-      "바닥에 손수건이 떨어져 있다. 손수건에는 자수로 SJ.라고 놓아져 있다. ",
+      "손수건이다. 한손에 꼭 들어오는 작은 사이즈. 손수건에는 자수로 S.J.라고 놓아져 있다. ",
     type: "additional",
     place: 24,
   },
@@ -203,12 +203,12 @@ export const museumClues: ClueType[] = [
   },
   {
     id: 17,
-    title: "CCTV",
+    title: "A동 CCTV",
     x: 33.567,
     y: 53.234,
     image: "/image/suspect/scenario/museum/clues/museum-17.png",
     description:
-      "박물관 내부에 도난 방지용으로 설치된 CCTV. 사건 당일 오전 6시부터 영상이 모두 끊겨있다. 미리 설치된 바이러스 떄문이다. 사건 당일 기록 중, 오전 6시 이전까지 찍힌 영상으로는 용의자들의 증언과 엇갈리는 점은 없다.",
+      "박물관 내부에 도난 방지용으로 설치된 CCTV. 강컨서가 유지보수해야하는 것 중 하나로, 전시실과 창고 모두 빼곡히 설치되어있다. 사건 당일 오전 6시부터 영상이 모두 끊겨있다. 미리 설치된 바이러스 떄문이다. 사건 당일 기록 중, 오전 6시 이전까지 찍힌 영상으로는 용의자들의 증언과 엇갈리는 점은 없다.",
     type: "basic",
     place: "A",
   },
@@ -252,7 +252,7 @@ export const museumClues: ClueType[] = [
     y: 31.678,
     image: "/image/suspect/scenario/museum/clues/museum-21.png",
     description:
-      "A동 복도에서 전시실로 통하는 문 손잡이. 모든 문 손잡이에서 여러 직원들의 지문이 검출되었다. 겹쳐있는 지문이 많아 정확히 구별이 어렵다.",
+      "A동 복도에서 전시실로 통하는 문 손잡이. 이 손잡이를 포함, 모든 문 손잡이에서 여러 직원들의 지문이 검출되었다. 겹쳐있는 지문이 많아 정확히 구별이 어렵다.",
     type: "basic",
     place: "A",
   },
@@ -306,7 +306,7 @@ export const museumClues: ClueType[] = [
     y: 68.934,
     image: "/image/suspect/scenario/museum/clues/museum-26.png",
     description:
-      "박물관에서 작성한 면담 기록지. 2024년 가을부터 유난히 신시장과의 면담이 많다. 면담 담당자는 도투어. 내용은 대부분 보조금 및 예산 관련 내용이다",
+      "박물관에서 작성한 면담 기록지. 2024년 가을부터 2024년 겨울까지 신시장과의 면담이 많다. 면담 담당자는 도투어. 내용은 대부분 보조금 및 예산 관련 내용이다",
     type: "basic",
     place: "B",
   },
@@ -369,7 +369,8 @@ export const museumClues: ClueType[] = [
     x: 24.978,
     y: 35.991,
     image: "/image/suspect/scenario/museum/clues/museum-32.png",
-    description: "도투어의 스마트폰 메모장에 남겨진 글.",
+    description:
+      "도투어의 스마트폰 메모장에 남겨진 글. 김큐레와 강컨서 얘기로 가득이다.",
     type: "additional",
     place: 30,
   },
@@ -380,7 +381,7 @@ export const museumClues: ClueType[] = [
     y: 79.992,
     image: "/image/suspect/scenario/museum/clues/museum-33.png",
     description:
-      "김큐레의 개인 서랍. 김큐레의 이름이 적힌 대기업 명함, 카드, 그리고 서울대학교 입학 당시 찍은 04학번 일어일문 단체 사진이 들어있다.",
+      "김큐레의 개인 서랍에 들어있던 지갑. 김큐레의 이름이 적힌 대기업 명함, 카드, 그리고 서울대학교 입학 당시 찍은 04학번 일어일문 단체 사진이 들어있다.",
     type: "basic",
     place: "B",
   },
@@ -423,7 +424,7 @@ export const museumClues: ClueType[] = [
     y: 2.996,
     image: "/image/suspect/scenario/museum/clues/museum-37.png",
     description:
-      "김큐레가 출퇴근용으로 사용하는 자동차. 주차장에 세워져 있다. 주차장에 들어온 시각은 당일 오전 6시 50분.",
+      "김큐레가 출퇴근용으로 사용하는 자동차. 주차장에 세워져 있다. 주차장에 들어온 시각은 당일 오전 6시 50분. 다른 서울대 주차장에 주차한 기록은 없다.",
     type: "basic",
     place: "A",
   },
@@ -434,7 +435,7 @@ export const museumClues: ClueType[] = [
     y: 24.997,
     image: "/image/suspect/scenario/museum/clues/museum-38.png",
     description:
-      "김큐레가 시체 발견 당시 자동차 안에서 들고 있던 커피. 아이스 아메리카노이다.",
+      "김큐레가 시체 발견 시점 당시 자동차 안에서 들고 있던 커피. 아이스 아메리카노이다.",
     type: "additional",
     place: 37,
   },
@@ -478,7 +479,7 @@ export const museumClues: ClueType[] = [
     y: 88.222,
     image: "/image/suspect/scenario/museum/clues/museum-42.png",
     description:
-      "김큐레가 휘갈겨 쓴 메모. CCTV, 몽둥이, 화살표 등 알 수 없는 내용이 적혀 있다.",
+      "김큐레가 휘갈겨 쓴 메모. CCTV, 몽둥이, 커피를 좋아한다 등 알 수 없는 내용이 적혀 있다.",
     type: "basic",
     place: "B",
   },
@@ -489,7 +490,7 @@ export const museumClues: ClueType[] = [
     y: 79.333,
     image: "/image/suspect/scenario/museum/clues/museum-43.png",
     description:
-      "그 날은 당직이라 저녁 7시 넘어까지 순찰을 몇 번 돌았죠. 퇴근이 10시 쯤이었는데 그때까지 PC도 이상 없었고요. 아, 순찰할 때 A동에서 인기척이 느껴졌긴 했는데...",
+      "그 날은 당직이라 오후 5시 넘어까지 순찰을 몇 번 돌았죠. 퇴근이 10시 쯤이었는데 그때까지 PC도 이상 없었고요. 아, 순찰할 때 A동에서 인기척이 느껴졌긴 했는데...",
     type: "basic",
     place: "B",
   },
@@ -505,7 +506,7 @@ export const museumClues: ClueType[] = [
   },
   {
     id: 45,
-    title: "카카오톡: 강지혜",
+    title: "카카오톡: 지혜",
     x: 17.444,
     y: 18.555,
     image: "/image/suspect/scenario/museum/clues/museum-45.png",
@@ -515,12 +516,12 @@ export const museumClues: ClueType[] = [
   },
   {
     id: 46,
-    title: "문자메시지: 샤울은행",
+    title: "카카오뱅크: 샤울은행",
     x: 18.555,
     y: 28.666,
     image: "/image/suspect/scenario/museum/clues/museum-46.png",
     description:
-      "샤울은행에서 온 문자메시지. 신용불량으로 인한 대출 심사 거절 통지이다.",
+      "샤울은행에서 보낸 대출 심사 결과. 신용불량으로 인한 대출 심사 거절 통지이다.",
     type: "additional",
     place: 44,
   },
@@ -583,7 +584,8 @@ export const museumClues: ClueType[] = [
     x: 14.222,
     y: 40.333,
     image: "/image/suspect/scenario/museum/clues/museum-52.png",
-    description: "강컨서의 스마트폰 검색 기록. 2025년 1월부터 검색된 기록이다.",
+    description:
+      "강컨서의 스마트폰 검색 기록. 2024년 9월부터 올해 1월까지 검색된 기록이다.",
     type: "additional",
     place: 44,
   },
@@ -603,7 +605,7 @@ export const museumClues: ClueType[] = [
     x: 11.444,
     y: 38.555,
     image: "/image/suspect/scenario/museum/clues/museum-54.png",
-    description: "박물관 내부 취업규칙. 직원들이 모두 숙지하고 있다.",
+    description: "박물관 내부 취업규칙과 조직도. 직원들이 모두 숙지하고 있다.",
     type: "basic",
     place: "B",
   },
@@ -625,7 +627,7 @@ export const museumClues: ClueType[] = [
     y: 26.777,
     image: "/image/suspect/scenario/museum/clues/museum-56.png",
     description:
-      "한 시민이 올린 신시장 관련 카카오톡 미담. 오늘 아침에 대화한 것으로 보인다. 신시장은 좋아요를 눌렀다.",
+      "박물관 관장이 올린 신시장 관련 카카오톡 미담. 오늘 아침에 대화한 것으로 보인다. 신시장은 좋아요를 눌렀다.",
     type: "additional",
     place: 23,
   },
@@ -642,12 +644,12 @@ export const museumClues: ClueType[] = [
   },
   {
     id: 58,
-    title: "달력",
+    title: "박물관장의 증언: 신시장에 대해",
     x: 30.888,
     y: 83.999,
     image: "/image/suspect/scenario/museum/clues/museum-58.png",
     description:
-      "김큐레 책상의 달력. 9월 23일에 동그라미가 쳐져있고, D-DAY라고 적혀 있다.",
+      "신시장 후보님은 작년에 예산안 문제로 박물관에 여러번 방문하셨죠. 올해는 한번도 안오셨는데.",
     type: "basic",
     place: "B",
   },
@@ -668,7 +670,7 @@ export const museumClues: ClueType[] = [
     y: 28.222,
     image: "/image/suspect/scenario/museum/clues/museum-60.png",
     description:
-      "박물관 창고에 보관된 상자. 일부 살해 도구 모형 전시물들이 잠시 보관되어있다. 구석에 있고 다른 상자 밑에 있어서 잘 보이지 않았지만, '유럽 연쇄살인마의 몽둥이' 상자가 비어있다.",
+      "박물관 창고에 보관된 상자. 일부 전시물들이 잠시 보관되어있다. 구석에 있고 다른 상자 밑에 있어서 자세히 찾지 않으면 보이지 않는 위치이다. '유럽 연쇄살인마의 몽둥이' 상자가 비어있다. 다른 전시물 보관품에는 마땅한 흉기나 둔기로 보이는 물품은 없다.",
     type: "basic",
     place: "A",
   },
