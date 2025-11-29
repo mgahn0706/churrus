@@ -470,7 +470,7 @@ export const museumClues: ClueType[] = [
     description:
       "박물관 내부 인트라넷에 게시된 공지사항. 9월 20일 김큐레가 공지한 내용이다. 강컨서, 도투어가 모두 확인했다. 내용은 박물관 내부 사정으로 몽둥이 등 살상 도구 전시물을 자료실/창고로 옮긴다는 것이다.",
     type: "additional",
-    place: 34,
+    place: 48,
   },
   {
     id: 42,
@@ -543,7 +543,7 @@ export const museumClues: ClueType[] = [
     y: 44.888,
     image: "/image/suspect/scenario/museum/clues/museum-48.png",
     description:
-      "박물관 내부에서 사용하는 데스크탑 컴퓨터. 도투어가 주로 사용한다. 도투어가 작성한 예산 관련 문서들이 저장되어 있다.",
+      "박물관 내부에서 사용하는 데스크탑 컴퓨터. 도투어가 주로 사용한다. 도투어가 작성한 예산 관련 문서들이 저장되어 있다. 박물관 관리비에 5천만원, 인건비에 3천 3백만원.",
     type: "basic",
     place: "B",
   },
@@ -563,7 +563,7 @@ export const museumClues: ClueType[] = [
     x: 12.999,
     y: 28.111,
     image: "/image/suspect/scenario/museum/clues/museum-50.png",
-    description: "박물관 직원들의 최근 3개월 급여명세서.",
+    description: "박물관 직원들의 최근 급여명세서.",
     type: "additional",
     place: 48,
   },
@@ -605,7 +605,7 @@ export const museumClues: ClueType[] = [
     x: 11.444,
     y: 38.555,
     image: "/image/suspect/scenario/museum/clues/museum-54.png",
-    description: "박물관 내부 취업규칙과 조직도. 직원들이 모두 숙지하고 있다.",
+    description: "박물관 내부 취업규칙. 직원들이 모두 숙지하고 있다.",
     type: "basic",
     place: "B",
   },
