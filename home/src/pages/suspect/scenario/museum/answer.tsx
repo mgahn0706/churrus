@@ -19,7 +19,6 @@ import { useEffect, useState } from "react";
 import { DetectiveNoteType } from "@/features/suspect/types";
 import TabPanel from "@/features/suspect/components/Answer/TabPanel";
 import { FadeInSection } from "@/features/suspect/components/FadeInSection";
-import { jahayeonAdditionalQuestions } from "@/features/suspect/fixtures/jahayeon/clues";
 import { LaunchRounded } from "@mui/icons-material";
 import { museumAdditionalQuestions } from "@/features/suspect/fixtures/museum/clues";
 
