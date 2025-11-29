@@ -9,6 +9,8 @@ import { startUpClues } from "./startup/clues";
 import { jahayeonClues } from "./jahayeon/clues";
 import { schoolClues } from "./school/clues";
 import { dureClues } from "./dure/clues";
+import { museumSuspects, museumVictim } from "./museum/suspects";
+import { museumClues } from "./museum/clues";
 
 export const scenarios: ScenarioType[] = [
   {
@@ -69,7 +71,19 @@ export const scenarios: ScenarioType[] = [
     prologue: durePrologue,
     clues: dureClues,
   },
-
+  {
+    title: "추러스 박물관 살인사건",
+    gameType: "CLUE",
+    numberOfSuspects: 3,
+    backgroundImage: "/image/suspect/scenario/museum/museum-main.png",
+    id: "museum",
+    isInDevelopment: true,
+    description: "추러스 박물관에서 발생한 기괴한 살인사건",
+    places: ["A", "B"],
+    suspects: museumSuspects,
+    victim: museumVictim,
+    clues: museumClues,
+  },
   {
     title: "케이팝 데몬 헌터스 살인사건",
     gameType: "CLUE",
