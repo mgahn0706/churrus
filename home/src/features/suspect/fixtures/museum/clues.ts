@@ -39,8 +39,8 @@ export const museumClues: ClueType[] = [
   {
     id: 2,
     title: "이마",
-    x: 22.123,
-    y: 30.456,
+    x: 10.123,
+    y: 24.456,
     image: "/image/suspect/scenario/museum/clues/museum-2.png",
     description:
       "시체의 이마에는 단단한 물체에 얻어맞은 것 같은 상처가 여러 개 나 있다. 어깨에도 비슷한 상처가 있다. 검시 결과에 따르면 즉사는 아니었을 것이며 첫 타격 이후에도 바로 의식을 잃지는 않았을 것이라고 한다. 하지만 연속으로 타격이 가해지면서 사망에 이르렀을 것이라고.",
@@ -51,7 +51,7 @@ export const museumClues: ClueType[] = [
     id: 3,
     title: "복장",
     x: 24.876,
-    y: 40.234,
+    y: 35.234,
     image: "/image/suspect/scenario/museum/clues/museum-3.png",
     description:
       "복면을 쓰고 망토를 입고 있다. 도둑의 정석 같은 복장이다. 괴도 1413 같은 만화에 나올 것만 같다.",
@@ -62,7 +62,7 @@ export const museumClues: ClueType[] = [
     id: 4,
     title: "와이셔츠 주머니",
     x: 21.567,
-    y: 46.876,
+    y: 40.876,
     image: "/image/suspect/scenario/museum/clues/museum-4.png",
     description:
       "와이셔츠 가슴에 달린 주머니가 어깨에서 흐른 피로 젖어 있다. 안에는 사용 흔적이 있는 얇고 굽은 핀 같은 것들이 들어 있다. 피 묻은 주머니 안에 있어서 역시 피가 묻어 있다.",
@@ -72,7 +72,7 @@ export const museumClues: ClueType[] = [
   {
     id: 5,
     title: "손",
-    x: 17.234,
+    x: 15.234,
     y: 62.345,
     image: "/image/suspect/scenario/museum/clues/museum-5.png",
     description:
@@ -83,11 +83,11 @@ export const museumClues: ClueType[] = [
   {
     id: 6,
     title: "손목",
-    x: 23.543,
+    x: 13.543,
     y: 55.987,
     image: "/image/suspect/scenario/museum/clues/museum-6.png",
     description:
-      "피해자의 양 손목에 붉은 색으로 옅게 둘러진 자국이 있다. 마치 팔찌를 꼈다가 빼면 남는 자국 같다.",
+      "피해자의 양 손목에 붉은 색으로 옅게 둘러진 자국이 있다. 마치 팔찌를 꼈다가 빼면 남는 자국 같다. 금방이라도 사라질 것만 같다.",
     type: "additional",
     place: 1,
   },
@@ -208,7 +208,7 @@ export const museumClues: ClueType[] = [
     y: 53.234,
     image: "/image/suspect/scenario/museum/clues/museum-17.png",
     description:
-      "박물관 내부에 도난 방지용으로 설치된 CCTV. 강컨서가 유지보수해야하는 것 중 하나로, 전시실과 창고 모두 빼곡히 설치되어있다. 사건 당일 오전 6시부터 영상이 모두 끊겨있다. 미리 설치된 바이러스 떄문이다. 사건 당일 기록 중, 오전 6시 이전까지 찍힌 영상으로는 용의자들의 증언과 엇갈리는 점은 없다.",
+      "박물관 내부에 도난 방지용으로 설치된 CCTV. 강컨서가 유지보수해야하는 것 중 하나로, 전시실과 창고 모두 빼곡히 설치되어있다. 사건 당일 오전 6시부터 영상이 모두 끊겨있다. 미리 설치된 바이러스 때문이다. 사건 당일 기록 중, 오전 6시 이전까지 찍힌 영상으로는 용의자들의 증언과 엇갈리는 점은 없다.",
     type: "basic",
     place: "A",
   },
@@ -574,7 +574,7 @@ export const museumClues: ClueType[] = [
     y: 29.222,
     image: "/image/suspect/scenario/museum/clues/museum-51.png",
     description:
-      "강컨서가 평소 끼고 다니는 목장갑. 박물관에서 일할 때 쓰는 것 치고 많이 닳아있다. 손목 부분은 넓어 끼우고 벗기기에 좋다.",
+      "강컨서가 평소 끼고 다니는 목장갑. 박물관에서 일할 때 쓰는 것 치고 많이 닳아있다. 손목 부분은 넓어 끼우고 벗기기에 좋다. 약간의 물기가 있다.",
     type: "basic",
     place: "B",
   },
@@ -646,7 +646,7 @@ export const museumClues: ClueType[] = [
     id: 58,
     title: "박물관장의 증언: 신시장에 대해",
     x: 30.888,
-    y: 83.999,
+    y: 63.999,
     image: "/image/suspect/scenario/museum/clues/museum-58.png",
     description:
       "신시장 후보님은 작년에 예산안 문제로 박물관에 여러번 방문하셨죠. 올해는 한번도 안오셨는데.",
