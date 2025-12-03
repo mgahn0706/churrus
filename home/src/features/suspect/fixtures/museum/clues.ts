@@ -627,7 +627,7 @@ export const museumClues: ClueType[] = [
     y: 26.777,
     image: "/image/suspect/scenario/museum/clues/museum-56.png",
     description:
-      "박물관 관장이 올린 신시장 관련 카카오톡 미담. 오늘 아침에 대화한 것으로 보인다. 신시장은 좋아요를 눌렀다.",
+      "박물관 관장이 올린 신시장 관련 카카오톡 미담. 어제 대화한 것으로 보인다. 신시장은 좋아요를 눌렀다.",
     type: "additional",
     place: 23,
   },
