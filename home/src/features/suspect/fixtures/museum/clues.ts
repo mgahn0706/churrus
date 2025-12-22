@@ -490,7 +490,7 @@ export const museumClues: ClueType[] = [
     y: 79.333,
     image: "/image/suspect/scenario/museum/clues/museum-43.png",
     description:
-      "그 날은 당직이라 오후 5시 넘어까지 순찰을 몇 번 돌았죠. 퇴근이 10시 쯤이었는데 그때까지 PC도 이상 없었고요. 아, 순찰할 때 A동에서 인기척이 느껴졌긴 했는데...",
+      "그 날은 당직이라 오후 5시 넘어까지 순찰을 몇 번 돌았죠. 퇴근이 10시 쯤이었는데 그때까지 PC도 이상 없었고, 외부 정원의 의자들도 모두 정리해놨어요. 아, 순찰할 때 A동에서 인기척이 느껴졌긴 했는데...",
     type: "basic",
     place: "B",
   },
