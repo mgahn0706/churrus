@@ -237,6 +237,7 @@ export const dureKeywordIds: Record<string, number[]> = {
   취업: [69],
   층: [85],
   치사: [95],
+  친구: [38],
   카카오톡: [15, 107],
   카페: [99, 100],
   키: [22, 89],
