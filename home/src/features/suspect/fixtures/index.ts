@@ -62,7 +62,7 @@ export const scenarios: ScenarioType[] = [
     numberOfSuspects: 4,
     backgroundImage: "/image/suspect/scenario/dure/dure-main.png",
     id: "dure",
-    isInDevelopment: true,
+    isInDevelopment: false,
     history: "2023년 5월 추러스 문화행사",
     description: "추리연극 당일 두레문예관에서 발생한 살인사건",
     places: ["3F", "4F"],
