@@ -105,7 +105,7 @@ export default function Connections() {
     KOREAN_CONNECTIONS[connectionDate.year][
       Math.min(
         connectionDate.week - 1,
-        KOREAN_CONNECTIONS[connectionDate.year]?.length - 1 ?? 0
+        KOREAN_CONNECTIONS[connectionDate.year]?.length - 1
       )
     ];
 

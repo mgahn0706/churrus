@@ -19,6 +19,7 @@ import { useEffect, useState } from "react";
 import { DetectiveNoteType } from "@/features/suspect/types";
 import { FadeInSection } from "@/features/suspect/components/FadeInSection";
 import TabPanel from "@/features/suspect/components/Answer/TabPanel";
+import { LaunchRounded } from "@mui/icons-material";
 
 export default function StartUpAnswer() {
   const router = useRouter();
@@ -179,6 +180,11 @@ export default function StartUpAnswer() {
             }}
             value="solution"
             label="사건 풀이법"
+          />
+          <Tab
+            sx={{ fontSize: "20px" }}
+            value="culprits"
+            label="용의자 롤카드 PDF"
           />
         </Tabs>
         <TabPanel value={tabValue} index="confess">
@@ -403,6 +409,26 @@ export default function StartUpAnswer() {
             한 사람도 김성균입니다.
             <br />
           </Typography>
+        </TabPanel>
+        <TabPanel value={tabValue} index="culprits">
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            mt={10}
+          >
+            <Button
+              variant="contained"
+              color="info"
+              href="https://drive.google.com/file/d/1y3Ay3Fye_2E2kN8z3sDIeru-xZlbKFAA/view?usp=drive_link"
+              target="_blank"
+              rel="noopener noreferrer"
+              sx={{ mb: 10 }}
+            >
+              용의자 롤카드 PDF 다운로드
+              <LaunchRounded sx={{ ml: 1, fontSize: 20 }} />
+            </Button>
+          </Box>
         </TabPanel>
       </Box>
 
