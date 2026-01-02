@@ -34,6 +34,12 @@ const WORD_PUZZLE_CONTENTS = [
     color: "#4b89da",
     url: "/crosswords",
   },
+  {
+    title: "추러스 크립틱",
+    src: "/image/logo/cryptic-logo.png",
+    color: "#BFE269",
+    url: "/cryptic",
+  },
 ];
 
 dayjs.extend(weekOfYear);
@@ -135,10 +141,9 @@ export default function Churrus() {
                   onClick={() => router.push("/connections")}
                 />
                 <DesktopPuzzleCard
-                  src="/image/logo/crossword-logo.png"
-                  title={`
-                    ${recentCrosswordDate.year}년 ${recentCrosswordDate.month}월 추로스워드`}
-                  subtitle="창의적인 십자말풀이."
+                  src="/image/logo/cryptic-logo.png"
+                  title={`Week ${dayjs().week()} 추러스 크립틱`}
+                  subtitle="말장난 단어 퍼즐."
                   onClick={() => router.push("/crosswords")}
                 />
               </Box>
@@ -162,6 +167,13 @@ export default function Churrus() {
               title={`Week ${dayjs().week()} 추러스 커넥션`}
               subtitle="네 단어씩 네 묶음으로."
               onClick={() => router.push("/connections")}
+            />
+            <MobilePuzzleCard
+              src="/image/logo/cryptic-logo.png"
+              title={`Week ${dayjs().week()} 추러스 크립틱`}
+              subtitle="난해한 수수께끼 같은 단어 퍼즐."
+              sx={{ mt: 1 }}
+              onClick={() => router.push("/cryptic")}
             />
           </Box>
           <Box
