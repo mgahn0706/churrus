@@ -35,7 +35,7 @@ const WORD_PUZZLE_CONTENTS = [
     url: "/crosswords",
   },
   {
-    title: "추러스 크립틱",
+    title: "추러스 말장난",
     src: "/image/logo/cryptic-logo.png",
     color: "#BFE269",
     url: "/cryptic",
@@ -142,7 +142,7 @@ export default function Churrus() {
                 />
                 <DesktopPuzzleCard
                   src="/image/logo/cryptic-logo.png"
-                  title={`Week ${dayjs().week()} 추러스 크립틱`}
+                  title={`Week ${dayjs().week()} 추러스 말장난`}
                   subtitle="말장난 단어 퍼즐."
                   onClick={() => router.push("/crosswords")}
                 />
@@ -170,7 +170,7 @@ export default function Churrus() {
             />
             <MobilePuzzleCard
               src="/image/logo/cryptic-logo.png"
-              title={`Week ${dayjs().week()} 추러스 크립틱`}
+              title={`Week ${dayjs().week()} 추러스 말장난`}
               subtitle="난해한 수수께끼 같은 단어 퍼즐."
               sx={{ mt: 1 }}
               onClick={() => router.push("/cryptic")}
