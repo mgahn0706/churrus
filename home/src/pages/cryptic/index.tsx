@@ -179,6 +179,7 @@ export default function CrypticPage() {
       setToastMessage("정답입니다!");
       setToastSeverity("success");
       setToastOpen(true);
+      setHintStep(MAX_HINT_STEP);
     } else {
       setToastMessage("정답이 아닙니다");
       setToastSeverity("error");

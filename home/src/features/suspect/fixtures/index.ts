@@ -87,7 +87,7 @@ export const scenarios: ScenarioType[] = [
   {
     title: "케이팝 데몬 헌터스 살인사건",
     gameType: "CLUE",
-    numberOfSuspects: 3,
+    numberOfSuspects: 5,
     backgroundImage: "/image/suspect/scenario/kpop/kpop-main.png",
     id: "kpop",
     isInDevelopment: true,

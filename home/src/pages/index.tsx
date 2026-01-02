@@ -144,7 +144,7 @@ export default function Churrus() {
                   src="/image/logo/cryptic-logo.png"
                   title={`Week ${dayjs().week()} 추러스 말장난`}
                   subtitle="말장난 단어 퍼즐."
-                  onClick={() => router.push("/crosswords")}
+                  onClick={() => router.push("/cryptic")}
                 />
               </Box>
             </Box>
