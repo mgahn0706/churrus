@@ -558,10 +558,12 @@ const RuleModal = ({
         크립틱 퍼즐의 단서는 두 부분으로 이루어져 있습니다.
       </DialogContentText>
       <DialogContentText mb={2}>
-        • <b>정의</b>: 정답의 뜻<br />• <b>말장난</b>: 글자를 만드는 규칙
+        • <b>정의</b>: 정답을 직접적으로 설명합니다.
+        <br />• <b>말장난</b>: 단어를 만드는 방법이 제시됩니다.
       </DialogContentText>
       <DialogContentText>
-        힌트는 초성 → 전부 → 정의/말장난 순서로 공개됩니다.
+        힌트는 초성 1개 → 2개 → ... → 마지막 초성 → 정의/말장난 순서로
+        공개됩니다.
       </DialogContentText>
     </DialogContent>
   </Dialog>
