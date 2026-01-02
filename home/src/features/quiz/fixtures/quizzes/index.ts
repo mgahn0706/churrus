@@ -1,6 +1,68 @@
 import { QuizType } from "../../types";
 
 export const QuizData: Record<string, QuizType[]> = {
+  "2025-12": [
+    {
+      id: "2025-12-1",
+      meetingId: "2025-12",
+      quizNumber: 1,
+      title: "POPular",
+      creator: "김태연",
+      quizImageSource: "/image/quiz/2025-12-1.png",
+      answer: "TAIL",
+      tags: ["WORD"],
+    },
+    {
+      id: "2025-12-2",
+      meetingId: "2025-12",
+      quizNumber: 2,
+      title: "No One Mourns the Melody",
+      creator: "안민규",
+      quizImageSource: "/image/quiz/2025-12-2.png",
+      answer: "FOOL",
+      tags: ["WORD"],
+    },
+    {
+      id: "2025-12-3",
+      meetingId: "2025-12",
+      quizNumber: 3,
+      title: "March of the Prime Hunters",
+      creator: "김태연",
+      quizImageSource: "/image/quiz/2025-12-3.png",
+      answer: "TIN",
+      tags: ["MATHEMATICS"],
+    },
+    {
+      id: "2025-12-4",
+      meetingId: "2025-12",
+      quizNumber: 4,
+      title: "What Is This Feeling?",
+      creator: "안민규",
+      quizImageSource: "/image/quiz/2025-12-4.png",
+      answer: "FEAR",
+      tags: ["KNOWLEDGE"],
+    },
+    {
+      id: "2025-12-5",
+      meetingId: "2025-12",
+      quizNumber: 5,
+      title: "Over the Rainbow",
+      creator: "김태연",
+      quizImageSource: "/image/quiz/2025-12-5.png",
+      answer: "DEFYING GRAVITY",
+      tags: ["DEDUCTION", "META", "HARD"],
+    },
+    {
+      id: "2025-12-6",
+      meetingId: "2025-12",
+      quizNumber: 6,
+      title: "A Sentimental Man",
+      creator: "김현준",
+      quizImageSource: "/image/quiz/2025-12-6.png",
+      answer: "예",
+      tags: ["KNOWLEDGE"],
+    },
+  ],
   "2025-11": [
     {
       id: "2025-11-1",
