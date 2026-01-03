@@ -19,6 +19,7 @@ import { useEffect, useState } from "react";
 import { DetectiveNoteType } from "@/features/suspect/types";
 import { FadeInSection } from "@/features/suspect/components/FadeInSection";
 import TabPanel from "@/features/suspect/components/Answer/TabPanel";
+import { LaunchRounded } from "@mui/icons-material";
 
 export default function SchoolAnswer() {
   const router = useRouter();
@@ -181,6 +182,13 @@ export default function SchoolAnswer() {
             }}
             value="solution"
             label="사건 풀이법"
+          />
+          <Tab
+            sx={{
+              fontSize: "20px",
+            }}
+            value="culprits"
+            label="용의자 롤카드"
           />
         </Tabs>
         <TabPanel value={tabValue} index="confess">
@@ -361,6 +369,26 @@ export default function SchoolAnswer() {
             위해서는 물컵이 꼭 필요했다는 것을 자습실에 돌아오고 나서야 깨달았던
             것 같네요.
           </Typography>
+        </TabPanel>
+        <TabPanel value={tabValue} index="culprits">
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            mt={10}
+          >
+            <Button
+              variant="contained"
+              color="info"
+              href="https://drive.google.com/file/d/1_eUjJDHCuuSfHP-pe6XVwE7d98-2KmkF/view?usp=drive_link"
+              target="_blank"
+              rel="noopener noreferrer"
+              sx={{ mb: 10 }}
+            >
+              용의자 롤카드 PDF 다운로드
+              <LaunchRounded sx={{ ml: 1, fontSize: 20 }} />
+            </Button>
+          </Box>
         </TabPanel>
       </Box>
 
