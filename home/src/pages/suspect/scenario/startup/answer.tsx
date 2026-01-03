@@ -87,7 +87,6 @@ export default function StartUpAnswer() {
       <FadeInSection>
         <Typography variant="h1" color="white" mt={40} mb={20}>
           {submittedAnswer.accusedSuspect}
-          {submittedAnswer.accusedSuspect === "강지혜" ? "는" : "은"}
         </Typography>
       </FadeInSection>
 
@@ -102,6 +101,11 @@ export default function StartUpAnswer() {
             }}
           />
         </Box>
+      </FadeInSection>
+      <FadeInSection>
+        <Typography variant="h1" color="white" mt={40} mb={20}>
+          당신은
+        </Typography>
       </FadeInSection>
 
       <FadeInSection>

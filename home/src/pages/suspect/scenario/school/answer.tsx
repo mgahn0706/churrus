@@ -87,7 +87,7 @@ export default function SchoolAnswer() {
       <FadeInSection>
         <Typography variant="h1" color="white" mt={40} mb={20}>
           {submittedAnswer.accusedSuspect}
-          {submittedAnswer.accusedSuspect === "손민혜" ? "는" : "은"}
+          {submittedAnswer.accusedSuspect === "자살" && "은"}
         </Typography>
       </FadeInSection>
 
@@ -103,6 +103,14 @@ export default function SchoolAnswer() {
           />
         </Box>
       </FadeInSection>
+
+      {submittedAnswer.accusedSuspect !== "자살" && (
+        <FadeInSection>
+          <Typography variant="h1" color="white" mt={40} mb={80}>
+            당신은
+          </Typography>
+        </FadeInSection>
+      )}
 
       <FadeInSection>
         <Typography variant="h1" color="white" mt={70} mb={100}>
