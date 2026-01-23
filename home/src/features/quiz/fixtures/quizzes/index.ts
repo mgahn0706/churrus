@@ -87,7 +87,7 @@ export const QuizData: Record<string, QuizType[]> = {
       meetingId: "2026-1",
       quizNumber: 9,
       title: "ㅋㅋㅋㅋ",
-      creator: null,
+      creator: "Gisela",
       quizImageSource: "/image/quiz/2026-1-9.png",
       answer: null,
       tags: ["GEOMETRY"],
