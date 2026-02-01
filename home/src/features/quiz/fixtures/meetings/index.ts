@@ -60,6 +60,7 @@ export const MEETINGS: Record<string, MeetingType> = {
     subtitle: "2026년 겨울 대이동",
     imageSource: "/image/quiz/meeting/2026-MT-1.png",
     quizIds: [
+      "2026-MT-1-0",
       "2026-MT-1-1",
       "2026-MT-1-2",
       "2026-MT-1-3",
@@ -68,7 +69,6 @@ export const MEETINGS: Record<string, MeetingType> = {
       "2026-MT-1-6",
       "2026-MT-1-7",
       "2026-MT-1-8",
-      "2026-MT-1-9",
     ],
   },
   "2026-1": {
