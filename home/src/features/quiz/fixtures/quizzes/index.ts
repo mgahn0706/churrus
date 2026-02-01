@@ -5,7 +5,7 @@ export const QuizData: Record<string, QuizType[]> = {
     {
       id: "2026-MT-1-0",
       meetingId: "2026-MT-1",
-      quizNumber: 0,
+      quizNumber: 1,
       title: "푸른 달",
       creator: "안민규",
       quizImageSource: "/image/quiz/2026-MT-1-0.png",
@@ -15,7 +15,7 @@ export const QuizData: Record<string, QuizType[]> = {
     {
       id: "2026-MT-1-1",
       meetingId: "2026-MT-1",
-      quizNumber: 1,
+      quizNumber: 2,
       title: "𐦊𐦕𐦍에서 𐦊𐦕𐦍로",
       creator: "강재호",
       quizImageSource: "/image/quiz/2026-MT-1-1.png",
@@ -25,7 +25,7 @@ export const QuizData: Record<string, QuizType[]> = {
     {
       id: "2026-MT-1-2",
       meetingId: "2026-MT-1",
-      quizNumber: 2,
+      quizNumber: 3,
       title: "同面象錄",
       creator: "이예준",
       quizImageSource: "/image/quiz/2026-MT-1-2.png",
@@ -35,7 +35,7 @@ export const QuizData: Record<string, QuizType[]> = {
     {
       id: "2026-MT-1-3",
       meetingId: "2026-MT-1",
-      quizNumber: 3,
+      quizNumber: 4,
       title: "대화창",
       creator: "김시영",
       quizImageSource: "/image/quiz/2026-MT-1-3.png",
@@ -45,7 +45,7 @@ export const QuizData: Record<string, QuizType[]> = {
     {
       id: "2026-MT-1-4",
       meetingId: "2026-MT-1",
-      quizNumber: 4,
+      quizNumber: 5,
       title: "육십",
       creator: "안민규",
       quizImageSource: "/image/quiz/2026-MT-1-4.png",
@@ -55,7 +55,7 @@ export const QuizData: Record<string, QuizType[]> = {
     {
       id: "2026-MT-1-5",
       meetingId: "2026-MT-1",
-      quizNumber: 5,
+      quizNumber: 6,
       title: "연결",
       creator: "조준호",
       quizImageSource: "/image/quiz/2026-MT-1-5.png",
@@ -65,7 +65,7 @@ export const QuizData: Record<string, QuizType[]> = {
     {
       id: "2026-MT-1-6",
       meetingId: "2026-MT-1",
-      quizNumber: 6,
+      quizNumber: 7,
       title: "서울",
       creator: "김시영",
       quizImageSource: "/image/quiz/2026-MT-1-6.png",
@@ -75,7 +75,7 @@ export const QuizData: Record<string, QuizType[]> = {
     {
       id: "2026-MT-1-7",
       meetingId: "2026-MT-1",
-      quizNumber: 7,
+      quizNumber: 8,
       title: "생신",
       creator: "류정환",
       quizImageSource: "/image/quiz/2026-MT-1-7.png",
@@ -85,7 +85,7 @@ export const QuizData: Record<string, QuizType[]> = {
     {
       id: "2026-MT-1-8",
       meetingId: "2026-MT-1",
-      quizNumber: 8,
+      quizNumber: 9,
       title: "전설",
       creator: "조준호",
       quizImageSource: "/image/quiz/2026-MT-1-8.png",
@@ -455,7 +455,7 @@ export const QuizData: Record<string, QuizType[]> = {
     {
       id: "2025-10-mini-0",
       meetingId: "2025-10-mini",
-      quizNumber: 0,
+      quizNumber: 1,
       title: "모자 색 맞히기",
       creator: null,
       quizImageSource: "/image/quiz/2025-10-mini-0.png",
@@ -465,7 +465,7 @@ export const QuizData: Record<string, QuizType[]> = {
     {
       id: "2025-10-mini-1",
       meetingId: "2025-10-mini",
-      quizNumber: 1,
+      quizNumber: 2,
       title: "감점",
       creator: null,
       quizImageSource: "/image/quiz/2025-10-mini-1.png",
@@ -475,7 +475,7 @@ export const QuizData: Record<string, QuizType[]> = {
     {
       id: "2025-10-mini-2",
       meetingId: "2025-10-mini",
-      quizNumber: 2,
+      quizNumber: 3,
       title: "스티커",
       creator: null,
       quizImageSource: "/image/quiz/2025-10-mini-2.png",
@@ -485,7 +485,7 @@ export const QuizData: Record<string, QuizType[]> = {
     {
       id: "2025-10-mini-3",
       meetingId: "2025-10-mini",
-      quizNumber: 3,
+      quizNumber: 4,
       title: "의사와 장갑",
       creator: null,
       quizImageSource: "/image/quiz/2025-10-mini-3.png",
@@ -495,7 +495,7 @@ export const QuizData: Record<string, QuizType[]> = {
     {
       id: "2025-10-mini-4",
       meetingId: "2025-10-mini",
-      quizNumber: 4,
+      quizNumber: 5,
       title: "쇠구슬",
       creator: "TedEd",
       quizImageSource: "/image/quiz/2025-10-mini-4.png",
@@ -505,7 +505,7 @@ export const QuizData: Record<string, QuizType[]> = {
     {
       id: "2025-10-mini-5",
       meetingId: "2025-10-mini",
-      quizNumber: 5,
+      quizNumber: 6,
       title: "양팔저울과 12개의 동전",
       creator: "TedEd",
       quizImageSource: "/image/quiz/2025-10-mini-5.png",
@@ -515,7 +515,7 @@ export const QuizData: Record<string, QuizType[]> = {
     {
       id: "2025-10-mini-6",
       meetingId: "2025-10-mini",
-      quizNumber: 6,
+      quizNumber: 7,
       title: "초록 눈의 죄수들",
       creator: "TedEd",
       quizImageSource: "/image/quiz/2025-10-mini-6.png",
@@ -525,7 +525,7 @@ export const QuizData: Record<string, QuizType[]> = {
     {
       id: "2025-10-mini-7",
       meetingId: "2025-10-mini",
-      quizNumber: 7,
+      quizNumber: 8,
       title: "금화 분배",
       creator: "TedEd",
       quizImageSource: "/image/quiz/2025-10-mini-7.png",
@@ -535,7 +535,7 @@ export const QuizData: Record<string, QuizType[]> = {
     {
       id: "2025-10-mini-8",
       meetingId: "2025-10-mini",
-      quizNumber: 8,
+      quizNumber: 9,
       title: "가장 어려운 논리 퍼즐",
       creator: "TedEd",
       quizImageSource: "/image/quiz/2025-10-mini-8.png",
@@ -545,7 +545,7 @@ export const QuizData: Record<string, QuizType[]> = {
     {
       id: "2025-10-mini-9",
       meetingId: "2025-10-mini",
-      quizNumber: 9,
+      quizNumber: 10,
       title: "천사",
       creator: "TedEd",
       quizImageSource: "/image/quiz/2025-10-mini-9.png",
@@ -555,7 +555,7 @@ export const QuizData: Record<string, QuizType[]> = {
     {
       id: "2025-10-mini-10",
       meetingId: "2025-10-mini",
-      quizNumber: 10,
+      quizNumber: 11,
       title: "Bonus",
       creator: "TedEd",
       quizImageSource: "/image/quiz/2025-10-mini-10.png",
