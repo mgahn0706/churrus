@@ -16,7 +16,7 @@ export const QuizData: Record<string, QuizType[]> = {
       id: "2026-MT-1-1",
       meetingId: "2026-MT-1",
       quizNumber: 1,
-      title: "𐦊𐦕𐦍에서 𐦊𐦕𐦍로 ",
+      title: "𐦊𐦕𐦍에서 𐦊𐦕𐦍로",
       creator: "강재호",
       quizImageSource: "/image/quiz/2026-MT-1-1.png",
       answer: "만족커피",
