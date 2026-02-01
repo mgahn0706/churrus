@@ -97,4 +97,17 @@ export const scenarios: ScenarioType[] = [
     victim: dureVictim,
     clues: [],
   },
+  {
+    id: "bluemoon",
+    title: "푸른 달 살인사건",
+    gameType: "CLUE",
+    numberOfSuspects: 6,
+    backgroundImage: "/image/suspect/scenario/bluemoon/bluemoon-main.png",
+    isInDevelopment: true,
+    description: "푸른 달이 뜨는 밤, 한 조선시대 마을에서 벌어진 살인사건",
+    places: [],
+    suspects: [],
+    victim: dureVictim,
+    clues: [],
+  },
 ];
