@@ -4,7 +4,7 @@ export const QuizData: Record<string, QuizType[]> = {
   "2026-MT-1": [
     {
       id: "2026-MT-1-0",
-      meetingId: "2026-MT-0",
+      meetingId: "2026-MT-1",
       quizNumber: 0,
       title: "푸른 달",
       creator: "안민규",
