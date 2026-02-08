@@ -33,7 +33,7 @@ export default function Museum() {
         suspects={museumSuspects}
         clues={museumClues}
         movePlaceButton={museumMoveButton}
-        victim={museumVictim}
+        victims={[museumVictim]}
         prologue={<MuseumPrologue />}
         scenario={museumScenario}
         additionalQuestions={museumAdditionalQuestions}

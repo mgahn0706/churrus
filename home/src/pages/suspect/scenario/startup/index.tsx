@@ -35,7 +35,7 @@ export default function Startup() {
         suspects={startUpSuspects}
         clues={startUpClues}
         movePlaceButton={startUpMoveButton}
-        victim={startUpVictim}
+        victims={[startUpVictim]}
         prologue={<StartUpPrologue />}
         scenario={startUpScenario}
         additionalQuestions={startupAdditionalQuestions}

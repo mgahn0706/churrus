@@ -44,7 +44,7 @@ export interface ScenarioType {
   description?: string;
   gameType: "TEXT" | "CLUE";
   suspects: SuspectType[];
-  victim: VictimType;
+  victims: VictimType[];
   places: string[];
   prologue?: string[];
   clues: ClueType[] | ClueData[];
