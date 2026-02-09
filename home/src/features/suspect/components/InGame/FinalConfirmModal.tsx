@@ -35,8 +35,8 @@ export default function FinalConfirmModal({
       <DialogTitle sx={{ justifyContent: "center" }}>최종 결정</DialogTitle>
       <DialogContent>
         <Box display="flex">
+          <Typography>진범 지목: </Typography>
           <Typography color="error">{suspect.name}</Typography>
-          <Typography>을(를) 진범으로 결정합니다.</Typography>
         </Box>
 
         <Box

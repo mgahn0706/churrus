@@ -32,7 +32,7 @@ export default function TextGameHeader({ scenarioId }: TextGameHeaderProps) {
     "MAP" | "SUSPECT" | "SUBMIT" | null
   >(null);
 
-  const { victim, suspects, places, title } = scenarios.find(
+  const { victims, suspects, places, title } = scenarios.find(
     (s) => s.id === scenarioId
   )!;
 
@@ -47,7 +47,7 @@ export default function TextGameHeader({ scenarioId }: TextGameHeaderProps) {
         places={places}
       />
       <SuspectsInfoCard
-        victim={victim}
+        victims={victims}
         suspects={suspects}
         isOpen={modalState === "SUSPECT"}
         onClose={() => {

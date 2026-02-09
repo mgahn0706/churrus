@@ -11,6 +11,8 @@ import { schoolClues } from "./school/clues";
 import { dureClues } from "./dure/clues";
 import { museumSuspects, museumVictim } from "./museum/suspects";
 import { museumClues } from "./museum/clues";
+import { serialSuspects, serialVictims } from "./serial/suspects";
+import { serialClues } from "./serial/clues";
 
 export const scenarios: ScenarioType[] = [
   {
@@ -24,7 +26,7 @@ export const scenarios: ScenarioType[] = [
     description: "IT 스타트업 '추러스'에서 발생한 살인사건",
     gameType: "CLUE",
     suspects: startUpSuspects,
-    victim: startUpVictim,
+    victims: [startUpVictim],
     clues: startUpClues,
   },
   {
@@ -38,7 +40,7 @@ export const scenarios: ScenarioType[] = [
     places: ["2F", "3F"],
     description: "와부고등학교 교실에서 한 학생이 사망한 사건",
     suspects: schoolSuspects,
-    victim: schoolVictim,
+    victims: [schoolVictim],
     prologue: schoolPrologue,
     clues: schoolClues,
   },
@@ -53,7 +55,7 @@ export const scenarios: ScenarioType[] = [
     description: "한겨울 자하연에서 시체가 발견되었다",
     places: ["pond", "dorm", "house"],
     suspects: jahayeonSuspects,
-    victim: jahayeonVictim,
+    victims: [jahayeonVictim],
     clues: jahayeonClues,
   },
   {
@@ -67,7 +69,7 @@ export const scenarios: ScenarioType[] = [
     description: "추리연극 당일 두레문예관에서 발생한 살인사건",
     places: ["3F", "4F"],
     suspects: dureSuspects,
-    victim: dureVictim,
+    victims: [dureVictim],
     prologue: durePrologue,
     clues: dureClues,
   },
@@ -81,8 +83,21 @@ export const scenarios: ScenarioType[] = [
     description: "추러스 박물관에서 발생한 기괴한 살인사건",
     places: ["A", "B"],
     suspects: museumSuspects,
-    victim: museumVictim,
+    victims: [museumVictim],
     clues: museumClues,
+  },
+  {
+    id: "serial",
+    title: "28동-301동 연쇄 살인사건",
+    gameType: "CLUE",
+    numberOfSuspects: 3,
+    backgroundImage: "/image/suspect/scenario/serial/serial-main.png",
+    isInDevelopment: true,
+    description: "서울대학교 28동과 301동에서 동시에 사람이 추락사했다.",
+    places: ["28", "301"],
+    suspects: serialSuspects,
+    victims: serialVictims,
+    clues: serialClues,
   },
   {
     title: "케이팝 데몬 헌터스 살인사건",
@@ -94,7 +109,7 @@ export const scenarios: ScenarioType[] = [
     description: "케이팝 아이돌 그룹 내에서 발생한 살인사건",
     places: [],
     suspects: [],
-    victim: dureVictim,
+    victims: [],
     clues: [],
   },
   {
@@ -107,7 +122,21 @@ export const scenarios: ScenarioType[] = [
     description: "푸른 달이 뜨는 밤, 한 조선시대 마을에서 벌어진 살인사건",
     places: [],
     suspects: [],
-    victim: dureVictim,
+    victims: [],
+    clues: [],
+  },
+
+  {
+    id: "mountain",
+    title: "청룡산 살인사건",
+    gameType: "CLUE",
+    numberOfSuspects: 4,
+    backgroundImage: "/image/suspect/scenario/mountain/mountain-main.png",
+    isInDevelopment: true,
+    description: "청룡산 등산로에서 발생한 의문의 추락사건",
+    places: [],
+    suspects: [],
+    victims: [],
     clues: [],
   },
 ];

@@ -31,7 +31,7 @@ interface InGameLayoutProps {
   clues: ClueType[];
   prologue: React.ReactNode;
   suspects: SuspectType[];
-  victim: VictimType;
+  victims: VictimType[];
   movePlaceButton: MovePlaceButtonType[];
   scenario: ScenarioType;
   additionalQuestions: AdditionalQuestionType[];
@@ -41,7 +41,7 @@ export default function InGameLayout({
   clues,
   prologue,
   suspects,
-  victim,
+  victims,
   movePlaceButton,
   scenario,
   additionalQuestions,
@@ -201,7 +201,7 @@ export default function InGameLayout({
         />
         <SuspectsInfoCard
           isOpen={openedModal === "suspects"}
-          victim={victim}
+          victims={victims}
           suspects={suspects}
           onClose={handleCloseModal}
         />

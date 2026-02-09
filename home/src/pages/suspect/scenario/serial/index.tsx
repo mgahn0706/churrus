@@ -10,35 +10,43 @@ import {
   jahayeonSuspects,
   jahayeonVictim,
 } from "@/features/suspect/fixtures/jahayeon/suspects";
+import {
+  serialAdditionalQuestions,
+  serialClues,
+} from "@/features/suspect/fixtures/serial/clues";
+import { serialMoveButton } from "@/features/suspect/fixtures/serial/movePlace";
+import { SerialPrologue } from "@/features/suspect/fixtures/serial/prologue";
+import {
+  serialSuspects,
+  serialVictims,
+} from "@/features/suspect/fixtures/serial/suspects";
 import { createTheme, ThemeProvider } from "@mui/material";
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#0891b2",
+      main: "#9333ea",
       contrastText: "#fafafa",
     },
   },
 });
 
-export default function Jahayeon() {
-  const jahayeonScenario = scenarios.find(
-    (scenario) => scenario.id === "jahayeon"
-  );
+export default function Serial() {
+  const serialScenario = scenarios.find((scenario) => scenario.id === "serial");
 
-  if (!jahayeonScenario) {
+  if (!serialScenario) {
     throw new Error("Scenario not found");
   }
   return (
     <ThemeProvider theme={theme}>
       <InGameLayout
-        suspects={jahayeonSuspects}
-        clues={jahayeonClues}
-        movePlaceButton={jahayeonMoveButton}
-        victims={[jahayeonVictim]}
-        prologue={<JahayeonPrologue />}
-        scenario={jahayeonScenario}
-        additionalQuestions={jahayeonAdditionalQuestions}
+        suspects={serialSuspects}
+        clues={serialClues}
+        movePlaceButton={serialMoveButton}
+        victims={serialVictims}
+        prologue={<SerialPrologue />}
+        scenario={serialScenario}
+        additionalQuestions={serialAdditionalQuestions}
       />
     </ThemeProvider>
   );
