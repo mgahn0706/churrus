@@ -172,14 +172,15 @@ export default function SerialAnswer() {
             value="confess"
             label="범인의 고백"
           />
-
-          <Tab
-            sx={{
-              fontSize: "20px",
-            }}
-            value="additional"
-            label="추가 질문 해답"
-          />
+          {serialAdditionalQuestions.length > 0 && (
+            <Tab
+              sx={{
+                fontSize: "20px",
+              }}
+              value="additional"
+              label="추가 질문 해답"
+            />
+          )}
           <Tab
             sx={{
               fontSize: "20px",

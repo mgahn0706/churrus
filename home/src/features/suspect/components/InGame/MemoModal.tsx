@@ -179,6 +179,11 @@ export default function MemoModal({
               <DialogContentText sx={{ fontWeight: "bold" }} mb={1}>
                 추가 질문
               </DialogContentText>
+              {questions.length === 0 && (
+                <DialogContentText>
+                  이 시나리오에는 추가 질문이 존재하지 않습니다.
+                </DialogContentText>
+              )}
               {questions.map((question, idx) => (
                 <Box mb={1} key={question.no}>
                   <InputLabel id={`additionalQuestion-${idx}`}>

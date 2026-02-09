@@ -11,6 +11,8 @@ import { schoolClues } from "./school/clues";
 import { dureClues } from "./dure/clues";
 import { museumSuspects, museumVictim } from "./museum/suspects";
 import { museumClues } from "./museum/clues";
+import { serialSuspects, serialVictims } from "./serial/suspects";
+import { serialClues } from "./serial/clues";
 
 export const scenarios: ScenarioType[] = [
   {
@@ -85,6 +87,19 @@ export const scenarios: ScenarioType[] = [
     clues: museumClues,
   },
   {
+    id: "serial",
+    title: "28동-301동 연쇄 살인사건",
+    gameType: "CLUE",
+    numberOfSuspects: 3,
+    backgroundImage: "/image/suspect/scenario/serial/serial-main.png",
+    isInDevelopment: true,
+    description: "서울대학교 28동과 301동에서 동시에 사람이 추락사했다.",
+    places: ["28", "301"],
+    suspects: serialSuspects,
+    victims: serialVictims,
+    clues: serialClues,
+  },
+  {
     title: "케이팝 데몬 헌터스 살인사건",
     gameType: "CLUE",
     numberOfSuspects: 5,
@@ -110,19 +125,7 @@ export const scenarios: ScenarioType[] = [
     victims: [],
     clues: [],
   },
-  {
-    id: "serial",
-    title: "28동-301동 연쇄 살인사건",
-    gameType: "CLUE",
-    numberOfSuspects: 3,
-    backgroundImage: "/image/suspect/scenario/serial/serial-main.png",
-    isInDevelopment: true,
-    description: "서울대학교 28동과 301동에서 동시에 사람이 추락사했다.",
-    places: ["28", "301"],
-    suspects: [],
-    victims: [],
-    clues: [],
-  },
+
   {
     id: "mountain",
     title: "청룡산 살인사건",
