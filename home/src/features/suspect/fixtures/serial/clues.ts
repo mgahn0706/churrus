@@ -220,7 +220,7 @@ export const serialClues: ClueType[] = [
     y: 79,
     image: "/image/suspect/scenario/serial/clues/serial-21.png",
     description:
-      "28동 카페 안쪽에 있는 책상. 책상 위에는 펼쳐진 시험공부 교과서와 함께 에어팟이 있다. 커피 흘린 자국이 흥건하고 얼움도 몇 개 남아있다.",
+      "28동 카페 안쪽에 있는 책상. 책상 위에는 펼쳐진 시험공부 교과서와 함께 에어팟이 있다. 커피 흘린 자국이 흥건하고 얼음도 몇 개 남아있다.",
     type: "basic",
     place: "28",
   },
@@ -410,7 +410,7 @@ export const serialClues: ClueType[] = [
     y: 79.456,
     image: "/image/suspect/scenario/serial/clues/serial-39.png",
     description:
-      "안친구의 주머니에서 발견된 편의점 영수증. 발급 시간은 오후 10시 30분.",
+      "안친구의 주머니에서 발견된 영수증. 발급 시간은 오후 10시 30분.",
     type: "basic",
     place: "301",
   },
