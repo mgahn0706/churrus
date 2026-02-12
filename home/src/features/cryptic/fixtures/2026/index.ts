@@ -181,4 +181,18 @@ export const CRYPTIC_2026 = [
     definitionPart: "꼬마",
     wordplayPart: "반지를 오직 모음",
   },
+  {
+    week: 27,
+    problem: "사고 나는 꿩과 작은 새는 머리가 잘렸다",
+    answer: "추리",
+    definitionPart: "사고",
+    wordplayPart: "나는 꿩과 작은 새는 머리가 잘렸다",
+  },
+  {
+    week: 28,
+    problem: "오른쪽 왼쪽 오른쪽 요리조리 섞인 단지",
+    answer: "오로지",
+    definitionPart: "단지",
+    wordplayPart: "오른쪽 왼쪽 오른쪽 요리조리 섞인",
+  },
 ];

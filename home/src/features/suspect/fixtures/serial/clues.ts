@@ -163,7 +163,7 @@ export const serialClues: ClueType[] = [
   },
   {
     id: 16,
-    title: "카카로톡: 여여친",
+    title: "카카오톡: 여여친",
     x: 25.123,
     y: 39.789,
     image: "/image/suspect/scenario/serial/clues/serial-16.png",
