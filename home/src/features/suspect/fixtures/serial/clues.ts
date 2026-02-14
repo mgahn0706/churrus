@@ -199,7 +199,7 @@ export const serialClues: ClueType[] = [
     y: 75.456,
     image: "/image/suspect/scenario/serial/clues/serial-19.png",
     description:
-      "문이 잠긴 22시 이후 28동을 학생증으로 출입한 기록. 권자연만 기록되어있다.",
+      "22시 이후 28동을 학생증으로 출입한 기록. 안친구와 권자연만 기록되어있다.",
     type: "basic",
     place: "28",
   },
