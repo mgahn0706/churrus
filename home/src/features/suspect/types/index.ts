@@ -40,7 +40,7 @@ export interface ScenarioType {
   backgroundImage: string;
   id: string;
   isInDevelopment: boolean;
-  history?: string;
+  histories?: string[];
   description?: string;
   gameType: "TEXT" | "CLUE";
   suspects: SuspectType[];
