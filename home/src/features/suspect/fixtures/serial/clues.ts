@@ -476,4 +476,14 @@ export const serialClues: ClueType[] = [
     type: "basic",
     place: "301",
   },
+  {
+    id: 46,
+    title: "카카오톡: 남남친",
+    x: 15.987,
+    y: 40.321,
+    image: "/image/suspect/scenario/serial/clues/serial-46.png",
+    description: "여여친이 남남친과 주고받은 카카오톡 대화 내용이다.",
+    type: "additional",
+    place: 33,
+  },
 ];
