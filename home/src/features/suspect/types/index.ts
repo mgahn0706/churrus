@@ -35,6 +35,7 @@ export interface SuspectType {
 export type VictimType = SuspectType;
 
 export interface ScenarioType {
+  color: string;
   title: string;
   numberOfSuspects: number;
   backgroundImage: string;

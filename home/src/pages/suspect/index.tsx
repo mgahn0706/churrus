@@ -1,13 +1,7 @@
 "use client";
 
-import { Box, Button, Typography, Chip, Tooltip } from "@mui/material";
-import {
-  PlayArrowRounded,
-  PeopleAlt,
-  Male,
-  Female,
-  Search,
-} from "@mui/icons-material";
+import { Box, Button, Typography, Chip } from "@mui/material";
+import { PlayArrowRounded, PeopleAlt, Search } from "@mui/icons-material";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { scenarios as sourceScenarios } from "@/features/suspect/fixtures";
@@ -123,6 +117,7 @@ export default function Suspect() {
                     }}
                   />
 
+                  {/* Dark gradient */}
                   <Box
                     sx={{
                       position: "absolute",
@@ -131,6 +126,18 @@ export default function Suspect() {
                         "linear-gradient(to right, rgba(0,0,0,0.95), rgba(0,0,0,0.6) 40%, transparent)",
                     }}
                   />
+
+                  {/* Scenario color overlay (subtle) */}
+                  {active && (
+                    <Box
+                      sx={{
+                        position: "absolute",
+                        inset: 0,
+                        background: `linear-gradient(to right, ${s.color}33, transparent 60%)`,
+                        transition: "opacity .6s ease",
+                      }}
+                    />
+                  )}
 
                   <Typography
                     sx={{
@@ -183,7 +190,7 @@ export default function Suspect() {
               }}
             />
 
-            {/* GRADIENT */}
+            {/* Base dark gradient */}
             <Box
               sx={{
                 position: "absolute",
@@ -192,6 +199,17 @@ export default function Suspect() {
                   linear-gradient(to right, rgba(0,0,0,0.95), rgba(0,0,0,0.7) 45%, transparent 70%),
                   linear-gradient(to top, rgba(0,0,0,0.85), transparent 60%)
                 `,
+              }}
+            />
+
+            {/* Scenario color radial mood */}
+            <Box
+              sx={{
+                position: "absolute",
+                inset: 0,
+                background: `radial-gradient(circle at 30% 40%, ${current.color}55, transparent 60%)`,
+                mixBlendMode: "overlay",
+                pointerEvents: "none",
               }}
             />
 
@@ -219,8 +237,9 @@ export default function Suspect() {
                   icon={<PeopleAlt />}
                   label={`용의자 ${current.numberOfSuspects}명`}
                   sx={{
-                    bgcolor: "rgba(255,255,255,0.1)",
-                    color: "#fff",
+                    bgcolor: `${current.color}22`,
+                    color: current.color,
+                    border: `1px solid ${current.color}55`,
                   }}
                 />
                 <Chip
@@ -229,8 +248,9 @@ export default function Suspect() {
                     current.gameType === "CLUE" ? "단서 탐색형" : "단서 검색형"
                   }
                   sx={{
-                    bgcolor: "rgba(255,255,255,0.1)",
-                    color: "#fff",
+                    bgcolor: `${current.color}22`,
+                    color: current.color,
+                    border: `1px solid ${current.color}55`,
                   }}
                 />
               </Box>
@@ -249,17 +269,21 @@ export default function Suspect() {
               <Button
                 startIcon={<PlayArrowRounded />}
                 onClick={handleSelect}
+                disabled={current.isInDevelopment}
                 sx={{
                   px: 3,
                   py: 1.2,
                   borderRadius: 999,
                   fontWeight: 600,
                   fontSize: 14,
-                  background: "#ffffff",
-                  color: "#000",
+                  background: current.color,
+                  color: "#fff",
+                  boxShadow: `0 10px 30px ${current.color}55`,
+                  transition: "all .3s ease",
                   "&:hover": {
                     transform: "translateY(-3px)",
-                    background: "#e6e6e6",
+                    boxShadow: `0 15px 40px ${current.color}88`,
+                    background: current.color,
                   },
                 }}
               >

@@ -28,6 +28,7 @@ export const scenarios: ScenarioType[] = [
     suspects: startUpSuspects,
     victims: [startUpVictim],
     clues: startUpClues,
+    color: "#3B4CCA",
   },
   {
     title: "와부고 살인사건",
@@ -43,6 +44,7 @@ export const scenarios: ScenarioType[] = [
     victims: [schoolVictim],
     prologue: schoolPrologue,
     clues: schoolClues,
+    color: "#ef4444",
   },
   {
     title: "자하연 살인사건",
@@ -57,6 +59,7 @@ export const scenarios: ScenarioType[] = [
     suspects: jahayeonSuspects,
     victims: [jahayeonVictim],
     clues: jahayeonClues,
+    color: "#0891b2",
   },
   {
     title: "두레문예관 살인사건",
@@ -72,6 +75,7 @@ export const scenarios: ScenarioType[] = [
     victims: [dureVictim],
     prologue: durePrologue,
     clues: dureClues,
+    color: "#ffcc00",
   },
   {
     title: "추러스 박물관 살인사건",
@@ -86,6 +90,7 @@ export const scenarios: ScenarioType[] = [
     suspects: museumSuspects,
     victims: [museumVictim],
     clues: museumClues,
+    color: "#d97706",
   },
   {
     id: "serial",
@@ -99,6 +104,7 @@ export const scenarios: ScenarioType[] = [
     suspects: serialSuspects,
     victims: serialVictims,
     clues: serialClues,
+    color: "#9333ea",
   },
   {
     title: "케이팝 데몬 헌터스 살인사건",
@@ -113,6 +119,7 @@ export const scenarios: ScenarioType[] = [
     suspects: [],
     victims: [],
     clues: [],
+    color: "#e91e63",
   },
   {
     id: "bluemoon",
@@ -127,6 +134,7 @@ export const scenarios: ScenarioType[] = [
     suspects: [],
     victims: [],
     clues: [],
+    color: "#1e6df4",
   },
 
   {
@@ -141,5 +149,6 @@ export const scenarios: ScenarioType[] = [
     suspects: [],
     victims: [],
     clues: [],
+    color: "#4caf50",
   },
 ];
