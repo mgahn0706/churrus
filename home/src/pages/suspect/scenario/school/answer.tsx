@@ -13,6 +13,7 @@ import {
   Tabs,
   Typography,
 } from "@mui/material";
+import Image from "next/image";
 import PlayButtonIcon from "@mui/icons-material/PlayCircleFilled";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -124,13 +125,22 @@ export default function SchoolAnswer() {
           variant="h1"
           color="white"
           mt={50}
-          mb={50}
+          mb={20}
           fontWeight="bold"
         >
           {submittedAnswer.accusedSuspect === "손민혜"
             ? "맞습니다!"
             : "아닙니다!"}
         </Typography>
+      </FadeInSection>
+      <FadeInSection>
+        <Image
+          src={"/image/suspect/scenario/school/school-reveal.png"}
+          alt="범인 공개 이미지"
+          width={800}
+          height={400}
+          style={{ objectFit: "contain" }}
+        />
       </FadeInSection>
       <FadeInSection>
         <Box display="flex" justifyContent="center">
@@ -208,7 +218,7 @@ export default function SchoolAnswer() {
             네, 제가 죽였어요. <br />
             아직도 많이 후회하고 있어요. 이게 다 그때 급식...아니 마약 때문에
             시작된 일이거든요. <br /> 저는 화학실험 동아리 활동을 명분 삼아
-            펜타닐 제조에 필수적인 4-NAPP 물질, 은어로는 '급식'을 만들고
+            펜타닐 제조에 필수적인 4-ANPP 물질, 은어로는 '급식'을 만들고
             있었어요. 최근에 한 클라이언트가 SA학원에서 해당 원료를 구하고
             싶다고 했었고, 저는 저희 조직의 명령에 따라 그 빌딩 안으로 원료를
             전달해야했어요.

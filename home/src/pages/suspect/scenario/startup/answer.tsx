@@ -13,6 +13,7 @@ import {
   Tabs,
   Typography,
 } from "@mui/material";
+import Image from "next/image";
 import PlayButtonIcon from "@mui/icons-material/PlayCircleFilled";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -118,13 +119,22 @@ export default function StartUpAnswer() {
           variant="h1"
           color="white"
           mt={50}
-          mb={50}
+          mb={20}
           fontWeight="bold"
         >
           {submittedAnswer.accusedSuspect === "김성균"
             ? "맞습니다!"
             : "아닙니다!"}
         </Typography>
+      </FadeInSection>
+      <FadeInSection>
+        <Image
+          src={"/image/suspect/scenario/startup/startup-reveal.png"}
+          alt="범인 공개 이미지"
+          width={800}
+          height={400}
+          style={{ objectFit: "contain" }}
+        />
       </FadeInSection>
       <FadeInSection>
         <Box display="flex" justifyContent="center">

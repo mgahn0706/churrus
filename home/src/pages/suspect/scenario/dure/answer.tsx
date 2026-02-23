@@ -13,6 +13,7 @@ import {
   Tabs,
   Typography,
 } from "@mui/material";
+import Image from "next/image";
 import PlayButtonIcon from "@mui/icons-material/PlayCircleFilled";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -118,13 +119,22 @@ export default function DureAnswer() {
           variant="h1"
           color="white"
           mt={50}
-          mb={50}
+          mb={20}
           fontWeight="bold"
         >
           {submittedAnswer.accusedSuspect === "백장훈"
             ? "맞습니다!"
             : "아닙니다!"}
         </Typography>
+      </FadeInSection>
+      <FadeInSection>
+        <Image
+          src={"/image/suspect/scenario/dure/dure-reveal.png"}
+          alt="범인 공개 이미지"
+          width={800}
+          height={400}
+          style={{ objectFit: "contain" }}
+        />
       </FadeInSection>
       <FadeInSection>
         <Box display="flex" justifyContent="center">
@@ -319,7 +329,8 @@ export default function DureAnswer() {
                 secondary={
                   <>
                     <Typography variant="body1" color="white">
-                      A. 1년 전 강제호 사건이 다시 수면 위로 떠오르는 것이 두려웠기 때문입니다.
+                      A. 1년 전 강제호 사건이 다시 수면 위로 떠오르는 것이
+                      두려웠기 때문입니다.
                     </Typography>
                     <Typography variant="body2" color="gray">
                       내 답변:{" "}

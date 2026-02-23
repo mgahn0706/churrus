@@ -21,6 +21,7 @@ import TabPanel from "@/features/suspect/components/Answer/TabPanel";
 import { FadeInSection } from "@/features/suspect/components/FadeInSection";
 import { LaunchRounded } from "@mui/icons-material";
 import { serialAdditionalQuestions } from "@/features/suspect/fixtures/serial/clues";
+import Image from "next/image";
 
 export default function SerialAnswer() {
   const router = useRouter();
@@ -120,13 +121,22 @@ export default function SerialAnswer() {
           variant="h1"
           color="white"
           mt={50}
-          mb={50}
+          mb={20}
           fontWeight="bold"
         >
           {submittedAnswer.accusedSuspect === "황새내"
             ? "맞습니다!"
             : "아닙니다!"}
         </Typography>
+      </FadeInSection>
+      <FadeInSection>
+        <Image
+          src={"/image/suspect/scenario/serial/serial-reveal.png"}
+          alt="범인 공개 이미지"
+          width={800}
+          height={400}
+          style={{ objectFit: "contain" }}
+        />
       </FadeInSection>
       <FadeInSection>
         <Box display="flex" justifyContent="center">
