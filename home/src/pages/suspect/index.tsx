@@ -2,7 +2,7 @@
 
 import { Box, Button, Typography, Chip } from "@mui/material";
 import { PlayArrowRounded, PeopleAlt, Search } from "@mui/icons-material";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { scenarios as sourceScenarios } from "@/features/suspect/fixtures";
 import Header from "@/features/suspect/components/Header";
@@ -13,6 +13,9 @@ export default function Suspect() {
   const [fadeKey, setFadeKey] = useState(0);
   const router = useRouter();
   const current = scenarios[currentIndex];
+  const itemRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const listRef = useRef<HTMLDivElement | null>(null);
+  const currentIndexRef = useRef(0);
   const genderLabel = (gender?: string) => {
     if (gender === "male") return "남";
     if (gender === "female") return "여";
@@ -33,12 +36,17 @@ export default function Suspect() {
      TAB NAVIGATION
   =========================== */
   useEffect(() => {
+    currentIndexRef.current = currentIndex;
+  }, [currentIndex]);
+
+  useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === "Tab") {
         e.preventDefault();
-        e.shiftKey
-          ? changeIndex(currentIndex - 1)
-          : changeIndex(currentIndex + 1);
+        const nextIndex = e.shiftKey
+          ? currentIndexRef.current - 1
+          : currentIndexRef.current + 1;
+        changeIndex(nextIndex);
       }
 
       if (e.key === "Enter") handleSelect();
@@ -46,18 +54,57 @@ export default function Suspect() {
 
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
+  }, []);
+
+  useEffect(() => {
+    const node = itemRefs.current[currentIndex];
+    const list = listRef.current;
+    if (!node || !list) return;
+
+    const listRect = list.getBoundingClientRect();
+    const nodeRect = node.getBoundingClientRect();
+    const isAbove = nodeRect.top < listRect.top;
+    const isBelow = nodeRect.bottom > listRect.bottom;
+    if (isAbove || isBelow) {
+      const offset =
+        node.offsetTop - (list.clientHeight - node.clientHeight) / 2;
+      list.scrollTo({ top: offset, behavior: "smooth" });
+    }
   }, [currentIndex]);
 
   return (
     <Box
       sx={{
         height: "100vh",
-        background: "#0a0c10",
+        background: `radial-gradient(1200px circle at 20% 10%, ${current.color}22, transparent 55%), #0a0c10`,
         display: "flex",
         flexDirection: "column",
         color: "#fff",
+        position: "relative",
+        overflow: "hidden",
       }}
     >
+      {/* Ambient animated background */}
+      <Box
+        sx={{
+          position: "absolute",
+          inset: "-20%",
+          background: `
+              radial-gradient(600px circle at 20% 20%, ${current.color}33, transparent 55%),
+              radial-gradient(520px circle at 80% 30%, ${current.color}22, transparent 55%),
+              radial-gradient(520px circle at 30% 80%, ${current.color}2b, transparent 60%)
+            `,
+          filter: "blur(40px)",
+          animation: "nebulaDrift 18s ease-in-out infinite alternate",
+          "@keyframes nebulaDrift": {
+            "0%": { transform: "translate3d(-2%, -1%, 0) scale(1)" },
+            "100%": { transform: "translate3d(2%, 1%, 0) scale(1.05)" },
+          },
+          zIndex: 0,
+          pointerEvents: "none",
+        }}
+      />
+
       <Header />
 
       <Box
@@ -67,6 +114,8 @@ export default function Suspect() {
           justifyContent: "center",
           alignItems: "center",
           p: 4,
+          position: "relative",
+          zIndex: 1,
         }}
       >
         <Box
@@ -88,18 +137,36 @@ export default function Suspect() {
               overflow: "hidden",
               backdropFilter: "blur(24px)",
               background: "rgba(255,255,255,0.04)",
-              border: "1px solid rgba(255,255,255,0.08)",
+              border: `1px solid ${current.color}33`,
               boxShadow: "0 40px 120px rgba(0,0,0,0.8)",
+              animation: "panelIn 600ms ease-out",
+              "@keyframes panelIn": {
+                "0%": { transform: "translateY(10px)", opacity: 0.6 },
+                "100%": { transform: "translateY(0)", opacity: 1 },
+              },
             }}
           >
             {/* ================= LEFT PANEL ================= */}
             <Box
+              ref={listRef}
               sx={{
                 width: 330,
                 overflowY: "auto",
                 "&::-webkit-scrollbar": { display: "none" },
+                position: "relative",
               }}
             >
+              {/* subtle scanline */}
+              <Box
+                sx={{
+                  position: "absolute",
+                  inset: 0,
+                  background:
+                    "linear-gradient(to bottom, rgba(255,255,255,0.06), transparent 8%, transparent 92%, rgba(255,255,255,0.04))",
+                  opacity: 0.35,
+                  pointerEvents: "none",
+                }}
+              />
               {scenarios.map((s, index) => {
                 const active = index === currentIndex;
 
@@ -107,11 +174,19 @@ export default function Suspect() {
                   <Box
                     key={s.id}
                     onClick={() => changeIndex(index)}
+                    ref={(el: HTMLDivElement | null) => {
+                      itemRefs.current[index] = el;
+                    }}
                     sx={{
                       position: "relative",
                       height: 115,
                       cursor: "pointer",
                       overflow: "hidden",
+                      transition: "transform 250ms ease, box-shadow 250ms ease",
+                      "&:hover": {
+                        transform: "translateX(4px)",
+                        boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.12)",
+                      },
                     }}
                   >
                     <Box
@@ -257,7 +332,9 @@ export default function Suspect() {
                   <Chip
                     icon={<Search />}
                     label={
-                      current.gameType === "CLUE" ? "단서 탐색형" : "단서 검색형"
+                      current.gameType === "CLUE"
+                        ? "단서 탐색형"
+                        : "단서 검색형"
                     }
                     sx={{
                       bgcolor: `${current.color}22`,
@@ -315,15 +392,29 @@ export default function Suspect() {
               borderRadius: 4,
               p: 2,
               background: "rgba(255,255,255,0.04)",
-              border: "1px solid rgba(255,255,255,0.08)",
-              boxShadow: "0 30px 80px rgba(0,0,0,0.6)",
+              border: `1px solid ${current.color}33`,
+              boxShadow: `0 30px 80px ${current.color}1f`,
               backdropFilter: "blur(18px)",
+              position: "relative",
+              overflow: "hidden",
             }}
           >
+            <Box
+              sx={{
+                position: "absolute",
+                inset: 0,
+                background: `linear-gradient(120deg, ${current.color}22, transparent 35%, transparent 70%, ${current.color}1a)`,
+                opacity: 0.35,
+                pointerEvents: "none",
+                animation: "sheen 6s ease-in-out infinite",
+                "@keyframes sheen": {
+                  "0%": { transform: "translateX(-30%)" },
+                  "100%": { transform: "translateX(30%)" },
+                },
+              }}
+            />
             <Box sx={{ px: 1, pt: 1 }}>
-              <Typography
-                sx={{ fontSize: 12, letterSpacing: 2, opacity: 0.6 }}
-              >
+              <Typography sx={{ fontSize: 12, letterSpacing: 2, opacity: 0.6 }}>
                 SCENARIO DETAIL
               </Typography>
               <Typography sx={{ fontSize: 18, fontWeight: 800, mt: 0.5 }}>
@@ -356,6 +447,13 @@ export default function Suspect() {
                         borderRadius: 2,
                         background: "rgba(255,255,255,0.03)",
                         border: "1px solid rgba(255,255,255,0.05)",
+                        transition:
+                          "transform 200ms ease, box-shadow 200ms ease",
+                        "&:hover": {
+                          transform: "translateY(-2px)",
+                          boxShadow:
+                            "0 10px 24px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(255,255,255,0.08)",
+                        },
                       }}
                     >
                       <Box
