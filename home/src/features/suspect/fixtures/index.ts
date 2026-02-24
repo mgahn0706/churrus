@@ -13,6 +13,9 @@ import { museumSuspects, museumVictim } from "./museum/suspects";
 import { museumClues } from "./museum/clues";
 import { serialSuspects, serialVictims } from "./serial/suspects";
 import { serialClues } from "./serial/clues";
+import { bluemoonSuspects, bluemoonVictim } from "./bluemoon/suspects";
+import { mountainSuspects, mountainVictim } from "./mountain/suspects";
+import { kpopSuspects, kpopVictim } from "./kpop/suspects";
 
 export const scenarios: ScenarioType[] = [
   {
@@ -116,8 +119,8 @@ export const scenarios: ScenarioType[] = [
     isInDevelopment: true,
     description: "케이팝 아이돌 그룹 내에서 발생한 살인사건",
     places: [],
-    suspects: [],
-    victims: [],
+    suspects: kpopSuspects,
+    victims: [kpopVictim],
     clues: [],
     color: "#e91e63",
   },
@@ -131,8 +134,8 @@ export const scenarios: ScenarioType[] = [
     isInDevelopment: true,
     description: "푸른 달이 뜨는 밤, 한 조선시대 마을에서 벌어진 살인사건",
     places: [],
-    suspects: [],
-    victims: [],
+    suspects: bluemoonSuspects,
+    victims: [bluemoonVictim],
     clues: [],
     color: "#1e6df4",
   },
@@ -146,8 +149,8 @@ export const scenarios: ScenarioType[] = [
     isInDevelopment: true,
     description: "청룡산 등산로에서 발생한 의문의 추락사건",
     places: [],
-    suspects: [],
-    victims: [],
+    suspects: mountainSuspects,
+    victims: [mountainVictim],
     clues: [],
     color: "#4caf50",
   },

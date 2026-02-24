@@ -397,6 +397,7 @@ export default function Suspect() {
               backdropFilter: "blur(18px)",
               position: "relative",
               overflow: "hidden",
+              minHeight: 0,
             }}
           >
             <Box
@@ -431,7 +432,71 @@ export default function Suspect() {
               </Typography>
             </Box>
 
-            <Box sx={{ px: 1 }}>
+            <Box
+              sx={{
+                px: 1,
+                flex: 1,
+                minHeight: 0,
+                overflowY: "auto",
+                "&::-webkit-scrollbar": { display: "none" },
+              }}
+            >
+              <Typography sx={{ fontSize: 13, opacity: 0.6, mb: 0.5 }}>
+                피해자
+              </Typography>
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 1.2 }}>
+                {current.victims && current.victims.length > 0 ? (
+                  current.victims.map((victim) => (
+                    <Box
+                      key={victim.name}
+                      sx={{
+                        display: "flex",
+                        gap: 1.2,
+                        p: 1,
+                        borderRadius: 2,
+                        background: "rgba(255,255,255,0.03)",
+                        border: "1px solid rgba(255,255,255,0.05)",
+                        transition: "transform 200ms ease, box-shadow 200ms ease",
+                        "&:hover": {
+                          transform: "translateY(-2px)",
+                          boxShadow:
+                            "0 10px 24px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(255,255,255,0.08)",
+                        },
+                      }}
+                    >
+                      <Box
+                        component="img"
+                        src={victim.image}
+                        alt={victim.name}
+                        sx={{
+                          width: 44,
+                          height: 44,
+                          borderRadius: 1.5,
+                          objectFit: "cover",
+                          flexShrink: 0,
+                        }}
+                      />
+                      <Box sx={{ minWidth: 0 }}>
+                        <Typography sx={{ fontSize: 14, fontWeight: 700 }}>
+                          {victim.name}
+                        </Typography>
+                        <Typography sx={{ fontSize: 12, opacity: 0.7 }}>
+                          {victim.job}
+                        </Typography>
+                        <Typography sx={{ fontSize: 12, opacity: 0.6 }}>
+                          {victim.age}세 · {genderLabel(victim.gender)}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  ))
+                ) : (
+                  <Typography sx={{ fontSize: 13, opacity: 0.5 }}>
+                    피해자 정보를 준비 중입니다.
+                  </Typography>
+                )}
+              </Box>
+
+              <Box sx={{ mt: 2 }}>
               <Typography sx={{ fontSize: 13, opacity: 0.6, mb: 0.5 }}>
                 용의자 목록
               </Typography>
@@ -486,6 +551,7 @@ export default function Suspect() {
                     용의자 정보를 준비 중입니다.
                   </Typography>
                 )}
+              </Box>
               </Box>
             </Box>
 
