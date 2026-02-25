@@ -75,7 +75,7 @@ export default function Suspect() {
   return (
     <Box
       sx={{
-        height: "100vh",
+        minHeight: "100dvh",
         background: `radial-gradient(1200px circle at 20% 10%, ${current.color}22, transparent 55%), #0a0c10`,
         display: "flex",
         flexDirection: "column",
@@ -95,7 +95,7 @@ export default function Suspect() {
               radial-gradient(520px circle at 30% 80%, ${current.color}2b, transparent 60%)
             `,
           filter: "blur(40px)",
-          animation: "nebulaDrift 18s ease-in-out infinite alternate",
+          animation: { xs: "none", md: "nebulaDrift 18s ease-in-out infinite alternate" },
           "@keyframes nebulaDrift": {
             "0%": { transform: "translate3d(-2%, -1%, 0) scale(1)" },
             "100%": { transform: "translate3d(2%, 1%, 0) scale(1.05)" },
@@ -112,8 +112,10 @@ export default function Suspect() {
           flex: 1,
           display: "flex",
           justifyContent: "center",
-          alignItems: "center",
-          p: 4,
+          alignItems: { xs: "stretch", md: "center" },
+          p: { xs: 2, md: 4 },
+          pt: { xs: "96px", sm: "104px", md: 4 },
+          pb: { xs: 3, md: 4 },
           position: "relative",
           zIndex: 1,
         }}
@@ -122,9 +124,10 @@ export default function Suspect() {
           sx={{
             width: "100%",
             maxWidth: 1600,
-            height: "82vh",
+            height: { xs: "auto", md: "82vh" },
             display: "flex",
-            gap: 3,
+            gap: { xs: 2, md: 3 },
+            flexDirection: { xs: "column", md: "row" },
           }}
         >
           {/* ================= GLASS WINDOW ================= */}
@@ -139,21 +142,27 @@ export default function Suspect() {
               background: "rgba(255,255,255,0.04)",
               border: `1px solid ${current.color}33`,
               boxShadow: "0 40px 120px rgba(0,0,0,0.8)",
-              animation: "panelIn 600ms ease-out",
+              animation: { xs: "none", md: "panelIn 600ms ease-out" },
               "@keyframes panelIn": {
                 "0%": { transform: "translateY(10px)", opacity: 0.6 },
                 "100%": { transform: "translateY(0)", opacity: 1 },
               },
+              flexDirection: { xs: "column", md: "row" },
             }}
           >
             {/* ================= LEFT PANEL ================= */}
             <Box
               ref={listRef}
               sx={{
-                width: 330,
-                overflowY: "auto",
+                width: { xs: "100%", md: 330 },
+                height: { xs: 120, md: "auto" },
+                overflowY: { xs: "hidden", md: "auto" },
+                overflowX: { xs: "auto", md: "hidden" },
                 "&::-webkit-scrollbar": { display: "none" },
                 position: "relative",
+                display: { xs: "flex", md: "block" },
+                gap: { xs: 1, md: 0 },
+                p: { xs: 1, md: 0 },
               }}
             >
               {/* subtle scanline */}
@@ -180,6 +189,7 @@ export default function Suspect() {
                     sx={{
                       position: "relative",
                       height: 115,
+                      minWidth: { xs: 240, sm: 260, md: "auto" },
                       cursor: "pointer",
                       overflow: "hidden",
                       transition: "transform 250ms ease, box-shadow 250ms ease",
@@ -187,6 +197,7 @@ export default function Suspect() {
                         transform: "translateX(4px)",
                         boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.12)",
                       },
+                      flexShrink: 0,
                     }}
                   >
                     <Box
@@ -261,7 +272,14 @@ export default function Suspect() {
             </Box>
 
             {/* ================= RIGHT PANEL ================= */}
-            <Box sx={{ flex: 1, position: "relative", overflow: "hidden" }}>
+            <Box
+              sx={{
+                flex: 1,
+                position: "relative",
+                overflow: { xs: "visible", md: "hidden" },
+                minHeight: { xs: 360, md: "auto" },
+              }}
+            >
               {/* HERO IMAGE */}
               <Box
                 key={fadeKey}
@@ -270,8 +288,9 @@ export default function Suspect() {
                 alt={current.title}
                 sx={{
                   width: "100%",
-                  height: "100%",
+                  height: { xs: 220, sm: 280, md: "100%" },
                   objectFit: "cover",
+                  objectPosition: "center",
                   filter: "brightness(0.65)",
                   transition: "opacity .6s ease",
                 }}
@@ -303,23 +322,24 @@ export default function Suspect() {
               {/* ================= CONTENT ================= */}
               <Box
                 sx={{
-                  position: "absolute",
-                  bottom: 100,
-                  left: 90,
+                  position: { xs: "relative", md: "absolute" },
+                  bottom: { md: 100 },
+                  left: { md: 90 },
                   maxWidth: 700,
+                  p: { xs: 2.5, sm: 3, md: 0 },
                 }}
               >
                 <Typography
                   sx={{
                     fontSize: "clamp(28px, 4vw, 52px)",
                     fontWeight: 800,
-                    mb: 3,
+                    mb: { xs: 1.5, md: 3 },
                   }}
                 >
                   {current.title}
                 </Typography>
 
-                <Box sx={{ display: "flex", gap: 2, mb: 3 }}>
+                <Box sx={{ display: "flex", gap: 1.5, mb: { xs: 2, md: 3 }, flexWrap: "wrap" }}>
                   <Chip
                     icon={<PeopleAlt />}
                     label={`용의자 ${current.numberOfSuspects}명`}
@@ -349,7 +369,7 @@ export default function Suspect() {
                     fontSize: "clamp(14px, 1.1vw, 18px)",
                     opacity: 0.85,
                     lineHeight: 1.8,
-                    mb: 4,
+                    mb: { xs: 2.5, md: 4 },
                   }}
                 >
                   {current.description}
@@ -385,18 +405,18 @@ export default function Suspect() {
           {/* ================= RIGHT SIDEBAR ================= */}
           <Box
             sx={{
-              width: 300,
+              width: { xs: "100%", md: 300 },
               display: "flex",
               flexDirection: "column",
               gap: 2,
               borderRadius: 4,
-              p: 2,
+              p: { xs: 2, md: 2 },
               background: "rgba(255,255,255,0.04)",
               border: `1px solid ${current.color}33`,
               boxShadow: `0 30px 80px ${current.color}1f`,
               backdropFilter: "blur(18px)",
               position: "relative",
-              overflow: "hidden",
+              overflow: { xs: "visible", md: "hidden" },
               minHeight: 0,
             }}
           >
@@ -407,7 +427,7 @@ export default function Suspect() {
                 background: `linear-gradient(120deg, ${current.color}22, transparent 35%, transparent 70%, ${current.color}1a)`,
                 opacity: 0.35,
                 pointerEvents: "none",
-                animation: "sheen 6s ease-in-out infinite",
+                animation: { xs: "none", md: "sheen 6s ease-in-out infinite" },
                 "@keyframes sheen": {
                   "0%": { transform: "translateX(-30%)" },
                   "100%": { transform: "translateX(30%)" },
