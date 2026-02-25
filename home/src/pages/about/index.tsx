@@ -99,6 +99,11 @@ export default function ChurrusMain() {
     "/image/suspect/scenario/bluemoon/bluemoon-main.png",
     "/image/suspect/scenario/school/school-main.png",
     "/image/suspect/scenario/serial/serial-main.png",
+    "/image/suspect/scenario/dure/dure-main.png",
+    "/image/suspect/scenario/jahayeon/jahayeon-main.png",
+    "/image/suspect/scenario/kpop/kpop-main.png",
+    "/image/suspect/scenario/mountain/mountain-main.png",
+    "/image/suspect/scenario/startup/startup-main.png",
   ];
   const crimeSceneProfiles = [
     {
@@ -217,7 +222,7 @@ export default function ChurrusMain() {
     "/image/quiz/2023-8-6.png",
     "/image/quiz/2024-3-2.png",
     "/image/quiz/2024-5-6.png",
-    "/image/quiz/2024-7-4.png",
+    "/image/quiz/2024-8-4.png",
     "/image/quiz/2024-10-3.png",
     "/image/quiz/2023-2-4.png",
     "/image/quiz/2023-4-7.png",
