@@ -35,37 +35,74 @@ export default function RecruitPage() {
       <Head>
         <title>지원하기</title>
       </Head>
-      <Box>
+      <Box
+        sx={{
+          background:
+            "radial-gradient(1200px 700px at 10% -10%, #f8fafc 0%, #eef2f7 45%, #ffffff 100%)",
+          position: "relative",
+          overflow: "hidden",
+          "::before": {
+            content: '""',
+            position: "absolute",
+            inset: 0,
+            background:
+              "radial-gradient(500px 300px at 85% 10%, rgba(217, 226, 255, 0.35), transparent 70%), radial-gradient(420px 240px at 5% 60%, rgba(255, 241, 230, 0.45), transparent 70%)",
+            animation: "pulseGlow 14s ease-in-out infinite",
+            pointerEvents: "none",
+          },
+          "@keyframes pulseGlow": {
+            "0%, 100%": { opacity: 0.75 },
+            "50%": { opacity: 1 },
+          },
+        }}
+      >
         <GlobalHeader />
-        <Box bgcolor="#d9efed" py={["100px", "120px", "150px"]} px="10vw">
-          <Box
+        <Box
+          sx={{
+            py: { xs: "90px", md: "130px" },
+            px: { xs: "6vw", md: "10vw" },
+            background:
+              "linear-gradient(180deg, rgba(248,250,252,0.95) 0%, rgba(236,242,247,0.95) 100%)",
+          }}
+        >
+          <Typography
             sx={{
-              fontSize: ["2em", "3rem", "3rem"],
+              fontSize: { xs: "2rem", md: "3rem" },
               fontWeight: 700,
+              letterSpacing: "-0.02em",
+              fontFamily:
+                "'SF Pro Display', 'Apple SD Gothic Neo', 'Pretendard', sans-serif",
               wordBreak: "keep-all",
             }}
           >
             추러스 25-2기 추가 모집
-          </Box>
-          <Box
-            fontSize={isMobileWidth ? "1rem" : "1.5rem"}
+          </Typography>
+          <Typography
+            mt={2}
+            fontSize={isMobileWidth ? "1rem" : "1.4rem"}
             sx={{
               wordBreak: "keep-all",
+              color: "rgba(15, 23, 42, 0.7)",
+              fontFamily:
+                "'SF Pro Text', 'Apple SD Gothic Neo', 'Pretendard', sans-serif",
             }}
           >
             추러스 25-2기 신입 회원 추가 모집을 시작합니다! ( ~ 10/14)
-          </Box>
+          </Typography>
         </Box>
-        <Box textAlign="center" py={["100px", "120px", "150px"]} px="10vw">
-          <Box
+        <Box textAlign="center" py={{ xs: "90px", md: "130px" }} px="10vw">
+          <Typography
             sx={{
-              fontSize: ["2em", "3rem", "3rem"],
+              fontSize: { xs: "2rem", md: "3rem" },
               fontWeight: 700,
+              letterSpacing: "-0.02em",
+              fontFamily:
+                "'SF Pro Display', 'Apple SD Gothic Neo', 'Pretendard', sans-serif",
             }}
             mb="20px"
           >
             지원 방법
-          </Box>
+          </Typography>
 
           <Box
             display="flex"
@@ -73,27 +110,36 @@ export default function RecruitPage() {
             alignItems="center"
             flexDirection="column"
           >
-            <Box
+            <Typography
               sx={{
-                fontSize: ["1.5rem", "2rem", "2rem"],
-                fontWeight: 400,
+                fontSize: { xs: "1.1rem", md: "1.6rem" },
+                fontWeight: 500,
+                color: "rgba(15, 23, 42, 0.75)",
+                fontFamily:
+                  "'SF Pro Text', 'Apple SD Gothic Neo', 'Pretendard', sans-serif",
               }}
             >
               아래의 버튼을 눌러 지원서를 작성할 수 있어요. 서울대 계정 로그인이
               필요해요.
-            </Box>
+            </Typography>
             <Button
               sx={{
                 color: "white",
-                borderRadius: "10px",
+                borderRadius: "999px",
                 mt: 4,
-                bgcolor: "#009688",
+                bgcolor: "#111827",
                 textAlign: "center",
-                px: 4,
-                py: 2,
+                px: 5,
+                py: 1.8,
                 fontWeight: 700,
+                boxShadow:
+                  "0 24px 50px rgba(15, 23, 42, 0.22), inset 0 1px 0 rgba(255,255,255,0.2)",
+                transition: "transform 0.4s ease, box-shadow 0.4s ease",
                 "&:hover": {
-                  bgcolor: "#00796b",
+                  bgcolor: "#0f172a",
+                  transform: "translateY(-4px)",
+                  boxShadow:
+                    "0 30px 60px rgba(15, 23, 42, 0.28), inset 0 1px 0 rgba(255,255,255,0.35)",
                 },
               }}
               onClick={() => {
@@ -108,26 +154,46 @@ export default function RecruitPage() {
             </Button>
           </Box>
         </Box>
-        <Divider />
-        <Box textAlign="center" py="150px" px="10vw" bgcolor="#d9efed">
-          <Box
-            display="flex"
+        <Divider sx={{ opacity: 0.4 }} />
+        <Box
+          textAlign="center"
+          py={{ xs: "90px", md: "130px" }}
+          px="10vw"
+          sx={{
+            background:
+              "linear-gradient(180deg, rgba(248,250,252,0.95) 0%, rgba(236,242,247,0.95) 100%)",
+          }}
+        >
+          <Typography
             sx={{
-              fontSize: "2rem",
+              fontSize: { xs: "1.6rem", md: "2rem" },
               fontWeight: 700,
+              letterSpacing: "-0.02em",
+              fontFamily:
+                "'SF Pro Display', 'Apple SD Gothic Neo', 'Pretendard', sans-serif",
             }}
             mb="20px"
           >
             자주 묻는 질문
-          </Box>
+          </Typography>
           <Box display="flex" flexDirection="column">
             {Object.entries(FAQList).map(([question, answer]) => {
               return (
                 <Accordion
                   key={question}
                   sx={{
-                    width: "80vw",
+                    width: "min(840px, 90vw)",
                     textAlign: "left",
+                    mx: "auto",
+                    mb: 1.5,
+                    borderRadius: "16px",
+                    boxShadow: "0 16px 36px rgba(15, 23, 42, 0.08)",
+                    background: "rgba(255,255,255,0.8)",
+                    backdropFilter: "blur(12px)",
+                    "::before": { display: "none" },
+                    "&.Mui-expanded": {
+                      margin: "0 auto 12px",
+                    },
                   }}
                 >
                   <AccordionSummary
@@ -140,7 +206,7 @@ export default function RecruitPage() {
                     }}
                   >
                     <Typography
-                      fontSize={isMobileWidth ? "1.2rem" : "1.5rem"}
+                      fontSize={isMobileWidth ? "1.1rem" : "1.4rem"}
                       fontWeight={500}
                       textAlign={"left"}
                     >
@@ -154,7 +220,7 @@ export default function RecruitPage() {
                     }}
                   >
                     <Typography
-                      fontSize={isMobileWidth ? "1rem" : "1.2rem"}
+                      fontSize={isMobileWidth ? "0.98rem" : "1.1rem"}
                       fontWeight={400}
                     >
                       {answer}
