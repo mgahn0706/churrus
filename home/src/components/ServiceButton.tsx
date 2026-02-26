@@ -12,7 +12,7 @@ export default function ServiceButton({
   label,
   url,
   icon,
-  color = "#318AE1",
+  color = "#5B6475",
 }: ServiceButtonProps) {
   const router = useRouter();
   return (

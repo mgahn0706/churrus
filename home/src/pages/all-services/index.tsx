@@ -60,11 +60,12 @@ export default function AllServicesPage() {
         <Box
           display="flex"
           flexDirection="column"
-          mx={[2, 4, 8]}
           mb={5}
           mt={[2, 3, "48px"]}
           width="100%"
           maxWidth="980px"
+          px={{ xs: 2, sm: 3, md: 4 }}
+          boxSizing="border-box"
           alignSelf="center"
         >
           <Box mt={2} mb={2}>
