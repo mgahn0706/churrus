@@ -77,6 +77,11 @@ const ImageMarqueeRow = ({
 export default function ChurrusMain() {
   const responsiveFontSize = useResponsiveValue([2, 2, 3]);
   const heroSubtitleSize = useResponsiveValue([16, 18, 20]);
+  const sectionContentSx = {
+    width: "100%",
+    maxWidth: "900px",
+    px: { xs: 3, md: 6 },
+  };
   const [mtProgress, setMtProgress] = useState(0);
   const mtProgressRef = useRef(0);
   const mtStops = [
@@ -196,7 +201,98 @@ export default function ChurrusMain() {
       name: "KIM SG",
       scenario: "STARTUP",
     },
+    {
+      src: "/image/suspect/scenario/bluemoon/profile/kw_kim.png",
+      name: "KW KIM",
+      scenario: "BLUE MOON",
+    },
+    {
+      src: "/image/suspect/scenario/bluemoon/profile/s_heo.png",
+      name: "S HEO",
+      scenario: "BLUE MOON",
+    },
+    {
+      src: "/image/suspect/scenario/dure/profile/lee_yj.png",
+      name: "LEE YJ",
+      scenario: "DURE",
+    },
+    {
+      src: "/image/suspect/scenario/dure/profile/song_gy.png",
+      name: "SONG GY",
+      scenario: "DURE",
+    },
+    {
+      src: "/image/suspect/scenario/jahayeon/profile/lee_gg.png",
+      name: "LEE GG",
+      scenario: "JAHAYEON",
+    },
+    {
+      src: "/image/suspect/scenario/jahayeon/profile/cho_nw.png",
+      name: "CHO NW",
+      scenario: "JAHAYEON",
+    },
+    {
+      src: "/image/suspect/scenario/kpop/profile/haru.png",
+      name: "HARU",
+      scenario: "K-POP",
+    },
+    {
+      src: "/image/suspect/scenario/kpop/profile/adam.png",
+      name: "ADAM",
+      scenario: "K-POP",
+    },
+    {
+      src: "/image/suspect/scenario/mountain/profile/cr_song.png",
+      name: "CR SONG",
+      scenario: "MOUNTAIN",
+    },
+    {
+      src: "/image/suspect/scenario/mountain/profile/rs_cheon.png",
+      name: "RS CHEON",
+      scenario: "MOUNTAIN",
+    },
+    {
+      src: "/image/suspect/scenario/museum/profile/doh_tu.png",
+      name: "DOH TU",
+      scenario: "MUSEUM",
+    },
+    {
+      src: "/image/suspect/scenario/museum/profile/kang_ks.png",
+      name: "KANG KS",
+      scenario: "MUSEUM",
+    },
+    {
+      src: "/image/suspect/scenario/school/profile/hyun_tm.png",
+      name: "HYUN TM",
+      scenario: "SCHOOL",
+    },
+    {
+      src: "/image/suspect/scenario/school/profile/son_mh.png",
+      name: "SON MH",
+      scenario: "SCHOOL",
+    },
+    {
+      src: "/image/suspect/scenario/serial/profile/hwang_sn.png",
+      name: "HWANG SN",
+      scenario: "SERIAL",
+    },
+    {
+      src: "/image/suspect/scenario/serial/profile/kwon_yg.png",
+      name: "KWON YG",
+      scenario: "SERIAL",
+    },
+    {
+      src: "/image/suspect/scenario/startup/profile/kang_jh.png",
+      name: "KANG JH",
+      scenario: "STARTUP",
+    },
+    {
+      src: "/image/suspect/scenario/startup/profile/park_jh.png",
+      name: "PARK JH",
+      scenario: "STARTUP",
+    },
   ];
+  const [crimeBackdropIndex, setCrimeBackdropIndex] = useState(0);
   const [typedText, setTypedText] = useState("");
   const problemImagesRowA = [
     "/image/quiz/2025-7-5.png",
@@ -317,6 +413,16 @@ export default function ChurrusMain() {
     return () => window.clearTimeout(timeoutId);
   }, []);
 
+  useEffect(() => {
+    const intervalId = window.setInterval(() => {
+      setCrimeBackdropIndex(
+        (prev) => (prev + 1) % Math.max(crimeSceneBackdrops.length, 1)
+      );
+    }, 5200);
+
+    return () => window.clearInterval(intervalId);
+  }, [crimeSceneBackdrops.length]);
+
   return (
     <Box
       sx={{
@@ -341,11 +447,6 @@ export default function ChurrusMain() {
           "0%": { transform: "scale(0.6)", opacity: 0.9 },
           "70%": { transform: "scale(1.6)", opacity: 0 },
           "100%": { transform: "scale(1.6)", opacity: 0 },
-        },
-        "@keyframes bgFade": {
-          "0%, 10%": { opacity: 1 },
-          "20%, 60%": { opacity: 1 },
-          "80%, 100%": { opacity: 0 },
         },
       }}
     >
@@ -386,10 +487,9 @@ export default function ChurrusMain() {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            px: { xs: 3, md: 6 },
           }}
         >
-          <Box sx={{ width: "min(900px, 100%)" }}>
+          <Box sx={sectionContentSx}>
             <Typography
               component="h1"
               sx={{
@@ -468,10 +568,9 @@ export default function ChurrusMain() {
       >
         <Box display="flex" justifyContent="center" alignItems="center">
           <Box
-            maxWidth={{ xs: "92vw", md: "50vw" }}
             sx={{
+              ...sectionContentSx,
               position: "relative",
-              px: { xs: 2, md: 0 },
             }}
           >
             <Typography
@@ -525,10 +624,9 @@ export default function ChurrusMain() {
 
         <Box display="flex" justifyContent="center" alignItems="center">
           <Box
-            maxWidth={{ xs: "92vw", md: "50vw" }}
             sx={{
+              ...sectionContentSx,
               position: "relative",
-              px: { xs: 2, md: 0 },
             }}
           >
             <Typography
@@ -582,7 +680,7 @@ export default function ChurrusMain() {
                   src="/image/seoul-map.png"
                   alt="서울 지도"
                   fill
-                  sizes="(max-width: 900px) 90vw, 50vw"
+                  sizes="(max-width: 900px) calc(100vw - 48px), 900px"
                   style={{ objectFit: "cover", filter: "saturate(0.85)" }}
                 />
                 <Box
@@ -661,10 +759,9 @@ export default function ChurrusMain() {
 
         <Box display="flex" justifyContent="center" alignItems="center">
           <Box
-            maxWidth={{ xs: "92vw", md: "50vw" }}
             sx={{
+              ...sectionContentSx,
               position: "relative",
-              px: { xs: 2, md: 0 },
             }}
           >
             <Typography
@@ -710,6 +807,7 @@ export default function ChurrusMain() {
                 sx={{
                   position: "relative",
                   padding: { xs: "20px", md: "28px" },
+                  height: { xs: 260, md: 320 },
                   borderRadius: "26px",
                   background:
                     "linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(242,244,248,0.9) 50%, rgba(236,238,243,0.9) 100%)",
@@ -720,13 +818,15 @@ export default function ChurrusMain() {
                   sx={{
                     fontSize: { xs: 13, md: 14 },
                     lineHeight: 1.8,
+                    height: "100%",
+                    overflowY: "auto",
                     color: "#1f2937",
                     fontFamily:
                       "'SF Pro Text', 'Apple SD Gothic Neo', 'Pretendard', sans-serif",
                     whiteSpace: "pre-wrap",
                   }}
                 >
-                  {typedText.trim()}
+                  {typedText}
                   <Box
                     component="span"
                     sx={{
@@ -752,10 +852,9 @@ export default function ChurrusMain() {
 
         <Box display="flex" justifyContent="center" alignItems="center">
           <Box
-            maxWidth={{ xs: "92vw", md: "50vw" }}
             sx={{
+              ...sectionContentSx,
               position: "relative",
-              px: { xs: 2, md: 0 },
             }}
           >
             <Typography
@@ -802,7 +901,7 @@ export default function ChurrusMain() {
                 position: "relative",
                 borderRadius: "26px",
                 overflow: "hidden",
-                minHeight: { xs: 260, md: 320 },
+                minHeight: { xs: 320, md: 400 },
                 boxShadow: "0 25px 60px rgba(15, 23, 42, 0.16)",
                 background:
                   "radial-gradient(320px 200px at 20% 20%, rgba(255,255,255,0.9), rgba(235,238,244,0.92) 55%, rgba(220,224,234,0.9) 100%)",
@@ -821,14 +920,12 @@ export default function ChurrusMain() {
                     src={src}
                     alt="크라임씬 배경"
                     fill
-                    sizes="(max-width: 900px) 90vw, 50vw"
+                    sizes="(max-width: 900px) calc(100vw - 48px), 900px"
                     style={{
                       objectFit: "cover",
                       filter: "saturate(0.7) brightness(0.7)",
-                      opacity: index === 0 ? 1 : 0,
-                      animation: `bgFade 28s ease-in-out ${
-                        index * 7
-                      }s infinite`,
+                      opacity: index === crimeBackdropIndex ? 1 : 0,
+                      transition: "opacity 1.4s ease-in-out",
                     }}
                   />
                 ))}
@@ -848,13 +945,16 @@ export default function ChurrusMain() {
                   inset: 0,
                   display: "flex",
                   alignItems: "center",
+                  py: { xs: 4, md: 5 },
                   zIndex: 2,
                 }}
               >
                 <Box
                   sx={{
                     width: "100%",
-                    overflow: "hidden",
+                    overflowX: "hidden",
+                    overflowY: "visible",
+                    py: { xs: 2, md: 3 },
                     maskImage:
                       "linear-gradient(90deg, transparent 0%, black 10%, black 90%, transparent 100%)",
                     WebkitMaskImage:
@@ -865,6 +965,7 @@ export default function ChurrusMain() {
                     sx={{
                       display: "flex",
                       gap: 2,
+                      py: { xs: 1, md: 1.5 },
                       width: "max-content",
                       alignItems: "center",
                       animation: "profileMarquee 44s linear infinite",
@@ -925,10 +1026,9 @@ export default function ChurrusMain() {
 
         <Box display="flex" justifyContent="center" alignItems="center">
           <Box
-            maxWidth={{ xs: "92vw", md: "50vw" }}
             sx={{
+              ...sectionContentSx,
               position: "relative",
-              px: { xs: 2, md: 0 },
               textAlign: "center",
               marginBottom: { xs: 4, md: 4 },
             }}
