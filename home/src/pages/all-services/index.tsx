@@ -51,10 +51,10 @@ export default function AllServicesPage() {
         display="flex"
         minHeight="100dvh"
         flexDirection="column"
-        bgcolor="#F7F5F2"
+        bgcolor="#F5F6FA"
         sx={{
           backgroundImage:
-            "radial-gradient(1200px 600px at 10% -10%, #FFF4E8 0%, transparent 55%), radial-gradient(900px 500px at 100% 0%, #F1F1ED 0%, transparent 50%)",
+            "radial-gradient(1200px 600px at 10% -10%, #EEF2FF 0%, transparent 55%), radial-gradient(900px 500px at 100% 0%, #F2F5FF 0%, transparent 50%)",
         }}
       >
         <Box
@@ -68,15 +68,15 @@ export default function AllServicesPage() {
           alignSelf="center"
         >
           <Box mt={2} mb={2}>
-            <Typography color="#1B1B1B" fontSize={26} fontWeight={700}>
+            <Typography color="#1B2430" fontSize={26} fontWeight={700}>
               전체 서비스
             </Typography>
-            <Typography color="#6B6B6B" fontSize={13} mt={0.5}>
+            <Typography color="#6B7280" fontSize={13} mt={0.5}>
               추러스에서 제공하는 모든 게임과 모임을 한눈에.
             </Typography>
           </Box>
 
-          <Typography color="#3B3B3B" fontSize={12} fontWeight={600} mt={2.5}>
+          <Typography color="#5A6477" fontSize={12} fontWeight={600} mt={2.5}>
             추러스
           </Typography>
           <CategorizedLayout>
@@ -88,7 +88,7 @@ export default function AllServicesPage() {
               icon={<MailRounded />}
             />
           </CategorizedLayout>
-          <Typography color="#3B3B3B" fontSize={12} fontWeight={600} mt={3}>
+          <Typography color="#5A6477" fontSize={12} fontWeight={600} mt={3}>
             정기모임
           </Typography>
           <CategorizedLayout>
@@ -104,7 +104,7 @@ export default function AllServicesPage() {
             />
           </CategorizedLayout>
 
-          <Typography color="#3B3B3B" fontSize={12} fontWeight={600} mt={3}>
+          <Typography color="#5A6477" fontSize={12} fontWeight={600} mt={3}>
             정기퍼즐
           </Typography>
           <CategorizedLayout>
@@ -130,7 +130,7 @@ export default function AllServicesPage() {
             />
           </CategorizedLayout>
 
-          <Typography color="#3B3B3B" fontSize={12} fontWeight={600} mt={3}>
+          <Typography color="#5A6477" fontSize={12} fontWeight={600} mt={3}>
             보드게임 / 더 지니어스
           </Typography>
           <CategorizedLayout>

@@ -23,6 +23,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useRouter } from "next/router";
+import { Fragment } from "react";
 
 const leftNavigationMenuItems: Record<
   string,
@@ -84,22 +85,27 @@ export default function LeftDrawer({
       anchor="left"
       sx={{
         "& .MuiDrawer-paper": {
-          width: "15rem",
+          width: "17rem",
+          bgcolor: "#F5F6FA",
+          borderRight: "none",
+          boxShadow: "12px 0 24px rgba(16, 16, 16, 0.08)",
         },
       }}
     >
       <Toolbar />
-      <List>
+      <List sx={{ px: 1.5, pb: 2 }}>
         {Object.entries(leftNavigationMenuItems).map(([key, value]) => {
           return (
-            <>
-              <ListItem key={key}>
+            <Fragment key={key}>
+              <ListItem key={key} sx={{ pt: 1.25, pb: 0.5 }}>
                 <Typography
                   variant="h4"
                   sx={{
-                    fontWeight: "bold",
-                    fontSize: "12px",
-                    textAlign: "center",
+                    fontWeight: 700,
+                    fontSize: "11px",
+                    letterSpacing: "0.08em",
+                    textTransform: "uppercase",
+                    color: "#6B6B6B",
                   }}
                 >
                   {key}
@@ -116,31 +122,43 @@ export default function LeftDrawer({
                 >
                   <ListItemButton
                     sx={{
-                      py: "4px",
+                      py: 0.75,
+                      px: 1.25,
+                      borderRadius: "10px",
                       width: "100%",
                       justifyContent: "flex-start",
+                      "&:hover": {
+                        bgcolor: "#ECEFF6",
+                      },
                     }}
                   >
                     <ListItemIcon
-                      color="#232937"
                       sx={{
                         minWidth: "unset",
-                        marginRight: "0.5rem",
+                        marginRight: "0.75rem",
+                        color: "#5A6477",
                       }}
                     >
                       {item.icon}
                     </ListItemIcon>
-                    <ListItemText primary={item.text} />
+                    <ListItemText
+                      primary={item.text}
+                      primaryTypographyProps={{
+                        fontSize: 14,
+                        fontWeight: 600,
+                        color: "#1B2430",
+                      }}
+                    />
                     {item.badgeText && (
                       <Chip
                         label={item.badgeText}
                         sx={{
                           ml: 1,
-                          fontSize: "0.5rem",
-                          fontWeight: "bold",
-                          height: "1.5rem",
-                          color: "white",
-                          bgcolor: "#eeb900",
+                          fontSize: "0.55rem",
+                          fontWeight: 700,
+                          height: "1.4rem",
+                          color: "#1B2430",
+                          bgcolor: "#E7ECF7",
                         }}
                       />
                     )}
@@ -149,10 +167,11 @@ export default function LeftDrawer({
               ))}
               <Divider
                 sx={{
-                  my: 1,
+                  my: 1.25,
+                  borderColor: "#E4E7F0",
                 }}
               />
-            </>
+            </Fragment>
           );
         })}
         <ListItem
@@ -164,21 +183,33 @@ export default function LeftDrawer({
         >
           <ListItemButton
             sx={{
-              py: "4px",
+              py: 0.75,
+              px: 1.25,
+              borderRadius: "10px",
               width: "100%",
               justifyContent: "flex-start",
+              "&:hover": {
+                bgcolor: "#ECEFF6",
+              },
             }}
           >
             <ListItemIcon
-              color="#232937"
               sx={{
                 minWidth: "unset",
-                marginRight: "0.5rem",
+                marginRight: "0.75rem",
+                color: "#5A6477",
               }}
             >
               <ListRounded />
             </ListItemIcon>
-            <ListItemText primary="전체 서비스" />
+            <ListItemText
+              primary="전체 서비스"
+              primaryTypographyProps={{
+                fontSize: 14,
+                fontWeight: 600,
+                color: "#1B2430",
+              }}
+            />
           </ListItemButton>
         </ListItem>
       </List>
