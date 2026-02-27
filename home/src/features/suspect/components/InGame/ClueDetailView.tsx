@@ -75,7 +75,13 @@ export function ClueDetailView({
       TransitionComponent={Transition}
       sx={{ zIndex: 1080 }}
     >
-      <AppBar sx={{ position: "relative" }}>
+      <AppBar
+        sx={{
+          position: "relative",
+          background: (theme) =>
+            `linear-gradient(90deg, ${theme.palette.primary.dark} 0%, ${theme.palette.primary.main} 62%, ${theme.palette.primary.light} 100%)`,
+        }}
+      >
         <Toolbar>
           <IconButton
             edge="start"
@@ -129,9 +135,15 @@ export function ClueDetailView({
             alt={`${clueData.id}번째 단서 이미지`}
             width={isImageLoading ? 0 : 600}
             height={isImageLoading ? 0 : 600}
+            style={{ borderRadius: 16 }}
           />
           {isImageLoading && (
-            <Skeleton variant="rectangular" width={600} height={600} />
+            <Skeleton
+              variant="rectangular"
+              width={600}
+              height={600}
+              sx={{ borderRadius: 2 }}
+            />
           )}
         </Box>
         <Box display="flex">

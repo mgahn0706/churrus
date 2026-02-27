@@ -216,7 +216,7 @@ export default function InGameLayout({
             position: "absolute",
             right: 16,
             top: 16,
-            zIndex: 1200,
+            zIndex: 1000,
           }}
         >
           <Button
