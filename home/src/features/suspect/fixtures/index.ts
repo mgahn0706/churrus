@@ -14,6 +14,7 @@ import { museumClues } from "./museum/clues";
 import { serialSuspects, serialVictims } from "./serial/suspects";
 import { serialClues } from "./serial/clues";
 import { bluemoonSuspects, bluemoonVictim } from "./bluemoon/suspects";
+import { bluemoonClues } from "./bluemoon/clues";
 import { mountainSuspects, mountainVictim } from "./mountain/suspects";
 import { kpopSuspects, kpopVictim } from "./kpop/suspects";
 
@@ -133,10 +134,10 @@ export const scenarios: ScenarioType[] = [
     backgroundImage: "/image/suspect/scenario/bluemoon/bluemoon-main.png",
     isInDevelopment: true,
     description: "푸른 달이 뜨는 밤, 한 조선시대 마을에서 벌어진 살인사건",
-    places: [],
+    places: ["village", "market"],
     suspects: bluemoonSuspects,
     victims: [bluemoonVictim],
-    clues: [],
+    clues: bluemoonClues,
     color: "#1e6df4",
   },
 
