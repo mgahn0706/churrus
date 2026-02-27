@@ -1,8 +1,11 @@
-import { Box, SpeedDial, SpeedDialAction, SpeedDialIcon } from "@mui/material";
+import { Box, Button, Grow, IconButton, Paper, Tooltip } from "@mui/material";
 import Image from "next/image";
 import LightBulbIcon from "@mui/icons-material/Lightbulb";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import InfoIcon from "@mui/icons-material/Info";
+import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
+import MenuOpenIcon from "@mui/icons-material/MenuOpen";
+import MenuIcon from "@mui/icons-material/Menu";
 import { useEffect, useState } from "react";
 
 import {
@@ -13,7 +16,6 @@ import {
   SuspectType,
   VictimType,
 } from "@/features/suspect/types";
-import MemoButton from "./MemoButton";
 import MemoModal from "./MemoModal";
 import { useMobileWidth } from "@/hooks/useMobileWIdth";
 import MobileWidthAlertModal from "../MobileWidthAlertModal";
@@ -53,6 +55,7 @@ export default function InGameLayout({
     "prologue" | "suspects" | "dashboard" | "password" | "memo" | null
   >("prologue");
   const [unlockingClue, setUnlockingClue] = useState<ClueType | null>(null);
+  const [isQuickMenuOpen, setIsQuickMenuOpen] = useState(false);
 
   const handleCloseModal = () => {
     setOpenedModal(null);
@@ -106,7 +109,6 @@ export default function InGameLayout({
           />
         )}
 
-        <MemoButton onClick={() => setOpenedModal("memo")} />
         {openedModal === "memo" && (
           <MemoModal
             scenarioKeyword={scenario.id}
@@ -209,27 +211,84 @@ export default function InGameLayout({
           onClose={handleCloseModal}
           onClickSuspects={() => setOpenedModal("suspects")}
         />
-        <SpeedDial
-          ariaLabel="SpeedDial basic example"
-          sx={{ position: "absolute", bottom: 18, right: 18 }}
-          icon={<SpeedDialIcon />}
+        <Box
+          sx={{
+            position: "absolute",
+            right: 16,
+            top: 16,
+            zIndex: 1200,
+          }}
         >
-          <SpeedDialAction
-            icon={<LightBulbIcon />}
-            tooltipTitle={"단서 현황"}
-            onClick={() => setOpenedModal("dashboard")}
-          />
-          <SpeedDialAction
-            icon={<PersonSearchIcon />}
-            tooltipTitle={"용의자/피해자 정보"}
-            onClick={() => setOpenedModal("suspects")}
-          />
-          <SpeedDialAction
-            icon={<InfoIcon />}
-            tooltipTitle={"공개된 정보"}
-            onClick={() => setOpenedModal("prologue")}
-          />
-        </SpeedDial>
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={isQuickMenuOpen ? <MenuOpenIcon /> : <MenuIcon />}
+            onClick={() => setIsQuickMenuOpen((prev) => !prev)}
+            sx={{
+              minWidth: 92,
+              borderRadius: 2,
+              textTransform: "none",
+              boxShadow: 2,
+            }}
+          >
+            도구
+          </Button>
+
+          <Grow in={isQuickMenuOpen} timeout={180} unmountOnExit>
+            <Paper
+              elevation={3}
+              sx={{
+                position: "absolute",
+                top: 44,
+                right: 0,
+                p: 0.6,
+                borderRadius: 3,
+                display: "flex",
+                flexDirection: "column",
+                gap: 0.4,
+                backgroundColor: "rgba(255,255,255,0.82)",
+                backdropFilter: "blur(6px)",
+              }}
+            >
+              <Tooltip title="추리 노트" placement="left">
+                <IconButton
+                  color="primary"
+                  onClick={() => setOpenedModal("memo")}
+                  size="small"
+                >
+                  <LibraryBooksIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="단서 현황" placement="left">
+                <IconButton
+                  color="primary"
+                  onClick={() => setOpenedModal("dashboard")}
+                  size="small"
+                >
+                  <LightBulbIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="용의자/피해자 정보" placement="left">
+                <IconButton
+                  color="primary"
+                  onClick={() => setOpenedModal("suspects")}
+                  size="small"
+                >
+                  <PersonSearchIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="공개된 정보" placement="left">
+                <IconButton
+                  color="primary"
+                  onClick={() => setOpenedModal("prologue")}
+                  size="small"
+                >
+                  <InfoIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+            </Paper>
+          </Grow>
+        </Box>
       </Box>
     </>
   );
