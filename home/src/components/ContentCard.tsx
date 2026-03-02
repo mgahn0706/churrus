@@ -1,4 +1,4 @@
-import { AddCircleOutline, PlayCircleOutline } from "@mui/icons-material";
+import { PlayCircleOutline } from "@mui/icons-material";
 import {
   Card,
   CardContent,
@@ -8,7 +8,6 @@ import {
   Typography,
 } from "@mui/material";
 import { useRouter } from "next/router";
-import { ReactNode } from "react";
 
 export interface ContentType {
   title: string;
