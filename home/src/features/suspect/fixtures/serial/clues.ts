@@ -1,5 +1,6 @@
-import { AdditionalQuestionType, ClueType } from "@/features/suspect/types";
-export const serialAdditionalQuestions: AdditionalQuestionType[] = [];
+import { ClueType } from "@/features/suspect/types";
+import { createAdditionalQuestions } from "../utils";
+export const serialAdditionalQuestions = createAdditionalQuestions([]);
 
 export const serialClues: ClueType[] = [
   {

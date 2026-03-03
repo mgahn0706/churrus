@@ -1,29 +1,26 @@
-import { AdditionalQuestionType, ClueType } from "@/features/suspect/types";
+import { ClueType } from "@/features/suspect/types";
+import { createAdditionalQuestions } from "../utils";
 
-export const museumAdditionalQuestions: AdditionalQuestionType[] = [
+export const museumAdditionalQuestions = createAdditionalQuestions([
   {
-    no: 1,
     question: "신시장은 피해자와 어떤 관련이 있나요?",
     answer: "신시장과 도투어는 불륜관계였습니다.",
   },
   {
-    no: 2,
     question: "김큐레가 추러스 박물관에 입사하게 된 계기는 무엇인가요?",
     answer:
       "김큐레는 추리에 미친 사람으로 추러스 박물관에 입사하게 되었습니다.",
   },
   {
-    no: 3,
     question: "강컨서가 최근 불안한 기색을 보인 이유는 무엇인가요?",
     answer:
       "강컨서의 딸이 희귀병에 걸려 돈이 필요했고, 이를 공금 횡령으로 메우려 했기 때문입니다.",
   },
   {
-    no: 4,
     question: "사건 현장의 휴지통에서 발견된 물건은 누구의 것인가요?",
     answer: "휴지통에서 발견된 장갑은 도투어의 것입니다.",
   },
-];
+]);
 
 export const museumClues: ClueType[] = [
   {

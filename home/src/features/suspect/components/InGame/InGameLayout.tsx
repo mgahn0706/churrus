@@ -49,7 +49,7 @@ export default function InGameLayout({
   additionalQuestions,
 }: InGameLayoutProps) {
   const [openedClueId, setOpenedClueId] = useState<number | null>(null);
-  const [currentPlace, setCurrentPlace] = useState("");
+  const [currentPlace, setCurrentPlace] = useState(scenario.places[0] ?? "");
   const [checkedClueList, setCheckedClueList] = useState<number[]>([]);
   const [openedModal, setOpenedModal] = useState<
     "prologue" | "suspects" | "dashboard" | "password" | "memo" | null
@@ -62,15 +62,41 @@ export default function InGameLayout({
   };
 
   useEffect(() => {
-    if (!currentPlace) {
-      setCurrentPlace(scenario.places[0]);
-    }
-  }, [scenario]);
+    setCurrentPlace(scenario.places[0] ?? "");
+  }, [scenario.id]);
 
   usePreventUnload();
 
   const openedClue: ClueType | null =
     clues.find((clue) => clue.id === openedClueId) ?? null;
+
+  const markClueAsChecked = (clueId: number) => {
+    setCheckedClueList((prev) => {
+      if (prev.includes(clueId)) {
+        return prev;
+      }
+      return [...prev, clueId];
+    });
+  };
+
+  const handleMapClick = (
+    event: React.MouseEvent<HTMLImageElement | HTMLDivElement>
+  ) => {
+    if (process.env.NODE_ENV !== "development") {
+      return;
+    }
+
+    const x = ((100 * event.pageX) / window.innerWidth).toFixed(3);
+    const y = ((100 * event.pageY) / window.innerHeight).toFixed(3);
+    navigator.clipboard?.writeText(`x: ${x}, y: ${y},`);
+  };
+
+  const visibleClues = clues.filter((clue) => {
+    return (
+      clue.place === currentPlace ||
+      (clue.place === openedClueId && clue.type === "additional")
+    );
+  });
 
   const { isMobileWidth } = useMobileWidth();
   if (isMobileWidth) {
@@ -79,35 +105,20 @@ export default function InGameLayout({
 
   return (
     <>
-      <Head>협동 크라임씬: {scenario.title}</Head>
+      <Head>
+        <title>협동 크라임씬: {scenario.title}</title>
+      </Head>
       <Box>
-        {scenario && (
-          <Image
-            priority
-            src={`/image/suspect/scenario/${scenario.id}/map/${scenario.id}-${currentPlace}.png`}
-            alt="맵 이미지"
-            fill
-            style={{
-              zIndex: -1,
-            }}
-            onClick={() => {
-              if (
-                !process.env.NODE_ENV ||
-                process.env.NODE_ENV === "development"
-              ) {
-                document.onclick = (e) => {
-                  navigator.clipboard.writeText(
-                    `x: ${((100 * e.pageX) / screen.availWidth).toFixed(
-                      3
-                    )}, y: ${((100 * e.pageY) / screen.availHeight).toFixed(
-                      3
-                    )},`
-                  );
-                };
-              }
-            }}
-          />
-        )}
+        <Image
+          priority
+          src={`/image/suspect/scenario/${scenario.id}/map/${scenario.id}-${currentPlace}.png`}
+          alt="맵 이미지"
+          fill
+          style={{
+            zIndex: -1,
+          }}
+          onClick={handleMapClick}
+        />
 
         {openedModal === "memo" && (
           <MemoModal
@@ -138,27 +149,22 @@ export default function InGameLayout({
             }}
           />
         )}
-        {clues.map((clue) => {
+        {visibleClues.map((clue) => {
           return (
-            (clue.place === currentPlace ||
-              (clue.place === openedClueId && clue.type === "additional")) && (
-              <ClueButton
-                key={clue.id}
-                clue={clue}
-                onClick={() => {
-                  if (clue.type === "locked") {
-                    setOpenedModal("password");
-                    setUnlockingClue(clue);
-                    return;
-                  }
+            <ClueButton
+              key={clue.id}
+              clue={clue}
+              onClick={() => {
+                if (clue.type === "locked") {
+                  setOpenedModal("password");
+                  setUnlockingClue(clue);
+                  return;
+                }
 
-                  setOpenedClueId(clue.id);
-                  if (!checkedClueList.includes(clue.id)) {
-                    setCheckedClueList([...checkedClueList, clue.id]);
-                  }
-                }}
-              />
-            )
+                setOpenedClueId(clue.id);
+                markClueAsChecked(clue.id);
+              }}
+            />
           );
         })}
 
@@ -171,8 +177,8 @@ export default function InGameLayout({
           }}
           onSuccess={() => {
             setOpenedClueId(unlockingClue?.id ?? null);
-            if (!checkedClueList.includes(unlockingClue?.id ?? -1)) {
-              setCheckedClueList([...checkedClueList, unlockingClue?.id ?? -1]);
+            if (unlockingClue?.id) {
+              markClueAsChecked(unlockingClue.id);
             }
             setUnlockingClue(null);
           }}
@@ -182,7 +188,7 @@ export default function InGameLayout({
           return (
             button.from === currentPlace && (
               <MovePlaceButton
-                key={`${button.from}-${button.to}}`}
+                key={`${button.from}-${button.to}`}
                 direction={button.direction}
                 x={button.x}
                 y={button.y}

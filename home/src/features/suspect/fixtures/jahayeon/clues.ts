@@ -1,30 +1,27 @@
-import { AdditionalQuestionType, ClueType } from "@/features/suspect/types";
+import { ClueType } from "@/features/suspect/types";
+import { createAdditionalQuestions } from "../utils";
 
-export const jahayeonAdditionalQuestions: AdditionalQuestionType[] = [
+export const jahayeonAdditionalQuestions = createAdditionalQuestions([
   {
-    no: 1,
     question: "서여친은 1월 28일 밤에 어디를, 왜 갔나요?",
     answer:
       "서여친은 사건 당일, 통제광 성격으로 인해 김하연이 연락이 안되자 직접 학교를 찾아왔습니다.",
   },
   {
-    no: 2,
     question: "‘경기야, 이번엔 너 스스로 해야한다’ 메모는 누가 썼을까요?",
     answer:
       "박경기 본인이 쓴 메모입니다. 박경기는 아버지가 돌아가신 후, 아버지의 재산과 권력을 이용하는 데 양심의 가책을 느끼고 있었습니다. 그래서 스스로를 합리화하기 위해 메모를 쓴 것입니다.",
   },
   {
-    no: 3,
     question: "이구관이 기숙사 점수가 부족해진 진짜 이유는 무엇인가요?",
     answer:
       "이구관은 기숙사 점수가 부족해진 이유는, 고급 일본어 II 과목에서 F를 받았기 때문입니다. 이구관은 해당 과목에서 박경기의 성적부정 청탁으로 인해 억울한 표절 처리를 받았고 그로 인해 F를 받았습니다.",
   },
   {
-    no: 4,
     question: "조노원은 서여친과 어떤 관계인가요?",
     answer: "조노원과 서여친은 전 연인 관계입니다.",
   },
-];
+]);
 
 export const jahayeonClues: ClueType[] = [
   {

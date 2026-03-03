@@ -1,6 +1,7 @@
-import { AdditionalQuestionType, ClueType } from "@/features/suspect/types";
+import { ClueType } from "@/features/suspect/types";
+import { createAdditionalQuestions } from "../utils";
 
-export const bluemoonAdditionalQuestions: AdditionalQuestionType[] = [];
+export const bluemoonAdditionalQuestions = createAdditionalQuestions([]);
 
 export const bluemoonClues: ClueType[] = [
   {
