@@ -1,4 +1,3 @@
-import { QuizData } from "@/features/quiz/fixtures/quizzes";
 import {
   Box,
   Button,
@@ -18,9 +17,16 @@ import {
 } from "@mui/icons-material";
 import { useState } from "react";
 import Head from "next/head";
-import { MEETINGS } from "@/features/quiz/fixtures/meetings";
 import { QuizType } from "@/features/quiz/types";
 import QuizCard from "@/features/quiz/components/QuizCard";
+import { MEETINGS } from "@/features/quiz/fixtures/meetings";
+import {
+  getMeetingById,
+  getMeetingQuizzes,
+  getPrevNextQuizIds,
+  getQuizById,
+} from "@/features/quiz/domain";
+import useSolvedQuizzes from "@/features/quiz/hooks/useSolvedQuizzes";
 
 const BACKGROUND_COLOR = "#F5F6FA";
 
@@ -31,6 +37,7 @@ const koreanRegex = /^[가-힣\s]+$/;
 
 export default function QuizPage() {
   const router = useRouter();
+  const { isSolved, markSolved } = useSolvedQuizzes();
 
   const [inputAnswer, setInputAnswer] = useState("");
   const [isImageLoading, setIsImageLoading] = useState(true);
@@ -42,22 +49,20 @@ export default function QuizPage() {
     return <div>loading...</div>;
   }
 
-  const quiz = Object.values(QuizData)
-    .flatMap((quizzes) => quizzes)
-    .find((quiz) => quiz.id === id[0]);
-
-  const isAnswerPage = id[1] === "answer";
+  const quizId = Array.isArray(id) ? id[0] : id;
+  const isAnswerPage = Array.isArray(id) ? id[1] === "answer" : false;
+  const quiz = getQuizById(quizId);
 
   if (!quiz) {
-    router.back();
-    return;
+    return <div>존재하지 않는 문제입니다.</div>;
   }
+
+  const meeting = getMeetingById(quiz.meetingId);
+  const { prevQuizId, nextQuizId } = getPrevNextQuizIds(quiz);
 
   const handleSolvedQuiz = () => {
     setIsImageLoading(true);
-    const solvedQuiz = JSON.parse(localStorage.getItem("quiz") ?? "[]");
-    localStorage.setItem("quiz", JSON.stringify([...solvedQuiz, quiz.id]));
-    return;
+    markSolved(quiz.id);
   };
 
   const handleAnswerSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -73,7 +78,7 @@ export default function QuizPage() {
     window.alert("오답입니다.");
   };
 
-  const answerFomat = () => {
+  const answerFormat = () => {
     if (!quiz.answer) {
       return "입력할 수 없음. 충분히 고민한 후 정답을 확인해주세요.";
     }
@@ -127,32 +132,26 @@ export default function QuizPage() {
 
               <Box display="flex" alignItems="center" ml={2}>
                 <HeaderButton onClick={() => setIsQuizListDrawerOpen(true)}>
-                  {MEETINGS[quiz.meetingId].title}
+                  {meeting?.title}
                 </HeaderButton>
                 <IconButton
-                  disabled={quiz.quizNumber === 1}
+                  disabled={!prevQuizId}
                   onClick={() => {
                     setIsImageLoading(true);
-                    router.push(
-                      `/quiz/${
-                        MEETINGS[quiz.meetingId].quizIds[quiz.quizNumber - 2]
-                      }`
-                    );
+                    if (prevQuizId) {
+                      router.push(`/quiz/${prevQuizId}`);
+                    }
                   }}
                 >
                   <ChevronLeftRounded />
                 </IconButton>
                 <IconButton
-                  disabled={
-                    quiz.quizNumber === MEETINGS[quiz.meetingId].quizIds.length
-                  }
+                  disabled={!nextQuizId}
                   onClick={() => {
                     setIsImageLoading(true);
-                    router.push(
-                      `/quiz/${
-                        MEETINGS[quiz.meetingId].quizIds[quiz.quizNumber]
-                      }`
-                    );
+                    if (nextQuizId) {
+                      router.push(`/quiz/${nextQuizId}`);
+                    }
                   }}
                 >
                   <ChevronRightRounded />
@@ -277,7 +276,7 @@ export default function QuizPage() {
                   width: "100%",
                 }}
               >
-                정답 형식: {answerFomat()}
+                정답 형식: {answerFormat()}
               </Typography>
               {quiz.answer && (
                 <Box
@@ -352,7 +351,8 @@ export default function QuizPage() {
         currentQuizId={quiz.id}
         isOpen={isQuizListDrawerOpen}
         onClose={() => setIsQuizListDrawerOpen(false)}
-        quizList={QuizData[quiz.meetingId]}
+        quizList={getMeetingQuizzes(quiz.meetingId)}
+        isSolved={isSolved}
         onClickMeeting={() => {
           router.push(`/meetings/${quiz.meetingId}`);
         }}
@@ -400,6 +400,7 @@ interface QuizListDrawerProps {
   isOpen: boolean;
   currentQuizId: string;
   quizList: QuizType[];
+  isSolved: (quizId: string) => boolean;
   onClose: () => void;
   onClickMeeting: () => void;
 }
@@ -409,8 +410,11 @@ const QuizListDrawer = ({
   currentQuizId,
   onClose,
   quizList,
+  isSolved,
   onClickMeeting,
 }: QuizListDrawerProps) => {
+  const meeting = quizList[0] ? MEETINGS[quizList[0].meetingId] : undefined;
+
   return (
     <Drawer anchor="bottom" open={isOpen} onClose={onClose}>
       <Box
@@ -436,10 +440,10 @@ const QuizListDrawer = ({
         >
           <Box display="flex" flexDirection="column">
             <Typography fontSize={18} fontWeight={700} px={2}>
-              {MEETINGS[quizList[0].meetingId].title}
+              {meeting?.title}
             </Typography>
             <Typography fontSize={14} fontWeight={400} px={2}>
-              {MEETINGS[quizList[0].meetingId].subtitle}
+              {meeting?.subtitle}
             </Typography>
           </Box>
           <ChevronRightRounded
@@ -458,7 +462,7 @@ const QuizListDrawer = ({
           <Grid item xs={12} key={quiz.id} ml={4}>
             <QuizCard
               quiz={quiz}
-              isSolved={false}
+              isSolved={isSolved(quiz.id)}
               isSelected={quiz.id === currentQuizId}
               onClick={() => {
                 onClose();

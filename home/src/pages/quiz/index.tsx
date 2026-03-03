@@ -1,26 +1,17 @@
 import GlobalHeader from "@/components/Navigation/GlobalHeader";
-import { QuizData } from "@/features/quiz/fixtures/quizzes";
 import { ShuffleOnRounded } from "@mui/icons-material";
 import { Box, Button, Grid, Typography } from "@mui/material";
 import Head from "next/head";
-import { MEETINGS, MEETING_IDS } from "@/features/quiz/fixtures/meetings";
+import { MEETINGS } from "@/features/quiz/fixtures/meetings";
 import MeetingCard from "@/features/quiz/components/MeetingCard";
 import { useResponsiveValue } from "@/hooks/useResponsiveValue";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
+import {
+  getRandomQuizId,
+  MEETING_IDS_BY_YEAR,
+} from "@/features/quiz/domain";
 
 const BACKGROUND_COLOR = "#F5F6FA";
-
-const MEETING_CATEGORIZED_BY_YEAR = Object.entries(MEETINGS).reduce(
-  (acc, [meetingId, meeting]) => {
-    const year = meeting.date.year;
-    if (!acc[year]) {
-      acc[year] = [];
-    }
-    acc[year].push(meetingId);
-    return acc;
-  },
-  {} as Record<number, string[]>
-);
 
 export default function Quiz() {
   const cardXs = useResponsiveValue([12, 6, 4]);
@@ -73,16 +64,10 @@ export default function Quiz() {
                   padding: "4px 8px",
                 }}
                 onClick={() => {
-                  const randomMeetingId =
-                    MEETING_IDS[Math.floor(Math.random() * MEETING_IDS.length)];
-                  const randomQuizId =
-                    QuizData[randomMeetingId][
-                      Math.floor(
-                        Math.random() * QuizData[randomMeetingId].length
-                      )
-                    ].id;
-
-                  router.push(`/quiz/${randomQuizId}`);
+                  const randomQuizId = getRandomQuizId();
+                  if (randomQuizId) {
+                    router.push(`/quiz/${randomQuizId}`);
+                  }
                 }}
               >
                 <ShuffleOnRounded
@@ -98,7 +83,7 @@ export default function Quiz() {
               </Button>
             </Box>
           </Box>
-          {Object.entries(MEETING_CATEGORIZED_BY_YEAR)
+          {Object.entries(MEETING_IDS_BY_YEAR)
             .sort((a, b) => {
               return Number(b[0]) - Number(a[0]);
             })

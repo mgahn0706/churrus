@@ -1,17 +1,14 @@
-import { MEETING_IDS } from "@/features/quiz/fixtures/meetings";
-import { QuizData } from "@/features/quiz/fixtures/quizzes";
-import useLocalStorage from "@/hooks/useLocalStorage";
-
-const ALL_QUIZZES = MEETING_IDS.flatMap((meetingId) => QuizData[meetingId]);
+import { ALL_QUIZZES } from "@/features/quiz/domain";
+import useSolvedQuizzes from "@/features/quiz/hooks/useSolvedQuizzes";
 export default function useRecommendedQuiz({
   recommendCount = 5,
 }: {
   recommendCount?: number;
 }) {
-  const [solvedQuizzes] = useLocalStorage<string[]>("quiz", []);
+  const { solvedQuizIds } = useSolvedQuizzes();
 
   const unsolvedQuizzes = ALL_QUIZZES.filter(
-    (quiz) => !solvedQuizzes.includes(quiz.id)
+    (quiz) => !solvedQuizIds.includes(quiz.id)
   );
 
   return unsolvedQuizzes.length >= recommendCount

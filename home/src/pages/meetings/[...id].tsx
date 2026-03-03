@@ -1,20 +1,24 @@
-import { QuizData } from "@/features/quiz/fixtures/quizzes";
 import { Box, Button, Grid, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 
 import Head from "next/head";
-import { MEETINGS, MEETING_IDS } from "@/features/quiz/fixtures/meetings";
+import { MEETINGS } from "@/features/quiz/fixtures/meetings";
 
 import QuizCard from "@/features/quiz/components/QuizCard";
-import useLocalStorage from "@/hooks/useLocalStorage";
 import Image from "next/image";
 import MeetingCard from "@/features/quiz/components/MeetingCard";
 import GlobalHeader from "@/components/Navigation/GlobalHeader";
+import useSolvedQuizzes from "@/features/quiz/hooks/useSolvedQuizzes";
+import {
+  getMeetingCreators,
+  getMeetingQuizzes,
+  getRandomOtherMeetingIds,
+} from "@/features/quiz/domain";
 
 const BACKGROUND_COLOR = "#F9FAFC";
 
 export default function MeetingPage() {
-  const [solvedQuizzes] = useLocalStorage<string[]>("quiz", []);
+  const { isSolved } = useSolvedQuizzes();
 
   const router = useRouter();
 
@@ -27,15 +31,29 @@ export default function MeetingPage() {
       </Box>
     );
   }
-  const meeting = MEETINGS[id[0]];
+  const meetingId = Array.isArray(id) ? id[0] : id;
+  const meeting = meetingId ? MEETINGS[meetingId] : undefined;
 
-  const creators = Array.from(
-    new Set(
-      QuizData[meeting.id]
-        .filter((quiz) => !!quiz.creator)
-        .map((quiz) => quiz.creator)
-    )
-  );
+  if (!meeting) {
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        bgcolor={BACKGROUND_COLOR}
+        minHeight="100vh"
+        flexDirection="column"
+        gap={2}
+      >
+        <Typography>존재하지 않는 모임입니다.</Typography>
+        <Button onClick={() => router.push("/quiz")}>문제 목록으로 이동</Button>
+      </Box>
+    );
+  }
+
+  const meetingQuizzes = getMeetingQuizzes(meeting.id);
+  const creators = getMeetingCreators(meeting.id);
+  const otherMeetingIds = getRandomOtherMeetingIds(meeting.id, 4);
 
   return (
     <>
@@ -64,7 +82,11 @@ export default function MeetingPage() {
             style={{
               borderRadius: "0 0 12px 12px",
             }}
-            src={meeting.imageSource ?? QuizData[meeting.id][0].quizImageSource}
+            src={
+              meeting.imageSource ??
+              meetingQuizzes[0]?.quizImageSource ??
+              "/image/quiz/meeting/default.png"
+            }
             fill
           />
           <Box
@@ -134,12 +156,9 @@ export default function MeetingPage() {
                   columnSpacing={[0, 0, 3]}
                   width="100%"
                 >
-                  {QuizData[meeting.id].map((quiz) => (
+                  {meetingQuizzes.map((quiz) => (
                     <Grid item xs={12} key={quiz.id}>
-                      <QuizCard
-                        quiz={quiz}
-                        isSolved={solvedQuizzes.includes(quiz.id)}
-                      />
+                      <QuizCard quiz={quiz} isSolved={isSolved(quiz.id)} />
                     </Grid>
                   ))}
                 </Grid>
@@ -172,14 +191,11 @@ export default function MeetingPage() {
                   다른 모임들
                 </Typography>
 
-                {MEETING_IDS.filter((id) => id !== meeting.id)
-                  .sort(() => 0.5 - Math.random())
-                  .slice(0, 4)
-                  .map((id) => (
-                    <Box key={id} mb="4px">
-                      <MeetingCard size="small" meetingId={id} />
-                    </Box>
-                  ))}
+                {otherMeetingIds.map((otherMeetingId) => (
+                  <Box key={otherMeetingId} mb="4px">
+                    <MeetingCard size="small" meetingId={otherMeetingId} />
+                  </Box>
+                ))}
                 <Button
                   variant="text"
                   size="small"
