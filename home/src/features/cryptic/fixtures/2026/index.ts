@@ -195,4 +195,33 @@ export const CRYPTIC_2026 = [
     definitionPart: "단지",
     wordplayPart: "오른쪽 왼쪽 오른쪽 요리조리 섞인",
   },
+  {
+    week: 29,
+    problem: "텅 빈 고백 속 정답",
+    answer: "공백",
+    definitionPart: "텅 빈",
+    wordplayPart: "고백 속 정답",
+  },
+  {
+    week: 30,
+    problem: "달 착륙 돌입 . . . 부스터용 코어가 소실되었습니다! 안 됨",
+    answer: "부착용",
+    definitionPart: "달",
+    wordplayPart: "착륙 돌입 . . . 부스터용 코어가 소실되었습니다! 안 됨",
+  },
+  {
+    week: 31,
+    problem: "새 해여 오너라, 학기초의 기수들을 맞이하자꾸나",
+    answer: "해오라기",
+    definitionPart: "새",
+    wordplayPart: "새 해여 오너라, 학기초의 기수들을 맞이하자꾸나",
+  },
+  {
+    week: 32,
+    problem:
+      "역대급 복장의 웨딩 플래너가 마지막 프로그램에서 닭볶음탕을 만들었다",
+    answer: "급식대가",
+    definitionPart: "프로그램에서 닭볶음탕을 만들었다",
+    wordplayPart: "역대급 복장의 웨딩 플래너가 마지막",
+  },
 ];
