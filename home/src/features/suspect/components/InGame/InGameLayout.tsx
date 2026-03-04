@@ -133,10 +133,7 @@ export default function InGameLayout({
 
         {openedClue !== null && (
           <ClueDetailView
-            scenarioKeyword={scenario.id}
-            suspects={suspects}
             clueData={openedClue}
-            id={openedClueId}
             onClose={() => {
               if (
                 openedClue.type === "additional" &&

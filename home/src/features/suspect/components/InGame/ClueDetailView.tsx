@@ -1,16 +1,12 @@
 import {
   AppBar,
   Box,
-  Button,
   Dialog,
   Divider,
   IconButton,
-  Menu,
-  MenuItem,
   Skeleton,
   Slide,
   Toolbar,
-  Tooltip,
   Typography,
 } from "@mui/material";
 import { TransitionProps } from "@mui/material/transitions";
@@ -18,14 +14,10 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import CloseIcon from "@mui/icons-material/Close";
 import { ArrowBack } from "@mui/icons-material";
-import { ClueType, SuspectType } from "@/features/suspect/types";
-import { Circle } from "@mui/icons-material";
+import { ClueType } from "@/features/suspect/types";
 
 interface ClueDetailViewProps {
-  id: number | null;
   clueData: ClueType | null;
-  suspects: SuspectType[];
-  scenarioKeyword: string;
   onClose: () => void;
 }
 
@@ -39,21 +31,10 @@ const Transition = React.forwardRef(function Transition(
 });
 
 export function ClueDetailView({
-  id,
-  scenarioKeyword,
   clueData,
-  suspects,
   onClose,
 }: ClueDetailViewProps) {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const isInterrogateMenuOpen = Boolean(anchorEl);
   const [isImageLoading, setIsImageLoading] = useState(true);
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
   useEffect(() => {
     if (clueData?.image) {
@@ -61,11 +42,9 @@ export function ClueDetailView({
     }
   }, [clueData]);
 
-  if (clueData === null || id === null) {
+  if (clueData === null) {
     return null;
   }
-
-  const IS_INTERROGATE = false;
 
   return (
     <Dialog
@@ -98,31 +77,6 @@ export function ClueDetailView({
           >
             {`${clueData.id}. ${clueData?.title}`}
           </Typography>
-          <>
-            {IS_INTERROGATE && (
-              <Button autoFocus color="inherit" onClick={handleClick}>
-                심문
-              </Button>
-            )}
-
-            <Menu
-              id="basic-menu"
-              anchorEl={anchorEl}
-              open={isInterrogateMenuOpen}
-              onClose={handleClose}
-              MenuListProps={{
-                "aria-labelledby": "basic-button",
-              }}
-            >
-              {suspects.map((suspect) => {
-                return (
-                  <MenuItem key={suspect.name} onClick={handleClose}>
-                    {suspect.name}
-                  </MenuItem>
-                );
-              })}
-            </Menu>
-          </>
         </Toolbar>
       </AppBar>
       <Box display="flex" mt={4}>
@@ -131,7 +85,7 @@ export function ClueDetailView({
             priority
             onLoadingComplete={() => setIsImageLoading(false)}
             onError={() => setIsImageLoading(false)}
-            src={`/image/suspect/scenario/${scenarioKeyword}/clues/${scenarioKeyword}-${id}.png`}
+            src={clueData.image}
             alt={`${clueData.id}번째 단서 이미지`}
             width={isImageLoading ? 0 : 600}
             height={isImageLoading ? 0 : 600}
