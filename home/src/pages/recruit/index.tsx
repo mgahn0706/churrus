@@ -144,7 +144,7 @@ export default function RecruitPage() {
               }}
               onClick={() => {
                 window.open(
-                  "https://forms.gle/RStmfPBFiDthbGoYA",
+                  "https://forms.gle/zhwBzDtjAH2NQw1k6",
                   "_blank",
                   "noopener noreferrer"
                 );
