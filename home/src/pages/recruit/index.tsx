@@ -30,6 +30,7 @@ const FAQList: Record<string, string> = {
 };
 export default function RecruitPage() {
   const { isMobileWidth } = useMobileWidth();
+  const isRecruitClosed = true;
   return (
     <>
       <Head>
@@ -87,7 +88,7 @@ export default function RecruitPage() {
                 "'SF Pro Text', 'Apple SD Gothic Neo', 'Pretendard', sans-serif",
             }}
           >
-            추러스 26-1기 신입 회원 모집을 시작합니다! (3/2 ~ 3/7)
+            추러스 26-1기 신입 회원 모집이 마감되었습니다. (3/2 ~ 3/7)
           </Typography>
         </Box>
         <Box textAlign="center" py={{ xs: "90px", md: "130px" }} px="10vw">
@@ -119,10 +120,11 @@ export default function RecruitPage() {
                   "'SF Pro Text', 'Apple SD Gothic Neo', 'Pretendard', sans-serif",
               }}
             >
-              아래의 버튼을 눌러 지원서를 작성할 수 있어요. 서울대 계정 로그인이
-              필요해요.
+              지원해주셔서 감사합니다. 이번 모집은 마감되어 지원서 제출이
+              어렵습니다.
             </Typography>
             <Button
+              disabled={isRecruitClosed}
               sx={{
                 color: "white",
                 borderRadius: "999px",
@@ -141,6 +143,12 @@ export default function RecruitPage() {
                   boxShadow:
                     "0 30px 60px rgba(15, 23, 42, 0.28), inset 0 1px 0 rgba(255,255,255,0.35)",
                 },
+                "&.Mui-disabled": {
+                  color: "rgba(255, 255, 255, 0.8)",
+                  bgcolor: "#94a3b8",
+                  boxShadow: "none",
+                  transform: "none",
+                },
               }}
               onClick={() => {
                 window.open(
@@ -150,8 +158,21 @@ export default function RecruitPage() {
                 );
               }}
             >
-              지원하기
+              모집 마감
             </Button>
+            <Typography
+              mt={2}
+              sx={{
+                fontSize: { xs: "0.95rem", md: "1.05rem" },
+                color: "#dc2626",
+                fontWeight: 600,
+                fontFamily:
+                  "'SF Pro Text', 'Apple SD Gothic Neo', 'Pretendard', sans-serif",
+              }}
+            >
+              추러스 26-1기 신입 회원 모집이 마감되었습니다. 다음 모집에서
+              뵙겠습니다.
+            </Typography>
           </Box>
         </Box>
         <Divider sx={{ opacity: 0.4 }} />
