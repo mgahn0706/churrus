@@ -224,4 +224,11 @@ export const CRYPTIC_2026 = [
     definitionPart: "프로그램에서 닭볶음탕을 만들었다",
     wordplayPart: "역대급 복장의 웨딩 플래너가 마지막",
   },
+  {
+    week: 33,
+    problem: "금요일에 가서 돈 보관함",
+    answer: "금고",
+    definitionPart: "돈 보관함",
+    wordplayPart: "금요일에 가서",
+  },
 ];
