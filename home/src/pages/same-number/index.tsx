@@ -42,6 +42,8 @@ const availableTargetNumbers = [
   72, 56, 63, 70, 77, 84, 80, 88, 96, 90, 99, 108, 110, 120, 132,
 ];
 
+const shuffle = <T,>(items: T[]) => [...items].sort(() => Math.random() - 0.5);
+
 export default function SameNumber() {
   const isMobileWidth = useResponsiveValue([true, true, false]);
 
@@ -75,12 +77,8 @@ export default function SameNumber() {
   const [targetNumbers, setTargetNumbers] = useState<number[]>([]);
 
   useEffect(() => {
-    const shuffledPanel = panel.sort(() => Math.random() - 0.5);
-    setPanel(shuffledPanel);
-    const shuffledTargetNumbers = availableTargetNumbers.sort(
-      () => Math.random() - 0.5
-    );
-    setTargetNumbers(shuffledTargetNumbers);
+    setPanel((prev) => shuffle(prev));
+    setTargetNumbers(shuffle(availableTargetNumbers));
   }, []);
 
   const handleSubmit = () => {
@@ -179,11 +177,10 @@ export default function SameNumber() {
         )}
         <Grid container width="430px" spacing={1} mb={2}>
           {panel.map((item, i) => (
-            <Grid item xs={3}>
+            <Grid item xs={3} key={`${item}-${i}`}>
               <PanelItem
                 isSelected={selectedPanels.includes(i)}
                 isFlipped={flippedPanels.includes(i)}
-                key={i}
                 onClick={() => {
                   if (selectedPanels.includes(i)) {
                     setSelectedPanels(selectedPanels.filter((n) => n !== i));

@@ -110,6 +110,7 @@ export default function Set() {
           <Grid container width="400px" spacing={3} mb={2}>
             {pictures.map((item, i) => (
               <Grid
+                key={i + 1}
                 item
                 xs={4}
                 onClick={() => {
@@ -136,7 +137,6 @@ export default function Set() {
                 >
                   <ShapePanel
                     picture={item}
-                    key={i}
                     isSelected={selectedPictures.includes(i + 1)}
                   />
                 </Badge>

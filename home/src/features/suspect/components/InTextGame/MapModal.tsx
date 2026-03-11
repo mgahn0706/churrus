@@ -35,7 +35,7 @@ export default function MapModal({
     >
       <Tabs value={selectedMap} onChange={handleChange}>
         {places.map((place) => {
-          return <Tab label={place} value={place} />;
+          return <Tab key={place} label={place} value={place} />;
         })}
       </Tabs>
       <TabPanel value={selectedMap} index={selectedMap}>

@@ -25,6 +25,8 @@ const CUBES = [
   -35,
 ];
 
+const shuffle = <T,>(items: T[]) => [...items].sort(() => Math.random() - 0.5);
+
 export default function MinusAuction() {
   const [round, setRound] = useState(1);
   const [players, setPlayers] = useState<PlayerType[]>([]);
@@ -41,7 +43,7 @@ export default function MinusAuction() {
     if (cubesForRound.length === 32 || cubesForRound.length === 33) {
       return;
     }
-    const shuffledCubes = CUBES.sort(() => Math.random() - 0.5);
+    const shuffledCubes = shuffle(CUBES);
     setCubesForRound(shuffledCubes.slice(0, CUBES.length - 2));
     setEliminatedCubes(shuffledCubes.slice(CUBES.length - 2));
   }, []);
@@ -103,7 +105,7 @@ export default function MinusAuction() {
         onEnterPlayer={setPlayers}
         onClose={() => {
           setIsPlayerSetModalOpen(false);
-          const randomizedOrder = players.sort(() => Math.random() - 0.5);
+          const randomizedOrder = shuffle(players);
           setPlayers(
             randomizedOrder.map((player, index) => ({
               ...player,
@@ -224,6 +226,7 @@ export default function MinusAuction() {
               >
                 {player.cubes.map((cube, idx) => (
                   <Avatar
+                    key={`${player.name}-${cube}-${idx}`}
                     variant="square"
                     sx={{
                       mx: 1,

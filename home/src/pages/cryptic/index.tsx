@@ -84,12 +84,29 @@ function splitWithHighlights(
 /* ===================== Page ===================== */
 
 export default function CrypticPage() {
-  const today = dayjs();
+  const [today, setToday] = useState(() => dayjs("2024-01-01"));
+
+  useEffect(() => {
+    setToday(dayjs());
+  }, []);
+
+  const [answer, setAnswer] = useState("");
+  const [hintStep, setHintStep] = useState(0);
+  const [isSolved, setIsSolved] = useState(false);
+  const [shake, setShake] = useState(false);
+
+  const [toastOpen, setToastOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastSeverity, setToastSeverity] = useState<"success" | "error">(
+    "success"
+  );
+  const [isRuleModalOpen, setIsRuleModalOpen] = useState(false);
 
   /** ✅ Stepper state */
   const [crypticDate, setCrypticDate] = useState(() => {
-    const y = today.year();
-    const w = today.week();
+    const initialToday = dayjs("2024-01-01");
+    const y = initialToday.year();
+    const w = initialToday.week();
     // 기본: 해당 연도 데이터 없으면 가장 첫 연도로
     const years = Object.keys(CRYPTIC_PROBLEMS)
       .map(Number)
@@ -101,6 +118,23 @@ export default function CrypticPage() {
     );
     return { year: defaultYear, week: defaultWeek };
   });
+
+  useEffect(() => {
+    const nextToday = dayjs();
+    const y = nextToday.year();
+    const w = nextToday.week();
+    const years = Object.keys(CRYPTIC_PROBLEMS)
+      .map(Number)
+      .sort((a, b) => a - b);
+    const defaultYear = CRYPTIC_PROBLEMS[y] ? y : years[years.length - 1] ?? y;
+    const defaultWeek = Math.min(
+      w,
+      (CRYPTIC_PROBLEMS[defaultYear]?.length ?? 1) || 1
+    );
+
+    setToday(nextToday);
+    setCrypticDate({ year: defaultYear, week: defaultWeek });
+  }, []);
 
   const selectedCryptic = useMemo(() => {
     const list = CRYPTIC_PROBLEMS[crypticDate.year] ?? [];
@@ -139,20 +173,6 @@ export default function CrypticPage() {
       return `초성이 ${hintStep}개 공개되었습니다.`;
     return "정의(노랑)와 말장난(하늘)이 표시되었습니다.";
   }
-
-  /* ===================== Local UI state ===================== */
-
-  const [answer, setAnswer] = useState("");
-  const [hintStep, setHintStep] = useState(0);
-  const [isSolved, setIsSolved] = useState(false);
-  const [shake, setShake] = useState(false);
-
-  const [toastOpen, setToastOpen] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
-  const [toastSeverity, setToastSeverity] = useState<"success" | "error">(
-    "success"
-  );
-  const [isRuleModalOpen, setIsRuleModalOpen] = useState(false);
 
   /* ===================== Slot Display ===================== */
 

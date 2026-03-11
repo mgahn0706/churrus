@@ -14,6 +14,7 @@ import Image from "next/image";
 import DesktopPuzzleCard from "@/features/home/components/DesktopPuzzleCard";
 import { CROSSWORDS } from "@/features/crosswords/fixtures";
 import Head from "next/head";
+import { useEffect, useState } from "react";
 
 const WORD_PUZZLE_CONTENTS = [
   {
@@ -46,10 +47,13 @@ dayjs.extend(weekOfYear);
 
 const BACKGROUND_COLOR = "#F5F6FA";
 
-const spellingBeeDate = dayjs().diff("2024-02-09", "day") + 1;
-
 export default function Churrus() {
   const router = useRouter();
+  const [today, setToday] = useState(() => dayjs("2024-02-09"));
+
+  useEffect(() => {
+    setToday(dayjs());
+  }, []);
 
   const [foundWords] = useLocalStorage<{
     day: number;
@@ -64,6 +68,8 @@ export default function Churrus() {
   });
 
   const recentCrosswordDate = CROSSWORDS[CROSSWORDS.length - 1].date;
+  const spellingBeeDate = today.diff("2024-02-09", "day") + 1;
+  const currentWeek = today.week();
 
   return (
     <>
@@ -136,13 +142,13 @@ export default function Churrus() {
                 />
                 <DesktopPuzzleCard
                   src="/image/logo/connections-logo.png"
-                  title={`Week ${dayjs().week()} 추러스 커넥션`}
+                  title={`Week ${currentWeek} 추러스 커넥션`}
                   subtitle="네 단어씩 네 묶음으로."
                   onClick={() => router.push("/connections")}
                 />
                 <DesktopPuzzleCard
                   src="/image/logo/cryptic-logo.png"
-                  title={`Week ${dayjs().week()} 추러스 말장난`}
+                  title={`Week ${currentWeek} 추러스 말장난`}
                   subtitle="말장난 단어 퍼즐."
                   onClick={() => router.push("/cryptic")}
                 />
@@ -164,13 +170,13 @@ export default function Churrus() {
             />
             <MobilePuzzleCard
               src="/image/logo/connections-logo.png"
-              title={`Week ${dayjs().week()} 추러스 커넥션`}
+              title={`Week ${currentWeek} 추러스 커넥션`}
               subtitle="네 단어씩 네 묶음으로."
               onClick={() => router.push("/connections")}
             />
             <MobilePuzzleCard
               src="/image/logo/cryptic-logo.png"
-              title={`Week ${dayjs().week()} 추러스 말장난`}
+              title={`Week ${currentWeek} 추러스 말장난`}
               subtitle="난해한 수수께끼 같은 단어 퍼즐."
               sx={{ mt: 1 }}
               onClick={() => router.push("/cryptic")}

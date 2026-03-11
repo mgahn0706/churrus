@@ -1,21 +1,22 @@
 import { Box, Grid } from "@mui/material";
 import { COLORS } from "../fixtures";
 import { getCharCodeFromNumber, getColorFromNumbers } from "../libs";
-import { useState } from "react";
 import { Check } from "@mui/icons-material";
 
 const COLOM_HEADERS = Array.from({ length: 30 }, (_, i) => i + 1);
 
 const ColorPanel = ({
+  panelKey,
   isSelected,
   color,
   onClick,
 }: {
+  panelKey: string;
   isSelected: boolean;
   color: string;
   onClick: () => void;
 }) => (
-  <Grid item xs={0.375}>
+  <Grid item xs={0.375} key={panelKey}>
     <Box
       display="flex"
       justifyContent="center"
@@ -66,11 +67,10 @@ export default function ColorSelectSection({
       <Grid item xs={0.375} />
       {Object.values(COLORS).map((colors, row) => {
         return (
-          <>
+          <Grid container key={row}>
             <Grid
               item
               xs={0.375}
-              key={row}
               sx={{
                 alignItems: "center",
                 display: "flex",
@@ -85,6 +85,8 @@ export default function ColorSelectSection({
             </Grid>
             {colors.map((color, col) => (
               <ColorPanel
+                key={`${row}-${col}`}
+                panelKey={`${row}-${col}`}
                 isSelected={color === getColorFromNumbers(selectedColor)}
                 color={color}
                 onClick={() => {
@@ -95,7 +97,6 @@ export default function ColorSelectSection({
             <Grid
               item
               xs={0.375}
-              key={row}
               sx={{
                 alignItems: "center",
                 display: "flex",
@@ -108,7 +109,7 @@ export default function ColorSelectSection({
             >
               {getCharCodeFromNumber(row)}
             </Grid>
-          </>
+          </Grid>
         );
       })}
       <Grid item xs={0.375} />

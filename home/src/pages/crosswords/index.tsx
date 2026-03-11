@@ -59,10 +59,10 @@ export default function Crosswords() {
             <Grid container spacing={[3, 4, 6]} width="100%">
               {selectedVariant === "BASIC"
                 ? CROSSWORDS.map((crossword) => (
-                    <CrosswordCard {...crossword} />
+                    <CrosswordCard key={crossword.id} {...crossword} />
                   ))
                 : MINI_CROSSWORDS.map((crossword) => (
-                    <CrosswordCard {...crossword} />
+                    <CrosswordCard key={crossword.id} {...crossword} />
                   ))}
             </Grid>
           </Box>

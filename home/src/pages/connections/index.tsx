@@ -78,22 +78,41 @@ const RuleModal = ({
 };
 
 dayjs.extend(weekOfYear);
+const CONNECTION_YEARS = Object.keys(KOREAN_CONNECTIONS)
+  .map(Number)
+  .sort((a, b) => a - b);
 
-const today = dayjs();
+const shuffle = <T,>(items: T[]) => [...items].sort(() => Math.random() - 0.5);
+
+const getCurrentConnectionDate = (today: dayjs.Dayjs) => {
+  const maxYear = CONNECTION_YEARS[CONNECTION_YEARS.length - 1] ?? today.year();
+  const year = Math.min(today.year(), maxYear);
+
+  return {
+    year,
+    week: Math.min(today.week(), KOREAN_CONNECTIONS[year]?.length ?? 1),
+  };
+};
 
 export default function Connections() {
   const [lives, setLives] = useState(4);
   const [isInfiniteMode, setIsInfiniteMode] = useState(true);
+  const [today, setToday] = useState(() => dayjs("2024-01-01"));
 
   const [selectedWords, setSelectedWords] = useState<string[]>([]);
   const [panels, setPanels] = useState<string[]>([]);
   const [solvedGroups, setSolvedGroups] = useState<number[]>([]);
   const [isRuleModalOpen, setIsRuleModalOpen] = useState(false);
   const [triedCount, setTriedCount] = useState([0, 0, 0, 0]);
-  const [connectionDate, setConnectionDate] = useState({
-    year: Math.min(today.get("year"), 2024), // 2024년까지만 제작된 커넥션
-    week: today.week(),
-  });
+  const [connectionDate, setConnectionDate] = useState(() =>
+    getCurrentConnectionDate(dayjs("2024-01-01"))
+  );
+
+  useEffect(() => {
+    const nextToday = dayjs();
+    setToday(nextToday);
+    setConnectionDate(getCurrentConnectionDate(nextToday));
+  }, []);
 
   const resetConnection = () => {
     setSelectedWords([]);
@@ -113,9 +132,8 @@ export default function Connections() {
     setSolvedGroups([]);
     setLives(4);
     const panels = selectedConnection.quiz.flatMap((quiz) => quiz.words);
-    const shuffledPanel = panels.sort(() => Math.random() - 0.5);
-    setPanels(shuffledPanel);
-  }, [connectionDate]);
+    setPanels(shuffle(panels));
+  }, [selectedConnection]);
 
   if (!selectedConnection) {
     return null;
@@ -183,8 +201,10 @@ export default function Connections() {
                   fontSize: "1rem",
                 }}
               >
-                {Object.keys(KOREAN_CONNECTIONS).map((year) => (
-                  <MenuItem value={year}>{year}</MenuItem>
+                {CONNECTION_YEARS.map((year) => (
+                  <MenuItem key={year} value={year}>
+                    {year}
+                  </MenuItem>
                 ))}
               </Select>
             </Box>
@@ -216,7 +236,9 @@ export default function Connections() {
                     today.year() === connectionDate.year ? today.week() : 53
                   )
                   .map((week) => (
-                    <MenuItem value={week.week}>Week {week.week}</MenuItem>
+                    <MenuItem key={week.week} value={week.week}>
+                      Week {week.week}
+                    </MenuItem>
                   ))}
               </Select>
             </Box>
@@ -316,7 +338,7 @@ export default function Connections() {
             {solvedGroups.map((solvedGroupIdx) => {
               const solvedGroup = selectedConnection.quiz;
               return (
-                <Grid item xs={12}>
+                <Grid item xs={12} key={solvedGroupIdx}>
                   <Box
                     height="100px"
                     bgcolor={CONNECTIONS_COLOR[solvedGroupIdx]}
@@ -339,7 +361,7 @@ export default function Connections() {
             })}
 
             {panels.map((panel) => (
-              <Grid item xs={3}>
+              <Grid item xs={3} key={panel}>
                 <Box
                   bgcolor={
                     selectedWords.includes(panel) ? "#555555" : "#eeeeee"
@@ -407,8 +429,7 @@ export default function Connections() {
               }}
               onClick={() => {
                 setSelectedWords([]);
-                const shuffledPanel = panels.sort(() => Math.random() - 0.5);
-                setPanels(shuffledPanel);
+                setPanels(shuffle(panels));
               }}
             >
               섞기

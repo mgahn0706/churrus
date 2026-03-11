@@ -2,6 +2,7 @@ import { Box, IconButton, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import { ArrowBack } from "@mui/icons-material";
 import Head from "next/head";
+import { useEffect } from "react";
 import {
   CROSSWORDS,
   MINI_CROSSWORDS,
@@ -14,22 +15,26 @@ export default function CrosswordPage() {
   const router = useRouter();
 
   const { id } = router.query;
+  const slug = Array.isArray(id) ? id : null;
+  const isMini = slug ? slug.includes("mini") : false;
+  const crossword = slug
+    ? [...CROSSWORDS, ...MINI_CROSSWORDS].find(
+        (item) => item.id === slug[0]
+      )
+    : undefined;
+
+  useEffect(() => {
+    if (slug && !crossword) {
+      router.replace("/crosswords");
+    }
+  }, [crossword, router, slug]);
 
   if (!id) {
     return <div>loading...</div>;
   }
 
-  const isMini = id.includes("mini");
-
-  const crossword = [...CROSSWORDS, ...MINI_CROSSWORDS].find(
-    (crossword) => crossword.id === id[0]
-  );
-
-  console.log(crossword, id);
-
   if (!crossword) {
-    router.back();
-    return;
+    return <div>존재하지 않는 크로스워드입니다.</div>;
   }
 
   return (

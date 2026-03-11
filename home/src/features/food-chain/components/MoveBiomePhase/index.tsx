@@ -93,7 +93,7 @@ export default function MoveBiomePhase({
                     </Box>
                     <Box gap={1} display="flex" flexWrap="wrap" mt={1}>
                       {selectedPlayers.map((player) => (
-                        <PlayerChip {...player} />
+                        <PlayerChip key={player.id} {...player} />
                       ))}
                     </Box>
                   </Box>
@@ -122,7 +122,7 @@ export default function MoveBiomePhase({
             </Box>
             <Box gap={1} display="flex" flexWrap="wrap" mt={1}>
               {unselectedAlivePlayers.map((player) => (
-                <PlayerChip {...player} />
+                <PlayerChip key={player.id} {...player} />
               ))}
             </Box>
           </Box>

@@ -65,6 +65,7 @@ export default function PlayerSetModal({
             {players.map((player) => {
               return (
                 <ListItem
+                  key={player.name}
                   disablePadding
                   secondaryAction={
                     <IconButton

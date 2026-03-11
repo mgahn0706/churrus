@@ -18,7 +18,7 @@ import dayjs from "dayjs";
 import weekOfYear from "dayjs/plugin/weekOfYear";
 import GlobalHeader from "@/components/Navigation/GlobalHeader";
 import Hive from "@/features/spelling-bee/components/Hive";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import hangul from "hangul-js";
 import ScoreSection from "@/features/spelling-bee/components/ScoreSection";
 import useLocalStorage from "@/hooks/useLocalStorage";
@@ -28,10 +28,6 @@ import { KOREAN_NOUNS } from "@/fixtures/koreanNounList";
 import { useResponsiveValue } from "@/hooks/useResponsiveValue";
 
 dayjs.extend(weekOfYear);
-
-const today = dayjs();
-const spellingBeeDate = today.diff("2024-02-09", "day");
-const TODAY_SPELLING_BEE = SPELLING_BEES[spellingBeeDate];
 
 const answerMessage = (
   answer: string
@@ -54,15 +50,19 @@ const answerMessage = (
 };
 
 export default function SpellingBee() {
-  if (!TODAY_SPELLING_BEE) {
-    return <h1>Spelling Bee is not available for today {":("}</h1>;
-  }
-
   const [validationMessage, setValidationMessage] = useState<{
     message: string;
     severity: "warning" | "success" | "error";
   } | null>(null);
   const [isRuleModalOpen, setIsRuleModalOpen] = useState(false);
+  const [today, setToday] = useState(() => dayjs("2024-02-09"));
+
+  useEffect(() => {
+    setToday(dayjs());
+  }, []);
+
+  const spellingBeeDate = today.diff("2024-02-09", "day");
+  const todaySpellingBee = SPELLING_BEES[spellingBeeDate];
 
   // Answers persistence (backward compatible)
   const [answerData, setCurrentAnswers] = useLocalStorage<{
@@ -86,11 +86,13 @@ export default function SpellingBee() {
   // Allowed letters for today
   const allowedLetters = useMemo(
     () =>
-      new Set([
-        ...TODAY_SPELLING_BEE.outerLetters,
-        TODAY_SPELLING_BEE.centerLetter,
-      ]),
-    [TODAY_SPELLING_BEE]
+      todaySpellingBee
+        ? new Set([
+            ...todaySpellingBee.outerLetters,
+            todaySpellingBee.centerLetter,
+          ])
+        : new Set<string>(),
+    [todaySpellingBee]
   );
 
   // Compute pangram candidates from dictionary (명사만)
@@ -103,13 +105,14 @@ export default function SpellingBee() {
     for (const w of iter) {
       const j = hangul.disassemble(w);
       if (j.length < 4) continue;
-      if (!j.includes(TODAY_SPELLING_BEE.centerLetter)) continue;
+      if (!todaySpellingBee) continue;
+      if (!j.includes(todaySpellingBee.centerLetter)) continue;
       if (j.some((ch) => !allowedLetters.has(ch))) continue;
       if (new Set(j).size !== 7) continue;
       list.push(w);
     }
     return Array.from(new Set(list)).sort((a, b) => a.length - b.length);
-  }, [allowedLetters, TODAY_SPELLING_BEE.centerLetter]);
+  }, [allowedLetters, todaySpellingBee]);
 
   // UI state for pangram reveal
   const [isRevealDialogOpen, setIsRevealDialogOpen] = useState(false);
@@ -117,7 +120,7 @@ export default function SpellingBee() {
     revealData.day === spellingBeeDate && !!revealData.words?.length;
 
   const handleReveal = () => {
-    if (!pangrams.length) return;
+    if (!pangrams.length || !todaySpellingBee) return;
 
     // persist reveal (all pangrams)
     setRevealData({ day: spellingBeeDate, words: pangrams });
@@ -132,6 +135,10 @@ export default function SpellingBee() {
 
     setIsRevealDialogOpen(false);
   };
+
+  if (!todaySpellingBee) {
+    return <h1>Spelling Bee is not available for today {":("}</h1>;
+  }
 
   return (
     <>
@@ -231,7 +238,7 @@ export default function SpellingBee() {
 
         {/* Score */}
         <ScoreSection
-          fullScore={TODAY_SPELLING_BEE.fullScore}
+          fullScore={todaySpellingBee.fullScore}
           currentAnswers={currentAnswers}
         />
 
@@ -273,8 +280,8 @@ export default function SpellingBee() {
           )}
 
           <Hive
-            centerLetter={TODAY_SPELLING_BEE.centerLetter}
-            outerLetters={TODAY_SPELLING_BEE.outerLetters}
+            centerLetter={todaySpellingBee.centerLetter}
+            outerLetters={todaySpellingBee.outerLetters}
             onSubmit={(input) => {
               if (input.length < 4) {
                 setValidationMessage({
@@ -290,7 +297,7 @@ export default function SpellingBee() {
                 });
                 return;
               }
-              if (!input.includes(TODAY_SPELLING_BEE.centerLetter)) {
+              if (!input.includes(todaySpellingBee.centerLetter)) {
                 setValidationMessage({
                   severity: "error",
                   message: "가운데 글자를 포함하지 않은 단어입니다.",
@@ -300,8 +307,8 @@ export default function SpellingBee() {
               if (
                 input.some(
                   (char) =>
-                    !TODAY_SPELLING_BEE.outerLetters.includes(char) &&
-                    char !== TODAY_SPELLING_BEE.centerLetter
+                    !todaySpellingBee.outerLetters.includes(char) &&
+                    char !== todaySpellingBee.centerLetter
                 )
               ) {
                 setValidationMessage({

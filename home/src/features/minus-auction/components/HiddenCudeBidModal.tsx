@@ -55,7 +55,9 @@ export default function HiddenCubeBidModal({
           }}
         >
           {players.map((player) => (
-            <MenuItem value={player.order}>{player.name}</MenuItem>
+            <MenuItem key={player.order} value={player.order}>
+              {player.name}
+            </MenuItem>
           ))}
         </Select>
         <TextField
