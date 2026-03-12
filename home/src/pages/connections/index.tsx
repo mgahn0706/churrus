@@ -97,7 +97,7 @@ const getCurrentConnectionDate = (today: dayjs.Dayjs) => {
 export default function Connections() {
   const [lives, setLives] = useState(4);
   const [isInfiniteMode, setIsInfiniteMode] = useState(true);
-  const [today, setToday] = useState(() => dayjs("2024-01-01"));
+  const [today, setToday] = useState(() => dayjs("2025-01-01"));
 
   const [selectedWords, setSelectedWords] = useState<string[]>([]);
   const [panels, setPanels] = useState<string[]>([]);
@@ -105,7 +105,7 @@ export default function Connections() {
   const [isRuleModalOpen, setIsRuleModalOpen] = useState(false);
   const [triedCount, setTriedCount] = useState([0, 0, 0, 0]);
   const [connectionDate, setConnectionDate] = useState(() =>
-    getCurrentConnectionDate(dayjs("2024-01-01"))
+    getCurrentConnectionDate(dayjs("2025-01-01"))
   );
 
   useEffect(() => {
@@ -153,7 +153,8 @@ export default function Connections() {
       >
         <IconButton
           disabled={
-            selectedConnection.week === 1 && connectionDate.year === 2022
+            selectedConnection.week === 1 &&
+            connectionDate.year === CONNECTION_YEARS[0]
           }
           color="primary"
           onClick={() => {

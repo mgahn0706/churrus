@@ -1,6 +1,6 @@
 import { ConnectionsType } from "..";
 
-export const CONNECTIONS2022: ConnectionsType[] = [
+export const CONNECTIONS2023: ConnectionsType[] = [
   {
     week: 1,
     quiz: [
