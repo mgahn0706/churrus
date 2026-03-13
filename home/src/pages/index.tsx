@@ -285,6 +285,41 @@ export default function Churrus() {
               borderRadius="12px"
               sx={{
                 background: `linear-gradient(90deg, #161C26 0%, #51658C 100%)`,
+                animation: "crimeBannerReveal 700ms ease-out",
+                "@keyframes crimeBannerReveal": {
+                  "0%": {
+                    opacity: 0,
+                    transform: "translateY(8px)",
+                  },
+                  "100%": {
+                    opacity: 1,
+                    transform: "translateY(0)",
+                  },
+                },
+                "@keyframes crimeBannerGlow": {
+                  "0%, 100%": {
+                    boxShadow: "0 0 0 rgba(255,255,255,0)",
+                  },
+                  "50%": {
+                    boxShadow: "0 0 24px rgba(255,255,255,0.12)",
+                  },
+                },
+                "@keyframes crimeBannerFloat": {
+                  "0%, 100%": {
+                    transform: "translateY(0)",
+                  },
+                  "50%": {
+                    transform: "translateY(-4px)",
+                  },
+                },
+                "&::after": {
+                  content: '""',
+                  position: "absolute",
+                  inset: 0,
+                  borderRadius: "12px",
+                  pointerEvents: "none",
+                  animation: "crimeBannerGlow 5s ease-in-out infinite",
+                },
               }}
             >
               <Box display="flex" flexDirection="column" ml={5}>
@@ -299,6 +334,7 @@ export default function Churrus() {
                 <Search
                   sx={{
                     fontSize: 100,
+                    animation: "crimeBannerFloat 4.5s ease-in-out infinite",
                   }}
                 />
               </Box>
