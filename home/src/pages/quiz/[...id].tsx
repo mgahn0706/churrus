@@ -15,7 +15,7 @@ import {
   ChevronRightRounded,
   CloseRounded,
 } from "@mui/icons-material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Head from "next/head";
 import { QuizType } from "@/features/quiz/types";
 import QuizCard from "@/features/quiz/components/QuizCard";
@@ -41,17 +41,43 @@ export default function QuizPage() {
 
   const [inputAnswer, setInputAnswer] = useState("");
   const [isImageLoading, setIsImageLoading] = useState(true);
+  const [imageAspectRatio, setImageAspectRatio] = useState(16 / 9);
   const [isQuizListDrawerOpen, setIsQuizListDrawerOpen] = useState(false);
 
   const { id } = router.query;
+  const quizId = Array.isArray(id) ? id[0] : id;
+  const isAnswerPage = Array.isArray(id) ? id[1] === "answer" : false;
+  const quiz = quizId ? getQuizById(quizId) : null;
+  const quizImageSrc = quiz
+    ? isAnswerPage
+      ? `/image/quiz/${quiz.id}-answer.png`
+      : quiz.quizImageSource
+    : null;
+
+  useEffect(() => {
+    if (!quizImageSrc) {
+      return;
+    }
+
+    setIsImageLoading(true);
+
+    const image = new window.Image();
+    image.src = quizImageSrc;
+    image.onload = () => {
+      if (image.naturalWidth > 0 && image.naturalHeight > 0) {
+        setImageAspectRatio(image.naturalWidth / image.naturalHeight);
+      }
+      setIsImageLoading(false);
+    };
+    image.onerror = () => {
+      setImageAspectRatio(16 / 9);
+      setIsImageLoading(false);
+    };
+  }, [quizImageSrc]);
 
   if (!id) {
     return <div>loading...</div>;
   }
-
-  const quizId = Array.isArray(id) ? id[0] : id;
-  const isAnswerPage = Array.isArray(id) ? id[1] === "answer" : false;
-  const quiz = getQuizById(quizId);
 
   if (!quiz) {
     return <div>존재하지 않는 문제입니다.</div>;
@@ -59,6 +85,7 @@ export default function QuizPage() {
 
   const meeting = getMeetingById(quiz.meetingId);
   const { prevQuizId, nextQuizId } = getPrevNextQuizIds(quiz);
+  const resolvedQuizImageSrc = quizImageSrc ?? quiz.quizImageSource;
 
   const handleSolvedQuiz = () => {
     setIsImageLoading(true);
@@ -118,6 +145,7 @@ export default function QuizPage() {
           position="fixed"
           sx={{
             backdropFilter: "blur(2px)",
+            zIndex: 10,
           }}
         >
           <Box
@@ -126,11 +154,13 @@ export default function QuizPage() {
             justifyContent="space-between"
             maxWidth="1200px"
             width={1}
+            px={[1, 2, 0]}
+            boxSizing="border-box"
           >
-            <Box display="flex" alignItems="center" ml={2}>
+            <Box display="flex" alignItems="center" minWidth={0}>
               <ChurrusLogoButton onClick={() => router.push("/")} />
 
-              <Box display="flex" alignItems="center" ml={2}>
+              <Box display="flex" alignItems="center" ml={[1, 2, 2]} minWidth={0}>
                 <HeaderButton onClick={() => setIsQuizListDrawerOpen(true)}>
                   {meeting?.title}
                 </HeaderButton>
@@ -164,7 +194,7 @@ export default function QuizPage() {
                   color: "#202837",
                   fontWeight: 700,
                   fontSize: 14,
-                  mr: 2,
+                  mr: [0, 1, 2],
                 }}
                 variant="text"
                 onClick={() => {
@@ -182,7 +212,8 @@ export default function QuizPage() {
           flexDirection="column"
           maxWidth={1200}
           width={1}
-          ml={2}
+          px={[2, 2, 0]}
+          boxSizing="border-box"
           textAlign={["left", "left", "center"]}
         >
           <Typography
@@ -214,21 +245,16 @@ export default function QuizPage() {
         <Box
           width="100%"
           sx={{
-            aspectRatio: 16 / 9,
+            aspectRatio: imageAspectRatio,
           }}
           display={isImageLoading ? "none" : "flex"}
           justifyContent="center"
           mt={2}
           maxWidth={1200}
-          maxHeight={675}
           position="relative"
         >
           <Image
-            src={
-              isAnswerPage
-                ? `/image/quiz/${quiz.id}-answer.png`
-                : quiz.quizImageSource
-            }
+            src={resolvedQuizImageSrc}
             alt={quiz.title}
             style={{
               borderRadius: "12px",
@@ -245,10 +271,9 @@ export default function QuizPage() {
             animation="wave"
             sx={{
               bgcolor: "rgba(255, 255, 255, 0.7)",
-              aspectRatio: 16 / 9,
+              aspectRatio: imageAspectRatio,
               marginTop: "16px",
               maxWidth: 1200,
-              maxHeight: 675,
               borderRadius: "12px",
               width: "100%",
               height: "100%",
@@ -256,23 +281,29 @@ export default function QuizPage() {
           />
         )}
         {!isAnswerPage && (
-          <form onSubmit={handleAnswerSubmit}>
+          <Box
+            component="form"
+            onSubmit={handleAnswerSubmit}
+            width="100%"
+            display="flex"
+            justifyContent="center"
+          >
             <Box
               display="flex"
               flexDirection="column"
               justifyContent="center"
               mt={4}
-              minWidth={300}
               maxWidth={1200}
-              width="70vw"
+              width={["calc(100vw - 32px)", "calc(100vw - 32px)", "70vw"]}
               mx="auto"
+              boxSizing="border-box"
             >
               <Typography
                 color="#212837"
                 fontSize={12}
                 fontWeight={400}
                 sx={{
-                  ml: 2,
+                  ml: [0, 1, 2],
                   width: "100%",
                 }}
               >
@@ -283,10 +314,12 @@ export default function QuizPage() {
                   display="flex"
                   alignItems="center"
                   justifyContent="center"
-                  gap={3}
+                  gap={[1.5, 2, 3]}
                   flexDirection={["column", "column", "row"]}
+                  width="100%"
                 >
                   <TextField
+                    fullWidth
                     variant="outlined"
                     value={inputAnswer}
                     onChange={(e) => {
@@ -294,6 +327,7 @@ export default function QuizPage() {
                     }}
                     InputProps={{
                       sx: {
+                        width: "100%",
                         maxWidth: 950,
                         borderRadius: "20px",
                         py: "2px",
@@ -302,6 +336,7 @@ export default function QuizPage() {
                     }}
                     sx={{
                       width: "100%",
+                      maxWidth: ["none", "none", 950],
                     }}
                     placeholder={
                       quiz.answer
@@ -344,7 +379,7 @@ export default function QuizPage() {
                 </Box>
               )}
             </Box>
-          </form>
+          </Box>
         )}
       </Box>
       <QuizListDrawer
