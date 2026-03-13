@@ -1,6 +1,7 @@
 import GlobalHeader from "@/components/Navigation/GlobalHeader";
 import ServiceButton from "@/components/ServiceButton";
 import {
+  AutoAwesomeRounded,
   CategoryRounded,
   ColorLensRounded,
   DashboardRounded,
@@ -135,6 +136,11 @@ export default function AllServicesPage() {
             보드게임 / 더 지니어스
           </Typography>
           <CategorizedLayout>
+            <ServiceButton
+              label="Genius Games"
+              url="/genius"
+              icon={<AutoAwesomeRounded />}
+            />
             <ServiceButton
               label="Hues and Cues"
               url="/hues-and-cues"
