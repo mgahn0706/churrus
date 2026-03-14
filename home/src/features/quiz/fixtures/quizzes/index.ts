@@ -1,6 +1,58 @@
 import { QuizType } from "../../types";
 
 export const QuizData: Record<string, QuizType[]> = {
+  "2026-OT-1": [
+    {
+      id: "2026-OT-1-1",
+      meetingId: "2026-OT-1",
+      quizNumber: 1,
+      title: "볶음밥",
+      creator: "김규민",
+      quizImageSource: "/image/quiz/2026-OT-1-1.png",
+      answer: "MEAT",
+      tags: ["KNOWLEDGE", "EASY"],
+    },
+    {
+      id: "2026-OT-1-2",
+      meetingId: "2026-OT-1",
+      quizNumber: 2,
+      title: "두쫀쿠",
+      creator: "김태연",
+      quizImageSource: "/image/quiz/2026-OT-1-2.png",
+      answer: "초코",
+      tags: [],
+    },
+    {
+      id: "2026-OT-1-3",
+      meetingId: "2026-OT-1",
+      quizNumber: 3,
+      title: "과자",
+      creator: "정해찬",
+      quizImageSource: "/image/quiz/2026-OT-1-3.png",
+      answer: "호두",
+      tags: ["WORD"],
+    },
+    {
+      id: "2026-OT-1-4",
+      meetingId: "2026-OT-1",
+      quizNumber: 4,
+      title: "미.온.향.",
+      creator: "권현수",
+      quizImageSource: "/image/quiz/2026-OT-1-4.png",
+      answer: "APPLE",
+      tags: ["EASY"],
+    },
+    {
+      id: "2026-OT-1-5",
+      meetingId: "2026-OT-1",
+      quizNumber: 5,
+      title: "찬장 정리",
+      creator: "김시영",
+      quizImageSource: "/image/quiz/2026-OT-1-5.png",
+      answer: "파이",
+      tags: ["META"],
+    },
+  ],
   "2026-2": [
     {
       id: "2026-2-1",
