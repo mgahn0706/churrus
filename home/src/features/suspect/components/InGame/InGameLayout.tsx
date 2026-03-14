@@ -106,7 +106,7 @@ export default function InGameLayout({
   return (
     <>
       <Head>
-        <title>협동 크라임씬: {scenario.title}</title>
+        <title>{`협동 크라임씬: ${scenario.title}`}</title>
       </Head>
       <Box>
         <Image
