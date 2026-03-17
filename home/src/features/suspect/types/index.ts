@@ -65,10 +65,22 @@ export interface DetectiveNoteType {
   memo: string;
 }
 
+export interface EpilogueSectionType {
+  heading: string;
+  paragraphs: string[];
+}
+
 export interface CertificationCardType {
+  scenarioId: string;
   title: string;
   description: string;
   image: string;
   date: string;
   isSuccess: boolean;
+  color: string;
+  verdict: string;
+  historyLabel?: string;
+  epilogueTitle: string;
+  epilogueSubtitle: string;
+  epilogueSections: EpilogueSectionType[];
 }

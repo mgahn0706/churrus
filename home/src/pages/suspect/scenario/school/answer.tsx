@@ -21,6 +21,7 @@ import { DetectiveNoteType } from "@/features/suspect/types";
 import { FadeInSection } from "@/features/suspect/components/FadeInSection";
 import TabPanel from "@/features/suspect/components/Answer/TabPanel";
 import { LaunchRounded } from "@mui/icons-material";
+import { saveScenarioCertification } from "@/features/suspect/libs/certification";
 
 export default function SchoolAnswer() {
   const router = useRouter();
@@ -44,6 +45,10 @@ export default function SchoolAnswer() {
       return;
     }
     setIsSuspectAccused(true);
+    saveScenarioCertification(
+      "school",
+      JSON.parse(localStorage.getItem("school") ?? "").accusedSuspect
+    );
   }, []);
 
   if (!isSuspectAccused) {
@@ -410,7 +415,18 @@ export default function SchoolAnswer() {
         </TabPanel>
       </Box>
 
-      <Box display="flex" justifyContent="center" alignItems="center" mt={10}>
+      <Box display="flex" justifyContent="center" alignItems="center" gap={2} mt={10}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => {
+            localStorage.removeItem("school");
+            router.push("/suspect/certification?scenario=school");
+          }}
+          sx={{ mb: 20 }}
+        >
+          인증카드 보러가기
+        </Button>
         <Button
           variant="outlined"
           color="primary"

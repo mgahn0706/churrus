@@ -22,6 +22,7 @@ import { FadeInSection } from "@/features/suspect/components/FadeInSection";
 import { LaunchRounded } from "@mui/icons-material";
 import { serialAdditionalQuestions } from "@/features/suspect/fixtures/serial/clues";
 import Image from "next/image";
+import { saveScenarioCertification } from "@/features/suspect/libs/certification";
 
 export default function SerialAnswer() {
   const router = useRouter();
@@ -45,6 +46,10 @@ export default function SerialAnswer() {
       return;
     }
     setIsSuspectAccused(true);
+    saveScenarioCertification(
+      "serial",
+      JSON.parse(localStorage.getItem("serial") ?? "").accusedSuspect
+    );
   }, []);
 
   if (!isSuspectAccused) {
@@ -350,12 +355,23 @@ export default function SerialAnswer() {
         </TabPanel>
       </Box>
 
-      <Box display="flex" justifyContent="center" alignItems="center" mt={10}>
+      <Box display="flex" justifyContent="center" alignItems="center" gap={2} mt={10}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => {
+            localStorage.removeItem("serial");
+            router.push("/suspect/certification?scenario=serial");
+          }}
+          sx={{ mb: 20 }}
+        >
+          인증카드 보러가기
+        </Button>
         <Button
           variant="outlined"
           color="primary"
           onClick={() => {
-            localStorage.removeItem("startup");
+            localStorage.removeItem("serial");
             router.push("/suspect");
           }}
           sx={{ mb: 20 }}

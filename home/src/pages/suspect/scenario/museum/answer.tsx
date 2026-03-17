@@ -22,6 +22,7 @@ import TabPanel from "@/features/suspect/components/Answer/TabPanel";
 import { FadeInSection } from "@/features/suspect/components/FadeInSection";
 import { LaunchRounded } from "@mui/icons-material";
 import { museumAdditionalQuestions } from "@/features/suspect/fixtures/museum/clues";
+import { saveScenarioCertification } from "@/features/suspect/libs/certification";
 
 export default function MuseumAnswer() {
   const router = useRouter();
@@ -45,6 +46,10 @@ export default function MuseumAnswer() {
       return;
     }
     setIsSuspectAccused(true);
+    saveScenarioCertification(
+      "museum",
+      JSON.parse(localStorage.getItem("museum") ?? "").accusedSuspect
+    );
   }, []);
 
   if (!isSuspectAccused) {
@@ -367,12 +372,23 @@ export default function MuseumAnswer() {
         </TabPanel>
       </Box>
 
-      <Box display="flex" justifyContent="center" alignItems="center" mt={10}>
+      <Box display="flex" justifyContent="center" alignItems="center" gap={2} mt={10}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => {
+            localStorage.removeItem("museum");
+            router.push("/suspect/certification?scenario=museum");
+          }}
+          sx={{ mb: 20 }}
+        >
+          인증카드 보러가기
+        </Button>
         <Button
           variant="outlined"
           color="primary"
           onClick={() => {
-            localStorage.removeItem("startup");
+            localStorage.removeItem("museum");
             router.push("/suspect");
           }}
           sx={{ mb: 20 }}
