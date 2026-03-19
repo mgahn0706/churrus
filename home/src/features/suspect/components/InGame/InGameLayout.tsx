@@ -26,6 +26,7 @@ import MovePlaceButton from "./MovePlaceButton";
 import PasswordInputModal from "./PasswordInputModal";
 import PrologueModal from "./PrologueModal";
 import SuspectsInfoCard from "./SuspectsInfoCard";
+import InteractionScoreBadge from "./InteractionScoreBadge";
 import usePreventUnload from "@/hooks/usePreventUnload";
 import Head from "next/head";
 
@@ -38,6 +39,17 @@ interface InGameLayoutProps {
   scenario: ScenarioType;
   additionalQuestions: AdditionalQuestionType[];
 }
+
+interface InteractionLogItem {
+  label: string;
+  elapsedMs: number;
+}
+
+const getInteractionStartStorageKey = (scenarioId: string) =>
+  `${scenarioId}-interaction-started-at`;
+
+const getInteractionLogStorageKey = (scenarioId: string) =>
+  `${scenarioId}-interaction-log`;
 
 export default function InGameLayout({
   clues,
@@ -56,6 +68,8 @@ export default function InGameLayout({
   >("prologue");
   const [unlockingClue, setUnlockingClue] = useState<ClueType | null>(null);
   const [isQuickMenuOpen, setIsQuickMenuOpen] = useState(false);
+  const [sessionStartedAt, setSessionStartedAt] = useState<number>(() => Date.now());
+  const [interactionLog, setInteractionLog] = useState<InteractionLogItem[]>([]);
 
   const handleCloseModal = () => {
     setOpenedModal(null);
@@ -63,6 +77,32 @@ export default function InGameLayout({
 
   useEffect(() => {
     setCurrentPlace(scenario.places[0] ?? "");
+  }, [scenario.id]);
+
+  useEffect(() => {
+    const startStorageKey = getInteractionStartStorageKey(scenario.id);
+    const logStorageKey = getInteractionLogStorageKey(scenario.id);
+
+    const savedStartedAt = localStorage.getItem(startStorageKey);
+    const nextStartedAt = savedStartedAt ? Number(savedStartedAt) : Date.now();
+
+    if (!savedStartedAt) {
+      localStorage.setItem(startStorageKey, String(nextStartedAt));
+    }
+
+    setSessionStartedAt(nextStartedAt);
+
+    const savedLog = localStorage.getItem(logStorageKey);
+    if (!savedLog) {
+      setInteractionLog([]);
+      return;
+    }
+
+    try {
+      setInteractionLog(JSON.parse(savedLog) as InteractionLogItem[]);
+    } catch {
+      setInteractionLog([]);
+    }
   }, [scenario.id]);
 
   usePreventUnload();
@@ -76,6 +116,25 @@ export default function InGameLayout({
         return prev;
       }
       return [...prev, clueId];
+    });
+  };
+
+  const recordInteraction = (label: string) => {
+    setInteractionLog((prev) => {
+      const nextLog = [
+        ...prev,
+        {
+          label,
+          elapsedMs: Date.now() - sessionStartedAt,
+        },
+      ];
+
+      localStorage.setItem(
+        getInteractionLogStorageKey(scenario.id),
+        JSON.stringify(nextLog)
+      );
+
+      return nextLog;
     });
   };
 
@@ -158,6 +217,7 @@ export default function InGameLayout({
                   return;
                 }
 
+                recordInteraction(`단서 ${clue.id} ${clue.title}`);
                 setOpenedClueId(clue.id);
                 markClueAsChecked(clue.id);
               }}
@@ -190,6 +250,7 @@ export default function InGameLayout({
                 x={button.x}
                 y={button.y}
                 onClick={() => {
+                  recordInteraction(`이동 ${button.from} -> ${button.to}`);
                   setCurrentPlace(button.to);
                 }}
               />
@@ -292,6 +353,7 @@ export default function InGameLayout({
             </Paper>
           </Grow>
         </Box>
+        <InteractionScoreBadge count={interactionLog.length} />
       </Box>
     </>
   );
