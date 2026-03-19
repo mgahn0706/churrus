@@ -4,6 +4,7 @@ import {
   Filter1,
   Help,
   Hexagon,
+  Psychology,
   IndeterminateCheckBox,
   ListRounded,
   Mail,
@@ -44,6 +45,11 @@ const leftNavigationMenuItems: Record<
       text: "협동 크라임씬",
       url: "/suspect",
       icon: <Search />,
+    },
+    {
+      text: "천재",
+      url: "/genius",
+      icon: <Psychology />,
     },
   ],
   "정기 퍼즐": [
