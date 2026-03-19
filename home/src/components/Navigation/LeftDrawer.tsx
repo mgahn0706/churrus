@@ -47,7 +47,7 @@ const leftNavigationMenuItems: Record<
       icon: <Search />,
     },
     {
-      text: "천재",
+      text: "더 지니어스 / 보드게임",
       url: "/genius",
       icon: <Psychology />,
     },
