@@ -16,6 +16,7 @@ import { serialClues } from "./serial/clues";
 import { bluemoonSuspects, bluemoonVictim } from "./bluemoon/suspects";
 import { bluemoonClues } from "./bluemoon/clues";
 import { mountainSuspects, mountainVictim } from "./mountain/suspects";
+import { mountainClues } from "./mountain/clues";
 import { kpopSuspects, kpopVictim } from "./kpop/suspects";
 
 export const scenarios: ScenarioType[] = [
@@ -152,7 +153,7 @@ export const scenarios: ScenarioType[] = [
     places: ["cafe", "intersection"],
     suspects: mountainSuspects,
     victims: [mountainVictim],
-    clues: [],
+    clues: mountainClues,
     color: "#4caf50",
   },
 ];

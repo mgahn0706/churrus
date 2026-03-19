@@ -4,15 +4,15 @@ export const mountainMoveButton: MovePlaceButtonType[] = [
   {
     from: "cafe",
     to: "intersection",
-    x: 84,
-    y: 52,
-    direction: "right",
+    x: 44,
+    y: 82,
+    direction: "down",
   },
   {
     from: "intersection",
     to: "cafe",
-    x: 14,
-    y: 52,
-    direction: "left",
+    x: 66,
+    y: 12,
+    direction: "up",
   },
 ];
