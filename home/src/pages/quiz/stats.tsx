@@ -1027,50 +1027,79 @@ export default function QuizStatsPage() {
 
                   <SectionCard
                     title="문제 유형 분포"
-                    description="현재 조건에서 많이 등장하는 유형을 상위 10개까지 보여줍니다."
+                    description="현재 조건에서 등장한 모든 유형을 확인할 수 있습니다."
                   >
-                    <Stack spacing={1.5}>
-                      {filteredTagStats.slice(0, 10).map((stat) => (
-                        <Box key={stat.tag}>
-                          <Box
-                            display="flex"
-                            justifyContent="space-between"
-                            alignItems="center"
-                            mb={0.75}
-                          >
-                            <Chip
-                              icon={<LocalOfferRounded />}
-                              label={QUIZ_TAG_KOREAN_NAME[stat.tag]}
+                    <Box position="relative">
+                      <Stack
+                        spacing={1.5}
+                        sx={{
+                          maxHeight: 420,
+                          overflowY: "auto",
+                          pr: 0.5,
+                          pb: filteredTagStats.length > 5 ? 6 : 0,
+                        }}
+                      >
+                        {filteredTagStats.map((stat) => (
+                          <Box key={stat.tag}>
+                            <Box
+                              display="flex"
+                              justifyContent="space-between"
+                              alignItems="center"
+                              mb={0.75}
+                            >
+                              <Chip
+                                icon={<LocalOfferRounded />}
+                                label={QUIZ_TAG_KOREAN_NAME[stat.tag]}
+                                sx={{
+                                  bgcolor: "#F3F4F6",
+                                  color: "#344054",
+                                  fontWeight: 700,
+                                }}
+                              />
+                              <Typography
+                                color="#344054"
+                                fontSize={14}
+                                fontWeight={700}
+                              >
+                                {stat.quizCount}
+                              </Typography>
+                            </Box>
+                            <LinearProgress
+                              variant="determinate"
+                              value={(stat.quizCount / maxTagQuizCount) * 100}
                               sx={{
-                                bgcolor: "#F3F4F6",
-                                color: "#344054",
-                                fontWeight: 700,
+                                height: 8,
+                                borderRadius: 999,
+                                bgcolor: "#F0F2F5",
+                                "& .MuiLinearProgress-bar": {
+                                  borderRadius: 999,
+                                  bgcolor: "#F59E0B",
+                                },
                               }}
                             />
-                            <Typography
-                              color="#344054"
-                              fontSize={14}
-                              fontWeight={700}
-                            >
-                              {stat.quizCount}
-                            </Typography>
                           </Box>
-                          <LinearProgress
-                            variant="determinate"
-                            value={(stat.quizCount / maxTagQuizCount) * 100}
-                            sx={{
-                              height: 8,
-                              borderRadius: 999,
-                              bgcolor: "#F0F2F5",
-                              "& .MuiLinearProgress-bar": {
-                                borderRadius: 999,
-                                bgcolor: "#F59E0B",
-                              },
-                            }}
-                          />
-                        </Box>
-                      ))}
-                    </Stack>
+                        ))}
+                      </Stack>
+
+                      {filteredTagStats.length > 5 && (
+                        <Box
+                          position="absolute"
+                          left={0}
+                          right={0}
+                          bottom={0}
+                          height={88}
+                          display="flex"
+                          alignItems="flex-end"
+                          justifyContent="center"
+                          pb={1}
+                          sx={{
+                            pointerEvents: "none",
+                            background:
+                              "linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.92) 58%, rgba(255,255,255,1) 100%)",
+                          }}
+                        />
+                      )}
+                    </Box>
                   </SectionCard>
 
                   <SectionCard
