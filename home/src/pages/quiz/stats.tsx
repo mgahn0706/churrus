@@ -632,16 +632,6 @@ export default function QuizStatsPage() {
               문제 목록으로 돌아가기
             </Button>
             <Box>
-              <Chip
-                icon={<BarChartRounded />}
-                label="Quiz Dashboard"
-                sx={{
-                  bgcolor: "#E8F1FF",
-                  color: "#235DA8",
-                  fontWeight: 700,
-                  mb: 2,
-                }}
-              />
               <Typography
                 color="#111827"
                 fontSize={[28, 34, 40]}
