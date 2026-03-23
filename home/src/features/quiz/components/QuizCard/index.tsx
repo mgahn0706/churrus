@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { QuizType } from "../../types";
 import { CheckCircleRounded } from "@mui/icons-material";
+import { getQuizCreatorsLabel } from "../../domain";
 
 interface QuizCardProps {
   quiz: QuizType;
@@ -88,7 +89,7 @@ export default function QuizCard({
               color={isSelected ? "#318AE1" : "#606880"}
               fontSize="12px"
             >
-              {quiz.creator}
+              {getQuizCreatorsLabel(quiz)}
             </Typography>
           </Box>
         </Box>

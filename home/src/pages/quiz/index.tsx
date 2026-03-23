@@ -1,5 +1,5 @@
 import GlobalHeader from "@/components/Navigation/GlobalHeader";
-import { ShuffleOnRounded } from "@mui/icons-material";
+import { BarChartRounded, ShuffleOnRounded } from "@mui/icons-material";
 import { Box, Button, Grid, Typography } from "@mui/material";
 import Head from "next/head";
 import { MEETINGS } from "@/features/quiz/fixtures/meetings";
@@ -48,6 +48,7 @@ export default function Quiz() {
               display="flex"
               justifyContent="space-between"
               alignItems="center"
+              gap={1}
             >
               <Typography
                 fontSize={24}
@@ -56,31 +57,55 @@ export default function Quiz() {
               >
                 문제적 추러스
               </Typography>
-              <Button
-                variant="outlined"
-                style={{
-                  borderRadius: 20,
-                  borderColor: "#e6e8ea",
-                  padding: "4px 8px",
-                }}
-                onClick={() => {
-                  const randomQuizId = getRandomQuizId();
-                  if (randomQuizId) {
-                    router.push(`/quiz/${randomQuizId}`);
-                  }
-                }}
-              >
-                <ShuffleOnRounded
-                  sx={{
-                    color: "#318ae1",
-                    marginRight: "4px",
-                    width: "15px",
+              <Box display="flex" gap={1} flexWrap="wrap" justifyContent="flex-end">
+                <Button
+                  variant="outlined"
+                  style={{
+                    borderRadius: 20,
+                    borderColor: "#e6e8ea",
+                    padding: "4px 8px",
                   }}
-                />
-                <Typography fontSize={14} color="#4e5968" fontWeight={500}>
-                  랜덤 문제
-                </Typography>
-              </Button>
+                  onClick={() => {
+                    router.push("/quiz/stats");
+                  }}
+                >
+                  <BarChartRounded
+                    sx={{
+                      color: "#318ae1",
+                      marginRight: "4px",
+                      width: "15px",
+                    }}
+                  />
+                  <Typography fontSize={14} color="#4e5968" fontWeight={500}>
+                    통계 보기
+                  </Typography>
+                </Button>
+                <Button
+                  variant="outlined"
+                  style={{
+                    borderRadius: 20,
+                    borderColor: "#e6e8ea",
+                    padding: "4px 8px",
+                  }}
+                  onClick={() => {
+                    const randomQuizId = getRandomQuizId();
+                    if (randomQuizId) {
+                      router.push(`/quiz/${randomQuizId}`);
+                    }
+                  }}
+                >
+                  <ShuffleOnRounded
+                    sx={{
+                      color: "#318ae1",
+                      marginRight: "4px",
+                      width: "15px",
+                    }}
+                  />
+                  <Typography fontSize={14} color="#4e5968" fontWeight={500}>
+                    랜덤 문제
+                  </Typography>
+                </Button>
+              </Box>
             </Box>
           </Box>
           {Object.entries(MEETING_IDS_BY_YEAR)

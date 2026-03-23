@@ -25,6 +25,7 @@ import {
   getMeetingQuizzes,
   getPrevNextQuizIds,
   getQuizById,
+  getQuizCreatorsLabel,
 } from "@/features/quiz/domain";
 import useSolvedQuizzes from "@/features/quiz/hooks/useSolvedQuizzes";
 
@@ -238,7 +239,7 @@ export default function QuizPage() {
           )}
 
           <Typography fontSize={12} color="#606B80" width="fit-content">
-            {quiz.creator}
+            {getQuizCreatorsLabel(quiz)}
           </Typography>
         </Box>
 

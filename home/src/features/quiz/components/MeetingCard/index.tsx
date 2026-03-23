@@ -1,8 +1,8 @@
 import { Box, Typography } from "@mui/material";
-import { QuizData } from "../../fixtures/quizzes";
 import Image from "next/image";
 import { MEETINGS } from "../../fixtures/meetings";
 import { useRouter } from "next/router";
+import { getMeetingCreators } from "../../domain";
 
 export default function MeetingCard({
   meetingId,
@@ -17,13 +17,7 @@ export default function MeetingCard({
 
   const meeting = MEETINGS[meetingId];
 
-  const creators = Array.from(
-    new Set(
-      QuizData[meeting.id]
-        .filter((quiz) => !!quiz.creator)
-        .map((quiz) => quiz.creator)
-    )
-  );
+  const creators = getMeetingCreators(meeting.id);
 
   return (
     <Box

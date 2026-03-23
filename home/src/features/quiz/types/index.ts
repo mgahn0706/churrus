@@ -3,13 +3,13 @@ export interface QuizType {
   meetingId: string;
   quizNumber: number;
   title: string;
-  creator: string | null;
+  creators: string[];
   quizImageSource: string;
   answer: string | null;
   tags: Tags[];
 }
 
-type Tags =
+export type Tags =
   | "EASY"
   | "HARD"
   | "DEDUCTION"
@@ -20,7 +20,7 @@ type Tags =
   | "PATTERN"
   | "GEOMETRY"
   | "ADVENTURE"
-  | "ONLY_FOR_MEEING"
+  | "ONLY_FOR_MEETING"
   | "RIDDLE"
   | "ENIGMATIC"
   | "WORD"
