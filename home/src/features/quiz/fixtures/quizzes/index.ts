@@ -20,7 +20,7 @@ export const QuizData: Record<string, QuizType[]> = {
       creators: ["김태연"],
       quizImageSource: "/image/quiz/2026-OT-1-2.png",
       answer: "초코",
-      tags: [],
+      tags: ["HARD", "WORD"],
     },
     {
       id: "2026-OT-1-3",
@@ -40,7 +40,7 @@ export const QuizData: Record<string, QuizType[]> = {
       creators: ["권현수"],
       quizImageSource: "/image/quiz/2026-OT-1-4.png",
       answer: "APPLE",
-      tags: ["EASY"],
+      tags: ["EASY", "WORD"],
     },
     {
       id: "2026-OT-1-5",
@@ -304,7 +304,7 @@ export const QuizData: Record<string, QuizType[]> = {
       creators: ["류정환"],
       quizImageSource: "/image/quiz/2026-MT-1-7.png",
       answer: "2월 2일",
-      tags: ["ADVENTURE"],
+      tags: ["ADVENTURE", "DEDUCTION"],
     },
     {
       id: "2026-MT-1-8",
@@ -796,7 +796,7 @@ export const QuizData: Record<string, QuizType[]> = {
       creators: ["조경아"],
       quizImageSource: "/image/quiz/2025-9-1.png",
       answer: "LESSON",
-      tags: [],
+      tags: ["LATERAL_THINKING"],
     },
     {
       id: "2025-9-2",
@@ -806,7 +806,7 @@ export const QuizData: Record<string, QuizType[]> = {
       creators: ["안민규"],
       quizImageSource: "/image/quiz/2025-9-2.png",
       answer: "ITEM",
-      tags: [],
+      tags: ["WORD", "PATTERN"],
     },
     {
       id: "2025-9-3",
@@ -816,7 +816,7 @@ export const QuizData: Record<string, QuizType[]> = {
       creators: ["김시영"],
       quizImageSource: "/image/quiz/2025-9-3.png",
       answer: "함정",
-      tags: [],
+      tags: ["WORD", "EASY"],
     },
     {
       id: "2025-9-4",
@@ -826,7 +826,7 @@ export const QuizData: Record<string, QuizType[]> = {
       creators: ["이예준"],
       quizImageSource: "/image/quiz/2025-9-4.png",
       answer: "쥐, 말",
-      tags: [],
+      tags: ["LATERAL_THINKING", "KNOWLEDGE"],
     },
     {
       id: "2025-9-5",
@@ -836,7 +836,7 @@ export const QuizData: Record<string, QuizType[]> = {
       creators: ["안민규"],
       quizImageSource: "/image/quiz/2025-9-5.png",
       answer: "물고기",
-      tags: [],
+      tags: ["LATERAL_THINKING", "RIDDLE"],
     },
     {
       id: "2025-9-6",
@@ -846,7 +846,7 @@ export const QuizData: Record<string, QuizType[]> = {
       creators: ["김현준"],
       quizImageSource: "/image/quiz/2025-9-6.png",
       answer: "팔벌려뛰기",
-      tags: [],
+      tags: ["LATERAL_THINKING"],
     },
     {
       id: "2025-9-7",
@@ -856,7 +856,7 @@ export const QuizData: Record<string, QuizType[]> = {
       creators: ["안민규"],
       quizImageSource: "/image/quiz/2025-9-7.png",
       answer: "APRIL",
-      tags: [],
+      tags: ["WORD"],
     },
     {
       id: "2025-9-8",
@@ -866,7 +866,7 @@ export const QuizData: Record<string, QuizType[]> = {
       creators: ["조준호"],
       quizImageSource: "/image/quiz/2025-9-8.png",
       answer: "SHIFT",
-      tags: [],
+      tags: ["KNOWLEDGE"],
     },
     {
       id: "2025-9-9",
@@ -876,7 +876,7 @@ export const QuizData: Record<string, QuizType[]> = {
       creators: ["김태연"],
       quizImageSource: "/image/quiz/2025-9-9.png",
       answer: "CPU",
-      tags: [],
+      tags: ["KNOWLEDGE", "HARD", "MATHEMATICS"],
     },
   ],
   "2025-OT-2": [
