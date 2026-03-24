@@ -1,6 +1,6 @@
 import { Box, Button, TextField } from "@mui/material";
 import HexagonButton from "./HexagonButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import hangul from "hangul-js";
 import { RestartAlt } from "@mui/icons-material";
 
@@ -57,9 +57,13 @@ export default function Hive({
   onSubmit,
 }: HiveProps) {
   const [input, setInput] = useState<string[]>([]);
-
   const [shuffledOuterLetters, setShuffledOuterLetters] =
     useState<string[]>(outerLetters);
+
+  useEffect(() => {
+    setInput([]);
+    setShuffledOuterLetters(outerLetters);
+  }, [centerLetter, outerLetters]);
 
   return (
     <form
