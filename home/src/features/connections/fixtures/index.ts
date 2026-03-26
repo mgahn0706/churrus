@@ -1,6 +1,7 @@
 import { CONNECTIONS2023 } from "./2022";
 import { CONNECTIONS2024 } from "./2023";
 import { CONNECTIONS2025 } from "./2024";
+import { CONNECTIONS2026 } from "./2026";
 
 export const CONNECTIONS_COLOR = ["#f8b703", "#949217", "#89b4c4", "#c1a7b0"];
 
@@ -23,4 +24,5 @@ export const KOREAN_CONNECTIONS: Record<number, ConnectionsType[]> = {
   2023: CONNECTIONS2023,
   2024: CONNECTIONS2024,
   2025: CONNECTIONS2025,
+  2026: CONNECTIONS2026,
 };
