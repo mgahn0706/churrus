@@ -148,11 +148,17 @@ export default function Connections() {
 
   const connectionAnswers = selectedConnection.quiz.map((quiz) => quiz.words);
   const currentYearConnections = KOREAN_CONNECTIONS[connectionDate.year] ?? [];
+  const currentYearIndex = CONNECTION_YEARS.indexOf(connectionDate.year);
+  const previousYear = CONNECTION_YEARS[currentYearIndex - 1];
+  const nextYear = CONNECTION_YEARS[currentYearIndex + 1];
+  const latestYear = CONNECTION_YEARS[CONNECTION_YEARS.length - 1];
+  const latestYearConnections = KOREAN_CONNECTIONS[latestYear] ?? [];
   const isCurrentWeek =
     connectionDate.year === today.year() && connectionDate.week === today.week();
   const isLastConnection =
+    connectionDate.year === latestYear &&
     selectedConnection.week ===
-    (currentYearConnections[currentYearConnections.length - 1]?.week ?? 1);
+      (latestYearConnections[latestYearConnections.length - 1]?.week ?? 1);
   const visibleWeekCount =
     today.year() === connectionDate.year
       ? Math.max(today.week(), connectionDate.week)
@@ -178,9 +184,9 @@ export default function Connections() {
             setConnectionDate(
               selectedConnection.week === 1
                 ? {
-                    year: connectionDate.year - 1,
-                    week:
-                      KOREAN_CONNECTIONS[connectionDate.year - 1]?.length ?? 1,
+                    year: previousYear ?? connectionDate.year,
+                    week: KOREAN_CONNECTIONS[previousYear ?? connectionDate.year]
+                      ?.length ?? 1,
                   }
                 : {
                     year: connectionDate.year,
@@ -266,10 +272,17 @@ export default function Connections() {
               return;
             }
             setConnectionDate(
-              {
-                year: connectionDate.year,
-                week: connectionDate.week + 1,
-              }
+              selectedConnection.week ===
+                (currentYearConnections[currentYearConnections.length - 1]?.week ??
+                  1)
+                ? {
+                    year: nextYear ?? connectionDate.year,
+                    week: 1,
+                  }
+                : {
+                    year: connectionDate.year,
+                    week: connectionDate.week + 1,
+                  }
             );
             resetConnection();
           }}
