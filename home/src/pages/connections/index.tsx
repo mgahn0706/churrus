@@ -81,6 +81,15 @@ dayjs.extend(weekOfYear);
 const CONNECTION_YEARS = Object.keys(KOREAN_CONNECTIONS)
   .map(Number)
   .sort((a, b) => a - b);
+const INITIAL_CONNECTION_DATE = (() => {
+  const year = CONNECTION_YEARS[CONNECTION_YEARS.length - 1] ?? dayjs().year();
+  const latestConnections = KOREAN_CONNECTIONS[year] ?? [];
+
+  return {
+    year,
+    week: latestConnections[latestConnections.length - 1]?.week ?? 1,
+  };
+})();
 
 const shuffle = <T,>(items: T[]) => [...items].sort(() => Math.random() - 0.5);
 
@@ -104,9 +113,7 @@ export default function Connections() {
   const [solvedGroups, setSolvedGroups] = useState<number[]>([]);
   const [isRuleModalOpen, setIsRuleModalOpen] = useState(false);
   const [triedCount, setTriedCount] = useState([0, 0, 0, 0]);
-  const [connectionDate, setConnectionDate] = useState(() =>
-    getCurrentConnectionDate(dayjs("2025-01-01"))
-  );
+  const [connectionDate, setConnectionDate] = useState(INITIAL_CONNECTION_DATE);
 
   useEffect(() => {
     const nextToday = dayjs();
@@ -140,6 +147,22 @@ export default function Connections() {
   }
 
   const connectionAnswers = selectedConnection.quiz.map((quiz) => quiz.words);
+  const currentYearConnections = KOREAN_CONNECTIONS[connectionDate.year] ?? [];
+  const currentYearIndex = CONNECTION_YEARS.indexOf(connectionDate.year);
+  const previousYear = CONNECTION_YEARS[currentYearIndex - 1];
+  const nextYear = CONNECTION_YEARS[currentYearIndex + 1];
+  const latestYear = CONNECTION_YEARS[CONNECTION_YEARS.length - 1];
+  const latestYearConnections = KOREAN_CONNECTIONS[latestYear] ?? [];
+  const isCurrentWeek =
+    connectionDate.year === today.year() && connectionDate.week === today.week();
+  const isLastConnection =
+    connectionDate.year === latestYear &&
+    selectedConnection.week ===
+      (latestYearConnections[latestYearConnections.length - 1]?.week ?? 1);
+  const visibleWeekCount =
+    today.year() === connectionDate.year
+      ? Math.max(today.week(), connectionDate.week)
+      : currentYearConnections.length;
 
   const ConnectionStepper = () => {
     return (
@@ -161,9 +184,9 @@ export default function Connections() {
             setConnectionDate(
               selectedConnection.week === 1
                 ? {
-                    year: connectionDate.year - 1,
-                    week:
-                      KOREAN_CONNECTIONS[connectionDate.year - 1]?.length ?? 1,
+                    year: previousYear ?? connectionDate.year,
+                    week: KOREAN_CONNECTIONS[previousYear ?? connectionDate.year]
+                      ?.length ?? 1,
                   }
                 : {
                     year: connectionDate.year,
@@ -232,10 +255,7 @@ export default function Connections() {
                 }}
               >
                 {KOREAN_CONNECTIONS[connectionDate.year]
-                  .slice(
-                    0,
-                    today.year() === connectionDate.year ? today.week() : 53
-                  )
+                  .slice(0, visibleWeekCount)
                   .map((week) => (
                     <MenuItem key={week.week} value={week.week}>
                       Week {week.week}
@@ -248,10 +268,17 @@ export default function Connections() {
         <IconButton
           color="primary"
           onClick={() => {
+            if (isLastConnection || isCurrentWeek) {
+              return;
+            }
             setConnectionDate(
               selectedConnection.week ===
-                KOREAN_CONNECTIONS[connectionDate.year].length
-                ? { year: connectionDate.year + 1, week: 1 }
+                (currentYearConnections[currentYearConnections.length - 1]?.week ??
+                  1)
+                ? {
+                    year: nextYear ?? connectionDate.year,
+                    week: 1,
+                  }
                 : {
                     year: connectionDate.year,
                     week: connectionDate.week + 1,
@@ -259,10 +286,7 @@ export default function Connections() {
             );
             resetConnection();
           }}
-          disabled={
-            connectionDate.year === today.get("year") &&
-            connectionDate.week === today.week()
-          }
+          disabled={isLastConnection || isCurrentWeek}
         >
           <NavigateNext />
         </IconButton>
