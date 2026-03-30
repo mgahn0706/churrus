@@ -82,7 +82,7 @@ export const mountainClues: ClueType[] = [
     x: 28,
     y: 66,
     image: "/image/suspect/scenario/mountain/clues/mountain-6.png",
-    description: "천람석의 스마트폰이다. ",
+    description: "천람석의 스마트폰이다.",
     type: "basic",
     place: "entrance",
   },

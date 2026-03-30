@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import Image from "next/image";
 import PlayButtonIcon from "@mui/icons-material/PlayCircleFilled";
+import LaunchRounded from "@mui/icons-material/LaunchRounded";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { DetectiveNoteType } from "@/features/suspect/types";
@@ -328,9 +329,17 @@ export default function MountainAnswer() {
             alignItems="center"
             mt={10}
           >
-            <Typography color="white" variant="body1" sx={{ mb: 10 }}>
-              청룡산 살인사건의 용의자 롤카드 PDF는 아직 등록되지 않았습니다.
-            </Typography>
+            <Button
+              variant="contained"
+              color="info"
+              href="https://drive.google.com/file/d/14pplWE_2NXsdxXvI24b-uQhNv_M-iEpj/view?usp=sharing"
+              target="_blank"
+              rel="noopener noreferrer"
+              sx={{ mb: 10 }}
+            >
+              용의자 롤카드 PDF 다운로드
+              <LaunchRounded sx={{ ml: 1, fontSize: 20 }} />
+            </Button>
           </Box>
         </TabPanel>
       </Box>
