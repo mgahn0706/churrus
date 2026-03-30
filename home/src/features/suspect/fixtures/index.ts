@@ -150,7 +150,7 @@ export const scenarios: ScenarioType[] = [
     backgroundImage: "/image/suspect/scenario/mountain/mountain-main.png",
     isInDevelopment: true,
     description: "청룡산 등산로에서 발생한 의문의 추락사건",
-    places: ["cafe", "intersection"],
+    places: ["intersection", "cafe", "entrance"],
     suspects: mountainSuspects,
     victims: [mountainVictim],
     clues: mountainClues,

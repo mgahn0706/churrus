@@ -15,4 +15,18 @@ export const mountainMoveButton: MovePlaceButtonType[] = [
     y: 12,
     direction: "up",
   },
+  {
+    from: "intersection",
+    to: "entrance",
+    x: 62,
+    y: 89,
+    direction: "down",
+  },
+  {
+    from: "entrance",
+    to: "intersection",
+    x: 50,
+    y: 10,
+    direction: "up",
+  },
 ];
