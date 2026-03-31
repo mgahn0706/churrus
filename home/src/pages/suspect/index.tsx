@@ -2,15 +2,15 @@
 
 import { Box, Button, Typography, Chip } from "@mui/material";
 import { PlayArrowRounded, PeopleAlt, Search } from "@mui/icons-material";
-import { useState, useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
-import { scenarios as sourceScenarios } from "@/features/suspect/fixtures";
+import { useState, useEffect, useRef, useCallback } from "react";
+import Image from "next/image";
+import { useRouter } from "next/router";
+import { scenarioPreviews } from "@/features/suspect/fixtures/preview";
 import Header from "@/features/suspect/components/Header";
 
 export default function Suspect() {
-  const scenarios = sourceScenarios;
+  const scenarios = scenarioPreviews;
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [fadeKey, setFadeKey] = useState(0);
   const router = useRouter();
   const current = scenarios[currentIndex];
   const itemRefs = useRef<Array<HTMLDivElement | null>>([]);
@@ -22,15 +22,15 @@ export default function Suspect() {
     return "N/A";
   };
 
-  const handleSelect = () => {
+  const handleSelect = useCallback(() => {
     router.push(`/suspect/scenario/${current.id}`);
-  };
+  }, [current.id, router]);
 
-  const changeIndex = (index: number) => {
+  const changeIndex = useCallback((index: number) => {
     const safeIndex = (index + scenarios.length) % scenarios.length;
-    setFadeKey((p) => p + 1);
+    if (safeIndex === currentIndexRef.current) return;
     setCurrentIndex(safeIndex);
-  };
+  }, [scenarios.length]);
 
   /* ===========================
      TAB NAVIGATION
@@ -54,7 +54,7 @@ export default function Suspect() {
 
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
-  }, []);
+  }, [changeIndex, handleSelect]);
 
   useEffect(() => {
     const node = itemRefs.current[currentIndex];
@@ -138,8 +138,8 @@ export default function Suspect() {
               position: "relative",
               borderRadius: 5,
               overflow: "hidden",
-              backdropFilter: "blur(24px)",
-              background: "rgba(255,255,255,0.04)",
+              backdropFilter: { xs: "none", md: "blur(18px)" },
+              background: { xs: "rgba(8,10,14,0.92)", md: "rgba(255,255,255,0.04)" },
               border: `1px solid ${current.color}33`,
               boxShadow: "0 40px 120px rgba(0,0,0,0.8)",
               animation: { xs: "none", md: "panelIn 600ms ease-out" },
@@ -200,20 +200,23 @@ export default function Suspect() {
                       flexShrink: 0,
                     }}
                   >
-                    <Box
-                      component="img"
-                      src={s.backgroundImage}
-                      alt={s.title}
-                      sx={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                        filter: active
-                          ? "brightness(1)"
-                          : "brightness(0.6) grayscale(40%)",
-                        transition: "all .6s ease",
-                      }}
-                    />
+                    <Box sx={{ position: "absolute", inset: 0 }}>
+                      <Image
+                        src={s.backgroundImage}
+                        alt={s.title}
+                        fill
+                        sizes="(max-width: 900px) 260px, 330px"
+                        loading="lazy"
+                        quality={65}
+                        style={{
+                          objectFit: "cover",
+                          filter: active
+                            ? "brightness(1)"
+                            : "brightness(0.6) grayscale(40%)",
+                          transition: "filter .6s ease",
+                        }}
+                      />
+                    </Box>
 
                     {/* Dark gradient */}
                     <Box
@@ -282,19 +285,28 @@ export default function Suspect() {
             >
               {/* HERO IMAGE */}
               <Box
-                key={fadeKey}
-                component="img"
-                src={current.backgroundImage}
-                alt={current.title}
                 sx={{
+                  position: "relative",
                   width: "100%",
                   height: { xs: 220, sm: 280, md: "100%" },
-                  objectFit: "cover",
-                  objectPosition: "center",
-                  filter: "brightness(0.65)",
-                  transition: "opacity .6s ease",
                 }}
-              />
+              >
+                <Image
+                  key={current.id}
+                  src={current.backgroundImage}
+                  alt={current.title}
+                  fill
+                  priority
+                  sizes="(max-width: 900px) 100vw, 900px"
+                  quality={72}
+                  style={{
+                    objectFit: "cover",
+                    objectPosition: "center",
+                    filter: "brightness(0.65)",
+                    transition: "opacity .4s ease",
+                  }}
+                />
+              </Box>
 
               {/* Base dark gradient */}
               <Box
@@ -414,7 +426,7 @@ export default function Suspect() {
               background: "rgba(255,255,255,0.04)",
               border: `1px solid ${current.color}33`,
               boxShadow: `0 30px 80px ${current.color}1f`,
-              backdropFilter: "blur(18px)",
+              backdropFilter: { xs: "none", md: "blur(14px)" },
               position: "relative",
               overflow: { xs: "visible", md: "hidden" },
               minHeight: 0,
@@ -485,17 +497,25 @@ export default function Suspect() {
                       }}
                     >
                       <Box
-                        component="img"
-                        src={victim.image}
-                        alt={victim.name}
                         sx={{
                           width: 44,
                           height: 44,
                           borderRadius: 1.5,
-                          objectFit: "cover",
+                          overflow: "hidden",
+                          position: "relative",
                           flexShrink: 0,
                         }}
-                      />
+                      >
+                        <Image
+                          src={victim.image || current.backgroundImage}
+                          alt={victim.name}
+                          fill
+                          sizes="44px"
+                          loading="lazy"
+                          quality={60}
+                          style={{ objectFit: "cover" }}
+                        />
+                      </Box>
                       <Box sx={{ minWidth: 0 }}>
                         <Typography sx={{ fontSize: 14, fontWeight: 700 }}>
                           {victim.name}
@@ -542,17 +562,25 @@ export default function Suspect() {
                       }}
                     >
                       <Box
-                        component="img"
-                        src={suspect.image}
-                        alt={suspect.name}
                         sx={{
                           width: 44,
                           height: 44,
                           borderRadius: 1.5,
-                          objectFit: "cover",
+                          overflow: "hidden",
+                          position: "relative",
                           flexShrink: 0,
                         }}
-                      />
+                      >
+                        <Image
+                          src={suspect.image || current.backgroundImage}
+                          alt={suspect.name}
+                          fill
+                          sizes="44px"
+                          loading="lazy"
+                          quality={60}
+                          style={{ objectFit: "cover" }}
+                        />
+                      </Box>
                       <Box sx={{ minWidth: 0 }}>
                         <Typography sx={{ fontSize: 14, fontWeight: 700 }}>
                           {suspect.name}
