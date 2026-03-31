@@ -5,11 +5,10 @@ import { PlayArrowRounded, PeopleAlt, Search } from "@mui/icons-material";
 import { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { scenarioPreviews } from "@/features/suspect/fixtures/preview";
+import { scenarios } from "@/features/suspect/fixtures";
 import Header from "@/features/suspect/components/Header";
 
 export default function Suspect() {
-  const scenarios = scenarioPreviews;
   const [currentIndex, setCurrentIndex] = useState(0);
   const router = useRouter();
   const current = scenarios[currentIndex];
@@ -30,7 +29,7 @@ export default function Suspect() {
     const safeIndex = (index + scenarios.length) % scenarios.length;
     if (safeIndex === currentIndexRef.current) return;
     setCurrentIndex(safeIndex);
-  }, [scenarios.length]);
+  }, []);
 
   /* ===========================
      TAB NAVIGATION
@@ -94,12 +93,7 @@ export default function Suspect() {
               radial-gradient(520px circle at 80% 30%, ${current.color}22, transparent 55%),
               radial-gradient(520px circle at 30% 80%, ${current.color}2b, transparent 60%)
             `,
-          filter: "blur(40px)",
-          animation: { xs: "none", md: "nebulaDrift 18s ease-in-out infinite alternate" },
-          "@keyframes nebulaDrift": {
-            "0%": { transform: "translate3d(-2%, -1%, 0) scale(1)" },
-            "100%": { transform: "translate3d(2%, 1%, 0) scale(1.05)" },
-          },
+          filter: { xs: "none", md: "blur(24px)" },
           zIndex: 0,
           pointerEvents: "none",
         }}
@@ -138,15 +132,9 @@ export default function Suspect() {
               position: "relative",
               borderRadius: 5,
               overflow: "hidden",
-              backdropFilter: { xs: "none", md: "blur(18px)" },
               background: { xs: "rgba(8,10,14,0.92)", md: "rgba(255,255,255,0.04)" },
               border: `1px solid ${current.color}33`,
-              boxShadow: "0 40px 120px rgba(0,0,0,0.8)",
-              animation: { xs: "none", md: "panelIn 600ms ease-out" },
-              "@keyframes panelIn": {
-                "0%": { transform: "translateY(10px)", opacity: 0.6 },
-                "100%": { transform: "translateY(0)", opacity: 1 },
-              },
+              boxShadow: "0 24px 72px rgba(0,0,0,0.55)",
               flexDirection: { xs: "column", md: "row" },
             }}
           >
@@ -192,53 +180,33 @@ export default function Suspect() {
                       minWidth: { xs: 240, sm: 260, md: "auto" },
                       cursor: "pointer",
                       overflow: "hidden",
-                      transition: "transform 250ms ease, box-shadow 250ms ease",
+                      background: active
+                        ? `linear-gradient(135deg, ${s.color}2f, rgba(255,255,255,0.03))`
+                        : "rgba(255,255,255,0.02)",
+                      borderBottom: "1px solid rgba(255,255,255,0.05)",
+                      transition: "background-color 200ms ease, border-color 200ms ease",
                       "&:hover": {
-                        transform: "translateX(4px)",
-                        boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.12)",
+                        borderColor: `${s.color}55`,
                       },
                       flexShrink: 0,
                     }}
                   >
-                    <Box sx={{ position: "absolute", inset: 0 }}>
-                      <Image
-                        src={s.backgroundImage}
-                        alt={s.title}
-                        fill
-                        sizes="(max-width: 900px) 260px, 330px"
-                        loading="lazy"
-                        quality={65}
-                        style={{
-                          objectFit: "cover",
-                          filter: active
-                            ? "brightness(1)"
-                            : "brightness(0.6) grayscale(40%)",
-                          transition: "filter .6s ease",
-                        }}
-                      />
-                    </Box>
-
-                    {/* Dark gradient */}
                     <Box
                       sx={{
                         position: "absolute",
                         inset: 0,
                         background:
-                          "linear-gradient(to right, rgba(0,0,0,0.95), rgba(0,0,0,0.6) 40%, transparent)",
+                          "linear-gradient(to right, rgba(0,0,0,0.92), rgba(0,0,0,0.55) 45%, rgba(0,0,0,0.15))",
                       }}
                     />
 
-                    {/* Scenario color overlay (subtle) */}
-                    {active && (
-                      <Box
-                        sx={{
-                          position: "absolute",
-                          inset: 0,
-                          background: `linear-gradient(to right, ${s.color}33, transparent 60%)`,
-                          transition: "opacity .6s ease",
-                        }}
-                      />
-                    )}
+                    <Box
+                      sx={{
+                        position: "absolute",
+                        inset: 0,
+                        background: `linear-gradient(to right, ${s.color}${active ? "40" : "18"}, transparent 65%)`,
+                      }}
+                    />
 
                     <Typography
                       sx={{
@@ -262,9 +230,7 @@ export default function Suspect() {
                         fontSize: 17,
                         fontWeight: active ? 700 : 500,
                         letterSpacing: 0.8,
-                        transition: "transform 350ms ease",
-                        transform: active ? "scale(1.04)" : "scale(1)",
-                        transformOrigin: "left bottom",
+                        color: active ? "#fff" : "rgba(255,255,255,0.82)",
                       }}
                     >
                       {s.title}
@@ -425,8 +391,7 @@ export default function Suspect() {
               p: { xs: 2, md: 2 },
               background: "rgba(255,255,255,0.04)",
               border: `1px solid ${current.color}33`,
-              boxShadow: `0 30px 80px ${current.color}1f`,
-              backdropFilter: { xs: "none", md: "blur(14px)" },
+              boxShadow: `0 18px 48px rgba(0,0,0,0.28)`,
               position: "relative",
               overflow: { xs: "visible", md: "hidden" },
               minHeight: 0,
@@ -439,11 +404,6 @@ export default function Suspect() {
                 background: `linear-gradient(120deg, ${current.color}22, transparent 35%, transparent 70%, ${current.color}1a)`,
                 opacity: 0.35,
                 pointerEvents: "none",
-                animation: { xs: "none", md: "sheen 6s ease-in-out infinite" },
-                "@keyframes sheen": {
-                  "0%": { transform: "translateX(-30%)" },
-                  "100%": { transform: "translateX(30%)" },
-                },
               }}
             />
             <Box sx={{ px: 1, pt: 1 }}>
@@ -488,12 +448,6 @@ export default function Suspect() {
                         borderRadius: 2,
                         background: "rgba(255,255,255,0.03)",
                         border: "1px solid rgba(255,255,255,0.05)",
-                        transition: "transform 200ms ease, box-shadow 200ms ease",
-                        "&:hover": {
-                          transform: "translateY(-2px)",
-                          boxShadow:
-                            "0 10px 24px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(255,255,255,0.08)",
-                        },
                       }}
                     >
                       <Box
@@ -501,20 +455,17 @@ export default function Suspect() {
                           width: 44,
                           height: 44,
                           borderRadius: 1.5,
-                          overflow: "hidden",
-                          position: "relative",
                           flexShrink: 0,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          background: `${current.color}22`,
+                          color: current.color,
+                          fontSize: 18,
+                          fontWeight: 800,
                         }}
                       >
-                        <Image
-                          src={victim.image || current.backgroundImage}
-                          alt={victim.name}
-                          fill
-                          sizes="44px"
-                          loading="lazy"
-                          quality={60}
-                          style={{ objectFit: "cover" }}
-                        />
+                        {victim.name.slice(0, 1)}
                       </Box>
                       <Box sx={{ minWidth: 0 }}>
                         <Typography sx={{ fontSize: 14, fontWeight: 700 }}>
@@ -552,13 +503,6 @@ export default function Suspect() {
                         borderRadius: 2,
                         background: "rgba(255,255,255,0.03)",
                         border: "1px solid rgba(255,255,255,0.05)",
-                        transition:
-                          "transform 200ms ease, box-shadow 200ms ease",
-                        "&:hover": {
-                          transform: "translateY(-2px)",
-                          boxShadow:
-                            "0 10px 24px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(255,255,255,0.08)",
-                        },
                       }}
                     >
                       <Box
@@ -566,20 +510,17 @@ export default function Suspect() {
                           width: 44,
                           height: 44,
                           borderRadius: 1.5,
-                          overflow: "hidden",
-                          position: "relative",
                           flexShrink: 0,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          background: `${current.color}22`,
+                          color: current.color,
+                          fontSize: 18,
+                          fontWeight: 800,
                         }}
                       >
-                        <Image
-                          src={suspect.image || current.backgroundImage}
-                          alt={suspect.name}
-                          fill
-                          sizes="44px"
-                          loading="lazy"
-                          quality={60}
-                          style={{ objectFit: "cover" }}
-                        />
+                        {suspect.name.slice(0, 1)}
                       </Box>
                       <Box sx={{ minWidth: 0 }}>
                         <Typography sx={{ fontSize: 14, fontWeight: 700 }}>

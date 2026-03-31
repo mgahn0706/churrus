@@ -34,28 +34,6 @@ export interface SuspectType {
 
 export type VictimType = SuspectType;
 
-export interface ScenarioPreviewPersonType {
-  name: string;
-  image?: string;
-  age: number;
-  gender: "male" | "female";
-  job: string;
-}
-
-export interface ScenarioPreviewType {
-  color: string;
-  title: string;
-  numberOfSuspects: number;
-  backgroundImage: string;
-  id: string;
-  isInDevelopment: boolean;
-  histories?: string[];
-  description?: string;
-  gameType: "TEXT" | "CLUE";
-  suspects: ScenarioPreviewPersonType[];
-  victims: ScenarioPreviewPersonType[];
-}
-
 export interface ScenarioType {
   color: string;
   title: string;
