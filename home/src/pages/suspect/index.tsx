@@ -132,7 +132,10 @@ export default function Suspect() {
               position: "relative",
               borderRadius: 5,
               overflow: "hidden",
-              background: { xs: "rgba(8,10,14,0.92)", md: "rgba(255,255,255,0.04)" },
+              background: {
+                xs: "rgba(8,10,14,0.92)",
+                md: "rgba(255,255,255,0.04)",
+              },
               border: `1px solid ${current.color}33`,
               boxShadow: "0 24px 72px rgba(0,0,0,0.55)",
               flexDirection: { xs: "column", md: "row" },
@@ -184,7 +187,8 @@ export default function Suspect() {
                         ? `linear-gradient(135deg, ${s.color}2f, rgba(255,255,255,0.03))`
                         : "rgba(255,255,255,0.02)",
                       borderBottom: "1px solid rgba(255,255,255,0.05)",
-                      transition: "background-color 200ms ease, border-color 200ms ease",
+                      transition:
+                        "background-color 200ms ease, border-color 200ms ease",
                       "&:hover": {
                         borderColor: `${s.color}55`,
                       },
@@ -222,7 +226,9 @@ export default function Suspect() {
                       sx={{
                         position: "absolute",
                         inset: 0,
-                        background: `linear-gradient(to right, ${s.color}${active ? "40" : "18"}, transparent 65%)`,
+                        background: `linear-gradient(to right, ${s.color}${
+                          active ? "40" : "18"
+                        }, transparent 65%)`,
                       }}
                     />
 
@@ -335,7 +341,14 @@ export default function Suspect() {
                   {current.title}
                 </Typography>
 
-                <Box sx={{ display: "flex", gap: 1.5, mb: { xs: 2, md: 3 }, flexWrap: "wrap" }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    gap: 1.5,
+                    mb: { xs: 2, md: 3 },
+                    flexWrap: "wrap",
+                  }}
+                >
                   <Chip
                     icon={<PeopleAlt />}
                     label={`용의자 ${current.numberOfSuspects}명`}
@@ -350,7 +363,7 @@ export default function Suspect() {
                     label={
                       current.gameType === "CLUE"
                         ? "단서 탐색형"
-                        : "단서 검색형"
+                        : "키워드 검색형"
                     }
                     sx={{
                       bgcolor: `${current.color}22`,
@@ -509,62 +522,64 @@ export default function Suspect() {
               </Box>
 
               <Box sx={{ mt: 2 }}>
-              <Typography sx={{ fontSize: 13, opacity: 0.6, mb: 0.5 }}>
-                용의자 목록
-              </Typography>
-              <Box sx={{ display: "flex", flexDirection: "column", gap: 1.2 }}>
-                {current.suspects && current.suspects.length > 0 ? (
-                  current.suspects.map((suspect) => (
-                    <Box
-                      key={suspect.name}
-                      sx={{
-                        display: "flex",
-                        gap: 1.2,
-                        p: 1,
-                        borderRadius: 2,
-                        background: "rgba(255,255,255,0.03)",
-                        border: "1px solid rgba(255,255,255,0.05)",
-                      }}
-                    >
+                <Typography sx={{ fontSize: 13, opacity: 0.6, mb: 0.5 }}>
+                  용의자 목록
+                </Typography>
+                <Box
+                  sx={{ display: "flex", flexDirection: "column", gap: 1.2 }}
+                >
+                  {current.suspects && current.suspects.length > 0 ? (
+                    current.suspects.map((suspect) => (
                       <Box
+                        key={suspect.name}
                         sx={{
-                          width: 44,
-                          height: 44,
-                          borderRadius: 1.5,
-                          overflow: "hidden",
-                          position: "relative",
-                          flexShrink: 0,
+                          display: "flex",
+                          gap: 1.2,
+                          p: 1,
+                          borderRadius: 2,
+                          background: "rgba(255,255,255,0.03)",
+                          border: "1px solid rgba(255,255,255,0.05)",
                         }}
                       >
-                        <Image
-                          src={suspect.image || current.backgroundImage}
-                          alt={suspect.name}
-                          fill
-                          sizes="44px"
-                          loading="lazy"
-                          quality={60}
-                          style={{ objectFit: "cover" }}
-                        />
+                        <Box
+                          sx={{
+                            width: 44,
+                            height: 44,
+                            borderRadius: 1.5,
+                            overflow: "hidden",
+                            position: "relative",
+                            flexShrink: 0,
+                          }}
+                        >
+                          <Image
+                            src={suspect.image || current.backgroundImage}
+                            alt={suspect.name}
+                            fill
+                            sizes="44px"
+                            loading="lazy"
+                            quality={60}
+                            style={{ objectFit: "cover" }}
+                          />
+                        </Box>
+                        <Box sx={{ minWidth: 0 }}>
+                          <Typography sx={{ fontSize: 14, fontWeight: 700 }}>
+                            {suspect.name}
+                          </Typography>
+                          <Typography sx={{ fontSize: 12, opacity: 0.7 }}>
+                            {suspect.job}
+                          </Typography>
+                          <Typography sx={{ fontSize: 12, opacity: 0.6 }}>
+                            {suspect.age}세 · {genderLabel(suspect.gender)}
+                          </Typography>
+                        </Box>
                       </Box>
-                      <Box sx={{ minWidth: 0 }}>
-                        <Typography sx={{ fontSize: 14, fontWeight: 700 }}>
-                          {suspect.name}
-                        </Typography>
-                        <Typography sx={{ fontSize: 12, opacity: 0.7 }}>
-                          {suspect.job}
-                        </Typography>
-                        <Typography sx={{ fontSize: 12, opacity: 0.6 }}>
-                          {suspect.age}세 · {genderLabel(suspect.gender)}
-                        </Typography>
-                      </Box>
-                    </Box>
-                  ))
-                ) : (
-                  <Typography sx={{ fontSize: 13, opacity: 0.5 }}>
-                    용의자 정보를 준비 중입니다.
-                  </Typography>
-                )}
-              </Box>
+                    ))
+                  ) : (
+                    <Typography sx={{ fontSize: 13, opacity: 0.5 }}>
+                      용의자 정보를 준비 중입니다.
+                    </Typography>
+                  )}
+                </Box>
               </Box>
             </Box>
 
