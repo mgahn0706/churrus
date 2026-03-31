@@ -191,6 +191,24 @@ export default function Suspect() {
                       flexShrink: 0,
                     }}
                   >
+                    <Box sx={{ position: "absolute", inset: 0 }}>
+                      <Image
+                        src={s.backgroundImage}
+                        alt={s.title}
+                        fill
+                        sizes="(max-width: 900px) 260px, 330px"
+                        loading="lazy"
+                        quality={65}
+                        style={{
+                          objectFit: "cover",
+                          filter: active
+                            ? "brightness(1)"
+                            : "brightness(0.6) grayscale(40%)",
+                          transition: "filter .6s ease",
+                        }}
+                      />
+                    </Box>
+
                     <Box
                       sx={{
                         position: "absolute",
@@ -455,17 +473,20 @@ export default function Suspect() {
                           width: 44,
                           height: 44,
                           borderRadius: 1.5,
+                          overflow: "hidden",
+                          position: "relative",
                           flexShrink: 0,
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          background: `${current.color}22`,
-                          color: current.color,
-                          fontSize: 18,
-                          fontWeight: 800,
                         }}
                       >
-                        {victim.name.slice(0, 1)}
+                        <Image
+                          src={victim.image || current.backgroundImage}
+                          alt={victim.name}
+                          fill
+                          sizes="44px"
+                          loading="lazy"
+                          quality={60}
+                          style={{ objectFit: "cover" }}
+                        />
                       </Box>
                       <Box sx={{ minWidth: 0 }}>
                         <Typography sx={{ fontSize: 14, fontWeight: 700 }}>
@@ -510,17 +531,20 @@ export default function Suspect() {
                           width: 44,
                           height: 44,
                           borderRadius: 1.5,
+                          overflow: "hidden",
+                          position: "relative",
                           flexShrink: 0,
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          background: `${current.color}22`,
-                          color: current.color,
-                          fontSize: 18,
-                          fontWeight: 800,
                         }}
                       >
-                        {suspect.name.slice(0, 1)}
+                        <Image
+                          src={suspect.image || current.backgroundImage}
+                          alt={suspect.name}
+                          fill
+                          sizes="44px"
+                          loading="lazy"
+                          quality={60}
+                          style={{ objectFit: "cover" }}
+                        />
                       </Box>
                       <Box sx={{ minWidth: 0 }}>
                         <Typography sx={{ fontSize: 14, fontWeight: 700 }}>
