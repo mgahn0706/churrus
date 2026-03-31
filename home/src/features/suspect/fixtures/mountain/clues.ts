@@ -100,7 +100,7 @@ export const mountainClues: ClueType[] = [
   {
     id: 8,
     title: "사진: 19시 36분",
-    x: 8,
+    x: 18,
     y: 20,
     image: "/image/suspect/scenario/mountain/clues/mountain-8.png",
     description:
