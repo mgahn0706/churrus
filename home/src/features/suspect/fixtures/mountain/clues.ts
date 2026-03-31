@@ -543,7 +543,7 @@ export const mountainClues: ClueType[] = [
     y: 73,
     image: "/image/suspect/scenario/mountain/clues/mountain-49.png",
     description:
-      "추리수가 원래 인성이 좀 안좋아요. 과에서 평판도 안좋고. 말도 함부로 하는 경향이 있죠. 자기만의 세계가 있다고 해야하나... 솔직히 저도 옆에서 듣다보면 좀 불편할 때가 있어요.",
+      "추리수가 원래 인성이 좀 안좋아요. 과에서 평판도 안좋고. 말도 함부로 하는 경향이 있어서 몸싸움으로 번진 적도 있죠. 자기만의 세계가 있다고 해야하나... 솔직히 저도 옆에서 듣다보면 좀 불편할 때가 있어요.",
     type: "basic",
     place: "entrance",
   },
