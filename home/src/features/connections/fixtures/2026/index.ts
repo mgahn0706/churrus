@@ -127,4 +127,88 @@ export const CONNECTIONS2026: ConnectionsType[] = [
       },
     ],
   },
+  {
+    week: 7,
+    quiz: [
+      {
+        words: ["동풍", "계절풍", "산들바람", "토네이도"],
+        description: "바람의 종류",
+      },
+      {
+        words: ["군", "양", "씨", "님"],
+        description: "이름 뒤에 붙여 부르는 호칭",
+      },
+      {
+        words: ["다스", "모", "첩", "개"],
+        description: "단위",
+      },
+      {
+        words: ["구미", "문", "시위", "고삐"],
+        description: "당겨길 수 있는 것",
+      },
+    ],
+  },
+  {
+    week: 8,
+    quiz: [
+      {
+        words: ["에잇", "치", "흥", "에라"],
+        description: "짜증을 낼 때 쓰는 감탄사",
+      },
+      {
+        words: ["포", "졸", "차", "마"],
+        description: "장기의 말",
+      },
+      {
+        words: ["원", "총", "분", "릉"],
+        description: "무덤의 종류",
+      },
+      {
+        words: ["강", "시간", "전기", "윤기"],
+        description: "흐를 수 있는 것",
+      },
+    ],
+  },
+  {
+    week: 9,
+    quiz: [
+      {
+        words: ["도", "솔", "라", "시"],
+        description: "계이름",
+      },
+      {
+        words: ["숯", "구리", "철", "금"],
+        description: "마인크래프트 지하광물",
+      },
+      {
+        words: ["분", "인", "놈", "명"],
+        description: "사람의 세는 단위",
+      },
+      {
+        words: ["군", "립", "달", "야"],
+        description: "__ 밤",
+      },
+    ],
+  },
+  {
+    week: 10,
+    quiz: [
+      {
+        words: ["물리", "수학", "역사", "영어"],
+        description: "고등학교 과목 이름",
+      },
+      {
+        words: ["뚝배기", "두부", "두", "대가리"],
+        description: "머리를 뜻하는 것",
+      },
+      {
+        words: ["꽃", "빵", "하우스", "칠"],
+        description: "풀 __",
+      },
+      {
+        words: ["근", "지구", "일", "복사"],
+        description: "__ 본",
+      },
+    ],
+  },
 ];
