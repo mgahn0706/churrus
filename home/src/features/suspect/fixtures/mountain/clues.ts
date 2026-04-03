@@ -257,7 +257,7 @@ export const mountainClues: ClueType[] = [
     y: 39,
     image: "/image/suspect/scenario/mountain/clues/mountain-22.png",
     description:
-      "TURQUOISE라는 제목의 책이다. 동굴 안 석판 위에 반듯이 놓여있다. 내용은 읽기 힘들지만, 청록색에 관한 책이다.",
+      "TURQUOISE라는 제목의 책이다. 동굴 안 석판 위에 반듯이 놓여있다. 내용은 읽기 힘들지만, 청록색에 관한 책이다. 그 안에는 여름 풍경과 청록색 관련 자연물들이 매우 신성하게 다뤄져 있다.",
     type: "additional",
     place: 21,
   },
