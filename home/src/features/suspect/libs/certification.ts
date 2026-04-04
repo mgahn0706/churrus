@@ -32,6 +32,9 @@ export function getAllCertificationCards(): CertificationCardType[] {
     "dure",
     "museum",
     "serial",
+    "mountain",
+    "kpop",
+    "bluemoon",
   ]
     .map((scenarioId) => buildCertificationCard(scenarioId))
     .filter((card): card is CertificationCardType => card != null);

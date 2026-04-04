@@ -1,4 +1,4 @@
-import { VolumeUpRounded, VolumeOffRounded } from "@mui/icons-material";
+import { VolumeUpRounded } from "@mui/icons-material";
 import { Box, Typography, IconButton, Tooltip } from "@mui/material";
 import { useRouter } from "next/router";
 
@@ -83,23 +83,44 @@ export default function Header() {
         </Box>
       </Box>
 
-      {/* Right: BGM Toggle */}
-      <Tooltip title={"BGM"} arrow>
-        <IconButton
-          onClick={toggleBgm}
+      <Box display="flex" alignItems="center" gap={1}>
+        <Box
+          onClick={() => router.push("/")}
           sx={{
-            color: "white",
-            bgcolor: "rgba(255,255,255,0.1)",
+            cursor: "pointer",
+            px: "10px",
+            py: "6px",
+            borderRadius: "999px",
+            color: "rgba(255,255,255,0.68)",
+            transition: "color 0.2s ease, background-color 0.2s ease",
             "&:hover": {
-              bgcolor: "rgba(255,255,255,0.2)",
+              color: "rgba(255,255,255,0.92)",
+              backgroundColor: "rgba(255,255,255,0.06)",
             },
-            borderRadius: "50%",
-            transition: "all 0.3s ease",
           }}
         >
-          <VolumeUpRounded />
-        </IconButton>
-      </Tooltip>
+          <Typography fontSize={13} fontWeight={500}>
+            추러스 사이트로 돌아가기
+          </Typography>
+        </Box>
+
+        <Tooltip title={"BGM"} arrow>
+          <IconButton
+            onClick={toggleBgm}
+            sx={{
+              color: "white",
+              bgcolor: "rgba(255,255,255,0.1)",
+              "&:hover": {
+                bgcolor: "rgba(255,255,255,0.2)",
+              },
+              borderRadius: "50%",
+              transition: "all 0.3s ease",
+            }}
+          >
+            <VolumeUpRounded />
+          </IconButton>
+        </Tooltip>
+      </Box>
     </Box>
   );
 }

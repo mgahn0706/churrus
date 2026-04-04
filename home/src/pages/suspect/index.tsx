@@ -31,6 +31,98 @@ export default function Suspect() {
     setCurrentIndex(safeIndex);
   }, []);
 
+  const renderPersonCard = (
+    person: {
+      name: string;
+      age: number;
+      gender: "male" | "female";
+      job: string;
+      image?: string;
+    },
+    fallbackImage: string
+  ) => (
+    <Box
+      key={person.name}
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        gap: 1.1,
+        p: 1,
+        borderRadius: 2,
+        background: "rgba(255,255,255,0.03)",
+        border: "1px solid rgba(255,255,255,0.05)",
+        minWidth: 0,
+      }}
+    >
+      <Box
+        sx={{
+          width: 44,
+          height: 44,
+          borderRadius: 1.5,
+          overflow: "hidden",
+          position: "relative",
+          flexShrink: 0,
+        }}
+      >
+        <Image
+          src={person.image || fallbackImage}
+          alt={person.name}
+          fill
+          sizes="44px"
+          loading="lazy"
+          quality={60}
+          style={{ objectFit: "cover" }}
+        />
+      </Box>
+      <Box sx={{ minWidth: 0, flex: 1 }}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "baseline",
+            gap: 0.7,
+            minWidth: 0,
+          }}
+        >
+          <Typography
+            sx={{
+              fontSize: 14,
+              fontWeight: 700,
+              lineHeight: 1.2,
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
+            {person.name}
+          </Typography>
+          <Typography
+            sx={{
+              fontSize: 12,
+              opacity: 0.58,
+              lineHeight: 1.2,
+              whiteSpace: "nowrap",
+              flexShrink: 0,
+            }}
+          >
+            {person.age}세 · {genderLabel(person.gender)}
+          </Typography>
+        </Box>
+        <Typography
+          sx={{
+            fontSize: 12,
+            opacity: 0.72,
+            lineHeight: 1.35,
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+          }}
+        >
+          {person.job}
+        </Typography>
+      </Box>
+    </Box>
+  );
+
   /* ===========================
      TAB NAVIGATION
   =========================== */
@@ -467,53 +559,11 @@ export default function Suspect() {
               <Typography sx={{ fontSize: 13, opacity: 0.6, mb: 0.5 }}>
                 피해자
               </Typography>
-              <Box sx={{ display: "flex", flexDirection: "column", gap: 1.2 }}>
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 0.8 }}>
                 {current.victims && current.victims.length > 0 ? (
-                  current.victims.map((victim) => (
-                    <Box
-                      key={victim.name}
-                      sx={{
-                        display: "flex",
-                        gap: 1.2,
-                        p: 1,
-                        borderRadius: 2,
-                        background: "rgba(255,255,255,0.03)",
-                        border: "1px solid rgba(255,255,255,0.05)",
-                      }}
-                    >
-                      <Box
-                        sx={{
-                          width: 44,
-                          height: 44,
-                          borderRadius: 1.5,
-                          overflow: "hidden",
-                          position: "relative",
-                          flexShrink: 0,
-                        }}
-                      >
-                        <Image
-                          src={victim.image || current.backgroundImage}
-                          alt={victim.name}
-                          fill
-                          sizes="44px"
-                          loading="lazy"
-                          quality={60}
-                          style={{ objectFit: "cover" }}
-                        />
-                      </Box>
-                      <Box sx={{ minWidth: 0 }}>
-                        <Typography sx={{ fontSize: 14, fontWeight: 700 }}>
-                          {victim.name}
-                        </Typography>
-                        <Typography sx={{ fontSize: 12, opacity: 0.7 }}>
-                          {victim.job}
-                        </Typography>
-                        <Typography sx={{ fontSize: 12, opacity: 0.6 }}>
-                          {victim.age}세 · {genderLabel(victim.gender)}
-                        </Typography>
-                      </Box>
-                    </Box>
-                  ))
+                  current.victims.map((victim) =>
+                    renderPersonCard(victim, current.backgroundImage)
+                  )
                 ) : (
                   <Typography sx={{ fontSize: 13, opacity: 0.5 }}>
                     피해자 정보를 준비 중입니다.
@@ -526,54 +576,12 @@ export default function Suspect() {
                   용의자 목록
                 </Typography>
                 <Box
-                  sx={{ display: "flex", flexDirection: "column", gap: 1.2 }}
+                  sx={{ display: "flex", flexDirection: "column", gap: 0.8 }}
                 >
                   {current.suspects && current.suspects.length > 0 ? (
-                    current.suspects.map((suspect) => (
-                      <Box
-                        key={suspect.name}
-                        sx={{
-                          display: "flex",
-                          gap: 1.2,
-                          p: 1,
-                          borderRadius: 2,
-                          background: "rgba(255,255,255,0.03)",
-                          border: "1px solid rgba(255,255,255,0.05)",
-                        }}
-                      >
-                        <Box
-                          sx={{
-                            width: 44,
-                            height: 44,
-                            borderRadius: 1.5,
-                            overflow: "hidden",
-                            position: "relative",
-                            flexShrink: 0,
-                          }}
-                        >
-                          <Image
-                            src={suspect.image || current.backgroundImage}
-                            alt={suspect.name}
-                            fill
-                            sizes="44px"
-                            loading="lazy"
-                            quality={60}
-                            style={{ objectFit: "cover" }}
-                          />
-                        </Box>
-                        <Box sx={{ minWidth: 0 }}>
-                          <Typography sx={{ fontSize: 14, fontWeight: 700 }}>
-                            {suspect.name}
-                          </Typography>
-                          <Typography sx={{ fontSize: 12, opacity: 0.7 }}>
-                            {suspect.job}
-                          </Typography>
-                          <Typography sx={{ fontSize: 12, opacity: 0.6 }}>
-                            {suspect.age}세 · {genderLabel(suspect.gender)}
-                          </Typography>
-                        </Box>
-                      </Box>
-                    ))
+                    current.suspects.map((suspect) =>
+                      renderPersonCard(suspect, current.backgroundImage)
+                    )
                   ) : (
                     <Typography sx={{ fontSize: 13, opacity: 0.5 }}>
                       용의자 정보를 준비 중입니다.

@@ -75,6 +75,7 @@ export interface CertificationCardType {
   title: string;
   description: string;
   image: string;
+  posterImage: string;
   date: string;
   isSuccess: boolean;
   color: string;

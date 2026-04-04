@@ -2,7 +2,7 @@ import { CertificationCardType, EpilogueSectionType } from "@/features/suspect/t
 import { scenarios } from "./index";
 
 interface ScenarioCertificationMetaType {
-  culprit: string;
+  culprit?: string;
   description: string;
   epilogueTitle: string;
   epilogueSubtitle: string;
@@ -148,6 +148,73 @@ const scenarioCertificationMeta: Record<string, ScenarioCertificationMetaType> =
       },
     ],
   },
+  mountain: {
+    culprit: "최령신",
+    description: "청룡산 등산로 끝에서 벌어진 추락 사건의 진실을 끝까지 추적한 기록입니다.",
+    epilogueTitle: "에필로그: 청룡산 아래 남은 소원",
+    epilogueSubtitle:
+      "절벽 아래로 사건은 끝났지만, 산을 둘러싼 믿음과 모욕의 기억은 더 오래 남았다.",
+    epilogueSections: [
+      {
+        heading: "잘못 놓인 표지판",
+        paragraphs: [
+          "추리수의 죽음은 단순한 실족처럼 보였지만, 엇갈린 동선과 누군가가 남긴 흔적은 사건을 다른 방향으로 끌고 갔다. 바뀐 표지판과 뒤엉킨 발자국은 우연이 아니라 마지막 실랑이의 구조를 드러내는 증거였다.",
+          "청룡산에 모인 사람들은 각자 사소한 거짓말과 회피를 품고 있었고, 그 탓에 진실은 한동안 더 깊은 안개 속에 숨을 수 있었다.",
+        ],
+      },
+      {
+        heading: "신앙과 상처",
+        paragraphs: [
+          "최령신의 고백은 범행의 순간보다도 그 이전에 오래 누적된 수치심과 불안을 더 선명하게 남겼다. 사건 이후 사람들은 누군가의 약점을 농담처럼 건드렸던 장면들을 다시 떠올리게 되었다.",
+          "청룡산은 다시 평소의 등산로로 돌아가겠지만, 그곳을 지나는 이들 가운데 몇몇은 표지판 하나와 말 한마디가 사람을 어디까지 몰아갈 수 있는지 오래 기억하게 된다.",
+        ],
+      },
+    ],
+  },
+  kpop: {
+    description: "무대 뒤편까지 파고든 탐정의 기록을 담은 케이팝 데몬 헌터스 인증 카드입니다.",
+    epilogueTitle: "에필로그: 스포트라이트가 꺼진 뒤",
+    epilogueSubtitle:
+      "환호와 조명이 걷힌 자리에서는, 끝내 감춰지지 못한 균열들이 서로의 얼굴을 드러냈다.",
+    epilogueSections: [
+      {
+        heading: "무대 위와 무대 아래",
+        paragraphs: [
+          "관객에게 보였던 팀워크와 서사는 사건 이후 전혀 다른 의미로 읽히기 시작했다. 완벽한 이미지로 포장된 관계일수록, 그 안에서 오래 눌려 있던 불안과 경쟁은 더 날카로운 흔적으로 남았다.",
+          "탐정이 확인한 기록은 단순한 스캔들이 아니라 누가 어떤 방식으로 시선을 통제했고, 누구의 침묵이 그 구조를 가능하게 했는지까지 보여 줬다.",
+        ],
+      },
+      {
+        heading: "남겨진 무대",
+        paragraphs: [
+          "사건 이후 사람들은 더 이상 퍼포먼스만으로 진실을 판단하지 않게 되었다. 노래와 안무, 방송용 멘트보다 중요한 것은 카메라 바깥에서 서로를 어떻게 대했는가였다.",
+          "케이팝 데몬 헌터스의 카드가 증명하는 것은 단순한 클리어 기록이 아니다. 가장 화려한 무대일수록 그림자도 더 선명해진다는 사실을 끝까지 확인한 기록이다.",
+        ],
+      },
+    ],
+  },
+  bluemoon: {
+    description: "푸른 달이 뜬 밤 조선시대 마을의 진실을 추적한 탐정에게 남는 인증 카드입니다.",
+    epilogueTitle: "에필로그: 푸른 달 아래의 고을",
+    epilogueSubtitle:
+      "한밤의 소란은 지나갔지만, 고을 사람들의 시선은 이전처럼 단순하게 돌아가지 않았다.",
+    epilogueSections: [
+      {
+        heading: "현령이 사라진 자리",
+        paragraphs: [
+          "김관우의 죽음은 한 사람의 몰락에 그치지 않고, 그를 둘러싸고 얽혀 있던 권력과 원한의 구조를 함께 끌어올렸다. 고을 사람들은 그를 두려워하면서도 이용했고, 그 관계의 균열이 사건 이후 한꺼번에 드러났다.",
+          "탐정이 맞춰 낸 동선과 진술의 틈은 밤의 정적보다 더 정확했다. 결국 푸른 달 아래 숨겨진 것은 초현상이 아니라 사람이 만든 계산과 감정이었다.",
+        ],
+      },
+      {
+        heading: "오래 남는 소문",
+        paragraphs: [
+          "사건이 종결된 뒤에도 월향루와 관청, 약방을 오가는 이야기들은 쉽게 사라지지 않았다. 사람들은 그날 밤 누구를 어디서 보았는지, 어떤 말이 거짓이었는지를 저마다 다른 버전으로 기억하게 된다.",
+          "그래도 한 가지는 분명하다. 그 밤의 진실은 더 이상 권세 있는 누군가의 말 한마디로 덮을 수 없는 기록이 되었다.",
+        ],
+      },
+    ],
+  },
 };
 
 export function buildCertificationCard(
@@ -166,10 +233,12 @@ export function buildCertificationCard(
     title: scenario.title,
     description: meta.description,
     image: scenario.backgroundImage,
+    posterImage: `/image/suspect/certiciation-card/${scenarioId}.png`,
     date: scenario.histories?.[scenario.histories.length - 1] ?? "",
-    isSuccess: accusedSuspect ? accusedSuspect === meta.culprit : true,
+    isSuccess:
+      accusedSuspect && meta.culprit ? accusedSuspect === meta.culprit : true,
     color: scenario.color,
-    verdict: meta.culprit,
+    verdict: meta.culprit ?? "",
     historyLabel: scenario.histories?.[scenario.histories.length - 1],
     epilogueTitle: meta.epilogueTitle,
     epilogueSubtitle: meta.epilogueSubtitle,
