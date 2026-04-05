@@ -5,26 +5,20 @@ import {
   getAllCertificationCards,
   getCertificationCards,
 } from "@/features/suspect/libs/certification";
-import { CertificationCardType } from "@/features/suspect/types";
+import { GetServerSideProps } from "next";
 import { Box, Typography } from "@mui/material";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 
-export default function Certification() {
-  const router = useRouter();
-  const [certificationCards, setCertificationCards] = useState<
-    CertificationCardType[]
-  >([]);
+interface CertificationPageProps {
+  scenarioId: string | null;
+}
 
-  useEffect(() => {
-    const scenarioId = router.query.scenario;
-    const cards =
-      scenarioId === "all"
-        ? getAllCertificationCards()
-        : getCertificationCards();
+export default function Certification({ scenarioId }: CertificationPageProps) {
 
-    setCertificationCards(cards);
-  }, [router.query.scenario]);
+  const certificationCards = useMemo(
+    () => (scenarioId === "all" ? getAllCertificationCards() : getCertificationCards()),
+    [scenarioId]
+  );
 
   return (
     <>
@@ -64,60 +58,70 @@ export default function Certification() {
             </Typography>
           </Box>
         </FadeInSection>
-        <FadeInSection>
+        <Box
+          width="100%"
+          px={{ xs: 2, md: 4 }}
+          py={{ xs: 4, md: 6 }}
+          display="flex"
+          justifyContent="center"
+        >
           <Box
             width="100%"
-            px={{ xs: 2, md: 4 }}
-            py={{ xs: 4, md: 6 }}
-            display="flex"
-            justifyContent="center"
+            maxWidth="1280px"
+            display="grid"
+            gridTemplateColumns={{
+              xs: "1fr",
+              sm: "repeat(2, minmax(0, 1fr))",
+              lg: "repeat(3, minmax(0, 1fr))",
+            }}
+            gap={4}
           >
-            <Box
-              width="100%"
-              maxWidth="1280px"
-              display="grid"
-              gridTemplateColumns={{
-                xs: "1fr",
-                sm: "repeat(2, minmax(0, 1fr))",
-                lg: "repeat(3, minmax(0, 1fr))",
-              }}
-              gap={4}
-            >
-              {certificationCards.length > 0 ? (
-                certificationCards.map((card) => (
-                  <Box
-                    key={card.scenarioId}
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="stretch"
-                  >
-                    <CertificationCard card={card} />
-                  </Box>
-                ))
-              ) : (
+            {certificationCards.length > 0 ? (
+              certificationCards.map((card) => (
                 <Box
-                  sx={{
-                    gridColumn: "1 / -1",
-                    minHeight: 360,
-                    border: "1px dashed rgba(255,255,255,0.18)",
-                    borderRadius: 6,
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    textAlign: "center",
-                    color: "rgba(255,255,255,0.48)",
-                    px: 3,
-                  }}
+                  key={card.scenarioId}
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="stretch"
                 >
-                  아직 발급된 인증 카드가 없습니다.
-                  <br />
-                  시나리오를 끝내고 다시 확인하세요.
+                  <CertificationCard card={card} />
                 </Box>
-              )}
-            </Box>
+              ))
+            ) : (
+              <Box
+                sx={{
+                  gridColumn: "1 / -1",
+                  minHeight: 360,
+                  border: "1px dashed rgba(255,255,255,0.18)",
+                  borderRadius: 6,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  textAlign: "center",
+                  color: "rgba(255,255,255,0.48)",
+                  px: 3,
+                }}
+              >
+                아직 발급된 인증 카드가 없습니다.
+                <br />
+                시나리오를 끝내고 다시 확인하세요.
+              </Box>
+            )}
           </Box>
-        </FadeInSection>
+        </Box>
       </Box>
     </>
   );
 }
+
+export const getServerSideProps: GetServerSideProps<
+  CertificationPageProps
+> = async (context) => {
+  const scenarioParam = context.query.scenario;
+
+  return {
+    props: {
+      scenarioId: typeof scenarioParam === "string" ? scenarioParam : null,
+    },
+  };
+};
