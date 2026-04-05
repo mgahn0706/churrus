@@ -5,15 +5,14 @@ import {
   getAllCertificationCards,
   getCertificationCards,
 } from "@/features/suspect/libs/certification";
-import { GetServerSideProps } from "next";
 import { Box, Typography } from "@mui/material";
 import { useMemo } from "react";
+import { useRouter } from "next/router";
 
-interface CertificationPageProps {
-  scenarioId: string | null;
-}
-
-export default function Certification({ scenarioId }: CertificationPageProps) {
+export default function Certification() {
+  const router = useRouter();
+  const scenarioId =
+    typeof router.query.scenario === "string" ? router.query.scenario : null;
 
   const certificationCards = useMemo(
     () => (scenarioId === "all" ? getAllCertificationCards() : getCertificationCards()),
@@ -113,15 +112,3 @@ export default function Certification({ scenarioId }: CertificationPageProps) {
     </>
   );
 }
-
-export const getServerSideProps: GetServerSideProps<
-  CertificationPageProps
-> = async (context) => {
-  const scenarioParam = context.query.scenario;
-
-  return {
-    props: {
-      scenarioId: typeof scenarioParam === "string" ? scenarioParam : null,
-    },
-  };
-};
