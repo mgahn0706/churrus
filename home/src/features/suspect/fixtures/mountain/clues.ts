@@ -137,7 +137,7 @@ export const mountainClues: ClueType[] = [
     y: 43,
     image: "/image/suspect/scenario/mountain/clues/mountain-11.png",
     description:
-      "절벽 쪽 표지판 끝부분이 곰팡이가 피어있고 검은 자국이 있다. 추러스 가게 쪽 방향도 검은 자국이 있고 나무 모서리가 긁혀있다. 힘을 주니 각 표지판 판자가 잘 빠져나온다.",
+      "절벽 쪽 표지판 끝부분에 어딘가에 끼어있는 듯 검은 자국이 있다. 힘을 주니 각 표지판 판자가 잘 빠져나온다. 표지판을 억지로 빼낸 흔적인 듯 하다.",
     type: "additional",
     place: 10,
   },
