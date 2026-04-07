@@ -5,19 +5,27 @@ import {
   getAllCertificationCards,
   getCertificationCards,
 } from "@/features/suspect/libs/certification";
+import { CertificationCardType } from "@/features/suspect/types";
 import { Box, Typography } from "@mui/material";
-import { useMemo } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 export default function Certification() {
   const router = useRouter();
   const scenarioId =
     typeof router.query.scenario === "string" ? router.query.scenario : null;
+  const [certificationCards, setCertificationCards] = useState<
+    CertificationCardType[]
+  >([]);
 
-  const certificationCards = useMemo(
-    () => (scenarioId === "all" ? getAllCertificationCards() : getCertificationCards()),
-    [scenarioId]
-  );
+  useEffect(() => {
+    setCertificationCards(
+      scenarioId === "all" ? getAllCertificationCards() : getCertificationCards()
+    );
+  }, [scenarioId]);
+
+  const showEmptyState =
+    certificationCards.length === 0 && scenarioId !== "all";
 
   return (
     <>
@@ -75,7 +83,7 @@ export default function Certification() {
             }}
             gap={4}
           >
-            {certificationCards.length > 0 ? (
+            {!showEmptyState ? (
               certificationCards.map((card) => (
                 <Box
                   key={card.scenarioId}

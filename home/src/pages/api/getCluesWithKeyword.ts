@@ -8,7 +8,6 @@ import {
   dureClues,
   dureKeywordIds,
 } from "@/features/suspect/fixtures/dure/clues";
-
 import type { NextApiRequest, NextApiResponse } from "next";
 
 export interface ClueData {

@@ -18,6 +18,8 @@ import { bluemoonClues } from "./bluemoon/clues";
 import { mountainSuspects, mountainVictim } from "./mountain/suspects";
 import { mountainClues } from "./mountain/clues";
 import { kpopSuspects, kpopVictim } from "./kpop/suspects";
+import { novelistSuspects, novelistVictim } from "./novelist/suspects";
+import { novelistClues } from "./novelist/clues";
 
 export const scenarios: ScenarioType[] = [
   {
@@ -124,6 +126,21 @@ export const scenarios: ScenarioType[] = [
     victims: [mountainVictim],
     clues: mountainClues,
     color: "#4caf50",
+  },
+  {
+    title: "추리소설가 살인사건",
+    gameType: "CLUE",
+    numberOfSuspects: 4,
+    histories: [],
+    backgroundImage: "/image/suspect/scenario/novelist/novelist-main.png",
+    id: "novelist",
+    isInDevelopment: true,
+    places: ["room", "lounge"],
+    description: "추리소설계의 거장과 함께한 신년회에서 발생한 의문의 살인사건",
+    suspects: novelistSuspects,
+    victims: [novelistVictim],
+    clues: novelistClues,
+    color: "#ac7f5e",
   },
   {
     title: "케이팝 데몬 헌터스 살인사건",

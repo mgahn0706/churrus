@@ -1,7 +1,30 @@
-import { buildCertificationCard } from "@/features/suspect/fixtures/certification";
+import { scenarios } from "@/features/suspect/fixtures";
 import { CertificationCardType } from "@/features/suspect/types";
 
 const CERTIFICATION_STORAGE_KEY = "cert-cards";
+
+function buildCertificationCard(
+  scenarioId: string,
+  accusedSuspect?: string
+): CertificationCardType | null {
+  const scenario = scenarios.find((item) => item.id === scenarioId);
+
+  if (!scenario) {
+    return null;
+  }
+
+  return {
+    scenarioId,
+    title: scenario.title,
+    description: scenario.description ?? "",
+    image: scenario.backgroundImage,
+    posterImage: `/image/suspect/certiciation-card/${scenarioId}.png`,
+    date: scenario.histories?.[scenario.histories.length - 1] ?? "",
+    isSuccess: Boolean(accusedSuspect) || accusedSuspect === undefined,
+    color: scenario.color,
+    historyLabel: scenario.histories?.[scenario.histories.length - 1],
+  };
+}
 
 function getStoredScenarioIds(): string[] {
   if (typeof window === "undefined") {
@@ -33,6 +56,7 @@ export function getAllCertificationCards(): CertificationCardType[] {
     "museum",
     "serial",
     "mountain",
+    "novelist",
     "kpop",
     "bluemoon",
   ]
