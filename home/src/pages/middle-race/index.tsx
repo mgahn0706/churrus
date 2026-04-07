@@ -1,212 +1,567 @@
-import GlobalHeader from "@/components/Navigation/GlobalHeader";
-import { Box, Button, Chip, Divider, Typography } from "@mui/material";
+import { DeleteOutlineRounded } from "@mui/icons-material";
+import {
+  Box,
+  Button,
+  IconButton,
+  MenuItem,
+  Select,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { MIDDLE_RACE_CHARACTERS } from "@/features/middle-race/fixtures/characters";
 import Head from "next/head";
+import Image from "next/image";
+import { FormEvent, useMemo, useState } from "react";
 
-const SectionCard = ({
-  title,
-  description,
-  minHeight = 220,
-}: {
-  title: string;
-  description: string;
-  minHeight?: number;
-}) => {
-  return (
-    <Box
-      sx={{
-        borderRadius: "28px",
-        background:
-          "linear-gradient(180deg, rgba(255,255,255,0.95), rgba(248,249,252,0.92))",
-        border: "1px solid rgba(20,24,36,0.08)",
-        boxShadow: "0 18px 50px rgba(18, 23, 37, 0.08)",
-        p: { xs: 2.5, md: 3.5 },
-        minHeight,
-      }}
-    >
-      <Typography color="#111827" fontSize={24} fontWeight={800} mb={1}>
-        {title}
-      </Typography>
-      <Typography color="#667085" fontSize={15} lineHeight={1.8}>
-        {description}
-      </Typography>
-    </Box>
-  );
+const fieldSx = {
+  "& .MuiOutlinedInput-notchedOutline": {
+    borderColor: "rgba(255,255,255,0.1)",
+  },
+  "& .MuiInputBase-input::placeholder": {
+    color: "rgba(255,255,255,0.32)",
+    opacity: 1,
+  },
 };
 
 export default function MiddleRacePage() {
+  const [phase, setPhase] = useState<1 | 2>(1);
+  const [playerName, setPlayerName] = useState("");
+  const [players, setPlayers] = useState<string[]>([]);
+  const [assignments, setAssignments] = useState<Record<string, string>>({});
+  const [openedAbilityByPlayer, setOpenedAbilityByPlayer] = useState<
+    Record<string, boolean>
+  >({});
+
+  const usedCharacters = useMemo(
+    () => new Set(Object.values(assignments).filter(Boolean)),
+    [assignments]
+  );
+  const sortedCharacters = useMemo(
+    () =>
+      [...MIDDLE_RACE_CHARACTERS].sort(
+        (left, right) => left.priority - right.priority
+      ),
+    []
+  );
+  const characterNames = sortedCharacters.map((character) => character.name);
+  const getCharacter = (name: string) =>
+    MIDDLE_RACE_CHARACTERS.find((character) => character.name === name);
+
+  const addPlayer = () => {
+    const trimmedName = playerName.trim();
+
+    if (!trimmedName || players.includes(trimmedName)) {
+      return;
+    }
+
+    setPlayers((previous) => [...previous, trimmedName]);
+    setPlayerName("");
+  };
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    addPlayer();
+  };
+
+  const startRandomAssign = () => {
+    const shuffled = [...characterNames].sort(() => Math.random() - 0.5);
+    const nextAssignments = Object.fromEntries(
+      players.map((player, index) => [player, shuffled[index]])
+    );
+
+    setAssignments((previous) => ({
+      ...previous,
+      ...nextAssignments,
+    }));
+  };
+
+  const startCharacterPhase = () => {
+    setAssignments((previous) => {
+      const nextAssignments = { ...previous };
+
+      players.forEach((player) => {
+        if (!(player in nextAssignments)) {
+          nextAssignments[player] = "";
+        }
+      });
+
+      Object.keys(nextAssignments).forEach((player) => {
+        if (!players.includes(player)) {
+          delete nextAssignments[player];
+        }
+      });
+
+      return nextAssignments;
+    });
+    setPhase(2);
+  };
+
   return (
     <>
       <Head>
-        <title>추러스: Middle Race</title>
+        <title>중간 달리기</title>
       </Head>
-      <GlobalHeader />
       <Box
         sx={{
           minHeight: "100dvh",
-          background:
-            "radial-gradient(900px 420px at 8% 0%, rgba(255,181,71,0.24), transparent 55%), radial-gradient(840px 480px at 100% 10%, rgba(77,138,255,0.16), transparent 54%), linear-gradient(180deg, #f6f7fb 0%, #eef2f7 100%)",
-          pb: { xs: 10, md: 8 },
+          bgcolor: "#05070b",
+          color: "white",
+          display: "flex",
+          justifyContent: "center",
+          px: 2,
         }}
       >
         <Box
           sx={{
             width: "100%",
-            maxWidth: "1120px",
-            mx: "auto",
-            px: { xs: 2, sm: 3, md: 4 },
-            pt: { xs: "88px", md: "112px" },
+            maxWidth: 880,
+            pt: { xs: 10, md: 14 },
+            pb: 5,
           }}
         >
           <Box
             sx={{
-              borderRadius: "32px",
-              overflow: "hidden",
-              position: "relative",
-              px: { xs: 2.5, md: 5 },
-              py: { xs: 4, md: 6 },
-              mb: 3,
-              background:
-                "linear-gradient(135deg, #18212f 0%, #24354d 46%, #101827 100%)",
-              boxShadow: "0 24px 70px rgba(15, 23, 42, 0.22)",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: { xs: "flex-start", md: "flex-end" },
+              gap: 2,
+              flexDirection: { xs: "column", md: "row" },
+              mb: 4,
             }}
           >
+            <Box>
+              <Typography
+                fontSize={{ xs: 12, md: 13 }}
+                color="rgba(255,255,255,0.45)"
+                letterSpacing="0.12em"
+                fontWeight={700}
+              >
+                PHASE {phase}
+              </Typography>
+              <Typography
+                fontSize={{ xs: 36, md: 42 }}
+                fontWeight={900}
+                letterSpacing="-0.05em"
+                lineHeight={1}
+                mt={0.5}
+              >
+                중간 달리기
+              </Typography>
+            </Box>
+
             <Box
               sx={{
-                position: "absolute",
-                inset: 0,
-                background:
-                  "radial-gradient(circle at 18% 24%, rgba(255,196,81,0.28), transparent 24%), radial-gradient(circle at 82% 16%, rgba(129,178,255,0.22), transparent 28%), linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.04) 50%, transparent 100%)",
-                pointerEvents: "none",
+                display: "grid",
+                gridTemplateColumns: "repeat(2, minmax(84px, 1fr))",
+                gap: 1,
+                width: { xs: "100%", md: "auto" },
               }}
-            />
-            <Box sx={{ position: "relative", zIndex: 1 }}>
-              <Chip
-                label="COMING SOON"
-                sx={{
-                  mb: 2,
-                  bgcolor: "rgba(255,255,255,0.1)",
-                  color: "white",
-                  fontWeight: 700,
-                  letterSpacing: "0.08em",
-                }}
+            >
+              <StatCard label="PLAYERS" value={`${players.length}`} />
+              <StatCard
+                label="READY"
+                value={`${players.filter((player) => assignments[player]).length}`}
               />
-              <Typography
-                color="white"
-                fontWeight={900}
-                sx={{
-                  fontSize: { xs: 34, md: 64 },
-                  lineHeight: 1.02,
-                  letterSpacing: "-0.03em",
-                  maxWidth: "8ch",
-                }}
-              >
-                Middle Race
-              </Typography>
-              <Typography
-                color="rgba(255,255,255,0.72)"
-                fontSize={{ xs: 15, md: 18 }}
-                lineHeight={1.8}
-                mt={2}
-                maxWidth="680px"
-              >
-                페이지 골격만 먼저 준비해 두었습니다. 제목, 설명, 섹션 블록,
-                CTA 영역은 바로 교체 가능하도록 분리되어 있습니다.
-              </Typography>
-              <Box display="flex" gap={1.5} mt={3} flexWrap="wrap">
-                <Button
-                  disableElevation
-                  sx={{
-                    px: 2.2,
-                    py: 1.1,
-                    borderRadius: "999px",
-                    bgcolor: "#f6c453",
-                    color: "#17202c",
-                    fontWeight: 800,
-                    "&:hover": {
-                      bgcolor: "#efba40",
-                    },
-                  }}
-                >
-                  Primary Slot
-                </Button>
-                <Button
-                  variant="outlined"
-                  sx={{
-                    px: 2.2,
-                    py: 1.1,
-                    borderRadius: "999px",
-                    borderColor: "rgba(255,255,255,0.22)",
-                    color: "white",
-                  }}
-                >
-                  Secondary Slot
-                </Button>
-              </Box>
             </Box>
           </Box>
 
-          <Box
-            sx={{
-              display: "grid",
-              gridTemplateColumns: { xs: "1fr", lg: "1.25fr 0.75fr" },
-              gap: 3,
-            }}
-          >
-            <SectionCard
-              title="Main Content"
-              description="가장 큰 본문 영역입니다. 규칙, 설명, 진행 방식, 카드 리스트, 인터랙션 컴포넌트 등 핵심 콘텐츠를 여기에 붙이면 됩니다."
-              minHeight={320}
-            />
-            <SectionCard
-              title="Side Panel"
-              description="공지, 상태 요약, 메타 정보, 버튼 묶음, 링크 카드 같은 보조 요소를 두기 위한 영역입니다."
-              minHeight={320}
-            />
-          </Box>
+          {phase === 1 ? (
+            <>
+              <SectionPanel>
+                <Typography color="rgba(255,255,255,0.56)" mb={3}>
+                  플레이어 등록
+                </Typography>
 
-          <Box
-            sx={{
-              mt: 3,
-              display: "grid",
-              gridTemplateColumns: { xs: "1fr", md: "repeat(3, 1fr)" },
-              gap: 3,
-            }}
-          >
-            <SectionCard
-              title="Block A"
-              description="짧은 설명이나 카드형 콘텐츠를 넣기 좋습니다."
-            />
-            <SectionCard
-              title="Block B"
-              description="향후 이미지, 표, 입력 UI, 스텝 안내를 배치할 수 있습니다."
-            />
-            <SectionCard
-              title="Block C"
-              description="임시 레이아웃 확인용 영역입니다. 필요 없으면 제거하거나 다른 섹션과 합치면 됩니다."
-            />
-          </Box>
+                <Box
+                  component="form"
+                  onSubmit={handleSubmit}
+                  display="grid"
+                  gridTemplateColumns={{ xs: "1fr", sm: "1fr auto" }}
+                  gap={1}
+                >
+                  <TextField
+                    value={playerName}
+                    onChange={(event) => setPlayerName(event.target.value)}
+                    placeholder="이름"
+                    fullWidth
+                    variant="outlined"
+                    InputProps={{
+                      sx: {
+                        bgcolor: "#05070b",
+                        color: "white",
+                        borderRadius: "14px",
+                      },
+                    }}
+                    sx={fieldSx}
+                  />
+                  <Button
+                    type="submit"
+                    disabled={!playerName.trim()}
+                    sx={buttonSx("white", "#05070b")}
+                  >
+                    추가
+                  </Button>
+                </Box>
 
-          <Box
-            sx={{
-              mt: 3,
-              borderRadius: "28px",
-              background: "rgba(255,255,255,0.74)",
-              border: "1px solid rgba(20,24,36,0.08)",
-              p: { xs: 2.5, md: 3.5 },
-              boxShadow: "0 18px 50px rgba(18, 23, 37, 0.06)",
-            }}
-          >
-            <Typography color="#0f172a" fontSize={22} fontWeight={800}>
-              Notes
-            </Typography>
-            <Divider sx={{ my: 2, borderColor: "rgba(15,23,42,0.08)" }} />
-            <Typography color="#667085" fontSize={15} lineHeight={1.8}>
-              이후 실제 콘텐츠를 넣을 때는 이 페이지에서 텍스트만 교체하거나,
-              별도 컴포넌트로 분리해서 꽂아 넣으면 됩니다.
-            </Typography>
-          </Box>
+                <Box
+                  mt={3}
+                  display="grid"
+                  gridTemplateColumns={{
+                    xs: "1fr",
+                    sm: "repeat(2, minmax(0, 1fr))",
+                    md: "repeat(3, minmax(0, 1fr))",
+                  }}
+                  gap={1}
+                >
+                  {players.map((name) => (
+                    <Box key={name} sx={rowSx}>
+                      <Typography fontWeight={600}>{name}</Typography>
+                      <IconButton
+                        onClick={() =>
+                          setPlayers((previous) =>
+                            previous.filter((player) => player !== name)
+                          )
+                        }
+                        sx={{ color: "rgba(255,255,255,0.7)" }}
+                      >
+                        <DeleteOutlineRounded />
+                      </IconButton>
+                    </Box>
+                  ))}
+                </Box>
+
+                <Box mt={3} display="flex" justifyContent="flex-end">
+                  <Button
+                    disabled={players.length < 2}
+                    onClick={startCharacterPhase}
+                    sx={buttonSx("white", "#05070b")}
+                  >
+                    다음
+                  </Button>
+                </Box>
+              </SectionPanel>
+            </>
+          ) : (
+            <>
+              <SectionPanel>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: { xs: "flex-start", md: "center" },
+                    gap: 2,
+                    flexDirection: { xs: "column", md: "row" },
+                    mb: 3,
+                  }}
+                >
+                  <Typography color="rgba(255,255,255,0.56)">
+                    캐릭터 선택
+                  </Typography>
+                  <Box display="flex" gap={1} flexWrap="wrap">
+                    <Button
+                      onClick={startRandomAssign}
+                      sx={buttonSx("#111827", "white")}
+                    >
+                      랜덤 배정
+                    </Button>
+                    <Button onClick={() => setPhase(1)} sx={outlineButtonSx}>
+                      이전
+                    </Button>
+                    <Button
+                      disabled={players.some((player) => !assignments[player])}
+                      sx={buttonSx("white", "#05070b")}
+                    >
+                      다음
+                    </Button>
+                  </Box>
+                </Box>
+
+                <Box
+                  display="grid"
+                  gridTemplateColumns={{
+                    xs: "1fr",
+                    md: "repeat(2, minmax(0, 1fr))",
+                    lg: "repeat(3, minmax(0, 1fr))",
+                  }}
+                  gap={1}
+                >
+                  {players.map((player) => {
+                    const character = getCharacter(assignments[player]);
+
+                    return (
+                      <Box
+                        key={player}
+                        sx={{
+                          ...rowSx,
+                          alignItems: "stretch",
+                          justifyContent: "flex-start",
+                          flexDirection: "column",
+                          gap: 1.4,
+                          p: 0,
+                          overflow: "hidden",
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            px: 1.5,
+                            pt: 1.5,
+                            pb: 0,
+                          }}
+                        >
+                          <Typography
+                            fontSize={13}
+                            fontWeight={800}
+                            color="rgba(255,255,255,0.92)"
+                          >
+                            {player}
+                          </Typography>
+                        </Box>
+
+                        <Box sx={{ px: 1.5, pb: 1.5 }}>
+                          <Select
+                            value={assignments[player] ?? ""}
+                            displayEmpty
+                            fullWidth
+                            size="small"
+                            onChange={(event) =>
+                              setAssignments((previous) => ({
+                                ...previous,
+                                [player]: event.target.value,
+                              }))
+                            }
+                            sx={{
+                              bgcolor: "#05070b",
+                              color: "white",
+                              borderRadius: "12px",
+                              "& .MuiOutlinedInput-notchedOutline": {
+                                borderColor: "rgba(255,255,255,0.1)",
+                              },
+                              "& .MuiSvgIcon-root": {
+                                color: "rgba(255,255,255,0.72)",
+                              },
+                            }}
+                            renderValue={(selected) => selected || "캐릭터 선택"}
+                          >
+                            {sortedCharacters.map((item) => {
+                              const isSelected = assignments[player] === item.name;
+                              const isUsed =
+                                usedCharacters.has(item.name) && !isSelected;
+
+                              return (
+                                <MenuItem
+                                  key={item.id}
+                                  value={item.name}
+                                  disabled={isUsed}
+                                >
+                                  {item.priority}. {item.label} ({item.name})
+                                </MenuItem>
+                              );
+                            })}
+                          </Select>
+
+                          {character ? (
+                            <Box
+                              sx={{
+                                mt: 1,
+                                borderRadius: "12px",
+                                border: "1px solid rgba(255,255,255,0.08)",
+                                background: `linear-gradient(180deg, ${character.color}22, rgba(255,255,255,0.02))`,
+                                overflow: "hidden",
+                              }}
+                            >
+                              <Box
+                                sx={{
+                                  display: "grid",
+                                  gridTemplateColumns: "56px 1fr",
+                                  alignItems: "center",
+                                  gap: 0.9,
+                                  p: 0.9,
+                                }}
+                              >
+                                <Box
+                                  sx={{
+                                    width: 56,
+                                    height: 56,
+                                    borderRadius: "12px",
+                                    overflow: "hidden",
+                                    bgcolor: "rgba(255,255,255,0.06)",
+                                    border: "1px solid rgba(255,255,255,0.08)",
+                                    position: "relative",
+                                  }}
+                                >
+                                  <Image
+                                    src={character.imageSrc}
+                                    alt={character.name}
+                                    fill
+                                    sizes="56px"
+                                    style={{ objectFit: "cover" }}
+                                  />
+                                </Box>
+                                <Box minWidth={0}>
+                                  <Typography
+                                    fontSize={10}
+                                    color="rgba(255,255,255,0.5)"
+                                    fontWeight={700}
+                                    letterSpacing="0.12em"
+                                  >
+                                    SELECTED
+                                  </Typography>
+                                  <Typography fontSize={15} fontWeight={800} mt={0.2}>
+                                    {character.label}
+                                  </Typography>
+                                  <Typography
+                                    fontSize={11}
+                                    color="rgba(255,255,255,0.66)"
+                                    mt={0.1}
+                                  >
+                                    {character.name}
+                                  </Typography>
+                                  <Typography fontSize={10} color="rgba(255,255,255,0.46)" mt={0.25}>
+                                    #{character.priority}
+                                  </Typography>
+                                </Box>
+                              </Box>
+
+                              <Box
+                                sx={{
+                                  px: 0.9,
+                                  pb: 0.9,
+                                  pt: 0,
+                                }}
+                              >
+                                <Button
+                                  onClick={() =>
+                                    setOpenedAbilityByPlayer((previous) => ({
+                                      ...previous,
+                                      [player]: !previous[player],
+                                    }))
+                                  }
+                                  sx={{
+                                    px: 0,
+                                    minWidth: "auto",
+                                    justifyContent: "flex-start",
+                                    color: "rgba(255,255,255,0.78)",
+                                    fontSize: 11,
+                                    fontWeight: 700,
+                                    lineHeight: 1,
+                                  }}
+                                >
+                                  {openedAbilityByPlayer[player]
+                                    ? "능력 숨기기"
+                                    : "능력 보기"}
+                                </Button>
+                                {openedAbilityByPlayer[player] ? (
+                                  <Typography
+                                    fontSize={12}
+                                    color="rgba(255,255,255,0.72)"
+                                    lineHeight={1.55}
+                                    mt={0.45}
+                                  >
+                                    {character.ability}
+                                  </Typography>
+                                ) : null}
+                              </Box>
+                            </Box>
+                          ) : null}
+                        </Box>
+                      </Box>
+                    );
+                  })}
+                </Box>
+              </SectionPanel>
+            </>
+          )}
         </Box>
       </Box>
     </>
   );
 }
+
+const rowSx = {
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
+  gap: 1,
+  px: 1,
+  py: 0.85,
+  borderRadius: "14px",
+  bgcolor: "#0d1117",
+  border: "1px solid rgba(255,255,255,0.06)",
+  boxShadow: "inset 0 1px 0 rgba(255,255,255,0.02)",
+};
+
+const buttonSx = (bgcolor: string, color: string) => ({
+  minWidth: 84,
+  borderRadius: "12px",
+  bgcolor,
+  color,
+  fontWeight: 700,
+  px: 1.4,
+  py: 0.75,
+  "&:hover": {
+    bgcolor,
+    opacity: 0.92,
+  },
+  "&.Mui-disabled": {
+    bgcolor: "rgba(255,255,255,0.08)",
+    color: "rgba(255,255,255,0.28)",
+  },
+});
+
+const outlineButtonSx = {
+  minWidth: 84,
+  borderRadius: "12px",
+  color: "white",
+  border: "1px solid rgba(255,255,255,0.12)",
+  bgcolor: "transparent",
+  fontWeight: 700,
+  px: 1.4,
+  py: 0.75,
+  "&:hover": {
+    bgcolor: "rgba(255,255,255,0.04)",
+  },
+  "&.Mui-disabled": {
+    color: "rgba(255,255,255,0.28)",
+    borderColor: "rgba(255,255,255,0.06)",
+  },
+};
+
+const SectionPanel = ({ children }: { children: React.ReactNode }) => (
+  <Box
+    sx={{
+      borderRadius: "24px",
+      border: "1px solid rgba(255,255,255,0.06)",
+      background:
+        "linear-gradient(180deg, rgba(14,17,23,0.96), rgba(10,13,18,0.96))",
+      boxShadow: "0 24px 50px rgba(0,0,0,0.28)",
+      p: { xs: 1, md: 1.25 },
+    }}
+  >
+    {children}
+  </Box>
+);
+
+const StatCard = ({ label, value }: { label: string; value: string }) => (
+  <Box
+    sx={{
+      borderRadius: "16px",
+      border: "1px solid rgba(255,255,255,0.06)",
+      bgcolor: "#0d1117",
+      px: 1,
+      py: 0.85,
+      minWidth: 0,
+    }}
+  >
+    <Typography
+      fontSize={10}
+      fontWeight={700}
+      letterSpacing="0.12em"
+      color="rgba(255,255,255,0.44)"
+    >
+      {label}
+    </Typography>
+    <Typography fontSize={20} fontWeight={800} mt={0.2}>
+      {value}
+    </Typography>
+  </Box>
+);
