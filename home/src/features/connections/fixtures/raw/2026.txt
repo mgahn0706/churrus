@@ -67,7 +67,7 @@ week: 11
 week: 12
 배의 영어 | pear, stomach, ship, times
 art로 끝나는 단어 | heart, start, part, mart
-하늘에 있는 것 | mon, bird, cloud, plane
+하늘에 있는 것 | moon, bird, cloud, plane
 check ___ | box, mate, out, point
 
 week: 13
