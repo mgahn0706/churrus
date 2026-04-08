@@ -244,7 +244,7 @@ export const CONNECTIONS2026: ConnectionsType[] = [
         description: "art로 끝나는 단어",
       },
       {
-        words: ["mon", "bird", "cloud", "plane"],
+        words: ["moon", "bird", "cloud", "plane"],
         description: "하늘에 있는 것",
       },
       {
