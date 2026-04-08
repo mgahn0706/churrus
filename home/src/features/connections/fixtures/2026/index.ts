@@ -177,7 +177,7 @@ export const CONNECTIONS2026: ConnectionsType[] = [
         description: "계이름",
       },
       {
-        words: ["숯", "구리", "철", "금"],
+        words: ["숯", "구리", "철", "다이아몬드"],
         description: "마인크래프트 지하광물",
       },
       {
@@ -208,6 +208,132 @@ export const CONNECTIONS2026: ConnectionsType[] = [
       {
         words: ["근", "지구", "일", "복사"],
         description: "__ 본",
+      },
+    ],
+  },
+  {
+    week: 11,
+    quiz: [
+      {
+        words: ["망치", "빨대", "핸드폰", "연필"],
+        description: "도구",
+      },
+      {
+        words: ["인삼", "오징어", "떡볶이", "칠석"],
+        description: "숫자가 들어간 단어",
+      },
+      {
+        words: ["커피콩", "돈까스", "나무껍질", "맥반석 계란"],
+        description: "갈색인 것",
+      },
+      {
+        words: ["그림자밟기", "등산", "썬탠", "낮잠"],
+        description: "낮에만 할 수 있는 것",
+      },
+    ],
+  },
+  {
+    week: 12,
+    quiz: [
+      {
+        words: ["pear", "stomach", "ship", "times"],
+        description: "배의 영어",
+      },
+      {
+        words: ["heart", "start", "part", "mart"],
+        description: "art로 끝나는 단어",
+      },
+      {
+        words: ["mon", "bird", "cloud", "plane"],
+        description: "하늘에 있는 것",
+      },
+      {
+        words: ["box", "mate", "out", "point"],
+        description: "check ___",
+      },
+    ],
+  },
+  {
+    week: 13,
+    quiz: [
+      {
+        words: ["키", "고도", "수위", "해발"],
+        description: "어떤 높이를 나타내는 말",
+      },
+      {
+        words: ["죽", "개방", "비", "복"],
+        description: "__ 음",
+      },
+      {
+        words: ["버섯", "별", "꽃", "깃발"],
+        description: "슈퍼마리오에 등장하는 엔티티",
+      },
+      {
+        words: ["글", "웃음", "밥", "죄"],
+        description: "지을 수 있는 것",
+      },
+    ],
+  },
+  {
+    week: 14,
+    quiz: [
+      {
+        words: ["집", "다리", "등대", "피라미드"],
+        description: "건축물",
+      },
+      {
+        words: ["진로", "집단", "심리", "법률"],
+        description: "상담의 종류",
+      },
+      {
+        words: ["은", "가", "보다", "이"],
+        description: "한국어의 조사",
+      },
+      {
+        words: ["수요", "금", "밭", "매"],
+        description: "__ 일",
+      },
+    ],
+  },
+  {
+    week: 15,
+    quiz: [
+      {
+        words: ["도시", "파도", "미라", "시도"],
+        description: "계이름으로 이루어진 단어",
+      },
+      {
+        words: ["동해", "구리", "공주", "진주"],
+        description: "한국의 시 이름",
+      },
+      {
+        words: ["자연", "유리", "사원", "공약"],
+        description: "__ 수",
+      },
+      {
+        words: ["방울", "물총", "악어", "파랑"],
+        description: "__ 새",
+      },
+    ],
+  },
+  {
+    week: 16,
+    quiz: [
+      {
+        words: ["천", "지", "현", "황"],
+        description: "천자문",
+      },
+      {
+        words: ["유", "축", "오", "미"],
+        description: "십이지신",
+      },
+      {
+        words: ["무", "마", "갓", "파"],
+        description: "채소",
+      },
+      {
+        words: ["구", "군", "수", "점"],
+        description: "맹 __",
       },
     ],
   },
