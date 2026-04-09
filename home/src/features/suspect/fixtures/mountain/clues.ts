@@ -534,7 +534,7 @@ export const mountainClues: ClueType[] = [
     image: "/image/suspect/scenario/mountain/clues/mountain-48.png",
     description: "최령신 주머니에 남겨져있는 부원들 메모 기록.",
     type: "additional",
-    place: 51,
+    place: 20,
   },
   {
     id: 49,
