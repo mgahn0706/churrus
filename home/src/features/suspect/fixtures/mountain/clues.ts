@@ -61,7 +61,7 @@ export const mountainClues: ClueType[] = [
     y: 70,
     image: "/image/suspect/scenario/mountain/clues/mountain-4.png",
     description:
-      "'아, 등산이요. 청룡산은 그래도 초보자에게 좋은 산이죠. 정상 쪽 길이 험해서, 그 길만 빼면 뛰어서 오를 수도 있어요. 뛰면 보통 걷는 것보다 2배 빠르게 갈 수 있더라고요. 정정한 청년들이라면 더더욱요.'",
+      "'아, 등산이요. 청룡산은 그래도 초보자에게 좋은 산이죠. 뛰어서 오를 수도 있어요. 뛰면 보통 걷는 것보다 2배 빠르게 갈 수 있더라고요. 정정한 청년들이라면 더더욱요.'",
     type: "basic",
     place: "intersection",
   },
@@ -213,7 +213,7 @@ export const mountainClues: ClueType[] = [
     y: 64,
     image: "/image/suspect/scenario/mountain/clues/mountain-18.png",
     description:
-      "오후 8시 5분. 채린 송이 멀리서 걸어오는 것이 찍혀있다. 이후 오후 8시 12분, 최령신이 멀리서 걸어오는 것이 찍혀있다.",
+      "오후 8시. 채린 송이 멀리서 걸어오는 것이 찍혀있다. 이후 오후 8시 2분, 최령신이 멀리서 다리를 절뚝이며 걸어오는 것이 찍혀있다.",
     type: "basic",
     place: "cafe",
   },
@@ -224,7 +224,7 @@ export const mountainClues: ClueType[] = [
     y: 27,
     image: "/image/suspect/scenario/mountain/clues/mountain-19.png",
     description:
-      "전방 1.2km 험로 주의 표지판이 있다. 바위가 많고 울퉁불퉁하여 뛰면 다치기 쉽고, 달리기도 쉽지 않다.",
+      "전방 1.2km 험로 주의 표지판이 있다. 뛰려면 뛸 수 있지만, 바위가 많고 울퉁불퉁하여 다치기 쉽고, 속도를 내기 쉽지 않다.",
     type: "basic",
     place: "intersection",
   },
