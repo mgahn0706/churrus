@@ -54,3 +54,23 @@ export type PendingAbility =
       delta: number;
       isLastCard: boolean;
     };
+
+export interface MiddleRaceGameState {
+  phase: Phase;
+  lap: number;
+  finishLine: number;
+  currentPlayerName: string;
+  selectedPlayerName: string;
+  selectedCard: number | null;
+  silencedPlayerName: string | null;
+  players: RacePlayerState[];
+}
+
+export interface MiddleRaceGameActions {
+  selectPlayer: (playerName: string) => void;
+  selectCard: (card: number) => void;
+  clearSelectedCard: () => void;
+  cyclePhase: () => void;
+}
+
+export interface MiddleRaceGame extends MiddleRaceGameState, MiddleRaceGameActions {}
