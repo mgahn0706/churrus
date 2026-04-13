@@ -21,6 +21,7 @@ import { DetectiveNoteType } from "@/features/suspect/types";
 import { FadeInSection } from "@/features/suspect/components/FadeInSection";
 import TabPanel from "@/features/suspect/components/Answer/TabPanel";
 import { saveScenarioCertification } from "@/features/suspect/libs/certification";
+import { LaunchRounded } from "@mui/icons-material";
 
 const culprit = "서재승";
 
@@ -189,6 +190,11 @@ export default function NovelistAnswer() {
             label="추가 질문 해답"
           />
           <Tab sx={{ fontSize: "20px" }} value="solution" label="사건 풀이법" />
+          <Tab
+            sx={{ fontSize: "20px" }}
+            value="culprits"
+            label="용의자 롤카드 PDF"
+          />
         </Tabs>
 
         <TabPanel value={tabValue} index="confess">
@@ -197,23 +203,35 @@ export default function NovelistAnswer() {
             color="white"
             sx={{ wordSpacing: 3, lineHeight: 2.5, wordBreak: "keep-all" }}
           >
-            맞아요. 내가 했습니다. 서린 작가가 계약서에 서명하지 않으면 이번
-            시즌 라인업 전체가 무너질 상황이었어요. 그런데 그 사람은 계약을
-            거절하는 걸 넘어서, 내가 원고를 어떻게 다뤄 왔는지까지 외부에
-            알리겠다고 했죠.
-            <br />
-            오민지의 초고를 먼저 받아 놓고도, 회사에선 그 아이디어 일부를 서린
-            작가 원고 쪽으로 정리해 붙이는 걸 문제라고 생각하지 않았어요. 난
-            그걸 막지 않았고, 오히려 일정 맞추려면 어쩔 수 없다고 여겼습니다.
-            <br />
-            그날도 홍차에 약을 타 정신을 흐리게 한 다음, 대화로 설득해서
-            마무리할 생각이었어요. 그런데 서린 작가가 노트북을 열어 증거 메일을
-            보내려는 걸 보고 눈앞이 캄캄해졌습니다. 결국 쿠션으로 눌렀고,
-            움직임이 멈춘 뒤에야 내가 돌이킬 수 없는 선을 넘었다는 걸 알았어요.
-            <br />
-            엘리베이터 CCTV를 잠깐 끈 것도, 원고 파일을 수정한 것도 전부 시간을
-            벌기 위해서였습니다. 마지막까지도 사고처럼 보이게 만들 수 있다고
-            믿었는데, 결국 가장 많이 남은 건 제 흔적이었네요.
+            저는 그날 있었던 일을 있는 그대로 말씀드리겠습니다. 꾸밀 생각도
+            없고, 변명할 생각도 없습니다. 2026년 1월 10일 오후 6시쯤, 이환 선생
+            저택에 도착했습니다. 제가 가장 먼저 도착했습니다. 선생은 1층
+            식당에서 저녁 준비를 하고 있었습니다. <br />
+            저는 화장실을 간다고 하고 2층으로 올라갔습니다. 그리고 선생 방에
+            들어갔습니다. 방 안을 뒤지다가 2025년 3월 2일자 무통장 입금증을
+            발견했습니다. 보내는 사람은 ‘브레이크’, 취급점은 이천이었습니다. 제
+            형 사고가 바로 다음 날이었습니다. 브레이크 과열 사고였습니다. 그걸
+            보는 순간, 우연이 아니라고 생각했습니다. <br />
+            그때부터 표절 문제는 아무 의미 없다고 느꼈습니다. 7시쯤 식사가
+            시작됐습니다. 윤찬이 표절 얘기를 꺼냈고... 선생은 처음엔 당황하다가,
+            곧 태도를 바꿨습니다. 저희를 몰아붙였고, 대화를 끊고 올라갔습니다.
+            그 모습을 보면서 더 확신했습니다. 이 사람은 멈추지 않을 거라고
+            생각했습니다. 그래서 그때 죽이기로 했습니다. <br />
+            9시 20분쯤, 저는 먼저 자리에서 일어났습니다. 이때 식칼 하나를
+            가져갔습니다. <br />
+            10시쯤, 이환 선생이 원고를 쓰기 시작할 때였죠. 저는 2층으로
+            올라갔습니다. 문을 열고 들어갔을 때 선생은 책상에 앉아 있었습니다.
+            저는 뒤에서 접근했습니다. 선생이 창문에 비친 저를 보고 돌아봤습니다.
+            그런데 그걸 보고도 멈추지는 않았습니다. 오른손으로 칼을 들고, 오른쪽
+            가슴을 찔렀고, 선생은 바로 쓰러졌습니다. 칼은 그대로 둔
+            상태였습니다. <br />
+            그때 노크 소리가 났습니다. 10시 5분쯤이었습니다. 류인영
+            목소리였습니다. 숨을 곳이 없어 문 뒤에 섰지만, 창문에 제 모습이
+            비치는 게 보여서, 바로 창문을 열었습니다. <br />
+            류인영이 들어와 시신을 보고 사진을 찍고 나갔습니다. 계단 내려가는
+            소리를 확인하고 바로 방을 나와 제 방으로 돌아갔습니다. 대략 10시
+            10분쯤이었습니다. 뭐, 이제 다 끝났군요. 제가 범인입니다. 후회는
+            없어요.
           </Typography>
         </TabPanel>
 
@@ -262,6 +280,26 @@ export default function NovelistAnswer() {
             없고 질식 정황이 남은 점까지 합치면, 서윤호가 대화 도중 약을 먹인 뒤
             현장을 조작하려 했다는 결론이 가장 자연스럽습니다.
           </Typography>
+        </TabPanel>
+        <TabPanel value={tabValue} index="culprits">
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            mt={10}
+          >
+            <Button
+              variant="contained"
+              color="info"
+              href="https://drive.google.com/file/d/19D-XLQMvKY4fHwt4peS2L-3HbY-s4Ipr/view?usp=drive_link"
+              target="_blank"
+              rel="noopener noreferrer"
+              sx={{ mb: 10 }}
+            >
+              용의자 롤카드 PDF 다운로드
+              <LaunchRounded sx={{ ml: 1, fontSize: 20 }} />
+            </Button>
+          </Box>
         </TabPanel>
       </Box>
 
