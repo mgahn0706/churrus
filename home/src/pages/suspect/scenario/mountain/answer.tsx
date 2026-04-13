@@ -13,16 +13,14 @@ import {
   Tabs,
   Typography,
 } from "@mui/material";
-import Image from "next/image";
-import PlayButtonIcon from "@mui/icons-material/PlayCircleFilled";
 import LaunchRounded from "@mui/icons-material/LaunchRounded";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { DetectiveNoteType } from "@/features/suspect/types";
 import TabPanel from "@/features/suspect/components/Answer/TabPanel";
-import { FadeInSection } from "@/features/suspect/components/FadeInSection";
 import { mountainAdditionalQuestions } from "@/features/suspect/fixtures/mountain/clues";
 import { saveScenarioCertification } from "@/features/suspect/libs/certification";
+import { AnswerRevealSequence } from "@/features/suspect/components/AnswerRevealSequence";
 
 export default function MountainAnswer() {
   const router = useRouter();
@@ -90,92 +88,21 @@ export default function MountainAnswer() {
 
   return (
     <Box sx={{ backgroundColor: "black" }}>
-      <FadeInSection>
-        <Typography variant="h1" color="white" mt={40} mb={20}>
-          {submittedAnswer.accusedSuspect}
-        </Typography>
-      </FadeInSection>
-
-      <FadeInSection>
-        <Box display="flex" justifyContent="center" mb={40}>
-          <PlayButtonIcon
-            sx={{
-              opacity: 0.2,
-              width: "50px",
-              height: "50px",
-              transform: `rotate(90deg)`,
-            }}
-          />
-        </Box>
-      </FadeInSection>
-
-      <FadeInSection>
-        <Typography variant="h1" color="white" mt={40} mb={20}>
-          당신은
-        </Typography>
-      </FadeInSection>
-
-      <FadeInSection>
-        <Typography variant="h1" color="white" mt={70} mb={100}>
-          추리수를 살해한 범인이
-        </Typography>
-      </FadeInSection>
-
-      <FadeInSection>
-        <Typography
-          variant="h1"
-          color="white"
-          mt={50}
-          mb={20}
-          fontWeight="bold"
-        >
-          {submittedAnswer.accusedSuspect === "최령신"
+      <AnswerRevealSequence
+        accusedText={submittedAnswer.accusedSuspect}
+        culpritText="최령신"
+        imageSrc="/image/suspect/scenario/mountain/mountain-reveal.png"
+        methodText="살해방법: 바뀐 표지판을 모른 채 절벽 쪽으로 향했다가, 실랑이 끝에 우발적으로 피해자를 밀어 추락시켰다."
+        motiveText="살해동기: 적록색맹 때문에 신청지 종교에서 중시하는 청록색을 구분하지 못한다는 약점을 추리수가 자극했고, 그 모욕과 불안이 폭발했다."
+        myMethodText={submittedAnswer.howDunnit}
+        myMotiveText={submittedAnswer.whyDunnit}
+        resultText={
+          submittedAnswer.accusedSuspect === "최령신"
             ? "맞습니다!"
-            : "아닙니다!"}
-        </Typography>
-      </FadeInSection>
-
-      <FadeInSection>
-        <Image
-          src={"/image/suspect/scenario/mountain/mountain-reveal.png"}
-          alt="범인 공개 이미지"
-          width={800}
-          height={400}
-          style={{ objectFit: "contain" }}
-        />
-      </FadeInSection>
-
-      <FadeInSection>
-        <Box display="flex" justifyContent="center">
-          <Typography variant="h2" color="white">
-            진범: 최령신
-          </Typography>
-        </Box>
-      </FadeInSection>
-
-      <FadeInSection>
-        <Box textAlign="center">
-          <Typography variant="h5" color="white" mt={1}>
-            살해방법: 바뀐 표지판을 모른 채 절벽 쪽으로 향했다가, 실랑이 끝에
-            우발적으로 피해자를 밀어 추락시켰다.
-          </Typography>
-          <Typography variant="body2" color="gray">
-            내 답변: {submittedAnswer.howDunnit}
-          </Typography>
-        </Box>
-      </FadeInSection>
-
-      <FadeInSection>
-        <Box textAlign="center">
-          <Typography variant="h5" color="white">
-            살해동기: 적록색맹 때문에 신청지 종교에서 중시하는 청록색을 구분하지
-            못한다는 약점을 추리수가 자극했고, 그 모욕과 불안이 폭발했다.
-          </Typography>
-          <Typography variant="body2" color="gray">
-            내 답변: {submittedAnswer.whyDunnit}
-          </Typography>
-        </Box>
-      </FadeInSection>
+            : "아닙니다!"
+        }
+        targetText="추리수를 살해한 범인이"
+      />
 
       <Box display="block" color="white" mx={15} mt={15}>
         <Tabs

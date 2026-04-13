@@ -13,15 +13,13 @@ import {
   Tabs,
   Typography,
 } from "@mui/material";
-import Image from "next/image";
-import PlayButtonIcon from "@mui/icons-material/PlayCircleFilled";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { DetectiveNoteType } from "@/features/suspect/types";
-import { FadeInSection } from "@/features/suspect/components/FadeInSection";
 import TabPanel from "@/features/suspect/components/Answer/TabPanel";
 import { LaunchRounded } from "@mui/icons-material";
 import { saveScenarioCertification } from "@/features/suspect/libs/certification";
+import { AnswerRevealSequence } from "@/features/suspect/components/AnswerRevealSequence";
 
 export default function SchoolAnswer() {
   const router = useRouter();
@@ -90,92 +88,28 @@ export default function SchoolAnswer() {
 
   return (
     <Box sx={{ backgroundColor: "black" }}>
-      <FadeInSection>
-        <Typography variant="h1" color="white" mt={40} mb={20}>
-          {submittedAnswer.accusedSuspect}
-          {submittedAnswer.accusedSuspect === "자살" && "은"}
-        </Typography>
-      </FadeInSection>
-
-      <FadeInSection>
-        <Box display="flex" justifyContent="center" mb={40}>
-          <PlayButtonIcon
-            sx={{
-              opacity: 0.2,
-              width: "50px",
-              height: "50px",
-              transform: `rotate(90deg)`,
-            }}
-          />
-        </Box>
-      </FadeInSection>
-
-      {submittedAnswer.accusedSuspect !== "자살" && (
-        <FadeInSection>
-          <Typography variant="h1" color="white" mt={40} mb={80}>
-            당신은
-          </Typography>
-        </FadeInSection>
-      )}
-
-      <FadeInSection>
-        <Typography variant="h1" color="white" mt={70} mb={100}>
-          {submittedAnswer.accusedSuspect === "자살"
-            ? "박현성의 사인이"
-            : "박현성을 살해한 범인이"}
-        </Typography>
-      </FadeInSection>
-      <FadeInSection>
-        <Typography
-          variant="h1"
-          color="white"
-          mt={50}
-          mb={20}
-          fontWeight="bold"
-        >
-          {submittedAnswer.accusedSuspect === "손민혜"
+      <AnswerRevealSequence
+        accusedText={`${submittedAnswer.accusedSuspect}${
+          submittedAnswer.accusedSuspect === "자살" ? "은" : ""
+        }`}
+        culpritText="손민혜"
+        imageSrc="/image/suspect/scenario/school/school-reveal.png"
+        methodText="살해방법: 클로로포름으로 마취시킨 후 의료용 고무줄로 교살한 뒤 수면제를 먹여 자살로 위장"
+        motiveText="살해동기: 마약 유통 사실을 들켜 본인의 마약 수급은 물론 생명까지 위험해졌다."
+        myMethodText={submittedAnswer.howDunnit}
+        myMotiveText={submittedAnswer.whyDunnit}
+        resultText={
+          submittedAnswer.accusedSuspect === "손민혜"
             ? "맞습니다!"
-            : "아닙니다!"}
-        </Typography>
-      </FadeInSection>
-      <FadeInSection>
-        <Image
-          src={"/image/suspect/scenario/school/school-reveal.png"}
-          alt="범인 공개 이미지"
-          width={800}
-          height={400}
-          style={{ objectFit: "contain" }}
-        />
-      </FadeInSection>
-      <FadeInSection>
-        <Box display="flex" justifyContent="center">
-          <Typography variant="h2" color="white">
-            진범: 손민혜
-          </Typography>
-        </Box>
-      </FadeInSection>
-      <FadeInSection>
-        <Box textAlign="center">
-          <Typography variant="h5" color="white" mt={1}>
-            살해방법: 클로로포름으로 마취시킨 후 의료용 고무줄로 교살한 뒤
-            수면제를 먹여 자살로 위장
-          </Typography>
-          <Typography variant="body2" color="gray">
-            내 답변: {submittedAnswer.howDunnit}
-          </Typography>
-        </Box>
-      </FadeInSection>
-      <FadeInSection>
-        <Box textAlign="center">
-          <Typography variant="h5" color="white">
-            살해동기: 마약 유통 사실을 들켜 본인의 마약 수급은 물론 생명까지
-            위험해졌다.
-          </Typography>
-          <Typography variant="body2" color="gray">
-            내 답변: {submittedAnswer.whyDunnit}
-          </Typography>
-        </Box>
-      </FadeInSection>
+            : "아닙니다!"
+        }
+        showYouText={submittedAnswer.accusedSuspect !== "자살"}
+        targetText={
+          submittedAnswer.accusedSuspect === "자살"
+            ? "박현성의 사인이"
+            : "박현성을 살해한 범인이"
+        }
+      />
       <Box display="block" color="white" mx={15} mt={15}>
         <Tabs
           value={tabValue}

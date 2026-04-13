@@ -13,15 +13,13 @@ import {
   Tabs,
   Typography,
 } from "@mui/material";
-import Image from "next/image";
-import PlayButtonIcon from "@mui/icons-material/PlayCircleFilled";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { DetectiveNoteType } from "@/features/suspect/types";
-import { FadeInSection } from "@/features/suspect/components/FadeInSection";
 import TabPanel from "@/features/suspect/components/Answer/TabPanel";
 import { LaunchRounded } from "@mui/icons-material";
 import { saveScenarioCertification } from "@/features/suspect/libs/certification";
+import { AnswerRevealSequence } from "@/features/suspect/components/AnswerRevealSequence";
 
 export default function DureAnswer() {
   const router = useRouter();
@@ -90,84 +88,21 @@ export default function DureAnswer() {
 
   return (
     <Box sx={{ backgroundColor: "black" }}>
-      <FadeInSection>
-        <Typography variant="h1" color="white" mt={40} mb={20}>
-          {submittedAnswer.accusedSuspect}
-        </Typography>
-      </FadeInSection>
-
-      <FadeInSection>
-        <Box display="flex" justifyContent="center" mb={40}>
-          <PlayButtonIcon
-            sx={{
-              opacity: 0.2,
-              width: "50px",
-              height: "50px",
-              transform: `rotate(90deg)`,
-            }}
-          />
-        </Box>
-      </FadeInSection>
-      <FadeInSection>
-        <Typography variant="h1" color="white" mt={70} mb={100}>
-          당신은
-        </Typography>
-      </FadeInSection>
-
-      <FadeInSection>
-        <Typography variant="h1" color="white" mt={70} mb={100}>
-          이예진을 살해한 범인이
-        </Typography>
-      </FadeInSection>
-      <FadeInSection>
-        <Typography
-          variant="h1"
-          color="white"
-          mt={50}
-          mb={20}
-          fontWeight="bold"
-        >
-          {submittedAnswer.accusedSuspect === "백장훈"
+      <AnswerRevealSequence
+        accusedText={submittedAnswer.accusedSuspect}
+        culpritText="백장훈"
+        imageSrc="/image/suspect/scenario/dure/dure-reveal.png"
+        methodText="살해방법: 망치로 머리를 가격하여 살해한 후, 감전 사고사로 위장"
+        motiveText="살해동기: 1년 전 강제호 살인사건의 진범이 자신임을 숨기기 위해"
+        myMethodText={submittedAnswer.howDunnit}
+        myMotiveText={submittedAnswer.whyDunnit}
+        resultText={
+          submittedAnswer.accusedSuspect === "백장훈"
             ? "맞습니다!"
-            : "아닙니다!"}
-        </Typography>
-      </FadeInSection>
-      <FadeInSection>
-        <Image
-          src={"/image/suspect/scenario/dure/dure-reveal.png"}
-          alt="범인 공개 이미지"
-          width={800}
-          height={400}
-          style={{ objectFit: "contain" }}
-        />
-      </FadeInSection>
-      <FadeInSection>
-        <Box display="flex" justifyContent="center">
-          <Typography variant="h2" color="white">
-            진범: 백장훈
-          </Typography>
-        </Box>
-      </FadeInSection>
-      <FadeInSection>
-        <Box textAlign="center">
-          <Typography variant="h5" color="white" mt={1}>
-            살해방법: 망치로 머리를 가격하여 살해한 후, 감전 사고사로 위장
-          </Typography>
-          <Typography variant="body2" color="gray">
-            내 답변: {submittedAnswer.howDunnit}
-          </Typography>
-        </Box>
-      </FadeInSection>
-      <FadeInSection>
-        <Box textAlign="center">
-          <Typography variant="h5" color="white">
-            살해동기: 1년 전 강제호 살인사건의 진범이 자신임을 숨기기 위해
-          </Typography>
-          <Typography variant="body2" color="gray">
-            내 답변: {submittedAnswer.whyDunnit}
-          </Typography>
-        </Box>
-      </FadeInSection>
+            : "아닙니다!"
+        }
+        targetText="이예진을 살해한 범인이"
+      />
       <Box display="block" color="white" mx={15} mt={15}>
         <Tabs
           value={tabValue}
