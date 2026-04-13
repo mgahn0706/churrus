@@ -34,7 +34,7 @@ export interface SuspectType {
 
 export type VictimType = SuspectType;
 
-export interface ScenarioType {
+interface ScenarioBase {
   color: string;
   title: string;
   creators: string[];
@@ -44,13 +44,24 @@ export interface ScenarioType {
   isInDevelopment: boolean;
   histories?: string[];
   description?: string;
-  gameType: "TEXT" | "CLUE";
   suspects: SuspectType[];
   victims: VictimType[];
   places: string[];
-  prologue?: string[];
-  clues: ClueType[] | ClueData[];
 }
+
+export interface TextScenarioType extends ScenarioBase {
+  gameType: "TEXT";
+  prologue: string[];
+  clues: ClueData[];
+}
+
+export interface ClueScenarioType extends ScenarioBase {
+  gameType: "CLUE";
+  prologue?: string[];
+  clues: ClueType[];
+}
+
+export type ScenarioType = TextScenarioType | ClueScenarioType;
 
 export interface AdditionalQuestionType {
   no: number;

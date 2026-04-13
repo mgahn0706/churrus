@@ -3,6 +3,7 @@ import { scenarios } from "@/features/suspect/fixtures";
 import { museumAdditionalQuestions } from "@/features/suspect/fixtures/museum/clues";
 import { museumMoveButton } from "@/features/suspect/fixtures/museum/movePlace";
 import { MuseumPrologue } from "@/features/suspect/fixtures/museum/prologue";
+import { ClueScenarioType } from "@/features/suspect/types";
 import { createTheme, ThemeProvider } from "@mui/material";
 
 const theme = createTheme({
@@ -15,7 +16,10 @@ const theme = createTheme({
 });
 
 export default function Museum() {
-  const museumScenario = scenarios.find((scenario) => scenario.id === "museum");
+  const museumScenario = scenarios.find(
+    (scenario): scenario is ClueScenarioType =>
+      scenario.id === "museum" && scenario.gameType === "CLUE"
+  );
 
   if (!museumScenario) {
     throw new Error("Scenario not found");

@@ -3,6 +3,7 @@ import { scenarios } from "@/features/suspect/fixtures";
 import { startupAdditionalQuestions } from "@/features/suspect/fixtures/startup/clues";
 import { startUpMoveButton } from "@/features/suspect/fixtures/startup/movePlace";
 import { StartUpPrologue } from "@/features/suspect/fixtures/startup/prologue";
+import { ClueScenarioType } from "@/features/suspect/types";
 import { createTheme, ThemeProvider } from "@mui/material";
 
 const theme = createTheme({
@@ -16,7 +17,8 @@ const theme = createTheme({
 
 export default function Startup() {
   const startUpScenario = scenarios.find(
-    (scenario) => scenario.id === "startup"
+    (scenario): scenario is ClueScenarioType =>
+      scenario.id === "startup" && scenario.gameType === "CLUE"
   );
 
   if (!startUpScenario) {

@@ -3,6 +3,7 @@ import { scenarios } from "@/features/suspect/fixtures";
 import { jahayeonAdditionalQuestions } from "@/features/suspect/fixtures/jahayeon/clues";
 import { jahayeonMoveButton } from "@/features/suspect/fixtures/jahayeon/movePlace";
 import { JahayeonPrologue } from "@/features/suspect/fixtures/jahayeon/prologue";
+import { ClueScenarioType } from "@/features/suspect/types";
 import { createTheme, ThemeProvider } from "@mui/material";
 
 const theme = createTheme({
@@ -16,7 +17,8 @@ const theme = createTheme({
 
 export default function Jahayeon() {
   const jahayeonScenario = scenarios.find(
-    (scenario) => scenario.id === "jahayeon"
+    (scenario): scenario is ClueScenarioType =>
+      scenario.id === "jahayeon" && scenario.gameType === "CLUE"
   );
 
   if (!jahayeonScenario) {

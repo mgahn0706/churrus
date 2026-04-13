@@ -11,8 +11,8 @@ import { useEffect, useState } from "react";
 import {
   AdditionalQuestionType,
   ClueType,
+  ClueScenarioType,
   MovePlaceButtonType,
-  ScenarioType,
 } from "@/features/suspect/types";
 import MemoModal from "./MemoModal";
 import { useMobileWidth } from "@/hooks/useMobileWIdth";
@@ -31,7 +31,7 @@ import Head from "next/head";
 interface InGameLayoutProps {
   prologue: React.ReactNode;
   movePlaceButton: MovePlaceButtonType[];
-  scenario: ScenarioType;
+  scenario: ClueScenarioType;
   additionalQuestions: AdditionalQuestionType[];
 }
 

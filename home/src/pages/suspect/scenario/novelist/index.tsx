@@ -3,6 +3,7 @@ import { scenarios } from "@/features/suspect/fixtures";
 import { novelistAdditionalQuestions } from "@/features/suspect/fixtures/novelist/clues";
 import { novelistMoveButton } from "@/features/suspect/fixtures/novelist/movePlace";
 import { NovelistPrologue } from "@/features/suspect/fixtures/novelist/prologue";
+import { ClueScenarioType } from "@/features/suspect/types";
 import { createTheme, ThemeProvider } from "@mui/material";
 
 const theme = createTheme({
@@ -15,7 +16,8 @@ const theme = createTheme({
 
 export default function Novelist() {
   const novelistScenario = scenarios.find(
-    (scenario) => scenario.id === "novelist"
+    (scenario): scenario is ClueScenarioType =>
+      scenario.id === "novelist" && scenario.gameType === "CLUE"
   );
 
   if (!novelistScenario) {

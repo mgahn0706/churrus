@@ -3,6 +3,7 @@ import { scenarios } from "@/features/suspect/fixtures";
 import { mountainAdditionalQuestions } from "@/features/suspect/fixtures/mountain/clues";
 import { mountainMoveButton } from "@/features/suspect/fixtures/mountain/movePlace";
 import { MountainPrologue } from "@/features/suspect/fixtures/mountain/prologue";
+import { ClueScenarioType } from "@/features/suspect/types";
 import { createTheme, ThemeProvider } from "@mui/material";
 
 const theme = createTheme({
@@ -16,7 +17,8 @@ const theme = createTheme({
 
 export default function Mountain() {
   const mountainScenario = scenarios.find(
-    (scenario) => scenario.id === "mountain"
+    (scenario): scenario is ClueScenarioType =>
+      scenario.id === "mountain" && scenario.gameType === "CLUE"
   );
 
   if (!mountainScenario) {
