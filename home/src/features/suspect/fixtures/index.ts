@@ -24,6 +24,7 @@ import { novelistClues } from "./novelist/clues";
 export const scenarios: ScenarioType[] = [
   {
     title: "스타트업 살인사건",
+    creators: [],
     numberOfSuspects: 3,
     backgroundImage: "/image/suspect/scenario/startup/startup-main.png",
     id: "startup",
@@ -39,6 +40,7 @@ export const scenarios: ScenarioType[] = [
   },
   {
     title: "와부고 살인사건",
+    creators: [],
     gameType: "TEXT",
     numberOfSuspects: 3,
     histories: ["2023년 10월 정기모임", "2024년 3월 OT"],
@@ -55,6 +57,7 @@ export const scenarios: ScenarioType[] = [
   },
   {
     title: "자하연 살인사건",
+    creators: [],
     gameType: "CLUE",
     numberOfSuspects: 4,
     backgroundImage: "/image/suspect/scenario/jahayeon/jahayeon-main.png",
@@ -70,6 +73,7 @@ export const scenarios: ScenarioType[] = [
   },
   {
     title: "두레문예관 살인사건",
+    creators: [],
     gameType: "TEXT",
     numberOfSuspects: 4,
     backgroundImage: "/image/suspect/scenario/dure/dure-main.png",
@@ -86,6 +90,7 @@ export const scenarios: ScenarioType[] = [
   },
   {
     title: "추러스 박물관 살인사건",
+    creators: [],
     gameType: "CLUE",
     numberOfSuspects: 3,
     backgroundImage: "/image/suspect/scenario/museum/museum-main.png",
@@ -102,6 +107,7 @@ export const scenarios: ScenarioType[] = [
   {
     id: "serial",
     title: "28동-301동 연쇄 살인사건",
+    creators: [],
     gameType: "CLUE",
     numberOfSuspects: 3,
     backgroundImage: "/image/suspect/scenario/serial/serial-main.png",
@@ -116,6 +122,7 @@ export const scenarios: ScenarioType[] = [
   {
     id: "mountain",
     title: "청룡산 살인사건",
+    creators: [],
     gameType: "CLUE",
     numberOfSuspects: 4,
     backgroundImage: "/image/suspect/scenario/mountain/mountain-main.png",
@@ -129,6 +136,7 @@ export const scenarios: ScenarioType[] = [
   },
   {
     title: "추리소설가 살인사건",
+    creators: [],
     gameType: "CLUE",
     numberOfSuspects: 4,
     histories: [],
@@ -144,6 +152,7 @@ export const scenarios: ScenarioType[] = [
   },
   {
     title: "케이팝 데몬 헌터스 살인사건",
+    creators: [],
     gameType: "CLUE",
     numberOfSuspects: 5,
     backgroundImage: "/image/suspect/scenario/kpop/kpop-main.png",
@@ -160,6 +169,7 @@ export const scenarios: ScenarioType[] = [
   {
     id: "bluemoon",
     title: "푸른 달 살인사건",
+    creators: [],
     gameType: "CLUE",
     numberOfSuspects: 6,
     histories: ["2026년 겨울 대이동"],

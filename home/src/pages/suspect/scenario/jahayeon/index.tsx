@@ -1,15 +1,8 @@
 import InGameLayout from "@/features/suspect/components/InGame/InGameLayout";
 import { scenarios } from "@/features/suspect/fixtures";
-import {
-  jahayeonClues,
-  jahayeonAdditionalQuestions,
-} from "@/features/suspect/fixtures/jahayeon/clues";
+import { jahayeonAdditionalQuestions } from "@/features/suspect/fixtures/jahayeon/clues";
 import { jahayeonMoveButton } from "@/features/suspect/fixtures/jahayeon/movePlace";
 import { JahayeonPrologue } from "@/features/suspect/fixtures/jahayeon/prologue";
-import {
-  jahayeonSuspects,
-  jahayeonVictim,
-} from "@/features/suspect/fixtures/jahayeon/suspects";
 import { createTheme, ThemeProvider } from "@mui/material";
 
 const theme = createTheme({
@@ -32,10 +25,7 @@ export default function Jahayeon() {
   return (
     <ThemeProvider theme={theme}>
       <InGameLayout
-        suspects={jahayeonSuspects}
-        clues={jahayeonClues}
         movePlaceButton={jahayeonMoveButton}
-        victims={[jahayeonVictim]}
         prologue={<JahayeonPrologue />}
         scenario={jahayeonScenario}
         additionalQuestions={jahayeonAdditionalQuestions}

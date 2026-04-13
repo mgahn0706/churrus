@@ -86,7 +86,7 @@ export default function Rules() {
 
         <RuleCard
           title="살인사건이 일어났습니다!"
-          description="단순한 사고일까요? 아니면 의도적인 살인일까요? 여러분은 탐정이 되어 용의자들 중 피해자를 살해한 범인이 누구인지 밝혀내야합니다. "
+          description="단순한 사고일까요? 아니면 의도적인 살인일까요? 여러분은 탐정이 되어 용의자들 중 피해자를 살해한 범인이 누구인지 밝혀내야합니다."
           image="/image/suspect/rules/1.png"
         />
         <RuleCard

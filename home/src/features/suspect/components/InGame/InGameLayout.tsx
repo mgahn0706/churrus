@@ -13,8 +13,6 @@ import {
   ClueType,
   MovePlaceButtonType,
   ScenarioType,
-  SuspectType,
-  VictimType,
 } from "@/features/suspect/types";
 import MemoModal from "./MemoModal";
 import { useMobileWidth } from "@/hooks/useMobileWIdth";
@@ -31,10 +29,7 @@ import usePreventUnload from "@/hooks/usePreventUnload";
 import Head from "next/head";
 
 interface InGameLayoutProps {
-  clues: ClueType[];
   prologue: React.ReactNode;
-  suspects: SuspectType[];
-  victims: VictimType[];
   movePlaceButton: MovePlaceButtonType[];
   scenario: ScenarioType;
   additionalQuestions: AdditionalQuestionType[];
@@ -52,10 +47,7 @@ const getInteractionLogStorageKey = (scenarioId: string) =>
   `${scenarioId}-interaction-log`;
 
 export default function InGameLayout({
-  clues,
   prologue,
-  suspects,
-  victims,
   movePlaceButton,
   scenario,
   additionalQuestions,
@@ -77,7 +69,7 @@ export default function InGameLayout({
 
   useEffect(() => {
     setCurrentPlace(scenario.places[0] ?? "");
-  }, [scenario.id]);
+  }, [scenario.id, scenario.places]);
 
   useEffect(() => {
     const startStorageKey = getInteractionStartStorageKey(scenario.id);
@@ -108,7 +100,7 @@ export default function InGameLayout({
   usePreventUnload();
 
   const openedClue: ClueType | null =
-    clues.find((clue) => clue.id === openedClueId) ?? null;
+    scenario.clues.find((clue) => clue.id === openedClueId) ?? null;
 
   const markClueAsChecked = (clueId: number) => {
     setCheckedClueList((prev) => {
@@ -150,7 +142,7 @@ export default function InGameLayout({
     navigator.clipboard?.writeText(`x: ${x}, y: ${y},`);
   };
 
-  const visibleClues = clues.filter((clue) => {
+  const visibleClues = scenario.clues.filter((clue) => {
     return (
       clue.place === currentPlace ||
       (clue.place === openedClueId && clue.type === "additional")
@@ -184,9 +176,9 @@ export default function InGameLayout({
             scenarioKeyword={scenario.id}
             isOpen={openedModal === "memo"}
             onClose={() => setOpenedModal(null)}
-            suspects={suspects}
+            suspects={scenario.suspects}
             questions={additionalQuestions}
-            isAllClueSearched={checkedClueList.length === clues.length}
+            isAllClueSearched={checkedClueList.length === scenario.clues.length}
           />
         )}
 
@@ -258,15 +250,15 @@ export default function InGameLayout({
           );
         })}
         <ClueDashboardModal
-          clues={clues}
+          clues={scenario.clues}
           isOpen={openedModal === "dashboard"}
           checkedClueList={checkedClueList}
           onClose={handleCloseModal}
         />
         <SuspectsInfoCard
           isOpen={openedModal === "suspects"}
-          victims={victims}
-          suspects={suspects}
+          victims={scenario.victims}
+          suspects={scenario.suspects}
           onClose={handleCloseModal}
         />
         <PrologueModal
