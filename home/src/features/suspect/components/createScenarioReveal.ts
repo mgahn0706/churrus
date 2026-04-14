@@ -1,5 +1,9 @@
 import { DetectiveNoteType } from "@/features/suspect/types";
 import { DEFAULT_WRONG_ANSWER_SUBTEXT } from "@/features/suspect/types/answerPage";
+import {
+  ResolvableWithSubmittedAnswer,
+  resolveWithSubmittedAnswer,
+} from "@/features/suspect/types/resolvable";
 import { AnswerRevealSequence } from "./AnswerRevealSequence";
 
 type RevealConfig = {
@@ -7,7 +11,7 @@ type RevealConfig = {
   imageSrc: string;
   methodText: string;
   motiveText: string;
-  targetText: string | ((submittedAnswer: DetectiveNoteType) => string);
+  targetText: ResolvableWithSubmittedAnswer<string>;
   accusedText?: (submittedAnswer: DetectiveNoteType) => string;
   isCorrect?: (submittedAnswer: DetectiveNoteType) => boolean;
   resultText?: (submittedAnswer: DetectiveNoteType) => string;
@@ -50,10 +54,10 @@ export function createScenarioReveal(config: RevealConfig) {
           ? undefined
           : DEFAULT_WRONG_ANSWER_SUBTEXT,
       showYouText: config.showYouText?.(submittedAnswer),
-      targetText:
-        typeof config.targetText === "function"
-          ? config.targetText(submittedAnswer)
-          : config.targetText,
+      targetText: resolveWithSubmittedAnswer(
+        config.targetText,
+        submittedAnswer
+      ),
     };
   };
 }

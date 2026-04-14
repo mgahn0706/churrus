@@ -5,39 +5,35 @@ import {
   ScenarioAnswerText,
   ScenarioSolutionText,
 } from "@/features/suspect/components/ScenarioAnswerContent";
-import { DetectiveNoteType } from "@/features/suspect/types";
-import {
-  ScenarioAdditionalAnswerItem,
-  ScenarioAnswerConfig,
-} from "@/features/suspect/types/answerPage";
+import { ScenarioAnswerConfig } from "@/features/suspect/types/answerPage";
+import { resolveWithSubmittedAnswer } from "@/features/suspect/types/resolvable";
 
-function resolveContent(
-  content: ReactNode | ((submittedAnswer: DetectiveNoteType) => ReactNode),
-  submittedAnswer: DetectiveNoteType
-): ReactNode;
-function resolveContent(
-  content:
-    | ScenarioAdditionalAnswerItem[]
-    | ((
-        submittedAnswer: DetectiveNoteType
-      ) => ScenarioAdditionalAnswerItem[]),
-  submittedAnswer: DetectiveNoteType
-): ScenarioAdditionalAnswerItem[];
-function resolveContent(
-  content:
-    | ReactNode
-    | ScenarioAdditionalAnswerItem[]
-    | ((submittedAnswer: DetectiveNoteType) => ReactNode)
-    | ((submittedAnswer: DetectiveNoteType) => ScenarioAdditionalAnswerItem[]),
-  submittedAnswer: DetectiveNoteType
-) {
-  return typeof content === "function"
-    ? content(submittedAnswer)
-    : content;
+function createAdditionalRenderer(config: ScenarioAnswerConfig) {
+  if (!config.additional) {
+    return undefined;
+  }
+
+  const additional = config.additional;
+
+  function renderGeneratedAdditional(
+    submittedAnswer: Parameters<ScenarioAnswerConfig["reveal"]>[0]
+  ) {
+    return (
+      <ScenarioAdditionalAnswerList
+        items={resolveWithSubmittedAnswer(additional, submittedAnswer)}
+        submittedAnswer={submittedAnswer}
+      />
+    );
+  }
+
+  return renderGeneratedAdditional;
 }
 
 export function createScenarioAnswerPage(config: ScenarioAnswerConfig) {
   function ScenarioAnswer() {
+    const renderAdditional =
+      config.renderAdditional ?? createAdditionalRenderer(config);
+
     return (
       <ScenarioAnswerPage
         scenarioKey={config.scenarioKey}
@@ -45,24 +41,13 @@ export function createScenarioAnswerPage(config: ScenarioAnswerConfig) {
         reveal={config.reveal}
         renderConfess={(submittedAnswer) => (
           <ScenarioAnswerText>
-            {resolveContent(config.confess, submittedAnswer)}
+            {resolveWithSubmittedAnswer(config.confess, submittedAnswer)}
           </ScenarioAnswerText>
         )}
-        renderAdditional={
-          config.renderAdditional
-            ? config.renderAdditional
-            : config.additional
-              ? (submittedAnswer) => (
-                  <ScenarioAdditionalAnswerList
-                    items={resolveContent(config.additional!, submittedAnswer)}
-                    submittedAnswer={submittedAnswer}
-                  />
-                )
-              : undefined
-        }
+        renderAdditional={renderAdditional}
         renderSolution={(submittedAnswer) => (
           <ScenarioSolutionText>
-            {resolveContent(config.solution, submittedAnswer)}
+            {resolveWithSubmittedAnswer(config.solution, submittedAnswer)}
           </ScenarioSolutionText>
         )}
         culpritsHref={config.culpritsHref}
