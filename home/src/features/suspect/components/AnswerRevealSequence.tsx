@@ -9,11 +9,14 @@ type AnswerRevealSequenceProps = {
   culpritText: string;
   imageAlt?: string;
   imageSrc: string;
+  methodLabel?: string;
   methodText: string;
+  motiveLabel?: string;
   motiveText: string;
   myMethodText: string;
   myMotiveText: string;
   resultText: string;
+  resultSubtext?: string;
   showYouText?: boolean;
   targetText: string;
 };
@@ -23,11 +26,14 @@ export function AnswerRevealSequence({
   culpritText,
   imageAlt = "범인 공개 이미지",
   imageSrc,
+  methodLabel = "살해방법",
   methodText,
+  motiveLabel = "살해동기",
   motiveText,
   myMethodText,
   myMotiveText,
   resultText,
+  resultSubtext,
   showYouText = true,
   targetText,
 }: AnswerRevealSequenceProps) {
@@ -70,6 +76,11 @@ export function AnswerRevealSequence({
         <Typography variant="h1" color="white" fontWeight="bold" mt={50} mb={20}>
           {resultText}
         </Typography>
+        {resultSubtext && (
+          <Typography variant="h3" color="white" fontWeight="bold" mb={100}>
+            {resultSubtext}
+          </Typography>
+        )}
       </ShakeTextSection>
 
       <FadeInSection>
@@ -95,7 +106,7 @@ export function AnswerRevealSequence({
       <FadeInSection>
         <Box textAlign="center">
           <Typography variant="h5" color="white" mt={1}>
-            {methodText}
+            {methodLabel}: {methodText}
           </Typography>
           <Typography variant="body2" color="gray">
             내 답변: {myMethodText}
@@ -106,7 +117,7 @@ export function AnswerRevealSequence({
       <FadeInSection>
         <Box textAlign="center">
           <Typography variant="h5" color="white">
-            {motiveText}
+            {motiveLabel}: {motiveText}
           </Typography>
           <Typography variant="body2" color="gray">
             내 답변: {myMotiveText}
