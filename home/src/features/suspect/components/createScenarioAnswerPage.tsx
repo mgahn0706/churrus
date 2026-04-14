@@ -6,13 +6,34 @@ import {
   ScenarioSolutionText,
 } from "@/features/suspect/components/ScenarioAnswerContent";
 import { DetectiveNoteType } from "@/features/suspect/types";
-import { ScenarioAnswerConfig } from "@/features/suspect/types/answerPage";
+import {
+  ScenarioAdditionalAnswerItem,
+  ScenarioAnswerConfig,
+} from "@/features/suspect/types/answerPage";
 
-function resolveContent<T>(
-  content: T | ((submittedAnswer: DetectiveNoteType) => T),
+function resolveContent(
+  content: ReactNode | ((submittedAnswer: DetectiveNoteType) => ReactNode),
+  submittedAnswer: DetectiveNoteType
+): ReactNode;
+function resolveContent(
+  content:
+    | ScenarioAdditionalAnswerItem[]
+    | ((
+        submittedAnswer: DetectiveNoteType
+      ) => ScenarioAdditionalAnswerItem[]),
+  submittedAnswer: DetectiveNoteType
+): ScenarioAdditionalAnswerItem[];
+function resolveContent(
+  content:
+    | ReactNode
+    | ScenarioAdditionalAnswerItem[]
+    | ((submittedAnswer: DetectiveNoteType) => ReactNode)
+    | ((submittedAnswer: DetectiveNoteType) => ScenarioAdditionalAnswerItem[]),
   submittedAnswer: DetectiveNoteType
 ) {
-  return typeof content === "function" ? content(submittedAnswer) : content;
+  return typeof content === "function"
+    ? content(submittedAnswer)
+    : content;
 }
 
 export function createScenarioAnswerPage(config: ScenarioAnswerConfig) {
