@@ -39,7 +39,6 @@ export function ShakeTextSection({ children }: { children: ReactNode }) {
     >
       <Box
         display="flex"
-        flexDirection="column"
         justifyContent="center"
         alignItems="center"
         sx={{

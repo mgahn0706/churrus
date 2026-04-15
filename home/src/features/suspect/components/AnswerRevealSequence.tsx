@@ -73,13 +73,20 @@ export function AnswerRevealSequence({
       </ShakeTextSection>
 
       <ShakeTextSection>
-        <Box textAlign="center" width="100%">
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          textAlign="center"
+          width="100%"
+          pb={resultSubtext ? 10 : 0}
+        >
           <Typography
             variant="h1"
             color="white"
             fontWeight="bold"
             mt={50}
-            mb={resultSubtext ? 100 : 20}
+            mb={resultSubtext ? 8 : 20}
             textAlign="center"
           >
             {resultText}
