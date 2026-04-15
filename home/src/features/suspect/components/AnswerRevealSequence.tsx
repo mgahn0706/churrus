@@ -73,37 +73,31 @@ export function AnswerRevealSequence({
       </ShakeTextSection>
 
       <ShakeTextSection>
-        <Box
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
+        <Typography
+          variant="h1"
+          color="white"
+          fontWeight="bold"
+          mt={50}
+          mb={resultSubtext ? 120 : 20}
           textAlign="center"
-          width="100%"
-          pb={resultSubtext ? 10 : 0}
         >
+          {resultText}
+        </Typography>
+      </ShakeTextSection>
+
+      {resultSubtext && (
+        <ShakeTextSection>
           <Typography
-            variant="h1"
+            variant="h3"
             color="white"
             fontWeight="bold"
-            mt={50}
-            mb={resultSubtext ? 8 : 20}
+            mb={100}
             textAlign="center"
           >
-            {resultText}
+            {resultSubtext}
           </Typography>
-          {resultSubtext && (
-            <Typography
-              variant="h3"
-              color="white"
-              fontWeight="bold"
-              mb={100}
-              textAlign="center"
-            >
-              {resultSubtext}
-            </Typography>
-          )}
-        </Box>
-      </ShakeTextSection>
+        </ShakeTextSection>
+      )}
 
       <FadeInSection>
         <Box display="flex" justifyContent="center">
