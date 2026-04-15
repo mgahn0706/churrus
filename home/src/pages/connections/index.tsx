@@ -453,7 +453,6 @@ export default function Connections() {
                 fontSize: "1.2rem",
               }}
               onClick={() => {
-                setSelectedWords([]);
                 setPanels(shuffle(panels));
               }}
             >
