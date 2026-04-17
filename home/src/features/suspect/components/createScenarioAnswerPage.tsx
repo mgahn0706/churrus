@@ -15,6 +15,10 @@ function createAdditionalRenderer(config: ScenarioAnswerConfig) {
 
   const additional = config.additional;
 
+  if (Array.isArray(additional) && additional.length === 0) {
+    return undefined;
+  }
+
   function renderGeneratedAdditional(
     submittedAnswer: Parameters<ScenarioAnswerConfig["reveal"]>[0]
   ) {
