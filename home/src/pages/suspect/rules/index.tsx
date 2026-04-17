@@ -1,34 +1,9 @@
 import { FadeInSection } from "@/features/suspect/components/FadeInSection";
 import Header from "@/features/suspect/components/Header";
+import { ShakeTextSection } from "@/features/suspect/components/ShakeTextSection";
 import { Box, Button, Typography } from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/router";
-
-const shakingTitleSx = {
-  display: "inline-block",
-  animation: "ruleTitleShake 2.4s ease-in-out infinite",
-  transformOrigin: "center",
-  "@keyframes ruleTitleShake": {
-    "0%, 100%": {
-      transform: "rotate(0deg)",
-    },
-    "10%": {
-      transform: "rotate(-3deg) scale(1.02)",
-    },
-    "20%": {
-      transform: "rotate(3deg) scale(1.03)",
-    },
-    "30%": {
-      transform: "rotate(-2deg)",
-    },
-    "40%": {
-      transform: "rotate(2deg)",
-    },
-    "50%": {
-      transform: "rotate(0deg)",
-    },
-  },
-} as const;
 
 function RuleCard({
   title,
@@ -55,19 +30,20 @@ function RuleCard({
           <Image src={image} width={500} height={300} alt="규칙 그림" />
         )}
         <Box width="700px">
-          <Typography
-            color="white"
-            fontSize="48px"
-            variant="h2"
-            mb={1}
-            fontWeight="bold"
-            sx={{
-              wordBreak: "keep-all",
-              ...shakingTitleSx,
-            }}
-          >
-            {title}
-          </Typography>
+          <ShakeTextSection>
+            <Typography
+              color="white"
+              fontSize="48px"
+              variant="h2"
+              mb={1}
+              fontWeight="bold"
+              sx={{
+                wordBreak: "keep-all",
+              }}
+            >
+              {title}
+            </Typography>
+          </ShakeTextSection>
           <Typography
             color="lightgray"
             variant="body1"
@@ -100,15 +76,16 @@ export default function Rules() {
       >
         <FadeInSection>
           <Box width="100%" pt="100px" mb="100px">
-            <Typography
-              color="white"
-              fontWeight="bold"
-              fontSize="48px"
-              textAlign="center"
-              sx={shakingTitleSx}
-            >
-              규칙
-            </Typography>
+            <ShakeTextSection>
+              <Typography
+                color="white"
+                fontWeight="bold"
+                fontSize="48px"
+                textAlign="center"
+              >
+                규칙
+              </Typography>
+            </ShakeTextSection>
           </Box>
         </FadeInSection>
 
