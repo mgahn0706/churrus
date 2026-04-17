@@ -4,6 +4,32 @@ import { Box, Button, Typography } from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/router";
 
+const shakingTitleSx = {
+  display: "inline-block",
+  animation: "ruleTitleShake 2.4s ease-in-out infinite",
+  transformOrigin: "center",
+  "@keyframes ruleTitleShake": {
+    "0%, 100%": {
+      transform: "rotate(0deg)",
+    },
+    "10%": {
+      transform: "rotate(-3deg) scale(1.02)",
+    },
+    "20%": {
+      transform: "rotate(3deg) scale(1.03)",
+    },
+    "30%": {
+      transform: "rotate(-2deg)",
+    },
+    "40%": {
+      transform: "rotate(2deg)",
+    },
+    "50%": {
+      transform: "rotate(0deg)",
+    },
+  },
+} as const;
+
 function RuleCard({
   title,
   description,
@@ -37,6 +63,7 @@ function RuleCard({
             fontWeight="bold"
             sx={{
               wordBreak: "keep-all",
+              ...shakingTitleSx,
             }}
           >
             {title}
@@ -78,6 +105,7 @@ export default function Rules() {
               fontWeight="bold"
               fontSize="48px"
               textAlign="center"
+              sx={shakingTitleSx}
             >
               규칙
             </Typography>
