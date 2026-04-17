@@ -130,7 +130,7 @@ export const novelistClues: ClueType[] = [
     y: 39.4,
     image: "/image/suspect/scenario/novelist/clues/novelist-12.png",
     description:
-      "책장에 꽂힌 2025년 출간한 이환 선생의 신작. 하드보일드 스타일의 소설이나, 소재는 '카페에서 유리잔 하나가 사라지는 사건' 등 일상 미스터리가 주를 이루며, 마지막은 좀비를 테마로 한 특수 설정 미스터리도 조금 들어가있는 실험적인 작품이다. 판매량이 매우 높았던 것으로 보인다.",
+      "책장에 꽂힌 2025년 출간한 이환 선생의 신작. 하드보일드 스타일의 소설이나, 소재는 '카페에서 유리잔 하나가 사라지는 사건', '브레이크가 고장나 교통사고가 나 회사에 지각한 사건' 등 일상 미스터리가 주를 이루며, 마지막은 좀비를 테마로 한 특수 설정 미스터리도 조금 들어가있는 실험적인 작품이다. 판매량이 매우 높았던 것으로 보인다.",
     type: "additional",
     place: 10,
   },
@@ -216,8 +216,8 @@ export const novelistClues: ClueType[] = [
     image: "/image/suspect/scenario/novelist/clues/novelist-20.png",
     description:
       "원고 일부다. 카페를 배경으로 한 일상 미스터리이며, 아직 발간되기 전의 원고이다.",
-    type: "additional",
-    place: 19,
+    type: "basic",
+    place: "lounge",
   },
   {
     id: 21,

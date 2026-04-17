@@ -51,30 +51,7 @@ export const novelistAnswerConfig: ScenarioAnswerConfig = {
       10분쯤이었습니다. 뭐, 이제 다 끝났군요. 제가 범인입니다. 후회는 없어요.
     </>
   ),
-  additional: [
-    {
-      question: "Q1. 피해자의 진단서가 보여주는 핵심 신체 이상은 무엇인가요?",
-      answer: "후각과 청각 장애",
-      showSubmittedAnswer: false,
-    },
-    {
-      question: "Q2. 2025년 3월 2일 무통장 입금증의 송금인은 누구인가요?",
-      answer: "브레이크",
-      showSubmittedAnswer: false,
-    },
-    {
-      question:
-        "Q3. 사건 당시 2층 방 안의 소리가 잘 퍼지지 않았던 이유는 무엇인가요?",
-      answer: "방이 흡음재가 들어간 차음 구조였기 때문",
-      showSubmittedAnswer: false,
-    },
-    {
-      question:
-        "Q4. 서재승이 피해자를 죽이기로 결심한 직접적 계기는 무엇인가요?",
-      answer: "형 서재형의 사고 배후에 이환이 있다고 확신했기 때문",
-      showSubmittedAnswer: false,
-    },
-  ],
+  additional: [],
   solution: (
     <>
       이 사건의 핵심은 흉기인 식칼의 사용 방식입니다. 범인은 우발적으로 주변
