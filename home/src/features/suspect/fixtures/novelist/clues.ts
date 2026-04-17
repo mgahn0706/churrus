@@ -1,27 +1,7 @@
 import { ClueType } from "@/features/suspect/types";
 import { createAdditionalQuestions } from "../utils";
 
-export const novelistAdditionalQuestions = createAdditionalQuestions([
-  {
-    question: "피해자의 진단서가 보여주는 핵심 신체 이상은 무엇인가요?",
-    answer: "후각과 청각에 장애가 있었다는 점입니다.",
-  },
-  {
-    question: "2025년 3월 2일 무통장 입금증의 송금인은 누구인가요?",
-    answer: "브레이크입니다.",
-  },
-  {
-    question:
-      "사건 당시 2층 방 안의 소리가 잘 퍼지지 않았던 이유는 무엇인가요?",
-    answer:
-      "방에 흡음재 시공 계획이 있었고 실제로 외부에 소리가 잘 새지 않는 구조였기 때문입니다.",
-  },
-  {
-    question: "서재승이 피해자를 죽이기로 결심한 직접적 계기는 무엇인가요?",
-    answer:
-      "형 서재형의 사고 뒤에 이환이 실제 사건을 소재로 삼기 위해 개입했을 수 있다고 확신했기 때문입니다.",
-  },
-]);
+export const novelistAdditionalQuestions = createAdditionalQuestions([]);
 
 export const novelistClues: ClueType[] = [
   {
@@ -31,7 +11,7 @@ export const novelistClues: ClueType[] = [
     y: 31.2,
     image: "/image/suspect/scenario/novelist/clues/novelist-1.png",
     description:
-      "피해자 이환의 시신이다. 2층 작업실 바닥에 쓰러져 있으며 오른쪽 가슴 부위에 식칼이 깊게 박혀 있다.",
+      "피해자 이환의 시신이다. 2층 바닥에 쓰러져 있으며 오른쪽 가슴 부위에 식칼이 깊게 박혀 있다.",
     type: "basic",
     place: "room",
   },
@@ -42,7 +22,7 @@ export const novelistClues: ClueType[] = [
     y: 10.8,
     image: "/image/suspect/scenario/novelist/clues/novelist-2.png",
     description:
-      "작업실 창문이 열려 있고 책상 위에는 원고, 연필, 안경이 남아 있다. 눈 오는 밤인데도 환기를 시킨 듯한 상태다.",
+      "작업실 창문이 열려 있고 책상 위에는 원고, 연필, 보청기가 남아 있다. 통유리창은 활짝 열려있어 차가운 바람이 들어온다.",
     type: "basic",
     place: "room",
   },
@@ -52,8 +32,7 @@ export const novelistClues: ClueType[] = [
     x: 8.4,
     y: 48.6,
     image: "/image/suspect/scenario/novelist/clues/novelist-3.png",
-    description:
-      "작업실에서 발견된 보청기 한 쌍이다. 피해자가 사건 당시 귀에 착용하고 있지 않았을 가능성을 시사한다.",
+    description: "작업실 책상에서 발견된 보청기 한 쌍이다.",
     type: "additional",
     place: 2,
   },
@@ -64,7 +43,7 @@ export const novelistClues: ClueType[] = [
     y: 60.8,
     image: "/image/suspect/scenario/novelist/clues/novelist-4.png",
     description:
-      "보청기 안내문이다. 장시간 사용과 습기, 오염에 민감하다는 설명이 적혀 있다. 평소 꾸준히 관리해야 하는 기기임을 보여준다.",
+      "보청기 안내문이다. 장시간 사용과 습기, 오염에 민감하고, 장시간 사용을 자제하라는 문구가 적혀있다.",
     type: "additional",
     place: 2,
   },
@@ -75,7 +54,7 @@ export const novelistClues: ClueType[] = [
     y: 51.2,
     image: "/image/suspect/scenario/novelist/clues/novelist-5.png",
     description:
-      "편백 숲 향 계열 향수다. 강한 냄새를 덮기 좋은 우디 계열 향으로 보인다.",
+      "편백 숲 향 계열 향수다. 강한 냄새를 덮기 좋은 우디 계열 향으로 보인다. 포장은 뜯어져있지 않고, 이환 선생이 구매한 것으로 보인다.",
     type: "additional",
     place: 2,
   },
@@ -86,7 +65,7 @@ export const novelistClues: ClueType[] = [
     y: 12.8,
     image: "/image/suspect/scenario/novelist/clues/novelist-6.png",
     description:
-      "피해자는 후각 및 청각 장애 진단을 받았고, 후각은 거의 상실된 상태였던 것으로 보인다. 냄새와 작은 인기척에 둔했을 가능성이 높다.",
+      "피해자는 후각 및 청각 장애 진단을 받았고, 후각은 거의 상실된 상태였던 것으로 보인다.",
     type: "basic",
     place: "room",
   },
@@ -97,7 +76,7 @@ export const novelistClues: ClueType[] = [
     y: 31.8,
     image: "/image/suspect/scenario/novelist/clues/novelist-7.png",
     description:
-      "한겨울 밤인데도 방 안 벽에 나방이 붙어 있다. 창문이 한동안 열려 있었음을 뒷받침한다.",
+      "겨울자나방이 벽에 붙어있다. 열려있는 창문으로 들어온 것 같다. 시간이 지날수록 더 많은 벌레들이 들어오는 것으로 보아 창문이 열린 지는 얼마 되지 않은 것 같다.",
     type: "basic",
     place: "room",
   },
@@ -108,7 +87,7 @@ export const novelistClues: ClueType[] = [
     y: 50.4,
     image: "/image/suspect/scenario/novelist/clues/novelist-8.png",
     description:
-      "2층 방의 침대다. 흐트러진 흔적이 거의 없어 사건 직전 누군가가 숨어 있던 자리로 보이지는 않는다.",
+      "2층 방의 침대다. 매트리스와 베개만 있고, 이불이 마땅히 없다. 상당히 무겁다.",
     type: "basic",
     place: "room",
   },
@@ -118,8 +97,7 @@ export const novelistClues: ClueType[] = [
     x: 56.2,
     y: 48.7,
     image: "/image/suspect/scenario/novelist/clues/novelist-9.png",
-    description:
-      "작업실 옆 옷장이다. 겉보기엔 단정하지만 안쪽을 더 살펴볼 필요가 있어 보인다.",
+    description: "이환 선생 방의 옷장이다. 옷 등으로 꽉 차있다.",
     type: "basic",
     place: "room",
   },
@@ -130,7 +108,7 @@ export const novelistClues: ClueType[] = [
     y: 12.3,
     image: "/image/suspect/scenario/novelist/clues/novelist-10.png",
     description:
-      "작업실 책장이다. 이환의 저서와 국내외 추리소설이 빼곡히 꽂혀 있다. 몇 권은 최근 자주 꺼낸 흔적이 있다.",
+      "이환 선생 방의 책장이다. 이환의 저서와 국내외 추리소설이 빼곡히 꽂혀 있다.",
     type: "basic",
     place: "room",
   },
@@ -141,7 +119,7 @@ export const novelistClues: ClueType[] = [
     y: 27.3,
     image: "/image/suspect/scenario/novelist/clues/novelist-11.png",
     description:
-      "이환의 대표작으로 보이는 책이다. 피해자가 자신의 이름 이니셜을 전면에 내세운 작품 세계를 밀고 있었음을 보여준다.",
+      "2025년 말 출간한 이환 선생의 신작. 훈련소에서 전투화 끈으로 교살당한 피해자를 죽인 범인을 찾는 내용이다. 전형적인 클로즈드 서클 미스터리이다.",
     type: "additional",
     place: 10,
   },
@@ -152,7 +130,7 @@ export const novelistClues: ClueType[] = [
     y: 39.4,
     image: "/image/suspect/scenario/novelist/clues/novelist-12.png",
     description:
-      "책장에 꽂힌 코맥 매카시의 소설이다. 최근 피해자가 읽은 흔적이 있어 현실 폭력과 노년의 몰락 같은 주제에 관심을 두고 있었던 것으로 보인다.",
+      "책장에 꽂힌 2025년 출간한 이환 선생의 신작. 하드보일드 스타일의 소설이나, 소재는 '카페에서 유리잔 하나가 사라지는 사건' 등 일상 미스터리가 주를 이루며, 마지막은 좀비를 테마로 한 특수 설정 미스터리도 조금 들어가있는 실험적인 작품이다. 판매량이 매우 높았던 것으로 보인다.",
     type: "additional",
     place: 10,
   },
@@ -162,8 +140,7 @@ export const novelistClues: ClueType[] = [
     x: 18.2,
     y: 61.6,
     image: "/image/suspect/scenario/novelist/clues/novelist-13.png",
-    description:
-      "2025년 3월 2일 발급된 무통장 입금증이다. 송금인은 '브레이크', 취급점은 이천, 수취인은 김가센, 금액은 500만 원으로 적혀 있다.",
+    description: "2025년 3월 2일 발급된 무통장 입금증이다.",
     type: "additional",
     place: 10,
   },
@@ -185,7 +162,7 @@ export const novelistClues: ClueType[] = [
     y: 68.1,
     image: "/image/suspect/scenario/novelist/clues/novelist-15.png",
     description:
-      "식탁 위 접시에 바게트 한 조각만 남아 있다. 저녁 식사가 완전히 정리되기 전에 사건이 벌어졌음을 보여준다.",
+      "식탁 위 접시에 바게트 한 조각만 남아 있다. 윤찬의 접시로, 포크와 나이프가 유일하게 왼쪽에 있다",
     type: "basic",
     place: "lounge",
   },
@@ -196,7 +173,7 @@ export const novelistClues: ClueType[] = [
     y: 45.9,
     image: "/image/suspect/scenario/novelist/clues/novelist-16.png",
     description:
-      "싱크대 옆 칼꽂이다. 사건 현장에 꽂혀 있던 식칼과 같은 계열의 칼이 여기서 빠져나갔을 가능성이 높다.",
+      "싱크대 옆 칼꽂이다. 사건 현장에 꽂혀 있던 식칼과 같은 계열이다. 칼꽂이에 하나가 비어있다.",
     type: "basic",
     place: "lounge",
   },
@@ -217,8 +194,7 @@ export const novelistClues: ClueType[] = [
     x: 37.1,
     y: 80.3,
     image: "/image/suspect/scenario/novelist/clues/novelist-18.png",
-    description:
-      "2026년 1월 12일 오후 2시 8분, 카카오페이로 29,000원이 'Google'에 결제된 기록이다. 사건 이틀 뒤의 흔적이지만 세부 구매 항목은 바로 보이지 않는다.",
+    description: "카카오페이로 29,000원이 결제된 기록이다.",
     type: "basic",
     place: "lounge",
   },
@@ -228,8 +204,7 @@ export const novelistClues: ClueType[] = [
     x: 37.4,
     y: 84.6,
     image: "/image/suspect/scenario/novelist/clues/novelist-19.png",
-    description:
-      "종이 쪽지에 '표절?'이라고 급하게 적혀 있다. 누군가가 원고의 출처나 유사성을 강하게 의심하고 있었던 것으로 보인다.",
+    description: "종이 쪽지에 '표절?'이라고 연필로 적혀있고 조금 번져있다.",
     type: "basic",
     place: "lounge",
   },
@@ -240,7 +215,7 @@ export const novelistClues: ClueType[] = [
     y: 70.5,
     image: "/image/suspect/scenario/novelist/clues/novelist-20.png",
     description:
-      "원고 일부다. 카페에 놓여 있던 유리컵이 사라졌다는 장면이 적혀 있다. 메타적인 트릭을 중심으로 한 내용이라 표절 의혹과 연결될 여지가 있다.",
+      "원고 일부다. 카페를 배경으로 한 일상 미스터리이며, 아직 발간되기 전의 원고이다.",
     type: "additional",
     place: 19,
   },
@@ -251,7 +226,7 @@ export const novelistClues: ClueType[] = [
     y: 15.5,
     image: "/image/suspect/scenario/novelist/clues/novelist-21.png",
     description:
-      "절반 정도 사용된 붉은 향수병이다. 독한 향이 남아 있어 특정 인물의 강한 체취나 담배 냄새를 덮는 데 쓰였을 가능성을 떠올리게 한다.",
+      "절반 정도 사용된 붉은 향수병이다. 류인영이 평소에 사용하는 향이다.",
     type: "basic",
     place: "lounge",
   },
@@ -262,7 +237,7 @@ export const novelistClues: ClueType[] = [
     y: 19.8,
     image: "/image/suspect/scenario/novelist/clues/novelist-22.png",
     description:
-      "과거 신간 사인회에서 찍은 사진이다. 윤찬과 류인영이 같은 책을 들고 밝게 웃고 있다. 최소한 당시 둘은 꽤 가까운 사이였던 것으로 보인다.",
+      "과거 신간 사인회에서 찍은 사진이다. 류인영이 본인의 당시 특수설정 미스터리 신작인 '시인장 살인사건'을 들고 있다.",
     type: "basic",
     place: "lounge",
   },
@@ -273,7 +248,7 @@ export const novelistClues: ClueType[] = [
     y: 22.2,
     image: "/image/suspect/scenario/novelist/clues/novelist-23.png",
     description:
-      "2024년 12월 양평 저택 방문 당시의 메모다. '보청기와 펜을 던짐'이라는 기록이 있어, 피해자가 최근 극도로 예민해졌음을 시사한다.",
+      "2024년 12월 양평 저택 방문 당시의 일기이다. '보청기와 펜을 던짐'이라는 기록이 있다.",
     type: "basic",
     place: "lounge",
   },
@@ -284,7 +259,7 @@ export const novelistClues: ClueType[] = [
     y: 29.4,
     image: "/image/suspect/scenario/novelist/clues/novelist-24.png",
     description:
-      "2026년 1월 10일 오후 10시 7분에 촬영된 현장 사진이다. 류인영이 방에 들어갔을 때 이미 시신이 방 한가운데에 놓여 있었음을 보여준다.",
+      "2026년 1월 10일 오후 10시 7분에 촬영된 현장 사진이다. 류인영이 방에 들어갔을 때 바로 찍은 사진으로, 현재 현장과 정확히 동일하다. 시신 위치, 창문 열림, 보청기 등 모두 동일하게 있다.",
     type: "basic",
     place: "lounge",
   },
@@ -295,7 +270,7 @@ export const novelistClues: ClueType[] = [
     y: 30.8,
     image: "/image/suspect/scenario/novelist/clues/novelist-25.png",
     description:
-      "2025년 10월 기사다. 2023년 훈련병 황모가 전투화 끈으로 목숨을 끊은 사건 이후, 군이 지퍼형 전투화로 바꾸려 한다는 내용이 담겨 있다.",
+      "2025년 10월 기사다. 육군이 전투화를 지퍼형 전투화로 바꾸려 한다는 내용이 담겨 있다.",
     type: "basic",
     place: "lounge",
   },
@@ -305,8 +280,7 @@ export const novelistClues: ClueType[] = [
     x: 25.8,
     y: 70.9,
     image: "/image/suspect/scenario/novelist/clues/novelist-26.png",
-    description:
-      "꽁초가 수북이 쌓인 재떨이다. 피해자나 용의자 중 누군가가 사건 전후로 연달아 담배를 피웠음을 짐작하게 한다.",
+    description: "꽁초가 수북이 쌓인 재떨이다.",
     type: "basic",
     place: "lounge",
   },
@@ -316,8 +290,7 @@ export const novelistClues: ClueType[] = [
     x: 17.4,
     y: 79.8,
     image: "/image/suspect/scenario/novelist/clues/novelist-27.png",
-    description:
-      "서재형의 재직증명서와 함께 도착한 보험사 메시지다. 사고 경위와 병원 기록 사이에 차이가 있어 추가 소명을 요구하고 있다.",
+    description: "보험사 메시지이다.",
     type: "basic",
     place: "lounge",
   },
@@ -328,7 +301,7 @@ export const novelistClues: ClueType[] = [
     y: 5.7,
     image: "/image/suspect/scenario/novelist/clues/novelist-28.png",
     description:
-      "눈 내리는 밤의 저택 외부 모습이다. 2층 작업실 창문만 활짝 열려 있다.",
+      "2층 창문은 활짝 열려있는데 반해, 그 아래 떨어진 것은 아무것도 없다. 창문으로 무언가를 던진 것은 아니다.",
     type: "basic",
     place: "room",
   },
@@ -339,7 +312,7 @@ export const novelistClues: ClueType[] = [
     y: 88.6,
     image: "/image/suspect/scenario/novelist/clues/novelist-29.png",
     description:
-      "창밖에서 들여다본 식당 모습이다. 한 시점에는 네 명의 제자가 모두 아래층에 함께 있었음을 보여준다. 범행 시각 특정에 도움이 된다.",
+      "식당의 통유리 창문이다. 밖은 가로등 불빛조차 없는 깜깜한 밤이라, 거울처럼 일행들의 모습만이 보일 뿐이다.",
     type: "basic",
     place: "lounge",
   },
@@ -350,7 +323,7 @@ export const novelistClues: ClueType[] = [
     y: 58.7,
     image: "/image/suspect/scenario/novelist/clues/novelist-30.png",
     description:
-      "작업실 흡음재 시공 계획서다. 이환이 집필실을 외부 소음과 차단된 공간으로 만들려 했음을 보여준다. 방 안의 소리가 밖으로 잘 새지 않았을 가능성이 높다.",
+      "작업실 흡음재 시공 계획서다. 아직 시공했는지는 불명이다. 만약 시공이 되었다면, 위에서 큰 소리가 나도 아래층에서는 느끼지 못할 수 있다.",
     type: "additional",
     place: 9,
   },
