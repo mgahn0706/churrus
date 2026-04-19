@@ -49,12 +49,12 @@ export const novelistClues: ClueType[] = [
   },
   {
     id: 5,
-    title: "편백 향수",
+    title: "탈취제",
     x: 18.4,
     y: 51.2,
     image: "/image/suspect/scenario/novelist/clues/novelist-5.png",
     description:
-      "편백 숲 향 계열 향수다. 강한 냄새를 덮기 좋은 우디 계열 향으로 보인다. 포장은 뜯어져있지 않고, 이환 선생이 구매한 것으로 보인다.",
+      "페브리즈 탈취제이다. 강한 냄새를 덮기 좋은 라벤더 향으로 보인다. 포장은 뜯어져있지 않고, 이환 선생이 구매한 것으로 보인다.",
     type: "additional",
     place: 2,
   },
@@ -259,7 +259,7 @@ export const novelistClues: ClueType[] = [
     y: 29.4,
     image: "/image/suspect/scenario/novelist/clues/novelist-24.png",
     description:
-      "2026년 1월 10일 오후 10시 7분에 촬영된 현장 사진이다. 류인영이 방에 들어갔을 때 바로 찍은 사진으로, 현재 현장과 정확히 동일하다. 시신 위치, 창문 열림, 보청기 등 모두 동일하게 있다.",
+      "2026년 1월 10일 오후 10시 7분에 촬영된 현장 사진이다. 류인영이 방에 들어갔을 때 바로 찍은 사진으로, 현재 현장과 정확히 동일하다. 시신 위치, 창문 열림, 책상 위 보청기와 탈취제 등 모두 동일하게 있다.",
     type: "basic",
     place: "lounge",
   },
