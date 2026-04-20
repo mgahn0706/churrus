@@ -521,9 +521,17 @@ export default function SuspectVoteModal({
                 >
                   <HowToVoteIcon />
                 </Box>
-                <Typography fontWeight={800} fontSize={{ xs: 22, md: 28 }}>
-                  용의자 투표
-                </Typography>
+                <Box>
+                  <Typography fontWeight={800} fontSize={{ xs: 22, md: 28 }}>
+                    실시간 범인지목
+                  </Typography>
+                  <Typography
+                    fontSize={13}
+                    sx={{ color: "rgba(226,232,240,0.72)" }}
+                  >
+                    범인은 누구?
+                  </Typography>
+                </Box>
               </Box>
               <Typography
                 fontSize={13}
@@ -741,6 +749,12 @@ export default function SuspectVoteModal({
                             textAlign: "center",
                           }}
                         >
+                          {(() => {
+                            const voteRatio =
+                              totalVotes > 0 ? Math.round((count / totalVotes) * 100) : 0;
+
+                            return (
+                              <>
                           <Avatar
                             src={suspect.image || ""}
                             alt={suspect.name}
@@ -771,16 +785,51 @@ export default function SuspectVoteModal({
                           >
                             {isResultVisible ? count : "?"}
                           </Typography>
-                          <Typography
+                          <Box
                             sx={{
-                              mt: 0.35,
-                              color: "rgba(226,232,240,0.62)",
-                              fontSize: 11,
-                              letterSpacing: "0.08em",
+                              mt: 1,
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 1,
                             }}
                           >
-                            {isResultVisible ? "VOTES" : "HIDDEN"}
-                          </Typography>
+                            <Box
+                              sx={{
+                                flex: 1,
+                                height: 8,
+                                borderRadius: 999,
+                                overflow: "hidden",
+                                backgroundColor: "rgba(255,255,255,0.08)",
+                                border: "1px solid rgba(255,255,255,0.08)",
+                              }}
+                            >
+                              <Box
+                                sx={{
+                                  width: isResultVisible ? `${voteRatio}%` : "0%",
+                                  height: "100%",
+                                  borderRadius: 999,
+                                  background: leadingSuspectNames.has(suspect.name)
+                                    ? "linear-gradient(90deg, rgba(248,113,113,0.95) 0%, rgba(251,146,60,0.92) 100%)"
+                                    : "linear-gradient(90deg, rgba(96,165,250,0.9) 0%, rgba(56,189,248,0.86) 100%)",
+                                  transition: "width 0.35s ease",
+                                }}
+                              />
+                            </Box>
+                            <Typography
+                              sx={{
+                                minWidth: 38,
+                                textAlign: "right",
+                                color: "rgba(226,232,240,0.78)",
+                                fontSize: 12,
+                                fontWeight: 700,
+                              }}
+                            >
+                              {isResultVisible ? `${voteRatio}%` : "--"}
+                            </Typography>
+                          </Box>
+                              </>
+                            );
+                          })()}
                         </Box>
                       ))}
                     </Box>
