@@ -13,6 +13,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+import { josa } from "es-hangul";
 import QRCode from "react-qr-code";
 import { useEffect, useMemo, useState } from "react";
 
@@ -41,6 +42,10 @@ export default function SuspectVoteModal({
   episodeNumber,
   onClose,
 }: SuspectVoteModalProps) {
+  const roomStorageKey = useMemo(
+    () => `suspect-vote-room-${episodeNumber}-${scenarioTitle}`,
+    [episodeNumber, scenarioTitle]
+  );
   const [origin, setOrigin] = useState("");
   const [roomCode, setRoomCode] = useState<string | null>(null);
   const [roomError, setRoomError] = useState<string | null>(null);
@@ -63,30 +68,36 @@ export default function SuspectVoteModal({
   }, []);
 
   useEffect(() => {
-    if (!isOpen) {
+    if (typeof window === "undefined") {
       return;
     }
 
-    setRoomCode(null);
-    setRoomError(null);
-    setIsOpeningRoom(false);
-    setIsCopied(false);
-    setIsResultVisible(false);
-    setIsFinalRevealMode(false);
-    setFinalRevealStepIndex(0);
-    setVoterCount(0);
-    setVoteCounts(Object.fromEntries(suspects.map((suspect) => [suspect.name, 0])));
-  }, [isOpen, suspects]);
+    const storedRoomCode = window.localStorage.getItem(roomStorageKey);
+    if (!storedRoomCode) {
+      return;
+    }
+
+    setRoomCode((currentRoomCode) => currentRoomCode ?? storedRoomCode);
+  }, [roomStorageKey]);
 
   useEffect(() => {
     if (!isOpen) {
       return;
     }
 
-    return () => {
-      setPlayroomModule(null);
-    };
-  }, [isOpen]);
+    setIsCopied(false);
+    setIsFinalRevealMode(false);
+    setFinalRevealStepIndex(0);
+    if (!roomCode) {
+      setRoomError(null);
+      setIsOpeningRoom(false);
+      setIsResultVisible(false);
+      setVoterCount(0);
+      setVoteCounts(
+        Object.fromEntries(suspects.map((suspect) => [suspect.name, 0]))
+      );
+    }
+  }, [isOpen, roomCode, suspects]);
 
   useEffect(() => {
     if (!roomCode || !playroomModule) {
@@ -160,17 +171,24 @@ export default function SuspectVoteModal({
     });
 
     const topVoteCount = sortedVoteSummary[0]?.count ?? 0;
-    const finalCandidates = sortedVoteSummary
+    const topTiedCandidates = sortedVoteSummary
       .filter(({ count }) => count === topVoteCount && count > 0)
       .map(({ suspect }) => suspect.name);
+    const secondaryVoteCount =
+      sortedVoteSummary.find(({ count }) => count < topVoteCount)?.count ?? 0;
+    const suspenseCutoffVoteCount =
+      secondaryVoteCount > 0 ? secondaryVoteCount : topVoteCount;
+    const finalCandidates = sortedVoteSummary
+      .filter(({ count }) => count >= suspenseCutoffVoteCount && count > 0)
+      .map(({ suspect }) => suspect.name);
     const excludedCandidates = sortedVoteSummary
-      .filter(({ count }) => count < topVoteCount)
+      .filter(({ count }) => count < suspenseCutoffVoteCount)
       .map(({ suspect }) => `${suspect.name}.`)
       .join(" ");
 
     const finalCandidateLine =
       finalCandidates.length > 0
-        ? finalCandidates.join(", ")
+        ? finalCandidates.join(" 그리고 ")
         : "지목된 후보가 없습니다";
     const excludedLine =
       excludedCandidates.length > 0
@@ -179,28 +197,96 @@ export default function SuspectVoteModal({
     const winnerName = sortedVoteSummary[0]?.suspect.name ?? "지목된 인물이 없습니다";
     const runnerUpCount = sortedVoteSummary[1]?.count ?? 0;
     const winnerCount = topVoteCount > 0 ? topVoteCount : 0;
+    const isTopVoteTied = topTiedCandidates.length > 1;
     const eliminationVoteCount =
-      sortedVoteSummary.filter(({ count }) => count < topVoteCount)[0]?.count ?? 0;
+      sortedVoteSummary.find(({ count }) => count < suspenseCutoffVoteCount)?.count ??
+      0;
     const winnerScoreLine =
       winnerCount > 0 ? `${winnerCount}:${runnerUpCount}` : "0:0";
+    const exclusionSteps =
+      excludedCandidates.length > 0
+        ? [
+            `최종 범인 지목 투표 결과`,
+            `${eliminationVoteCount}표를 받은 사람은`,
+            excludedLine,
+            "범인 후보 제외",
+          ]
+        : ["최종 범인 지목 투표 결과", "아직 제외된 후보가 없습니다"];
+    const finalCandidateSteps =
+      finalCandidates.length > 0
+        ? [
+            "이렇게 해서",
+            "최종 범인 후보로",
+            finalCandidateLine,
+            "지목되었습니다",
+          ]
+        : ["이렇게 해서", "최종 범인 후보는 아직 정해지지 않았습니다"];
+    const winnerRevealSteps =
+      isTopVoteTied
+        ? [
+            "본격 추리게임 크라임씬",
+            `<${scenarioTitle}> 최종 투표 결과`,
+            `${topTiedCandidates.join(", ")}가 ${winnerCount}표로 동률입니다.`,
+            "재투표를 실시합니다!",
+          ]
+        : winnerCount > 0
+        ? [
+            `본격 추리게임 크라임씬`,
+            `<${scenarioTitle}> 최종 투표 결과`,
+            "최종 범인으로 지목된 사람은",
+            `${winnerScoreLine}으로 ${winnerCount}표를 획득한`,
+            winnerName,
+          ]
+        : [
+            "본격 추리게임 크라임씬",
+            `<${scenarioTitle}> 최종 투표 결과`,
+            "아직 최종 범인이 정해지지 않았습니다",
+          ];
 
     return [
       `추리게임 협동 크라임씬의 ${episodeNumber}번째 에피소드`,
-      `<${scenarioTitle}>의 범인을 찾기 위한 숨막히는 추리게임의 결과, 범인으로 가장 많은 지목을 받은 사람은 누구인지.`,
+      `<${scenarioTitle}>의 범인을 찾기 위한`,
+      "숨막히는 추리게임의 결과",
+      "범인으로 가장 많은 지목을 받은 사람은 누구인지",
       "지금부터 투표 결과를 공개합니다.",
-      "본격 추리 게임 크라임씬, 최종 범인 후보에서 제외된 사람을 말씀드리겠습니다.",
-      `최종 범인 지목 투표 결과, ${eliminationVoteCount}표를 받은 사람은: ${excludedLine} 범인 후보 제외.`,
-      `이렇게 해서 최종 범인 후보로 ${finalCandidateLine}이 지목되었습니다.`,
-      `본격 추리게임 크라임씬, <${scenarioTitle}> 최종 투표 결과 최종 범인으로 지목된 사람은 ${winnerScoreLine}으로 ${winnerCount}표를 획득한, ${winnerName}!`,
-      `최종 범인 후보로 지목된 ${winnerName}는 감옥으로 이동해주십시오.`,
+      "본격 추리 게임 크라임씬",
+      "최종 범인 후보에서 제외된 사람을 말씀드리겠습니다",
+      ...exclusionSteps,
+      ...finalCandidateSteps,
+      ...winnerRevealSteps,
+      ...(!isTopVoteTied && winnerCount > 0
+        ? [`최종 범인 후보로 지목된 ${josa(winnerName, "은/는")} 감옥으로 이동해주십시오.`]
+        : []),
     ] as const;
   }, [episodeNumber, scenarioTitle, voteSummary]);
   const currentFinalRevealText = finalRevealSteps[finalRevealStepIndex];
   const isLastFinalRevealStep =
     finalRevealStepIndex === finalRevealSteps.length - 1;
 
+  const connectHostToExistingRoom = async (nextRoomCode: string) => {
+    const nextPlayroomModule = await loadPlayroomKit();
+    await withPlayroomTimeout(
+      nextPlayroomModule.insertCoin({
+        skipLobby: true,
+        roomCode: nextRoomCode,
+        gameId: "suspect-realtime-vote",
+      }),
+      6000
+    );
+
+    setPlayroomModule(nextPlayroomModule);
+    setRoomCode(nextRoomCode);
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem(roomStorageKey, nextRoomCode);
+    }
+  };
+
   const handleOpenRoom = async () => {
-    if (isOpeningRoom || roomCode) {
+    if (isOpeningRoom) {
+      return;
+    }
+
+    if (roomCode && playroomModule) {
       return;
     }
 
@@ -208,6 +294,11 @@ export default function SuspectVoteModal({
     setRoomError(null);
 
     try {
+      if (roomCode) {
+        await connectHostToExistingRoom(roomCode);
+        return;
+      }
+
       const nextPlayroomModule = await loadPlayroomKit();
       await withPlayroomTimeout(
         nextPlayroomModule.insertCoin({
@@ -239,14 +330,32 @@ export default function SuspectVoteModal({
 
       setPlayroomModule(nextPlayroomModule);
       setRoomCode(actualRoomCode);
+      if (typeof window !== "undefined") {
+        window.localStorage.setItem(roomStorageKey, actualRoomCode);
+      }
     } catch {
       setRoomError("투표 방 생성 실패");
-      setRoomCode(null);
       setPlayroomModule(null);
+      if (!playroomModule) {
+        setRoomCode(null);
+        if (typeof window !== "undefined") {
+          window.localStorage.removeItem(roomStorageKey);
+        }
+      }
     } finally {
       setIsOpeningRoom(false);
     }
   };
+
+  useEffect(() => {
+    if (!isOpen || !roomCode || playroomModule || isOpeningRoom) {
+      return;
+    }
+
+    void handleOpenRoom();
+    // handleOpenRoom intentionally uses current persisted room state.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen, isOpeningRoom, playroomModule, roomCode]);
 
   const handleCopyLink = async () => {
     if (!joinUrl) {
@@ -548,21 +657,23 @@ export default function SuspectVoteModal({
                       alignItems: "center",
                       justifyContent: "space-between",
                       gap: 2,
-                      mb: 2.6,
-                      p: 1.4,
+                      mb: 3,
+                      p: 1.1,
                       borderRadius: 3,
-                      backgroundColor: "rgba(255,255,255,0.05)",
-                      border: "1px solid rgba(255,255,255,0.08)",
+                      backgroundColor: "rgba(255,255,255,0.03)",
+                      border: "1px solid rgba(255,255,255,0.06)",
+                      opacity: 0.74,
                     }}
                   >
                     <Box sx={{ minWidth: 0 }}>
-                      <Typography fontSize={12} sx={{ opacity: 0.7 }}>
+                      <Typography fontSize={11} sx={{ opacity: 0.56 }}>
                         투표 링크
                       </Typography>
                       <Typography
                         sx={{
                           mt: 0.4,
-                          fontSize: 13,
+                          fontSize: 12,
+                          color: "rgba(226,232,240,0.7)",
                           whiteSpace: "nowrap",
                           overflow: "hidden",
                           textOverflow: "ellipsis",
@@ -581,6 +692,10 @@ export default function SuspectVoteModal({
                         flexShrink: 0,
                         textTransform: "none",
                         borderRadius: 999,
+                        minWidth: 78,
+                        color: "rgba(226,232,240,0.78)",
+                        borderColor: "rgba(255,255,255,0.1)",
+                        backgroundColor: "rgba(255,255,255,0.02)",
                       }}
                     >
                       {isCopied ? "복사됨" : "복사"}
@@ -609,17 +724,20 @@ export default function SuspectVoteModal({
                           key={suspect.name}
                           sx={{
                             borderRadius: 3,
-                            p: 1.6,
+                            p: { xs: 1.7, md: 1.9 },
                             border: "1px solid",
-                            borderColor: leadingSuspectNames.has(suspect.name)
-                              ? "rgba(248, 113, 113, 0.28)"
-                              : "rgba(255,255,255,0.1)",
-                            background: leadingSuspectNames.has(suspect.name)
-                              ? "linear-gradient(180deg, rgba(127, 29, 29, 0.28) 0%, rgba(255,255,255,0.05) 100%)"
-                              : "rgba(255,255,255,0.05)",
-                            boxShadow: leadingSuspectNames.has(suspect.name)
-                              ? "0 0 0 1px rgba(248, 113, 113, 0.08), 0 0 24px rgba(239, 68, 68, 0.18)"
-                              : "0 10px 28px rgba(0,0,0,0.12)",
+                            borderColor:
+                              isResultVisible && leadingSuspectNames.has(suspect.name)
+                              ? "rgba(248, 113, 113, 0.34)"
+                              : "rgba(255,255,255,0.12)",
+                            background:
+                              isResultVisible && leadingSuspectNames.has(suspect.name)
+                              ? "linear-gradient(180deg, rgba(127, 29, 29, 0.34) 0%, rgba(255,255,255,0.07) 100%)"
+                              : "linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.04) 100%)",
+                            boxShadow:
+                              isResultVisible && leadingSuspectNames.has(suspect.name)
+                              ? "0 0 0 1px rgba(248, 113, 113, 0.1), 0 0 28px rgba(239, 68, 68, 0.22), 0 18px 36px rgba(0,0,0,0.18)"
+                              : "0 16px 34px rgba(0,0,0,0.18)",
                             textAlign: "center",
                           }}
                         >
@@ -627,24 +745,41 @@ export default function SuspectVoteModal({
                             src={suspect.image || ""}
                             alt={suspect.name}
                             sx={{
-                              width: 84,
-                              height: 84,
+                              width: { xs: 88, md: 96 },
+                              height: { xs: 88, md: 96 },
                               mx: "auto",
-                              mb: 1.3,
-                              border: "2px solid rgba(255,255,255,0.12)",
+                              mb: 1.4,
+                              border: "2px solid rgba(255,255,255,0.14)",
+                              boxShadow: "0 10px 24px rgba(0,0,0,0.16)",
                             }}
                           />
-                          <Typography fontWeight={700} fontSize={15}>
+                          <Typography fontWeight={800} fontSize={{ xs: 15, md: 16 }}>
                             {suspect.name}
                           </Typography>
                           <Typography
                             sx={{
-                              mt: 0.5,
-                              color: "rgba(226,232,240,0.76)",
-                              fontSize: 13,
+                              mt: 0.75,
+                              color:
+                                isResultVisible && leadingSuspectNames.has(suspect.name)
+                                ? "rgba(254, 202, 202, 0.96)"
+                                : "rgba(241,245,249,0.94)",
+                              fontSize: { xs: 22, md: 24 },
+                              lineHeight: 1,
+                              fontWeight: 800,
+                              letterSpacing: "-0.04em",
                             }}
                           >
-                            {count}표
+                            {count}
+                          </Typography>
+                          <Typography
+                            sx={{
+                              mt: 0.35,
+                              color: "rgba(226,232,240,0.62)",
+                              fontSize: 11,
+                              letterSpacing: "0.08em",
+                            }}
+                          >
+                            VOTES
                           </Typography>
                         </Box>
                       ))}
