@@ -769,7 +769,7 @@ export default function SuspectVoteModal({
                               letterSpacing: "-0.04em",
                             }}
                           >
-                            {count}
+                            {isResultVisible ? count : "?"}
                           </Typography>
                           <Typography
                             sx={{
@@ -779,7 +779,7 @@ export default function SuspectVoteModal({
                               letterSpacing: "0.08em",
                             }}
                           >
-                            VOTES
+                            {isResultVisible ? "VOTES" : "HIDDEN"}
                           </Typography>
                         </Box>
                       ))}
