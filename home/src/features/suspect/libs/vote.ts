@@ -6,6 +6,13 @@ export const getSuspectVoteGameId = (scenarioId: string) =>
 export const getSuspectVoteStateKey = (scenarioId: string) =>
   `suspect-vote:${scenarioId}`;
 
+export const createSuspectVoteRoomCode = () => {
+  const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  return Array.from({ length: 6 }, () => {
+    return alphabet[Math.floor(Math.random() * alphabet.length)];
+  }).join("");
+};
+
 export const getSuspectVoteJoinUrl = (
   origin: string,
   scenarioId: string,

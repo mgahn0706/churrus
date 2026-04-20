@@ -1,5 +1,7 @@
 import CloseIcon from "@mui/icons-material/Close";
 import HowToVoteIcon from "@mui/icons-material/HowToVote";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { CircularProgress } from "@mui/material";
 import {
   Avatar,
@@ -9,13 +11,14 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
-import { insertCoin, getRoomCode, usePlayersList, usePlayersState } from "playroomkit";
+import { getParticipants, insertCoin, me } from "playroomkit";
 import QRCode from "react-qr-code";
 import { useEffect, useMemo, useState } from "react";
 
 import { SuspectType } from "@/features/suspect/types";
 import {
   countVotesBySuspect,
+  createSuspectVoteRoomCode,
   getSuspectVoteGameId,
   getSuspectVoteJoinUrl,
   getSuspectVoteStateKey,
@@ -36,11 +39,14 @@ export default function SuspectVoteModal({
 }: SuspectVoteModalProps) {
   const [isRoomReady, setIsRoomReady] = useState(false);
   const [isInitializing, setIsInitializing] = useState(false);
-  const [roomCode, setRoomCode] = useState<string | null>(null);
+  const [roomCode, setRoomCode] = useState<string>(() => createSuspectVoteRoomCode());
   const [initError, setInitError] = useState<string | null>(null);
+  const [isResultVisible, setIsResultVisible] = useState(false);
   const [origin, setOrigin] = useState("");
-  const playerVotes = usePlayersState(getSuspectVoteStateKey(scenarioId));
-  const players = usePlayersList(true);
+  const [connectedVoterCount, setConnectedVoterCount] = useState(0);
+  const [voteSummary, setVoteSummary] = useState(() =>
+    countVotesBySuspect(suspects, [])
+  );
 
   useEffect(() => {
     if (typeof window === "undefined") {
@@ -51,91 +57,74 @@ export default function SuspectVoteModal({
   }, []);
 
   useEffect(() => {
-    if (!isOpen || isRoomReady || isInitializing) {
+    if (!isOpen) {
+      return;
+    }
+    setVoteSummary(countVotesBySuspect(suspects, []));
+    setConnectedVoterCount(0);
+    setInitError(null);
+  }, [isOpen, suspects]);
+
+  useEffect(() => {
+    if (!isRoomReady) {
       return;
     }
 
-    let isCancelled = false;
+    const syncVotes = () => {
+      const participants = Object.values(getParticipants() ?? {});
+      const myId = me()?.id;
+      const voterParticipants = participants.filter((participant) => {
+        return participant.id !== myId;
+      });
 
-    const resolveRoomCode = async () => {
-      for (let index = 0; index < 30; index += 1) {
-        const nextRoomCode = getRoomCode();
-        if (nextRoomCode) {
-          return nextRoomCode;
-        }
+      const votes = voterParticipants.map((participant) => {
+        return participant.getState(getSuspectVoteStateKey(scenarioId)) as
+          | string
+          | null
+          | undefined;
+      });
 
-        await new Promise((resolve) => window.setTimeout(resolve, 150));
-      }
-
-      return null;
+      setConnectedVoterCount(voterParticipants.length);
+      setVoteSummary(countVotesBySuspect(suspects, votes));
     };
 
-    const initRoom = async () => {
-      setIsInitializing(true);
-      setInitError(null);
-
-      try {
-        await new Promise<void>((resolve, reject) => {
-          void insertCoin(
-            {
-              skipLobby: true,
-              gameId: getSuspectVoteGameId(scenarioId),
-            },
-            () => resolve(),
-            (error) => reject(error)
-          );
-        });
-
-        if (isCancelled) {
-          return;
-        }
-
-        const nextRoomCode = await resolveRoomCode();
-
-        if (isCancelled) {
-          return;
-        }
-
-        if (!nextRoomCode) {
-          throw new Error("ROOM_CODE_UNAVAILABLE");
-        }
-
-        setRoomCode(nextRoomCode);
-        setIsRoomReady(true);
-      } catch (error) {
-        if (!isCancelled) {
-          setInitError("QR 코드를 불러오지 못했습니다");
-        }
-      } finally {
-        if (!isCancelled) {
-          setIsInitializing(false);
-        }
-      }
-    };
-
-    void initRoom();
+    syncVotes();
+    const intervalId = window.setInterval(syncVotes, 700);
 
     return () => {
-      isCancelled = true;
+      window.clearInterval(intervalId);
     };
-  }, [isInitializing, isOpen, isRoomReady, scenarioId]);
+  }, [isRoomReady, scenarioId, suspects]);
 
   const joinUrl = useMemo(() => {
-    if (!origin || !roomCode) {
+    if (!origin) {
       return "";
     }
 
     return getSuspectVoteJoinUrl(origin, scenarioId, roomCode);
   }, [origin, roomCode, scenarioId]);
 
-  const voteSummary = useMemo(() => {
-    return countVotesBySuspect(
-      suspects,
-      playerVotes.map((item) => item.state as string | null | undefined)
-    );
-  }, [playerVotes, suspects]);
+  const connectHostToVoteRoom = async () => {
+    if (isInitializing || isRoomReady) {
+      return;
+    }
 
-  const connectedVoterCount = Math.max(players.length - 1, 0);
+    setIsInitializing(true);
+    setInitError(null);
+
+    try {
+      await insertCoin({
+        skipLobby: true,
+        roomCode,
+        gameId: getSuspectVoteGameId(scenarioId),
+      });
+      setIsRoomReady(true);
+    } catch {
+      setInitError("결과 연결 실패");
+    } finally {
+      setIsInitializing(false);
+    }
+  };
 
   return (
     <Dialog fullScreen open={isOpen} onClose={onClose}>
@@ -248,14 +237,25 @@ export default function SuspectVoteModal({
                     <Typography fontSize={11} mt={0.8}>
                       {initError}
                     </Typography>
+                    <Button
+                      size="small"
+                      variant="text"
+                      onClick={() => {
+                        setInitError(null);
+                        setIsRoomReady(false);
+                        setRoomCode(createSuspectVoteRoomCode());
+                      }}
+                      sx={{ mt: 1, minWidth: 0 }}
+                    >
+                      다시 시도
+                    </Button>
                   </Box>
                 ) : (
-                  <>
-                    <CircularProgress size={28} />
-                    <Typography fontSize={12} fontWeight={700} mt={1.4}>
-                      ROOM
-                    </Typography>
-                  </>
+                  <QRCode
+                    value={joinUrl}
+                    size={160}
+                    style={{ width: "100%", height: "100%" }}
+                  />
                 )}
               </Box>
             </Box>
@@ -265,7 +265,7 @@ export default function SuspectVoteModal({
               mt={2.2}
               sx={{ color: "rgba(226, 232, 240, 0.68)", fontSize: 13 }}
             >
-              {roomCode ? `ROOM ${roomCode}` : initError ?? "연결 중"}
+              {`ROOM ${roomCode}`}
             </Typography>
           </Box>
 
@@ -293,13 +293,55 @@ export default function SuspectVoteModal({
               }}
             >
               <Typography fontWeight={700}>실시간 투표</Typography>
-              <Typography fontSize={13} sx={{ color: "rgba(226,232,240,0.68)" }}>
-                {connectedVoterCount}명 접속
-              </Typography>
+              <Box display="flex" alignItems="center" gap={1}>
+                <Typography
+                  fontSize={13}
+                  sx={{ color: "rgba(226,232,240,0.68)" }}
+                >
+                  {isRoomReady ? `${connectedVoterCount}명 접속` : "결과 미연결"}
+                </Typography>
+                <Button
+                  size="small"
+                  variant="outlined"
+                  startIcon={
+                    !isRoomReady ? (
+                      isInitializing ? (
+                        <CircularProgress size={14} color="inherit" />
+                      ) : (
+                        <VisibilityIcon />
+                      )
+                    ) : isResultVisible ? (
+                      <VisibilityOffIcon />
+                    ) : (
+                      <VisibilityIcon />
+                    )
+                  }
+                  onClick={() => {
+                    if (!isRoomReady) {
+                      void connectHostToVoteRoom();
+                      return;
+                    }
+                    setIsResultVisible((prev) => !prev);
+                  }}
+                  sx={{
+                    minWidth: 0,
+                    px: 1.1,
+                    color: "common.white",
+                    borderColor: "rgba(255,255,255,0.18)",
+                    "&:hover": {
+                      borderColor: "rgba(255,255,255,0.32)",
+                      backgroundColor: "rgba(255,255,255,0.05)",
+                    },
+                  }}
+                >
+                  {!isRoomReady ? "결과 연결" : isResultVisible ? "숨기기" : "보기"}
+                </Button>
+              </Box>
             </Box>
 
             <Box
               sx={{
+                position: "relative",
                 display: "grid",
                 gridTemplateColumns: {
                   xs: "repeat(2, minmax(0, 1fr))",
@@ -345,6 +387,37 @@ export default function SuspectVoteModal({
                 </Box>
               ))}
             </Box>
+
+            {!isResultVisible && (
+              <Box
+                sx={{
+                  position: "absolute",
+                  inset: 0,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderRadius: 3,
+                  backgroundColor: "rgba(4, 6, 12, 0.42)",
+                  backdropFilter: "blur(6px)",
+                  pointerEvents: "none",
+                }}
+              >
+                <Box
+                  sx={{
+                    px: 2,
+                    py: 1,
+                    borderRadius: 999,
+                    backgroundColor: "rgba(15, 23, 42, 0.78)",
+                    border: "1px solid rgba(255,255,255,0.12)",
+                    boxShadow: "0 10px 30px rgba(0,0,0,0.2)",
+                  }}
+                >
+                  <Typography fontSize={13} fontWeight={700}>
+                    {isRoomReady ? "결과 숨김" : "결과 연결 필요"}
+                  </Typography>
+                </Box>
+              </Box>
+            )}
           </Box>
 
           <Box display="flex" justifyContent="flex-end" mt={3}>
