@@ -1,4 +1,5 @@
 import AddIcon from "@mui/icons-material/Add";
+import CloseIcon from "@mui/icons-material/Close";
 import HowToVoteIcon from "@mui/icons-material/HowToVote";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import RemoveIcon from "@mui/icons-material/Remove";
@@ -108,6 +109,25 @@ export default function SuspectVoteModal({
             "radial-gradient(circle at 20% 0%, rgba(56, 189, 248, 0.2) 0%, rgba(8, 11, 18, 0) 30%), radial-gradient(circle at 80% 10%, rgba(59, 130, 246, 0.18) 0%, rgba(8, 11, 18, 0) 26%), linear-gradient(180deg, rgba(12, 17, 28, 0.96) 0%, rgba(4, 6, 12, 1) 100%)",
         }}
       >
+        <IconButton
+          onClick={onClose}
+          aria-label="닫기"
+          sx={{
+            position: "fixed",
+            top: 20,
+            right: 20,
+            zIndex: 20,
+            color: "common.white",
+            border: "1px solid rgba(255,255,255,0.14)",
+            backgroundColor: "rgba(15, 23, 42, 0.48)",
+            backdropFilter: "blur(10px)",
+            "&:hover": {
+              backgroundColor: "rgba(255,255,255,0.08)",
+            },
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
         {isFinalRevealMode ? (
           <Box
             sx={{
@@ -168,92 +188,91 @@ export default function SuspectVoteModal({
             </Button>
           </Box>
         ) : (
-        <Box
-          sx={{
-            width: "100%",
-            maxWidth: 960,
-            mx: "auto",
-            p: { xs: 3, md: 5 },
-            borderRadius: 4,
-            color: "common.white",
-            position: "relative",
-            overflow: "hidden",
-            background:
-              "linear-gradient(135deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.06) 100%)",
-            border: "1px solid rgba(255, 255, 255, 0.16)",
-            boxShadow:
-              "0 24px 60px rgba(0, 0, 0, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.18)",
-            backdropFilter: "blur(28px) saturate(150%)",
-          }}
-        >
           <Box
             sx={{
-              position: "absolute",
-              inset: 0,
-              pointerEvents: "none",
-              background:
-                "radial-gradient(circle at top left, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 32%), radial-gradient(circle at bottom right, rgba(59,130,246,0.12) 0%, rgba(59,130,246,0) 28%)",
-            }}
-          />
-
-          <Box
-            sx={{
+              width: "100%",
+              maxWidth: 960,
+              mx: "auto",
+              p: { xs: 3, md: 5 },
+              borderRadius: 4,
+              color: "common.white",
               position: "relative",
-              zIndex: 1,
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              mb: 4,
+              overflow: "hidden",
+              background:
+                "linear-gradient(135deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.06) 100%)",
+              border: "1px solid rgba(255, 255, 255, 0.16)",
+              boxShadow:
+                "0 24px 60px rgba(0, 0, 0, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.18)",
+              backdropFilter: "blur(28px) saturate(150%)",
             }}
           >
-            <Box display="flex" alignItems="center" gap={1.2}>
-              <Box
-                sx={{
-                  width: 42,
-                  height: 42,
-                  borderRadius: "50%",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  backgroundColor: "rgba(255,255,255,0.08)",
-                  border: "1px solid rgba(255,255,255,0.12)",
-                }}
-              >
-                <HowToVoteIcon />
-              </Box>
-              <Box>
-                <Typography fontWeight={800} fontSize={{ xs: 22, md: 28 }}>
-                  용의자 투표
-                </Typography>
-                <Typography
-                  fontSize={13}
-                  sx={{ color: "rgba(226,232,240,0.68)" }}
+            <Box
+              sx={{
+                position: "absolute",
+                inset: 0,
+                pointerEvents: "none",
+                background:
+                  "radial-gradient(circle at top left, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 32%), radial-gradient(circle at bottom right, rgba(59,130,246,0.12) 0%, rgba(59,130,246,0) 28%)",
+              }}
+            />
+
+            <Box
+              sx={{
+                position: "relative",
+                zIndex: 1,
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                mb: 4,
+              }}
+            >
+              <Box display="flex" alignItems="center" gap={1.2}>
+                <Box
+                  sx={{
+                    width: 42,
+                    height: 42,
+                    borderRadius: "50%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    backgroundColor: "rgba(255,255,255,0.08)",
+                    border: "1px solid rgba(255,255,255,0.12)",
+                  }}
                 >
-                  수동 입력 모드
-                </Typography>
+                  <HowToVoteIcon />
+                </Box>
+                <Box>
+                  <Typography fontWeight={800} fontSize={{ xs: 22, md: 28 }}>
+                    용의자 투표
+                  </Typography>
+                  <Typography
+                    fontSize={13}
+                    sx={{ color: "rgba(226,232,240,0.68)" }}
+                  >
+                    수동 입력 모드
+                  </Typography>
+                </Box>
               </Box>
+              <Typography fontSize={13} sx={{ color: "rgba(226,232,240,0.68)" }}>
+                총 {totalVotes}표
+              </Typography>
             </Box>
-            <Typography fontSize={13} sx={{ color: "rgba(226,232,240,0.68)" }}>
-              총 {totalVotes}표
-            </Typography>
-          </Box>
 
-          <Box
-            sx={{
-              position: "relative",
-              zIndex: 1,
-              minHeight: 260,
-              borderRadius: 3,
-              border: "1px solid rgba(255, 255, 255, 0.12)",
-              background:
-                "linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.04) 100%)",
-              boxShadow: "inset 0 1px 0 rgba(255,255,255,0.08)",
-              backdropFilter: "blur(18px)",
-              px: { xs: 2, md: 3 },
-              py: { xs: 2, md: 2.5 },
-            }}
-          >
-            <>
+            <Box
+              sx={{
+                position: "relative",
+                zIndex: 1,
+                minHeight: 260,
+                borderRadius: 3,
+                border: "1px solid rgba(255, 255, 255, 0.12)",
+                background:
+                  "linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.04) 100%)",
+                boxShadow: "inset 0 1px 0 rgba(255,255,255,0.08)",
+                backdropFilter: "blur(18px)",
+                px: { xs: 2, md: 3 },
+                py: { xs: 2, md: 2.5 },
+              }}
+            >
                 <Box
                   sx={{
                     display: "flex",
@@ -401,21 +420,19 @@ export default function SuspectVoteModal({
                     </Box>
                   </Box>
                 )}
-            </>
-          </Box>
+            </Box>
 
-          <Stack
-            direction={{ xs: "column", md: "row" }}
-            spacing={1.2}
-            sx={{
-              position: "relative",
-              zIndex: 1,
-              display: "flex",
-              justifyContent: "center",
-              mt: 1.8,
-            }}
-          >
-            {!isFinalRevealMode && (
+            <Stack
+              direction={{ xs: "column", md: "row" }}
+              spacing={1.2}
+              sx={{
+                position: "relative",
+                zIndex: 1,
+                display: "flex",
+                justifyContent: "center",
+                mt: 1.8,
+              }}
+            >
               <Button
                 variant="outlined"
                 size="medium"
@@ -442,9 +459,7 @@ export default function SuspectVoteModal({
               >
                 {isResultVisible ? "결과 숨기기" : "결과 보기"}
               </Button>
-            )}
 
-            {!isFinalRevealMode && (
               <Button
                 variant="outlined"
                 size="medium"
@@ -462,38 +477,33 @@ export default function SuspectVoteModal({
               >
                 초기화
               </Button>
-            )}
 
-            <Button
-              variant={isFinalRevealMode ? "contained" : "outlined"}
-              size="medium"
-              onClick={() => {
-                setIsFinalRevealMode(true);
-                setFinalRevealStepIndex(0);
-              }}
-              sx={{
-                minWidth: 186,
-                borderRadius: 999,
-                textTransform: "none",
-                fontWeight: 700,
-                px: 2.2,
-                color: "common.white",
-                borderColor: "rgba(255,255,255,0.18)",
-                backgroundColor: isFinalRevealMode
-                  ? "rgba(59, 130, 246, 0.32)"
-                  : "rgba(15, 23, 42, 0.72)",
-                "&:hover": {
-                  borderColor: "rgba(255,255,255,0.32)",
-                  backgroundColor: isFinalRevealMode
-                    ? "rgba(59, 130, 246, 0.4)"
-                    : "rgba(255,255,255,0.07)",
-                },
-              }}
-            >
-              최종 투표 결과 공개
-            </Button>
-          </Stack>
-        </Box>
+              <Button
+                variant="outlined"
+                size="medium"
+                onClick={() => {
+                  setIsFinalRevealMode(true);
+                  setFinalRevealStepIndex(0);
+                }}
+                sx={{
+                  minWidth: 186,
+                  borderRadius: 999,
+                  textTransform: "none",
+                  fontWeight: 700,
+                  px: 2.2,
+                  color: "common.white",
+                  borderColor: "rgba(255,255,255,0.18)",
+                  backgroundColor: "rgba(15, 23, 42, 0.72)",
+                  "&:hover": {
+                    borderColor: "rgba(255,255,255,0.32)",
+                    backgroundColor: "rgba(255,255,255,0.07)",
+                  },
+                }}
+              >
+                최종 투표 결과 공개
+              </Button>
+            </Stack>
+          </Box>
         )}
       </Box>
     </Dialog>
