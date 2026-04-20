@@ -1,33 +1,25 @@
+import AddIcon from "@mui/icons-material/Add";
 import HowToVoteIcon from "@mui/icons-material/HowToVote";
+import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
+import RemoveIcon from "@mui/icons-material/Remove";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
-import { CircularProgress } from "@mui/material";
 import {
   Avatar,
   Box,
   Button,
   Dialog,
+  IconButton,
   Stack,
   Typography,
 } from "@mui/material";
-import QRCode from "react-qr-code";
 import { useEffect, useMemo, useState } from "react";
 
 import { ShakeTextSection } from "@/features/suspect/components/ShakeTextSection";
 import { SuspectType } from "@/features/suspect/types";
-import {
-  countVotesBySuspect,
-  getSuspectVoteGameId,
-  getSuspectVoteJoinUrl,
-  getSuspectVoteStateKey,
-  loadPlayroomKit,
-  withTimeout,
-} from "@/features/suspect/libs/vote";
 
 interface SuspectVoteModalProps {
   isOpen: boolean;
-  scenarioId: string;
   suspects: SuspectType[];
   onClose: () => void;
 }
@@ -41,87 +33,33 @@ const FINAL_REVEAL_STEPS = [
 
 export default function SuspectVoteModal({
   isOpen,
-  scenarioId,
   suspects,
   onClose,
 }: SuspectVoteModalProps) {
-  const [isRoomReady, setIsRoomReady] = useState(false);
-  const [isInitializing, setIsInitializing] = useState(false);
-  const [roomCode, setRoomCode] = useState<string | null>(null);
-  const [initError, setInitError] = useState<string | null>(null);
+  const [voteCounts, setVoteCounts] = useState<Record<string, number>>({});
   const [isResultVisible, setIsResultVisible] = useState(false);
   const [isFinalRevealMode, setIsFinalRevealMode] = useState(false);
   const [finalRevealStepIndex, setFinalRevealStepIndex] = useState(0);
-  const [origin, setOrigin] = useState("");
-  const [connectedVoterCount, setConnectedVoterCount] = useState(0);
-  const [voteSummary, setVoteSummary] = useState(() =>
-    countVotesBySuspect(suspects, [])
-  );
-  const [playroomModule, setPlayroomModule] =
-    useState<Awaited<ReturnType<typeof loadPlayroomKit>> | null>(null);
-
-  useEffect(() => {
-    if (typeof window === "undefined") {
-      return;
-    }
-
-    setOrigin(window.location.origin);
-  }, []);
 
   useEffect(() => {
     if (!isOpen) {
       return;
     }
-    setRoomCode(null);
-    setVoteSummary(countVotesBySuspect(suspects, []));
-    setConnectedVoterCount(0);
-    setInitError(null);
+
+    setVoteCounts(
+      Object.fromEntries(suspects.map((suspect) => [suspect.name, 0]))
+    );
+    setIsResultVisible(false);
     setIsFinalRevealMode(false);
     setFinalRevealStepIndex(0);
   }, [isOpen, suspects]);
 
-  useEffect(() => {
-    if (!isRoomReady) {
-      return;
-    }
-
-    if (!playroomModule) {
-      return;
-    }
-
-    const syncVotes = () => {
-      const participants = Object.values(playroomModule.getParticipants() ?? {});
-      const myId = playroomModule.me()?.id;
-      const voterParticipants = participants.filter((participant) => {
-        return participant.id !== myId;
-      });
-
-      const votes = voterParticipants.map((participant) => {
-        return participant.getState(getSuspectVoteStateKey(scenarioId)) as
-          | string
-          | null
-          | undefined;
-      });
-
-      setConnectedVoterCount(voterParticipants.length);
-      setVoteSummary(countVotesBySuspect(suspects, votes));
-    };
-
-    syncVotes();
-    const intervalId = window.setInterval(syncVotes, 700);
-
-    return () => {
-      window.clearInterval(intervalId);
-    };
-  }, [isRoomReady, playroomModule, scenarioId, suspects]);
-
-  const joinUrl = useMemo(() => {
-    if (!origin || !roomCode) {
-      return "";
-    }
-
-    return getSuspectVoteJoinUrl(origin, scenarioId, roomCode);
-  }, [origin, roomCode, scenarioId]);
+  const voteSummary = useMemo(() => {
+    return suspects.map((suspect) => ({
+      suspect,
+      count: voteCounts[suspect.name] ?? 0,
+    }));
+  }, [suspects, voteCounts]);
 
   const leadingSuspectNames = useMemo(() => {
     const maxVoteCount = Math.max(...voteSummary.map(({ count }) => count), 0);
@@ -141,53 +79,23 @@ export default function SuspectVoteModal({
     return new Set(leaders);
   }, [voteSummary]);
 
-  const connectHostToVoteRoom = async () => {
-    if (isInitializing || isRoomReady) {
-      return;
-    }
-
-    setIsInitializing(true);
-    setInitError(null);
-
-    try {
-      const nextPlayroomModule = await loadPlayroomKit();
-      await withTimeout(
-        nextPlayroomModule.insertCoin({
-          skipLobby: true,
-          gameId: getSuspectVoteGameId(scenarioId),
-        }),
-        6000
-      );
-
-      let actualRoomCode: string | undefined;
-      for (let index = 0; index < 20; index += 1) {
-        actualRoomCode = nextPlayroomModule.getRoomCode?.();
-        if (actualRoomCode) {
-          break;
-        }
-        await new Promise((resolve) => window.setTimeout(resolve, 150));
-      }
-
-      if (!actualRoomCode) {
-        throw new Error("ROOM_CODE_UNAVAILABLE");
-      }
-
-      setRoomCode(actualRoomCode);
-      setPlayroomModule(nextPlayroomModule);
-      setIsRoomReady(true);
-    } catch {
-      setInitError("투표 방 생성 실패");
-      setRoomCode(null);
-      setPlayroomModule(null);
-      setIsRoomReady(false);
-    } finally {
-      setIsInitializing(false);
-    }
-  };
-
+  const totalVotes = voteSummary.reduce((sum, item) => sum + item.count, 0);
   const currentFinalRevealText = FINAL_REVEAL_STEPS[finalRevealStepIndex];
   const isLastFinalRevealStep =
     finalRevealStepIndex === FINAL_REVEAL_STEPS.length - 1;
+
+  const adjustVoteCount = (suspectName: string, delta: number) => {
+    setVoteCounts((prev) => ({
+      ...prev,
+      [suspectName]: Math.max(0, (prev[suspectName] ?? 0) + delta),
+    }));
+  };
+
+  const resetVotes = () => {
+    setVoteCounts(
+      Object.fromEntries(suspects.map((suspect) => [suspect.name, 0]))
+    );
+  };
 
   return (
     <Dialog fullScreen open={isOpen} onClose={onClose}>
@@ -227,95 +135,46 @@ export default function SuspectVoteModal({
                 "radial-gradient(circle at top left, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 32%), radial-gradient(circle at bottom right, rgba(59,130,246,0.12) 0%, rgba(59,130,246,0) 28%)",
             }}
           />
+
           <Box
             sx={{
               position: "relative",
               zIndex: 1,
               display: "flex",
-              flexDirection: "column",
+              justifyContent: "space-between",
               alignItems: "center",
               mb: 4,
             }}
           >
-            <Box
-              sx={{
-                width: { xs: 176, md: 204 },
-                height: { xs: 176, md: 204 },
-                borderRadius: 4,
-                p: 1.5,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                background:
-                  "linear-gradient(135deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.08) 100%)",
-                border: "1px solid rgba(255,255,255,0.18)",
-                boxShadow:
-                  "0 24px 40px rgba(0,0,0,0.24), inset 0 1px 0 rgba(255,255,255,0.16)",
-                backdropFilter: "blur(20px)",
-              }}
-            >
+            <Box display="flex" alignItems="center" gap={1.2}>
               <Box
                 sx={{
-                  width: "100%",
-                  height: "100%",
-                  borderRadius: 3,
-                  backgroundColor: "#f8fafc",
-                  color: "#0f172a",
+                  width: 42,
+                  height: 42,
+                  borderRadius: "50%",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  flexDirection: "column",
-                  p: 1.5,
+                  backgroundColor: "rgba(255,255,255,0.08)",
+                  border: "1px solid rgba(255,255,255,0.12)",
                 }}
               >
-                {isRoomReady && joinUrl ? (
-                  <QRCode
-                    value={joinUrl}
-                    size={160}
-                    style={{ width: "100%", height: "100%" }}
-                  />
-                ) : initError ? (
-                  <Box textAlign="center">
-                    <Typography fontSize={12} fontWeight={700}>
-                      ROOM ERROR
-                    </Typography>
-                    <Typography fontSize={11} mt={0.8}>
-                      {initError}
-                    </Typography>
-                    <Button
-                      size="small"
-                      variant="text"
-                      onClick={() => {
-                        setInitError(null);
-                        setIsRoomReady(false);
-                        setRoomCode(null);
-                      }}
-                      sx={{ mt: 1, minWidth: 0 }}
-                    >
-                      다시 시도
-                    </Button>
-                  </Box>
-                ) : (
-                  <Box textAlign="center">
-                    {isInitializing ? (
-                      <CircularProgress size={28} />
-                    ) : (
-                      <HowToVoteIcon sx={{ fontSize: 34 }} />
-                    )}
-                    <Typography fontSize={12} fontWeight={700} mt={1.4}>
-                      {isInitializing ? "ROOM OPENING" : "OPEN ROOM"}
-                    </Typography>
-                  </Box>
-                )}
+                <HowToVoteIcon />
+              </Box>
+              <Box>
+                <Typography fontWeight={800} fontSize={{ xs: 22, md: 28 }}>
+                  용의자 투표
+                </Typography>
+                <Typography
+                  fontSize={13}
+                  sx={{ color: "rgba(226,232,240,0.68)" }}
+                >
+                  수동 입력 모드
+                </Typography>
               </Box>
             </Box>
-
-            <Typography
-              textAlign="center"
-              mt={2.2}
-              sx={{ color: "rgba(226, 232, 240, 0.68)", fontSize: 13 }}
-            >
-              {roomCode ? `ROOM ${roomCode}` : isInitializing ? "투표 방 생성 중" : "투표 방 미개설"}
+            <Typography fontSize={13} sx={{ color: "rgba(226,232,240,0.68)" }}>
+              총 {totalVotes}표
             </Typography>
           </Box>
 
@@ -366,13 +225,7 @@ export default function SuspectVoteModal({
                   </ShakeTextSection>
                 </Box>
 
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    mt: 3,
-                  }}
-                >
+                <Box display="flex" justifyContent="center" mt={3}>
                   <Button
                     variant="text"
                     endIcon={<KeyboardArrowRightIcon />}
@@ -406,60 +259,23 @@ export default function SuspectVoteModal({
                     mb: 2,
                   }}
                 >
-                  <Typography fontWeight={700}>실시간 투표</Typography>
+                  <Typography fontWeight={700}>수동 투표 입력</Typography>
                   <Typography
                     fontSize={13}
                     sx={{ color: "rgba(226,232,240,0.68)" }}
                   >
-                    {isRoomReady ? `${connectedVoterCount}명 접속` : "대기 중"}
+                    {suspects.length}명 후보
                   </Typography>
                 </Box>
-                {!isRoomReady && (
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      minHeight: 72,
-                      mb: 2,
-                    }}
-                  >
-                    <Button
-                      variant="contained"
-                      size="medium"
-                      startIcon={
-                        isInitializing ? (
-                          <CircularProgress size={16} color="inherit" />
-                        ) : (
-                          <HowToVoteIcon />
-                        )
-                      }
-                      onClick={() => {
-                        void connectHostToVoteRoom();
-                      }}
-                      sx={{
-                        minWidth: 168,
-                        borderRadius: 999,
-                        textTransform: "none",
-                        fontWeight: 700,
-                        px: 2.2,
-                      }}
-                    >
-                      {isInitializing ? "연결 중" : "투표 방 열기"}
-                    </Button>
-                  </Box>
-                )}
 
                 <Box
                   sx={{
-                    position: "relative",
                     display: "grid",
                     gridTemplateColumns: {
                       xs: "repeat(2, minmax(0, 1fr))",
                       md: `repeat(${Math.min(Math.max(suspects.length, 2), 4)}, minmax(0, 1fr))`,
                     },
                     gap: 1.4,
-                    opacity: isRoomReady ? 1 : 0.42,
                   }}
                 >
                   {voteSummary.map(({ suspect, count }) => (
@@ -506,23 +322,53 @@ export default function SuspectVoteModal({
                       >
                         {count}표
                       </Typography>
+
+                      <Box
+                        sx={{
+                          mt: 1.3,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: 0.8,
+                        }}
+                      >
+                        <IconButton
+                          size="small"
+                          onClick={() => adjustVoteCount(suspect.name, -1)}
+                          sx={{
+                            color: "common.white",
+                            border: "1px solid rgba(255,255,255,0.12)",
+                            backgroundColor: "rgba(255,255,255,0.04)",
+                          }}
+                        >
+                          <RemoveIcon fontSize="small" />
+                        </IconButton>
+                        <Typography
+                          sx={{
+                            minWidth: 32,
+                            fontWeight: 700,
+                            fontSize: 16,
+                          }}
+                        >
+                          {count}
+                        </Typography>
+                        <IconButton
+                          size="small"
+                          onClick={() => adjustVoteCount(suspect.name, 1)}
+                          sx={{
+                            color: "common.white",
+                            border: "1px solid rgba(255,255,255,0.12)",
+                            backgroundColor: "rgba(255,255,255,0.04)",
+                          }}
+                        >
+                          <AddIcon fontSize="small" />
+                        </IconButton>
+                      </Box>
                     </Box>
                   ))}
                 </Box>
 
-                {!isRoomReady && (
-                  <Box
-                    sx={{
-                      position: "absolute",
-                      inset: 0,
-                      borderRadius: 3,
-                      backgroundColor: "rgba(4, 6, 12, 0.14)",
-                      pointerEvents: "none",
-                    }}
-                  />
-                )}
-
-                {isRoomReady && !isResultVisible && (
+                {!isResultVisible && (
                   <Box
                     sx={{
                       position: "absolute",
@@ -556,94 +402,95 @@ export default function SuspectVoteModal({
             )}
           </Box>
 
-          {isRoomReady && (
-            <Stack
-              direction={{ xs: "column", md: "row" }}
-              spacing={1.2}
-              sx={{
-                position: "relative",
-                zIndex: 1,
-                display: "flex",
-                justifyContent: "center",
-                mt: 1.8,
-              }}
-            >
-              {!isFinalRevealMode && (
-                <Button
-                  variant="outlined"
-                  size="medium"
-                  startIcon={
-                    isResultVisible ? <VisibilityOffIcon /> : <VisibilityIcon />
-                  }
-                  onClick={() => {
-                    setIsResultVisible((prev) => !prev);
-                  }}
-                  sx={{
-                    minWidth: 148,
-                    borderRadius: 999,
-                    textTransform: "none",
-                    fontWeight: 700,
-                    px: 2,
-                    color: "common.white",
-                    borderColor: "rgba(255,255,255,0.18)",
-                    backgroundColor: "rgba(15, 23, 42, 0.72)",
-                    "&:hover": {
-                      borderColor: "rgba(255,255,255,0.32)",
-                      backgroundColor: "rgba(255,255,255,0.07)",
-                    },
-                  }}
-                >
-                  {isResultVisible ? "결과 숨기기" : "결과 보기"}
-                </Button>
-              )}
-
+          <Stack
+            direction={{ xs: "column", md: "row" }}
+            spacing={1.2}
+            sx={{
+              position: "relative",
+              zIndex: 1,
+              display: "flex",
+              justifyContent: "center",
+              mt: 1.8,
+            }}
+          >
+            {!isFinalRevealMode && (
               <Button
-                variant={isFinalRevealMode ? "contained" : "outlined"}
+                variant="outlined"
                 size="medium"
+                startIcon={
+                  isResultVisible ? <VisibilityOffIcon /> : <VisibilityIcon />
+                }
                 onClick={() => {
-                  setIsFinalRevealMode(true);
-                  setFinalRevealStepIndex(0);
+                  setIsResultVisible((prev) => !prev);
                 }}
                 sx={{
-                  minWidth: 186,
+                  minWidth: 148,
                   borderRadius: 999,
                   textTransform: "none",
                   fontWeight: 700,
-                  px: 2.2,
+                  px: 2,
                   color: "common.white",
                   borderColor: "rgba(255,255,255,0.18)",
-                  backgroundColor: isFinalRevealMode
-                    ? "rgba(59, 130, 246, 0.32)"
-                    : "rgba(15, 23, 42, 0.72)",
+                  backgroundColor: "rgba(15, 23, 42, 0.72)",
                   "&:hover": {
                     borderColor: "rgba(255,255,255,0.32)",
-                    backgroundColor: isFinalRevealMode
-                      ? "rgba(59, 130, 246, 0.4)"
-                      : "rgba(255,255,255,0.07)",
+                    backgroundColor: "rgba(255,255,255,0.07)",
                   },
                 }}
               >
-                최종 투표 결과 공개
+                {isResultVisible ? "결과 숨기기" : "결과 보기"}
               </Button>
-            </Stack>
-          )}
+            )}
 
-          <Box display="flex" justifyContent="flex-end" mt={3}>
+            {!isFinalRevealMode && (
+              <Button
+                variant="outlined"
+                size="medium"
+                onClick={resetVotes}
+                sx={{
+                  minWidth: 120,
+                  borderRadius: 999,
+                  textTransform: "none",
+                  fontWeight: 700,
+                  px: 2,
+                  color: "common.white",
+                  borderColor: "rgba(255,255,255,0.18)",
+                  backgroundColor: "rgba(15, 23, 42, 0.72)",
+                }}
+              >
+                초기화
+              </Button>
+            )}
+
             <Button
-              variant="outlined"
-              onClick={onClose}
+              variant={isFinalRevealMode ? "contained" : "outlined"}
+              size="medium"
+              onClick={() => {
+                setIsFinalRevealMode(true);
+                setFinalRevealStepIndex(0);
+              }}
               sx={{
+                minWidth: 186,
+                borderRadius: 999,
+                textTransform: "none",
+                fontWeight: 700,
+                px: 2.2,
                 color: "common.white",
-                borderColor: "rgba(255,255,255,0.22)",
+                borderColor: "rgba(255,255,255,0.18)",
+                backgroundColor: isFinalRevealMode
+                  ? "rgba(59, 130, 246, 0.32)"
+                  : "rgba(15, 23, 42, 0.72)",
                 "&:hover": {
-                  borderColor: "rgba(255,255,255,0.4)",
-                  backgroundColor: "rgba(255,255,255,0.04)",
+                  borderColor: "rgba(255,255,255,0.32)",
+                  backgroundColor: isFinalRevealMode
+                    ? "rgba(59, 130, 246, 0.4)"
+                    : "rgba(255,255,255,0.07)",
                 },
               }}
             >
-              닫기
+              최종 투표 결과 공개
             </Button>
-          </Box>
+          </Stack>
         </Box>
       </Box>
     </Dialog>

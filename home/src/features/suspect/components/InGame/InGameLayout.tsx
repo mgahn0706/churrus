@@ -271,7 +271,6 @@ export default function InGameLayout({
         />
         <SuspectVoteModal
           isOpen={openedModal === "vote"}
-          scenarioId={scenario.id}
           suspects={scenario.suspects}
           onClose={handleCloseModal}
         />
