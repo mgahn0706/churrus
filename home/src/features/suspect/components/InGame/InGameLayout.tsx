@@ -4,6 +4,7 @@ import LightBulbIcon from "@mui/icons-material/Lightbulb";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import InfoIcon from "@mui/icons-material/Info";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
+import HowToVoteIcon from "@mui/icons-material/HowToVote";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useEffect, useState } from "react";
@@ -24,6 +25,7 @@ import MovePlaceButton from "./MovePlaceButton";
 import PasswordInputModal from "./PasswordInputModal";
 import PrologueModal from "./PrologueModal";
 import SuspectsInfoCard from "./SuspectsInfoCard";
+import SuspectVoteModal from "./SuspectVoteModal";
 import InteractionScoreBadge from "./InteractionScoreBadge";
 import usePreventUnload from "@/hooks/usePreventUnload";
 import Head from "next/head";
@@ -56,7 +58,13 @@ export default function InGameLayout({
   const [currentPlace, setCurrentPlace] = useState(scenario.places[0] ?? "");
   const [checkedClueList, setCheckedClueList] = useState<number[]>([]);
   const [openedModal, setOpenedModal] = useState<
-    "prologue" | "suspects" | "dashboard" | "password" | "memo" | null
+    | "prologue"
+    | "suspects"
+    | "dashboard"
+    | "password"
+    | "memo"
+    | "vote"
+    | null
   >("prologue");
   const [unlockingClue, setUnlockingClue] = useState<ClueType | null>(null);
   const [isQuickMenuOpen, setIsQuickMenuOpen] = useState(false);
@@ -261,6 +269,10 @@ export default function InGameLayout({
           suspects={scenario.suspects}
           onClose={handleCloseModal}
         />
+        <SuspectVoteModal
+          isOpen={openedModal === "vote"}
+          onClose={handleCloseModal}
+        />
         <PrologueModal
           prolougeContent={prologue}
           isOpen={openedModal === "prologue"}
@@ -331,6 +343,15 @@ export default function InGameLayout({
                   size="small"
                 >
                   <PersonSearchIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="용의자 투표" placement="left">
+                <IconButton
+                  color="primary"
+                  onClick={() => setOpenedModal("vote")}
+                  size="small"
+                >
+                  <HowToVoteIcon fontSize="small" />
                 </IconButton>
               </Tooltip>
               <Tooltip title="공개된 정보" placement="left">
