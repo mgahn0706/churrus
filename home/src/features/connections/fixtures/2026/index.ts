@@ -337,4 +337,46 @@ export const CONNECTIONS2026: ConnectionsType[] = [
       },
     ],
   },
+  {
+    week: 17,
+    quiz: [
+      {
+        words: ["매화", "난초", "국화", "대나무"],
+        description: "사군자",
+      },
+      {
+        words: ["코스모스", "유니버스", "스페이스", "세상"],
+        description: "우주의 다른 말",
+      },
+      {
+        words: ["오목", "소프트", "중력", "콘택트"],
+        description: "__ 렌즈",
+      },
+      {
+        words: ["빙고", "스도쿠", "달력", "키패드"],
+        description: "네모난 칸에 숫자가 적힌 것",
+      },
+    ],
+  },
+  {
+    week: 18,
+    quiz: [
+      {
+        words: ["턱", "발", "옷걸이", "시비"],
+        description: "걸 수 있는 것",
+      },
+      {
+        words: ["새", "벽지", "아기", "주먹"],
+        description: "울 수 있는 것",
+      },
+      {
+        words: ["타일", "목소리", "아스팔트", "앱"],
+        description: "깔 수 있는 것",
+      },
+      {
+        words: ["책임", "짐", "그늘", "경기"],
+        description: "질 수 있는 것",
+      },
+    ],
+  },
 ];
