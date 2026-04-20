@@ -19,6 +19,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import { ShakeTextSection } from "@/features/suspect/components/ShakeTextSection";
 import {
+  clearPlayroomRoomHash,
   getPlayroomVoteJoinUrl,
   getPlayroomVoteStateKey,
   getPlayroomVoteSuspectsStateKey,
@@ -217,7 +218,7 @@ export default function SuspectVoteModal({
         ? [
             "이렇게 해서",
             "최종 범인 후보로",
-            finalCandidateLine,
+            josa(finalCandidateLine, "이/가"),
             "지목되었습니다",
           ]
         : ["이렇게 해서", "최종 범인 후보는 아직 정해지지 않았습니다"];
@@ -234,7 +235,7 @@ export default function SuspectVoteModal({
             `본격 추리게임 크라임씬`,
             `<${scenarioTitle}> 최종 투표 결과`,
             "최종 범인으로 지목된 사람은",
-            `${winnerScoreLine}으로 ${winnerCount}표를 획득한`,
+            `${josa(winnerScoreLine, "으로/로")} ${winnerCount}표를 획득한`,
             winnerName,
           ]
         : [
@@ -295,6 +296,7 @@ export default function SuspectVoteModal({
     if (typeof window !== "undefined") {
       window.localStorage.removeItem(roomStorageKey);
     }
+    clearPlayroomRoomHash();
   };
 
   const handleOpenRoom = async () => {
@@ -316,6 +318,8 @@ export default function SuspectVoteModal({
       }
 
       const nextPlayroomModule = await loadPlayroomKit();
+      nextPlayroomModule.Multiplayer?.reset?.();
+      clearPlayroomRoomHash();
       await withPlayroomTimeout(
         nextPlayroomModule.insertCoin({
           skipLobby: true,
@@ -373,6 +377,8 @@ export default function SuspectVoteModal({
 
     try {
       const nextPlayroomModule = await loadPlayroomKit();
+      nextPlayroomModule.Multiplayer?.reset?.();
+      clearPlayroomRoomHash();
       await Promise.allSettled([
         nextPlayroomModule.resetStates?.(),
         nextPlayroomModule.resetPlayersStates?.(),
@@ -472,10 +478,10 @@ export default function SuspectVoteModal({
               <ShakeTextSection>
                 <Typography
                   sx={{
-                    fontSize: { xs: 30, md: 52 },
+                    fontSize: { xs: 38, md: 68 },
                     fontWeight: 800,
                     letterSpacing: "-0.05em",
-                    lineHeight: 1.35,
+                    lineHeight: 1.28,
                     wordBreak: "keep-all",
                     textAlign: "center",
                   }}
@@ -511,9 +517,9 @@ export default function SuspectVoteModal({
           <Box
             sx={{
               width: "100%",
-              maxWidth: 960,
+              maxWidth: 920,
               mx: "auto",
-              p: { xs: 3, md: 5 },
+              p: { xs: 2.5, md: 3.5 },
               borderRadius: 4,
               color: "common.white",
               position: "relative",
@@ -543,7 +549,7 @@ export default function SuspectVoteModal({
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
-                mb: 2.5,
+                mb: 1.8,
               }}
             >
               <Box display="flex" alignItems="center" gap={1.2}>
@@ -566,7 +572,7 @@ export default function SuspectVoteModal({
                     실시간 범인지목
                   </Typography>
                   <Typography
-                    fontSize={13}
+                    fontSize={12}
                     sx={{ color: "rgba(226,232,240,0.72)" }}
                   >
                     범인은 누구?
@@ -592,7 +598,7 @@ export default function SuspectVoteModal({
               sx={{
                 position: "relative",
                 zIndex: 1,
-                minHeight: 260,
+                minHeight: 220,
                 borderRadius: 4,
                 border: "1px solid rgba(255, 255, 255, 0.16)",
                 background:
@@ -600,8 +606,8 @@ export default function SuspectVoteModal({
                 boxShadow:
                   "0 24px 48px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.1)",
                 backdropFilter: "blur(16px)",
-                px: { xs: 2.5, md: 3.5 },
-                py: { xs: 2.5, md: 3 },
+                px: { xs: 2, md: 2.6 },
+                py: { xs: 2, md: 2.3 },
               }}
             >
               <Box
@@ -609,7 +615,7 @@ export default function SuspectVoteModal({
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "space-between",
-                  mb: 2.5,
+                  mb: 1.6,
                 }}
               >
                 <Typography fontWeight={800} fontSize={{ xs: 17, md: 19 }}>
@@ -678,21 +684,21 @@ export default function SuspectVoteModal({
                     sx={{
                       display: "flex",
                       justifyContent: "center",
-                      mb: 2.4,
+                      mb: 1.5,
                     }}
                   >
                     <Box
                       sx={{
-                        p: 2.2,
-                        borderRadius: 4,
+                        p: 1.4,
+                        borderRadius: 3,
                         backgroundColor: "#ffffff",
                         border: "1px solid rgba(255,255,255,0.32)",
-                        boxShadow: "0 18px 44px rgba(0,0,0,0.28)",
+                        boxShadow: "0 14px 34px rgba(0,0,0,0.24)",
                       }}
                     >
                       <QRCode
                         value={joinUrl}
-                        size={148}
+                        size={112}
                         bgColor="#ffffff"
                         fgColor="#05070c"
                       />
@@ -705,8 +711,8 @@ export default function SuspectVoteModal({
                       alignItems: "center",
                       justifyContent: "space-between",
                       gap: 2,
-                      mb: 3,
-                      p: 1.1,
+                      mb: 1.7,
+                      p: 0.9,
                       borderRadius: 3,
                       backgroundColor: "rgba(255,255,255,0.03)",
                       border: "1px solid rgba(255,255,255,0.06)",
@@ -720,7 +726,7 @@ export default function SuspectVoteModal({
                       <Typography
                         sx={{
                           mt: 0.4,
-                          fontSize: 12,
+                          fontSize: 11,
                           color: "rgba(226,232,240,0.7)",
                           whiteSpace: "nowrap",
                           overflow: "hidden",
@@ -740,7 +746,7 @@ export default function SuspectVoteModal({
                         flexShrink: 0,
                         textTransform: "none",
                         borderRadius: 999,
-                        minWidth: 78,
+                        minWidth: 68,
                         color: "rgba(226,232,240,0.78)",
                         borderColor: "rgba(255,255,255,0.1)",
                         backgroundColor: "rgba(255,255,255,0.02)",
@@ -754,7 +760,7 @@ export default function SuspectVoteModal({
                     sx={{
                       position: "relative",
                       borderRadius: 3,
-                      minHeight: 240,
+                      minHeight: 190,
                     }}
                   >
                     <Box
@@ -764,7 +770,7 @@ export default function SuspectVoteModal({
                           xs: "repeat(2, minmax(0, 1fr))",
                           md: `repeat(${Math.min(Math.max(voteSummary.length, 2), 4)}, minmax(0, 1fr))`,
                         },
-                        gap: 1.6,
+                        gap: 1.1,
                       }}
                     >
                       {voteSummary.map(({ suspect, count }) => (
@@ -772,7 +778,7 @@ export default function SuspectVoteModal({
                           key={suspect.name}
                           sx={{
                             borderRadius: 3,
-                            p: { xs: 1.7, md: 1.9 },
+                            p: { xs: 1.2, md: 1.35 },
                             border: "1px solid",
                             borderColor:
                               isResultVisible && leadingSuspectNames.has(suspect.name)
@@ -799,25 +805,25 @@ export default function SuspectVoteModal({
                             src={suspect.image || ""}
                             alt={suspect.name}
                             sx={{
-                              width: { xs: 88, md: 96 },
-                              height: { xs: 88, md: 96 },
+                              width: { xs: 64, md: 72 },
+                              height: { xs: 64, md: 72 },
                               mx: "auto",
-                              mb: 1.4,
+                              mb: 0.9,
                               border: "2px solid rgba(255,255,255,0.14)",
                               boxShadow: "0 10px 24px rgba(0,0,0,0.16)",
                             }}
                           />
-                          <Typography fontWeight={800} fontSize={{ xs: 15, md: 16 }}>
+                          <Typography fontWeight={800} fontSize={{ xs: 13, md: 14 }}>
                             {suspect.name}
                           </Typography>
                           <Typography
                             sx={{
-                              mt: 0.75,
+                              mt: 0.5,
                               color:
                                 isResultVisible && leadingSuspectNames.has(suspect.name)
                                 ? "rgba(254, 202, 202, 0.96)"
                                 : "rgba(241,245,249,0.94)",
-                              fontSize: { xs: 22, md: 24 },
+                              fontSize: { xs: 18, md: 20 },
                               lineHeight: 1,
                               fontWeight: 800,
                               letterSpacing: "-0.04em",
@@ -827,16 +833,16 @@ export default function SuspectVoteModal({
                           </Typography>
                           <Box
                             sx={{
-                              mt: 1,
+                              mt: 0.7,
                               display: "flex",
                               alignItems: "center",
-                              gap: 1,
+                              gap: 0.6,
                             }}
                           >
                             <Box
                               sx={{
                                 flex: 1,
-                                height: 8,
+                                height: 6,
                                 borderRadius: 999,
                                 overflow: "hidden",
                                 backgroundColor: "rgba(255,255,255,0.08)",
@@ -857,10 +863,10 @@ export default function SuspectVoteModal({
                             </Box>
                             <Typography
                               sx={{
-                                minWidth: 38,
+                                minWidth: 32,
                                 textAlign: "right",
                                 color: "rgba(226,232,240,0.78)",
-                                fontSize: 12,
+                                fontSize: 11,
                                 fontWeight: 700,
                               }}
                             >
@@ -921,7 +927,7 @@ export default function SuspectVoteModal({
                 zIndex: 1,
                 display: "flex",
                 justifyContent: "center",
-                mt: 1.8,
+                mt: 1.1,
               }}
             >
               {roomCode && (
