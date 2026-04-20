@@ -108,6 +108,66 @@ export default function SuspectVoteModal({
             "radial-gradient(circle at 20% 0%, rgba(56, 189, 248, 0.2) 0%, rgba(8, 11, 18, 0) 30%), radial-gradient(circle at 80% 10%, rgba(59, 130, 246, 0.18) 0%, rgba(8, 11, 18, 0) 26%), linear-gradient(180deg, rgba(12, 17, 28, 0.96) 0%, rgba(4, 6, 12, 1) 100%)",
         }}
       >
+        {isFinalRevealMode ? (
+          <Box
+            sx={{
+              minHeight: "calc(100vh - 48px)",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              alignItems: "center",
+              px: { xs: 2, md: 6 },
+              py: { xs: 6, md: 10 },
+            }}
+          >
+            <Box
+              sx={{
+                flex: 1,
+                width: "100%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <ShakeTextSection>
+                <Typography
+                  sx={{
+                    fontSize: { xs: 30, md: 52 },
+                    fontWeight: 800,
+                    letterSpacing: "-0.05em",
+                    lineHeight: 1.35,
+                    wordBreak: "keep-all",
+                    textAlign: "center",
+                  }}
+                >
+                  {currentFinalRevealText}
+                </Typography>
+              </ShakeTextSection>
+            </Box>
+
+            <Button
+              variant="text"
+              endIcon={<KeyboardArrowRightIcon />}
+              onClick={() => {
+                if (isLastFinalRevealStep) {
+                  return;
+                }
+                setFinalRevealStepIndex((prev) => prev + 1);
+              }}
+              disabled={isLastFinalRevealStep}
+              sx={{
+                color: "rgba(226,232,240,0.72)",
+                textTransform: "none",
+                fontWeight: 600,
+                "&:hover": {
+                  backgroundColor: "rgba(255,255,255,0.04)",
+                },
+              }}
+            >
+              {isLastFinalRevealStep ? "다음 단계 준비 중" : "다음"}
+            </Button>
+          </Box>
+        ) : (
         <Box
           sx={{
             width: "100%",
@@ -193,64 +253,7 @@ export default function SuspectVoteModal({
               py: { xs: 2, md: 2.5 },
             }}
           >
-            {isFinalRevealMode ? (
-              <Box
-                sx={{
-                  minHeight: 320,
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Box
-                  sx={{
-                    minHeight: 220,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <ShakeTextSection>
-                    <Typography
-                      sx={{
-                        fontSize: { xs: 28, md: 42 },
-                        fontWeight: 800,
-                        letterSpacing: "-0.04em",
-                        lineHeight: 1.35,
-                        wordBreak: "keep-all",
-                      }}
-                    >
-                      {currentFinalRevealText}
-                    </Typography>
-                  </ShakeTextSection>
-                </Box>
-
-                <Box display="flex" justifyContent="center" mt={3}>
-                  <Button
-                    variant="text"
-                    endIcon={<KeyboardArrowRightIcon />}
-                    onClick={() => {
-                      if (isLastFinalRevealStep) {
-                        return;
-                      }
-                      setFinalRevealStepIndex((prev) => prev + 1);
-                    }}
-                    disabled={isLastFinalRevealStep}
-                    sx={{
-                      color: "rgba(226,232,240,0.72)",
-                      textTransform: "none",
-                      fontWeight: 600,
-                      "&:hover": {
-                        backgroundColor: "rgba(255,255,255,0.04)",
-                      },
-                    }}
-                  >
-                    {isLastFinalRevealStep ? "다음 단계 준비 중" : "다음"}
-                  </Button>
-                </Box>
-              </Box>
-            ) : (
-              <>
+            <>
                 <Box
                   sx={{
                     display: "flex",
@@ -398,8 +401,7 @@ export default function SuspectVoteModal({
                     </Box>
                   </Box>
                 )}
-              </>
-            )}
+            </>
           </Box>
 
           <Stack
@@ -492,6 +494,7 @@ export default function SuspectVoteModal({
             </Button>
           </Stack>
         </Box>
+        )}
       </Box>
     </Dialog>
   );
