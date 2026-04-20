@@ -526,10 +526,10 @@ export default function SuspectVoteModal({
                   >
                     <Box
                       sx={{
-                        p: 1.7,
+                        p: 2.2,
                         borderRadius: 4,
-                        backgroundColor: "rgba(255,255,255,0.1)",
-                        border: "1px solid rgba(255,255,255,0.18)",
+                        backgroundColor: "#ffffff",
+                        border: "1px solid rgba(255,255,255,0.32)",
                         boxShadow: "0 18px 44px rgba(0,0,0,0.28)",
                       }}
                     >
@@ -589,91 +589,102 @@ export default function SuspectVoteModal({
 
                   <Box
                     sx={{
-                      display: "grid",
-                      gridTemplateColumns: {
-                        xs: "repeat(2, minmax(0, 1fr))",
-                        md: `repeat(${Math.min(Math.max(voteSummary.length, 2), 4)}, minmax(0, 1fr))`,
-                      },
-                      gap: 1.6,
+                      position: "relative",
+                      borderRadius: 3,
+                      minHeight: 240,
                     }}
                   >
-                    {voteSummary.map(({ suspect, count }) => (
-                      <Box
-                        key={suspect.name}
-                        sx={{
-                          borderRadius: 3,
-                          p: 1.6,
-                          border: "1px solid",
-                          borderColor: leadingSuspectNames.has(suspect.name)
-                            ? "rgba(248, 113, 113, 0.28)"
-                            : "rgba(255,255,255,0.1)",
-                          background: leadingSuspectNames.has(suspect.name)
-                            ? "linear-gradient(180deg, rgba(127, 29, 29, 0.28) 0%, rgba(255,255,255,0.05) 100%)"
-                            : "rgba(255,255,255,0.05)",
-                          boxShadow: leadingSuspectNames.has(suspect.name)
-                            ? "0 0 0 1px rgba(248, 113, 113, 0.08), 0 0 24px rgba(239, 68, 68, 0.18)"
-                            : "0 10px 28px rgba(0,0,0,0.12)",
-                          textAlign: "center",
-                        }}
-                      >
-                        <Avatar
-                          src={suspect.image || ""}
-                          alt={suspect.name}
-                          sx={{
-                            width: 84,
-                            height: 84,
-                            mx: "auto",
-                            mb: 1.3,
-                            border: "2px solid rgba(255,255,255,0.12)",
-                          }}
-                        />
-                        <Typography fontWeight={700} fontSize={15}>
-                          {suspect.name}
-                        </Typography>
-                        <Typography
-                          sx={{
-                            mt: 0.5,
-                            color: "rgba(226,232,240,0.76)",
-                            fontSize: 13,
-                          }}
-                        >
-                          {count}표
-                        </Typography>
-                      </Box>
-                    ))}
-                  </Box>
-
-                  {!isResultVisible && (
                     <Box
                       sx={{
-                        position: "absolute",
-                        inset: 0,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        borderRadius: 3,
-                        background:
-                          "linear-gradient(180deg, rgba(3, 6, 14, 0.96) 0%, rgba(6, 10, 20, 0.98) 100%)",
-                        pointerEvents: "none",
-                        zIndex: 2,
+                        display: "grid",
+                        gridTemplateColumns: {
+                          xs: "repeat(2, minmax(0, 1fr))",
+                          md: `repeat(${Math.min(Math.max(voteSummary.length, 2), 4)}, minmax(0, 1fr))`,
+                        },
+                        gap: 1.6,
                       }}
                     >
+                      {voteSummary.map(({ suspect, count }) => (
+                        <Box
+                          key={suspect.name}
+                          sx={{
+                            borderRadius: 3,
+                            p: 1.6,
+                            border: "1px solid",
+                            borderColor: leadingSuspectNames.has(suspect.name)
+                              ? "rgba(248, 113, 113, 0.28)"
+                              : "rgba(255,255,255,0.1)",
+                            background: leadingSuspectNames.has(suspect.name)
+                              ? "linear-gradient(180deg, rgba(127, 29, 29, 0.28) 0%, rgba(255,255,255,0.05) 100%)"
+                              : "rgba(255,255,255,0.05)",
+                            boxShadow: leadingSuspectNames.has(suspect.name)
+                              ? "0 0 0 1px rgba(248, 113, 113, 0.08), 0 0 24px rgba(239, 68, 68, 0.18)"
+                              : "0 10px 28px rgba(0,0,0,0.12)",
+                            textAlign: "center",
+                          }}
+                        >
+                          <Avatar
+                            src={suspect.image || ""}
+                            alt={suspect.name}
+                            sx={{
+                              width: 84,
+                              height: 84,
+                              mx: "auto",
+                              mb: 1.3,
+                              border: "2px solid rgba(255,255,255,0.12)",
+                            }}
+                          />
+                          <Typography fontWeight={700} fontSize={15}>
+                            {suspect.name}
+                          </Typography>
+                          <Typography
+                            sx={{
+                              mt: 0.5,
+                              color: "rgba(226,232,240,0.76)",
+                              fontSize: 13,
+                            }}
+                          >
+                            {count}표
+                          </Typography>
+                        </Box>
+                      ))}
+                    </Box>
+
+                    {!isResultVisible && (
                       <Box
                         sx={{
-                          px: 2,
-                          py: 1,
-                          borderRadius: 999,
-                          backgroundColor: "rgba(15, 23, 42, 0.92)",
-                          border: "1px solid rgba(255,255,255,0.12)",
-                          boxShadow: "0 10px 30px rgba(0,0,0,0.2)",
+                          position: "absolute",
+                          inset: 0,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          borderRadius: 3,
+                          background:
+                            "linear-gradient(180deg, rgba(3, 6, 14, 0.7) 0%, rgba(6, 10, 20, 0.78) 100%)",
+                          backdropFilter: "blur(18px) saturate(120%)",
+                          WebkitBackdropFilter: "blur(18px) saturate(120%)",
+                          pointerEvents: "none",
+                          zIndex: 2,
                         }}
                       >
-                        <Typography fontSize={13} fontWeight={700}>
-                          결과가 숨겨져 있습니다
-                        </Typography>
+                        <Box
+                          sx={{
+                            px: 2,
+                            py: 1,
+                            borderRadius: 999,
+                            backgroundColor: "rgba(10, 14, 24, 0.92)",
+                            border: "1px solid rgba(255,255,255,0.14)",
+                            boxShadow:
+                              "0 10px 30px rgba(0,0,0,0.22), inset 0 1px 0 rgba(255,255,255,0.08)",
+                          }}
+                        >
+                          <Typography fontSize={13} fontWeight={700}>
+                            결과가 숨겨져 있습니다
+                          </Typography>
+                        </Box>
                       </Box>
-                    </Box>
-                  )}
+                    )}
+                  </Box>
                 </>
               )}
             </Box>
