@@ -7,7 +7,6 @@ import {
 } from "@/features/suspect/libs/vote";
 import { ClueScenarioType, ScenarioType, SuspectType } from "@/features/suspect/types";
 import { Avatar, Box, CircularProgress, IconButton, Typography } from "@mui/material";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
@@ -138,21 +137,10 @@ export default function SuspectVotePage() {
         <Box
           sx={{
             display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
+            justifyContent: "flex-end",
             mb: 2.5,
           }}
         >
-          <IconButton
-            onClick={() => router.back()}
-            sx={{
-              color: "white",
-              backgroundColor: "rgba(255,255,255,0.06)",
-              border: "1px solid rgba(255,255,255,0.08)",
-            }}
-          >
-            <ArrowBackIcon />
-          </IconButton>
           <Typography fontSize={12} sx={{ opacity: 0.66 }}>
             ROOM {roomCode}
           </Typography>
