@@ -1,4 +1,3 @@
-import CloseIcon from "@mui/icons-material/Close";
 import HowToVoteIcon from "@mui/icons-material/HowToVote";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
@@ -8,10 +7,8 @@ import {
   Box,
   Button,
   Dialog,
-  IconButton,
   Typography,
 } from "@mui/material";
-import { getParticipants, insertCoin, me } from "playroomkit";
 import QRCode from "react-qr-code";
 import { useEffect, useMemo, useState } from "react";
 
@@ -22,6 +19,8 @@ import {
   getSuspectVoteGameId,
   getSuspectVoteJoinUrl,
   getSuspectVoteStateKey,
+  loadPlayroomKit,
+  withTimeout,
 } from "@/features/suspect/libs/vote";
 
 interface SuspectVoteModalProps {
@@ -47,6 +46,8 @@ export default function SuspectVoteModal({
   const [voteSummary, setVoteSummary] = useState(() =>
     countVotesBySuspect(suspects, [])
   );
+  const [playroomModule, setPlayroomModule] =
+    useState<Awaited<ReturnType<typeof loadPlayroomKit>> | null>(null);
 
   useEffect(() => {
     if (typeof window === "undefined") {
@@ -70,9 +71,13 @@ export default function SuspectVoteModal({
       return;
     }
 
+    if (!playroomModule) {
+      return;
+    }
+
     const syncVotes = () => {
-      const participants = Object.values(getParticipants() ?? {});
-      const myId = me()?.id;
+      const participants = Object.values(playroomModule.getParticipants() ?? {});
+      const myId = playroomModule.me()?.id;
       const voterParticipants = participants.filter((participant) => {
         return participant.id !== myId;
       });
@@ -94,7 +99,7 @@ export default function SuspectVoteModal({
     return () => {
       window.clearInterval(intervalId);
     };
-  }, [isRoomReady, scenarioId, suspects]);
+  }, [isRoomReady, playroomModule, scenarioId, suspects]);
 
   const joinUrl = useMemo(() => {
     if (!origin) {
@@ -103,6 +108,24 @@ export default function SuspectVoteModal({
 
     return getSuspectVoteJoinUrl(origin, scenarioId, roomCode);
   }, [origin, roomCode, scenarioId]);
+
+  const leadingSuspectNames = useMemo(() => {
+    const maxVoteCount = Math.max(...voteSummary.map(({ count }) => count), 0);
+
+    if (maxVoteCount === 0) {
+      return new Set<string>();
+    }
+
+    const leaders = voteSummary
+      .filter(({ count }) => count === maxVoteCount)
+      .map(({ suspect }) => suspect.name);
+
+    if (leaders.length !== 1) {
+      return new Set<string>();
+    }
+
+    return new Set(leaders);
+  }, [voteSummary]);
 
   const connectHostToVoteRoom = async () => {
     if (isInitializing || isRoomReady) {
@@ -113,11 +136,16 @@ export default function SuspectVoteModal({
     setInitError(null);
 
     try {
-      await insertCoin({
-        skipLobby: true,
-        roomCode,
-        gameId: getSuspectVoteGameId(scenarioId),
-      });
+      const nextPlayroomModule = await loadPlayroomKit();
+      await withTimeout(
+        nextPlayroomModule.insertCoin({
+          skipLobby: true,
+          roomCode,
+          gameId: getSuspectVoteGameId(scenarioId),
+        }),
+        6000
+      );
+      setPlayroomModule(nextPlayroomModule);
       setIsRoomReady(true);
     } catch {
       setInitError("결과 연결 실패");
@@ -174,24 +202,6 @@ export default function SuspectVoteModal({
               mb: 4,
             }}
           >
-            <IconButton
-              onClick={onClose}
-              aria-label="닫기"
-              sx={{
-                position: "absolute",
-                top: 0,
-                right: 0,
-                color: "common.white",
-                backgroundColor: "rgba(255,255,255,0.06)",
-                border: "1px solid rgba(255,255,255,0.12)",
-                "&:hover": {
-                  backgroundColor: "rgba(255,255,255,0.1)",
-                },
-              }}
-            >
-              <CloseIcon />
-            </IconButton>
-
             <Box
               sx={{
                 width: { xs: 176, md: 204 },
@@ -293,51 +303,48 @@ export default function SuspectVoteModal({
               }}
             >
               <Typography fontWeight={700}>실시간 투표</Typography>
-              <Box display="flex" alignItems="center" gap={1}>
-                <Typography
-                  fontSize={13}
-                  sx={{ color: "rgba(226,232,240,0.68)" }}
-                >
-                  {isRoomReady ? `${connectedVoterCount}명 접속` : "결과 미연결"}
-                </Typography>
+              <Typography
+                fontSize={13}
+                sx={{ color: "rgba(226,232,240,0.68)" }}
+              >
+                {isRoomReady ? `${connectedVoterCount}명 접속` : "대기 중"}
+              </Typography>
+            </Box>
+            {!isRoomReady && (
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  minHeight: 72,
+                  mb: 2,
+                }}
+              >
                 <Button
-                  size="small"
-                  variant="outlined"
+                  variant="contained"
+                  size="medium"
                   startIcon={
-                    !isRoomReady ? (
-                      isInitializing ? (
-                        <CircularProgress size={14} color="inherit" />
-                      ) : (
-                        <VisibilityIcon />
-                      )
-                    ) : isResultVisible ? (
-                      <VisibilityOffIcon />
+                    isInitializing ? (
+                      <CircularProgress size={16} color="inherit" />
                     ) : (
-                      <VisibilityIcon />
+                      <HowToVoteIcon />
                     )
                   }
                   onClick={() => {
-                    if (!isRoomReady) {
-                      void connectHostToVoteRoom();
-                      return;
-                    }
-                    setIsResultVisible((prev) => !prev);
+                    void connectHostToVoteRoom();
                   }}
                   sx={{
-                    minWidth: 0,
-                    px: 1.1,
-                    color: "common.white",
-                    borderColor: "rgba(255,255,255,0.18)",
-                    "&:hover": {
-                      borderColor: "rgba(255,255,255,0.32)",
-                      backgroundColor: "rgba(255,255,255,0.05)",
-                    },
+                    minWidth: 168,
+                    borderRadius: 999,
+                    textTransform: "none",
+                    fontWeight: 700,
+                    px: 2.2,
                   }}
                 >
-                  {!isRoomReady ? "결과 연결" : isResultVisible ? "숨기기" : "보기"}
+                  {isInitializing ? "연결 중" : "투표 방 열기"}
                 </Button>
               </Box>
-            </Box>
+            )}
 
             <Box
               sx={{
@@ -348,6 +355,7 @@ export default function SuspectVoteModal({
                   md: `repeat(${Math.min(Math.max(suspects.length, 2), 4)}, minmax(0, 1fr))`,
                 },
                 gap: 1.4,
+                opacity: isRoomReady ? 1 : 0.42,
               }}
             >
               {voteSummary.map(({ suspect, count }) => (
@@ -356,9 +364,18 @@ export default function SuspectVoteModal({
                   sx={{
                     borderRadius: 3,
                     p: 1.4,
-                    border: "1px solid rgba(255,255,255,0.1)",
-                    backgroundColor: "rgba(255,255,255,0.05)",
+                    border: "1px solid",
+                    borderColor: leadingSuspectNames.has(suspect.name)
+                      ? "rgba(248, 113, 113, 0.28)"
+                      : "rgba(255,255,255,0.1)",
+                    background: leadingSuspectNames.has(suspect.name)
+                      ? "linear-gradient(180deg, rgba(127, 29, 29, 0.28) 0%, rgba(255,255,255,0.05) 100%)"
+                      : "rgba(255,255,255,0.05)",
+                    boxShadow: leadingSuspectNames.has(suspect.name)
+                      ? "0 0 0 1px rgba(248, 113, 113, 0.08), 0 0 24px rgba(239, 68, 68, 0.18)"
+                      : "none",
                     textAlign: "center",
+                    transition: "border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease",
                   }}
                 >
                   <Avatar
@@ -388,7 +405,19 @@ export default function SuspectVoteModal({
               ))}
             </Box>
 
-            {!isResultVisible && (
+            {!isRoomReady && (
+              <Box
+                sx={{
+                  position: "absolute",
+                  inset: 0,
+                  borderRadius: 3,
+                  backgroundColor: "rgba(4, 6, 12, 0.14)",
+                  pointerEvents: "none",
+                }}
+              />
+            )}
+
+            {isRoomReady && !isResultVisible && (
               <Box
                 sx={{
                   position: "absolute",
@@ -413,12 +442,51 @@ export default function SuspectVoteModal({
                   }}
                 >
                   <Typography fontSize={13} fontWeight={700}>
-                    {isRoomReady ? "결과 숨김" : "결과 연결 필요"}
+                    결과가 숨겨져 있습니다
                   </Typography>
                 </Box>
               </Box>
             )}
           </Box>
+
+          {isRoomReady && (
+            <Box
+              sx={{
+                position: "relative",
+                zIndex: 1,
+                display: "flex",
+                justifyContent: "center",
+                mt: 1.8,
+              }}
+            >
+              <Button
+                variant="outlined"
+                size="medium"
+                startIcon={
+                  isResultVisible ? <VisibilityOffIcon /> : <VisibilityIcon />
+                }
+                onClick={() => {
+                  setIsResultVisible((prev) => !prev);
+                }}
+                sx={{
+                  minWidth: 148,
+                  borderRadius: 999,
+                  textTransform: "none",
+                  fontWeight: 700,
+                  px: 2,
+                  color: "common.white",
+                  borderColor: "rgba(255,255,255,0.18)",
+                  backgroundColor: "rgba(15, 23, 42, 0.72)",
+                  "&:hover": {
+                    borderColor: "rgba(255,255,255,0.32)",
+                    backgroundColor: "rgba(255,255,255,0.07)",
+                  },
+                }}
+              >
+                {isResultVisible ? "결과 숨기기" : "결과 보기"}
+              </Button>
+            </Box>
+          )}
 
           <Box display="flex" justifyContent="flex-end" mt={3}>
             <Button

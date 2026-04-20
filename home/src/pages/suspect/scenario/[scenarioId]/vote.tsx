@@ -2,11 +2,12 @@ import { scenarios } from "@/features/suspect/fixtures";
 import {
   getSuspectVoteGameId,
   getSuspectVoteStateKey,
+  loadPlayroomKit,
+  withTimeout,
 } from "@/features/suspect/libs/vote";
 import { ClueScenarioType, ScenarioType, SuspectType } from "@/features/suspect/types";
 import { Avatar, Box, CircularProgress, IconButton, Typography } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { insertCoin, myPlayer } from "playroomkit";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
 
@@ -25,6 +26,9 @@ export default function SuspectVotePage() {
   const [isReady, setIsReady] = useState(false);
   const [selectedSuspect, setSelectedSuspect] = useState<string | null>(null);
   const [isConnecting, setIsConnecting] = useState(false);
+  const [connectError, setConnectError] = useState<string | null>(null);
+  const [playroomModule, setPlayroomModule] =
+    useState<Awaited<ReturnType<typeof loadPlayroomKit>> | null>(null);
 
   const scenario = useMemo(() => {
     return findScenario(router.query.scenarioId);
@@ -42,16 +46,26 @@ export default function SuspectVotePage() {
 
     const connect = async () => {
       setIsConnecting(true);
+      setConnectError(null);
 
       try {
-        await insertCoin({
-          skipLobby: true,
-          roomCode,
-          gameId: getSuspectVoteGameId(scenario.id),
-        });
+        const nextPlayroomModule = await loadPlayroomKit();
+        await withTimeout(
+          nextPlayroomModule.insertCoin({
+            skipLobby: true,
+            roomCode,
+            gameId: getSuspectVoteGameId(scenario.id),
+          }),
+          6000
+        );
 
         if (!isCancelled) {
+          setPlayroomModule(nextPlayroomModule);
           setIsReady(true);
+        }
+      } catch {
+        if (!isCancelled) {
+          setConnectError("투표방 연결 실패");
         }
       } finally {
         if (!isCancelled) {
@@ -68,12 +82,14 @@ export default function SuspectVotePage() {
   }, [isConnecting, isReady, roomCode, router.isReady, scenario]);
 
   const handleVote = (suspect: SuspectType) => {
-    if (!scenario || !isReady) {
+    if (!scenario || !isReady || !playroomModule) {
       return;
     }
 
     setSelectedSuspect(suspect.name);
-    myPlayer().setState(getSuspectVoteStateKey(scenario.id), suspect.name, true);
+    playroomModule
+      .myPlayer()
+      .setState(getSuspectVoteStateKey(scenario.id), suspect.name, true);
   };
 
   if (!scenario) {
@@ -158,10 +174,23 @@ export default function SuspectVotePage() {
               backdropFilter: "blur(16px)",
             }}
           >
-            <CircularProgress size={30} />
-            <Typography sx={{ opacity: 0.72, fontSize: 14 }}>
-              투표방 연결 중
-            </Typography>
+            {connectError ? (
+              <>
+                <Typography sx={{ fontSize: 14, fontWeight: 700 }}>
+                  {connectError}
+                </Typography>
+                <Typography sx={{ opacity: 0.68, fontSize: 13, mt: 0.6 }}>
+                  새로고침 후 다시 시도하세요
+                </Typography>
+              </>
+            ) : (
+              <>
+                <CircularProgress size={30} />
+                <Typography sx={{ opacity: 0.72, fontSize: 14 }}>
+                  투표방 연결 중
+                </Typography>
+              </>
+            )}
           </Box>
         ) : (
           <Box

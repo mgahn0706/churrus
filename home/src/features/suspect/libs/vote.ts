@@ -1,5 +1,7 @@
 import { SuspectType } from "@/features/suspect/types";
 
+type PlayroomKitModule = typeof import("playroomkit");
+
 export const getSuspectVoteGameId = (scenarioId: string) =>
   `suspect-vote-${scenarioId}`;
 
@@ -19,6 +21,19 @@ export const getSuspectVoteJoinUrl = (
   roomCode: string
 ) =>
   `${origin}/suspect/scenario/${scenarioId}/vote?r=${encodeURIComponent(roomCode)}`;
+
+export const withTimeout = async <T,>(promise: Promise<T>, ms: number) => {
+  return await Promise.race<T>([
+    promise,
+    new Promise<T>((_, reject) => {
+      window.setTimeout(() => reject(new Error("TIMEOUT")), ms);
+    }),
+  ]);
+};
+
+export const loadPlayroomKit = async (): Promise<PlayroomKitModule> => {
+  return await import("playroomkit");
+};
 
 export const countVotesBySuspect = (
   suspects: SuspectType[],
