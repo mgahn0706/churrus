@@ -29,19 +29,16 @@ import { SuspectType } from "@/features/suspect/types";
 interface SuspectVoteModalProps {
   isOpen: boolean;
   suspects: SuspectType[];
+  scenarioTitle: string;
+  episodeNumber: number;
   onClose: () => void;
 }
-
-const FINAL_REVEAL_STEPS = [
-  "본격 추리게임 협동 크라임씬",
-  "숨막히는 추리게임의 결과",
-  "가장 많은 표를 얻은 사람은 누구일지",
-  "지금부터 투표 결과를 공개합니다",
-] as const;
 
 export default function SuspectVoteModal({
   isOpen,
   suspects,
+  scenarioTitle,
+  episodeNumber,
   onClose,
 }: SuspectVoteModalProps) {
   const [origin, setOrigin] = useState("");
@@ -153,9 +150,54 @@ export default function SuspectVoteModal({
 
   const totalVotes = voteSummary.reduce((sum, item) => sum + item.count, 0);
   const joinUrl = roomCode ? getPlayroomVoteJoinUrl(origin, roomCode) : "";
-  const currentFinalRevealText = FINAL_REVEAL_STEPS[finalRevealStepIndex];
+  const finalRevealSteps = useMemo(() => {
+    const sortedVoteSummary = [...voteSummary].sort((left, right) => {
+      if (right.count !== left.count) {
+        return right.count - left.count;
+      }
+
+      return left.suspect.name.localeCompare(right.suspect.name, "ko");
+    });
+
+    const topVoteCount = sortedVoteSummary[0]?.count ?? 0;
+    const finalCandidates = sortedVoteSummary
+      .filter(({ count }) => count === topVoteCount && count > 0)
+      .map(({ suspect }) => suspect.name);
+    const excludedCandidates = sortedVoteSummary
+      .filter(({ count }) => count < topVoteCount)
+      .map(({ suspect }) => `${suspect.name}.`)
+      .join(" ");
+
+    const finalCandidateLine =
+      finalCandidates.length > 0
+        ? finalCandidates.join(", ")
+        : "지목된 후보가 없습니다";
+    const excludedLine =
+      excludedCandidates.length > 0
+        ? excludedCandidates
+        : "제외된 후보가 없습니다.";
+    const winnerName = sortedVoteSummary[0]?.suspect.name ?? "지목된 인물이 없습니다";
+    const runnerUpCount = sortedVoteSummary[1]?.count ?? 0;
+    const winnerCount = topVoteCount > 0 ? topVoteCount : 0;
+    const eliminationVoteCount =
+      sortedVoteSummary.filter(({ count }) => count < topVoteCount)[0]?.count ?? 0;
+    const winnerScoreLine =
+      winnerCount > 0 ? `${winnerCount}:${runnerUpCount}` : "0:0";
+
+    return [
+      `추리게임 협동 크라임씬의 ${episodeNumber}번째 에피소드`,
+      `<${scenarioTitle}>의 범인을 찾기 위한 숨막히는 추리게임의 결과, 범인으로 가장 많은 지목을 받은 사람은 누구인지.`,
+      "지금부터 투표 결과를 공개합니다.",
+      "본격 추리 게임 크라임씬, 최종 범인 후보에서 제외된 사람을 말씀드리겠습니다.",
+      `최종 범인 지목 투표 결과, ${eliminationVoteCount}표를 받은 사람은: ${excludedLine} 범인 후보 제외.`,
+      `이렇게 해서 최종 범인 후보로 ${finalCandidateLine}이 지목되었습니다.`,
+      `본격 추리게임 크라임씬, <${scenarioTitle}> 최종 투표 결과 최종 범인으로 지목된 사람은 ${winnerScoreLine}으로 ${winnerCount}표를 획득한, ${winnerName}!`,
+      `최종 범인 후보로 지목된 ${winnerName}는 감옥으로 이동해주십시오.`,
+    ] as const;
+  }, [episodeNumber, scenarioTitle, voteSummary]);
+  const currentFinalRevealText = finalRevealSteps[finalRevealStepIndex];
   const isLastFinalRevealStep =
-    finalRevealStepIndex === FINAL_REVEAL_STEPS.length - 1;
+    finalRevealStepIndex === finalRevealSteps.length - 1;
 
   const handleOpenRoom = async () => {
     if (isOpeningRoom || roomCode) {
@@ -352,7 +394,7 @@ export default function SuspectVoteModal({
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
-                mb: 4,
+                mb: 2.5,
               }}
             >
               <Box display="flex" alignItems="center" gap={1.2}>
@@ -370,19 +412,21 @@ export default function SuspectVoteModal({
                 >
                   <HowToVoteIcon />
                 </Box>
-                <Box>
-                  <Typography fontWeight={800} fontSize={{ xs: 22, md: 28 }}>
-                    용의자 투표
-                  </Typography>
-                  <Typography
-                    fontSize={13}
-                    sx={{ color: "rgba(226,232,240,0.68)" }}
-                  >
-                    Playroom 실시간 투표
-                  </Typography>
-                </Box>
+                <Typography fontWeight={800} fontSize={{ xs: 22, md: 28 }}>
+                  용의자 투표
+                </Typography>
               </Box>
-              <Typography fontSize={13} sx={{ color: "rgba(226,232,240,0.68)" }}>
+              <Typography
+                fontSize={13}
+                sx={{
+                  color: "rgba(226,232,240,0.84)",
+                  px: 1.2,
+                  py: 0.55,
+                  borderRadius: 999,
+                  backgroundColor: "rgba(255,255,255,0.08)",
+                  border: "1px solid rgba(255,255,255,0.1)",
+                }}
+              >
                 총 {totalVotes}표
               </Typography>
             </Box>
@@ -392,14 +436,15 @@ export default function SuspectVoteModal({
                 position: "relative",
                 zIndex: 1,
                 minHeight: 260,
-                borderRadius: 3,
-                border: "1px solid rgba(255, 255, 255, 0.12)",
+                borderRadius: 4,
+                border: "1px solid rgba(255, 255, 255, 0.16)",
                 background:
-                  "linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.04) 100%)",
-                boxShadow: "inset 0 1px 0 rgba(255,255,255,0.08)",
-                backdropFilter: "blur(18px)",
-                px: { xs: 2, md: 3 },
-                py: { xs: 2, md: 2.5 },
+                  "linear-gradient(180deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.05) 100%)",
+                boxShadow:
+                  "0 24px 48px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.1)",
+                backdropFilter: "blur(16px)",
+                px: { xs: 2.5, md: 3.5 },
+                py: { xs: 2.5, md: 3 },
               }}
             >
               <Box
@@ -407,13 +452,21 @@ export default function SuspectVoteModal({
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "space-between",
-                  mb: 2,
+                  mb: 2.5,
                 }}
               >
-                <Typography fontWeight={700}>실시간 투표</Typography>
+                <Typography fontWeight={800} fontSize={{ xs: 17, md: 19 }}>
+                  실시간 투표
+                </Typography>
                 <Typography
                   fontSize={13}
-                  sx={{ color: "rgba(226,232,240,0.68)" }}
+                  sx={{
+                    color: "rgba(226,232,240,0.82)",
+                    px: 1.2,
+                    py: 0.5,
+                    borderRadius: 999,
+                    backgroundColor: "rgba(15,23,42,0.34)",
+                  }}
                 >
                   {roomCode ? `${voterCount}명 참여` : "대기 중"}
                 </Typography>
@@ -467,13 +520,39 @@ export default function SuspectVoteModal({
                   <Box
                     sx={{
                       display: "flex",
+                      justifyContent: "center",
+                      mb: 2.4,
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        p: 1.7,
+                        borderRadius: 4,
+                        backgroundColor: "rgba(255,255,255,0.1)",
+                        border: "1px solid rgba(255,255,255,0.18)",
+                        boxShadow: "0 18px 44px rgba(0,0,0,0.28)",
+                      }}
+                    >
+                      <QRCode
+                        value={joinUrl}
+                        size={148}
+                        bgColor="#ffffff"
+                        fgColor="#05070c"
+                      />
+                    </Box>
+                  </Box>
+
+                  <Box
+                    sx={{
+                      display: "flex",
                       alignItems: "center",
                       justifyContent: "space-between",
                       gap: 2,
-                      mb: 2.2,
-                      p: 1.3,
-                      borderRadius: 2.5,
-                      backgroundColor: "rgba(255,255,255,0.04)",
+                      mb: 2.6,
+                      p: 1.4,
+                      borderRadius: 3,
+                      backgroundColor: "rgba(255,255,255,0.05)",
+                      border: "1px solid rgba(255,255,255,0.08)",
                     }}
                   >
                     <Box sx={{ minWidth: 0 }}>
@@ -515,7 +594,7 @@ export default function SuspectVoteModal({
                         xs: "repeat(2, minmax(0, 1fr))",
                         md: `repeat(${Math.min(Math.max(voteSummary.length, 2), 4)}, minmax(0, 1fr))`,
                       },
-                      gap: 1.4,
+                      gap: 1.6,
                     }}
                   >
                     {voteSummary.map(({ suspect, count }) => (
@@ -523,7 +602,7 @@ export default function SuspectVoteModal({
                         key={suspect.name}
                         sx={{
                           borderRadius: 3,
-                          p: 1.4,
+                          p: 1.6,
                           border: "1px solid",
                           borderColor: leadingSuspectNames.has(suspect.name)
                             ? "rgba(248, 113, 113, 0.28)"
@@ -533,7 +612,7 @@ export default function SuspectVoteModal({
                             : "rgba(255,255,255,0.05)",
                           boxShadow: leadingSuspectNames.has(suspect.name)
                             ? "0 0 0 1px rgba(248, 113, 113, 0.08), 0 0 24px rgba(239, 68, 68, 0.18)"
-                            : "none",
+                            : "0 10px 28px rgba(0,0,0,0.12)",
                           textAlign: "center",
                         }}
                       >
@@ -541,21 +620,21 @@ export default function SuspectVoteModal({
                           src={suspect.image || ""}
                           alt={suspect.name}
                           sx={{
-                            width: 72,
-                            height: 72,
+                            width: 84,
+                            height: 84,
                             mx: "auto",
-                            mb: 1.2,
+                            mb: 1.3,
                             border: "2px solid rgba(255,255,255,0.12)",
                           }}
                         />
-                        <Typography fontWeight={700} fontSize={14}>
+                        <Typography fontWeight={700} fontSize={15}>
                           {suspect.name}
                         </Typography>
                         <Typography
                           sx={{
                             mt: 0.5,
-                            color: "rgba(226,232,240,0.68)",
-                            fontSize: 12,
+                            color: "rgba(226,232,240,0.76)",
+                            fontSize: 13,
                           }}
                         >
                           {count}표
@@ -573,9 +652,10 @@ export default function SuspectVoteModal({
                         alignItems: "center",
                         justifyContent: "center",
                         borderRadius: 3,
-                        backgroundColor: "rgba(4, 6, 12, 0.42)",
-                        backdropFilter: "blur(6px)",
+                        background:
+                          "linear-gradient(180deg, rgba(3, 6, 14, 0.96) 0%, rgba(6, 10, 20, 0.98) 100%)",
                         pointerEvents: "none",
+                        zIndex: 2,
                       }}
                     >
                       <Box
@@ -583,7 +663,7 @@ export default function SuspectVoteModal({
                           px: 2,
                           py: 1,
                           borderRadius: 999,
-                          backgroundColor: "rgba(15, 23, 42, 0.78)",
+                          backgroundColor: "rgba(15, 23, 42, 0.92)",
                           border: "1px solid rgba(255,255,255,0.12)",
                           boxShadow: "0 10px 30px rgba(0,0,0,0.2)",
                         }}
