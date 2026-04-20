@@ -8,6 +8,7 @@ import {
 import { ClueScenarioType, ScenarioType, SuspectType } from "@/features/suspect/types";
 import { Avatar, Box, CircularProgress, IconButton, Typography } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import RefreshIcon from "@mui/icons-material/Refresh";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
 
@@ -38,7 +39,14 @@ export default function SuspectVotePage() {
     typeof router.query.r === "string" ? router.query.r.toUpperCase() : "";
 
   useEffect(() => {
-    if (!router.isReady || !scenario || !roomCode || isReady || isConnecting) {
+    if (
+      !router.isReady ||
+      !scenario ||
+      !roomCode ||
+      isReady ||
+      isConnecting ||
+      connectError
+    ) {
       return;
     }
 
@@ -79,7 +87,7 @@ export default function SuspectVotePage() {
     return () => {
       isCancelled = true;
     };
-  }, [isConnecting, isReady, roomCode, router.isReady, scenario]);
+  }, [connectError, isConnecting, isReady, roomCode, router.isReady, scenario]);
 
   const handleVote = (suspect: SuspectType) => {
     if (!scenario || !isReady || !playroomModule) {
@@ -180,8 +188,19 @@ export default function SuspectVotePage() {
                   {connectError}
                 </Typography>
                 <Typography sx={{ opacity: 0.68, fontSize: 13, mt: 0.6 }}>
-                  새로고침 후 다시 시도하세요
+                  잠시 후 다시 시도하세요
                 </Typography>
+                <IconButton
+                  onClick={() => setConnectError(null)}
+                  sx={{
+                    mt: 1,
+                    color: "white",
+                    backgroundColor: "rgba(255,255,255,0.06)",
+                    border: "1px solid rgba(255,255,255,0.08)",
+                  }}
+                >
+                  <RefreshIcon />
+                </IconButton>
               </>
             ) : (
               <>
