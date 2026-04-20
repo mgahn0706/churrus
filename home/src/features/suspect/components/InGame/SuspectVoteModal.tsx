@@ -281,6 +281,22 @@ export default function SuspectVoteModal({
     }
   };
 
+  const clearLocalRoomState = () => {
+    setPlayroomModule(null);
+    setRoomCode(null);
+    setRoomError(null);
+    setIsOpeningRoom(false);
+    setIsCopied(false);
+    setIsResultVisible(false);
+    setIsFinalRevealMode(false);
+    setFinalRevealStepIndex(0);
+    setVoterCount(0);
+    setVoteCounts(Object.fromEntries(suspects.map((suspect) => [suspect.name, 0])));
+    if (typeof window !== "undefined") {
+      window.localStorage.removeItem(roomStorageKey);
+    }
+  };
+
   const handleOpenRoom = async () => {
     if (isOpeningRoom) {
       return;
@@ -345,6 +361,30 @@ export default function SuspectVoteModal({
     } finally {
       setIsOpeningRoom(false);
     }
+  };
+
+  const handleReopenRoom = async () => {
+    if (isOpeningRoom) {
+      return;
+    }
+
+    setIsOpeningRoom(true);
+    setRoomError(null);
+
+    try {
+      const nextPlayroomModule = await loadPlayroomKit();
+      await Promise.allSettled([
+        nextPlayroomModule.resetStates?.(),
+        nextPlayroomModule.resetPlayersStates?.(),
+      ]);
+    } catch {
+      // Ignore reset failures and still force a fresh local room open.
+    } finally {
+      clearLocalRoomState();
+    }
+
+    await new Promise((resolve) => window.setTimeout(resolve, 0));
+    void handleOpenRoom();
   };
 
   useEffect(() => {
@@ -884,6 +924,31 @@ export default function SuspectVoteModal({
                 mt: 1.8,
               }}
             >
+              {roomCode && (
+                <Button
+                  variant="outlined"
+                  size="medium"
+                  onClick={() => void handleReopenRoom()}
+                  disabled={isOpeningRoom}
+                  sx={{
+                    minWidth: 160,
+                    borderRadius: 999,
+                    textTransform: "none",
+                    fontWeight: 700,
+                    px: 2,
+                    color: "common.white",
+                    borderColor: "rgba(255,255,255,0.18)",
+                    backgroundColor: "rgba(15, 23, 42, 0.72)",
+                    "&:hover": {
+                      borderColor: "rgba(255,255,255,0.32)",
+                      backgroundColor: "rgba(255,255,255,0.07)",
+                    },
+                  }}
+                >
+                  {isOpeningRoom ? "다시 여는 중" : "투표방 다시 열기"}
+                </Button>
+              )}
+
               {roomCode && (
                 <Button
                   variant="outlined"
