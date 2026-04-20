@@ -33,7 +33,6 @@ export default function ClueDashboardModal({
         backdrop: {
           sx: {
             backgroundColor: "rgba(12, 14, 24, 0.45)",
-            backdropFilter: "blur(2px)",
           },
         },
       }}
@@ -48,7 +47,7 @@ export default function ClueDashboardModal({
           maxWidth: "92vw",
           bgcolor: "background.paper",
           borderRadius: 3,
-          boxShadow: "0 20px 60px rgba(0,0,0,0.28)",
+          boxShadow: "0 16px 40px rgba(0,0,0,0.22)",
           p: 3,
         }}
       >
