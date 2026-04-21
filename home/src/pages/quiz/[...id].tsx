@@ -161,7 +161,12 @@ export default function QuizPage() {
             <Box display="flex" alignItems="center" minWidth={0}>
               <ChurrusLogoButton onClick={() => router.push("/")} />
 
-              <Box display="flex" alignItems="center" ml={[1, 2, 2]} minWidth={0}>
+              <Box
+                display="flex"
+                alignItems="center"
+                ml={[1, 2, 2]}
+                minWidth={0}
+              >
                 <HeaderButton onClick={() => setIsQuizListDrawerOpen(true)}>
                   {meeting?.title}
                 </HeaderButton>
@@ -262,6 +267,7 @@ export default function QuizPage() {
             }}
             fill
             priority
+            unoptimized
             onLoadingComplete={() => setIsImageLoading(false)}
             onError={() => setIsImageLoading(false)}
           />
