@@ -311,7 +311,6 @@ export default function SuspectVoteModal({
                         size="small"
                         variant="text"
                         onClick={() => {
-                          setRoomError(null);
                           void handleOpenRoom();
                         }}
                         sx={{ mt: 0.6, textTransform: "none" }}
