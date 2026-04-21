@@ -31,12 +31,14 @@ export default function SuspectVoteModal({
     currentFinalRevealText,
     finalRevealStepIndex,
     handleCopyLink,
+    handleFinishFinalReveal,
     handleOpenRoom,
     handleReopenRoom,
     handleStartFinalReveal,
     isCopied,
     isFinalRevealDisabled,
     isFinalRevealMode,
+    isFinalRevealReVote,
     isLastFinalRevealStep,
     isOpeningRoom,
     isResultVisible,
@@ -140,11 +142,14 @@ export default function SuspectVoteModal({
               endIcon={<KeyboardArrowRightIcon />}
               onClick={() => {
                 if (isLastFinalRevealStep) {
+                  if (isFinalRevealReVote) {
+                    handleFinishFinalReveal();
+                  }
                   return;
                 }
                 setFinalRevealStepIndex((prev) => prev + 1);
               }}
-              disabled={isLastFinalRevealStep}
+              disabled={isLastFinalRevealStep && !isFinalRevealReVote}
               sx={{
                 color: "rgba(226,232,240,0.72)",
                 textTransform: "none",
@@ -154,7 +159,11 @@ export default function SuspectVoteModal({
                 },
               }}
             >
-              {isLastFinalRevealStep ? "다음 단계 준비 중" : "다음"}
+              {isLastFinalRevealStep
+                ? isFinalRevealReVote
+                  ? "재투표 시작"
+                  : "다음 단계 준비 중"
+                : "다음"}
             </Button>
           </Box>
         ) : (

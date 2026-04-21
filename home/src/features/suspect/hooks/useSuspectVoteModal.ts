@@ -160,6 +160,15 @@ export const useSuspectVoteModal = ({
     () => shouldDisableFinalReveal(voteSummary),
     [voteSummary]
   );
+  const isFinalRevealReVote = useMemo(() => {
+    const maxVoteCount = Math.max(...voteSummary.map(({ count }) => count), 0);
+
+    if (maxVoteCount <= 0) {
+      return false;
+    }
+
+    return voteSummary.filter(({ count }) => count === maxVoteCount).length === 2;
+  }, [voteSummary]);
   const currentFinalRevealText = finalRevealSteps[finalRevealStepIndex];
   const isLastFinalRevealStep =
     finalRevealStepIndex === finalRevealSteps.length - 1;
@@ -327,16 +336,27 @@ export const useSuspectVoteModal = ({
     playroomModule?.setState?.(getPlayroomVoteLockedStateKey(), true, true);
   };
 
+  const handleFinishFinalReveal = () => {
+    if (isFinalRevealReVote) {
+      playroomModule?.setState?.(getPlayroomVoteLockedStateKey(), false, true);
+    }
+
+    setIsFinalRevealMode(false);
+    setFinalRevealStepIndex(0);
+  };
+
   return {
     currentFinalRevealText,
     finalRevealStepIndex,
     handleCopyLink,
+    handleFinishFinalReveal,
     handleOpenRoom,
     handleReopenRoom,
     handleStartFinalReveal,
     isCopied,
     isFinalRevealDisabled,
     isFinalRevealMode,
+    isFinalRevealReVote,
     isLastFinalRevealStep,
     isOpeningRoom,
     isResultVisible,
