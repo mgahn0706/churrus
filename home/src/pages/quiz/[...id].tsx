@@ -250,11 +250,25 @@ export default function QuizPage() {
 
         <Box
           width="100%"
-          display={isImageLoading ? "none" : "flex"}
-          justifyContent="center"
           mt={2}
           maxWidth={1200}
+          position="relative"
+          sx={{
+            aspectRatio: imageAspectRatio,
+          }}
         >
+          {isImageLoading && (
+            <Skeleton
+              variant="rectangular"
+              animation="wave"
+              sx={{
+                bgcolor: "rgba(255, 255, 255, 0.7)",
+                borderRadius: "12px",
+                position: "absolute",
+                inset: 0,
+              }}
+            />
+          )}
           <Image
             src={resolvedQuizImageSrc}
             alt={quiz.title}
@@ -262,8 +276,11 @@ export default function QuizPage() {
             height={Math.round(1200 / imageAspectRatio)}
             style={{
               width: "100%",
-              height: "auto",
+              height: "100%",
+              objectFit: "contain",
               borderRadius: "12px",
+              opacity: isImageLoading ? 0 : 1,
+              transition: "opacity 0.2s ease",
             }}
             priority
             unoptimized
@@ -271,21 +288,6 @@ export default function QuizPage() {
             onError={() => setIsImageLoading(false)}
           />
         </Box>
-        {isImageLoading && (
-          <Skeleton
-            variant="rectangular"
-            animation="wave"
-            sx={{
-              bgcolor: "rgba(255, 255, 255, 0.7)",
-              aspectRatio: imageAspectRatio,
-              marginTop: "16px",
-              maxWidth: 1200,
-              borderRadius: "12px",
-              width: "100%",
-              height: "100%",
-            }}
-          />
-        )}
         {!isAnswerPage && (
           <Box
             component="form"
