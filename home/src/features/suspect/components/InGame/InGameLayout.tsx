@@ -9,6 +9,7 @@ import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useEffect, useState } from "react";
 
+import { scenarios } from "@/features/suspect/fixtures";
 import {
   AdditionalQuestionType,
   ClueType,
@@ -54,6 +55,8 @@ export default function InGameLayout({
   scenario,
   additionalQuestions,
 }: InGameLayoutProps) {
+  const episodeNumber =
+    scenarios.findIndex((candidate) => candidate.id === scenario.id) + 1;
   const [openedClueId, setOpenedClueId] = useState<number | null>(null);
   const [currentPlace, setCurrentPlace] = useState(scenario.places[0] ?? "");
   const [checkedClueList, setCheckedClueList] = useState<number[]>([]);
@@ -272,6 +275,8 @@ export default function InGameLayout({
         <SuspectVoteModal
           isOpen={openedModal === "vote"}
           suspects={scenario.suspects}
+          scenarioTitle={scenario.title}
+          episodeNumber={episodeNumber > 0 ? episodeNumber : 1}
           onClose={handleCloseModal}
         />
         <PrologueModal
