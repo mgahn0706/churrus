@@ -250,22 +250,21 @@ export default function QuizPage() {
 
         <Box
           width="100%"
-          sx={{
-            aspectRatio: imageAspectRatio,
-          }}
           display={isImageLoading ? "none" : "flex"}
           justifyContent="center"
           mt={2}
           maxWidth={1200}
-          position="relative"
         >
           <Image
             src={resolvedQuizImageSrc}
             alt={quiz.title}
+            width={1200}
+            height={Math.round(1200 / imageAspectRatio)}
             style={{
+              width: "100%",
+              height: "auto",
               borderRadius: "12px",
             }}
-            fill
             priority
             unoptimized
             onLoadingComplete={() => setIsImageLoading(false)}
