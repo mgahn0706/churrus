@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import {
   clearPlayroomRoomHash,
   getPlayroomVoteJoinUrl,
+  getPlayroomVoteLockedStateKey,
   getPlayroomVoteStateKey,
   getPlayroomVoteSuspectsStateKey,
   loadPlayroomKit,
@@ -181,6 +182,7 @@ export const useSuspectVoteModal = ({
     );
 
     setPlayroomModule(nextPlayroomModule);
+    nextPlayroomModule.setState?.(getPlayroomVoteLockedStateKey(), false, true);
     setRoomCode(nextRoomCode);
     persistRoomCode(nextRoomCode);
   };
@@ -217,6 +219,7 @@ export const useSuspectVoteModal = ({
         skipLobby: true,
         gameId: "suspect-realtime-vote",
         defaultStates: {
+          [getPlayroomVoteLockedStateKey()]: false,
           [getPlayroomVoteSuspectsStateKey()]: suspects.map((suspect) => ({
             name: suspect.name,
             image: suspect.image,
@@ -318,12 +321,19 @@ export const useSuspectVoteModal = ({
     window.setTimeout(() => setIsCopied(false), 1500);
   };
 
+  const handleStartFinalReveal = () => {
+    setIsFinalRevealMode(true);
+    setFinalRevealStepIndex(0);
+    playroomModule?.setState?.(getPlayroomVoteLockedStateKey(), true, true);
+  };
+
   return {
     currentFinalRevealText,
     finalRevealStepIndex,
     handleCopyLink,
     handleOpenRoom,
     handleReopenRoom,
+    handleStartFinalReveal,
     isCopied,
     isFinalRevealDisabled,
     isFinalRevealMode,

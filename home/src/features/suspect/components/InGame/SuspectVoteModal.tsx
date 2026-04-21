@@ -33,6 +33,7 @@ export default function SuspectVoteModal({
     handleCopyLink,
     handleOpenRoom,
     handleReopenRoom,
+    handleStartFinalReveal,
     isCopied,
     isFinalRevealDisabled,
     isFinalRevealMode,
@@ -475,10 +476,7 @@ export default function SuspectVoteModal({
                 <Button
                   variant="outlined"
                   size="medium"
-                  onClick={() => {
-                    setIsFinalRevealMode(true);
-                    setFinalRevealStepIndex(0);
-                  }}
+                  onClick={handleStartFinalReveal}
                   disabled={isFinalRevealDisabled}
                   sx={{
                     minWidth: 186,

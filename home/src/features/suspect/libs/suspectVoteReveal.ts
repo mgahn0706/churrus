@@ -48,15 +48,24 @@ export const buildFinalRevealSteps = ({
     .filter(({ count }) => count === topVoteCount && count > 0)
     .map(({ suspect }) => suspect.name);
   const secondDistinctVoteCount = distinctVoteCounts[1] ?? 0;
+  const secondTiedCandidates = sortedVoteSummary
+    .filter(({ count }) => count === secondDistinctVoteCount && count > 0)
+    .map(({ suspect }) => suspect.name);
+  const isRunnerUpTied =
+    topTiedCandidates.length === 1 && secondDistinctVoteCount > 0 && secondTiedCandidates.length > 1;
   const suspenseCutoffVoteCount =
     secondDistinctVoteCount > 0 ? secondDistinctVoteCount : topVoteCount;
-  const finalCandidates = sortedVoteSummary
-    .filter(({ count }) => count >= suspenseCutoffVoteCount && count > 0)
-    .map(({ suspect }) => suspect.name);
-  const excludedCandidates = sortedVoteSummary
-    .filter(({ count }) => count < suspenseCutoffVoteCount)
-    .map(({ suspect }) => `${suspect.name}.`)
-    .join(" ");
+  const finalCandidates = isRunnerUpTied
+    ? []
+    : sortedVoteSummary
+        .filter(({ count }) => count >= suspenseCutoffVoteCount && count > 0)
+        .map(({ suspect }) => suspect.name);
+  const excludedCandidates = isRunnerUpTied
+    ? ""
+    : sortedVoteSummary
+        .filter(({ count }) => count < suspenseCutoffVoteCount)
+        .map(({ suspect }) => `${suspect.name}.`)
+        .join(" ");
 
   const finalCandidateLine =
     finalCandidates.length > 0
@@ -74,8 +83,14 @@ export const buildFinalRevealSteps = ({
     sortedVoteSummary.find(({ count }) => count < suspenseCutoffVoteCount)?.count ??
     0;
   const winnerScoreLine = winnerCount > 0 ? `${winnerCount}:${runnerUpCount}` : "0:0";
-  const exclusionSteps =
-    excludedCandidates.length > 0
+  const exclusionSteps = isRunnerUpTied
+    ? [
+        "최종 범인 지목 투표 결과",
+        `${secondDistinctVoteCount}표를 받은 사람이 동률입니다.`,
+        `${secondTiedCandidates.join(", ")} 중 한 명을 바로 제외할 수 없습니다.`,
+        "최종 후보 선정을 위해 재투표를 실시합니다",
+      ]
+    : excludedCandidates.length > 0
       ? [
           "최종 범인 지목 투표 결과",
           `${eliminationVoteCount}표를 받은 사람은`,
@@ -83,8 +98,13 @@ export const buildFinalRevealSteps = ({
           "범인 후보 제외",
         ]
       : ["최종 범인 지목 투표 결과", "아직 제외된 후보가 없습니다"];
-  const finalCandidateSteps =
-    finalCandidates.length > 0
+  const finalCandidateSteps = isRunnerUpTied
+    ? [
+        "현재 1위 후보는 확정되었지만",
+        "2위 후보가 동률이기 때문에",
+        "최종 범인 후보 2명을 아직 확정할 수 없습니다",
+      ]
+    : finalCandidates.length > 0
       ? [
           "이렇게 해서",
           "최종 범인 후보로",
@@ -93,7 +113,14 @@ export const buildFinalRevealSteps = ({
         ]
       : ["이렇게 해서", "최종 범인 후보는 아직 정해지지 않았습니다"];
   const winnerRevealSteps =
-    isTopVoteTied
+    isRunnerUpTied
+      ? [
+          "본격 추리게임 크라임씬",
+          `<${scenarioTitle}> 최종 후보 선정 결과`,
+          `${secondTiedCandidates.join(", ")}가 ${secondDistinctVoteCount}표로 동률입니다.`,
+          "최종 후보 선정을 위해 재투표를 실시합니다!",
+        ]
+      : isTopVoteTied
       ? [
           "본격 추리게임 크라임씬",
           `<${scenarioTitle}> 최종 투표 결과`,
@@ -125,7 +152,7 @@ export const buildFinalRevealSteps = ({
     ...exclusionSteps,
     ...finalCandidateSteps,
     ...winnerRevealSteps,
-    ...(!isTopVoteTied && winnerCount > 0
+    ...(!isRunnerUpTied && !isTopVoteTied && winnerCount > 0
       ? [`최종 범인 후보로 지목된 ${josa(winnerName, "은/는")} 감옥으로 이동해주십시오.`]
       : []),
   ] as const;

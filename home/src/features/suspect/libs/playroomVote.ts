@@ -24,6 +24,8 @@ export const getPlayroomVoteStateKey = () => "suspect-vote-choice";
 
 export const getPlayroomVoteSuspectsStateKey = () => "suspect-vote-suspects";
 
+export const getPlayroomVoteLockedStateKey = () => "suspect-vote-locked";
+
 export const getPlayroomVoteJoinUrl = (origin: string, roomCode: string) => {
   return `${origin}/suspect/vote?room=${encodeURIComponent(roomCode)}`;
 };

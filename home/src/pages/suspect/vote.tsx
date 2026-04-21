@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import {
+  getPlayroomVoteLockedStateKey,
   getPlayroomVoteStateKey,
   getPlayroomVoteSuspectsStateKey,
   loadPlayroomKit,
@@ -24,6 +25,7 @@ export default function SuspectVotePage() {
   const [pageError, setPageError] = useState<string | null>(null);
   const [suspects, setSuspects] = useState<VoteSuspect[]>([]);
   const [selectedSuspectName, setSelectedSuspectName] = useState<string | null>(null);
+  const [isVoteLocked, setIsVoteLocked] = useState(false);
 
   const roomCode =
     typeof router.query.room === "string" ? router.query.room.toUpperCase() : "";
@@ -36,6 +38,7 @@ export default function SuspectVotePage() {
     setIsConnecting(true);
     setPageError(null);
     setSuspects([]);
+    setIsVoteLocked(false);
 
       try {
         const nextPlayroomModule = await loadPlayroomKit();
@@ -59,7 +62,14 @@ export default function SuspectVotePage() {
           throw new Error("SUSPECTS_UNAVAILABLE");
         }
 
+      const lockedState =
+        (await withPlayroomTimeout(
+          nextPlayroomModule.waitForState<boolean>(getPlayroomVoteLockedStateKey()),
+          4000
+        ).catch(() => false)) ?? false;
+
       setSuspects(suspectsState);
+      setIsVoteLocked(Boolean(lockedState));
       setSelectedSuspectName(
         (nextPlayroomModule.myPlayer().getState(
           getPlayroomVoteStateKey()
@@ -87,8 +97,27 @@ export default function SuspectVotePage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isReady, pageError, roomCode, router.isReady]);
 
-  const handleVote = (suspectName: string) => {
+  useEffect(() => {
     if (!playroomModule) {
+      return;
+    }
+
+    const syncLockedState = () => {
+      setIsVoteLocked(
+        Boolean(playroomModule.getState?.(getPlayroomVoteLockedStateKey()))
+      );
+    };
+
+    syncLockedState();
+    const intervalId = window.setInterval(syncLockedState, 500);
+
+    return () => {
+      window.clearInterval(intervalId);
+    };
+  }, [playroomModule]);
+
+  const handleVote = (suspectName: string) => {
+    if (!playroomModule || isVoteLocked) {
       return;
     }
 
@@ -116,7 +145,7 @@ export default function SuspectVotePage() {
             용의자 투표
           </Typography>
           <Typography sx={{ mt: 0.7, opacity: 0.68, fontSize: 14 }}>
-            한 명을 선택하세요
+            {isVoteLocked ? "최종 결과 공개 중" : "한 명을 선택하세요"}
           </Typography>
         </Box>
 
@@ -177,13 +206,38 @@ export default function SuspectVotePage() {
             </Typography>
           </Box>
         ) : (
-          <Box
-            sx={{
-              display: "grid",
-              gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
-              gap: 1.4,
-            }}
-          >
+          <Box sx={{ position: "relative" }}>
+            <Box
+              sx={{
+                mb: 1.6,
+                px: 1.4,
+                py: 1.1,
+                borderRadius: 3,
+                border: "1px solid rgba(255,255,255,0.1)",
+                backgroundColor: isVoteLocked
+                  ? "rgba(248, 113, 113, 0.12)"
+                  : "rgba(255,255,255,0.04)",
+                backdropFilter: "blur(16px)",
+              }}
+            >
+              <Typography fontSize={13} fontWeight={700}>
+                {isVoteLocked
+                  ? "호스트가 최종 투표 결과를 공개했습니다"
+                  : "원하는 용의자 한 명에게 투표하세요"}
+              </Typography>
+              <Typography sx={{ mt: 0.45, opacity: 0.7, fontSize: 12 }}>
+                {isVoteLocked
+                  ? "이제 투표 결과를 바꿀 수 없습니다."
+                  : "투표는 다시 눌러 변경할 수 있습니다."}
+              </Typography>
+            </Box>
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+                gap: 1.4,
+              }}
+            >
             {suspects.map((suspect) => {
               const selected = selectedSuspectName === suspect.name;
 
@@ -205,6 +259,9 @@ export default function SuspectVotePage() {
                       ? "0 18px 36px rgba(37, 99, 235, 0.18)"
                       : "none",
                     backdropFilter: "blur(18px)",
+                    cursor: isVoteLocked ? "not-allowed" : "pointer",
+                    opacity: isVoteLocked ? 0.56 : 1,
+                    pointerEvents: isVoteLocked ? "none" : "auto",
                   }}
                 >
                   <Avatar
@@ -231,6 +288,36 @@ export default function SuspectVotePage() {
                 </Box>
               );
             })}
+            </Box>
+            {isVoteLocked && (
+              <Box
+                sx={{
+                  position: "absolute",
+                  inset: 0,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderRadius: 4,
+                  background:
+                    "linear-gradient(180deg, rgba(3, 6, 14, 0.3) 0%, rgba(6, 10, 20, 0.42) 100%)",
+                  pointerEvents: "none",
+                }}
+              >
+                <Box
+                  sx={{
+                    px: 2.2,
+                    py: 1,
+                    borderRadius: 999,
+                    backgroundColor: "rgba(10, 14, 24, 0.92)",
+                    border: "1px solid rgba(255,255,255,0.14)",
+                  }}
+                >
+                  <Typography fontSize={13} fontWeight={700}>
+                    투표 수정이 비활성화되었습니다
+                  </Typography>
+                </Box>
+              </Box>
+            )}
           </Box>
         )}
       </Box>
