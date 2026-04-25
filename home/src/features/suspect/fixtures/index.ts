@@ -20,12 +20,14 @@ import { mountainClues } from "./mountain/clues";
 import { kpopSuspects, kpopVictim } from "./kpop/suspects";
 import { novelistSuspects, novelistVictim } from "./novelist/suspects";
 import { novelistClues } from "./novelist/clues";
+import { subwaySuspects, subwayVictim } from "./subway/suspects";
+import { subwayClues } from "./subway/clues";
 
 export const scenarios: ScenarioType[] = [
   {
     title: "스타트업 살인사건",
     creators: [],
-    numberOfSuspects: 3,
+    numberOfSuspects: 4,
     backgroundImage: "/image/suspect/scenario/startup/startup-main.png",
     id: "startup",
     isInDevelopment: false,
@@ -132,7 +134,7 @@ export const scenarios: ScenarioType[] = [
     suspects: mountainSuspects,
     victims: [mountainVictim],
     clues: mountainClues,
-    color: "#4caf50",
+    color: "#34c759",
   },
   {
     title: "추리소설가 살인사건",
@@ -181,5 +183,21 @@ export const scenarios: ScenarioType[] = [
     victims: [bluemoonVictim],
     clues: bluemoonClues,
     color: "#1e6df4",
+  },
+  {
+    id: "subway",
+    title: "서울대입구역 살인사건",
+    creators: [],
+    gameType: "CLUE",
+    numberOfSuspects: 4,
+    histories: [],
+    backgroundImage: "/image/suspect/scenario/subway/subway-main.png",
+    isInDevelopment: true,
+    description: "지하철 역사에서 돌연 발생한 살인사건",
+    places: ["ground", "platform"],
+    suspects: subwaySuspects,
+    victims: [subwayVictim],
+    clues: subwayClues,
+    color: "#00A84D",
   },
 ];
