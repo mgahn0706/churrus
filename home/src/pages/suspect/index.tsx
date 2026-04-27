@@ -421,13 +421,17 @@ export default function Suspect() {
                   left: { md: 90 },
                   maxWidth: 700,
                   p: { xs: 2.5, sm: 3, md: 0 },
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "flex-start",
                 }}
               >
                 <Typography
                   sx={{
                     fontSize: "clamp(28px, 4vw, 52px)",
                     fontWeight: 800,
-                    mb: { xs: 1.5, md: 3 },
+                    lineHeight: 1.06,
+                    mb: { xs: 0.9, md: 1.2 },
                   }}
                 >
                   {current.title}
@@ -436,8 +440,8 @@ export default function Suspect() {
                 <Box
                   sx={{
                     display: "flex",
-                    gap: 1.5,
-                    mb: { xs: 2, md: 3 },
+                    gap: 1,
+                    mb: { xs: 1.1, md: 1.5 },
                     flexWrap: "wrap",
                   }}
                 >
@@ -469,8 +473,9 @@ export default function Suspect() {
                   sx={{
                     fontSize: "clamp(14px, 1.1vw, 18px)",
                     opacity: 0.85,
-                    lineHeight: 1.8,
-                    mb: { xs: 2.5, md: 4 },
+                    lineHeight: 1.72,
+                    maxWidth: 560,
+                    mb: { xs: 1.2, md: 1.75 },
                   }}
                 >
                   {current.description}

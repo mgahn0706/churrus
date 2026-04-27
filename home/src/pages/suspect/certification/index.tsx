@@ -35,11 +35,13 @@ export default function Certification() {
           minHeight: "100dvh",
           background:
             "radial-gradient(circle at top, rgba(81,115,255,0.16), transparent 30%), #04070d",
+          overflowX: "clip",
+          boxSizing: "border-box",
         }}
         width="100%"
       >
         <FadeInSection>
-          <Box width="100%" pt="110px" px={2}>
+          <Box width="100%" pt="110px" px={2} sx={{ boxSizing: "border-box" }}>
             <Typography
               color="white"
               fontWeight="bold"
@@ -59,7 +61,7 @@ export default function Certification() {
           </Box>
         </FadeInSection>
         <FadeInSection>
-          <Box width="100%" px={2} mt={2}>
+          <Box width="100%" px={2} mt={2} sx={{ boxSizing: "border-box" }}>
             <Typography color="lightgray" fontSize="14px" textAlign="center">
               완료한 시나리오가 없다면 아직 카드가 표시되지 않습니다.
             </Typography>
@@ -71,6 +73,7 @@ export default function Certification() {
           py={{ xs: 4, md: 6 }}
           display="flex"
           justifyContent="center"
+          sx={{ boxSizing: "border-box" }}
         >
           <Box
             width="100%"
