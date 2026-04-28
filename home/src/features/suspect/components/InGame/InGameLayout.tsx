@@ -49,23 +49,6 @@ const getInteractionStartStorageKey = (scenarioId: string) =>
 const getInteractionLogStorageKey = (scenarioId: string) =>
   `${scenarioId}-interaction-log`;
 
-const getInitialPlace = (scenario: ClueScenarioType) =>
-  scenario.places.find((place) =>
-    scenario.clues.some(
-      (clue) =>
-        typeof clue.place === "string" &&
-        clue.place === place &&
-        clue.type !== "additional"
-    )
-  ) ??
-  scenario.places.find((place) =>
-    scenario.clues.some(
-      (clue) => typeof clue.place === "string" && clue.place === place
-    )
-  ) ??
-  scenario.places[0] ??
-  "";
-
 export default function InGameLayout({
   prologue,
   movePlaceButton,
@@ -75,7 +58,7 @@ export default function InGameLayout({
   const episodeNumber =
     scenarios.findIndex((candidate) => candidate.id === scenario.id) + 1;
   const [openedClueId, setOpenedClueId] = useState<number | null>(null);
-  const [currentPlace, setCurrentPlace] = useState(() => getInitialPlace(scenario));
+  const [currentPlace, setCurrentPlace] = useState(scenario.places[0] ?? "");
   const [checkedClueList, setCheckedClueList] = useState<number[]>([]);
   const [openedModal, setOpenedModal] = useState<
     | "prologue"
@@ -96,8 +79,8 @@ export default function InGameLayout({
   };
 
   useEffect(() => {
-    setCurrentPlace(getInitialPlace(scenario));
-  }, [scenario]);
+    setCurrentPlace(scenario.places[0] ?? "");
+  }, [scenario.id, scenario.places]);
 
   useEffect(() => {
     const startStorageKey = getInteractionStartStorageKey(scenario.id);
