@@ -194,7 +194,7 @@ export const scenarios: ScenarioType[] = [
     backgroundImage: "/image/suspect/scenario/subway/subway-main.png",
     isInDevelopment: true,
     description: "2020년 4월, 서울대입구역에서 일어난 독살 사건",
-    places: ["ground", "platform"],
+    places: ["1F", "B1", "B2"],
     suspects: subwaySuspects,
     victims: [subwayVictim],
     clues: subwayClues,
