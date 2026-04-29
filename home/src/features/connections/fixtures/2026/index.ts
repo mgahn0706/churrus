@@ -379,4 +379,67 @@ export const CONNECTIONS2026: ConnectionsType[] = [
       },
     ],
   },
+  {
+    week: 19,
+    quiz: [
+      {
+        words: ["수술", "줄기", "뿌리", "가지"],
+        description: "식물의 구성 요소",
+      },
+      {
+        words: ["수단", "가나", "부탄", "오만"],
+        description: "나라 이름",
+      },
+      {
+        words: ["부처", "탑", "직구", "나물"],
+        description: "돌 __",
+      },
+      {
+        words: ["도넛", "빨대", "굴렁쇠", "베이글"],
+        description: "구멍이 하나인 것",
+      },
+    ],
+  },
+  {
+    week: 20,
+    quiz: [
+      {
+        words: ["지구", "설득", "자기", "추진"],
+        description: "__ 력",
+      },
+      {
+        words: ["팽이", "주황", "광대", "독"],
+        description: "__ 버섯",
+      },
+      {
+        words: ["머리", "스파이", "희망", "씨"],
+        description: "심을 수 있는 것",
+      },
+      {
+        words: ["의자", "신문", "유리", "장수"],
+        description: "삼국시대의 왕호",
+      },
+    ],
+  },
+  {
+    week: 21,
+    quiz: [
+      {
+        words: ["선", "미팅", "소개", "중매"],
+        description: "연애 상대를 만나는 방법",
+      },
+      {
+        words: ["양", "수", "규모", "수준"],
+        description: "분량을 나타내는 말",
+      },
+      {
+        words: ["도", "구", "군", "면"],
+        description: "대한민국의 행정구역",
+      },
+      {
+        words: ["화", "성", "분", "노"],
+        description: "분노를 이르는 말",
+      },
+    ],
+  },
 ];
