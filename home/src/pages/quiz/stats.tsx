@@ -459,18 +459,6 @@ export default function QuizStatsPage() {
   const isYearFiltered = selectedYear !== ALL_FILTER_VALUE;
   const showCreatorRanking = !isCreatorFiltered;
   const showYearTrend = !isYearFiltered;
-  const leftColumnSectionCount = showCreatorRanking ? 1 : 0;
-  const rightColumnSectionCount = (showYearTrend ? 1 : 0) + 2;
-  const hasLeftColumnContent = leftColumnSectionCount > 0;
-  const hasRightColumnContent = rightColumnSectionCount > 0;
-  const leftColumnMd = hasLeftColumnContent
-    ? leftColumnSectionCount === rightColumnSectionCount
-      ? 6
-      : leftColumnSectionCount > rightColumnSectionCount
-      ? 7
-      : 5
-    : 12;
-  const rightColumnMd = hasLeftColumnContent ? 12 - leftColumnMd : 12;
   const busiestMeetingQuizCount = busiestMeeting
     ? filteredQuizzes.filter((quiz) => quiz.meetingId === busiestMeeting.id)
         .length
@@ -815,9 +803,19 @@ export default function QuizStatsPage() {
               </Typography>
             </Box>
           ) : (
-            <Grid container spacing={3}>
+            <Box
+              sx={{
+                display: "grid",
+                gap: 3,
+                gridTemplateColumns: {
+                  xs: "minmax(0, 1fr)",
+                  md: "repeat(12, minmax(0, 1fr))",
+                },
+                gridAutoFlow: "dense",
+              }}
+            >
               {hasActiveFilter && highlightInsights.length > 0 && (
-                <Grid item xs={12}>
+                <Box sx={{ gridColumn: { xs: "1 / -1", md: "span 12" } }}>
                   <SectionCard
                     title="하이라이트"
                     description="현재 필터를 기준으로 비교가 되는 해석형 인사이트를 보여줍니다."
@@ -843,308 +841,316 @@ export default function QuizStatsPage() {
                       ))}
                     </Stack>
                   </SectionCard>
-                </Grid>
+                </Box>
               )}
 
-              {hasLeftColumnContent && (
-                <Grid item xs={12} md={leftColumnMd}>
-                  <Stack spacing={3}>
-                    {showCreatorRanking && (
-                      <SectionCard
-                        title="출제자 랭킹"
-                        description="현재 필터에 포함된 문제 기준으로 누가 가장 많이 출제했는지 보여줍니다."
+              {showCreatorRanking && (
+                <Box sx={{ gridColumn: { xs: "1 / -1", md: "span 7" } }}>
+                  <SectionCard
+                    title="출제자 랭킹"
+                    description="현재 필터에 포함된 문제 기준으로 누가 가장 많이 출제했는지 보여줍니다."
+                  >
+                    <Box position="relative">
+                      <Stack
+                        spacing={2}
+                        sx={{
+                          maxHeight: 420,
+                          overflowY: "auto",
+                          pr: 0.5,
+                          pb: filteredCreatorStats.length > 5 ? 6 : 0,
+                        }}
                       >
-                        <Box position="relative">
-                          <Stack
-                            spacing={2}
-                            sx={{
-                              maxHeight: 420,
-                              overflowY: "auto",
-                              pr: 0.5,
-                              pb: filteredCreatorStats.length > 5 ? 6 : 0,
-                            }}
-                          >
-                            {filteredCreatorStats.map((stat, index) => {
-                              const meeting = getMeetingById(
-                                stat.latestMeetingId
-                              );
-                              const progressValue =
-                                (stat.quizCount / maxCreatorQuizCount) * 100;
+                        {filteredCreatorStats.map((stat, index) => {
+                          const meeting = getMeetingById(stat.latestMeetingId);
+                          const progressValue =
+                            (stat.quizCount / maxCreatorQuizCount) * 100;
 
-                              return (
-                                <Box key={stat.creator}>
-                                  <Box
-                                    display="flex"
-                                    justifyContent="space-between"
-                                    alignItems="center"
-                                    gap={2}
-                                    mb={1}
-                                  >
-                                    <Box minWidth={0}>
-                                      <Typography
-                                        color="#111827"
-                                        fontSize={16}
-                                        fontWeight={700}
-                                      >
-                                        {index + 1}. {stat.creator}
-                                      </Typography>
-                                      <Typography color="#667085" fontSize={13}>
-                                        {stat.meetingCount}개 모임 참여
-                                        {meeting
-                                          ? ` · 최근 ${
-                                              meeting.subtitle ?? meeting.title
-                                            }`
-                                          : ""}
-                                      </Typography>
-                                    </Box>
-                                    <Typography
-                                      color="#235DA8"
-                                      fontSize={15}
-                                      fontWeight={700}
-                                      whiteSpace="nowrap"
-                                    >
-                                      {stat.quizCount}문제
-                                    </Typography>
-                                  </Box>
-                                  <LinearProgress
-                                    variant="determinate"
-                                    value={progressValue}
-                                    sx={{
-                                      height: 10,
-                                      borderRadius: 999,
-                                      bgcolor: "#EDF2F7",
-                                      "& .MuiLinearProgress-bar": {
-                                        borderRadius: 999,
-                                        bgcolor:
-                                          index === 0 ? "#318AE1" : "#7BB0EA",
-                                      },
-                                    }}
-                                  />
-                                </Box>
-                              );
-                            })}
-                          </Stack>
-
-                          {filteredCreatorStats.length > 5 && (
-                            <Box
-                              position="absolute"
-                              left={0}
-                              right={0}
-                              bottom={0}
-                              height={88}
-                              display="flex"
-                              alignItems="flex-end"
-                              justifyContent="center"
-                              pb={1}
-                              sx={{
-                                pointerEvents: "none",
-                                background:
-                                  "linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.92) 58%, rgba(255,255,255,1) 100%)",
-                              }}
-                            />
-                          )}
-                        </Box>
-                      </SectionCard>
-                    )}
-                  </Stack>
-                </Grid>
-              )}
-
-              {hasRightColumnContent && (
-                <Grid item xs={12} md={rightColumnMd}>
-                  <Stack spacing={3}>
-                    {showYearTrend && (
-                    <SectionCard
-                      title="연도별 추이"
-                      description="연도 필터가 없을 때 전체 연도 분포를 비교할 수 있습니다."
-                    >
-                      <Box position="relative">
-                        <Stack
-                          divider={<Divider flexItem />}
-                          spacing={1}
-                          sx={{
-                            maxHeight: 420,
-                            overflowY: "auto",
-                            pr: 0.5,
-                            pb: filteredYearStats.length > 5 ? 6 : 0,
-                          }}
-                        >
-                          {filteredYearStats.map((stat) => (
-                            <Box
-                              key={stat.year}
-                              display="flex"
-                              alignItems="center"
-                              justifyContent="space-between"
-                              py={1}
-                              gap={2}
-                            >
-                              <Box>
-                                <Typography
-                                  color="#111827"
-                                  fontSize={17}
-                                  fontWeight={700}
-                                >
-                                  {stat.year}
-                                </Typography>
-                                <Typography color="#667085" fontSize={13}>
-                                  {stat.meetingCount}개 모임 · 출제자{" "}
-                                  {stat.creatorCount}명
-                                </Typography>
-                              </Box>
-                              <Chip
-                                icon={<QuizRounded />}
-                                label={`${stat.quizCount}문제`}
-                                sx={{
-                                  bgcolor: "#EEF4FF",
-                                  color: "#235DA8",
-                                  fontWeight: 700,
-                                }}
-                              />
-                            </Box>
-                          ))}
-                        </Stack>
-
-                        {filteredYearStats.length > 5 && (
-                          <Box
-                            position="absolute"
-                            left={0}
-                            right={0}
-                            bottom={0}
-                            height={88}
-                            display="flex"
-                            alignItems="flex-end"
-                            justifyContent="center"
-                            pb={1}
-                            sx={{
-                              pointerEvents: "none",
-                              background:
-                                "linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.92) 58%, rgba(255,255,255,1) 100%)",
-                            }}
-                          />
-                        )}
-                      </Box>
-                    </SectionCard>
-                    )}
-
-                    <SectionCard
-                      title="문제 유형 분포"
-                      description="현재 조건에서 등장한 모든 유형을 확인할 수 있습니다."
-                    >
-                      <Box position="relative">
-                        <Stack
-                          spacing={1.5}
-                          sx={{
-                            maxHeight: 420,
-                            overflowY: "auto",
-                            pr: 0.5,
-                            pb: filteredTagStats.length > 5 ? 6 : 0,
-                          }}
-                        >
-                          {filteredTagStats.map((stat) => (
-                            <Box key={stat.tag}>
+                          return (
+                            <Box key={stat.creator}>
                               <Box
                                 display="flex"
                                 justifyContent="space-between"
                                 alignItems="center"
-                                mb={0.75}
+                                gap={2}
+                                mb={1}
                               >
-                                <Chip
-                                  icon={<LocalOfferRounded />}
-                                  label={QUIZ_TAG_KOREAN_NAME[stat.tag]}
-                                  sx={{
-                                    bgcolor: "#F3F4F6",
-                                    color: "#344054",
-                                    fontWeight: 700,
-                                  }}
-                                />
+                                <Box minWidth={0}>
+                                  <Typography
+                                    color="#111827"
+                                    fontSize={16}
+                                    fontWeight={700}
+                                  >
+                                    {index + 1}. {stat.creator}
+                                  </Typography>
+                                  <Typography color="#667085" fontSize={13}>
+                                    {stat.meetingCount}개 모임 참여
+                                    {meeting
+                                      ? ` · 최근 ${
+                                          meeting.subtitle ?? meeting.title
+                                        }`
+                                      : ""}
+                                  </Typography>
+                                </Box>
                                 <Typography
-                                  color="#344054"
-                                  fontSize={14}
+                                  color="#235DA8"
+                                  fontSize={15}
                                   fontWeight={700}
+                                  whiteSpace="nowrap"
                                 >
-                                  {stat.quizCount}
+                                  {stat.quizCount}문제
                                 </Typography>
                               </Box>
                               <LinearProgress
                                 variant="determinate"
-                                value={(stat.quizCount / maxTagQuizCount) * 100}
+                                value={progressValue}
                                 sx={{
-                                  height: 8,
+                                  height: 10,
                                   borderRadius: 999,
-                                  bgcolor: "#F0F2F5",
+                                  bgcolor: "#EDF2F7",
                                   "& .MuiLinearProgress-bar": {
                                     borderRadius: 999,
-                                    bgcolor: "#F59E0B",
+                                    bgcolor:
+                                      index === 0 ? "#318AE1" : "#7BB0EA",
                                   },
                                 }}
                               />
                             </Box>
-                          ))}
-                        </Stack>
+                          );
+                        })}
+                      </Stack>
 
-                        {filteredTagStats.length > 5 && (
+                      {filteredCreatorStats.length > 5 && (
+                        <Box
+                          position="absolute"
+                          left={0}
+                          right={0}
+                          bottom={0}
+                          height={88}
+                          display="flex"
+                          alignItems="flex-end"
+                          justifyContent="center"
+                          pb={1}
+                          sx={{
+                            pointerEvents: "none",
+                            background:
+                              "linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.92) 58%, rgba(255,255,255,1) 100%)",
+                          }}
+                        />
+                      )}
+                    </Box>
+                  </SectionCard>
+                </Box>
+              )}
+
+              {showYearTrend && (
+                <Box sx={{ gridColumn: { xs: "1 / -1", md: "span 5" } }}>
+                  <SectionCard
+                    title="연도별 추이"
+                    description="연도 필터가 없을 때 전체 연도 분포를 비교할 수 있습니다."
+                  >
+                    <Box position="relative">
+                      <Stack
+                        divider={<Divider flexItem />}
+                        spacing={1}
+                        sx={{
+                          maxHeight: 420,
+                          overflowY: "auto",
+                          pr: 0.5,
+                          pb: filteredYearStats.length > 5 ? 6 : 0,
+                        }}
+                      >
+                        {filteredYearStats.map((stat) => (
                           <Box
-                            position="absolute"
-                            left={0}
-                            right={0}
-                            bottom={0}
-                            height={88}
+                            key={stat.year}
                             display="flex"
-                            alignItems="flex-end"
-                            justifyContent="center"
-                            pb={1}
+                            alignItems="center"
+                            justifyContent="space-between"
+                            py={1}
+                            gap={2}
+                          >
+                            <Box>
+                              <Typography
+                                color="#111827"
+                                fontSize={17}
+                                fontWeight={700}
+                              >
+                                {stat.year}
+                              </Typography>
+                              <Typography color="#667085" fontSize={13}>
+                                {stat.meetingCount}개 모임 · 출제자{" "}
+                                {stat.creatorCount}명
+                              </Typography>
+                            </Box>
+                            <Chip
+                              icon={<QuizRounded />}
+                              label={`${stat.quizCount}문제`}
+                              sx={{
+                                bgcolor: "#EEF4FF",
+                                color: "#235DA8",
+                                fontWeight: 700,
+                              }}
+                            />
+                          </Box>
+                        ))}
+                      </Stack>
+
+                      {filteredYearStats.length > 5 && (
+                        <Box
+                          position="absolute"
+                          left={0}
+                          right={0}
+                          bottom={0}
+                          height={88}
+                          display="flex"
+                          alignItems="flex-end"
+                          justifyContent="center"
+                          pb={1}
+                          sx={{
+                            pointerEvents: "none",
+                            background:
+                              "linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.92) 58%, rgba(255,255,255,1) 100%)",
+                          }}
+                        />
+                      )}
+                    </Box>
+                  </SectionCard>
+                </Box>
+              )}
+
+              <Box
+                sx={{
+                  gridColumn: {
+                    xs: "1 / -1",
+                    md: showYearTrend ? "span 7" : "span 8",
+                  },
+                }}
+              >
+                <SectionCard
+                  title="문제 유형 분포"
+                  description="현재 조건에서 등장한 모든 유형을 확인할 수 있습니다."
+                >
+                  <Box position="relative">
+                    <Stack
+                      spacing={1.5}
+                      sx={{
+                        maxHeight: 420,
+                        overflowY: "auto",
+                        pr: 0.5,
+                        pb: filteredTagStats.length > 5 ? 6 : 0,
+                      }}
+                    >
+                      {filteredTagStats.map((stat) => (
+                        <Box key={stat.tag}>
+                          <Box
+                            display="flex"
+                            justifyContent="space-between"
+                            alignItems="center"
+                            mb={0.75}
+                          >
+                            <Chip
+                              icon={<LocalOfferRounded />}
+                              label={QUIZ_TAG_KOREAN_NAME[stat.tag]}
+                              sx={{
+                                bgcolor: "#F3F4F6",
+                                color: "#344054",
+                                fontWeight: 700,
+                              }}
+                            />
+                            <Typography
+                              color="#344054"
+                              fontSize={14}
+                              fontWeight={700}
+                            >
+                              {stat.quizCount}
+                            </Typography>
+                          </Box>
+                          <LinearProgress
+                            variant="determinate"
+                            value={(stat.quizCount / maxTagQuizCount) * 100}
                             sx={{
-                              pointerEvents: "none",
-                              background:
-                                "linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.92) 58%, rgba(255,255,255,1) 100%)",
+                              height: 8,
+                              borderRadius: 999,
+                              bgcolor: "#F0F2F5",
+                              "& .MuiLinearProgress-bar": {
+                                borderRadius: 999,
+                                bgcolor: "#F59E0B",
+                              },
                             }}
                           />
-                        )}
-                      </Box>
-                    </SectionCard>
+                        </Box>
+                      ))}
+                    </Stack>
 
-                    <SectionCard
-                      title="기준 정보"
-                      description="전체 데이터셋과 현재 필터 범위를 함께 확인합니다."
-                    >
-                      <Stack spacing={1.5}>
-                        <Chip
-                          label={`전체 데이터 ${ALL_QUIZZES.length}문제 · ${QUIZ_CREATOR_STATS.length}명`}
-                          sx={{
-                            justifyContent: "flex-start",
-                            bgcolor: "#F3F4F6",
-                            color: "#344054",
-                            fontWeight: 700,
-                          }}
-                        />
-                        <Chip
-                          label={`현재 필터 ${filteredQuizzes.length}문제 · ${creatorCount}명`}
-                          sx={{
-                            justifyContent: "flex-start",
-                            bgcolor: "#EEF4FF",
-                            color: "#235DA8",
-                            fontWeight: 700,
-                          }}
-                        />
-                        <Chip
-                          label={
-                            isYearFiltered
-                              ? `${selectedYear}년 데이터만 표시 중`
-                              : "연도 제한 없음"
-                          }
-                          sx={{
-                            justifyContent: "flex-start",
-                            bgcolor: "#FFF4E8",
-                            color: "#B54708",
-                            fontWeight: 700,
-                          }}
-                        />
-                      </Stack>
-                    </SectionCard>
+                    {filteredTagStats.length > 5 && (
+                      <Box
+                        position="absolute"
+                        left={0}
+                        right={0}
+                        bottom={0}
+                        height={88}
+                        display="flex"
+                        alignItems="flex-end"
+                        justifyContent="center"
+                        pb={1}
+                        sx={{
+                          pointerEvents: "none",
+                          background:
+                            "linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.92) 58%, rgba(255,255,255,1) 100%)",
+                        }}
+                      />
+                    )}
+                  </Box>
+                </SectionCard>
+              </Box>
+
+              <Box
+                sx={{
+                  gridColumn: {
+                    xs: "1 / -1",
+                    md: showCreatorRanking ? "span 5" : "span 4",
+                  },
+                }}
+              >
+                <SectionCard
+                  title="기준 정보"
+                  description="전체 데이터셋과 현재 필터 범위를 함께 확인합니다."
+                >
+                  <Stack spacing={1.5}>
+                    <Chip
+                      label={`전체 데이터 ${ALL_QUIZZES.length}문제 · ${QUIZ_CREATOR_STATS.length}명`}
+                      sx={{
+                        justifyContent: "flex-start",
+                        bgcolor: "#F3F4F6",
+                        color: "#344054",
+                        fontWeight: 700,
+                      }}
+                    />
+                    <Chip
+                      label={`현재 필터 ${filteredQuizzes.length}문제 · ${creatorCount}명`}
+                      sx={{
+                        justifyContent: "flex-start",
+                        bgcolor: "#EEF4FF",
+                        color: "#235DA8",
+                        fontWeight: 700,
+                      }}
+                    />
+                    <Chip
+                      label={
+                        isYearFiltered
+                          ? `${selectedYear}년 데이터만 표시 중`
+                          : "연도 제한 없음"
+                      }
+                      sx={{
+                        justifyContent: "flex-start",
+                        bgcolor: "#FFF4E8",
+                        color: "#B54708",
+                        fontWeight: 700,
+                      }}
+                    />
                   </Stack>
-                </Grid>
-              )}
-            </Grid>
+                </SectionCard>
+              </Box>
+            </Box>
           )}
         </Box>
       </Box>
