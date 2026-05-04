@@ -46,22 +46,14 @@ const bluemoonQuestions: {
   },
   {
     id: 4,
-    question: "시신의 입 주변에 남아 있던 특징은 무엇인가요?",
+    question:
+      "이번 사건에 연루된 '요괴', 즉 사람이 아닌 존재는 누구인가요? 또, 그들의 정체는 무엇인가요?",
     variant: "input",
   },
   {
     id: 5,
-    question: "깨진 술병에서는 어떤 냄새가 확인되었나요?",
-    variant: "input",
-  },
-  {
-    id: 6,
-    question: "세금 장부에는 어떤 이상한 정황이 있었나요?",
-    variant: "input",
-  },
-  {
-    id: 7,
-    question: "밀서는 무엇을 암시하나요?",
+    question:
+      "용의자들 사이의 '비밀스러운 관계'를 알아냈나요? 누구와 누구가 어떤 관계인가요?",
     variant: "input",
   },
 ];
@@ -195,12 +187,7 @@ export default function BluemoonSubmit() {
                     accusedSuspect: answers[0],
                     howDunnit: answers[1],
                     whyDunnit: answers[2],
-                    additionalQuestionAnswers: [
-                      answers[3],
-                      answers[4],
-                      answers[5],
-                      answers[6],
-                    ],
+                    additionalQuestionAnswers: [answers[3], answers[4]],
                     memo: "",
                   };
                   localStorage.setItem("bluemoon", JSON.stringify(note));

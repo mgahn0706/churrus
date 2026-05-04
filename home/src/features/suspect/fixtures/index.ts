@@ -179,7 +179,7 @@ export const scenarios: ScenarioType[] = [
     backgroundImage: "/image/suspect/scenario/bluemoon/bluemoon-main.png",
     isInDevelopment: true,
     description: "푸른 달이 뜨는 밤, 한 조선시대 마을에서 벌어진 살인사건",
-    places: ["village", "market"],
+    places: ["village"],
     suspects: bluemoonSuspects,
     victims: [bluemoonVictim],
     prologue: bluemoonPrologue,

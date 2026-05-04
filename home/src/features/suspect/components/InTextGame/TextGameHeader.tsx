@@ -93,7 +93,7 @@ export default function TextGameHeader({ scenarioId }: TextGameHeaderProps) {
             <ListItem>범인은 누구인가요?</ListItem>
             <ListItem>살해 방법은 무엇인가요?</ListItem>
             <ListItem>살해 동기는 무엇인가요?</ListItem>
-            <ListItem>...외 다른 인물들의 숨은 이야기에 관한 질문 4개</ListItem>
+            <ListItem>...외 다른 인물들의 숨은 이야기에 관한 추가 질문들</ListItem>
           </List>
           <DialogActions>
             <Button
