@@ -5,6 +5,7 @@ import { jahayeonSuspects, jahayeonVictim } from "./jahayeon/suspects";
 import { dureSuspects, dureVictim } from "./dure/suspects";
 import { durePrologue } from "./dure/prologue";
 import { schoolPrologue } from "./school/prologue";
+import { bluemoonPrologue } from "./bluemoon/prologue";
 import { startUpClues } from "./startup/clues";
 import { jahayeonClues } from "./jahayeon/clues";
 import { schoolClues } from "./school/clues";
@@ -172,7 +173,7 @@ export const scenarios: ScenarioType[] = [
     id: "bluemoon",
     title: "푸른 달 살인사건",
     creators: [],
-    gameType: "CLUE",
+    gameType: "TEXT",
     numberOfSuspects: 6,
     histories: ["2026년 겨울 대이동"],
     backgroundImage: "/image/suspect/scenario/bluemoon/bluemoon-main.png",
@@ -181,6 +182,7 @@ export const scenarios: ScenarioType[] = [
     places: ["village", "market"],
     suspects: bluemoonSuspects,
     victims: [bluemoonVictim],
+    prologue: bluemoonPrologue,
     clues: bluemoonClues,
     color: "#1e6df4",
   },
