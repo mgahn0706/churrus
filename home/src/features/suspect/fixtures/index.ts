@@ -197,7 +197,7 @@ export const scenarios: ScenarioType[] = [
     histories: [],
     backgroundImage: "/image/suspect/scenario/subway/subway-main.png",
     isInDevelopment: true,
-    description: "2020년 4월, 서울대입구역에서 일어난 독살 사건",
+    description: "2020년 4월, 서울대입구역에서 일어난 사망 사건",
     places: ["1F", "B1", "B2"],
     suspects: subwaySuspects,
     victims: [subwayVictim],
@@ -218,6 +218,6 @@ export const scenarios: ScenarioType[] = [
     suspects: clubroomSuspects,
     victims: [clubroomVictim],
     clues: clubroomClues,
-    color: "#6d4aff",
+    color: "#f59e0b",
   },
 ];
