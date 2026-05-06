@@ -1,18 +1,11 @@
 import InGameLayout from "@/features/suspect/components/InGame/InGameLayout";
+import { createScenarioTheme } from "@/features/suspect/components/createScenarioTheme";
 import { scenarios } from "@/features/suspect/fixtures";
 import { novelistAdditionalQuestions } from "@/features/suspect/fixtures/novelist/clues";
 import { novelistMoveButton } from "@/features/suspect/fixtures/novelist/movePlace";
 import { NovelistPrologue } from "@/features/suspect/fixtures/novelist/prologue";
 import { ClueScenarioType } from "@/features/suspect/types";
-import { createTheme, ThemeProvider } from "@mui/material";
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#ac7f5e",
-    },
-  },
-});
+import { ThemeProvider } from "@mui/material";
 
 export default function Novelist() {
   const novelistScenario = scenarios.find(
@@ -25,7 +18,7 @@ export default function Novelist() {
   }
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={createScenarioTheme(novelistScenario.color)}>
       <InGameLayout
         movePlaceButton={novelistMoveButton}
         prologue={<NovelistPrologue />}

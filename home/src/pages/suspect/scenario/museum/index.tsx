@@ -1,19 +1,11 @@
 import InGameLayout from "@/features/suspect/components/InGame/InGameLayout";
+import { createScenarioTheme } from "@/features/suspect/components/createScenarioTheme";
 import { scenarios } from "@/features/suspect/fixtures";
 import { museumAdditionalQuestions } from "@/features/suspect/fixtures/museum/clues";
 import { museumMoveButton } from "@/features/suspect/fixtures/museum/movePlace";
 import { MuseumPrologue } from "@/features/suspect/fixtures/museum/prologue";
 import { ClueScenarioType } from "@/features/suspect/types";
-import { createTheme, ThemeProvider } from "@mui/material";
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#d97706",
-      contrastText: "#fafafa",
-    },
-  },
-});
+import { ThemeProvider } from "@mui/material";
 
 export default function Museum() {
   const museumScenario = scenarios.find(
@@ -25,7 +17,7 @@ export default function Museum() {
     throw new Error("Scenario not found");
   }
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={createScenarioTheme(museumScenario.color)}>
       <InGameLayout
         movePlaceButton={museumMoveButton}
         prologue={<MuseumPrologue />}

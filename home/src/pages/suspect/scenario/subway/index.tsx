@@ -1,19 +1,11 @@
 import InGameLayout from "@/features/suspect/components/InGame/InGameLayout";
+import { createScenarioTheme } from "@/features/suspect/components/createScenarioTheme";
 import { scenarios } from "@/features/suspect/fixtures";
 import { subwayAdditionalQuestions } from "@/features/suspect/fixtures/subway/clues";
 import { subwayMoveButton } from "@/features/suspect/fixtures/subway/movePlace";
 import { SubwayPrologue } from "@/features/suspect/fixtures/subway/prologue";
 import { ClueScenarioType } from "@/features/suspect/types";
-import { createTheme, ThemeProvider } from "@mui/material";
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#00A84D",
-      contrastText: "#fafafa",
-    },
-  },
-});
+import { ThemeProvider } from "@mui/material";
 
 export default function Subway() {
   const subwayScenario = scenarios.find(
@@ -26,7 +18,7 @@ export default function Subway() {
   }
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={createScenarioTheme(subwayScenario.color)}>
       <InGameLayout
         movePlaceButton={subwayMoveButton}
         prologue={<SubwayPrologue />}

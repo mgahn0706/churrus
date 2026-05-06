@@ -1,19 +1,11 @@
 import InGameLayout from "@/features/suspect/components/InGame/InGameLayout";
+import { createScenarioTheme } from "@/features/suspect/components/createScenarioTheme";
 import { scenarios } from "@/features/suspect/fixtures";
 import { startupAdditionalQuestions } from "@/features/suspect/fixtures/startup/clues";
 import { startUpMoveButton } from "@/features/suspect/fixtures/startup/movePlace";
 import { StartUpPrologue } from "@/features/suspect/fixtures/startup/prologue";
 import { ClueScenarioType } from "@/features/suspect/types";
-import { createTheme, ThemeProvider } from "@mui/material";
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#3B4CCA",
-      contrastText: "#fafafa",
-    },
-  },
-});
+import { ThemeProvider } from "@mui/material";
 
 export default function Startup() {
   const startUpScenario = scenarios.find(
@@ -24,8 +16,9 @@ export default function Startup() {
   if (!startUpScenario) {
     throw new Error("Scenario not found");
   }
+
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={createScenarioTheme(startUpScenario.color)}>
       <InGameLayout
         movePlaceButton={startUpMoveButton}
         prologue={<StartUpPrologue />}

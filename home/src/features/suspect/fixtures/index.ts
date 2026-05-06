@@ -213,7 +213,7 @@ export const scenarios: ScenarioType[] = [
     histories: [],
     backgroundImage: "/image/suspect/scenario/clubroom/clubroom-main.png",
     isInDevelopment: true,
-    description: "동아리방에서 발생한 살인사건",
+    description: "동아리방에서 자고 있는 줄 알았던 회장이 살해된 사건",
     places: ["room"],
     suspects: clubroomSuspects,
     victims: [clubroomVictim],

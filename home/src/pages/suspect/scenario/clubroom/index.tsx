@@ -1,19 +1,11 @@
 import InGameLayout from "@/features/suspect/components/InGame/InGameLayout";
+import { createScenarioTheme } from "@/features/suspect/components/createScenarioTheme";
 import { scenarios } from "@/features/suspect/fixtures";
 import { clubroomAdditionalQuestions } from "@/features/suspect/fixtures/clubroom/clues";
 import { clubroomMoveButton } from "@/features/suspect/fixtures/clubroom/movePlace";
 import { ClubroomPrologue } from "@/features/suspect/fixtures/clubroom/prologue";
 import { ClueScenarioType } from "@/features/suspect/types";
-import { createTheme, ThemeProvider } from "@mui/material";
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#6d4aff",
-      contrastText: "#fafafa",
-    },
-  },
-});
+import { ThemeProvider } from "@mui/material";
 
 export default function Clubroom() {
   const clubroomScenario = scenarios.find(
@@ -26,7 +18,7 @@ export default function Clubroom() {
   }
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={createScenarioTheme(clubroomScenario.color)}>
       <InGameLayout
         movePlaceButton={clubroomMoveButton}
         prologue={<ClubroomPrologue />}
