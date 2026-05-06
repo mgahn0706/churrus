@@ -23,6 +23,8 @@ import { novelistSuspects, novelistVictim } from "./novelist/suspects";
 import { novelistClues } from "./novelist/clues";
 import { subwaySuspects, subwayVictim } from "./subway/suspects";
 import { subwayClues } from "./subway/clues";
+import { clubroomSuspects, clubroomVictim } from "./clubroom/suspects";
+import { clubroomClues } from "./clubroom/clues";
 
 export const scenarios: ScenarioType[] = [
   {
@@ -201,5 +203,21 @@ export const scenarios: ScenarioType[] = [
     victims: [subwayVictim],
     clues: subwayClues,
     color: "#00A84D",
+  },
+  {
+    id: "clubroom",
+    title: "동아리방 살인사건",
+    creators: [],
+    gameType: "CLUE",
+    numberOfSuspects: 4,
+    histories: [],
+    backgroundImage: "/image/suspect/scenario/clubroom/clubroom-main.png",
+    isInDevelopment: true,
+    description: "동아리방에서 발생한 살인사건",
+    places: ["room"],
+    suspects: clubroomSuspects,
+    victims: [clubroomVictim],
+    clues: clubroomClues,
+    color: "#6d4aff",
   },
 ];
