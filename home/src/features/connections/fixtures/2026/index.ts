@@ -442,4 +442,25 @@ export const CONNECTIONS2026: ConnectionsType[] = [
       },
     ],
   },
+  {
+    week: 22,
+    quiz: [
+      {
+        words: ["노래", "성대모사", "춤", "연기"],
+        description: "개인기",
+      },
+      {
+        words: ["분", "슬픔", "우울", "냉소"],
+        description: "부정적 감정",
+      },
+      {
+        words: ["한", "두", "세", "네"],
+        description: "한국어의 숫자 관련 단어",
+      },
+      {
+        words: ["기쁨", "라이트닝", "니모", "마이크"],
+        description: "픽사의 애니메이션 주인공",
+      },
+    ],
+  },
 ];
