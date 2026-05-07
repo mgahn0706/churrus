@@ -159,6 +159,16 @@ export default function InGameLayout({
       (clue.place === openedClueId && clue.type === "additional")
     );
   });
+  const uncheckedAdditionalParentIds = new Set(
+    scenario.clues
+      .filter(
+        (clue) =>
+          clue.type === "additional" &&
+          typeof clue.place === "number" &&
+          !checkedClueList.includes(clue.id)
+      )
+      .map((clue) => clue.place)
+  );
 
   const { isMobileWidth } = useMobileWidth();
   if (isMobileWidth) {
@@ -209,10 +219,21 @@ export default function InGameLayout({
           />
         )}
         {visibleClues.map((clue) => {
+          const isChecked = checkedClueList.includes(clue.id);
+          const clueStatus =
+            clue.type === "locked"
+              ? "locked"
+              : isChecked && uncheckedAdditionalParentIds.has(clue.id)
+                ? "pending"
+                : isChecked
+                ? "checked"
+                : "default";
+
           return (
             <ClueButton
               key={clue.id}
               clue={clue}
+              status={clueStatus}
               onClick={() => {
                 if (clue.type === "locked") {
                   setOpenedModal("password");
