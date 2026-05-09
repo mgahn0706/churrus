@@ -302,8 +302,7 @@ export const subwayClues: ClueType[] = [
     x: 16,
     y: 52,
     image: "/image/suspect/scenario/subway/clues/subway-28.png",
-    description:
-      "매달 100만 원에서 200만 원의 돈이 특정일에 빠져나간 내역이다.",
+    description: "홍셰프의 계좌에서 돈이 빠져나간 내역이다.",
     type: "additional",
     place: 26,
   },
@@ -323,8 +322,7 @@ export const subwayClues: ClueType[] = [
     x: 59.152,
     y: 60.124,
     image: "/image/suspect/scenario/subway/clues/subway-30.png",
-    description:
-      "킷사샤울 벽에 걸려 있는 일식 자격증 및 복어조리기능사 액자이다.",
+    description: "킷사샤울 벽에 걸려 있는 액자들이다. 다양한 자격증들이 있다.",
     type: "basic",
     place: "1F",
   },
@@ -394,7 +392,7 @@ export const subwayClues: ClueType[] = [
   },
   {
     id: 37,
-    title: "문서",
+    title: "시험 성적서",
     x: 63.393,
     y: 44.938,
     image: "/image/suspect/scenario/subway/clues/subway-37.png",
@@ -410,7 +408,7 @@ export const subwayClues: ClueType[] = [
     y: 63.43,
     image: "/image/suspect/scenario/subway/clues/subway-38.png",
     description:
-      "홍셰프가 가지고 있던 영수증이다. 오늘 오후 12시에 추리스 커피에서 아이스 아메리카노를 구매했다.",
+      "전공익이 가지고 있던 영수증이다. 오늘 저녁 추리스 커피에서 아이스 아메리카노를 구매했다.",
     type: "basic",
     place: "1F",
   },
