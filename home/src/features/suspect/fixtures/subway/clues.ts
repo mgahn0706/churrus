@@ -1,7 +1,28 @@
 import { ClueType } from "@/features/suspect/types";
 import { createAdditionalQuestions } from "../utils";
 
-export const subwayAdditionalQuestions = createAdditionalQuestions([]);
+export const subwayAdditionalQuestions = createAdditionalQuestions([
+  {
+    question: "정보건의 사건 당일 행적은 어땠나요?",
+    answer:
+      "사건 당일 홍셰프에게 돈을 받기 위해 보건소를 갔고, 서울대입구역으로 돌아왔습니다.",
+  },
+  {
+    question: "스크린도어는 누가, 왜 정지시켰나요?",
+    answer:
+      "스크린도어는 사회복무요원인 전공익이 정지시켰습니다. 이는 정보건을 독살한 후 선로에 던지기 위함입니다",
+  },
+  {
+    question: "추리스 커피의 알바 교체 주기에 대한 이유는 무엇인가요?",
+    answer:
+      "전사장이 알바생들을 자주 바꾸는 이유는 적합한 혈액형을 가진 신장 기증자를 찾아 설득 또는 협박하기 위함입니다.",
+  },
+  {
+    question: "각 용의자 4명이 서울대입구역에 온 이유는 각각 무엇인가요?",
+    answer:
+      "전공익: 공익근무 출근, 전사장: 카페 출근 및 알바 면접, 홍셰프: 식당 출근 및 정보건에게 200만원 건네기 위함, 하승객: 마약 던지기 수법 시행",
+  },
+]);
 
 export const subwayClues: ClueType[] = [
   {
@@ -79,13 +100,14 @@ export const subwayClues: ClueType[] = [
   },
   {
     id: 8,
-    title: "---(수정예정)",
-    x: 30.163,
-    y: 57.645,
+    title: "열화상 카메라 기록",
+    x: 39.9,
+    y: 82.438,
     image: "/image/suspect/scenario/subway/clues/subway-8.png",
-    description: "",
+    description:
+      "코로나19 예방을 위해 설치된 카메라로, 2020년 4월 25일 오후 9시 45분에 찍힌 열화상 카메라 기록이다. 두 명이 보건소를 나서고 있다. 열화상 카메라의 메모리가 크지 않아, 이 이전은 확인이 불가능하다.",
     type: "basic",
-    place: "B2",
+    place: "1F",
   },
   {
     id: 9,
@@ -102,7 +124,7 @@ export const subwayClues: ClueType[] = [
     id: 10,
     title: "플라스틱 커피컵",
     x: 16,
-    y: 22,
+    y: 24,
     image: "/image/suspect/scenario/subway/clues/subway-10.png",
     description:
       "추리스 커피 로고가 각인된 투명한 플라스틱 컵이다. 하나에는 재활용품 칸이 아니라 음료 버리는 곳 위에 놓여 있다. 다른 하나는 재활용품 칸에 정확히 버려져 있으며 립스틱은 없다.",
@@ -112,7 +134,7 @@ export const subwayClues: ClueType[] = [
   {
     id: 11,
     title: "재활용품 칸",
-    x: 16,
+    x: 26,
     y: 31,
     image: "/image/suspect/scenario/subway/clues/subway-11.png",
     description:
@@ -127,7 +149,7 @@ export const subwayClues: ClueType[] = [
     y: 40,
     image: "/image/suspect/scenario/subway/clues/subway-12.png",
     description:
-      "음료 버리는 곳에는 커피가 버려져 있다. 얼음은 따로 없고 색깔로 보아 아메리카노가 주로 버려져 있다.",
+      "음료 버리는 곳에는 커피가 버려져 있다. 얼음은 따로 없고, 색깔로 보아 아메리카노가 버려져있다. 용량 상 딱 아메리카노 한 잔이 버려져있다.",
     type: "additional",
     place: 9,
   },
@@ -189,7 +211,7 @@ export const subwayClues: ClueType[] = [
     id: 18,
     title: "삼성 노트 - 죽음의 과학적 이해",
     x: 14,
-    y: 13,
+    y: 16,
     image: "/image/suspect/scenario/subway/clues/subway-18.png",
     description:
       "독살 관련 강의록에 있는 필기이다. 웬만한 독약은 먹고 나서 바로 죽는 게 아니라 서서히 마비된다는 메모가 적혀 있다.",
@@ -203,7 +225,7 @@ export const subwayClues: ClueType[] = [
     y: 22,
     image: "/image/suspect/scenario/subway/clues/subway-19.png",
     description:
-      "하승객에게 전달된 가족의 2020년 1월 입원 기록 및 역학조사 결과이다. 병문안을 요청했지만 거절당했다.",
+      "하승객에게 전달된 가족의 입원 기록 및 역학조사 결과이다. 병문안을 요청했지만 거절당했다.",
     type: "additional",
     place: 17,
   },
@@ -292,7 +314,7 @@ export const subwayClues: ClueType[] = [
     y: 42,
     image: "/image/suspect/scenario/subway/clues/subway-27.png",
     description:
-      "홍셰프와 정보건이 오늘 보건소에서 만나기로 한 내용이 있다. ‘최근에 들킬 뻔했으니 2배’라는 내용도 보인다.",
+      "홍셰프와 정보건이 오늘 만나기로 한 내용이 있다. ‘최근에 들킬 뻔했으니 2배’라는 내용도 보인다.",
     type: "additional",
     place: 26,
   },
@@ -339,8 +361,8 @@ export const subwayClues: ClueType[] = [
   {
     id: 32,
     title: "인생네컷",
-    x: 52.623,
-    y: 73.554,
+    x: 21.783,
+    y: 33.781,
     image: "/image/suspect/scenario/subway/clues/subway-32.png",
     description:
       "벽에 붙어 있던 인생네컷 사진이다. 정보건과 홍셰프가 같이 찍은 사진이며 날짜는 2019년 11월이다.",
@@ -404,13 +426,13 @@ export const subwayClues: ClueType[] = [
   {
     id: 38,
     title: "영수증",
-    x: 51.339,
-    y: 63.43,
+    x: 60.1,
+    y: 47.004,
     image: "/image/suspect/scenario/subway/clues/subway-38.png",
     description:
       "전공익이 가지고 있던 영수증이다. 오늘 저녁 추리스 커피에서 아이스 아메리카노를 구매했다.",
     type: "basic",
-    place: "1F",
+    place: "B2",
   },
   {
     id: 39,
@@ -436,23 +458,23 @@ export const subwayClues: ClueType[] = [
   },
   {
     id: 41,
-    title: "보건소 역학조사 지침",
+    title: "보건소 위생조사 지침",
     x: 23.438,
     y: 91.426,
     image: "/image/suspect/scenario/subway/clues/subway-41.png",
     description:
-      "역학조사에 관한 보건소 자료이다. 보건소에서 10분 거리 내에 있는 곳들이 역학조사 대상이다.",
+      "위생 조사에 관한 보건소 자료이다. 보건소에서 10분 거리 내에 있는 곳들이 조사 대상이다.",
     type: "basic",
     place: "1F",
   },
   {
     id: 42,
-    title: "지하철 사물함 이용 기록",
+    title: "지하철 보관함 이용 기록",
     x: 49.275,
     y: 65.599,
     image: "/image/suspect/scenario/subway/clues/subway-42.png",
     description:
-      "지하철 사물함 이용 기록이다. 9번 보관함만 최근 열렸다가 빠르게 이용 종료된 흔적이 있다.",
+      "지하철 보관함 이용 기록이다. 9번 보관함만 최근 열렸다가 빠르게 이용 종료된 흔적이 있다.",
     type: "basic",
     place: "B1",
   },
@@ -496,6 +518,38 @@ export const subwayClues: ClueType[] = [
     y: 62.81,
     image: "/image/suspect/scenario/subway/clues/subway-46.png",
     description: "화장실 세면대에 얼음 조각들과 커피 자국이 있다.",
+    type: "basic",
+    place: "B1",
+  },
+  {
+    id: 47,
+    title: "추리스 커피 방문 명단",
+    x: 47.989,
+    y: 52.479,
+    image: "/image/suspect/scenario/subway/clues/subway-47.png",
+    description:
+      "추리스 커피에 방문한 사람들의 명단이다. 방문한 사람이 각자 작성하는 방식이다.",
+    type: "basic",
+    place: "1F",
+  },
+  {
+    id: 48,
+    title: "박스",
+    x: 57.239,
+    y: 24.174,
+    image: "/image/suspect/scenario/subway/clues/subway-48.png",
+    description: "8번 출구 근처에서 발견된 박스. 안에 백색 가루가 보인다.",
+    type: "basic",
+    place: "1F",
+  },
+  {
+    id: 49,
+    title: "역무원의 증언",
+    x: 68.304,
+    y: 65.186,
+    image: "/image/suspect/scenario/subway/clues/subway-49.png",
+    description:
+      "'오늘 오후 10시 되기 한 5분 전? 그러니까 9시 55분쯤에 전공익이 저에게 와서 화장실에 누수 있다고 했어요. 그게 좀 수상했어요. 저한테는 원래 보고 안하거든요. 그래서 가봤더니 원, 누수는 커녕 물 한 방울도 없었어요. 저에게 거짓말한거죠. 취객이 토해놓은 거 치웠다고 자랑하려고 그랬나?'",
     type: "basic",
     place: "B1",
   },
