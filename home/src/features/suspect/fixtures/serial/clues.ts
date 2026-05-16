@@ -228,11 +228,12 @@ export const serialClues: ClueType[] = [
   },
   {
     id: 22,
-    title: "황새내의 필통",
+    title: "황새내의 지갑",
     x: 43,
     y: 50,
     image: "/image/suspect/scenario/serial/clues/serial-22.png",
-    description: "황새내의 가방에 있던 필통이다. 약간 낡은 티가 난다.",
+    description:
+      "황새내의 지갑에 있던 사진이다. 아버지와 함께 초등학교 졸업식에서 찍은 사진같다. 실내화 가방에는 1303이라고 쓰여있다.",
     type: "basic",
     place: "28",
   },
