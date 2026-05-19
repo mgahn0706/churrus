@@ -27,26 +27,25 @@ const CUBES = [
 
 const shuffle = <T,>(items: T[]) => [...items].sort(() => Math.random() - 0.5);
 
+const createRoundCubes = () => {
+  const shuffledCubes = shuffle(CUBES);
+
+  return {
+    cubesForRound: shuffledCubes.slice(0, CUBES.length - 2),
+    eliminatedCubes: shuffledCubes.slice(CUBES.length - 2),
+  };
+};
+
 export default function MinusAuction() {
   const [round, setRound] = useState(1);
   const [players, setPlayers] = useState<PlayerType[]>([]);
-  const [cubesForRound, setCubesForRound] = useState<number[]>([]);
-  const [eliminatedCubes, setEliminatedCubes] = useState<number[]>([]);
+  const [{ cubesForRound, eliminatedCubes }] = useState(createRoundCubes);
   const [currentOrder, setCurrentOrder] = useState(1);
   const [collectedChips, setCollectedChips] = useState(0);
   const [isHiddenCubeBidModalOpen, setIsHiddenCubeBidModalOpen] =
     useState(false);
 
   const [isPlayerSetModalOpen, setIsPlayerSetModalOpen] = useState(true);
-
-  useEffect(() => {
-    if (cubesForRound.length === 32 || cubesForRound.length === 33) {
-      return;
-    }
-    const shuffledCubes = shuffle(CUBES);
-    setCubesForRound(shuffledCubes.slice(0, CUBES.length - 2));
-    setEliminatedCubes(shuffledCubes.slice(CUBES.length - 2));
-  }, []);
 
   useEffect(() => {
     if (round > cubesForRound.length && cubesForRound.length !== 0) {
