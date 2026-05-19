@@ -17,6 +17,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import {
   ALL_QUIZZES,
   compareQuizzesByChronology,
+  compareQuizzesByRecentFirst,
   getMeetingById,
 } from "@/features/quiz/domain";
 import { QUIZ_TAG_KOREAN_NAME } from "@/features/quiz/fixtures/tagName";
@@ -84,13 +85,13 @@ export default function QuizInfiniteListView({
           return matchesSearch && matchesStatus && matchesTag;
         })
         .sort((leftQuiz, rightQuiz) => {
-          const compareByChronology =
+          const compareByMeeting =
             sortDirection === "asc"
               ? compareQuizzesByChronology(leftQuiz, rightQuiz)
-              : compareQuizzesByChronology(rightQuiz, leftQuiz);
+              : compareQuizzesByRecentFirst(leftQuiz, rightQuiz);
 
           if (sortField === "meeting") {
-            return compareByChronology;
+            return compareByMeeting;
           }
 
           if (sortField === "status") {
@@ -101,7 +102,7 @@ export default function QuizInfiniteListView({
               return sortDirection === "asc" ? solvedDifference : -solvedDifference;
             }
 
-            return compareQuizzesByChronology(rightQuiz, leftQuiz);
+            return compareQuizzesByRecentFirst(leftQuiz, rightQuiz);
           }
 
           if (sortField === "title") {
@@ -111,7 +112,7 @@ export default function QuizInfiniteListView({
               return sortDirection === "asc" ? titleDifference : -titleDifference;
             }
 
-            return compareQuizzesByChronology(rightQuiz, leftQuiz);
+            return compareQuizzesByRecentFirst(leftQuiz, rightQuiz);
           }
 
           const creatorDifference = leftQuiz.creators
@@ -124,7 +125,7 @@ export default function QuizInfiniteListView({
               : -creatorDifference;
           }
 
-          return compareQuizzesByChronology(rightQuiz, leftQuiz);
+          return compareQuizzesByRecentFirst(leftQuiz, rightQuiz);
         }),
     [
       isSolved,
