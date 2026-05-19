@@ -9,7 +9,7 @@ export default function QuizTagGridView() {
   const cardXs = useResponsiveValue([12, 6, 4]);
 
   return (
-    <Box mt={6}>
+    <Box mt={7}>
       <Grid
         container
         rowSpacing={[0, 1, 1]}
