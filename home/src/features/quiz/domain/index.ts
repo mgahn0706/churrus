@@ -97,19 +97,19 @@ export const compareQuizzesByRecentFirst = (
   leftQuiz: QuizType,
   rightQuiz: QuizType
 ) => {
-  const chronologyDifference = compareQuizzesByChronology(rightQuiz, leftQuiz);
+  const meetingOrderDifference =
+    (MEETING_ORDER_BY_ID[leftQuiz.meetingId] ?? Number.MAX_SAFE_INTEGER) -
+    (MEETING_ORDER_BY_ID[rightQuiz.meetingId] ?? Number.MAX_SAFE_INTEGER);
 
-  if (chronologyDifference !== 0 && leftQuiz.meetingId !== rightQuiz.meetingId) {
-    return chronologyDifference;
+  if (meetingOrderDifference !== 0) {
+    return meetingOrderDifference;
   }
 
-  if (leftQuiz.meetingId === rightQuiz.meetingId) {
-    if (rightQuiz.quizNumber !== leftQuiz.quizNumber) {
-      return rightQuiz.quizNumber - leftQuiz.quizNumber;
-    }
+  if (leftQuiz.quizNumber !== rightQuiz.quizNumber) {
+    return rightQuiz.quizNumber - leftQuiz.quizNumber;
   }
 
-  return chronologyDifference;
+  return rightQuiz.id.localeCompare(leftQuiz.id, "ko");
 };
 
 export interface QuizCreatorStat {
