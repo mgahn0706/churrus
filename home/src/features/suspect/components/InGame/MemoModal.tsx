@@ -270,7 +270,6 @@ export default function MemoModal({
           <Button
             color="error"
             onClick={() => {
-              handleSetNote();
               setIsUnsaveAlertModalOpen(false);
               onClose();
             }}
