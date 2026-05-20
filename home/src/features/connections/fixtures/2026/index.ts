@@ -446,6 +446,27 @@ export const CONNECTIONS2026: ConnectionsType[] = [
     week: 22,
     quiz: [
       {
+        words: ["노래", "성대모사", "춤", "연기"],
+        description: "개인기",
+      },
+      {
+        words: ["분", "슬픔", "우울", "분노"],
+        description: "부정적 감정",
+      },
+      {
+        words: ["한", "두", "세", "네"],
+        description: "한국어의 숫자 관련 단어",
+      },
+      {
+        words: ["기쁨", "라이트닝", "니모", "마이크"],
+        description: "픽사의 애니메이션 주인공",
+      },
+    ],
+  },
+  {
+    week: 23,
+    quiz: [
+      {
         words: ["연기", "보류", "지연", "연착"],
         description: "미룸",
       },
@@ -464,7 +485,7 @@ export const CONNECTIONS2026: ConnectionsType[] = [
     ],
   },
   {
-    week: 23,
+    week: 24,
     quiz: [
       {
         words: ["가정", "성", "사이버", "팩트"],
