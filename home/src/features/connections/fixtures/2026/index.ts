@@ -450,7 +450,7 @@ export const CONNECTIONS2026: ConnectionsType[] = [
         description: "개인기",
       },
       {
-        words: ["분", "슬픔", "우울", "분노"],
+        words: ["분", "슬픔", "우울", "냉소"],
         description: "부정적 감정",
       },
       {
