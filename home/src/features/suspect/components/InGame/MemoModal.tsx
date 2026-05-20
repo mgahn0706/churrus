@@ -24,6 +24,14 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Close } from "@mui/icons-material";
 
+const INIT_NOTE: DetectiveNoteType = {
+  accusedSuspect: "",
+  howDunnit: "",
+  whyDunnit: "",
+  additionalQuestionAnswers: ["", "", "", ""],
+  memo: "",
+};
+
 interface MemoModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -46,30 +54,21 @@ export default function MemoModal({
   const handleNoteSave = () => {
     localStorage.setItem(scenarioKeyword, JSON.stringify(note));
   };
-  const handleSetNote = () => {
-    const savedNote = localStorage.getItem(scenarioKeyword);
-    if (savedNote) {
-      setNote({
-        ...JSON.parse(savedNote),
-      });
-    }
-  };
-
-  const INIT_NOTE: DetectiveNoteType = {
-    accusedSuspect: "",
-    howDunnit: "",
-    whyDunnit: "",
-    additionalQuestionAnswers: ["", "", "", ""],
-    memo: "",
-  };
-
   const [note, setNote] = useState<DetectiveNoteType>(INIT_NOTE);
 
   const router = useRouter();
 
   useEffect(() => {
-    handleSetNote();
-  }, []);
+    const savedNote = localStorage.getItem(scenarioKeyword);
+    if (savedNote) {
+      setNote({
+        ...JSON.parse(savedNote),
+      });
+      return;
+    }
+
+    setNote(INIT_NOTE);
+  }, [scenarioKeyword]);
 
   const isAllRequiredFilled =
     note.accusedSuspect && note.howDunnit && note.whyDunnit;
@@ -271,7 +270,6 @@ export default function MemoModal({
           <Button
             color="error"
             onClick={() => {
-              handleSetNote();
               setIsUnsaveAlertModalOpen(false);
               onClose();
             }}

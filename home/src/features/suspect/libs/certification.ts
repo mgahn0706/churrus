@@ -1,7 +1,30 @@
-import { buildCertificationCard } from "@/features/suspect/fixtures/certification";
+import { scenarios } from "@/features/suspect/fixtures";
 import { CertificationCardType } from "@/features/suspect/types";
 
 const CERTIFICATION_STORAGE_KEY = "cert-cards";
+
+function buildCertificationCard(
+  scenarioId: string,
+  isSuccess: boolean
+): CertificationCardType | null {
+  const scenario = scenarios.find((item) => item.id === scenarioId);
+
+  if (!scenario) {
+    return null;
+  }
+
+  return {
+    scenarioId,
+    title: scenario.title,
+    description: scenario.description ?? "",
+    image: scenario.backgroundImage,
+    posterImage: `/image/suspect/certiciation-card/${scenarioId}.png`,
+    date: scenario.histories?.[scenario.histories.length - 1] ?? "",
+    isSuccess,
+    color: scenario.color,
+    historyLabel: scenario.histories?.[scenario.histories.length - 1],
+  };
+}
 
 function getStoredScenarioIds(): string[] {
   if (typeof window === "undefined") {
@@ -25,21 +48,18 @@ function getStoredScenarioIds(): string[] {
 }
 
 export function getAllCertificationCards(): CertificationCardType[] {
-  return [
-    "startup",
-    "school",
-    "jahayeon",
-    "dure",
-    "museum",
-    "serial",
-  ]
-    .map((scenarioId) => buildCertificationCard(scenarioId))
+  const storedScenarioIds = new Set(getStoredScenarioIds());
+
+  return scenarios
+    .map((scenario) =>
+      buildCertificationCard(scenario.id, storedScenarioIds.has(scenario.id))
+    )
     .filter((card): card is CertificationCardType => card != null);
 }
 
 export function getCertificationCards(): CertificationCardType[] {
   return getStoredScenarioIds()
-    .map((scenarioId) => buildCertificationCard(scenarioId))
+    .map((scenarioId) => buildCertificationCard(scenarioId, true))
     .filter((card): card is CertificationCardType => card != null);
 }
 
@@ -51,7 +71,7 @@ export function saveScenarioCertification(
     return null;
   }
 
-  const certificationCard = buildCertificationCard(scenarioId, accusedSuspect);
+  const certificationCard = buildCertificationCard(scenarioId, Boolean(accusedSuspect));
 
   if (!certificationCard) {
     return null;

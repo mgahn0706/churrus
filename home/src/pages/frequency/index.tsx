@@ -39,13 +39,18 @@ export default function Frequency() {
   const [playedConcepts, setPlayedConcepts] = useState<ConceptType[]>([]);
 
   useEffect(() => {
-    setPlayedConcepts([...playedConcepts, concept]);
     const randomNumber = Math.floor(Math.random() * FrequencyConcepts.length);
-    setConcept(
-      playedConcepts.includes(FrequencyConcepts[randomNumber])
-        ? FrequencyConcepts[randomNumber + 1]
-        : FrequencyConcepts[randomNumber]
-    );
+    setPlayedConcepts((previousConcepts) => {
+      const nextConcept =
+        previousConcepts.includes(FrequencyConcepts[randomNumber]) &&
+        randomNumber + 1 < FrequencyConcepts.length
+          ? FrequencyConcepts[randomNumber + 1]
+          : FrequencyConcepts[randomNumber];
+
+      setConcept(nextConcept);
+
+      return [...previousConcepts, nextConcept];
+    });
     setExactDegree(Math.floor(Math.random() * 14));
   }, [round]);
 

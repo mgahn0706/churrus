@@ -26,6 +26,8 @@ export type Tags =
   | "WORD"
   | "META";
 
+export type QuizViewMode = "grid" | "list" | "tag";
+
 export interface MeetingType {
   id: string;
   title: string;

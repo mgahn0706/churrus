@@ -8,7 +8,10 @@ import {
   dureClues,
   dureKeywordIds,
 } from "@/features/suspect/fixtures/dure/clues";
-
+import {
+  bluemoonClues,
+  bluemoonKeywordIds,
+} from "@/features/suspect/fixtures/bluemoon/clues";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 export interface ClueData {
@@ -25,6 +28,7 @@ type Scenario = {
 const scenarios: Record<string, Scenario> = {
   school: { keywordIds: schoolKeywordIds, clues: schoolClues },
   dure: { keywordIds: dureKeywordIds, clues: dureClues },
+  bluemoon: { keywordIds: bluemoonKeywordIds, clues: bluemoonClues },
 };
 
 interface ClueApiRequest extends NextApiRequest {

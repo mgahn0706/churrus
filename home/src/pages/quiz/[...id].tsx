@@ -161,7 +161,12 @@ export default function QuizPage() {
             <Box display="flex" alignItems="center" minWidth={0}>
               <ChurrusLogoButton onClick={() => router.push("/")} />
 
-              <Box display="flex" alignItems="center" ml={[1, 2, 2]} minWidth={0}>
+              <Box
+                display="flex"
+                alignItems="center"
+                ml={[1, 2, 2]}
+                minWidth={0}
+              >
                 <HeaderButton onClick={() => setIsQuizListDrawerOpen(true)}>
                   {meeting?.title}
                 </HeaderButton>
@@ -245,42 +250,44 @@ export default function QuizPage() {
 
         <Box
           width="100%"
-          sx={{
-            aspectRatio: imageAspectRatio,
-          }}
-          display={isImageLoading ? "none" : "flex"}
-          justifyContent="center"
           mt={2}
           maxWidth={1200}
           position="relative"
+          sx={{
+            aspectRatio: imageAspectRatio,
+          }}
         >
+          {isImageLoading && (
+            <Skeleton
+              variant="rectangular"
+              animation="wave"
+              sx={{
+                bgcolor: "rgba(255, 255, 255, 0.7)",
+                borderRadius: "12px",
+                position: "absolute",
+                inset: 0,
+              }}
+            />
+          )}
           <Image
             src={resolvedQuizImageSrc}
             alt={quiz.title}
+            width={1200}
+            height={Math.round(1200 / imageAspectRatio)}
             style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "contain",
               borderRadius: "12px",
+              opacity: isImageLoading ? 0 : 1,
+              transition: "opacity 0.2s ease",
             }}
-            fill
             priority
+            unoptimized
             onLoadingComplete={() => setIsImageLoading(false)}
             onError={() => setIsImageLoading(false)}
           />
         </Box>
-        {isImageLoading && (
-          <Skeleton
-            variant="rectangular"
-            animation="wave"
-            sx={{
-              bgcolor: "rgba(255, 255, 255, 0.7)",
-              aspectRatio: imageAspectRatio,
-              marginTop: "16px",
-              maxWidth: 1200,
-              borderRadius: "12px",
-              width: "100%",
-              height: "100%",
-            }}
-          />
-        )}
         {!isAnswerPage && (
           <Box
             component="form"

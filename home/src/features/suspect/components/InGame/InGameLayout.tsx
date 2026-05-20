@@ -4,17 +4,17 @@ import LightBulbIcon from "@mui/icons-material/Lightbulb";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import InfoIcon from "@mui/icons-material/Info";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
+import HowToVoteIcon from "@mui/icons-material/HowToVote";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useEffect, useState } from "react";
 
+import { scenarios } from "@/features/suspect/fixtures";
 import {
   AdditionalQuestionType,
   ClueType,
+  ClueScenarioType,
   MovePlaceButtonType,
-  ScenarioType,
-  SuspectType,
-  VictimType,
 } from "@/features/suspect/types";
 import MemoModal from "./MemoModal";
 import { useMobileWidth } from "@/hooks/useMobileWIdth";
@@ -26,17 +26,15 @@ import MovePlaceButton from "./MovePlaceButton";
 import PasswordInputModal from "./PasswordInputModal";
 import PrologueModal from "./PrologueModal";
 import SuspectsInfoCard from "./SuspectsInfoCard";
+import SuspectVoteModal from "./SuspectVoteModal";
 import InteractionScoreBadge from "./InteractionScoreBadge";
 import usePreventUnload from "@/hooks/usePreventUnload";
 import Head from "next/head";
 
 interface InGameLayoutProps {
-  clues: ClueType[];
   prologue: React.ReactNode;
-  suspects: SuspectType[];
-  victims: VictimType[];
   movePlaceButton: MovePlaceButtonType[];
-  scenario: ScenarioType;
+  scenario: ClueScenarioType;
   additionalQuestions: AdditionalQuestionType[];
 }
 
@@ -52,19 +50,24 @@ const getInteractionLogStorageKey = (scenarioId: string) =>
   `${scenarioId}-interaction-log`;
 
 export default function InGameLayout({
-  clues,
   prologue,
-  suspects,
-  victims,
   movePlaceButton,
   scenario,
   additionalQuestions,
 }: InGameLayoutProps) {
+  const episodeNumber =
+    scenarios.findIndex((candidate) => candidate.id === scenario.id) + 1;
   const [openedClueId, setOpenedClueId] = useState<number | null>(null);
   const [currentPlace, setCurrentPlace] = useState(scenario.places[0] ?? "");
   const [checkedClueList, setCheckedClueList] = useState<number[]>([]);
   const [openedModal, setOpenedModal] = useState<
-    "prologue" | "suspects" | "dashboard" | "password" | "memo" | null
+    | "prologue"
+    | "suspects"
+    | "dashboard"
+    | "password"
+    | "memo"
+    | "vote"
+    | null
   >("prologue");
   const [unlockingClue, setUnlockingClue] = useState<ClueType | null>(null);
   const [isQuickMenuOpen, setIsQuickMenuOpen] = useState(false);
@@ -77,7 +80,7 @@ export default function InGameLayout({
 
   useEffect(() => {
     setCurrentPlace(scenario.places[0] ?? "");
-  }, [scenario.id]);
+  }, [scenario.id, scenario.places]);
 
   useEffect(() => {
     const startStorageKey = getInteractionStartStorageKey(scenario.id);
@@ -108,7 +111,7 @@ export default function InGameLayout({
   usePreventUnload();
 
   const openedClue: ClueType | null =
-    clues.find((clue) => clue.id === openedClueId) ?? null;
+    scenario.clues.find((clue) => clue.id === openedClueId) ?? null;
 
   const markClueAsChecked = (clueId: number) => {
     setCheckedClueList((prev) => {
@@ -150,12 +153,22 @@ export default function InGameLayout({
     navigator.clipboard?.writeText(`x: ${x}, y: ${y},`);
   };
 
-  const visibleClues = clues.filter((clue) => {
+  const visibleClues = scenario.clues.filter((clue) => {
     return (
       clue.place === currentPlace ||
       (clue.place === openedClueId && clue.type === "additional")
     );
   });
+  const uncheckedAdditionalParentIds = new Set(
+    scenario.clues
+      .filter(
+        (clue) =>
+          clue.type === "additional" &&
+          typeof clue.place === "number" &&
+          !checkedClueList.includes(clue.id)
+      )
+      .map((clue) => clue.place)
+  );
 
   const { isMobileWidth } = useMobileWidth();
   if (isMobileWidth) {
@@ -184,9 +197,9 @@ export default function InGameLayout({
             scenarioKeyword={scenario.id}
             isOpen={openedModal === "memo"}
             onClose={() => setOpenedModal(null)}
-            suspects={suspects}
+            suspects={scenario.suspects}
             questions={additionalQuestions}
-            isAllClueSearched={checkedClueList.length === clues.length}
+            isAllClueSearched={checkedClueList.length === scenario.clues.length}
           />
         )}
 
@@ -206,10 +219,21 @@ export default function InGameLayout({
           />
         )}
         {visibleClues.map((clue) => {
+          const isChecked = checkedClueList.includes(clue.id);
+          const clueStatus =
+            clue.type === "locked"
+              ? "locked"
+              : isChecked && uncheckedAdditionalParentIds.has(clue.id)
+                ? "pending"
+                : isChecked
+                ? "checked"
+                : "default";
+
           return (
             <ClueButton
               key={clue.id}
               clue={clue}
+              status={clueStatus}
               onClick={() => {
                 if (clue.type === "locked") {
                   setOpenedModal("password");
@@ -258,15 +282,22 @@ export default function InGameLayout({
           );
         })}
         <ClueDashboardModal
-          clues={clues}
+          clues={scenario.clues}
           isOpen={openedModal === "dashboard"}
           checkedClueList={checkedClueList}
           onClose={handleCloseModal}
         />
         <SuspectsInfoCard
           isOpen={openedModal === "suspects"}
-          victims={victims}
-          suspects={suspects}
+          victims={scenario.victims}
+          suspects={scenario.suspects}
+          onClose={handleCloseModal}
+        />
+        <SuspectVoteModal
+          isOpen={openedModal === "vote"}
+          suspects={scenario.suspects}
+          scenarioTitle={scenario.title}
+          episodeNumber={episodeNumber > 0 ? episodeNumber : 1}
           onClose={handleCloseModal}
         />
         <PrologueModal
@@ -339,6 +370,15 @@ export default function InGameLayout({
                   size="small"
                 >
                   <PersonSearchIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="용의자 투표" placement="left">
+                <IconButton
+                  color="primary"
+                  onClick={() => setOpenedModal("vote")}
+                  size="small"
+                >
+                  <HowToVoteIcon fontSize="small" />
                 </IconButton>
               </Tooltip>
               <Tooltip title="공개된 정보" placement="left">

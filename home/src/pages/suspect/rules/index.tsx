@@ -1,5 +1,6 @@
 import { FadeInSection } from "@/features/suspect/components/FadeInSection";
 import Header from "@/features/suspect/components/Header";
+import { ShakeTextSection } from "@/features/suspect/components/ShakeTextSection";
 import { Box, Button, Typography } from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -19,42 +20,57 @@ function RuleCard({
     <FadeInSection>
       <Box
         display="flex"
-        gap={12}
+        flexDirection={{ xs: "column", md: align === "left" ? "row" : "row-reverse" }}
+        gap={{ xs: 3, md: 12 }}
         justifyContent="center"
         alignItems="center"
-        width="80%"
-        mb={30}
+        width={{ xs: "100%", md: "80%" }}
+        px={{ xs: 2, sm: 3, md: 0 }}
+        mb={{ xs: 8, md: 30 }}
+        mx="auto"
       >
-        {align === "left" && (
-          <Image src={image} width={500} height={300} alt="규칙 그림" />
-        )}
-        <Box width="700px">
-          <Typography
-            color="white"
-            fontSize="48px"
-            variant="h2"
-            mb={1}
-            fontWeight="bold"
-            sx={{
-              wordBreak: "keep-all",
-            }}
-          >
-            {title}
-          </Typography>
+        <Box
+          sx={{
+            width: { xs: "100%", md: "auto" },
+            maxWidth: { xs: 420, md: 500 },
+          }}
+        >
+          <Image
+            src={image}
+            width={500}
+            height={300}
+            alt="규칙 그림"
+            style={{ width: "100%", height: "auto" }}
+          />
+        </Box>
+        <Box width={{ xs: "100%", md: "700px" }}>
+          <ShakeTextSection>
+            <Typography
+              color="white"
+              fontSize={{ xs: "32px", md: "48px" }}
+              variant="h2"
+              mb={1}
+              fontWeight="bold"
+              sx={{
+                wordBreak: "keep-all",
+                textAlign: { xs: "left", md: "inherit" },
+              }}
+            >
+              {title}
+            </Typography>
+          </ShakeTextSection>
           <Typography
             color="lightgray"
             variant="body1"
-            fontSize="28px"
+            fontSize={{ xs: "18px", md: "28px" }}
             sx={{
               wordBreak: "keep-all",
+              lineHeight: { xs: 1.7, md: "inherit" },
             }}
           >
             {description}
           </Typography>
         </Box>
-        {align === "right" && (
-          <Image src={image} width={500} height={300} alt="규칙 그림" />
-        )}
       </Box>
     </FadeInSection>
   );
@@ -69,24 +85,26 @@ export default function Rules() {
         sx={{ backgroundColor: "black" }}
         width="100%"
         height="100%"
-        pb="300px"
+        pb={{ xs: "120px", md: "300px" }}
       >
         <FadeInSection>
-          <Box width="100%" pt="100px" mb="100px">
-            <Typography
-              color="white"
-              fontWeight="bold"
-              fontSize="48px"
-              textAlign="center"
-            >
-              규칙
-            </Typography>
+          <Box width="100%" pt={{ xs: "88px", md: "100px" }} mb={{ xs: "56px", md: "100px" }}>
+            <ShakeTextSection>
+              <Typography
+                color="white"
+                fontWeight="bold"
+                fontSize={{ xs: "36px", md: "48px" }}
+                textAlign="center"
+              >
+                규칙
+              </Typography>
+            </ShakeTextSection>
           </Box>
         </FadeInSection>
 
         <RuleCard
           title="살인사건이 일어났습니다!"
-          description="단순한 사고일까요? 아니면 의도적인 살인일까요? 여러분은 탐정이 되어 용의자들 중 피해자를 살해한 범인이 누구인지 밝혀내야합니다. "
+          description="단순한 사고일까요? 아니면 의도적인 살인일까요? 여러분은 탐정이 되어 용의자들 중 피해자를 살해한 범인이 누구인지 밝혀내야합니다."
           image="/image/suspect/rules/1.png"
         />
         <RuleCard
@@ -100,15 +118,16 @@ export default function Rules() {
 
         <FadeInSection>
           <Box textAlign="center">
-            <Typography variant="h2" mb={6}>
+            <Typography variant="h2" mb={{ xs: 3, md: 6 }} fontSize={{ xs: "32px", md: undefined }}>
               점수표
             </Typography>
-            <Box mb={20}>
+            <Box mb={{ xs: 8, md: 20 }} px={{ xs: 2, md: 0 }}>
               <Image
                 src="/image/suspect/rules/score.png"
                 width={800}
                 height={500}
                 alt="점수표"
+                style={{ width: "100%", maxWidth: 800, height: "auto" }}
               />
             </Box>
           </Box>
@@ -143,8 +162,8 @@ export default function Rules() {
           align="right"
         />
         <FadeInSection>
-          <Box textAlign="center">
-            <Typography variant="h5" fontWeight="bold" mb={2}>
+          <Box textAlign="center" px={2}>
+            <Typography variant="h5" fontWeight="bold" mb={2} fontSize={{ xs: "24px", md: undefined }}>
               범인을 어서 잡고 싶다면?
             </Typography>
 

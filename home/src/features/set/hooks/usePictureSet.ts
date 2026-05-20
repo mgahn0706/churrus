@@ -1,23 +1,23 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { PictureType } from "../types";
 
-export default function usePictureSet({ round }: { round: number }) {
-  const SHAPE: ("circle" | "square" | "triangle")[] = [
-    "circle",
-    "square",
-    "triangle",
-  ];
-  const COLOR: ("red" | "yellow" | "blue")[] = ["red", "yellow", "blue"];
-  const BACKGROUND_COLOR: ("white" | "gray" | "black")[] = [
-    "white",
-    "gray",
-    "black",
-  ];
+const SHAPE: ("circle" | "square" | "triangle")[] = [
+  "circle",
+  "square",
+  "triangle",
+];
+const COLOR: ("red" | "yellow" | "blue")[] = ["red", "yellow", "blue"];
+const BACKGROUND_COLOR: ("white" | "gray" | "black")[] = [
+  "white",
+  "gray",
+  "black",
+];
 
+export default function usePictureSet({ round }: { round: number }) {
   const [pictures, setPictures] = useState<PictureType[]>([]);
   const [availableSets, setAvailableSets] = useState<number[][]>([]);
 
-  const generatePictures = () => {
+  useEffect(() => {
     const pictures: PictureType[] = [];
     SHAPE.forEach((shape) => {
       COLOR.forEach((color) => {
@@ -32,9 +32,9 @@ export default function usePictureSet({ round }: { round: number }) {
     });
     pictures.sort(() => Math.random() - 0.5);
     setPictures(pictures.slice(0, 9));
-  };
+  }, [round]);
 
-  const calculateAvailableSets = () => {
+  useEffect(() => {
     if (pictures.length < 9) {
       return;
     }
@@ -96,14 +96,6 @@ export default function usePictureSet({ round }: { round: number }) {
     });
 
     setAvailableSets(availableSets);
-  };
-
-  useEffect(() => {
-    generatePictures();
-  }, [round]);
-
-  useEffect(() => {
-    calculateAvailableSets();
   }, [pictures]);
 
   return { pictures, availableSets };

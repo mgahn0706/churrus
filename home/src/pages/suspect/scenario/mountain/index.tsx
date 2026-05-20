@@ -1,29 +1,16 @@
 import InGameLayout from "@/features/suspect/components/InGame/InGameLayout";
+import { createScenarioTheme } from "@/features/suspect/components/createScenarioTheme";
 import { scenarios } from "@/features/suspect/fixtures";
-import {
-  mountainAdditionalQuestions,
-  mountainClues,
-} from "@/features/suspect/fixtures/mountain/clues";
+import { mountainAdditionalQuestions } from "@/features/suspect/fixtures/mountain/clues";
 import { mountainMoveButton } from "@/features/suspect/fixtures/mountain/movePlace";
 import { MountainPrologue } from "@/features/suspect/fixtures/mountain/prologue";
-import {
-  mountainSuspects,
-  mountainVictim,
-} from "@/features/suspect/fixtures/mountain/suspects";
-import { createTheme, ThemeProvider } from "@mui/material";
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#4caf50",
-      contrastText: "#fafafa",
-    },
-  },
-});
+import { ClueScenarioType } from "@/features/suspect/types";
+import { ThemeProvider } from "@mui/material";
 
 export default function Mountain() {
   const mountainScenario = scenarios.find(
-    (scenario) => scenario.id === "mountain"
+    (scenario): scenario is ClueScenarioType =>
+      scenario.id === "mountain" && scenario.gameType === "CLUE"
   );
 
   if (!mountainScenario) {
@@ -31,12 +18,9 @@ export default function Mountain() {
   }
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={createScenarioTheme(mountainScenario.color)}>
       <InGameLayout
-        suspects={mountainSuspects}
-        clues={mountainClues}
         movePlaceButton={mountainMoveButton}
-        victims={[mountainVictim]}
         prologue={<MountainPrologue />}
         scenario={mountainScenario}
         additionalQuestions={mountainAdditionalQuestions}

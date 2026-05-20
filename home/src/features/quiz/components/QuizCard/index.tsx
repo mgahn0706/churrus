@@ -61,6 +61,7 @@ export default function QuizCard({
             height={70}
             src={quiz.quizImageSource}
             alt={quiz.title}
+            unoptimized
             style={{ objectFit: "cover" }}
           />
         </Box>

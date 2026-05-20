@@ -2,6 +2,7 @@ import GlobalHeader from "@/components/Navigation/GlobalHeader";
 import {
   CategoryRounded,
   ColorLensRounded,
+  DirectionsRunRounded,
   Filter1Rounded,
   HelpRounded,
   IndeterminateCheckBoxRounded,
@@ -90,6 +91,13 @@ const FEATURED_GROUPS = [
         url: "/same-number",
         accent: "#4861C7",
         icon: <Filter1Rounded />,
+      },
+      {
+        title: "중간 달리기",
+        subtitle: "새 라우트로 연결되는 임시 레이아웃 페이지",
+        url: "/middle-race",
+        accent: "#D97706",
+        icon: <DirectionsRunRounded />,
       },
     ],
   },

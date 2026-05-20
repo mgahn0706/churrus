@@ -2,15 +2,14 @@
 
 import { Box, Button, Typography, Chip } from "@mui/material";
 import { PlayArrowRounded, PeopleAlt, Search } from "@mui/icons-material";
-import { useState, useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
-import { scenarios as sourceScenarios } from "@/features/suspect/fixtures";
+import { useState, useEffect, useRef, useCallback } from "react";
+import Image from "next/image";
+import { useRouter } from "next/router";
+import { scenarios } from "@/features/suspect/fixtures";
 import Header from "@/features/suspect/components/Header";
 
 export default function Suspect() {
-  const scenarios = sourceScenarios;
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [fadeKey, setFadeKey] = useState(0);
   const router = useRouter();
   const current = scenarios[currentIndex];
   const itemRefs = useRef<Array<HTMLDivElement | null>>([]);
@@ -22,15 +21,107 @@ export default function Suspect() {
     return "N/A";
   };
 
-  const handleSelect = () => {
+  const handleSelect = useCallback(() => {
     router.push(`/suspect/scenario/${current.id}`);
-  };
+  }, [current.id, router]);
 
-  const changeIndex = (index: number) => {
+  const changeIndex = useCallback((index: number) => {
     const safeIndex = (index + scenarios.length) % scenarios.length;
-    setFadeKey((p) => p + 1);
+    if (safeIndex === currentIndexRef.current) return;
     setCurrentIndex(safeIndex);
-  };
+  }, []);
+
+  const renderPersonCard = (
+    person: {
+      name: string;
+      age: number;
+      gender: "male" | "female";
+      job: string;
+      image?: string;
+    },
+    fallbackImage: string
+  ) => (
+    <Box
+      key={person.name}
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        gap: 1.1,
+        p: 1,
+        borderRadius: 2,
+        background: "rgba(255,255,255,0.03)",
+        border: "1px solid rgba(255,255,255,0.05)",
+        minWidth: 0,
+      }}
+    >
+      <Box
+        sx={{
+          width: 44,
+          height: 44,
+          borderRadius: 1.5,
+          overflow: "hidden",
+          position: "relative",
+          flexShrink: 0,
+        }}
+      >
+        <Image
+          src={person.image || fallbackImage}
+          alt={person.name}
+          fill
+          sizes="44px"
+          loading="lazy"
+          quality={60}
+          style={{ objectFit: "cover" }}
+        />
+      </Box>
+      <Box sx={{ minWidth: 0, flex: 1 }}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "baseline",
+            gap: 0.7,
+            minWidth: 0,
+          }}
+        >
+          <Typography
+            sx={{
+              fontSize: 14,
+              fontWeight: 700,
+              lineHeight: 1.2,
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
+            {person.name}
+          </Typography>
+          <Typography
+            sx={{
+              fontSize: 12,
+              opacity: 0.58,
+              lineHeight: 1.2,
+              whiteSpace: "nowrap",
+              flexShrink: 0,
+            }}
+          >
+            {person.age}세 · {genderLabel(person.gender)}
+          </Typography>
+        </Box>
+        <Typography
+          sx={{
+            fontSize: 12,
+            opacity: 0.72,
+            lineHeight: 1.35,
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+          }}
+        >
+          {person.job}
+        </Typography>
+      </Box>
+    </Box>
+  );
 
   /* ===========================
      TAB NAVIGATION
@@ -54,7 +145,7 @@ export default function Suspect() {
 
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
-  }, []);
+  }, [changeIndex, handleSelect]);
 
   useEffect(() => {
     const node = itemRefs.current[currentIndex];
@@ -94,12 +185,7 @@ export default function Suspect() {
               radial-gradient(520px circle at 80% 30%, ${current.color}22, transparent 55%),
               radial-gradient(520px circle at 30% 80%, ${current.color}2b, transparent 60%)
             `,
-          filter: "blur(40px)",
-          animation: { xs: "none", md: "nebulaDrift 18s ease-in-out infinite alternate" },
-          "@keyframes nebulaDrift": {
-            "0%": { transform: "translate3d(-2%, -1%, 0) scale(1)" },
-            "100%": { transform: "translate3d(2%, 1%, 0) scale(1.05)" },
-          },
+          filter: { xs: "none", md: "blur(24px)" },
           zIndex: 0,
           pointerEvents: "none",
         }}
@@ -138,15 +224,12 @@ export default function Suspect() {
               position: "relative",
               borderRadius: 5,
               overflow: "hidden",
-              backdropFilter: "blur(24px)",
-              background: "rgba(255,255,255,0.04)",
-              border: `1px solid ${current.color}33`,
-              boxShadow: "0 40px 120px rgba(0,0,0,0.8)",
-              animation: { xs: "none", md: "panelIn 600ms ease-out" },
-              "@keyframes panelIn": {
-                "0%": { transform: "translateY(10px)", opacity: 0.6 },
-                "100%": { transform: "translateY(0)", opacity: 1 },
+              background: {
+                xs: "rgba(8,10,14,0.92)",
+                md: "rgba(255,255,255,0.04)",
               },
+              border: `1px solid ${current.color}33`,
+              boxShadow: "0 24px 72px rgba(0,0,0,0.55)",
               flexDirection: { xs: "column", md: "row" },
             }}
           >
@@ -192,50 +275,54 @@ export default function Suspect() {
                       minWidth: { xs: 240, sm: 260, md: "auto" },
                       cursor: "pointer",
                       overflow: "hidden",
-                      transition: "transform 250ms ease, box-shadow 250ms ease",
+                      background: active
+                        ? `linear-gradient(135deg, ${s.color}2f, rgba(255,255,255,0.03))`
+                        : "rgba(255,255,255,0.02)",
+                      borderBottom: "1px solid rgba(255,255,255,0.05)",
+                      transition:
+                        "background-color 200ms ease, border-color 200ms ease",
                       "&:hover": {
-                        transform: "translateX(4px)",
-                        boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.12)",
+                        borderColor: `${s.color}55`,
                       },
                       flexShrink: 0,
                     }}
                   >
-                    <Box
-                      component="img"
-                      src={s.backgroundImage}
-                      alt={s.title}
-                      sx={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                        filter: active
-                          ? "brightness(1)"
-                          : "brightness(0.6) grayscale(40%)",
-                        transition: "all .6s ease",
-                      }}
-                    />
+                    <Box sx={{ position: "absolute", inset: 0 }}>
+                      <Image
+                        src={s.backgroundImage}
+                        alt={s.title}
+                        fill
+                        sizes="(max-width: 900px) 260px, 330px"
+                        loading="lazy"
+                        quality={65}
+                        style={{
+                          objectFit: "cover",
+                          filter: active
+                            ? "brightness(1)"
+                            : "brightness(0.6) grayscale(40%)",
+                          transition: "filter .6s ease",
+                        }}
+                      />
+                    </Box>
 
-                    {/* Dark gradient */}
                     <Box
                       sx={{
                         position: "absolute",
                         inset: 0,
                         background:
-                          "linear-gradient(to right, rgba(0,0,0,0.95), rgba(0,0,0,0.6) 40%, transparent)",
+                          "linear-gradient(to right, rgba(0,0,0,0.92), rgba(0,0,0,0.55) 45%, rgba(0,0,0,0.15))",
                       }}
                     />
 
-                    {/* Scenario color overlay (subtle) */}
-                    {active && (
-                      <Box
-                        sx={{
-                          position: "absolute",
-                          inset: 0,
-                          background: `linear-gradient(to right, ${s.color}33, transparent 60%)`,
-                          transition: "opacity .6s ease",
-                        }}
-                      />
-                    )}
+                    <Box
+                      sx={{
+                        position: "absolute",
+                        inset: 0,
+                        background: `linear-gradient(to right, ${s.color}${
+                          active ? "40" : "18"
+                        }, transparent 65%)`,
+                      }}
+                    />
 
                     <Typography
                       sx={{
@@ -259,9 +346,7 @@ export default function Suspect() {
                         fontSize: 17,
                         fontWeight: active ? 700 : 500,
                         letterSpacing: 0.8,
-                        transition: "transform 350ms ease",
-                        transform: active ? "scale(1.04)" : "scale(1)",
-                        transformOrigin: "left bottom",
+                        color: active ? "#fff" : "rgba(255,255,255,0.82)",
                       }}
                     >
                       {s.title}
@@ -282,19 +367,28 @@ export default function Suspect() {
             >
               {/* HERO IMAGE */}
               <Box
-                key={fadeKey}
-                component="img"
-                src={current.backgroundImage}
-                alt={current.title}
                 sx={{
+                  position: "relative",
                   width: "100%",
                   height: { xs: 220, sm: 280, md: "100%" },
-                  objectFit: "cover",
-                  objectPosition: "center",
-                  filter: "brightness(0.65)",
-                  transition: "opacity .6s ease",
                 }}
-              />
+              >
+                <Image
+                  key={current.id}
+                  src={current.backgroundImage}
+                  alt={current.title}
+                  fill
+                  priority
+                  sizes="(max-width: 900px) 100vw, 900px"
+                  quality={72}
+                  style={{
+                    objectFit: "cover",
+                    objectPosition: "center",
+                    filter: "brightness(0.65)",
+                    transition: "opacity .4s ease",
+                  }}
+                />
+              </Box>
 
               {/* Base dark gradient */}
               <Box
@@ -327,19 +421,30 @@ export default function Suspect() {
                   left: { md: 90 },
                   maxWidth: 700,
                   p: { xs: 2.5, sm: 3, md: 0 },
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "flex-start",
                 }}
               >
                 <Typography
                   sx={{
                     fontSize: "clamp(28px, 4vw, 52px)",
                     fontWeight: 800,
-                    mb: { xs: 1.5, md: 3 },
+                    lineHeight: 1.06,
+                    mb: { xs: 0.9, md: 1.2 },
                   }}
                 >
                   {current.title}
                 </Typography>
 
-                <Box sx={{ display: "flex", gap: 1.5, mb: { xs: 2, md: 3 }, flexWrap: "wrap" }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    gap: 1,
+                    mb: { xs: 1.1, md: 1.5 },
+                    flexWrap: "wrap",
+                  }}
+                >
                   <Chip
                     icon={<PeopleAlt />}
                     label={`용의자 ${current.numberOfSuspects}명`}
@@ -354,7 +459,7 @@ export default function Suspect() {
                     label={
                       current.gameType === "CLUE"
                         ? "단서 탐색형"
-                        : "단서 검색형"
+                        : "키워드 검색형"
                     }
                     sx={{
                       bgcolor: `${current.color}22`,
@@ -368,8 +473,9 @@ export default function Suspect() {
                   sx={{
                     fontSize: "clamp(14px, 1.1vw, 18px)",
                     opacity: 0.85,
-                    lineHeight: 1.8,
-                    mb: { xs: 2.5, md: 4 },
+                    lineHeight: 1.72,
+                    maxWidth: 560,
+                    mb: { xs: 1.2, md: 1.75 },
                   }}
                 >
                   {current.description}
@@ -413,8 +519,7 @@ export default function Suspect() {
               p: { xs: 2, md: 2 },
               background: "rgba(255,255,255,0.04)",
               border: `1px solid ${current.color}33`,
-              boxShadow: `0 30px 80px ${current.color}1f`,
-              backdropFilter: "blur(18px)",
+              boxShadow: `0 18px 48px rgba(0,0,0,0.28)`,
               position: "relative",
               overflow: { xs: "visible", md: "hidden" },
               minHeight: 0,
@@ -427,11 +532,6 @@ export default function Suspect() {
                 background: `linear-gradient(120deg, ${current.color}22, transparent 35%, transparent 70%, ${current.color}1a)`,
                 opacity: 0.35,
                 pointerEvents: "none",
-                animation: { xs: "none", md: "sheen 6s ease-in-out infinite" },
-                "@keyframes sheen": {
-                  "0%": { transform: "translateX(-30%)" },
-                  "100%": { transform: "translateX(30%)" },
-                },
               }}
             />
             <Box sx={{ px: 1, pt: 1 }}>
@@ -464,51 +564,11 @@ export default function Suspect() {
               <Typography sx={{ fontSize: 13, opacity: 0.6, mb: 0.5 }}>
                 피해자
               </Typography>
-              <Box sx={{ display: "flex", flexDirection: "column", gap: 1.2 }}>
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 0.8 }}>
                 {current.victims && current.victims.length > 0 ? (
-                  current.victims.map((victim) => (
-                    <Box
-                      key={victim.name}
-                      sx={{
-                        display: "flex",
-                        gap: 1.2,
-                        p: 1,
-                        borderRadius: 2,
-                        background: "rgba(255,255,255,0.03)",
-                        border: "1px solid rgba(255,255,255,0.05)",
-                        transition: "transform 200ms ease, box-shadow 200ms ease",
-                        "&:hover": {
-                          transform: "translateY(-2px)",
-                          boxShadow:
-                            "0 10px 24px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(255,255,255,0.08)",
-                        },
-                      }}
-                    >
-                      <Box
-                        component="img"
-                        src={victim.image}
-                        alt={victim.name}
-                        sx={{
-                          width: 44,
-                          height: 44,
-                          borderRadius: 1.5,
-                          objectFit: "cover",
-                          flexShrink: 0,
-                        }}
-                      />
-                      <Box sx={{ minWidth: 0 }}>
-                        <Typography sx={{ fontSize: 14, fontWeight: 700 }}>
-                          {victim.name}
-                        </Typography>
-                        <Typography sx={{ fontSize: 12, opacity: 0.7 }}>
-                          {victim.job}
-                        </Typography>
-                        <Typography sx={{ fontSize: 12, opacity: 0.6 }}>
-                          {victim.age}세 · {genderLabel(victim.gender)}
-                        </Typography>
-                      </Box>
-                    </Box>
-                  ))
+                  current.victims.map((victim) =>
+                    renderPersonCard(victim, current.backgroundImage)
+                  )
                 ) : (
                   <Typography sx={{ fontSize: 13, opacity: 0.5 }}>
                     피해자 정보를 준비 중입니다.
@@ -517,61 +577,22 @@ export default function Suspect() {
               </Box>
 
               <Box sx={{ mt: 2 }}>
-              <Typography sx={{ fontSize: 13, opacity: 0.6, mb: 0.5 }}>
-                용의자 목록
-              </Typography>
-              <Box sx={{ display: "flex", flexDirection: "column", gap: 1.2 }}>
-                {current.suspects && current.suspects.length > 0 ? (
-                  current.suspects.map((suspect) => (
-                    <Box
-                      key={suspect.name}
-                      sx={{
-                        display: "flex",
-                        gap: 1.2,
-                        p: 1,
-                        borderRadius: 2,
-                        background: "rgba(255,255,255,0.03)",
-                        border: "1px solid rgba(255,255,255,0.05)",
-                        transition:
-                          "transform 200ms ease, box-shadow 200ms ease",
-                        "&:hover": {
-                          transform: "translateY(-2px)",
-                          boxShadow:
-                            "0 10px 24px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(255,255,255,0.08)",
-                        },
-                      }}
-                    >
-                      <Box
-                        component="img"
-                        src={suspect.image}
-                        alt={suspect.name}
-                        sx={{
-                          width: 44,
-                          height: 44,
-                          borderRadius: 1.5,
-                          objectFit: "cover",
-                          flexShrink: 0,
-                        }}
-                      />
-                      <Box sx={{ minWidth: 0 }}>
-                        <Typography sx={{ fontSize: 14, fontWeight: 700 }}>
-                          {suspect.name}
-                        </Typography>
-                        <Typography sx={{ fontSize: 12, opacity: 0.7 }}>
-                          {suspect.job}
-                        </Typography>
-                        <Typography sx={{ fontSize: 12, opacity: 0.6 }}>
-                          {suspect.age}세 · {genderLabel(suspect.gender)}
-                        </Typography>
-                      </Box>
-                    </Box>
-                  ))
-                ) : (
-                  <Typography sx={{ fontSize: 13, opacity: 0.5 }}>
-                    용의자 정보를 준비 중입니다.
-                  </Typography>
-                )}
-              </Box>
+                <Typography sx={{ fontSize: 13, opacity: 0.6, mb: 0.5 }}>
+                  용의자 목록
+                </Typography>
+                <Box
+                  sx={{ display: "flex", flexDirection: "column", gap: 0.8 }}
+                >
+                  {current.suspects && current.suspects.length > 0 ? (
+                    current.suspects.map((suspect) =>
+                      renderPersonCard(suspect, current.backgroundImage)
+                    )
+                  ) : (
+                    <Typography sx={{ fontSize: 13, opacity: 0.5 }}>
+                      용의자 정보를 준비 중입니다.
+                    </Typography>
+                  )}
+                </Box>
               </Box>
             </Box>
 

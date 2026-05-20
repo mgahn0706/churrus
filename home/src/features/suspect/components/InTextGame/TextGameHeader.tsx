@@ -10,10 +10,12 @@ import {
   ListItem,
   Typography,
 } from "@mui/material";
+import HowToVoteIcon from "@mui/icons-material/HowToVote";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import MapModal from "./MapModal";
 import SuspectsInfoCard from "../InGame/SuspectsInfoCard";
+import SuspectVoteModal from "../InGame/SuspectVoteModal";
 import { ErrorOutline } from "@mui/icons-material";
 import { scenarios } from "../../fixtures";
 
@@ -22,6 +24,7 @@ interface TextGameHeaderProps {
 }
 
 const emojiMap: Record<string, string> = {
+  bluemoon: "🌕",
   dure: "🎭",
   school: "🏫",
 };
@@ -29,9 +32,10 @@ const emojiMap: Record<string, string> = {
 export default function TextGameHeader({ scenarioId }: TextGameHeaderProps) {
   const router = useRouter();
   const [modalState, setModalState] = useState<
-    "MAP" | "SUSPECT" | "SUBMIT" | null
+    "MAP" | "SUSPECT" | "SUBMIT" | "VOTE" | null
   >(null);
 
+  const scenarioIndex = scenarios.findIndex((s) => s.id === scenarioId);
   const { victims, suspects, places, title } = scenarios.find(
     (s) => s.id === scenarioId
   )!;
@@ -50,6 +54,15 @@ export default function TextGameHeader({ scenarioId }: TextGameHeaderProps) {
         victims={victims}
         suspects={suspects}
         isOpen={modalState === "SUSPECT"}
+        onClose={() => {
+          setModalState(null);
+        }}
+      />
+      <SuspectVoteModal
+        isOpen={modalState === "VOTE"}
+        suspects={suspects}
+        scenarioTitle={title}
+        episodeNumber={scenarioIndex >= 0 ? scenarioIndex + 1 : 1}
         onClose={() => {
           setModalState(null);
         }}
@@ -80,7 +93,7 @@ export default function TextGameHeader({ scenarioId }: TextGameHeaderProps) {
             <ListItem>범인은 누구인가요?</ListItem>
             <ListItem>살해 방법은 무엇인가요?</ListItem>
             <ListItem>살해 동기는 무엇인가요?</ListItem>
-            <ListItem>...외 다른 인물들의 숨은 이야기에 관한 질문 4개</ListItem>
+            <ListItem>...외 다른 인물들의 숨은 이야기에 관한 추가 질문들</ListItem>
           </List>
           <DialogActions>
             <Button
@@ -158,6 +171,27 @@ export default function TextGameHeader({ scenarioId }: TextGameHeaderProps) {
           >
             <Typography fontWeight="bolder" fontSize={16}>
               인물
+            </Typography>
+          </Box>
+          <Box
+            mx={1}
+            px={2}
+            py={1}
+            borderRadius="2px"
+            display="flex"
+            alignItems="center"
+            gap={0.8}
+            sx={{
+              cursor: "pointer",
+              "&:hover": {
+                backgroundColor: "rgb(60, 60, 60)",
+              },
+            }}
+            onClick={() => setModalState("VOTE")}
+          >
+            <HowToVoteIcon sx={{ fontSize: 18 }} />
+            <Typography fontWeight="bolder" fontSize={16}>
+              투표
             </Typography>
           </Box>
           <Box

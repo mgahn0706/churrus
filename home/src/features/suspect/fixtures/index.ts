@@ -5,6 +5,7 @@ import { jahayeonSuspects, jahayeonVictim } from "./jahayeon/suspects";
 import { dureSuspects, dureVictim } from "./dure/suspects";
 import { durePrologue } from "./dure/prologue";
 import { schoolPrologue } from "./school/prologue";
+import { bluemoonPrologue } from "./bluemoon/prologue";
 import { startUpClues } from "./startup/clues";
 import { jahayeonClues } from "./jahayeon/clues";
 import { schoolClues } from "./school/clues";
@@ -18,11 +19,18 @@ import { bluemoonClues } from "./bluemoon/clues";
 import { mountainSuspects, mountainVictim } from "./mountain/suspects";
 import { mountainClues } from "./mountain/clues";
 import { kpopSuspects, kpopVictim } from "./kpop/suspects";
+import { novelistSuspects, novelistVictim } from "./novelist/suspects";
+import { novelistClues } from "./novelist/clues";
+import { subwaySuspects, subwayVictim } from "./subway/suspects";
+import { subwayClues } from "./subway/clues";
+import { clubroomSuspects, clubroomVictim } from "./clubroom/suspects";
+import { clubroomClues } from "./clubroom/clues";
 
 export const scenarios: ScenarioType[] = [
   {
     title: "스타트업 살인사건",
-    numberOfSuspects: 3,
+    creators: [],
+    numberOfSuspects: 4,
     backgroundImage: "/image/suspect/scenario/startup/startup-main.png",
     id: "startup",
     isInDevelopment: false,
@@ -37,6 +45,7 @@ export const scenarios: ScenarioType[] = [
   },
   {
     title: "와부고 살인사건",
+    creators: [],
     gameType: "TEXT",
     numberOfSuspects: 3,
     histories: ["2023년 10월 정기모임", "2024년 3월 OT"],
@@ -53,6 +62,7 @@ export const scenarios: ScenarioType[] = [
   },
   {
     title: "자하연 살인사건",
+    creators: [],
     gameType: "CLUE",
     numberOfSuspects: 4,
     backgroundImage: "/image/suspect/scenario/jahayeon/jahayeon-main.png",
@@ -68,6 +78,7 @@ export const scenarios: ScenarioType[] = [
   },
   {
     title: "두레문예관 살인사건",
+    creators: [],
     gameType: "TEXT",
     numberOfSuspects: 4,
     backgroundImage: "/image/suspect/scenario/dure/dure-main.png",
@@ -84,6 +95,7 @@ export const scenarios: ScenarioType[] = [
   },
   {
     title: "추러스 박물관 살인사건",
+    creators: [],
     gameType: "CLUE",
     numberOfSuspects: 3,
     backgroundImage: "/image/suspect/scenario/museum/museum-main.png",
@@ -100,6 +112,7 @@ export const scenarios: ScenarioType[] = [
   {
     id: "serial",
     title: "28동-301동 연쇄 살인사건",
+    creators: [],
     gameType: "CLUE",
     numberOfSuspects: 3,
     backgroundImage: "/image/suspect/scenario/serial/serial-main.png",
@@ -112,7 +125,39 @@ export const scenarios: ScenarioType[] = [
     color: "#9333ea",
   },
   {
+    id: "mountain",
+    title: "청룡산 살인사건",
+    creators: [],
+    gameType: "CLUE",
+    numberOfSuspects: 4,
+    backgroundImage: "/image/suspect/scenario/mountain/mountain-main.png",
+    isInDevelopment: true,
+    description: "청룡산 등산로에서 발생한 의문의 추락사건",
+    places: ["intersection", "cafe", "entrance"],
+    suspects: mountainSuspects,
+    victims: [mountainVictim],
+    clues: mountainClues,
+    color: "#34c759",
+  },
+  {
+    title: "추리소설가 살인사건",
+    creators: [],
+    gameType: "CLUE",
+    numberOfSuspects: 4,
+    histories: [],
+    backgroundImage: "/image/suspect/scenario/novelist/novelist-main.png",
+    id: "novelist",
+    isInDevelopment: true,
+    places: ["room", "lounge"],
+    description: "추리소설계의 거장과 함께한 신년회에서 발생한 의문의 살인사건",
+    suspects: novelistSuspects,
+    victims: [novelistVictim],
+    clues: novelistClues,
+    color: "#ac7f5e",
+  },
+  {
     title: "케이팝 데몬 헌터스 살인사건",
+    creators: [],
     gameType: "CLUE",
     numberOfSuspects: 5,
     backgroundImage: "/image/suspect/scenario/kpop/kpop-main.png",
@@ -129,31 +174,50 @@ export const scenarios: ScenarioType[] = [
   {
     id: "bluemoon",
     title: "푸른 달 살인사건",
-    gameType: "CLUE",
+    creators: [],
+    gameType: "TEXT",
     numberOfSuspects: 6,
     histories: ["2026년 겨울 대이동"],
     backgroundImage: "/image/suspect/scenario/bluemoon/bluemoon-main.png",
     isInDevelopment: true,
     description: "푸른 달이 뜨는 밤, 한 조선시대 마을에서 벌어진 살인사건",
-    places: ["village", "market"],
+    places: ["village"],
     suspects: bluemoonSuspects,
     victims: [bluemoonVictim],
+    prologue: bluemoonPrologue,
     clues: bluemoonClues,
     color: "#1e6df4",
   },
-
   {
-    id: "mountain",
-    title: "청룡산 살인사건",
+    id: "subway",
+    title: "서울대입구역 살인사건",
+    creators: [],
     gameType: "CLUE",
     numberOfSuspects: 4,
-    backgroundImage: "/image/suspect/scenario/mountain/mountain-main.png",
+    histories: [],
+    backgroundImage: "/image/suspect/scenario/subway/subway-main.png",
     isInDevelopment: true,
-    description: "청룡산 등산로에서 발생한 의문의 추락사건",
-    places: ["cafe", "intersection"],
-    suspects: mountainSuspects,
-    victims: [mountainVictim],
-    clues: mountainClues,
-    color: "#4caf50",
+    description: "2020년 4월, 서울대입구역에서 일어난 사망 사건",
+    places: ["1F", "B1", "B2"],
+    suspects: subwaySuspects,
+    victims: [subwayVictim],
+    clues: subwayClues,
+    color: "#00A84D",
+  },
+  {
+    id: "clubroom",
+    title: "동아리방 살인사건",
+    creators: [],
+    gameType: "CLUE",
+    numberOfSuspects: 4,
+    histories: [],
+    backgroundImage: "/image/suspect/scenario/clubroom/clubroom-main.png",
+    isInDevelopment: true,
+    description: "동아리방에서 자고 있는 줄 알았던 회장이 살해된 사건",
+    places: ["room"],
+    suspects: clubroomSuspects,
+    victims: [clubroomVictim],
+    clues: clubroomClues,
+    color: "#f59e0b",
   },
 ];

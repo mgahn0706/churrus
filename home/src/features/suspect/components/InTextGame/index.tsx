@@ -21,7 +21,7 @@ import TextGameHeader from "./TextGameHeader";
 import { Search } from "@mui/icons-material";
 import { ClueData } from "@/pages/api/getCluesWithKeyword";
 import { FadeInSection } from "../FadeInSection";
-import { ScenarioType } from "../../types";
+import { TextScenarioType } from "../../types";
 
 const darkTheme = createTheme({
   palette: {
@@ -64,7 +64,7 @@ const ProgressBar = ({
 const MAX_VISIBLE = 6;
 
 interface InTextGameProps {
-  scenario: ScenarioType;
+  scenario: TextScenarioType;
 }
 
 export default function InTextGame({ scenario }: InTextGameProps) {

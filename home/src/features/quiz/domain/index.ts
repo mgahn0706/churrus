@@ -1,6 +1,14 @@
 import { MEETING_IDS, MEETINGS } from "../fixtures/meetings";
+import {
+  QUIZ_TAG_META,
+  QUIZ_TAG_EMOJI,
+  QUIZ_TAG_IMAGE_SOURCE,
+  QUIZ_TAG_KOREAN_NAME,
+  QUIZ_TAG_SLUG,
+  QUIZ_TAGS,
+} from "../fixtures/tagName";
 import { QuizData } from "../fixtures/quizzes";
-import { MeetingType, QuizType } from "../types";
+import { MeetingType, QuizType, Tags } from "../types";
 
 export const ALL_QUIZZES = MEETING_IDS.flatMap((meetingId) => QuizData[meetingId]);
 
@@ -22,6 +30,15 @@ export const MEETING_IDS_BY_YEAR = Object.entries(MEETINGS).reduce<
   acc[year].push(meetingId);
   return acc;
 }, {});
+
+export const MEETING_YEAR_GROUPS = Object.entries(MEETING_IDS_BY_YEAR)
+  .sort((a, b) => Number(b[0]) - Number(a[0]))
+  .map(([year, meetingIds]) => ({
+    year,
+    meetingIds: [...meetingIds].sort(
+      (a, b) => MEETINGS[b].date.month - MEETINGS[a].date.month
+    ),
+  }));
 
 export const getQuizById = (quizId: string) => QUIZ_BY_ID[quizId];
 
@@ -49,6 +66,52 @@ const getMeetingSortValue = (meetingId: string) => {
   return meeting.date.year * 100 + meeting.date.month;
 };
 
+const MEETING_ORDER_BY_ID = MEETING_IDS.reduce<Record<string, number>>(
+  (acc, meetingId, index) => {
+    acc[meetingId] = index;
+    return acc;
+  },
+  {}
+);
+
+export const compareQuizzesByChronology = (
+  leftQuiz: QuizType,
+  rightQuiz: QuizType
+) => {
+  const meetingOrderDifference =
+    (MEETING_ORDER_BY_ID[leftQuiz.meetingId] ?? Number.MAX_SAFE_INTEGER) -
+    (MEETING_ORDER_BY_ID[rightQuiz.meetingId] ?? Number.MAX_SAFE_INTEGER);
+
+  if (meetingOrderDifference !== 0) {
+    return meetingOrderDifference;
+  }
+
+  if (leftQuiz.quizNumber !== rightQuiz.quizNumber) {
+    return leftQuiz.quizNumber - rightQuiz.quizNumber;
+  }
+
+  return leftQuiz.id.localeCompare(rightQuiz.id, "ko");
+};
+
+export const compareQuizzesByRecentFirst = (
+  leftQuiz: QuizType,
+  rightQuiz: QuizType
+) => {
+  const meetingOrderDifference =
+    (MEETING_ORDER_BY_ID[leftQuiz.meetingId] ?? Number.MAX_SAFE_INTEGER) -
+    (MEETING_ORDER_BY_ID[rightQuiz.meetingId] ?? Number.MAX_SAFE_INTEGER);
+
+  if (meetingOrderDifference !== 0) {
+    return meetingOrderDifference;
+  }
+
+  if (leftQuiz.quizNumber !== rightQuiz.quizNumber) {
+    return rightQuiz.quizNumber - leftQuiz.quizNumber;
+  }
+
+  return rightQuiz.id.localeCompare(leftQuiz.id, "ko");
+};
+
 export interface QuizCreatorStat {
   creator: string;
   quizCount: number;
@@ -65,6 +128,17 @@ export interface QuizYearStat {
 
 export interface QuizTagStat {
   tag: string;
+  quizCount: number;
+}
+
+export interface QuizTagGroup {
+  tag: Tags;
+  label: string;
+  emoji: string;
+  slug: string;
+  imageSource: string;
+  shortDescription: string;
+  longDescription: string;
   quizCount: number;
 }
 
@@ -193,6 +267,28 @@ export const QUIZ_TAG_STATS: QuizTagStat[] = Object.entries(
 
     return a.tag.localeCompare(b.tag);
   });
+
+export const QUIZ_TAG_GROUPS: QuizTagGroup[] = QUIZ_TAGS.map((tag) => ({
+  tag,
+  label: QUIZ_TAG_KOREAN_NAME[tag],
+  emoji: QUIZ_TAG_EMOJI[tag],
+  slug: QUIZ_TAG_SLUG[tag],
+  imageSource: QUIZ_TAG_IMAGE_SOURCE[tag],
+  shortDescription: QUIZ_TAG_META[tag].shortDescription,
+  longDescription: QUIZ_TAG_META[tag].longDescription,
+  quizCount: ALL_QUIZZES.filter((quiz) => quiz.tags.includes(tag)).length,
+})).filter(({ quizCount }) => quizCount > 0);
+
+export const getQuizzesByTag = (tag: Tags): QuizType[] =>
+  ALL_QUIZZES.filter((quiz) => quiz.tags.includes(tag)).sort(
+    compareQuizzesByRecentFirst
+  );
+
+export const getQuizTagGroup = (tag: Tags): QuizTagGroup | undefined =>
+  QUIZ_TAG_GROUPS.find((tagGroup) => tagGroup.tag === tag);
+
+export const getTagBySlug = (slug: string): Tags | undefined =>
+  QUIZ_TAGS.find((tag) => QUIZ_TAG_SLUG[tag] === slug);
 
 const sortedMeetingsByQuizCount = [...MEETING_IDS].sort((a, b) => {
   const quizCountDifference = getMeetingQuizzes(b).length - getMeetingQuizzes(a).length;
