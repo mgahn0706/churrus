@@ -463,4 +463,46 @@ export const CONNECTIONS2026: ConnectionsType[] = [
       },
     ],
   },
+  {
+    week: 23,
+    quiz: [
+      {
+        words: ["연기", "보류", "지연", "연착"],
+        description: "미룸",
+      },
+      {
+        words: ["셈", "연산", "계", "산정"],
+        description: "계산",
+      },
+      {
+        words: ["비빔", "주먹", "솥", "개"],
+        description: "밥의 종류",
+      },
+      {
+        words: ["셔플", "학", "발레", "탈"],
+        description: "춤",
+      },
+    ],
+  },
+  {
+    week: 24,
+    quiz: [
+      {
+        words: ["가정", "성", "사이버", "팩트"],
+        description: "폭력의 종류",
+      },
+      {
+        words: ["시", "극", "가요", "가사"],
+        description: "한국 문학의 갈래",
+      },
+      {
+        words: ["브라운", "태그", "테이블", "계"],
+        description: "해시 __",
+      },
+      {
+        words: ["파티", "슈가", "정당", "마다"],
+        description: "'당'의 다른 말",
+      },
+    ],
+  },
 ];
