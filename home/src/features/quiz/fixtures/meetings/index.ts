@@ -59,7 +59,7 @@ export const MEETINGS: Record<string, MeetingType> = {
     id: "2026-5",
     title: "가정의 달",
     subtitle: "2026년 5월 정기모임",
-    imageSource: "",
+    imageSource: "/image/quiz/meeting/2026-5.png",
     quizIds: [
       "2026-5-1",
       "2026-5-2",
