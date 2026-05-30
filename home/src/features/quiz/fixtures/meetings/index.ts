@@ -1,6 +1,7 @@
 import { MeetingType } from "../../types";
 
 export const MEETING_IDS = [
+  "2026-5",
   "2026-4",
   "2026-3",
   "2026-OT-1",
@@ -54,6 +55,27 @@ export const MEETING_IDS = [
 ] as const;
 
 export const MEETINGS: Record<string, MeetingType> = {
+  "2026-5": {
+    id: "2026-5",
+    title: "가정의 달",
+    subtitle: "2026년 5월 정기모임",
+    imageSource: "",
+    quizIds: [
+      "2026-5-1",
+      "2026-5-2",
+      "2026-5-3",
+      "2026-5-4",
+      "2026-5-5",
+      "2026-5-6",
+      "2026-5-7",
+      "2026-5-8",
+      "2026-5-9",
+    ],
+    date: {
+      year: 2026,
+      month: 5,
+    },
+  },
   "2026-4": {
     id: "2026-4",
     title: "추그와트 중간고사",
@@ -72,7 +94,7 @@ export const MEETINGS: Record<string, MeetingType> = {
     ],
     date: {
       year: 2026,
-      month: 4,
+      month: 5,
     },
   },
   "2026-3": {
