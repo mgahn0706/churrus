@@ -57,14 +57,18 @@ export const buildFinalRevealSteps = ({
   const finalCandidates = sortedVoteSummary
     .filter(({ count }) => count >= suspenseCutoffVoteCount && count > 0)
     .map(({ suspect }) => suspect.name);
+  const suspenseOrderedFinalCandidates =
+    topTiedCandidates.length === 1 && finalCandidates.length === 2
+      ? [...finalCandidates].reverse()
+      : finalCandidates;
   const excludedCandidates = sortedVoteSummary
     .filter(({ count }) => count < suspenseCutoffVoteCount)
     .map(({ suspect }) => `${suspect.name}.`)
     .join(" ");
 
   const finalCandidateLine =
-    finalCandidates.length > 0
-      ? finalCandidates.join(" 그리고 ")
+    suspenseOrderedFinalCandidates.length > 0
+      ? suspenseOrderedFinalCandidates.join(" 그리고 ")
       : "지목된 후보가 없습니다";
   const excludedLine =
     excludedCandidates.length > 0
