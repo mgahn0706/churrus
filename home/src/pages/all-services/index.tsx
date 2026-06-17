@@ -5,6 +5,7 @@ import {
   CategoryRounded,
   ColorLensRounded,
   DashboardRounded,
+  DirectionsRunRounded,
   Filter1Rounded,
   GridOnRounded,
   HelpRounded,
@@ -165,6 +166,11 @@ export default function AllServicesPage() {
               label="먹이사슬"
               url="/food-chain"
               icon={<PetsRounded />}
+            />
+            <ServiceButton
+              label="중간 달리기"
+              url="/middle-race"
+              icon={<DirectionsRunRounded />}
             />
             <ServiceButton
               label="지하감옥"

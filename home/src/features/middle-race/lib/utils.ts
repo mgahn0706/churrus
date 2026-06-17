@@ -55,9 +55,11 @@ export const calculateNextPosition = ({
       const occupied = Object.values(playersState).some(
         (player) => player.name !== playerName && player.position === pointer
       );
+
       if (occupied) {
         continue;
       }
+
       remaining -= 1;
     }
 
