@@ -10,6 +10,7 @@ import {
   PetsRounded,
   PublicRounded,
   RadioRounded,
+  ShowChartRounded,
 } from "@mui/icons-material";
 import { Box, ButtonBase, Container, Typography } from "@mui/material";
 import Head from "next/head";
@@ -91,6 +92,13 @@ const FEATURED_GROUPS = [
         url: "/same-number",
         accent: "#4861C7",
         icon: <Filter1Rounded />,
+      },
+      {
+        title: "폭풍의 증권시장",
+        subtitle: "비공개 주가 정보로 폭풍처럼 거래하는 주식 심리전",
+        url: "/storm-stock-market",
+        accent: "#0F766E",
+        icon: <ShowChartRounded />,
       },
       {
         title: "중간 달리기",
