@@ -18,6 +18,7 @@ import {
   NavigateNextRounded,
   RemoveRounded,
   ShuffleRounded,
+  UndoRounded,
 } from "@mui/icons-material";
 import {
   Avatar,
@@ -67,6 +68,9 @@ const phasePanelSx = {
 const getPlayerColor = (player: RacePlayerState) =>
   getCharacterById(player.characterId)?.color ?? "#38bdf8";
 
+const getPlayerTooltipTitle = (player: RacePlayerState) =>
+  player.name.trim() || `Player ${player.draftOrder}`;
+
 const useIsomorphicLayoutEffect =
   typeof window === "undefined" ? useEffect : useLayoutEffect;
 
@@ -77,7 +81,7 @@ const PlayerPiece = ({
   active = false,
 }: {
   player: RacePlayerState;
-  size: number | { xs: number; md?: number };
+  size: number | string | { xs: number; md?: number };
   selected?: boolean;
   active?: boolean;
 }) => {
@@ -88,8 +92,9 @@ const PlayerPiece = ({
   const copied = Boolean(player.copiedAbilityId);
 
   return (
-    <Tooltip title={player.name} arrow placement="top">
+    <Tooltip title={getPlayerTooltipTitle(player)} arrow placement="top">
       <Box
+        aria-label={getPlayerTooltipTitle(player)}
         sx={{
           width: size,
           aspectRatio: "1 / 1",
@@ -932,6 +937,10 @@ const MoveCardDock = ({ game }: { game: MiddleRaceGame }) => {
   const [deleteTargetName, setDeleteTargetName] = useState("");
   const [deleteCardToKeep, setDeleteCardToKeep] = useState<number | null>(null);
   const [resetTargetName, setResetTargetName] = useState("");
+  const [offerTargetName, setOfferTargetName] = useState("");
+  const [offerCard, setOfferCard] = useState<number | null>(null);
+  const [mirrorTargetName, setMirrorTargetName] = useState("");
+  const [copyTargetName, setCopyTargetName] = useState("");
   const [hoveredTargetName, setHoveredTargetName] = useState<string | null>(null);
   const [dragState, setDragState] = useState<{
     card: number;
@@ -977,6 +986,43 @@ const MoveCardDock = ({ game }: { game: MiddleRaceGame }) => {
       : [];
   const selectedResetTarget =
     resetTargetPlayers.find((player) => player.name === resetTargetName) ?? null;
+  const offerSourcePlayer =
+    activePendingAbility?.type === "offer"
+      ? game.players.find((player) => player.name === activePendingAbility.source) ??
+        null
+      : null;
+  const offerTargetPlayers =
+    activePendingAbility?.type === "offer" && offerSourcePlayer
+      ? game.players.filter(
+          (player) =>
+            player.name !== offerSourcePlayer.name &&
+            !player.finishedRank &&
+            offerSourcePlayer.lastAbilityTargetName !== player.name
+        )
+      : [];
+  const selectedOfferTarget =
+    offerTargetPlayers.find((player) => player.name === offerTargetName) ?? null;
+  const mirrorSourcePlayer =
+    activePendingAbility?.type === "mirror"
+      ? game.players.find((player) => player.name === activePendingAbility.source) ??
+        null
+      : null;
+  const mirrorTargetPlayers =
+    activePendingAbility?.type === "mirror" && mirrorSourcePlayer
+      ? game.players.filter(
+          (player) =>
+            player.name !== mirrorSourcePlayer.name &&
+            !player.finishedRank &&
+            mirrorSourcePlayer.lastAbilityTargetName !== player.name
+        )
+      : [];
+  const selectedMirrorTarget =
+    mirrorTargetPlayers.find((player) => player.name === mirrorTargetName) ?? null;
+  const copySourcePlayer =
+    activePendingAbility?.type === "copy"
+      ? game.players.find((player) => player.name === activePendingAbility.source) ??
+        null
+      : null;
   const pendingUnionTargets =
     activePendingAbility?.type === "union"
       ? activePendingAbility.targets
@@ -1022,6 +1068,18 @@ const MoveCardDock = ({ game }: { game: MiddleRaceGame }) => {
     selectedDeleteTarget.hand.includes(deleteCardToKeep);
   const canResolveReset =
     activePendingAbility?.type === "reset" && Boolean(selectedResetTarget);
+  const canResolveOffer = Boolean(
+    activePendingAbility?.type === "offer" &&
+      offerSourcePlayer &&
+      selectedOfferTarget &&
+      offerCard !== null &&
+      offerSourcePlayer.hand.includes(offerCard)
+  );
+  const canResolveMirror = Boolean(
+    activePendingAbility?.type === "mirror" &&
+      mirrorSourcePlayer &&
+      selectedMirrorTarget
+  );
   const abilityTargetPlayers = game.currentAbilityTargetNames
     .map((playerName) => game.players.find((player) => player.name === playerName))
     .filter((player): player is RacePlayerState => Boolean(player));
@@ -1037,6 +1095,22 @@ const MoveCardDock = ({ game }: { game: MiddleRaceGame }) => {
     return Boolean(player.copiedAbilityId && player.copiedAbilityId !== "copy");
   };
   const copyableTargetPlayers = abilityTargetPlayers.filter(isCopyableTarget);
+  const pendingCopyTargetPlayers =
+    activePendingAbility?.type === "copy" && copySourcePlayer
+      ? game.players.filter(
+          (player) =>
+            player.name !== copySourcePlayer.name &&
+            !player.finishedRank &&
+            copySourcePlayer.lastAbilityTargetName !== player.name &&
+            isCopyableTarget(player)
+        )
+      : [];
+  const selectedCopyTarget =
+    pendingCopyTargetPlayers.find((player) => player.name === copyTargetName) ??
+    null;
+  const canResolveCopy = Boolean(
+    activePendingAbility?.type === "copy" && copySourcePlayer && selectedCopyTarget
+  );
   const abilitySelectedTarget = abilityTargetPlayers.find(
     (player) => player.name === abilityTargetName
   );
@@ -1519,30 +1593,40 @@ const MoveCardDock = ({ game }: { game: MiddleRaceGame }) => {
 
               {selectedDeleteTarget && (
                 <Stack direction="row" spacing={0.45} flexWrap="wrap" useFlexGap>
-                  {selectedDeleteTarget.hand.map((card, index) => (
-                    <Button
-                      key={`${selectedDeleteTarget.name}-keep-${card}-${index}`}
-                      onClick={() => {
-                        setDeleteCardToKeep(card);
-                      }}
-                      sx={{
-                        minWidth: 34,
-                        width: 34,
-                        height: 46,
-                        borderRadius: 1,
-                        border:
-                          deleteCardToKeep === card
+                  {selectedDeleteTarget.hand.map((card, index) => {
+                    const kept = deleteCardToKeep === card;
+
+                    return (
+                      <Button
+                        key={`${selectedDeleteTarget.name}-keep-${card}-${index}`}
+                        onClick={() => {
+                          setDeleteCardToKeep(card);
+                        }}
+                        sx={{
+                          minWidth: 34,
+                          width: 34,
+                          height: 46,
+                          borderRadius: 1,
+                          border: kept
                             ? "2px solid #5eead4"
                             : "1px solid rgba(255,255,255,0.18)",
-                        bgcolor: "#ffffff",
-                        color: "#111111",
-                        fontWeight: 900,
-                        p: 0,
-                      }}
-                    >
-                      {card}
-                    </Button>
-                  ))}
+                          bgcolor: "#ffffff",
+                          color: "#111111",
+                          fontWeight: 900,
+                          p: 0,
+                          opacity: kept ? 1 : 0.32,
+                          filter: kept ? "none" : "grayscale(1)",
+                          boxShadow: kept ? "0 0 14px rgba(94,234,212,0.42)" : "none",
+                          "&:hover": {
+                            opacity: kept ? 1 : 0.64,
+                            bgcolor: "#ffffff",
+                          },
+                        }}
+                      >
+                        {card}
+                      </Button>
+                    );
+                  })}
                 </Stack>
               )}
 
@@ -1585,7 +1669,9 @@ const MoveCardDock = ({ game }: { game: MiddleRaceGame }) => {
                       },
                     }}
                   >
-                    삭제 확정
+                    {deleteCardToKeep === null
+                      ? "삭제 확정"
+                      : `${deleteCardToKeep}만 남기고 삭제`}
                   </Button>
                 </Box>
               </Tooltip>
@@ -1680,6 +1766,336 @@ const MoveCardDock = ({ game }: { game: MiddleRaceGame }) => {
                     }}
                   >
                     리셋 확정
+                  </Button>
+                </Box>
+              </Tooltip>
+            </Stack>
+          )}
+          {activePendingAbility.type === "offer" && offerSourcePlayer && (
+            <Stack spacing={0.65} mt={0.75}>
+              <Stack direction="row" spacing={0.45} flexWrap="wrap" useFlexGap>
+                {offerSourcePlayer.hand.map((card, index) => {
+                  const selected = offerCard === card;
+
+                  return (
+                    <Button
+                      key={`${offerSourcePlayer.name}-offer-${card}-${index}`}
+                      onClick={() => {
+                        setOfferCard(card);
+                      }}
+                      sx={{
+                        minWidth: 34,
+                        width: 34,
+                        height: 46,
+                        borderRadius: 1,
+                        border: selected
+                          ? "2px solid #5eead4"
+                          : "1px solid rgba(255,255,255,0.18)",
+                        bgcolor: "#ffffff",
+                        color: "#111111",
+                        fontWeight: 900,
+                        p: 0,
+                        opacity: selected || offerCard === null ? 1 : 0.42,
+                        boxShadow: selected
+                          ? "0 0 14px rgba(94,234,212,0.42)"
+                          : "none",
+                        "&:hover": {
+                          opacity: 1,
+                          bgcolor: "#ffffff",
+                        },
+                      }}
+                    >
+                      {card}
+                    </Button>
+                  );
+                })}
+              </Stack>
+
+              <Box
+                sx={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr",
+                  gap: 0.4,
+                }}
+              >
+                {offerTargetPlayers.map((player) => {
+                  const selected = player.name === offerTargetName;
+                  const character = getCharacterById(player.characterId);
+
+                  return (
+                    <Button
+                      key={player.name}
+                      onMouseEnter={() => {
+                        setHoveredTargetName(player.name);
+                      }}
+                      onMouseLeave={() => {
+                        setHoveredTargetName((prev) =>
+                          prev === player.name ? null : prev
+                        );
+                      }}
+                      onClick={() => {
+                        setOfferTargetName(player.name);
+                      }}
+                      sx={{
+                        position: "relative",
+                        justifyContent: "flex-start",
+                        minWidth: 0,
+                        minHeight: 34,
+                        borderRadius: 1,
+                        border: selected
+                          ? `1px solid ${character?.color ?? "#5eead4"}`
+                          : "1px solid rgba(255,255,255,0.1)",
+                        bgcolor: selected
+                          ? "rgba(94,234,212,0.12)"
+                          : "rgba(15,23,42,0.52)",
+                        color: "#f8fafc",
+                        px: 0.55,
+                        py: 0.35,
+                        overflow: "visible",
+                      }}
+                    >
+                      <Box mr={0.55} width={22} height={22} flexShrink={0}>
+                        <PlayerPiece player={player} size={22} selected={selected} />
+                      </Box>
+                      <Typography fontSize={11} fontWeight={900} noWrap>
+                        {player.name}
+                      </Typography>
+                      {hoveredTargetPlayer?.name === player.name && (
+                        <TargetHandPreview player={hoveredTargetPlayer} />
+                      )}
+                    </Button>
+                  );
+                })}
+              </Box>
+
+              <Tooltip
+                title={
+                  canResolveOffer
+                    ? ""
+                    : offerCard === null
+                    ? "줄 이동카드 1장을 선택해야 합니다."
+                    : "이동카드를 받을 대상을 선택해야 합니다."
+                }
+                disableHoverListener={Boolean(canResolveOffer)}
+              >
+                <Box component="span" sx={{ display: "block" }}>
+                  <Button
+                    variant="contained"
+                    disabled={!canResolveOffer}
+                    onClick={() => {
+                      if (!selectedOfferTarget || offerCard === null) {
+                        return;
+                      }
+
+                      game.resolveOfferPendingAbility(
+                        selectedOfferTarget.name,
+                        offerCard
+                      );
+                      setOfferTargetName("");
+                      setOfferCard(null);
+                    }}
+                    sx={{
+                      width: "100%",
+                      height: 38,
+                      bgcolor: "#5eead4",
+                      color: "#052e24",
+                      fontWeight: 900,
+                      "&:hover": { bgcolor: "#2dd4bf" },
+                      "&.Mui-disabled": {
+                        bgcolor: "rgba(255,255,255,0.14)",
+                        color: "rgba(255,255,255,0.38)",
+                      },
+                    }}
+                  >
+                    {offerCard === null ? "오퍼 확정" : `${offerCard} 주기`}
+                  </Button>
+                </Box>
+              </Tooltip>
+            </Stack>
+          )}
+          {activePendingAbility.type === "mirror" && mirrorSourcePlayer && (
+            <Stack spacing={0.65} mt={0.75}>
+              <Box
+                sx={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr",
+                  gap: 0.4,
+                }}
+              >
+                {mirrorTargetPlayers.map((player) => {
+                  const selected = player.name === mirrorTargetName;
+                  const character = getCharacterById(player.characterId);
+
+                  return (
+                    <Button
+                      key={player.name}
+                      onMouseEnter={() => {
+                        setHoveredTargetName(player.name);
+                      }}
+                      onMouseLeave={() => {
+                        setHoveredTargetName((prev) =>
+                          prev === player.name ? null : prev
+                        );
+                      }}
+                      onClick={() => {
+                        setMirrorTargetName(player.name);
+                      }}
+                      sx={{
+                        position: "relative",
+                        justifyContent: "flex-start",
+                        minWidth: 0,
+                        minHeight: 34,
+                        borderRadius: 1,
+                        border: selected
+                          ? `1px solid ${character?.color ?? "#5eead4"}`
+                          : "1px solid rgba(255,255,255,0.1)",
+                        bgcolor: selected
+                          ? "rgba(94,234,212,0.12)"
+                          : "rgba(15,23,42,0.52)",
+                        color: "#f8fafc",
+                        px: 0.55,
+                        py: 0.35,
+                        overflow: "visible",
+                      }}
+                    >
+                      <Box mr={0.55} width={22} height={22} flexShrink={0}>
+                        <PlayerPiece player={player} size={22} selected={selected} />
+                      </Box>
+                      <Typography fontSize={11} fontWeight={900} noWrap>
+                        {player.name}
+                      </Typography>
+                      {hoveredTargetPlayer?.name === player.name && (
+                        <TargetHandPreview player={hoveredTargetPlayer} />
+                      )}
+                    </Button>
+                  );
+                })}
+              </Box>
+
+              <Tooltip
+                title={canResolveMirror ? "" : "반대 방향으로 이동시킬 대상을 선택해야 합니다."}
+                disableHoverListener={Boolean(canResolveMirror)}
+              >
+                <Box component="span" sx={{ display: "block" }}>
+                  <Button
+                    variant="contained"
+                    disabled={!canResolveMirror}
+                    onClick={() => {
+                      if (!selectedMirrorTarget) {
+                        return;
+                      }
+
+                      game.resolveMirrorPendingAbility(selectedMirrorTarget.name);
+                      setMirrorTargetName("");
+                    }}
+                    sx={{
+                      width: "100%",
+                      height: 38,
+                      bgcolor: "#5eead4",
+                      color: "#052e24",
+                      fontWeight: 900,
+                      "&:hover": { bgcolor: "#2dd4bf" },
+                      "&.Mui-disabled": {
+                        bgcolor: "rgba(255,255,255,0.14)",
+                        color: "rgba(255,255,255,0.38)",
+                      },
+                    }}
+                  >
+                    반대로 이동
+                  </Button>
+                </Box>
+              </Tooltip>
+            </Stack>
+          )}
+          {activePendingAbility.type === "copy" && copySourcePlayer && (
+            <Stack spacing={0.65} mt={0.75}>
+              <Box
+                sx={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr",
+                  gap: 0.4,
+                }}
+              >
+                {pendingCopyTargetPlayers.map((player) => {
+                  const selected = player.name === copyTargetName;
+                  const character = getCharacterById(player.characterId);
+
+                  return (
+                    <Button
+                      key={player.name}
+                      onMouseEnter={() => {
+                        setHoveredTargetName(player.name);
+                      }}
+                      onMouseLeave={() => {
+                        setHoveredTargetName((prev) =>
+                          prev === player.name ? null : prev
+                        );
+                      }}
+                      onClick={() => {
+                        setCopyTargetName(player.name);
+                      }}
+                      sx={{
+                        position: "relative",
+                        justifyContent: "flex-start",
+                        minWidth: 0,
+                        minHeight: 34,
+                        borderRadius: 1,
+                        border: selected
+                          ? `1px solid ${character?.color ?? "#5eead4"}`
+                          : "1px solid rgba(255,255,255,0.1)",
+                        bgcolor: selected
+                          ? "rgba(94,234,212,0.12)"
+                          : "rgba(15,23,42,0.52)",
+                        color: "#f8fafc",
+                        px: 0.55,
+                        py: 0.35,
+                        overflow: "visible",
+                      }}
+                    >
+                      <Box mr={0.55} width={22} height={22} flexShrink={0}>
+                        <PlayerPiece player={player} size={22} selected={selected} />
+                      </Box>
+                      <Typography fontSize={11} fontWeight={900} noWrap>
+                        {player.name}
+                      </Typography>
+                      {hoveredTargetPlayer?.name === player.name && (
+                        <TargetHandPreview player={hoveredTargetPlayer} />
+                      )}
+                    </Button>
+                  );
+                })}
+              </Box>
+
+              <Tooltip
+                title={canResolveCopy ? "" : "복사할 능력의 대상을 선택해야 합니다."}
+                disableHoverListener={Boolean(canResolveCopy)}
+              >
+                <Box component="span" sx={{ display: "block" }}>
+                  <Button
+                    variant="contained"
+                    disabled={!canResolveCopy}
+                    onClick={() => {
+                      if (!selectedCopyTarget) {
+                        return;
+                      }
+
+                      game.resolveCopyPendingAbility(selectedCopyTarget.name);
+                      setCopyTargetName("");
+                    }}
+                    sx={{
+                      width: "100%",
+                      height: 38,
+                      bgcolor: "#5eead4",
+                      color: "#052e24",
+                      fontWeight: 900,
+                      "&:hover": { bgcolor: "#2dd4bf" },
+                      "&.Mui-disabled": {
+                        bgcolor: "rgba(255,255,255,0.14)",
+                        color: "rgba(255,255,255,0.38)",
+                      },
+                    }}
+                  >
+                    능력 복사
                   </Button>
                 </Box>
               </Tooltip>
@@ -2367,6 +2783,32 @@ export function MiddleRacePageContent({ game }: { game: MiddleRaceGame }) {
             justifySelf="end"
             sx={{ gridColumn: { xs: 2, md: "auto" } }}
           >
+            <Tooltip title="방금 행동 무르기">
+              <span>
+                <IconButton
+                  aria-label="undo last action"
+                  size="small"
+                  onClick={game.undoLastAction}
+                  disabled={!game.canUndoLastAction}
+                  sx={{
+                    color: "rgba(226,232,240,0.72)",
+                    bgcolor: "rgba(255,255,255,0.06)",
+                    border: "1px solid rgba(255,255,255,0.08)",
+                    "&:hover": {
+                      color: "#e2e8f0",
+                      bgcolor: "rgba(255,255,255,0.12)",
+                    },
+                    "&.Mui-disabled": {
+                      color: "rgba(255,255,255,0.16)",
+                      bgcolor: "rgba(255,255,255,0.03)",
+                      borderColor: "rgba(255,255,255,0.05)",
+                    },
+                  }}
+                >
+                  <UndoRounded fontSize="small" />
+                </IconButton>
+              </span>
+            </Tooltip>
             <IconButton
               aria-label="previous phase"
               onClick={game.moveToPreviousPhase}

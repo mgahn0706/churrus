@@ -6,6 +6,7 @@ import {
 } from "@/features/middle-race/lib/utils";
 import {
   Direction,
+  Effect,
   MiddleRaceGame,
   PendingAbility,
   Phase,
@@ -23,6 +24,30 @@ const PHASE_ORDER: Phase[] = [
 const MIN_PLAYERS = 1;
 const MAX_PLAYERS = 13;
 const FINISH_LINE = 30;
+const UNDO_HISTORY_LIMIT = 30;
+
+const isAbilityMoveEffect = (
+  effect: Effect
+): effect is Extract<Effect, { type: "abilityMove" }> =>
+  effect.type === "abilityMove";
+
+type AbilityMoveEffect = Extract<Effect, { type: "abilityMove" }>;
+
+interface MiddleRaceGameSnapshot {
+  phase: Phase;
+  players: RacePlayerState[];
+  currentPlayerDraftOrder: number;
+  selectedPlayerName: string;
+  selectedCard: number | null;
+  pendingAbilityQueue: PendingAbility[];
+  abilityUsedThisTurnDraftOrder: number | null;
+  pendingMoveCardAction: {
+    currentPlayerDraftOrder: number;
+    card: number;
+    useDefaultMove?: boolean;
+  } | null;
+  pendingResumeDraftOrder: number | null;
+}
 
 const createDefaultPlayer = (draftOrder: number): RacePlayerState => ({
   name: `Player ${draftOrder}`,
@@ -63,6 +88,9 @@ const getRaceTurnPlayers = (racePlayers: RacePlayerState[]) =>
   sortRacePlayersByCharacterPriority(
     racePlayers.filter((player) => player.characterId && !player.finishedRank)
   );
+
+const areSameCards = (left: number[], right: number[]) =>
+  left.length === right.length && left.every((card, index) => card === right[index]);
 
 const getFirstRacePlayer = (racePlayers: RacePlayerState[]) =>
   getRaceTurnPlayers(racePlayers)[0] ??
@@ -144,16 +172,23 @@ const createTriggeredAbilityQueue = ({
   movedPlayerNames,
   movedBackwardPlayerNames = [],
   includeMovedDelete = false,
+  deleteMovedPlayerNames,
+  abilityMoves = [],
   getEffectiveAbilityId,
 }: {
   racePlayers: RacePlayerState[];
   movedPlayerNames: string[];
   movedBackwardPlayerNames?: string[];
   includeMovedDelete?: boolean;
+  deleteMovedPlayerNames?: string[];
+  abilityMoves?: AbilityMoveEffect[];
   getEffectiveAbilityId: (player: RacePlayerState) => string | null;
 }) => {
   const movedNameSet = new Set(movedPlayerNames);
   const movedBackwardNameSet = new Set(movedBackwardPlayerNames);
+  const deleteMovedNameSet = new Set(
+    deleteMovedPlayerNames ?? (includeMovedDelete ? movedPlayerNames : [])
+  );
   const queue: PendingAbility[] = [];
   const queueKeys = new Set<string>();
 
@@ -179,7 +214,7 @@ const createTriggeredAbilityQueue = ({
   };
   const pushDeleteQueue = (source: RacePlayerState) => {
     if (
-      !includeMovedDelete ||
+      !deleteMovedNameSet.has(source.name) ||
       source.finishedRank ||
       getEffectiveAbilityId(source) !== "delete"
     ) {
@@ -247,6 +282,27 @@ const createTriggeredAbilityQueue = ({
       targets,
     });
   };
+  const pushMirrorQueue = (move: AbilityMoveEffect) => {
+    const source = racePlayers.find((player) => player.name === move.target);
+
+    if (
+      !source ||
+      source.finishedRank ||
+      move.source === move.target ||
+      move.delta === 0 ||
+      getEffectiveAbilityId(source) !== "mirror"
+    ) {
+      return;
+    }
+
+    const key = `mirror:${source.name}:${move.source}:${move.delta}`;
+    if (queueKeys.has(key)) {
+      return;
+    }
+
+    queueKeys.add(key);
+    queue.push({ type: "mirror", source: source.name, delta: move.delta });
+  };
   racePlayers
     .filter((player) => movedNameSet.has(player.name))
     .forEach((movedPlayer) => {
@@ -264,11 +320,31 @@ const createTriggeredAbilityQueue = ({
         });
     });
 
-  racePlayers.forEach((player) => {
-    pushUnionQueueForSource(player);
-  });
+  racePlayers
+    .filter((player) => {
+      if (movedNameSet.has(player.name)) {
+        return true;
+      }
 
-  return queue.sort((left, right) => {
+      return racePlayers.some(
+        (movedPlayer) =>
+          movedNameSet.has(movedPlayer.name) &&
+          movedPlayer.position === player.position + 1
+      );
+    })
+    .forEach((player) => {
+      pushUnionQueueForSource(player);
+    });
+  abilityMoves.forEach(pushMirrorQueue);
+
+  return sortPendingAbilityQueue(queue, racePlayers);
+};
+
+const sortPendingAbilityQueue = (
+  queue: PendingAbility[],
+  racePlayers: RacePlayerState[]
+) =>
+  [...queue].sort((left, right) => {
     if (left.type === "push" && right.type === "union") {
       return -1;
     }
@@ -287,8 +363,139 @@ const createTriggeredAbilityQueue = ({
       return priorityDiff;
     }
 
-    return left.source.localeCompare(right.source);
+    const sourceDiff = left.source.localeCompare(right.source);
+
+    if (sourceDiff !== 0) {
+      return sourceDiff;
+    }
+
+    const typeOrder = ["offer", "copy"];
+    return typeOrder.indexOf(left.type) - typeOrder.indexOf(right.type);
   });
+
+const getResetPlayerNames = ({
+  beforePlayers,
+  afterPlayers,
+}: {
+  beforePlayers: RacePlayerState[];
+  afterPlayers: RacePlayerState[];
+}) =>
+  afterPlayers
+    .filter((afterPlayer) => {
+      const beforePlayer = beforePlayers.find(
+        (player) => player.name === afterPlayer.name
+      );
+      const defaultHand = createDefaultHand(afterPlayer.characterId);
+
+      return Boolean(
+        beforePlayer &&
+          afterPlayer.discard.length === 0 &&
+          areSameCards(afterPlayer.hand, defaultHand) &&
+          (!areSameCards(beforePlayer.hand, afterPlayer.hand) ||
+            beforePlayer.discard.length > 0)
+      );
+    })
+    .map((player) => player.name);
+
+const createOfferAbilityQueue = ({
+  racePlayers,
+  resetPlayerNames,
+  getEffectiveAbilityId,
+}: {
+  racePlayers: RacePlayerState[];
+  resetPlayerNames: string[];
+  getEffectiveAbilityId: (player: RacePlayerState) => string | null;
+}) => {
+  const resetNameSet = new Set(resetPlayerNames);
+
+  return sortPendingAbilityQueue(
+    racePlayers
+      .filter(
+        (player) =>
+          resetNameSet.has(player.name) &&
+          !player.finishedRank &&
+          player.hand.length > 0 &&
+          getEffectiveAbilityId(player) === "offer" &&
+          racePlayers.some(
+            (target) =>
+              target.name !== player.name &&
+              !target.finishedRank &&
+              player.lastAbilityTargetName !== target.name
+          )
+      )
+      .map(
+        (player): PendingAbility => ({
+          type: "offer",
+          source: player.name,
+        })
+      ),
+    racePlayers
+  );
+};
+
+const createCopyAbilityQueue = ({
+  racePlayers,
+  resetPlayerNames,
+  getEffectiveAbilityId,
+}: {
+  racePlayers: RacePlayerState[];
+  resetPlayerNames: string[];
+  getEffectiveAbilityId: (player: RacePlayerState) => string | null;
+}) => {
+  const resetNameSet = new Set(resetPlayerNames);
+
+  return sortPendingAbilityQueue(
+    racePlayers
+      .filter(
+        (player) =>
+          resetNameSet.has(player.name) &&
+          player.characterId === "copy" &&
+          !player.abilityDisabled &&
+          !player.finishedRank &&
+          racePlayers.some(
+            (target) => {
+              const targetAbilityId = getEffectiveAbilityId(target);
+
+              return Boolean(
+                target.name !== player.name &&
+                  !target.finishedRank &&
+                  !target.abilityDisabled &&
+                  targetAbilityId &&
+                  targetAbilityId !== "copy" &&
+                  player.lastAbilityTargetName !== target.name
+              );
+            }
+          )
+      )
+      .map(
+        (player): PendingAbility => ({
+          type: "copy",
+          source: player.name,
+        })
+      ),
+    racePlayers
+  );
+};
+
+const clearExpiredCopiedAbilities = ({
+  racePlayers,
+  resetPlayerNames,
+  preserveOfferSourceNames = [],
+}: {
+  racePlayers: RacePlayerState[];
+  resetPlayerNames: string[];
+  preserveOfferSourceNames?: string[];
+}) => {
+  const resetNameSet = new Set(resetPlayerNames);
+  const preserveNameSet = new Set(preserveOfferSourceNames);
+
+  return racePlayers.map((player) =>
+    resetNameSet.has(player.name) &&
+    player.characterId === "copy" &&
+    !preserveNameSet.has(player.name)
+      ? { ...player, copiedAbilityId: null }
+      : player
+  );
 };
 
 const getPendingAbilityFocusName = (ability: PendingAbility) =>
@@ -304,11 +511,115 @@ const normalizePendingAbilityQueue = ({
   getEffectiveAbilityId: (player: RacePlayerState) => string | null;
 }) =>
   queue.flatMap((ability): PendingAbility[] => {
+    const source = racePlayers.find((player) => player.name === ability.source);
+
+    if (ability.type === "offer") {
+      return source &&
+        !source.finishedRank &&
+        source.hand.length > 0 &&
+        getEffectiveAbilityId(source) === "offer" &&
+        racePlayers.some(
+          (target) =>
+            target.name !== source.name &&
+            !target.finishedRank &&
+            source.lastAbilityTargetName !== target.name
+        )
+        ? [ability]
+        : [];
+    }
+
+    if (ability.type === "copy") {
+      return source &&
+        source.characterId === "copy" &&
+        !source.abilityDisabled &&
+        !source.finishedRank &&
+        racePlayers.some(
+          (target) => {
+            const targetAbilityId = getEffectiveAbilityId(target);
+
+            return Boolean(
+              target.name !== source.name &&
+                !target.finishedRank &&
+                !target.abilityDisabled &&
+                targetAbilityId &&
+                targetAbilityId !== "copy" &&
+                source.lastAbilityTargetName !== target.name
+            );
+          }
+        )
+        ? [ability]
+        : [];
+    }
+
+    if (ability.type === "mirror") {
+      return source &&
+        !source.finishedRank &&
+        getEffectiveAbilityId(source) === "mirror" &&
+        ability.delta !== 0 &&
+        racePlayers.some(
+          (target) =>
+            target.name !== source.name &&
+            !target.finishedRank &&
+            source.lastAbilityTargetName !== target.name
+        )
+        ? [ability]
+        : [];
+    }
+
+    if (ability.type === "push") {
+      const target = racePlayers.find((player) => player.name === ability.target);
+
+      return source &&
+        target &&
+        !source.finishedRank &&
+        !target.finishedRank &&
+        source.position > 1 &&
+        source.position === target.position &&
+        getEffectiveAbilityId(source) === "push"
+        ? [ability]
+        : [];
+    }
+
+    if (ability.type === "one") {
+      return source &&
+        !source.finishedRank &&
+        getEffectiveAbilityId(source) === "one"
+        ? [ability]
+        : [];
+    }
+
+    if (ability.type === "delete") {
+      return source &&
+        !source.finishedRank &&
+        getEffectiveAbilityId(source) === "delete" &&
+        racePlayers.some(
+          (target) =>
+            target.name !== source.name &&
+            !target.finishedRank &&
+            source.lastAbilityTargetName !== target.name &&
+            target.hand.length > 0
+        )
+        ? [ability]
+        : [];
+    }
+
+    if (ability.type === "reset") {
+      return source &&
+        !source.finishedRank &&
+        getEffectiveAbilityId(source) === "reset" &&
+        racePlayers.some(
+          (target) =>
+            target.name !== source.name &&
+            !target.finishedRank &&
+            source.lastAbilityTargetName !== target.name
+        )
+        ? [ability]
+        : [];
+    }
+
     if (ability.type !== "union") {
       return [ability];
     }
-
-    const source = racePlayers.find((player) => player.name === ability.source);
 
     if (
       !source ||
@@ -403,6 +714,58 @@ export const useMiddleRaceGame = (): MiddleRaceGame => {
   const [pendingResumeDraftOrder, setPendingResumeDraftOrder] = useState<
     number | null
   >(null);
+  const [undoStack, setUndoStack] = useState<MiddleRaceGameSnapshot[]>([]);
+
+  const createUndoSnapshot = (): MiddleRaceGameSnapshot => ({
+    phase,
+    players: players.map((player) => ({
+      ...player,
+      hand: [...player.hand],
+      discard: [...player.discard],
+    })),
+    currentPlayerDraftOrder,
+    selectedPlayerName,
+    selectedCard,
+    pendingAbilityQueue: pendingAbilityQueue.map((ability) => ({
+      ...ability,
+      ...(ability.type === "union" ? { targets: [...ability.targets] } : {}),
+    })),
+    abilityUsedThisTurnDraftOrder,
+    pendingMoveCardAction: pendingMoveCardAction
+      ? { ...pendingMoveCardAction }
+      : null,
+    pendingResumeDraftOrder,
+  });
+
+  const pushUndoSnapshot = () => {
+    const snapshot = createUndoSnapshot();
+    setUndoStack((prev) => [...prev.slice(-UNDO_HISTORY_LIMIT + 1), snapshot]);
+  };
+
+  const restoreUndoSnapshot = (snapshot: MiddleRaceGameSnapshot) => {
+    setPhase(snapshot.phase);
+    setPlayers(
+      snapshot.players.map((player) => ({
+        ...player,
+        hand: [...player.hand],
+        discard: [...player.discard],
+      }))
+    );
+    setCurrentPlayerDraftOrder(snapshot.currentPlayerDraftOrder);
+    setSelectedPlayerName(snapshot.selectedPlayerName);
+    setSelectedCard(snapshot.selectedCard);
+    setPendingAbilityQueue(
+      snapshot.pendingAbilityQueue.map((ability) => ({
+        ...ability,
+        ...(ability.type === "union" ? { targets: [...ability.targets] } : {}),
+      }))
+    );
+    setAbilityUsedThisTurnDraftOrder(snapshot.abilityUsedThisTurnDraftOrder);
+    setPendingMoveCardAction(
+      snapshot.pendingMoveCardAction ? { ...snapshot.pendingMoveCardAction } : null
+    );
+    setPendingResumeDraftOrder(snapshot.pendingResumeDraftOrder);
+  };
 
   const selectedPlayer =
     players.find((player) => player.name === selectedPlayerName) ?? players[0];
@@ -430,12 +793,20 @@ export const useMiddleRaceGame = (): MiddleRaceGame => {
   const turnPlayerEffectiveAbilityId = turnPlayer
     ? getEffectiveAbilityId(turnPlayer)
     : null;
+  const hasTurnAbilityTarget = Boolean(
+    turnPlayer &&
+      players.some((player) =>
+        canTargetWithAbility({ source: turnPlayer, target: player })
+      )
+  );
   const mustUseSilenceBeforeMoveCard =
     turnPlayerEffectiveAbilityId === "silence" &&
+    hasTurnAbilityTarget &&
     abilityUsedThisTurnDraftOrder !== turnPlayer?.draftOrder;
   const mustUseWithBeforeMoveCard =
     turnPlayerEffectiveAbilityId === "with" &&
     turnPlayer?.hand.length === 1 &&
+    hasTurnAbilityTarget &&
     abilityUsedThisTurnDraftOrder !== turnPlayer?.draftOrder;
   const canUseSelectedMoveCard =
     selectedCard !== null &&
@@ -541,22 +912,45 @@ export const useMiddleRaceGame = (): MiddleRaceGame => {
             getEffectiveAbilityId,
           })
         : [];
+      const resetPlayerNames = getResetPlayerNames({
+        beforePlayers: nextPlayers,
+        afterPlayers: rankedMovedPlayers,
+      });
+      const offerQueue = createOfferAbilityQueue({
+        racePlayers: rankedMovedPlayers,
+        resetPlayerNames,
+        getEffectiveAbilityId,
+      });
+      const copyQueue = createCopyAbilityQueue({
+        racePlayers: rankedMovedPlayers,
+        resetPlayerNames,
+        getEffectiveAbilityId,
+      });
+      const resolvedRankedMovedPlayers = clearExpiredCopiedAbilities({
+        racePlayers: rankedMovedPlayers,
+        resetPlayerNames,
+        preserveOfferSourceNames: offerQueue.map((ability) => ability.source),
+      });
+      const nextPendingQueue = sortPendingAbilityQueue(
+        [...offerQueue, ...copyQueue, ...postMoveQueue],
+        resolvedRankedMovedPlayers
+      );
 
       setPendingMoveCardAction(null);
 
-      if (postMoveQueue.length > 0) {
-        const firstPending = postMoveQueue[0];
+      if (nextPendingQueue.length > 0) {
+        const firstPending = nextPendingQueue[0];
 
         if (firstPending) {
-          setPendingAbilityQueue(postMoveQueue);
+          setPendingAbilityQueue(nextPendingQueue);
           setSelectedPlayerName(getPendingAbilityFocusName(firstPending));
         }
 
-        return rankedMovedPlayers;
+        return resolvedRankedMovedPlayers;
       }
 
       return advanceToNextTurnOrQueueTriggeredAbilities({
-        nextPlayers: rankedMovedPlayers,
+        nextPlayers: resolvedRankedMovedPlayers,
         currentDraftOrder: pendingMoveCardAction.currentPlayerDraftOrder,
       });
     }
@@ -603,11 +997,6 @@ export const useMiddleRaceGame = (): MiddleRaceGame => {
     const shouldReleaseSilence =
       nextPlayer?.characterId === "silence" &&
       nextPlayers.some((player) => player.abilityDisabled);
-    const releasedPlayerNames = shouldReleaseSilence
-      ? nextPlayers
-          .filter((player) => player.abilityDisabled)
-          .map((player) => player.name)
-      : [];
     const turnStartPlayers = shouldReleaseSilence
       ? nextPlayers.map((player) =>
           player.abilityDisabled
@@ -618,28 +1007,6 @@ export const useMiddleRaceGame = (): MiddleRaceGame => {
             : player
         )
       : nextPlayers;
-    const releaseQueue =
-      releasedPlayerNames.length > 0
-        ? createTriggeredAbilityQueue({
-            racePlayers: turnStartPlayers,
-            movedPlayerNames: releasedPlayerNames,
-            getEffectiveAbilityId,
-          })
-        : [];
-
-    if (releaseQueue.length > 0) {
-      const firstPending = releaseQueue[0];
-
-      if (firstPending) {
-        setPendingResumeDraftOrder(nextPlayer?.draftOrder ?? 1);
-        setPendingAbilityQueue(releaseQueue);
-        setSelectedPlayerName(getPendingAbilityFocusName(firstPending));
-      }
-
-      setSelectedCard(null);
-      setAbilityUsedThisTurnDraftOrder(null);
-      return turnStartPlayers;
-    }
 
     setPendingAbilityQueue([]);
     setPendingResumeDraftOrder(null);
@@ -677,6 +1044,7 @@ export const useMiddleRaceGame = (): MiddleRaceGame => {
     currentAbilityTargetNames,
     canAddPlayer,
     canRemovePlayer,
+    canUndoLastAction: undoStack.length > 0,
     selectPlayer: (playerName) => {
       const nextPlayer =
         players.find((player) => player.name === playerName) ?? players[0];
@@ -699,6 +1067,8 @@ export const useMiddleRaceGame = (): MiddleRaceGame => {
       if (!turnPlayer.hand.includes(selectedCard)) {
         return;
       }
+
+      pushUndoSnapshot();
 
       setPlayers((prev) => {
         const oneQueue = createOneTriggerQueue({
@@ -754,24 +1124,47 @@ export const useMiddleRaceGame = (): MiddleRaceGame => {
               : [],
           getEffectiveAbilityId,
         });
+        const resetPlayerNames = getResetPlayerNames({
+          beforePlayers: prev,
+          afterPlayers: rankedPlayers,
+        });
+        const offerQueue = createOfferAbilityQueue({
+          racePlayers: rankedPlayers,
+          resetPlayerNames,
+          getEffectiveAbilityId,
+        });
+        const copyQueue = createCopyAbilityQueue({
+          racePlayers: rankedPlayers,
+          resetPlayerNames,
+          getEffectiveAbilityId,
+        });
+        const resolvedRankedPlayers = clearExpiredCopiedAbilities({
+          racePlayers: rankedPlayers,
+          resetPlayerNames,
+          preserveOfferSourceNames: offerQueue.map((ability) => ability.source),
+        });
+        const pendingQueue = sortPendingAbilityQueue(
+          [...offerQueue, ...copyQueue, ...nextQueue],
+          resolvedRankedPlayers
+        );
 
-        if (nextQueue.length > 0) {
-          const firstPending = nextQueue[0];
+        if (pendingQueue.length > 0) {
+          const firstPending = pendingQueue[0];
 
           if (!firstPending) {
-            return rankedPlayers;
+            return resolvedRankedPlayers;
           }
 
           setAbilityUsedThisTurnDraftOrder(null);
-          setPendingAbilityQueue(nextQueue);
+          setPendingAbilityQueue(pendingQueue);
           setSelectedPlayerName(getPendingAbilityFocusName(firstPending));
           setSelectedCard(null);
 
-          return rankedPlayers;
+          return resolvedRankedPlayers;
         }
 
         return advanceToNextTurnOrQueueTriggeredAbilities({
-          nextPlayers: rankedPlayers,
+          nextPlayers: resolvedRankedPlayers,
           currentDraftOrder: turnPlayer.draftOrder,
         });
       });
@@ -801,6 +1194,8 @@ export const useMiddleRaceGame = (): MiddleRaceGame => {
           if (!source || targets.length === 0) {
             return prev;
           }
+
+          pushUndoSnapshot();
 
           const nextQueue: PendingAbility[] = [
             {
@@ -838,16 +1233,37 @@ export const useMiddleRaceGame = (): MiddleRaceGame => {
           targetPlayerName: abilityTargetPlayerName,
         });
         const movedByAbilityNames = effects
-          .filter((effect) => effect.type === "abilityMove")
+          .filter(isAbilityMoveEffect)
           .map((effect) => effect.target);
+        const movedForFinishRank =
+          currentEffectiveAbilityId === "with"
+            ? [turnPlayer.name, ...movedByAbilityNames].sort((leftName, rightName) => {
+                const leftPlayer = prev.find((player) => player.name === leftName);
+                const rightPlayer = prev.find((player) => player.name === rightName);
+                const positionDiff =
+                  (rightPlayer?.position ?? 0) - (leftPlayer?.position ?? 0);
+
+                if (positionDiff !== 0) {
+                  return positionDiff;
+                }
+
+                return (
+                  getCharacterPriority(leftPlayer?.characterId ?? null) -
+                    getCharacterPriority(rightPlayer?.characterId ?? null) ||
+                  (leftPlayer?.draftOrder ?? 0) - (rightPlayer?.draftOrder ?? 0)
+                );
+              })
+            : [turnPlayer.name, ...movedByAbilityNames];
         const rankedPlayers = turnConsumed
           ? applyFinishRanks({
               racePlayers: nextPlayers,
-              movedPlayerNames: [turnPlayer.name, ...movedByAbilityNames],
+              movedPlayerNames: movedForFinishRank,
             })
           : nextPlayers;
 
         if (turnConsumed) {
+          pushUndoSnapshot();
+
           const actorBeforeAbility = prev.find(
             (player) => player.draftOrder === turnPlayer.draftOrder
           );
@@ -871,9 +1287,8 @@ export const useMiddleRaceGame = (): MiddleRaceGame => {
               ? [actorBeforeAbility.name]
               : []),
             ...effects
-              .filter(
-                (effect) => effect.type === "abilityMove" && effect.delta < 0
-              )
+              .filter(isAbilityMoveEffect)
+              .filter((effect) => effect.delta < 0)
               .map((effect) => effect.target),
           ];
           const nextQueue =
@@ -882,31 +1297,57 @@ export const useMiddleRaceGame = (): MiddleRaceGame => {
                   racePlayers: rankedPlayers,
                   movedPlayerNames,
                   movedBackwardPlayerNames,
-                  includeMovedDelete: true,
+                  deleteMovedPlayerNames: movedByAbilityNames,
+                  abilityMoves: effects.filter(isAbilityMoveEffect),
                   getEffectiveAbilityId,
                 })
               : [];
+          const resetPlayerNames = getResetPlayerNames({
+            beforePlayers: prev,
+            afterPlayers: rankedPlayers,
+          });
+          const offerQueue = createOfferAbilityQueue({
+            racePlayers: rankedPlayers,
+            resetPlayerNames,
+            getEffectiveAbilityId,
+          });
+          const copyQueue = createCopyAbilityQueue({
+            racePlayers: rankedPlayers,
+            resetPlayerNames,
+            getEffectiveAbilityId,
+          });
+          const resolvedRankedPlayers = clearExpiredCopiedAbilities({
+            racePlayers: rankedPlayers,
+            resetPlayerNames,
+            preserveOfferSourceNames: offerQueue.map((ability) => ability.source),
+          });
+          const pendingQueue = sortPendingAbilityQueue(
+            [...offerQueue, ...copyQueue, ...nextQueue],
+            resolvedRankedPlayers
+          );
 
-          if (nextQueue.length > 0) {
-            const firstPending = nextQueue[0];
+          if (pendingQueue.length > 0) {
+            const firstPending = pendingQueue[0];
 
             if (!firstPending) {
-              return rankedPlayers;
+              return resolvedRankedPlayers;
             }
 
             setAbilityUsedThisTurnDraftOrder(null);
-            setPendingAbilityQueue(nextQueue);
+            setPendingAbilityQueue(pendingQueue);
             setSelectedPlayerName(getPendingAbilityFocusName(firstPending));
             setSelectedCard(null);
 
-            return rankedPlayers;
+            return resolvedRankedPlayers;
           }
 
           return advanceToNextTurnOrQueueTriggeredAbilities({
-            nextPlayers: rankedPlayers,
+            nextPlayers: resolvedRankedPlayers,
             currentDraftOrder: turnPlayer.draftOrder,
           });
         } else if (rankedPlayers !== prev) {
+          pushUndoSnapshot();
+
           const releasedPlayerNames = prev
             .filter((player) => {
               const nextPlayerState = rankedPlayers.find(
@@ -1024,7 +1465,19 @@ export const useMiddleRaceGame = (): MiddleRaceGame => {
                 movedPlayerNames: [movedPlayerName],
                 movedBackwardPlayerNames:
                   direction < 0 ? [movedPlayerName] : [],
-                includeMovedDelete: true,
+                deleteMovedPlayerNames:
+                  active.type === "push" && target ? [target.name] : [],
+                abilityMoves:
+                  active.type === "push" && target
+                    ? [
+                        {
+                          type: "abilityMove",
+                          source: active.source,
+                          target: target.name,
+                          delta: direction,
+                        },
+                      ]
+                    : [],
                 getEffectiveAbilityId,
               })
             : [];
@@ -1032,6 +1485,8 @@ export const useMiddleRaceGame = (): MiddleRaceGame => {
         if (!movedPlayerName) {
           return prev;
         }
+
+        pushUndoSnapshot();
 
         return continueAfterPendingAbility({
           nextPlayers: rankedPlayers,
@@ -1066,6 +1521,8 @@ export const useMiddleRaceGame = (): MiddleRaceGame => {
         if (!canResolveDelete) {
           return prev;
         }
+
+        pushUndoSnapshot();
 
         const nextPlayers = canResolveDelete
           ? prev.map((player) => {
@@ -1130,6 +1587,8 @@ export const useMiddleRaceGame = (): MiddleRaceGame => {
           return prev;
         }
 
+        pushUndoSnapshot();
+
         const nextPlayers = prev.map((player) => {
           if (player.name === source?.name) {
             return {
@@ -1150,6 +1609,219 @@ export const useMiddleRaceGame = (): MiddleRaceGame => {
           };
         });
 
+        const offerQueue = createOfferAbilityQueue({
+          racePlayers: nextPlayers,
+          resetPlayerNames: [targetPlayerName],
+          getEffectiveAbilityId,
+        });
+        const copyQueue = createCopyAbilityQueue({
+          racePlayers: nextPlayers,
+          resetPlayerNames: [targetPlayerName],
+          getEffectiveAbilityId,
+        });
+        const resolvedNextPlayers = clearExpiredCopiedAbilities({
+          racePlayers: nextPlayers,
+          resetPlayerNames: [targetPlayerName],
+          preserveOfferSourceNames: offerQueue.map((ability) => ability.source),
+        });
+
+        return continueAfterPendingAbility({
+          nextPlayers: resolvedNextPlayers,
+          triggeredQueue: sortPendingAbilityQueue(
+            [...offerQueue, ...copyQueue],
+            resolvedNextPlayers
+          ),
+        });
+      });
+    },
+    resolveOfferPendingAbility: (targetPlayerName, cardToGive) => {
+      if (!activePendingAbility || activePendingAbility.type !== "offer") {
+        return;
+      }
+
+      setPlayers((prev) => {
+        const active = pendingAbilityQueue[0];
+        if (!active || active.type !== "offer") {
+          return prev;
+        }
+
+        const source = prev.find((player) => player.name === active.source);
+        const target = prev.find((player) => player.name === targetPlayerName);
+        const canResolveOffer = Boolean(
+          source &&
+            target &&
+            !source.finishedRank &&
+            !target.finishedRank &&
+            source.name !== target.name &&
+            source.lastAbilityTargetName !== target.name &&
+            getEffectiveAbilityId(source) === "offer" &&
+            source.hand.includes(cardToGive)
+        );
+
+        if (!canResolveOffer) {
+          return prev;
+        }
+
+        pushUndoSnapshot();
+
+        let offeredCardRemoved = false;
+        const nextPlayers = prev.map((player) => {
+          if (player.name === source?.name) {
+            return {
+              ...player,
+              hand: player.hand.filter((card) => {
+                if (!offeredCardRemoved && card === cardToGive) {
+                  offeredCardRemoved = true;
+                  return false;
+                }
+
+                return true;
+              }),
+              copiedAbilityId:
+                player.characterId === "copy" ? null : player.copiedAbilityId,
+              lastAbilityTargetName: targetPlayerName,
+            };
+          }
+
+          if (player.name === targetPlayerName) {
+            return {
+              ...player,
+              hand: [...player.hand, cardToGive],
+            };
+          }
+
+          return player;
+        });
+
+        return continueAfterPendingAbility({
+          nextPlayers,
+        });
+      });
+    },
+    resolveMirrorPendingAbility: (targetPlayerName) => {
+      if (!activePendingAbility || activePendingAbility.type !== "mirror") {
+        return;
+      }
+
+      setPlayers((prev) => {
+        const active = pendingAbilityQueue[0];
+        if (!active || active.type !== "mirror") {
+          return prev;
+        }
+
+        const source = prev.find((player) => player.name === active.source);
+        const target = prev.find((player) => player.name === targetPlayerName);
+        const mirrorDelta = -active.delta;
+        const canResolveMirror = Boolean(
+          source &&
+            target &&
+            !source.finishedRank &&
+            !target.finishedRank &&
+            source.name !== target.name &&
+            source.lastAbilityTargetName !== target.name &&
+            getEffectiveAbilityId(source) === "mirror" &&
+            mirrorDelta !== 0
+        );
+
+        if (!canResolveMirror || !target) {
+          return prev;
+        }
+
+        pushUndoSnapshot();
+
+        const nextPosition = clampPosition(target.position + mirrorDelta);
+        const moved = nextPosition !== target.position;
+        const nextPlayers = prev.map((player) => {
+          if (player.name === source?.name) {
+            return {
+              ...player,
+              lastAbilityTargetName: targetPlayerName,
+            };
+          }
+
+          if (player.name === targetPlayerName) {
+            return {
+              ...player,
+              position: nextPosition,
+            };
+          }
+
+          return player;
+        });
+        const rankedPlayers = moved
+          ? applyFinishRanks({
+              racePlayers: nextPlayers,
+              movedPlayerNames: [targetPlayerName],
+            })
+          : nextPlayers;
+        const triggeredQueue = moved
+          ? createTriggeredAbilityQueue({
+              racePlayers: rankedPlayers,
+              movedPlayerNames: [targetPlayerName],
+              movedBackwardPlayerNames:
+                mirrorDelta < 0 ? [targetPlayerName] : [],
+              deleteMovedPlayerNames: [targetPlayerName],
+              abilityMoves: [
+                {
+                  type: "abilityMove",
+                  source: active.source,
+                  target: targetPlayerName,
+                  delta: mirrorDelta,
+                },
+              ],
+              getEffectiveAbilityId,
+            })
+          : [];
+
+        return continueAfterPendingAbility({
+          nextPlayers: rankedPlayers,
+          triggeredQueue,
+        });
+      });
+    },
+    resolveCopyPendingAbility: (targetPlayerName) => {
+      if (!activePendingAbility || activePendingAbility.type !== "copy") {
+        return;
+      }
+
+      setPlayers((prev) => {
+        const active = pendingAbilityQueue[0];
+        if (!active || active.type !== "copy") {
+          return prev;
+        }
+
+        const source = prev.find((player) => player.name === active.source);
+        const target = prev.find((player) => player.name === targetPlayerName);
+        const copiedAbilityId = target ? getEffectiveAbilityId(target) : null;
+        const canResolveCopy = Boolean(
+          source &&
+            target &&
+            source.characterId === "copy" &&
+            !source.abilityDisabled &&
+            !source.finishedRank &&
+            !target.finishedRank &&
+            source.name !== target.name &&
+            source.lastAbilityTargetName !== target.name &&
+            copiedAbilityId &&
+            copiedAbilityId !== "copy"
+        );
+
+        if (!canResolveCopy || !copiedAbilityId) {
+          return prev;
+        }
+
+        pushUndoSnapshot();
+
+        const nextPlayers = prev.map((player) =>
+          player.name === active.source
+            ? {
+                ...player,
+                copiedAbilityId,
+                lastAbilityTargetName: targetPlayerName,
+              }
+            : player
+        );
+
         return continueAfterPendingAbility({
           nextPlayers,
         });
@@ -1165,6 +1837,8 @@ export const useMiddleRaceGame = (): MiddleRaceGame => {
         if (!active || active.type !== "union") {
           return prev;
         }
+
+        pushUndoSnapshot();
 
         const source = prev.find((player) => player.name === active.source);
         const orderedTargets =
@@ -1186,29 +1860,41 @@ export const useMiddleRaceGame = (): MiddleRaceGame => {
                   )
               )
             : [];
-        const targetNames = orderedTargets.map((target) => target.name);
+        const firstTarget = orderedTargets[0] ?? null;
+        const targetNames = firstTarget ? [firstTarget.name] : [];
+        const remainingTargetNames = orderedTargets
+          .slice(1)
+          .map((target) => target.name);
         const nextPlayers =
-          shouldPull && source && targetNames.length > 0
+          shouldPull && source && firstTarget
             ? prev.map((player) =>
-                targetNames.includes(player.name)
+                player.name === firstTarget.name
                   ? { ...player, position: source.position }
                   : player
               )
             : prev;
         const rankedPlayers =
-          shouldPull && targetNames.length > 0
+          shouldPull && firstTarget
             ? applyFinishRanks({
                 racePlayers: nextPlayers,
                 movedPlayerNames: targetNames,
               })
             : nextPlayers;
         const triggeredQueue =
-          shouldPull && targetNames.length > 0
+          shouldPull && source && firstTarget
             ? createTriggeredAbilityQueue({
                 racePlayers: rankedPlayers,
                 movedPlayerNames: targetNames,
                 movedBackwardPlayerNames: targetNames,
-                includeMovedDelete: true,
+                deleteMovedPlayerNames: targetNames,
+                abilityMoves: [
+                  {
+                    type: "abilityMove",
+                    source: active.source,
+                    target: firstTarget.name,
+                    delta: source.position - firstTarget.position,
+                  },
+                ],
                 getEffectiveAbilityId,
               }).filter(
                 (ability) =>
@@ -1217,6 +1903,16 @@ export const useMiddleRaceGame = (): MiddleRaceGame => {
             : [];
         const nextQueueOverride = [
           ...triggeredQueue,
+          ...(shouldPull && source && remainingTargetNames.length > 0
+            ? [
+                {
+                  type: "union" as const,
+                  source: active.source,
+                  isLastCard: active.isLastCard,
+                  targets: remainingTargetNames,
+                },
+              ]
+            : []),
           ...pendingAbilityQueue.slice(1),
         ];
 
@@ -1227,14 +1923,16 @@ export const useMiddleRaceGame = (): MiddleRaceGame => {
       });
     },
     cyclePhase: () => {
-      setPhase((prev) => {
-        if (
-          prev === "CHARACTER_DRAFT" &&
-          !players.every((player) => player.characterId)
-        ) {
-          return prev;
-        }
+      if (
+        phase === "CHARACTER_DRAFT" &&
+        !players.every((player) => player.characterId)
+      ) {
+        return;
+      }
 
+      pushUndoSnapshot();
+
+      setPhase((prev) => {
         const currentIndex = PHASE_ORDER.indexOf(prev);
         const nextPhase = PHASE_ORDER[(currentIndex + 1) % PHASE_ORDER.length];
 
@@ -1253,6 +1951,12 @@ export const useMiddleRaceGame = (): MiddleRaceGame => {
       });
     },
     moveToPreviousPhase: () => {
+      if (PHASE_ORDER.indexOf(phase) <= 0) {
+        return;
+      }
+
+      pushUndoSnapshot();
+
       setPendingAbilityQueue([]);
       setPendingMoveCardAction(null);
       setPendingResumeDraftOrder(null);
@@ -1264,26 +1968,73 @@ export const useMiddleRaceGame = (): MiddleRaceGame => {
       });
     },
     updatePlayerName: (draftOrder, name) => {
+      const nextName = name.trim() || `Player ${draftOrder}`;
       const previousName = players.find(
         (player) => player.draftOrder === draftOrder
       )?.name;
+
+      if (
+        !previousName ||
+        previousName === nextName ||
+        players.some(
+          (player) =>
+            player.draftOrder !== draftOrder && player.name === nextName
+        )
+      ) {
+        return;
+      }
 
       setPlayers((prev) =>
         prev.map((player) =>
           player.draftOrder === draftOrder
             ? {
                 ...player,
-                name,
+                name: nextName,
+                lastAbilityTargetName:
+                  player.lastAbilityTargetName === previousName
+                    ? nextName
+                    : player.lastAbilityTargetName,
               }
-            : player
+            : {
+                ...player,
+                lastAbilityTargetName:
+                  player.lastAbilityTargetName === previousName
+                    ? nextName
+                    : player.lastAbilityTargetName,
+              }
         )
       );
 
       if (previousName && selectedPlayerName === previousName) {
-        setSelectedPlayerName(name);
+        setSelectedPlayerName(nextName);
       }
+
+      setPendingAbilityQueue((prev) =>
+        prev.map((ability) => ({
+          ...ability,
+          source: ability.source === previousName ? nextName : ability.source,
+          ...("target" in ability
+            ? {
+                target: ability.target === previousName ? nextName : ability.target,
+              }
+            : {}),
+          ...(ability.type === "union"
+            ? {
+                targets: ability.targets.map((target) =>
+                  target === previousName ? nextName : target
+                ),
+              }
+            : {}),
+        }))
+      );
     },
     addPlayer: () => {
+      if (players.length >= MAX_PLAYERS) {
+        return;
+      }
+
+      pushUndoSnapshot();
+
       setPlayers((prev) => {
         if (prev.length >= MAX_PLAYERS) {
           return prev;
@@ -1293,6 +2044,12 @@ export const useMiddleRaceGame = (): MiddleRaceGame => {
       });
     },
     removeLastPlayer: () => {
+      if (players.length <= MIN_PLAYERS) {
+        return;
+      }
+
+      pushUndoSnapshot();
+
       setPlayers((prev) => {
         if (prev.length <= MIN_PLAYERS) {
           return prev;
@@ -1315,6 +2072,8 @@ export const useMiddleRaceGame = (): MiddleRaceGame => {
       });
     },
     assignCharacter: (draftOrder, characterId) => {
+      pushUndoSnapshot();
+
       setPlayers((prev) =>
         prev.map((player) => {
           if (player.draftOrder === draftOrder) {
@@ -1354,6 +2113,16 @@ export const useMiddleRaceGame = (): MiddleRaceGame => {
       );
     },
     clearCharacter: (draftOrder) => {
+      const targetPlayer = players.find(
+        (player) => player.draftOrder === draftOrder
+      );
+
+      if (!targetPlayer?.characterId) {
+        return;
+      }
+
+      pushUndoSnapshot();
+
       setPlayers((prev) =>
         prev.map((player) =>
           player.draftOrder === draftOrder
@@ -1373,6 +2142,8 @@ export const useMiddleRaceGame = (): MiddleRaceGame => {
       );
     },
     randomizeCharacters: () => {
+      pushUndoSnapshot();
+
       setPlayers((prev) => {
         const shuffledCharacters = [...MIDDLE_RACE_CHARACTERS].sort(
           () => Math.random() - 0.5
@@ -1394,6 +2165,16 @@ export const useMiddleRaceGame = (): MiddleRaceGame => {
           };
         });
       });
+    },
+    undoLastAction: () => {
+      const snapshot = undoStack[undoStack.length - 1];
+
+      if (!snapshot) {
+        return;
+      }
+
+      restoreUndoSnapshot(snapshot);
+      setUndoStack((prev) => prev.slice(0, -1));
     },
   };
 };

@@ -16,6 +16,7 @@ interface CardPositionResolverInput {
   actor: RacePlayerState;
   card: number;
   playersState: PlayersStateByName;
+  effectiveAbilityId?: string | null;
 }
 
 interface MoveCardResolverInput {
@@ -64,12 +65,14 @@ const resolveDefaultCardPosition = ({
   actor,
   card,
   playersState,
+  effectiveAbilityId,
 }: CardPositionResolverInput) =>
   calculateNextPosition({
     playerName: actor.name,
     delta: card,
     cause: "card",
     playersState,
+    jumpsOccupiedCells: effectiveAbilityId === "jump",
   });
 
 const resolveQuickCardPosition = ({
@@ -87,12 +90,31 @@ const resolveQuickCardPosition = ({
   });
 };
 
-const shouldResetMoveCards = (player: RacePlayerState, nextHand: number[]) => {
-  if (player.characterId === "jump") {
+const shouldResetMoveCards = (
+  player: RacePlayerState,
+  nextHand: number[],
+  effectiveAbilityId: string | null = player.abilityDisabled
+    ? null
+    : player.characterId
+) => {
+  if (effectiveAbilityId === "jump") {
     return nextHand.length === 0 || nextHand.length === 2;
   }
 
   return nextHand.length === 0;
+};
+
+const removeFirstCard = (cards: number[], cardToRemove: number) => {
+  let removed = false;
+
+  return cards.filter((card) => {
+    if (!removed && card === cardToRemove) {
+      removed = true;
+      return false;
+    }
+
+    return true;
+  });
 };
 
 const getEffectiveAbilityId = (player: RacePlayerState) => {
@@ -138,7 +160,7 @@ const consumeMoveCard = ({
   nextPosition?: number;
   countQuickForward?: boolean;
 }) => {
-  const nextHand = player.hand.filter((handCard) => handCard !== card);
+  const nextHand = removeFirstCard(player.hand, card);
   const shouldResetHand = shouldResetMoveCards(player, nextHand);
 
   return {
@@ -378,7 +400,6 @@ export const middleRaceAbilityDefinitions: Record<
   },
   copy: {
     id: "copy",
-    canUseAsTurnAction: true,
     requiresTarget: true,
     resolveAbilityAction: ({ players, currentPlayerDraftOrder, targetPlayerName }) => {
       const actor = players.find(
@@ -544,10 +565,13 @@ export const useMiddleRaceAbilities = () => {
       const ability = effectiveAbilityId
         ? middleRaceAbilityDefinitions[effectiveAbilityId]
         : null;
+      const movesAsQuick =
+        effectiveAbilityId === "quick" ||
+        (actor.characterId === "quick" && actor.abilityDisabled);
       const cardPositionResolver =
         useDefaultMove
           ? resolveDefaultCardPosition
-          : actor.characterId === "quick" && actor.abilityDisabled
+          : movesAsQuick
           ? resolveQuickCardPosition
           : ability?.resolveCardPosition;
       const beforeMoveEffects = Object.values(middleRaceAbilityDefinitions)
@@ -560,10 +584,14 @@ export const useMiddleRaceAbilities = () => {
             }) ?? []
         );
       const nextPosition =
-        cardPositionResolver?.({ actor, card, playersState }) ??
-        resolveDefaultCardPosition({ actor, card, playersState });
-      const nextHand = actor.hand.filter((handCard) => handCard !== card);
-      const shouldResetHand = shouldResetMoveCards(actor, nextHand);
+        cardPositionResolver?.({ actor, card, playersState, effectiveAbilityId }) ??
+        resolveDefaultCardPosition({ actor, card, playersState, effectiveAbilityId });
+      const nextHand = removeFirstCard(actor.hand, card);
+      const shouldResetHand = shouldResetMoveCards(
+        actor,
+        nextHand,
+        effectiveAbilityId
+      );
 
       return {
         players: players.map((player) => {
@@ -579,7 +607,7 @@ export const useMiddleRaceAbilities = () => {
               : nextHand,
             discard: shouldResetHand ? [] : [...player.discard, card],
             quickForwardUsed:
-              player.characterId === "quick"
+              movesAsQuick
                 ? shouldResetHand
                   ? 0
                   : useDefaultMove

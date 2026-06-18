@@ -34,18 +34,24 @@ export const calculateNextPosition = ({
   delta,
   cause,
   playersState,
+  jumpsOccupiedCells,
 }: {
   playerName: string;
   delta: number;
   cause: "card" | "ability";
   playersState: Record<string, RacePlayerState>;
+  jumpsOccupiedCells?: boolean;
 }) => {
   const actor = playersState[playerName];
   if (!actor) {
     return 0;
   }
 
-  if (cause === "card" && actor.characterId === "jump" && delta !== 0) {
+  if (
+    cause === "card" &&
+    (jumpsOccupiedCells ?? (actor.characterId === "jump" && !actor.abilityDisabled)) &&
+    delta !== 0
+  ) {
     const stepDirection = delta > 0 ? 1 : -1;
     let remaining = Math.abs(delta);
     let pointer = actor.position;

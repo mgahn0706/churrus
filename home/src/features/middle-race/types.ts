@@ -49,6 +49,19 @@ export type PendingAbility =
       source: string;
     }
   | {
+      type: "offer";
+      source: string;
+    }
+  | {
+      type: "mirror";
+      source: string;
+      delta: number;
+    }
+  | {
+      type: "copy";
+      source: string;
+    }
+  | {
       type: "gravity";
       source: string;
       card: number;
@@ -98,6 +111,7 @@ export interface MiddleRaceGameState {
   currentAbilityTargetNames: string[];
   canAddPlayer: boolean;
   canRemovePlayer: boolean;
+  canUndoLastAction: boolean;
 }
 
 export interface MiddleRaceGameActions {
@@ -112,6 +126,9 @@ export interface MiddleRaceGameActions {
   resolvePendingAbility: (direction: Direction) => void;
   resolveDeletePendingAbility: (targetPlayerName: string, cardToKeep: number) => void;
   resolveResetPendingAbility: (targetPlayerName: string) => void;
+  resolveOfferPendingAbility: (targetPlayerName: string, cardToGive: number) => void;
+  resolveMirrorPendingAbility: (targetPlayerName: string) => void;
+  resolveCopyPendingAbility: (targetPlayerName: string) => void;
   resolveUnionPendingAbility: (shouldPull: boolean) => void;
   cyclePhase: () => void;
   moveToPreviousPhase: () => void;
@@ -121,6 +138,7 @@ export interface MiddleRaceGameActions {
   assignCharacter: (draftOrder: number, characterId: string) => void;
   clearCharacter: (draftOrder: number) => void;
   randomizeCharacters: () => void;
+  undoLastAction: () => void;
 }
 
 export interface MiddleRaceGame extends MiddleRaceGameState, MiddleRaceGameActions {}
