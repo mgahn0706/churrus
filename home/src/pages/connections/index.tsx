@@ -31,8 +31,11 @@ import {
   FormControl,
 } from "@mui/material";
 import dayjs from "dayjs";
-import weekOfYear from "dayjs/plugin/weekOfYear";
 import { useEffect, useState } from "react";
+import {
+  getCalendarYearWeek,
+  WEEKS_PER_YEAR,
+} from "@/utils/calendarWeek";
 
 const SHARE_GRUOP_IMOJI = ["🟨", "🟩", "🟦", "🟪"];
 
@@ -77,7 +80,6 @@ const RuleModal = ({
   );
 };
 
-dayjs.extend(weekOfYear);
 const CONNECTION_YEARS = Object.keys(KOREAN_CONNECTIONS)
   .map(Number)
   .sort((a, b) => a - b);
@@ -87,19 +89,24 @@ const INITIAL_CONNECTION_DATE = (() => {
 
   return {
     year,
-    week: latestConnections[latestConnections.length - 1]?.week ?? 1,
+    week: Math.min(latestConnections.length, WEEKS_PER_YEAR) || 1,
   };
 })();
 
 const shuffle = <T,>(items: T[]) => [...items].sort(() => Math.random() - 0.5);
 
 const getCurrentConnectionDate = (today: dayjs.Dayjs) => {
-  const maxYear = CONNECTION_YEARS[CONNECTION_YEARS.length - 1] ?? today.year();
-  const year = Math.min(today.year(), maxYear);
+  const currentYearConnections = KOREAN_CONNECTIONS[today.year()];
+
+  if (!currentYearConnections) {
+    return INITIAL_CONNECTION_DATE;
+  }
+
+  const maxWeek = Math.min(currentYearConnections.length, WEEKS_PER_YEAR) || 1;
 
   return {
-    year,
-    week: Math.min(today.week(), KOREAN_CONNECTIONS[year]?.length ?? 1),
+    year: today.year(),
+    week: Math.min(getCalendarYearWeek(today), maxWeek),
   };
 };
 
@@ -153,16 +160,21 @@ export default function Connections() {
   const nextYear = CONNECTION_YEARS[currentYearIndex + 1];
   const latestYear = CONNECTION_YEARS[CONNECTION_YEARS.length - 1];
   const latestYearConnections = KOREAN_CONNECTIONS[latestYear] ?? [];
+  const currentCalendarWeek = getCalendarYearWeek(today);
   const isCurrentWeek =
-    connectionDate.year === today.year() && connectionDate.week === today.week();
+    connectionDate.year === today.year() &&
+    connectionDate.week === currentCalendarWeek;
+  const lastVisibleWeek =
+    Math.min(currentYearConnections.length, WEEKS_PER_YEAR) || 1;
+  const latestVisibleWeek =
+    Math.min(latestYearConnections.length, WEEKS_PER_YEAR) || 1;
   const isLastConnection =
     connectionDate.year === latestYear &&
-    selectedConnection.week ===
-      (latestYearConnections[latestYearConnections.length - 1]?.week ?? 1);
+    selectedConnection.week === latestVisibleWeek;
   const visibleWeekCount =
     today.year() === connectionDate.year
-      ? Math.max(today.week(), connectionDate.week)
-      : currentYearConnections.length;
+      ? Math.max(currentCalendarWeek, connectionDate.week)
+      : Math.min(currentYearConnections.length, WEEKS_PER_YEAR);
 
   const ConnectionStepper = () => {
     return (
@@ -273,8 +285,7 @@ export default function Connections() {
             }
             setConnectionDate(
               selectedConnection.week ===
-                (currentYearConnections[currentYearConnections.length - 1]?.week ??
-                  1)
+                lastVisibleWeek
                 ? {
                     year: nextYear ?? connectionDate.year,
                     week: 1,

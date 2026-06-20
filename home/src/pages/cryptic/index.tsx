@@ -26,10 +26,11 @@ import {
 import HomeButton from "@/components/HomeButton";
 import { getChoseong } from "es-hangul";
 import dayjs from "dayjs";
-import weekOfYear from "dayjs/plugin/weekOfYear";
 import { CRYPTIC_PROBLEMS } from "@/features/cryptic/fixtures";
-
-dayjs.extend(weekOfYear);
+import {
+  getCalendarYearWeek,
+  WEEKS_PER_YEAR,
+} from "@/utils/calendarWeek";
 
 /* ===================== Data (예시) ===================== */
 /**
@@ -81,6 +82,24 @@ function splitWithHighlights(
   return segments;
 }
 
+function getDefaultCrypticDate(today: dayjs.Dayjs) {
+  const years = Object.keys(CRYPTIC_PROBLEMS)
+    .map(Number)
+    .sort((a, b) => a - b);
+  const latestYear = years[years.length - 1] ?? today.year();
+  const year = CRYPTIC_PROBLEMS[today.year()] ? today.year() : latestYear;
+  const yearList = CRYPTIC_PROBLEMS[year] ?? [];
+  const maxWeek = Math.min(yearList.length, WEEKS_PER_YEAR) || 1;
+
+  return {
+    year,
+    week:
+      year === today.year()
+        ? Math.min(getCalendarYearWeek(today), maxWeek)
+        : maxWeek,
+  };
+}
+
 /* ===================== Page ===================== */
 
 export default function CrypticPage() {
@@ -105,35 +124,14 @@ export default function CrypticPage() {
   /** ✅ Stepper state */
   const [crypticDate, setCrypticDate] = useState(() => {
     const initialToday = dayjs("2024-01-01");
-    const y = initialToday.year();
-    const w = initialToday.week();
-    // 기본: 해당 연도 데이터 없으면 가장 첫 연도로
-    const years = Object.keys(CRYPTIC_PROBLEMS)
-      .map(Number)
-      .sort((a, b) => a - b);
-    const defaultYear = CRYPTIC_PROBLEMS[y] ? y : years[years.length - 1] ?? y;
-    const defaultWeek = Math.min(
-      w,
-      (CRYPTIC_PROBLEMS[defaultYear]?.length ?? 1) || 1
-    );
-    return { year: defaultYear, week: defaultWeek };
+    return getDefaultCrypticDate(initialToday);
   });
 
   useEffect(() => {
     const nextToday = dayjs();
-    const y = nextToday.year();
-    const w = nextToday.week();
-    const years = Object.keys(CRYPTIC_PROBLEMS)
-      .map(Number)
-      .sort((a, b) => a - b);
-    const defaultYear = CRYPTIC_PROBLEMS[y] ? y : years[years.length - 1] ?? y;
-    const defaultWeek = Math.min(
-      w,
-      (CRYPTIC_PROBLEMS[defaultYear]?.length ?? 1) || 1
-    );
 
     setToday(nextToday);
-    setCrypticDate({ year: defaultYear, week: defaultWeek });
+    setCrypticDate(getDefaultCrypticDate(nextToday));
   }, []);
 
   const selectedCryptic = useMemo(() => {
@@ -219,12 +217,25 @@ export default function CrypticPage() {
       .map(Number)
       .sort((a, b) => a - b);
     const yearList = CRYPTIC_PROBLEMS[crypticDate.year] ?? [];
+    const latestYear = years[years.length - 1];
+    const latestYearList = CRYPTIC_PROBLEMS[latestYear] ?? [];
+    const currentCalendarWeek = getCalendarYearWeek(today);
+    const lastVisibleWeek = Math.min(yearList.length, WEEKS_PER_YEAR) || 1;
+    const latestVisibleWeek =
+      Math.min(latestYearList.length, WEEKS_PER_YEAR) || 1;
+    const visibleWeekCount =
+      today.year() === crypticDate.year
+        ? Math.max(currentCalendarWeek, crypticDate.week)
+        : lastVisibleWeek;
 
     const disablePrev =
       selectedCryptic.week === 1 && crypticDate.year === years[0];
 
     const disableNext =
-      crypticDate.year === today.year() && crypticDate.week === today.week();
+      (crypticDate.year === today.year() &&
+        crypticDate.week === currentCalendarWeek) ||
+      (crypticDate.year === latestYear &&
+        selectedCryptic.week === latestVisibleWeek);
 
     return (
       <Box
@@ -319,7 +330,7 @@ export default function CrypticPage() {
               }}
             >
               {yearList
-                .slice(0, today.year() === crypticDate.year ? today.week() : 53)
+                .slice(0, visibleWeekCount)
                 .map((w) => (
                   <MenuItem
                     key={w.week}
@@ -338,7 +349,11 @@ export default function CrypticPage() {
           color="primary"
           onClick={() => {
             setCrypticDate((prev) => {
-              const len = CRYPTIC_PROBLEMS[prev.year]?.length ?? 1;
+              const len =
+                Math.min(
+                  CRYPTIC_PROBLEMS[prev.year]?.length ?? 1,
+                  WEEKS_PER_YEAR
+                ) || 1;
               if (selectedCryptic.week === len) {
                 return { year: prev.year + 1, week: 1 };
               }

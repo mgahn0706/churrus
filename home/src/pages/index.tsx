@@ -9,12 +9,12 @@ import useLocalStorage from "@/hooks/useLocalStorage";
 import HomeQuizCard from "@/features/home/components/HomeQuizCard";
 import PuzzleButton from "@/features/home/components/PuzzleButton";
 import useRecommendedQuiz from "@/features/home/hooks/useRecommendedQuiz";
-import weekOfYear from "dayjs/plugin/weekOfYear";
 import Image from "next/image";
 import DesktopPuzzleCard from "@/features/home/components/DesktopPuzzleCard";
 import { CROSSWORDS } from "@/features/crosswords/fixtures";
 import Head from "next/head";
 import { useEffect, useState } from "react";
+import { getCalendarYearWeek } from "@/utils/calendarWeek";
 
 const WORD_PUZZLE_CONTENTS = [
   {
@@ -43,8 +43,6 @@ const WORD_PUZZLE_CONTENTS = [
   },
 ];
 
-dayjs.extend(weekOfYear);
-
 const BACKGROUND_COLOR = "#F5F6FA";
 
 export default function Churrus() {
@@ -69,7 +67,7 @@ export default function Churrus() {
 
   const recentCrosswordDate = CROSSWORDS[CROSSWORDS.length - 1].date;
   const spellingBeeDate = today.diff("2024-02-09", "day") + 1;
-  const currentWeek = today.week();
+  const currentWeek = getCalendarYearWeek(today);
 
   return (
     <>
