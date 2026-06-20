@@ -266,4 +266,32 @@ export const CRYPTIC_2026 = [
     definitionPart: "달라붙기",
     wordplayPart: "추러스 크립틱의 마지막",
   },
+  {
+    week: 39,
+    problem: "직접 단 천 조각",
+    answer: "손수건",
+    definitionPart: "천 조각",
+    wordplayPart: "직접 단",
+  },
+  {
+    week: 40,
+    problem: "바나나 비닐 안에 붙은 곤충",
+    answer: "나비",
+    definitionPart: "곤충",
+    wordplayPart: "바나나 비닐 안에 붙은",
+  },
+  {
+    week: 41,
+    problem: "필연을 거스른 필기도구",
+    answer: "연필",
+    definitionPart: "필기도구",
+    wordplayPart: "필연을 거스른",
+  },
+  {
+    week: 42,
+    problem: "계약 속에 숨은 다짐",
+    answer: "약속",
+    definitionPart: "다짐",
+    wordplayPart: "계약 속에 숨은",
+  },
 ];
