@@ -25,6 +25,21 @@ const MIN_PLAYERS = 1;
 const MAX_PLAYERS = 13;
 const FINISH_LINE = 30;
 const UNDO_HISTORY_LIMIT = 30;
+const DEFAULT_PLAYER_NAMES = [
+  "안민규",
+  "이연호",
+  "김태연",
+  "홍경아",
+  "김민석",
+  "김현준",
+  "강재호",
+  "최유섭",
+  "송가현",
+  "고재준",
+  "김수인",
+  "김진하",
+  "우진백",
+];
 
 const isAbilityMoveEffect = (
   effect: Effect
@@ -49,8 +64,11 @@ interface MiddleRaceGameSnapshot {
   pendingResumeDraftOrder: number | null;
 }
 
+const getDefaultPlayerName = (draftOrder: number) =>
+  DEFAULT_PLAYER_NAMES[draftOrder - 1] ?? `Player ${draftOrder}`;
+
 const createDefaultPlayer = (draftOrder: number): RacePlayerState => ({
-  name: `Player ${draftOrder}`,
+  name: getDefaultPlayerName(draftOrder),
   draftOrder,
   characterId: null,
   position: 1,
@@ -1860,60 +1878,50 @@ export const useMiddleRaceGame = (): MiddleRaceGame => {
                   )
               )
             : [];
-        const firstTarget = orderedTargets[0] ?? null;
-        const targetNames = firstTarget ? [firstTarget.name] : [];
-        const remainingTargetNames = orderedTargets
-          .slice(1)
-          .map((target) => target.name);
+        const targetNames = orderedTargets.map((target) => target.name);
         const nextPlayers =
-          shouldPull && source && firstTarget
+          shouldPull && source && targetNames.length > 0
             ? prev.map((player) =>
-                player.name === firstTarget.name
+                targetNames.includes(player.name)
                   ? { ...player, position: source.position }
                   : player
               )
             : prev;
         const rankedPlayers =
-          shouldPull && firstTarget
+          shouldPull && targetNames.length > 0
             ? applyFinishRanks({
                 racePlayers: nextPlayers,
                 movedPlayerNames: targetNames,
               })
             : nextPlayers;
         const triggeredQueue =
-          shouldPull && source && firstTarget
+          shouldPull && source && targetNames.length > 0
             ? createTriggeredAbilityQueue({
                 racePlayers: rankedPlayers,
                 movedPlayerNames: targetNames,
                 movedBackwardPlayerNames: targetNames,
                 deleteMovedPlayerNames: targetNames,
-                abilityMoves: [
-                  {
-                    type: "abilityMove",
-                    source: active.source,
-                    target: firstTarget.name,
-                    delta: source.position - firstTarget.position,
-                  },
-                ],
+                abilityMoves: orderedTargets.map((target) => ({
+                  type: "abilityMove",
+                  source: active.source,
+                  target: target.name,
+                  delta: source.position - target.position,
+                })),
                 getEffectiveAbilityId,
               }).filter(
                 (ability) =>
                   ability.type !== "union" || ability.source !== active.source
               )
             : [];
+        const nextPendingQueue = pendingAbilityQueue
+          .slice(1)
+          .filter(
+            (ability) =>
+              ability.type !== "union" || ability.source !== active.source
+          );
         const nextQueueOverride = [
           ...triggeredQueue,
-          ...(shouldPull && source && remainingTargetNames.length > 0
-            ? [
-                {
-                  type: "union" as const,
-                  source: active.source,
-                  isLastCard: active.isLastCard,
-                  targets: remainingTargetNames,
-                },
-              ]
-            : []),
-          ...pendingAbilityQueue.slice(1),
+          ...nextPendingQueue,
         ];
 
         return continueAfterPendingAbility({
@@ -1968,7 +1976,7 @@ export const useMiddleRaceGame = (): MiddleRaceGame => {
       });
     },
     updatePlayerName: (draftOrder, name) => {
-      const nextName = name.trim() || `Player ${draftOrder}`;
+      const nextName = name.trim() || getDefaultPlayerName(draftOrder);
       const previousName = players.find(
         (player) => player.draftOrder === draftOrder
       )?.name;

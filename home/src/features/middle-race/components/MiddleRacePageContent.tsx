@@ -42,10 +42,10 @@ import {
 import { createPortal } from "react-dom";
 
 const PHASES: { id: Phase; label: string }[] = [
-  { id: "PLAYER_SETTING", label: "PLAYERS" },
-  { id: "CHARACTER_DRAFT", label: "DRAFT" },
-  { id: "RACE", label: "RACE" },
-  { id: "RESULT", label: "RESULT" },
+  { id: "PLAYER_SETTING", label: "플레이어" },
+  { id: "CHARACTER_DRAFT", label: "캐릭터 선택" },
+  { id: "RACE", label: "경주" },
+  { id: "RESULT", label: "결과" },
 ];
 
 const feltBoardSx = {
@@ -70,6 +70,22 @@ const getPlayerColor = (player: RacePlayerState) =>
 
 const getPlayerTooltipTitle = (player: RacePlayerState) =>
   player.name.trim() || `Player ${player.draftOrder}`;
+
+const getTrackStackPieceWidth = (playerCount: number) => {
+  if (playerCount >= 12) return "76%";
+  if (playerCount >= 10) return "86%";
+  if (playerCount >= 8) return "96%";
+
+  return "118%";
+};
+
+const getTrackStackGap = (playerCount: number) => {
+  if (playerCount >= 12) return { xs: 0.22, md: 0.3 };
+  if (playerCount >= 10) return { xs: 0.32, md: 0.45 };
+  if (playerCount >= 8) return { xs: 0.45, md: 0.62 };
+
+  return { xs: 0.75, md: 1.05 };
+};
 
 const useIsomorphicLayoutEffect =
   typeof window === "undefined" ? useEffect : useLayoutEffect;
@@ -657,6 +673,7 @@ const TrackBoard = ({ game }: { game: MiddleRaceGame }) => {
           const playersAtPosition = game.players.filter(
             (player) => player.position === position
           );
+          const playerCount = playersAtPosition.length;
           const isFinish = position === game.finishLine;
 
           return (
@@ -680,7 +697,7 @@ const TrackBoard = ({ game }: { game: MiddleRaceGame }) => {
                 color={isFinish ? "#99f6e4" : "rgba(255,255,255,0.74)"}
                 noWrap
               >
-                {isFinish ? "FINISH" : position}
+                {isFinish ? "도착" : position}
               </Typography>
               <Box
                 sx={{
@@ -688,7 +705,7 @@ const TrackBoard = ({ game }: { game: MiddleRaceGame }) => {
                   flexDirection: "column",
                   justifyContent: "center",
                   alignItems: "center",
-                  gap: { xs: 0.75, md: 1.05 },
+                  gap: getTrackStackGap(playerCount),
                   mt: 0.45,
                   height: "calc(100% - 18px)",
                   overflow: "visible",
@@ -706,7 +723,7 @@ const TrackBoard = ({ game }: { game: MiddleRaceGame }) => {
                       sx={{
                         "--move-from-x": `${pieceAnimation?.x ?? 0}px`,
                         "--move-from-y": `${pieceAnimation?.y ?? 0}px`,
-                        width: "118%",
+                        width: getTrackStackPieceWidth(playerCount),
                         aspectRatio: "1 / 1",
                         borderRadius: 0,
                         position: "relative",
@@ -781,7 +798,7 @@ const TargetHandPreview = ({ player }: { player: RacePlayerState }) => (
     <Stack direction="row" spacing={0.35}>
       {player.hand.length === 0 ? (
         <Typography fontSize={11} fontWeight={900} color="rgba(248,250,252,0.54)">
-          EMPTY
+          없음
         </Typography>
       ) : (
         player.hand.map((card, index) => (
@@ -1335,7 +1352,7 @@ const MoveCardDock = ({ game }: { game: MiddleRaceGame }) => {
         {currentPlayer && <PlayerPiece player={currentPlayer} size={44} active />}
         <Box minWidth={0}>
           <Typography fontSize={11} fontWeight={900} color="#5eead4">
-            TURN
+            차례
           </Typography>
           <Typography fontSize={{ xs: 16, md: 18 }} fontWeight={900} color="#f8fafc" noWrap>
             {currentPlayer?.name}
@@ -1459,7 +1476,7 @@ const MoveCardDock = ({ game }: { game: MiddleRaceGame }) => {
                   fontWeight={900}
                   color="rgba(248,250,252,0.48)"
                 >
-                  TARGETS
+                  대상
                 </Typography>
                 <Stack spacing={0.4} mt={0.5}>
                   {pendingUnionTargets.length === 0 ? (
@@ -2135,7 +2152,7 @@ const MoveCardDock = ({ game }: { game: MiddleRaceGame }) => {
       >
         {game.selectedCard === null ? (
           <Typography fontSize={12} fontWeight={900} color="rgba(255,255,255,0.46)">
-            DROP CARD
+            카드를 놓으세요
           </Typography>
         ) : (
           <Box
@@ -2430,7 +2447,7 @@ const MoveCardDock = ({ game }: { game: MiddleRaceGame }) => {
                 fontWeight={900}
                 color="rgba(248,250,252,0.48)"
               >
-                FRONT CELL
+                앞 칸
               </Typography>
               <Stack spacing={0.4} mt={0.5}>
                 {unionTargets.length === 0 ? (
