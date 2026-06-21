@@ -342,7 +342,7 @@ export const clubroomClues: ClueType[] = [
     description:
       "추러스 부원이 말했다. “추러스 사람들이요? 술을 잘 안 먹긴 해요. 아, 그저께, 그러니까 10월 16일에는 동아리방에서 와인을 마신 것 같더라고요. 어제 아침에 동방을 잠깐 들렀는데 와인병이 그대로 있었어요. 좀 치우고 가지, 에휴.”",
     type: "basic",
-    place: "room",
+    place: "recycling",
   },
   {
     id: 32,
