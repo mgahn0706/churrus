@@ -1,4 +1,4 @@
-export type Phase = 1 | 2 | 3;
+export type Phase = "PLAYER_SETTING" | "CHARACTER_DRAFT" | "RACE" | "RESULT";
 export type Direction = 1 | -1;
 
 export interface RacePlayerState {
@@ -9,6 +9,9 @@ export interface RacePlayerState {
   hand: number[];
   discard: number[];
   finishedRank: number | null;
+  abilityDisabled: boolean;
+  copiedAbilityId: string | null;
+  lastAbilityTargetName: string | null;
   quickForwardUsed: number;
 }
 
@@ -16,7 +19,7 @@ export type Effect =
   | { type: "reset"; source: string }
   | { type: "delete"; source: string }
   | { type: "mirror"; source: string; delta: number }
-  | { type: "one"; source: string }
+  | { type: "one"; source: string; trigger: string }
   | { type: "abilityMove"; source: string; target: string; delta: number }
   | {
       type: "delayedMove";
@@ -27,6 +30,37 @@ export type Effect =
     };
 
 export type PendingAbility =
+  | {
+      type: "one";
+      source: string;
+      trigger: string;
+    }
+  | {
+      type: "push";
+      source: string;
+      target: string;
+    }
+  | {
+      type: "delete";
+      source: string;
+    }
+  | {
+      type: "reset";
+      source: string;
+    }
+  | {
+      type: "offer";
+      source: string;
+    }
+  | {
+      type: "mirror";
+      source: string;
+      delta: number;
+    }
+  | {
+      type: "copy";
+      source: string;
+    }
   | {
       type: "gravity";
       source: string;
@@ -64,13 +98,47 @@ export interface MiddleRaceGameState {
   selectedCard: number | null;
   silencedPlayerName: string | null;
   players: RacePlayerState[];
+  canMoveToNextPhase: boolean;
+  canUseSelectedMoveCard: boolean;
+  selectedMoveCardDisabledReason: string;
+  canUseCurrentAbility: boolean;
+  isResolvingAbility: boolean;
+  activePendingAbility: PendingAbility | null;
+  pendingAbilityQueue: PendingAbility[];
+  currentAbilityId: string | null;
+  currentAbilityRequiresSelectedCard: boolean;
+  currentAbilityRequiresTarget: boolean;
+  currentAbilityTargetNames: string[];
+  canAddPlayer: boolean;
+  canRemovePlayer: boolean;
+  canUndoLastAction: boolean;
 }
 
 export interface MiddleRaceGameActions {
   selectPlayer: (playerName: string) => void;
   selectCard: (card: number) => void;
   clearSelectedCard: () => void;
+  useSelectedMoveCard: (options?: { useDefaultMove?: boolean }) => void;
+  useCurrentAbility: (options?: {
+    card?: number | null;
+    targetPlayerName?: string;
+  }) => void;
+  resolvePendingAbility: (direction: Direction) => void;
+  resolveDeletePendingAbility: (targetPlayerName: string, cardToKeep: number) => void;
+  resolveResetPendingAbility: (targetPlayerName: string) => void;
+  resolveOfferPendingAbility: (targetPlayerName: string, cardToGive: number) => void;
+  resolveMirrorPendingAbility: (targetPlayerName: string) => void;
+  resolveCopyPendingAbility: (targetPlayerName: string) => void;
+  resolveUnionPendingAbility: (shouldPull: boolean) => void;
   cyclePhase: () => void;
+  moveToPreviousPhase: () => void;
+  updatePlayerName: (draftOrder: number, name: string) => void;
+  addPlayer: () => void;
+  removeLastPlayer: () => void;
+  assignCharacter: (draftOrder: number, characterId: string) => void;
+  clearCharacter: (draftOrder: number) => void;
+  randomizeCharacters: () => void;
+  undoLastAction: () => void;
 }
 
 export interface MiddleRaceGame extends MiddleRaceGameState, MiddleRaceGameActions {}

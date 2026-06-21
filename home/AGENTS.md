@@ -62,15 +62,6 @@ This file defines repository-specific guidance for Codex and other coding agents
 - Preserve current public routes and storage keys unless the task requires changing them.
 - Do not introduce a new architecture layer or abstraction for small tasks.
 
-## Validation
-
-- For targeted UI or file changes, prefer narrow validation first.
-- Useful commands:
-  - `npm run lint`
-  - `npx eslint <file-paths>`
-  - `npm run build`
-- Existing repo-wide lint warnings may already exist. Do not treat unrelated pre-existing warnings as part of the task unless the user asks.
-
 ## When Unsure
 
 - Copy the nearest established pattern from the same feature.
