@@ -61,6 +61,6 @@ export const clubroomVictim: VictimType = {
   age: 23,
   gender: "male",
   job: "추러스 회장",
-  description: "추후 설정될 동아리방 시나리오의 피해자.",
+  description: "정치외교학부 23학번. 추러스의 회장.",
   statement: "",
 };
