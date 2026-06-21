@@ -1,0 +1,2 @@
+export const HORROR_RACE_MIN_PLAYERS = 3;
+export const HORROR_RACE_MAX_PLAYERS = 16;

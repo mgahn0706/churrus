@@ -99,6 +99,13 @@ const FEATURED_GROUPS = [
         accent: "#D97706",
         icon: <DirectionsRunRounded />,
       },
+      {
+        title: "호러 레이스",
+        subtitle: "단계별 진행을 먼저 잡아둔 신규 레이스 게임",
+        url: "/horror-race",
+        accent: "#DC2626",
+        icon: <DirectionsRunRounded />,
+      },
     ],
   },
 ];
