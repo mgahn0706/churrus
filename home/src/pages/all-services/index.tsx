@@ -173,6 +173,11 @@ export default function AllServicesPage() {
               icon={<DirectionsRunRounded />}
             />
             <ServiceButton
+              label="호러 레이스"
+              url="/horror-race"
+              icon={<DirectionsRunRounded />}
+            />
+            <ServiceButton
               label="지하감옥"
               url="/underground-prison"
               icon={<LockRounded />}
