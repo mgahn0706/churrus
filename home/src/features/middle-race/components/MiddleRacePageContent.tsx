@@ -32,6 +32,7 @@ import {
   Typography,
 } from "@mui/material";
 import {
+  useCallback,
   useEffect,
   useLayoutEffect,
   useRef,
@@ -942,6 +943,23 @@ const getPendingAbilityKey = (ability: PendingAbility, index: number) =>
     "target" in ability ? ability.target : index
   }-${index}`;
 
+const removeFirstCardValue = (cards: number[], cardToRemove: number | null) => {
+  if (cardToRemove === null) {
+    return cards;
+  }
+
+  let removed = false;
+
+  return cards.filter((card) => {
+    if (!removed && card === cardToRemove) {
+      removed = true;
+      return false;
+    }
+
+    return true;
+  });
+};
+
 const MoveCardDock = ({ game }: { game: MiddleRaceGame }) => {
   const dropZoneRef = useRef<HTMLDivElement | null>(null);
   const [isDragOver, setIsDragOver] = useState(false);
@@ -1240,15 +1258,15 @@ const MoveCardDock = ({ game }: { game: MiddleRaceGame }) => {
       : abilityNeedsTarget && !abilitySelectedTarget
       ? "대상을 선택해야 합니다."
       : "현재 조건에서 사용할 수 없습니다.";
-  const visibleHand =
-    currentPlayer?.hand.filter(
-      (card) => card !== game.selectedCard && card !== dragState?.card
-    ) ?? [];
+  const visibleHand = removeFirstCardValue(
+    removeFirstCardValue(currentPlayer?.hand ?? [], game.selectedCard),
+    dragState?.card ?? null
+  );
 
-  const setMoveCard = (card: number) => {
+  const setMoveCard = useCallback((card: number) => {
     game.selectCard(card);
     setPlacementKey((prev) => prev + 1);
-  };
+  }, [game]);
 
   const dragPreview =
     dragState && typeof document !== "undefined"
@@ -1317,7 +1335,7 @@ const MoveCardDock = ({ game }: { game: MiddleRaceGame }) => {
       window.removeEventListener("pointermove", handlePointerMove);
       window.removeEventListener("pointerup", handlePointerUp);
     };
-  }, [dragState]);
+  }, [dragState, setMoveCard]);
 
   return (
     <>
@@ -2183,9 +2201,9 @@ const MoveCardDock = ({ game }: { game: MiddleRaceGame }) => {
         minHeight={{ xs: 94, md: 112 }}
         sx={{ overflow: "visible" }}
       >
-        {visibleHand.map((card) => (
+        {visibleHand.map((card, index) => (
           <MoveCard
-            key={`${currentPlayer.name}-${card}`}
+            key={`${currentPlayer.name}-${card}-${index}`}
             card={card}
             onPointerDown={(nextDraggingCard, event) => {
               event.preventDefault();
