@@ -14,7 +14,7 @@ export const clubroomClues: ClueType[] = [
     y: 70.661,
     image: getClubroomClueImage(1),
     description:
-      "나회장의 시체이다. 동아리방 침대 위에 이불을 덮은 채 누워 있다.",
+      "나회장의 시체이다. 동아리방 간이 침대 위에 이불을 덮은 채 누워 있다.",
     type: "basic",
     place: "room",
   },
@@ -25,7 +25,7 @@ export const clubroomClues: ClueType[] = [
     y: 38,
     image: getClubroomClueImage(2),
     description:
-      "목 주변에 끈 같은 것으로 조른 흔적이 남아 있다. 피부에는 손톱자국도 보인다.",
+      "목 주변에 끈 형태의 흔적이 남아 있다. 피부에는 손톱자국도 살짝 보인다.",
     type: "additional",
     place: 1,
   },
