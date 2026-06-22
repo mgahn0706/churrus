@@ -10,8 +10,8 @@ export const clubroomClues: ClueType[] = [
   {
     id: 1,
     title: "시체",
-    x: 54,
-    y: 52,
+    x: 58.241,
+    y: 70.661,
     image: getClubroomClueImage(1),
     description:
       "나회장의 시체이다. 동아리방 침대 위에 이불을 덮은 채 누워 있다.",
@@ -22,7 +22,7 @@ export const clubroomClues: ClueType[] = [
     id: 2,
     title: "목",
     x: 18,
-    y: 24,
+    y: 38,
     image: getClubroomClueImage(2),
     description:
       "목 주변에 끈 같은 것으로 조른 흔적이 남아 있다. 피부에는 손톱자국도 보인다.",
@@ -33,10 +33,9 @@ export const clubroomClues: ClueType[] = [
     id: 3,
     title: "머리",
     x: 18,
-    y: 38,
+    y: 24,
     image: getClubroomClueImage(3),
-    description:
-      "머리 앞부분에 둔탁한 물체로 강하게 맞은 듯한 상처가 있다.",
+    description: "머리 앞부분에 둔탁한 물체로 강하게 맞은 듯한 상처가 있다.",
     type: "additional",
     place: 1,
   },
@@ -47,15 +46,15 @@ export const clubroomClues: ClueType[] = [
     y: 62,
     image: getClubroomClueImage(4),
     description:
-      "동아리방에서 발견된 녹음기이다. 코난 극장판 OST가 녹음되어 있으나 재생은 중간에 멈춰져 있고, 기기 일부가 약간 부서져 있다.",
+      "주머니에서 발견된 녹음기이다. 코난 극장판 OST가 녹음되어 있으나 재생은 중간에 멈춰져 있고, 기기 일부가 약간 부서져 있다.",
     type: "basic",
     place: "room",
   },
   {
     id: 5,
     title: "도어락",
-    x: 78,
-    y: 47,
+    x: 85.603,
+    y: 72.107,
     image: getClubroomClueImage(5),
     description:
       "비밀번호로 여는 동아리방 도어락이다. 문이 열린 시각이 자동으로 기록되며, 기록을 조작하는 것은 불가능하다. 기록된 시각은 20:30, 20:45, 22:00, 22:40, 23:00, 23:05, 04:00, 04:03, 05:00, 05:03, 11:30이다.",
@@ -65,19 +64,19 @@ export const clubroomClues: ClueType[] = [
   {
     id: 6,
     title: "벽",
-    x: 72,
-    y: 26,
+    x: 37.003,
+    y: 10.124,
     image: getClubroomClueImage(6),
     description:
-      "동아리방 벽과 그 근처 장판에 검은 그을음 자국이 남아 있다.",
+      "책장 뒤로 가려져 있었지만, 동아리방 벽과 그 근처 장판에 검은 그을음 자국이 남아 있다.",
     type: "basic",
     place: "room",
   },
   {
     id: 7,
     title: "나회장의 스마트폰",
-    x: 28,
-    y: 58,
+    x: 20.489,
+    y: 45.793,
     image: getClubroomClueImage(7),
     description: "나회장의 스마트폰이다.",
     type: "additional",
@@ -119,8 +118,8 @@ export const clubroomClues: ClueType[] = [
   {
     id: 11,
     title: "박스",
-    x: 20,
-    y: 72,
+    x: 74.658,
+    y: 14.153,
     image: getClubroomClueImage(11),
     description:
       "동아리방 구석에 놓인 박스이다. 안에는 연두색 빛깔이 도는 물티슈가 들어 있으며, 새로 산 물건처럼 보인다.",
@@ -130,8 +129,8 @@ export const clubroomClues: ClueType[] = [
   {
     id: 12,
     title: "멀티탭",
-    x: 36,
-    y: 78,
+    x: 25.668,
+    y: 15.186,
     image: getClubroomClueImage(12),
     description:
       "멀티탭에는 휴대폰 충전기 3개와 노트북 충전기 2개가 꽂혀 있다. 휴대폰 충전기는 C타입 2개와 애플용 1개이고, 노트북 충전기는 둘 다 애플용이다. 충전기 중 하나에는 ‘구애인’이라고 적혀 있다.",
@@ -141,8 +140,8 @@ export const clubroomClues: ClueType[] = [
   {
     id: 13,
     title: "카펫",
-    x: 51,
-    y: 78,
+    x: 45.212,
+    y: 48.657,
     image: getClubroomClueImage(13),
     description:
       "동아리방 바닥에 깔린 카펫이다. 주변에 비해 지나치게 깔끔하고 깨끗하다. 라벨에는 불에 잘 탄다는 표시가 있으며, 카펫 밑에서는 검은빛 유리조각이 반짝이고 있다.",
@@ -152,8 +151,8 @@ export const clubroomClues: ClueType[] = [
   {
     id: 14,
     title: "쓰레기통",
-    x: 66,
-    y: 76,
+    x: 82.606,
+    y: 47.624,
     image: getClubroomClueImage(14),
     description:
       "동아리방에 놓인 쓰레기통이다. 쓰레기통은 동방지기가 자율적으로 비우고 있다.",
@@ -270,8 +269,8 @@ export const clubroomClues: ClueType[] = [
   {
     id: 25,
     title: "빔프로젝터",
-    x: 82,
-    y: 64,
+    x: 40.391,
+    y: 19.731,
     image: getClubroomClueImage(25),
     description:
       "동아리방 빔프로젝터이다. 기기가 부서져 작동하지 않지만, 그을음은 보이지 않는다.",
@@ -281,8 +280,8 @@ export const clubroomClues: ClueType[] = [
   {
     id: 26,
     title: "올리브오일",
-    x: 18,
-    y: 48,
+    x: 15.896,
+    y: 14.876,
     image: getClubroomClueImage(26),
     description:
       "동아리방에서 발견된 엑스트라 버진 올리브오일 병이다. 어느 정도 사용된 상태이다.",
@@ -292,8 +291,8 @@ export const clubroomClues: ClueType[] = [
   {
     id: 27,
     title: "가이아 프로젝트",
-    x: 34,
-    y: 42,
+    x: 58.567,
+    y: 17.459,
     image: getClubroomClueImage(27),
     description:
       "보드게임 ‘가이아 프로젝트’ 상자이다. 들어보니 비정상적으로 가볍고, 열어보면 케이스만 남은 채 내용물은 비어 있다.",
@@ -302,9 +301,9 @@ export const clubroomClues: ClueType[] = [
   },
   {
     id: 28,
-    title: "동아리방 사진 보드",
-    x: 84,
-    y: 32,
+    title: "사진 보드",
+    x: 24.104,
+    y: 4.959,
     image: getClubroomClueImage(28),
     description:
       "동아리방에서 찍은 사진들이 걸려 있는 보드이다. 사진 하나는 핀만 남긴 채 찢어져 있고, 남아 있는 나회장의 사진은 얼굴 부분이 핀으로 여러 번 뚫려 있다.",
@@ -313,9 +312,9 @@ export const clubroomClues: ClueType[] = [
   },
   {
     id: 29,
-    title: "동아리방 화이트보드",
-    x: 82,
-    y: 18,
+    title: "화이트보드",
+    x: 9.186,
+    y: 5.269,
     image: getClubroomClueImage(29),
     description:
       "동아리방 화이트보드에는 최근 일정이 적혀 있다. 10월 17일에는 미니정모가 있었고, 10월 16일에는 하드보드게임 소모임과 음주 예정이 적혀 있다. 10월 1일에는 ‘나이브스 인’ 추리 영화 상영회가 있었다.",
@@ -325,8 +324,8 @@ export const clubroomClues: ClueType[] = [
   {
     id: 30,
     title: "나회장의 노트북",
-    x: 28,
-    y: 30,
+    x: 23.388,
+    y: 37.707,
     image: getClubroomClueImage(30),
     description:
       "나회장의 노트북이다. 화면에는 ‘추추티비’와 ‘나무위키 추추티비 문서’가 켜져 있다.",
@@ -383,7 +382,8 @@ export const clubroomClues: ClueType[] = [
     x: 72,
     y: 36,
     image: getClubroomClueImage(35),
-    description: "분리수거장에서 발견된 택배상자이다. 카펫이 들어 있던 상자로 보인다.",
+    description:
+      "분리수거장에서 발견된 택배상자이다. 카펫이 들어 있던 상자로 보인다.",
     type: "basic",
     place: "recycling",
   },
@@ -401,8 +401,8 @@ export const clubroomClues: ClueType[] = [
   {
     id: 37,
     title: "차 키",
-    x: 12,
-    y: 62,
+    x: 29.121,
+    y: 73.347,
     image: getClubroomClueImage(37),
     description:
       "나회장의 차 키이다. 붉은색 자동차 사진이 든 키링과 작은 키링 몇 개가 함께 걸려 있다.",
@@ -499,9 +499,9 @@ export const clubroomClues: ClueType[] = [
   },
   {
     id: 46,
-    title: "코난 안경",
-    x: 60,
-    y: 52,
+    title: "안경",
+    x: 57.785,
+    y: 85.847,
     image: getClubroomClueImage(46),
     description:
       "침대 밑에서 발견된 코난 안경 장난감이다. 버튼을 누르면 빛이 나온다.",
