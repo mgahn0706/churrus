@@ -21,8 +21,8 @@ export const clubroomClues: ClueType[] = [
   {
     id: 2,
     title: "목",
-    x: 18,
-    y: 38,
+    x: 12,
+    y: 28,
     image: getClubroomClueImage(2),
     description:
       "목 주변에 끈 형태의 흔적이 남아 있다. 피부에는 손톱자국도 살짝 보인다.",
@@ -32,7 +32,7 @@ export const clubroomClues: ClueType[] = [
   {
     id: 3,
     title: "머리",
-    x: 18,
+    x: 10,
     y: 24,
     image: getClubroomClueImage(3),
     description: "머리 앞부분에 둔탁한 물체로 강하게 맞은 듯한 상처가 있다.",
@@ -118,8 +118,8 @@ export const clubroomClues: ClueType[] = [
   {
     id: 11,
     title: "박스",
-    x: 74.658,
-    y: 14.153,
+    x: 75.502,
+    y: 14.773,
     image: getClubroomClueImage(11),
     description:
       "동아리방 구석에 놓인 박스이다. 안에는 연두색 빛깔이 도는 물티슈가 들어 있으며, 새로 산 물건처럼 보인다.",
@@ -204,8 +204,8 @@ export const clubroomClues: ClueType[] = [
   {
     id: 19,
     title: "쓰레기 수거 일정표",
-    x: 24,
-    y: 34,
+    x: 64.565,
+    y: 48.45,
     image: getClubroomClueImage(19),
     description:
       "분리수거장에 붙어 있는 쓰레기 수거 일정표이다. 오전 4시에 쓰레기를 수거한다고 적혀 있다.",
@@ -215,8 +215,8 @@ export const clubroomClues: ClueType[] = [
   {
     id: 20,
     title: "쓰레기장",
-    x: 54,
-    y: 58,
+    x: 65.904,
+    y: 55.785,
     image: getClubroomClueImage(20),
     description:
       "분리수거장에서 흰색 C-C 타입 충전기 선이 발견되었다. 선에는 옅은 손톱자국처럼 보이는 흔적이 남아 있다.",
@@ -335,8 +335,8 @@ export const clubroomClues: ClueType[] = [
   {
     id: 31,
     title: "추러스 부원의 증언",
-    x: 12,
-    y: 18,
+    x: 36.83,
+    y: 46.901,
     image: getClubroomClueImage(31),
     description:
       "추러스 부원이 말했다. “추러스 사람들이요? 술을 잘 안 먹긴 해요. 아, 그저께, 그러니까 10월 16일에는 동아리방에서 와인을 마신 것 같더라고요. 어제 아침에 동방을 잠깐 들렀는데 와인병이 그대로 있었어요. 좀 치우고 가지, 에휴.”",
@@ -345,7 +345,7 @@ export const clubroomClues: ClueType[] = [
   },
   {
     id: 32,
-    title: "오지인에 대해",
+    title: "추러스 부원: 오지인에 대해",
     x: 62,
     y: 30,
     image: getClubroomClueImage(32),
@@ -356,7 +356,7 @@ export const clubroomClues: ClueType[] = [
   },
   {
     id: 33,
-    title: "나회장 어머니의 증언",
+    title: "나회장 어머니: 나회장에 대해",
     x: 22,
     y: 58,
     image: getClubroomClueImage(33),
@@ -378,9 +378,9 @@ export const clubroomClues: ClueType[] = [
   },
   {
     id: 35,
-    title: "박스",
-    x: 72,
-    y: 36,
+    title: "종이 상자",
+    x: 66.685,
+    y: 63.223,
     image: getClubroomClueImage(35),
     description:
       "분리수거장에서 발견된 택배상자이다. 카펫이 들어 있던 상자로 보인다.",
@@ -389,9 +389,9 @@ export const clubroomClues: ClueType[] = [
   },
   {
     id: 36,
-    title: "행인의 증언",
-    x: 74,
-    y: 58,
+    title: "행인의 증언: 오늘 낮에 대해",
+    x: 47.266,
+    y: 32.851,
     image: getClubroomClueImage(36),
     description:
       "학생회관 앞을 지나가던 사람이 말했다. “오늘 11시쯤부터 11시 30분쯤까지였나, 장절친 씨가 학생회관 앞을 계속 서성거리고 있더라고요.”",
