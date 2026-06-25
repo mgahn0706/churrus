@@ -556,4 +556,15 @@ export const clubroomClues: ClueType[] = [
     type: "basic",
     place: "homes",
   },
+  {
+    id: 52,
+    title: "카카오톡: 샤울대병원",
+    x: 18,
+    y: 64,
+    image: getClubroomClueImage(52),
+    description:
+      "샤울대병원에서 구애인에게 보낸 카카오톡 안내이다. 구애인이 병문안을 신청한 기록이다.",
+    type: "additional",
+    place: 48,
+  },
 ];
