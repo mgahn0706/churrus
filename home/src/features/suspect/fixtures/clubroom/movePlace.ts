@@ -18,9 +18,9 @@ export const clubroomMoveButton: MovePlaceButtonType[] = [
   {
     from: "homes",
     to: "recycling",
-    x: 4,
-    y: 88,
-    direction: "left",
+    x: 51.674,
+    y: 89.463,
+    direction: "down",
   },
   {
     from: "recycling",
