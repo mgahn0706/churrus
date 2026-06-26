@@ -29,7 +29,7 @@ import { clubroomClues } from "./clubroom/clues";
 export const scenarios: ScenarioType[] = [
   {
     title: "스타트업 살인사건",
-    creators: [],
+    creators: ["안민규"],
     numberOfSuspects: 4,
     backgroundImage: "/image/suspect/scenario/startup/startup-main.png",
     id: "startup",
@@ -45,7 +45,7 @@ export const scenarios: ScenarioType[] = [
   },
   {
     title: "와부고 살인사건",
-    creators: [],
+    creators: ["안민규"],
     gameType: "TEXT",
     numberOfSuspects: 3,
     histories: ["2023년 10월 정기모임", "2024년 3월 OT"],
@@ -62,7 +62,7 @@ export const scenarios: ScenarioType[] = [
   },
   {
     title: "자하연 살인사건",
-    creators: [],
+    creators: ["안민규"],
     gameType: "CLUE",
     numberOfSuspects: 4,
     backgroundImage: "/image/suspect/scenario/jahayeon/jahayeon-main.png",
@@ -78,7 +78,7 @@ export const scenarios: ScenarioType[] = [
   },
   {
     title: "두레문예관 살인사건",
-    creators: [],
+    creators: ["강재호", "고재준", "김지훈", "김현준", "안민규"],
     gameType: "TEXT",
     numberOfSuspects: 4,
     backgroundImage: "/image/suspect/scenario/dure/dure-main.png",
@@ -95,7 +95,7 @@ export const scenarios: ScenarioType[] = [
   },
   {
     title: "추러스 박물관 살인사건",
-    creators: [],
+    creators: ["김지훈", "안민규"],
     gameType: "CLUE",
     numberOfSuspects: 3,
     backgroundImage: "/image/suspect/scenario/museum/museum-main.png",
@@ -112,7 +112,7 @@ export const scenarios: ScenarioType[] = [
   {
     id: "serial",
     title: "28동-301동 연쇄 살인사건",
-    creators: [],
+    creators: ["안민규"],
     gameType: "CLUE",
     numberOfSuspects: 3,
     backgroundImage: "/image/suspect/scenario/serial/serial-main.png",
@@ -128,13 +128,14 @@ export const scenarios: ScenarioType[] = [
   {
     id: "mountain",
     title: "청룡산 살인사건",
-    creators: [],
+    creators: ["조경아", "김태연", "안민규"],
     gameType: "CLUE",
     numberOfSuspects: 4,
     backgroundImage: "/image/suspect/scenario/mountain/mountain-main.png",
     isInDevelopment: true,
     description: "청룡산 등산로에서 발생한 의문의 추락사건",
     places: ["intersection", "cafe", "entrance"],
+    histories: ["2026년 6월 정기모임"],
     suspects: mountainSuspects,
     victims: [mountainVictim],
     clues: mountainClues,
@@ -142,7 +143,7 @@ export const scenarios: ScenarioType[] = [
   },
   {
     title: "추리소설가 살인사건",
-    creators: [],
+    creators: ["김지훈", "안민규"],
     gameType: "CLUE",
     numberOfSuspects: 4,
     histories: [],
@@ -160,7 +161,7 @@ export const scenarios: ScenarioType[] = [
   {
     id: "subway",
     title: "서울대입구역 살인사건",
-    creators: [],
+    creators: ["안민규"],
     gameType: "CLUE",
     numberOfSuspects: 4,
     histories: [],
@@ -176,7 +177,7 @@ export const scenarios: ScenarioType[] = [
   {
     id: "clubroom",
     title: "동아리방 살인사건",
-    creators: [],
+    creators: ["허정", "강재호", "오수진", "안민규"],
     gameType: "CLUE",
     numberOfSuspects: 4,
     histories: [],
@@ -192,7 +193,7 @@ export const scenarios: ScenarioType[] = [
   {
     id: "bluemoon",
     title: "푸른 달 살인사건",
-    creators: [],
+    creators: [""],
     gameType: "TEXT",
     numberOfSuspects: 6,
     histories: ["2026년 겨울 대이동"],
