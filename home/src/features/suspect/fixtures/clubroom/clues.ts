@@ -133,7 +133,7 @@ export const clubroomClues: ClueType[] = [
     y: 15.186,
     image: getClubroomClueImage(12),
     description:
-      "멀티탭에는 휴대폰 충전기 3개와 노트북 충전기 2개가 꽂혀 있다. 휴대폰 충전기는 C타입 2개와 애플용 1개이고, 노트북 충전기는 둘 다 삼성 용이다. 충전기 중 하나에는 ‘구애인’이라고 적혀 있다.",
+      "멀티탭에는 휴대폰 충전기 3개와 노트북 충전기 1개가 꽂혀 있다. 휴대폰 충전기는 C타입 2개와 애플용 1개이고, 노트북 충전기 삼성 용이다. 충전기 중 하나에는 ‘구애인’이라고 적혀 있다.",
     type: "basic",
     place: "room",
   },
@@ -248,11 +248,12 @@ export const clubroomClues: ClueType[] = [
     id: 23,
     title: "구애인의 교통카드",
     x: 18,
-    y: 36,
+    y: 26,
     image: getClubroomClueImage(23),
-    description: "구애인의 교통카드이다. 버스에 승하차한 기록이 남아 있다.",
+    description:
+      "구애인의 교통카드 이용 기록이다. 버스에 승하차한 기록이 남아 있다.",
     type: "additional",
-    place: 21,
+    place: 48,
   },
   {
     id: 24,
@@ -566,5 +567,15 @@ export const clubroomClues: ClueType[] = [
       "샤울대병원에서 구애인에게 보낸 카카오톡 안내이다. 구애인이 병문안을 신청한 기록이다.",
     type: "additional",
     place: 48,
+  },
+  {
+    id: 53,
+    title: "갤러리",
+    x: 18,
+    y: 56,
+    image: getClubroomClueImage(53),
+    description: "2023년 12월에 촬영된 장절친 본인의 사진.",
+    type: "additional",
+    place: 49,
   },
 ];
