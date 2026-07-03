@@ -133,7 +133,7 @@ export const scenarios: ScenarioType[] = [
     gameType: "CLUE",
     numberOfSuspects: 4,
     backgroundImage: "/image/suspect/scenario/mountain/mountain-main.png",
-    isInDevelopment: true,
+    isInDevelopment: false,
     description: "청룡산 등산로에서 발생한 의문의 추락사건",
     places: ["intersection", "cafe", "entrance"],
     histories: ["2026년 6월 정기모임"],
