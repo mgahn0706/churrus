@@ -7,7 +7,7 @@ import { RestartAlt } from "@mui/icons-material";
 interface HiveProps {
   centerLetter: string;
   outerLetters: string[];
-  onSubmit: (answer: string[]) => void;
+  onSubmit: (answer: string[]) => void | Promise<void>;
 }
 
 const HALF_HEXAGON_WIDTH = 50;
@@ -67,9 +67,9 @@ export default function Hive({
 
   return (
     <form
-      onSubmit={(e) => {
+      onSubmit={async (e) => {
         e.preventDefault();
-        onSubmit(input);
+        await onSubmit(input);
         setInput([]);
       }}
     >

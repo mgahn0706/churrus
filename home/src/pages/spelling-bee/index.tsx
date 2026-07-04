@@ -24,10 +24,20 @@ import ScoreSection from "@/features/spelling-bee/components/ScoreSection";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import AnswersSection from "@/features/spelling-bee/components/AnswersSection";
 import { HelpOutline, Lightbulb, LockOpen } from "@mui/icons-material";
-import { KOREAN_NOUNS } from "@/fixtures/koreanNounList";
 import { useResponsiveValue } from "@/hooks/useResponsiveValue";
 
 dayjs.extend(weekOfYear);
+
+let koreanNounsPromise: Promise<Set<string>> | null = null;
+
+const loadKoreanNouns = () => {
+  if (!koreanNounsPromise) {
+    koreanNounsPromise = import("@/fixtures/koreanNounList").then(
+      ({ KOREAN_NOUNS }) => KOREAN_NOUNS
+    );
+  }
+  return koreanNounsPromise;
+};
 
 const answerMessage = (
   answer: string
@@ -83,36 +93,13 @@ export default function SpellingBee() {
 
   const isMobileWidth = useResponsiveValue([true, true, false]);
 
-  // Allowed letters for today
-  const allowedLetters = useMemo(
+  const pangrams = useMemo(
     () =>
       todaySpellingBee
-        ? new Set([
-            ...todaySpellingBee.outerLetters,
-            todaySpellingBee.centerLetter,
-          ])
-        : new Set<string>(),
+        ? [...todaySpellingBee.pangrams].sort((a, b) => a.length - b.length)
+        : [],
     [todaySpellingBee]
   );
-
-  // Compute pangram candidates from dictionary (명사만)
-  const pangrams = useMemo(() => {
-    const list: string[] = [];
-    const iter: string[] = Array.isArray(KOREAN_NOUNS)
-      ? (KOREAN_NOUNS as string[])
-      : Array.from(KOREAN_NOUNS as Set<string>);
-
-    for (const w of iter) {
-      const j = hangul.disassemble(w);
-      if (j.length < 4) continue;
-      if (!todaySpellingBee) continue;
-      if (!j.includes(todaySpellingBee.centerLetter)) continue;
-      if (j.some((ch) => !allowedLetters.has(ch))) continue;
-      if (new Set(j).size !== 7) continue;
-      list.push(w);
-    }
-    return Array.from(new Set(list)).sort((a, b) => a.length - b.length);
-  }, [allowedLetters, todaySpellingBee]);
 
   // UI state for pangram reveal
   const [isRevealDialogOpen, setIsRevealDialogOpen] = useState(false);
@@ -282,7 +269,9 @@ export default function SpellingBee() {
           <Hive
             centerLetter={todaySpellingBee.centerLetter}
             outerLetters={todaySpellingBee.outerLetters}
-            onSubmit={(input) => {
+            onSubmit={async (input) => {
+              const assembled = hangul.assemble(input);
+
               if (input.length < 4) {
                 setValidationMessage({
                   severity: "error",
@@ -290,7 +279,7 @@ export default function SpellingBee() {
                 });
                 return;
               }
-              if (currentAnswers.includes(hangul.assemble(input))) {
+              if (currentAnswers.includes(assembled)) {
                 setValidationMessage({
                   severity: "error",
                   message: "이미 찾은 단어입니다.",
@@ -317,7 +306,8 @@ export default function SpellingBee() {
                 });
                 return;
               }
-              if (!KOREAN_NOUNS.has(hangul.assemble(input))) {
+              const koreanNouns = await loadKoreanNouns();
+              if (!koreanNouns.has(assembled)) {
                 setValidationMessage({
                   severity: "error",
                   message: "표준어사전에 없는 단어입니다. 명사만 가능합니다.",
@@ -325,7 +315,6 @@ export default function SpellingBee() {
                 return;
               }
 
-              const assembled = hangul.assemble(input);
               setValidationMessage(answerMessage(assembled));
               setCurrentAnswers({
                 day: spellingBeeDate,
