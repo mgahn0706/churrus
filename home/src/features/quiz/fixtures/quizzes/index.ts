@@ -37,7 +37,7 @@ export const QuizData: Record<string, QuizType[]> = {
       meetingId: "2026-6",
       quizNumber: 4,
       title: "Counting Stars",
-      creators: ["안민규"],
+      creators: ["김태연"],
       quizImageSource: "/image/quiz/2026-6-4.png",
       answer: "군수물자",
       tags: ["HARD", "KNOWLEDGE"],
