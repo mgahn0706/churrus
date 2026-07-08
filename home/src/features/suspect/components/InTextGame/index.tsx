@@ -36,6 +36,9 @@ const ProgressBar = ({
   checkedCount: number;
   totalCount: number;
 }) => {
+  const progress =
+    totalCount === 0 ? 0 : Math.floor((checkedCount / totalCount) * 100);
+
   return (
     <Tooltip title={`조사 진행도 (${checkedCount} / ${totalCount})`}>
       <Box
@@ -50,12 +53,10 @@ const ProgressBar = ({
           <LinearProgress
             color="primary"
             variant="determinate"
-            value={Math.floor((checkedCount / totalCount) * 100)}
+            value={progress}
           />
         </Box>
-        <Typography>
-          {Math.floor((checkedCount / totalCount) * 100)}%
-        </Typography>
+        <Typography>{progress}%</Typography>
       </Box>
     </Tooltip>
   );

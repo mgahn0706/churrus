@@ -26,6 +26,8 @@ import { subwayClues } from "./subway/clues";
 import { clubroomSuspects, clubroomVictim } from "./clubroom/suspects";
 import { clubroomClues } from "./clubroom/clues";
 import { hotelSuspects, hotelVictim } from "./hotel/suspects";
+import { hotelClues } from "./hotel/clues";
+import { hotelPrologue } from "./hotel/prologue";
 
 export const scenarios: ScenarioType[] = [
   {
@@ -227,7 +229,7 @@ export const scenarios: ScenarioType[] = [
   {
     title: "호텔 살인사건",
     creators: ["안민규"],
-    gameType: "CLUE",
+    gameType: "TEXT",
     numberOfSuspects: 4,
     backgroundImage: "/image/suspect/scenario/hotel/hotel-main.png",
     id: "hotel",
@@ -237,7 +239,8 @@ export const scenarios: ScenarioType[] = [
     places: [],
     suspects: hotelSuspects,
     victims: [hotelVictim],
-    clues: [],
+    clues: hotelClues,
     color: "#8e8e93",
+    prologue: hotelPrologue,
   },
 ];
