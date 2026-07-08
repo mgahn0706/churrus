@@ -1,4 +1,4 @@
-import { Dialog, Tab, Tabs } from "@mui/material";
+import { Box, Dialog, Tab, Tabs, Typography } from "@mui/material";
 import Image from "next/image";
 import { useState } from "react";
 import TabPanel from "../Answer/TabPanel";
@@ -23,6 +23,8 @@ export default function MapModal({
 
   const { isMobileWidth } = useMobileWidth();
 
+  const hasPlaces = places.length > 0;
+
   return (
     <Dialog
       open={isOpen}
@@ -33,20 +35,28 @@ export default function MapModal({
       }}
       maxWidth={isMobileWidth ? "xs" : "lg"}
     >
-      <Tabs value={selectedMap} onChange={handleChange}>
-        {places.map((place) => {
-          return <Tab key={place} label={place} value={place} />;
-        })}
-      </Tabs>
-      <TabPanel value={selectedMap} index={selectedMap}>
-        <Image
-          width={isMobileWidth ? 300 : 1080}
-          height={isMobileWidth ? 160 : 600}
-          priority
-          alt="맵 이미지"
-          src={`/image/suspect/scenario/${scenarioId}/map/${scenarioId}-${selectedMap}.png`}
-        />
-      </TabPanel>
+      {hasPlaces ? (
+        <>
+          <Tabs value={selectedMap} onChange={handleChange}>
+            {places.map((place) => {
+              return <Tab key={place} label={place} value={place} />;
+            })}
+          </Tabs>
+          <TabPanel value={selectedMap} index={selectedMap}>
+            <Image
+              width={isMobileWidth ? 300 : 1080}
+              height={isMobileWidth ? 160 : 600}
+              priority
+              alt="맵 이미지"
+              src={`/image/suspect/scenario/${scenarioId}/map/${scenarioId}-${selectedMap}.png`}
+            />
+          </TabPanel>
+        </>
+      ) : (
+        <Box p={4}>
+          <Typography>지도 정보가 아직 준비되지 않았습니다.</Typography>
+        </Box>
+      )}
     </Dialog>
   );
 }

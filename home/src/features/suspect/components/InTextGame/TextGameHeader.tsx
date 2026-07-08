@@ -26,6 +26,7 @@ interface TextGameHeaderProps {
 const emojiMap: Record<string, string> = {
   bluemoon: "🌕",
   dure: "🎭",
+  hotel: "🏨",
   school: "🏫",
 };
 
