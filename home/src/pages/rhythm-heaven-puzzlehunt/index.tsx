@@ -290,6 +290,10 @@ export default function RhythmHeavenPuzzleHuntPage() {
                   right: 0,
                   bottom: 0,
                   left: 0,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  textAlign: "center",
                   py: { xs: 1.5, md: 2 },
                   background:
                     "linear-gradient(90deg, rgba(41, 0, 0, 0.96), rgba(176, 0, 0, 0.94))",
