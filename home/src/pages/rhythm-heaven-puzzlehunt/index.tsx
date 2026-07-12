@@ -129,6 +129,16 @@ export default function RhythmHeavenPuzzleHuntPage() {
     <>
       <Head>
         <title>리듬 천국 퍼즐 헌트 | 추러스</title>
+        <link
+          rel="preload"
+          as="image"
+          href="/image/rhythm-heaven-puzzlehunt/bar-background.png"
+        />
+        <link
+          rel="preload"
+          as="image"
+          href="/image/rhythm-heaven-puzzlehunt/puzzlehunt-2.png"
+        />
       </Head>
       <style jsx global>{`
         @font-face {
@@ -238,7 +248,6 @@ export default function RhythmHeavenPuzzleHuntPage() {
                 "60%": { transform: "scale(1) translateY(0)" },
               },
               "&:hover": {
-                animationPlayState: "paused",
                 transform: "translateY(-4px) scale(1.03)",
                 boxShadow: "0 24px 56px rgba(0, 0, 0, 0.65)",
               },
