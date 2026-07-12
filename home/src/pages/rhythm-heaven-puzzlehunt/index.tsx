@@ -8,6 +8,8 @@ import {
 
 const CLICK_SOUND_SOURCE = "/audio/click.wav";
 const TYPING_INTERVAL = 32;
+const PUZZLE_HUNT_DOWNLOAD_URL =
+  "https://drive.google.com/file/d/1s-6eYtkLGiAIoHLDf3OGFCaMU1yT-UZw/view?usp=drive_link";
 
 const SCENES = {
   cafe: {
@@ -239,6 +241,10 @@ export default function RhythmHeavenPuzzleHuntPage() {
             }}
           >
             <Button
+              component="a"
+              href={PUZZLE_HUNT_DOWNLOAD_URL}
+              target="_blank"
+              rel="noopener noreferrer"
               aria-label="리듬천국 퍼즐헌트 2 다운로드"
               sx={{
                 position: "relative",
