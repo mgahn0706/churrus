@@ -1,4 +1,11 @@
-import { Box, Button, Card, CardActionArea, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  CardActionArea,
+  IconButton,
+  Typography,
+} from "@mui/material";
 import GlobalHeader from "@/components/Navigation/GlobalHeader";
 
 import dayjs from "dayjs";
@@ -13,7 +20,7 @@ import Image from "next/image";
 import DesktopPuzzleCard from "@/features/home/components/DesktopPuzzleCard";
 import { CROSSWORDS } from "@/features/crosswords/fixtures";
 import Head from "next/head";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getCalendarYearWeek } from "@/utils/calendarWeek";
 
 const WORD_PUZZLE_CONTENTS = [
@@ -48,9 +55,53 @@ const BACKGROUND_COLOR = "#F5F6FA";
 export default function Churrus() {
   const router = useRouter();
   const [today, setToday] = useState(() => dayjs("2024-02-09"));
+  const [isCafeButtonVisible, setIsCafeButtonVisible] = useState(false);
+  const spacePressTimesRef = useRef<number[]>([]);
+  const isCafeButtonVisibleRef = useRef(false);
+  const popupAudioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     setToday(dayjs());
+  }, []);
+
+  useEffect(() => {
+    const popupAudio = new Audio("/audio/pop-up.wav");
+    popupAudio.volume = 0.65;
+    popupAudioRef.current = popupAudio;
+
+    return () => {
+      popupAudio.pause();
+      popupAudioRef.current = null;
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.code !== "Space" || event.repeat) return;
+
+      const now = Date.now();
+      spacePressTimesRef.current = [...spacePressTimesRef.current, now].filter(
+        (pressTime) => now - pressTime <= 5000
+      );
+
+      if (
+        spacePressTimesRef.current.length >= 8 &&
+        !isCafeButtonVisibleRef.current
+      ) {
+        const popupAudio = popupAudioRef.current;
+        if (popupAudio) {
+          popupAudio.currentTime = 0;
+          void popupAudio.play().catch(() => undefined);
+        }
+
+        isCafeButtonVisibleRef.current = true;
+        setIsCafeButtonVisible(true);
+        spacePressTimesRef.current = [];
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
   const [foundWords] = useLocalStorage<{
@@ -77,13 +128,16 @@ export default function Churrus() {
       <GlobalHeader />
       <Box
         bgcolor={BACKGROUND_COLOR}
-        minWidth="100vw"
+        width="100%"
         minHeight="100vh"
-        py={[4, 4, 0]}
+        pt={[4, 4, "48px"]}
+        pb={[4, 4, 0]}
+        boxSizing="border-box"
+        sx={{ overflowX: "hidden" }}
       >
         <Box
           mx={[2, 2, 0]}
-          mt={[0, 0, "48px"]}
+          mt={0}
           display="flex"
           justifyContent="center"
           flexDirection="column"
@@ -365,6 +419,121 @@ export default function Churrus() {
           </Box>
         </Box>
       </Box>
+      {isCafeButtonVisible && (
+        <Box
+          sx={{
+            position: "fixed",
+            right: { xs: 20, md: 32 },
+            bottom: { xs: 20, md: 32 },
+            zIndex: 1200,
+            "&:hover .cafe-alert": {
+              width: 130,
+              animationPlayState: "paused",
+            },
+            "&:hover .cafe-alert-icon": {
+              opacity: 0,
+              transform: "scale(0.5)",
+            },
+            "&:hover .cafe-alert-text": {
+              opacity: 1,
+              transform: "translateX(0)",
+            },
+          }}
+        >
+          <Box
+            aria-hidden="true"
+            className="cafe-alert"
+            sx={{
+              position: "absolute",
+              top: 8,
+              right: "calc(100% + 10px)",
+              width: 30,
+              height: 28,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              overflow: "hidden",
+              borderRadius: "3px",
+              backgroundColor: "#171717",
+              color: "#fff",
+              fontSize: 18,
+              fontWeight: 800,
+              lineHeight: 1,
+              boxShadow: "0 3px 8px rgba(0, 0, 0, 0.3)",
+              animation: "cafeAlertBlink 900ms steps(2, jump-none) infinite",
+              transition: "width 240ms ease-out",
+              "@keyframes cafeAlertBlink": {
+                "50%": { opacity: 0.25 },
+              },
+              "&::after": {
+                content: '\"\"',
+                position: "absolute",
+                right: -6,
+                top: "50%",
+                transform: "translateY(-50%)",
+                borderTop: "6px solid transparent",
+                borderBottom: "6px solid transparent",
+                borderLeft: "7px solid #171717",
+              },
+            }}
+          >
+            <Box
+              component="span"
+              className="cafe-alert-icon"
+              sx={{ transition: "opacity 160ms ease-out, transform 160ms ease-out" }}
+            >
+              !
+            </Box>
+            <Box
+              component="span"
+              className="cafe-alert-text"
+              sx={{
+                position: "absolute",
+                opacity: 0,
+                whiteSpace: "nowrap",
+                fontSize: 12,
+                fontWeight: 700,
+                transform: "translateX(-6px)",
+                transition: "opacity 180ms ease-out 80ms, transform 180ms ease-out 80ms",
+              }}
+            >
+              소리를 켜주세요
+            </Box>
+          </Box>
+          <IconButton
+            aria-label="리듬 천국 퍼즐 헌트로 이동"
+            onClick={() => router.push("/rhythm-heaven-puzzlehunt")}
+            sx={{
+            width: 72,
+            height: 72,
+            backgroundColor: "#fff",
+            boxShadow: "0 10px 24px rgba(64, 44, 24, 0.28)",
+            animation: "cafeButtonPop 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+            "@keyframes cafeButtonPop": {
+              "0%": {
+                opacity: 0,
+                transform: "scale(0.2) rotate(-18deg)",
+              },
+              "100%": {
+                opacity: 1,
+                transform: "scale(1) rotate(0deg)",
+              },
+            },
+            "&:hover": {
+              backgroundColor: "#fffaf3",
+              transform: "scale(1.08)",
+            },
+          }}
+          >
+            <Image
+              alt="카페"
+              src="/image/rhythm-heaven-puzzlehunt/cafe-icon.png"
+              width={38}
+              height={44}
+            />
+          </IconButton>
+        </Box>
+      )}
     </>
   );
 }

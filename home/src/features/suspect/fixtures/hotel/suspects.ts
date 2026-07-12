@@ -63,6 +63,5 @@ export const hotelVictim: VictimType = {
   gender: "male",
   job: "일류대학교 제약학과 교수",
   statement: "",
-  description:
-    "마르고 작은 체구를 가진 서울대학교 일어일문학과 남학생. 기숙사 신관인 901동에 거주 중이다. 평소 밝은 성격으로, 다른 친구들을 잘 챙겨준다.",
+  description: "일류대학교 제약학과 교수이자 추르제약의 자문위원.",
 };
