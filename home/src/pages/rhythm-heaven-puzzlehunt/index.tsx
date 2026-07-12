@@ -79,10 +79,22 @@ export default function RhythmHeavenPuzzleHuntPage() {
     const bgmAudio = bgmAudioRef.current;
     if (!bgmAudio) return;
 
+    const startBgm = () => {
+      void bgmAudio.play().catch(() => undefined);
+    };
+
     bgmAudio.volume = 0.4;
     bgmAudio.muted = isBgmMutedRef.current;
     bgmAudio.load();
-    void bgmAudio.play().catch(() => undefined);
+    startBgm();
+
+    window.addEventListener("pointerdown", startBgm, { once: true });
+    window.addEventListener("keydown", startBgm, { once: true });
+
+    return () => {
+      window.removeEventListener("pointerdown", startBgm);
+      window.removeEventListener("keydown", startBgm);
+    };
   }, [currentScene.bgmSource]);
 
   const handleNext = () => {
@@ -123,6 +135,7 @@ export default function RhythmHeavenPuzzleHuntPage() {
     bgmAudio.muted = nextIsBgmMuted;
     isBgmMutedRef.current = nextIsBgmMuted;
     setIsBgmMuted(nextIsBgmMuted);
+    void bgmAudio.play().catch(() => undefined);
   };
 
   return (
@@ -187,7 +200,13 @@ export default function RhythmHeavenPuzzleHuntPage() {
             },
           }}
         />
-        <audio ref={bgmAudioRef} src={currentScene.bgmSource} autoPlay loop />
+        <audio
+          ref={bgmAudioRef}
+          src={currentScene.bgmSource}
+          autoPlay
+          loop
+          preload="auto"
+        />
         <IconButton
           aria-label={isBgmMuted ? "배경 음악 켜기" : "배경 음악 끄기"}
           onClick={handleBgmToggle}
