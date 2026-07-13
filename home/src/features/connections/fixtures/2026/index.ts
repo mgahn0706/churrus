@@ -505,4 +505,46 @@ export const CONNECTIONS2026: ConnectionsType[] = [
       },
     ],
   },
+  {
+    week: 25,
+    quiz: [
+      {
+        words: ["단수", "축", "패", "집"],
+        description: "바둑 관련 단어",
+      },
+      {
+        words: ["복수", "피", "침", "눈물"],
+        description: "신체에 있는 액체",
+      },
+      {
+        words: ["장구", "해금", "나발", "북"],
+        description: "국악기",
+      },
+      {
+        words: ["백합", "소라", "대합", "고둥"],
+        description: "껍데기를 가진 연체동물",
+      },
+    ],
+  },
+  {
+    week: 26,
+    quiz: [
+      {
+        words: ["인도", "견인", "지도", "지휘"],
+        description: "어떤 방향으로 이끌다",
+      },
+      {
+        words: ["인기", "인망", "위신", "평판"],
+        description: "유명세",
+      },
+      {
+        words: ["인물", "추상", "산수", "풍속"],
+        description: "__ 화",
+      },
+      {
+        words: ["좀", "장구", "공", "바퀴"],
+        description: "__ 벌레",
+      },
+    ],
+  },
 ];
