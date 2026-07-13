@@ -547,4 +547,46 @@ export const CONNECTIONS2026: ConnectionsType[] = [
       },
     ],
   },
+  {
+    week: 27,
+    quiz: [
+      {
+        words: ["교류", "저항", "전력", "볼트"],
+        description: "전기 관련 단어",
+      },
+      {
+        words: ["새우", "나비", "쪽", "아침"],
+        description: "__ 잠",
+      },
+      {
+        words: ["유산", "대전", "일주", "정복"],
+        description: "세계 __",
+      },
+      {
+        words: ["자전", "수교", "식생", "불문"],
+        description: "서울대학교 학과의 준말",
+      },
+    ],
+  },
+  {
+    week: 28,
+    quiz: [
+      {
+        words: ["피난", "지름", "갈림", "골목"],
+        description: "__ 길",
+      },
+      {
+        words: ["아주", "건국", "서울", "연세"],
+        description: "대학교 이름",
+      },
+      {
+        words: ["이주", "사주", "십분", "오일"],
+        description: "시간",
+      },
+      {
+        words: ["꼭지", "역병", "돈", "소문"],
+        description: "돌 수 있는 것",
+      },
+    ],
+  },
 ];
