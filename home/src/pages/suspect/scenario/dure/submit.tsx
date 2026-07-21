@@ -1,4 +1,5 @@
 import { DetectiveNoteType } from "@/features/suspect/types";
+import { dureAdditionalQuestions } from "@/features/suspect/fixtures/dure/additionalQuestions";
 import {
   Box,
   Button,
@@ -44,28 +45,11 @@ const dureQuestions: {
     required: true,
     variant: "input",
   },
-  {
-    id: 4,
-    question: "박선재의 주머니 속 목걸이의 구입 자금 출처는 어디인가요?",
-    variant: "input",
-  },
-  {
-    id: 5,
-    question: "송가연은 박선재를 어떻게 생각하고 있었나요?",
-    variant: "input",
-  },
-
-  {
-    id: 6,
-    question: "고제준이 연구실 자료 사진을 찍은 이유는 무엇인가요?",
-    variant: "input",
-  },
-
-  {
-    id: 7,
-    question: "백장훈이 추리극을 취소하려고 한 이유는 무엇인가요?",
-    variant: "input",
-  },
+  ...dureAdditionalQuestions.map((item, index) => ({
+    id: index + 4,
+    question: item.question,
+    variant: "input" as const,
+  })),
 ];
 
 export default function DureSubmit() {
@@ -199,12 +183,7 @@ export default function DureSubmit() {
                     accusedSuspect: answers[0],
                     howDunnit: answers[1],
                     whyDunnit: answers[2],
-                    additionalQuestionAnswers: [
-                      answers[3],
-                      answers[4],
-                      answers[5],
-                      answers[6],
-                    ],
+                    additionalQuestionAnswers: answers.slice(3),
                     memo: "",
                   };
                   localStorage.setItem("dure", JSON.stringify(note));

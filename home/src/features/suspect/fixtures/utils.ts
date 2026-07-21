@@ -1,6 +1,6 @@
 import { AdditionalQuestionType } from "@/features/suspect/types";
 
-type AdditionalQuestionInput = Omit<AdditionalQuestionType, "no">;
+export type AdditionalQuestionInput = Omit<AdditionalQuestionType, "no">;
 
 export const createAdditionalQuestions = (
   questions: AdditionalQuestionInput[]

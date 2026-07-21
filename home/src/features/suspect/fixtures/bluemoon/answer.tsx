@@ -1,3 +1,4 @@
+import { bluemoonAdditionalQuestions } from "@/features/suspect/fixtures/bluemoon/additionalQuestions";
 import { ScenarioAnswerConfig } from "@/features/suspect/types/answerPage";
 
 export const bluemoonAnswerConfig: ScenarioAnswerConfig = {
@@ -77,20 +78,10 @@ export const bluemoonAnswerConfig: ScenarioAnswerConfig = {
       가족만은, 이것으로 평안히 살아갈 수 있겠지.
     </>
   ),
-  additional: [
-    {
-      question:
-        "Q1. 이번 사건에 연루된 '요괴', 즉 사람이 아닌 존재는 누구인가요? 또, 그들의 정체는 무엇인가요?",
-      answer:
-        "A. 김관우는 늑대인간, 가영은 구미호(구희묘), 허순은 선녀입니다.",
-    },
-    {
-      question:
-        "Q2. 용의자들 사이의 '비밀스러운 관계'를 알아냈나요? 누구와 누구가 어떤 관계인가요?",
-      answer:
-        "A. 임연화와 연부농은 불륜 관계였고, 임연화는 김관우를 독살할 계획이었으며 연부농은 암살을 의뢰한 인물이었습니다.",
-    },
-  ],
+  additional: bluemoonAdditionalQuestions.map((item, index) => ({
+    question: `Q${index + 1}. ${item.question}`,
+    answer: `A. ${item.answer}`,
+  })),
   solution: (
     <>
       김관우의 피가 붉은 색이고, 낯선 칼로 찔린 것이므로 임연화는 범인

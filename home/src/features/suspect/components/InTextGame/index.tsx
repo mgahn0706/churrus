@@ -1,7 +1,7 @@
-import { ThemeProvider } from "@emotion/react";
 import {
   Box,
   Button,
+  ButtonBase,
   Chip,
   CircularProgress,
   Dialog,
@@ -13,21 +13,16 @@ import {
   Paper,
   Tooltip,
   Typography,
-  createTheme,
+  ThemeProvider,
 } from "@mui/material";
 
 import { useState } from "react";
-import TextGameHeader from "./TextGameHeader";
-import { Search } from "@mui/icons-material";
+import TextGameHeader, { PhysicalClue } from "./TextGameHeader";
+import { ContentPasteSearchOutlined, Close, Search } from "@mui/icons-material";
 import { ClueData } from "@/pages/api/getCluesWithKeyword";
 import { FadeInSection } from "../FadeInSection";
 import { TextScenarioType } from "../../types";
-
-const darkTheme = createTheme({
-  palette: {
-    mode: "dark",
-  },
-});
+import { createScenarioTheme } from "../createScenarioTheme";
 
 const ProgressBar = ({
   checkedCount,
@@ -69,7 +64,12 @@ interface InTextGameProps {
 }
 
 export default function InTextGame({ scenario }: InTextGameProps) {
+  const scenarioTheme = createScenarioTheme(scenario.color, "dark");
   const [prolougeStep, setProlougeStep] = useState(0);
+  const [selectedPhysicalClue, setSelectedPhysicalClue] = useState<{
+    id: number;
+    image: string;
+  } | null>(null);
 
   const [openAllHistory, setOpenAllHistory] = useState(false);
 
@@ -87,11 +87,26 @@ export default function InTextGame({ scenario }: InTextGameProps) {
   );
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  const acquiredPhysicalClues = scenario.clues.reduce<PhysicalClue[]>(
+    (physicalClues, clue, index) => {
+      if (checkedClues[index] && clue.physicalClueId !== undefined) {
+        physicalClues.push({
+          id: clue.physicalClueId,
+          image: clue.image,
+          text: clue.text,
+        });
+      }
+
+      return physicalClues;
+    },
+    []
+  );
+
   const handleSearch = async () => {
     if (!searchKeyword) return;
 
     // remove spaces from search keyword
-    const trimmedKeyword = searchKeyword.replace(/\s+/g, "");
+    const trimmedKeyword = searchKeyword.replace(/\s+/g, "").toUpperCase();
 
     setIsLoading(true);
     setSearchedClues([]);
@@ -118,7 +133,7 @@ export default function InTextGame({ scenario }: InTextGameProps) {
   };
 
   return (
-    <ThemeProvider theme={darkTheme}>
+    <ThemeProvider theme={scenarioTheme}>
       {
         <Dialog open={openAllHistory} onClose={() => setOpenAllHistory(false)}>
           <DialogTitle>검색 기록 전체</DialogTitle>
@@ -138,8 +153,39 @@ export default function InTextGame({ scenario }: InTextGameProps) {
           </DialogContent>
         </Dialog>
       }
+      <Dialog
+        open={selectedPhysicalClue !== null}
+        onClose={() => setSelectedPhysicalClue(null)}
+        maxWidth="md"
+        fullWidth
+      >
+        <DialogTitle>
+          {selectedPhysicalClue &&
+            `${selectedPhysicalClue.id}번 실물단서`}
+          <IconButton
+            aria-label="닫기"
+            onClick={() => setSelectedPhysicalClue(null)}
+            sx={{ position: "absolute", right: 8, top: 8 }}
+          >
+            <Close />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent>
+          {selectedPhysicalClue && (
+            <Box
+              component="img"
+              src={selectedPhysicalClue.image}
+              alt={`${selectedPhysicalClue.id}번 실물단서`}
+              sx={{ display: "block", width: "100%", height: "auto" }}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
       <Box bgcolor="black" minHeight="100vh" py="60px" px="10vw">
-        <TextGameHeader scenarioId={scenario.id} />
+        <TextGameHeader
+          scenarioId={scenario.id}
+          acquiredPhysicalClues={acquiredPhysicalClues}
+        />
         {currentStep === "PROLOGUE" && (
           <Box mt={6} color="white">
             <Typography mr={1} variant="h5" color="white">
@@ -203,7 +249,7 @@ export default function InTextGame({ scenario }: InTextGameProps) {
                   }}
                   placeholder="조사 키워드를 입력하세요."
                   value={searchKeyword}
-                  onChange={(e) => setSearchKeyword(e.target.value)}
+                  onChange={(e) => setSearchKeyword(e.target.value.toUpperCase())}
                 />
                 <Tooltip
                   title="'시체'를 검색해보세요."
@@ -261,9 +307,43 @@ export default function InTextGame({ scenario }: InTextGameProps) {
                 return (
                   <FadeInSection key={clue.id}>
                     <Box minWidth="80vw">
-                      <Typography variant="h6" color="#eeeeee">
-                        {clue.from}
-                      </Typography>
+                      <Box display="flex" alignItems="center" gap={1} mb={0.5}>
+                        <Typography variant="h6" color="#eeeeee">
+                          {clue.from}
+                        </Typography>
+                        {clue.physicalClueId !== undefined && (
+                          <ButtonBase
+                            onClick={() =>
+                              setSelectedPhysicalClue({
+                                id: clue.physicalClueId,
+                                image: clue.image,
+                              })
+                            }
+                            sx={{
+                              border: "1px solid rgba(246, 200, 95, 0.75)",
+                              borderRadius: 1,
+                              bgcolor: "rgba(246, 200, 95, 0.12)",
+                              color: "white",
+                              px: 1,
+                              py: 0.5,
+                              gap: 0.6,
+                              boxShadow: "0 0 12px rgba(246, 200, 95, 0.18)",
+                              "&:hover": {
+                                bgcolor: "rgba(246, 200, 95, 0.22)",
+                                borderColor: "#f6c85f",
+                              },
+                            }}
+                          >
+                            <ContentPasteSearchOutlined
+                              fontSize="small"
+                              sx={{ color: "#f6c85f" }}
+                            />
+                            <Typography component="span" fontWeight="bold">
+                              {clue.physicalClueId}번 실물단서
+                            </Typography>
+                          </ButtonBase>
+                        )}
+                      </Box>
                       <Typography
                         variant="h5"
                         fontWeight="bold"

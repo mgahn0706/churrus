@@ -1,4 +1,5 @@
 import { DetectiveNoteType } from "@/features/suspect/types";
+import { bluemoonAdditionalQuestions } from "@/features/suspect/fixtures/bluemoon/additionalQuestions";
 import {
   Box,
   Button,
@@ -44,18 +45,11 @@ const bluemoonQuestions: {
     required: true,
     variant: "input",
   },
-  {
-    id: 4,
-    question:
-      "이번 사건에 연루된 '요괴', 즉 사람이 아닌 존재는 누구인가요? 또, 그들의 정체는 무엇인가요?",
-    variant: "input",
-  },
-  {
-    id: 5,
-    question:
-      "용의자들 사이의 '비밀스러운 관계'를 알아냈나요? 누구와 누구가 어떤 관계인가요?",
-    variant: "input",
-  },
+  ...bluemoonAdditionalQuestions.map((item, index) => ({
+    id: index + 4,
+    question: item.question,
+    variant: "input" as const,
+  })),
 ];
 
 export default function BluemoonSubmit() {
@@ -187,7 +181,7 @@ export default function BluemoonSubmit() {
                     accusedSuspect: answers[0],
                     howDunnit: answers[1],
                     whyDunnit: answers[2],
-                    additionalQuestionAnswers: [answers[3], answers[4]],
+                    additionalQuestionAnswers: answers.slice(3),
                     memo: "",
                   };
                   localStorage.setItem("bluemoon", JSON.stringify(note));

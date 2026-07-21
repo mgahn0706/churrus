@@ -1,4 +1,5 @@
 import { createScenarioReveal } from "@/features/suspect/components/createScenarioReveal";
+import { schoolAdditionalQuestions } from "@/features/suspect/fixtures/school/additionalQuestions";
 import { ScenarioAnswerConfig } from "@/features/suspect/types/answerPage";
 
 export const schoolAnswerConfig: ScenarioAnswerConfig = {
@@ -59,24 +60,10 @@ export const schoolAnswerConfig: ScenarioAnswerConfig = {
       경멸때문일지는 모르겠어요.
     </>
   ),
-  additional: [
-    {
-      question: "Q1. 9월 2일자 위클리 와부 십자말풀이의 가로 3번의 정답은 무엇인가요?",
-      answer: "A. 성민아",
-    },
-    {
-      question: "Q2. 손민혜가 최근 피로감과 불안증세를 겪고 있었던 이유는 무엇인가요?",
-      answer: "A. 마약 수급이 어려워져 금단 증상을 겪고 있었기 때문입니다.",
-    },
-    {
-      question: "Q3. 유가람과 유지현은 어떤 관계였나요?",
-      answer: "A. 유가람은 유지현의 반려견이었습니다.",
-    },
-    {
-      question: "Q4. gusty_d2의 인스타그램 계정의 주인은 누구인가요?",
-      answer: "A. 인스타그램 계정의 주인은 박현성입니다.",
-    },
-  ],
+  additional: schoolAdditionalQuestions.map((item, index) => ({
+    question: `Q${index + 1}. ${item.question}`,
+    answer: `A. ${item.answer}`,
+  })),
   solution: (
     <>
       박현성이 살해된 방법에는 세가지 요소가 있습니다. 클로로포름, 혼자 있었다는

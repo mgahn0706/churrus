@@ -12,14 +12,29 @@ import {
   bluemoonClues,
   bluemoonKeywordIds,
 } from "@/features/suspect/fixtures/bluemoon/clues";
+import {
+  hotelClues,
+  hotelKeywordIds,
+} from "@/features/suspect/fixtures/hotel/clues";
 import type { NextApiRequest, NextApiResponse } from "next";
 
-export interface ClueData {
+interface BaseClueData {
   id: number;
   text: string;
   from: string;
-  image?: string;
 }
+
+export type ClueData = BaseClueData &
+  (
+    | {
+        image: string;
+        physicalClueId: number;
+      }
+    | {
+        image?: string;
+        physicalClueId?: never;
+      }
+  );
 
 type Scenario = {
   keywordIds: Record<string, number[]>;
@@ -29,6 +44,7 @@ const scenarios: Record<string, Scenario> = {
   school: { keywordIds: schoolKeywordIds, clues: schoolClues },
   dure: { keywordIds: dureKeywordIds, clues: dureClues },
   bluemoon: { keywordIds: bluemoonKeywordIds, clues: bluemoonClues },
+  hotel: { keywordIds: hotelKeywordIds, clues: hotelClues },
 };
 
 interface ClueApiRequest extends NextApiRequest {
@@ -53,7 +69,12 @@ export default function handler(
     return;
   }
 
-  const ids = scenario.keywordIds[keyword];
+  const normalizedKeyword = keyword.toUpperCase();
+  const ids =
+    scenario.keywordIds[normalizedKeyword] ??
+    Object.entries(scenario.keywordIds).find(
+      ([keyword]) => keyword.toUpperCase() === normalizedKeyword
+    )?.[1];
   if (!ids || ids.length === 0) {
     res.status(200).json(null);
     return;

@@ -1,4 +1,5 @@
 import { DetectiveNoteType } from "@/features/suspect/types";
+import { hotelAdditionalQuestions } from "@/features/suspect/fixtures/hotel/additionalQuestions";
 import {
   Box,
   Button,
@@ -44,6 +45,11 @@ const hotelQuestions: {
     required: true,
     variant: "input",
   },
+  ...hotelAdditionalQuestions.map((item, index) => ({
+    id: index + 4,
+    question: item.question,
+    variant: "input" as const,
+  })),
 ];
 
 export default function HotelSubmit() {
@@ -152,7 +158,10 @@ export default function HotelSubmit() {
 
             <Button
               disabled={
-                answers.some((answer) => answer.trim() === "") &&
+                hotelQuestions.some(
+                  (question, index) =>
+                    question.required && answers[index].trim() === ""
+                ) &&
                 questionStep === hotelQuestions.length - 1
               }
               variant="contained"
@@ -174,7 +183,7 @@ export default function HotelSubmit() {
                     accusedSuspect: answers[0],
                     howDunnit: answers[1],
                     whyDunnit: answers[2],
-                    additionalQuestionAnswers: [],
+                    additionalQuestionAnswers: answers.slice(3),
                     memo: "",
                   };
                   localStorage.setItem("hotel", JSON.stringify(note));

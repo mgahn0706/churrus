@@ -1,4 +1,5 @@
 import { createScenarioReveal } from "@/features/suspect/components/createScenarioReveal";
+import { dureAdditionalQuestions } from "@/features/suspect/fixtures/dure/additionalQuestions";
 import { ScenarioAnswerConfig } from "@/features/suspect/types/answerPage";
 
 export const dureAnswerConfig: ScenarioAnswerConfig = {
@@ -60,25 +61,10 @@ export const dureAnswerConfig: ScenarioAnswerConfig = {
       없었어요. 어쩔 수 없었다구요.
     </>
   ),
-  additional: [
-    {
-      question: "Q1. 박선재의 주머니 속 목걸이의 구입 자금 출처는 어디인가요?",
-      answer: "A. 추러스 회비에서 횡령한 금액입니다.",
-    },
-    {
-      question: "Q2. 송가연은 박선재를 어떻게 생각하고 있었나요?",
-      answer: "A. 송가연은 박선재를 짝사랑하고 있었습니다.",
-    },
-    {
-      question: "Q3. 고제준이 연구실 자료 사진을 찍은 이유는 무엇인가요?",
-      answer: "A. 고제준은 남파공작원으로, 댐 관련 기밀을 빼내기 위해서입니다.",
-    },
-    {
-      question: "Q4. 백장훈이 추리극을 취소하려고 한 이유는 무엇인가요?",
-      answer:
-        "A. 1년 전 강제호 사건이 다시 수면 위로 떠오르는 것이 두려웠기 때문입니다.",
-    },
-  ],
+  additional: dureAdditionalQuestions.map((item, index) => ({
+    question: `Q${index + 1}. ${item.question}`,
+    answer: `A. ${item.answer}`,
+  })),
   solution: (
     <>
       이예진을 살해할 수 있는 사람은 세 가지 조건을 만족해야 합니다. 첫째,
