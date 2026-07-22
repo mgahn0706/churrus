@@ -3,6 +3,7 @@ import {
   CategoryRounded,
   ColorLensRounded,
   DirectionsRunRounded,
+  StorefrontRounded,
   Filter1Rounded,
   HelpRounded,
   IndeterminateCheckBoxRounded,
@@ -50,6 +51,13 @@ const FEATURED_GROUPS = [
     title: "협상과 추론 중심의 지니어스 스타일 게임",
     description: "협상, 블러핑, 정보전 중심의 메인 매치 스타일.",
     games: [
+      {
+        title: "과일가게",
+        subtitle: "최저가 경쟁과 비밀 전략이 교차하는 판매 게임",
+        url: "/fruit-market",
+        accent: "#D97706",
+        icon: <StorefrontRounded />,
+      },
       {
         title: "먹이사슬",
         subtitle: "위치와 타이밍이 중요한 생존 심리전",
