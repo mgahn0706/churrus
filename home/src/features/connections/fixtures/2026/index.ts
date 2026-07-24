@@ -589,4 +589,25 @@ export const CONNECTIONS2026: ConnectionsType[] = [
       },
     ],
   },
+  {
+    week: 29,
+    quiz: [
+      {
+        words: ["서울", "연세", "빙그레", "매일"],
+        description: "우유 브랜드",
+      },
+      {
+        words: ["인", "보물", "세계", "칠"],
+        description: "__ 지도",
+      },
+      {
+        words: ["노래", "배", "이름", "택시"],
+        description: "부를 수 있는 것",
+      },
+      {
+        words: ["육사", "이상", "한강", "영하"],
+        description: "한국의 문학가",
+      },
+    ],
+  },
 ];
