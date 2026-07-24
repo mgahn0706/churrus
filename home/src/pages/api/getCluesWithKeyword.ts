@@ -27,11 +27,11 @@ interface BaseClueData {
 export type ClueData = BaseClueData &
   (
     | {
-        image: string;
+        images: [string, ...string[]];
         physicalClueId: number;
       }
     | {
-        image?: string;
+        images?: never;
         physicalClueId?: never;
       }
   );

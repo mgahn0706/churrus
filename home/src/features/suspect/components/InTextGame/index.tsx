@@ -68,7 +68,7 @@ export default function InTextGame({ scenario }: InTextGameProps) {
   const [prolougeStep, setProlougeStep] = useState(0);
   const [selectedPhysicalClue, setSelectedPhysicalClue] = useState<{
     id: number;
-    image: string;
+    images: [string, ...string[]];
   } | null>(null);
 
   const [openAllHistory, setOpenAllHistory] = useState(false);
@@ -92,7 +92,7 @@ export default function InTextGame({ scenario }: InTextGameProps) {
       if (checkedClues[index] && clue.physicalClueId !== undefined) {
         physicalClues.push({
           id: clue.physicalClueId,
-          image: clue.image,
+          images: clue.images,
           text: clue.text,
         });
       }
@@ -173,11 +173,26 @@ export default function InTextGame({ scenario }: InTextGameProps) {
         <DialogContent>
           {selectedPhysicalClue && (
             <Box
-              component="img"
-              src={selectedPhysicalClue.image}
-              alt={`${selectedPhysicalClue.id}번 실물단서`}
-              sx={{ display: "block", width: "100%", height: "auto" }}
-            />
+              display="grid"
+              gridTemplateColumns={{
+                xs: "1fr",
+                md:
+                  selectedPhysicalClue.images.length > 1
+                    ? "repeat(2, minmax(0, 1fr))"
+                    : "1fr",
+              }}
+              gap={2}
+            >
+              {selectedPhysicalClue.images.map((image, index) => (
+                <Box
+                  key={`${image}-${index}`}
+                  component="img"
+                  src={image}
+                  alt={`${selectedPhysicalClue.id}번 실물단서 ${index + 1}`}
+                  sx={{ display: "block", width: "100%", height: "auto" }}
+                />
+              ))}
+            </Box>
           )}
         </DialogContent>
       </Dialog>
@@ -316,7 +331,7 @@ export default function InTextGame({ scenario }: InTextGameProps) {
                             onClick={() =>
                               setSelectedPhysicalClue({
                                 id: clue.physicalClueId,
-                                image: clue.image,
+                                images: clue.images,
                               })
                             }
                             sx={{

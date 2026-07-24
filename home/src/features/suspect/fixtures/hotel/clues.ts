@@ -46,6 +46,7 @@ export const hotelKeywordIds: Record<string, number[]> = {
   구입: [40],
   구조: [12],
   구타: [80],
+  근무: [55, 56, 62],
   근무복: [62],
   근무표: [56],
   기관생명윤리위원회: [102],
@@ -93,7 +94,7 @@ export const hotelKeywordIds: Record<string, number[]> = {
   매장: [40],
   머리끈: [47],
   먼지: [88],
-  메모: [91, 98],
+  메모: [91, 98, 100],
   메신저: [94],
   메일: [39],
   명단: [21, 50, 97],
@@ -265,7 +266,7 @@ export const hotelKeywordIds: Record<string, number[]> = {
   채용: [30, 95],
   책상: [37],
   청력: [103],
-  청소: [8, 54, 59],
+  청소: [8, 54, 56, 59],
   청소용품: [54],
   체크아웃: [3, 59, 60, 61],
   체크인: [26, 74],
@@ -387,7 +388,7 @@ export const hotelClues: ClueData[] = [
     text: "호텔 구조요? 이렇게 되어있어요.",
     from: "박호텔",
     physicalClueId: 1,
-    image: "/image/suspect/scenario/hotel/clues/hotel_structure.png",
+    images: ["/image/suspect/scenario/hotel/clues/hotel_structure.png"],
   },
   {
     id: 13,
@@ -426,7 +427,7 @@ export const hotelClues: ClueData[] = [
   },
   {
     id: 20,
-    text: "원생이 여자친구 있을걸요? 저도 몇 번 뵀었는데, 이름이 기억이 안나요. 최 씨 였던거 같기도.",
+    text: "원생이 여자친구 있을걸요? 고등학교 때부터 사귄 친구라고 해요. 저도 몇 번 뵀었는데, 이름이 기억이 안나요. 최 씨 였던거 같기도.",
     from: "강생명",
   },
   {
@@ -434,7 +435,9 @@ export const hotelClues: ClueData[] = [
     text: "크롬친화세포종 치료약 관련 임상실험 참가자 명단이에요.",
     from: "조수",
     physicalClueId: 2,
-    image: "/image/suspect/scenario/hotel/clues/clinical_trial_participant_list.png",
+    images: [
+      "/image/suspect/scenario/hotel/clues/clinical_trial_participant_list.png",
+    ],
   },
   {
     id: 22,
@@ -451,7 +454,7 @@ export const hotelClues: ClueData[] = [
     text: "최근 임원생 씨가 받은 안과 진단서입니다. 난시가 생겼다고.",
     from: "조수",
     physicalClueId: 3,
-    image: "/image/suspect/scenario/hotel/clues/ophthalmology_diagnosis.png",
+    images: ["/image/suspect/scenario/hotel/clues/ophthalmology_diagnosis.png"],
   },
   {
     id: 25,
@@ -488,14 +491,20 @@ export const hotelClues: ClueData[] = [
     text: "양연구 씨 짐에서 나온 대출 문서에요. 상환 연기 기록도 있고, 담보도 걸려있군요.",
     from: "조수",
     physicalClueId: 4,
-    image: "/image/suspect/scenario/hotel/clues/loan_document.png",
+    images: [
+      "/image/suspect/scenario/hotel/clues/mortgage_loan_application.png",
+      "/image/suspect/scenario/hotel/clues/loan_term_extension_application.png",
+    ],
   },
   {
     id: 32,
     text: "이게 이번 대한제약학컨퍼런스 일정 목걸이에요. 어제는 네트워킹 행사가 7시부터 있었고... 오늘 키노트 발표로 피해자가 나왔어야 했죠.",
     from: "조수",
     physicalClueId: 5,
-    image: "/image/suspect/scenario/hotel/clues/conference_schedule.png",
+    images: [
+      "/image/suspect/scenario/hotel/clues/conference_badge_front.png",
+      "/image/suspect/scenario/hotel/clues/conference_badge_back.png",
+    ],
   },
   {
     id: 33,
@@ -567,7 +576,9 @@ export const hotelClues: ClueData[] = [
     text: "여기 홍연구 씨의 요양병원 기록 자료입니다.",
     from: "조수",
     physicalClueId: 6,
-    image: "/image/suspect/scenario/hotel/clues/hong_researcher_medical_record.png",
+    images: [
+      "/image/suspect/scenario/hotel/clues/hong_researcher_medical_record.png",
+    ],
   },
   {
     id: 47,
@@ -619,7 +630,7 @@ export const hotelClues: ClueData[] = [
     text: "이게 오늘 룸메이드 청소 근무 담당표입니다. 404호가, 바뀌어져있네요. 변경 시각은 13일 저녁 6시에요.",
     from: "조수",
     physicalClueId: 7,
-    image: "/image/suspect/scenario/hotel/clues/housekeeping_schedule.png",
+    images: ["/image/suspect/scenario/hotel/clues/housekeeping_schedule.png"],
   },
   {
     id: 57,
@@ -696,7 +707,7 @@ export const hotelClues: ClueData[] = [
     text: "오늘 컨퍼런스에서 발표될 예정의 논문 첫 페이지 초록이에요. 20년간 축적한 희귀 내분비질환 환자 반응 예측 모델 상용화와 관련된 거죠.",
     from: "조수",
     physicalClueId: 8,
-    image: "/image/suspect/scenario/hotel/clues/paper_first_page.png",
+    images: ["/image/suspect/scenario/hotel/clues/paper_first_page.png"],
   },
   {
     id: 72,
@@ -760,10 +771,8 @@ export const hotelClues: ClueData[] = [
   },
   {
     id: 84,
-    text: "객실 배정표에요. 유교수 404호, 임원생 504호, 그리고 양연구 713호네요.",
+    text: "객실 배정표를 확인해보니, 유교수 404호, 임원생 504호, 그리고 양연구 713호네요.",
     from: "조수",
-    physicalClueId: 9,
-    image: "/image/suspect/scenario/hotel/clues/room_assignment.png",
   },
   {
     id: 85,
@@ -809,8 +818,11 @@ export const hotelClues: ClueData[] = [
     id: 93,
     text: "여기 임원생의 노트북에 있던 대학원 합격 증서들 입니다.",
     from: "조수",
-    physicalClueId: 10,
-    image: "/image/suspect/scenario/hotel/clues/graduate_school_admission_certificates.png",
+    physicalClueId: 9,
+    images: [
+      "/image/suspect/scenario/hotel/clues/life_sciences_graduate_admission_certificate.png",
+      "/image/suspect/scenario/hotel/clues/pharmacy_graduate_admission_certificate.png",
+    ],
   },
   {
     id: 94,
@@ -821,8 +833,8 @@ export const hotelClues: ClueData[] = [
     id: 95,
     text: "양연구의 노트북에 있던 입사 예정 확인서에요. 원래 이렇게 내정해서 하나봐요.",
     from: "조수",
-    physicalClueId: 11,
-    image: "/image/suspect/scenario/hotel/clues/employment_offer_letter.png",
+    physicalClueId: 10,
+    images: ["/image/suspect/scenario/hotel/clues/employment_offer_letter.png"],
   },
   {
     id: 96,
@@ -833,8 +845,8 @@ export const hotelClues: ClueData[] = [
     id: 97,
     text: "호텔 직원 명단이에요. 원래 외부에 공개하면 안되지만, 사건이 일어났으니 보여드려요.",
     from: "조수",
-    physicalClueId: 12,
-    image: "/image/suspect/scenario/hotel/clues/hotel_staff_list.png",
+    physicalClueId: 11,
+    images: ["/image/suspect/scenario/hotel/clues/hotel_staff_list.png"],
   },
   {
     id: 98,
@@ -845,22 +857,25 @@ export const hotelClues: ClueData[] = [
     id: 99,
     text: "2006년 경에 작성된 사업화 문서에요. 문바이오 측에서 주장하는 자료라서 신빙성이 있는지는 모르겠지만, 일단 이번 사건과 관련이 있을거같아서요 탐정님!",
     from: "조수",
-    physicalClueId: 13,
-    image: "/image/suspect/scenario/hotel/clues/business_plan.png",
+    physicalClueId: 12,
+    images: ["/image/suspect/scenario/hotel/clues/business_plan.png"],
   },
   {
     id: 100,
     text: "문실장 가방에서 발견된 간단한 지도에요. 뭔가 많이 표시되어있네요.",
     from: "조수",
-    physicalClueId: 14,
-    image: "/image/suspect/scenario/hotel/clues/map.png",
+    physicalClueId: 13,
+    images: ["/image/suspect/scenario/hotel/clues/map.png"],
   },
   {
     id: 101,
     text: "문실장 지갑에서 호텔 관리자 명함과 더불어 학회 운영용 명함이 발견되었습니다.",
     from: "조수",
-    physicalClueId: 15,
-    image: "/image/suspect/scenario/hotel/clues/business_card.png",
+    physicalClueId: 14,
+    images: [
+      "/image/suspect/scenario/hotel/clues/chubaldi_park_business_card.png",
+      "/image/suspect/scenario/hotel/clues/kpsc_business_card.png",
+    ],
   },
   {
     id: 102,

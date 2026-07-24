@@ -30,7 +30,7 @@ interface TextGameHeaderProps {
 
 export interface PhysicalClue {
   id: number;
-  image: string;
+  images: [string, ...string[]];
   text: string;
 }
 
@@ -62,7 +62,7 @@ export default function TextGameHeader({
           if (clue.physicalClueId !== undefined) {
             clues.push({
               id: clue.physicalClueId,
-              image: clue.image,
+              images: clue.images,
               text: clue.text,
             });
           }
@@ -112,89 +112,102 @@ export default function TextGameHeader({
               gridTemplateColumns={{
                 xs: "1fr",
                 sm: "repeat(2, minmax(0, 1fr))",
-                lg: "repeat(3, minmax(0, 1fr))",
+                lg: "repeat(4, minmax(0, 1fr))",
               }}
-              gap={1.5}
+              gap={1}
               width="100%"
             >
               {physicalClues.map((clue) => {
                 const acquiredClue = acquiredPhysicalCluesById.get(clue.id);
 
                 return acquiredClue ? (
-                  <Box
+                  <ButtonBase
                     key={clue.id}
-                    minWidth={0}
-                    p={1.5}
-                    border="1px solid"
-                    borderColor="divider"
-                    borderRadius={1}
-                    display="grid"
-                    gridTemplateColumns={{
-                      xs: "1fr",
-                      sm: "150px minmax(0, 1fr)",
+                    aria-label={`${clue.id}번 실물단서 크게 보기`}
+                    onClick={() => setSelectedPhysicalClue(acquiredClue)}
+                    sx={{
+                      minWidth: 0,
+                      width: "100%",
+                      p: 1,
+                      border: "1px solid",
+                      borderColor: "divider",
+                      borderRadius: 1,
+                      display: "grid",
+                      gridTemplateColumns: {
+                        xs: "1fr",
+                        sm: "110px minmax(0, 1fr)",
+                      },
+                      gap: 1,
+                      alignItems: "center",
+                      textAlign: "left",
+                      transition: "background-color 0.2s ease",
+                      "&:hover": {
+                        bgcolor: "action.hover",
+                      },
+                      "&:hover img": {
+                        transform: "scale(1.03)",
+                      },
                     }}
-                    gap={1.5}
-                    alignItems="center"
                   >
-                    <ButtonBase
-                      aria-label={`${clue.id}번 실물단서 크게 보기`}
-                      onClick={() => setSelectedPhysicalClue(acquiredClue)}
+                    <Box
                       sx={{
                         width: "100%",
                         borderRadius: 0.5,
                         overflow: "hidden",
-                        "&:hover img": {
-                          transform: "scale(1.03)",
-                        },
                       }}
                     >
                       <Box
                         component="img"
-                        src={acquiredClue.image}
+                        src={acquiredClue.images[0]}
                         alt={`${clue.id}번 실물단서`}
                         sx={{
                           display: "block",
                           width: "100%",
-                          height: 150,
+                          height: 110,
                           objectFit: "contain",
                           bgcolor: "rgba(0, 0, 0, 0.04)",
                           transition: "transform 0.2s ease",
                         }}
                       />
-                    </ButtonBase>
+                    </Box>
                     <Box minWidth={0}>
-                      <Typography fontWeight="bold" mb={0.75}>
+                      <Typography fontWeight="bold" fontSize="0.875rem" mb={0.5}>
                         {clue.id}번 실물단서
                       </Typography>
                       <Typography
                         variant="body2"
                         color="text.secondary"
-                        fontSize="0.82rem"
-                        lineHeight={1.55}
+                        fontSize="0.75rem"
+                        lineHeight={1.4}
                       >
                         {acquiredClue.text}
                       </Typography>
                     </Box>
-                  </Box>
+                  </ButtonBase>
                 ) : (
                   <Box
                     key={clue.id}
                     minWidth={0}
-                    p={1.5}
+                    p={1}
                     border="1px solid"
                     borderColor="divider"
                     borderRadius={1}
                     display="grid"
                     gridTemplateColumns={{
                       xs: "1fr",
-                      sm: "150px minmax(0, 1fr)",
+                      sm: "110px minmax(0, 1fr)",
                     }}
-                    gap={1.5}
+                    gap={1}
                     alignItems="center"
                   >
-                    <Skeleton variant="rectangular" height={150} animation={false} />
+                    <Skeleton variant="rectangular" height={110} animation={false} />
                     <Box minWidth={0}>
-                      <Typography color="text.secondary" fontWeight="bold" mb={0.75}>
+                      <Typography
+                        color="text.secondary"
+                        fontWeight="bold"
+                        fontSize="0.875rem"
+                        mb={0.5}
+                      >
                         미획득 실물단서
                       </Typography>
                       <Skeleton variant="text" width="100%" animation={false} />
@@ -230,18 +243,35 @@ export default function TextGameHeader({
         <DialogContent>
           {selectedPhysicalClue && (
             <Box
-              component="img"
-              src={selectedPhysicalClue.image}
-              alt={`${selectedPhysicalClue.id}번 실물단서`}
-              sx={{
-                display: "block",
-                maxWidth: "100%",
-                maxHeight: "75vh",
-                width: "auto",
-                height: "auto",
-                mx: "auto",
+              display="grid"
+              gridTemplateColumns={{
+                xs: "1fr",
+                md:
+                  selectedPhysicalClue.images.length > 1
+                    ? "repeat(2, minmax(0, 1fr))"
+                    : "1fr",
               }}
-            />
+              gap={2}
+              sx={{
+                justifyItems: "center",
+              }}
+            >
+              {selectedPhysicalClue.images.map((image, index) => (
+                <Box
+                  key={`${image}-${index}`}
+                  component="img"
+                  src={image}
+                  alt={`${selectedPhysicalClue.id}번 실물단서 ${index + 1}`}
+                  sx={{
+                    display: "block",
+                    maxWidth: "100%",
+                    maxHeight: "75vh",
+                    width: "auto",
+                    height: "auto",
+                  }}
+                />
+              ))}
+            </Box>
           )}
         </DialogContent>
       </Dialog>
