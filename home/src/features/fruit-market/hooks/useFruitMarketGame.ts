@@ -4,6 +4,7 @@ import {
   FruitMarketBids,
   FruitMarketPhase,
   FruitMarketPlayer,
+  FruitMarketRoundLog,
   FruitMarketRoundResult,
   FruitMarketSpecial,
 } from "@/features/fruit-market/types";
@@ -66,6 +67,10 @@ export function useFruitMarketGame() {
   const [bids, setBids] = useState<FruitMarketBids>({});
   const [secretFruits, setSecretFruits] = useState<Fruit[]>([]);
   const [results, setResults] = useState<FruitMarketRoundResult[]>([]);
+  const [gameLogs, setGameLogs] = useState<FruitMarketRoundLog[]>([]);
+  const [currentRoundLogs, setCurrentRoundLogs] = useState<
+    FruitMarketRoundLog["players"]
+  >([]);
   const [special, setSpecial] = useState<FruitMarketSpecial>("none");
   const [targetFruit, setTargetFruit] = useState<Fruit>("사과");
   const [replacementFruit, setReplacementFruit] = useState<Fruit>("딸기");
@@ -194,8 +199,26 @@ export function useFruitMarketGame() {
     if (!currentPlayer || !bidComplete) return;
     let nextPlayers = players;
     let nextSecretFruits = secretFruits;
+    const currentPlayerBids = { ...(bids[currentPlayer.id] ?? {}) };
+    const nextBids = {
+      ...bids,
+      [currentPlayer.id]: currentPlayerBids,
+    };
+    const submittedSpecial = special;
+    const submittedTargetFruit = special !== "none" ? targetFruit : undefined;
+    const submittedReplacementFruit =
+      special === "replace" ? replacementFruit : undefined;
+    const submittedLog = {
+      playerId: currentPlayer.id,
+      playerName: currentPlayer.name,
+      bids: currentPlayerBids,
+      special: submittedSpecial,
+      targetFruit: submittedTargetFruit,
+      replacementFruit: submittedReplacementFruit,
+    };
+    const nextCurrentRoundLogs = [...currentRoundLogs, submittedLog];
 
-    if (special === "secret") {
+    if (submittedSpecial === "secret") {
       nextSecretFruits = [...secretFruits, targetFruit];
       nextPlayers = players.map((player) =>
         player.id === currentPlayer.id
@@ -204,7 +227,7 @@ export function useFruitMarketGame() {
       );
     }
 
-    if (special === "replace") {
+    if (submittedSpecial === "replace") {
       nextPlayers = players.map((player) => {
         if (player.id !== currentPlayer.id) return player;
         const fruits = [...player.fruits];
@@ -223,12 +246,17 @@ export function useFruitMarketGame() {
     const nextBidPlayerIds = [...bidPlayerIds, currentPlayer.id];
     setBidPlayerIds(nextBidPlayerIds);
     if (nextBidPlayerIds.length < players.length) {
+      setCurrentRoundLogs(nextCurrentRoundLogs);
       closePrivateRoom();
       return;
     }
 
     const incomeByPlayer: Record<number, number> = {};
     const roundResults: FruitMarketRoundResult[] = [];
+    const roundLog: FruitMarketRoundLog = {
+      round,
+      players: nextCurrentRoundLogs,
+    };
     const sellingFruits = uniqueFruits(
       nextPlayers.flatMap((player) => player.fruits),
     );
@@ -238,10 +266,10 @@ export function useFruitMarketGame() {
         player.fruits.includes(fruit),
       );
       const price = Math.min(
-        ...sellers.map((player) => bids[player.id]?.[fruit] as number),
+        ...sellers.map((player) => nextBids[player.id]?.[fruit] as number),
       );
       const winners = sellers.filter(
-        (player) => bids[player.id]?.[fruit] === price,
+        (player) => nextBids[player.id]?.[fruit] === price,
       );
       const revenue = price * sellers.length;
       const share = Math.floor(revenue / winners.length);
@@ -262,6 +290,8 @@ export function useFruitMarketGame() {
         income: player.income + (incomeByPlayer[player.id] ?? 0),
       })),
     );
+    setGameLogs((previous) => [...previous, roundLog]);
+    setCurrentRoundLogs([]);
     setResults(roundResults);
     setPhase("result");
     closePrivateRoom();
@@ -278,6 +308,7 @@ export function useFruitMarketGame() {
     setBids({});
     setSecretFruits([]);
     setReplacementNotices([]);
+    setCurrentRoundLogs([]);
     setPhase("bid");
   };
 
@@ -293,6 +324,7 @@ export function useFruitMarketGame() {
     setRoomOpen,
     bids,
     results,
+    gameLogs,
     special,
     targetFruit,
     setTargetFruit,
