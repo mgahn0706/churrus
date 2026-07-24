@@ -706,11 +706,11 @@ export const CONNECTIONS2026: ConnectionsType[] = [
         description: "__ 마켓",
       },
       {
-        words: ["블랙", "빼빼로", "디", "화이트"],
+        words: ["파이", "빼빼로", "디", "발렌타인"],
         description: "__ 데이",
       },
       {
-        words: ["타로", "로얄", "블랙", "루이보스"],
+        words: ["타로", "로얄", "우롱", "루이보스"],
         description: "밀크티의 종류",
       },
     ],
