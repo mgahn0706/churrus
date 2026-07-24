@@ -22,3 +22,17 @@ export interface FruitMarketRoundResult {
   revenue: number;
   hidden: boolean;
 }
+
+export interface FruitMarketPlayerRoundLog {
+  playerId: number;
+  playerName: string;
+  bids: Partial<Record<Fruit, number>>;
+  special: FruitMarketSpecial;
+  targetFruit?: Fruit;
+  replacementFruit?: Fruit;
+}
+
+export interface FruitMarketRoundLog {
+  round: number;
+  players: FruitMarketPlayerRoundLog[];
+}
