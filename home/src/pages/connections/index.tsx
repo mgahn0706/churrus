@@ -464,7 +464,7 @@ export default function Connections() {
                 fontSize: "1.2rem",
               }}
               onClick={() => {
-                setPanels(shuffle(panels));
+                setPanels((currentPanels) => shuffle(currentPanels));
               }}
             >
               섞기
