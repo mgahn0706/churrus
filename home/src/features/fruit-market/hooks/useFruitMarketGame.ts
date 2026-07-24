@@ -15,6 +15,45 @@ const createEmptyFruitCounts = () =>
     number
   >;
 
+const shuffle = <T,>(items: T[]) => {
+  const nextItems = [...items];
+  for (let index = nextItems.length - 1; index > 0; index -= 1) {
+    const other = Math.floor(Math.random() * (index + 1));
+    [nextItems[index], nextItems[other]] = [nextItems[other], nextItems[index]];
+  }
+  return nextItems;
+};
+
+const createFruitPairs = (counts: Record<Fruit, number>) => {
+  const remaining = shuffle(
+    FRUITS.map((fruit) => ({
+      fruit,
+      count: counts[fruit],
+    })).filter(({ count }) => count > 0),
+  );
+  const pairs: [Fruit, Fruit][] = [];
+
+  while (remaining.length > 0) {
+    remaining.sort((a, b) => b.count - a.count);
+    const first = remaining[0];
+    const second = remaining[1];
+
+    if (!second) break;
+
+    pairs.push([first.fruit, second.fruit]);
+    first.count -= 1;
+    second.count -= 1;
+
+    for (let index = remaining.length - 1; index >= 0; index -= 1) {
+      if (remaining[index].count === 0) {
+        remaining.splice(index, 1);
+      }
+    }
+  }
+
+  return shuffle(pairs);
+};
+
 export function useFruitMarketGame() {
   const [phase, setPhase] = useState<FruitMarketPhase>("setup");
   const [participantNames, setParticipantNames] = useState("");
@@ -41,11 +80,17 @@ export function useFruitMarketGame() {
     (sum, count) => sum + count,
     0,
   );
+  const maxFruitCount = Math.max(0, ...Object.values(counts));
   const marketFruits = FRUITS.filter((fruit) => counts[fruit] > 0);
   const currentPlayer = players.find((player) => player.id === activePlayerId);
   const currentPlayerFruits = useMemo(
     () => (currentPlayer ? uniqueFruits(currentPlayer.fruits) : []),
     [currentPlayer],
+  );
+  const replacementFruitOptions = useMemo(
+    () =>
+      marketFruits.filter((fruit) => !currentPlayerFruits.includes(fruit)),
+    [currentPlayerFruits, marketFruits],
   );
   const bidFruits = useMemo(() => {
     if (special !== "replace" || !currentPlayer) return currentPlayerFruits;
@@ -62,9 +107,13 @@ export function useFruitMarketGame() {
   const setupReady =
     participants.length >= 2 &&
     totalCount === requiredCount &&
-    marketFruits.length >= 2;
+    marketFruits.length >= 2 &&
+    maxFruitCount <= participants.length;
+  const replacementReady =
+    special !== "replace" || replacementFruitOptions.includes(replacementFruit);
   const bidComplete = currentPlayer
-    ? bidFruits.every((fruit) => bids[currentPlayer.id]?.[fruit])
+    ? replacementReady &&
+      bidFruits.every((fruit) => bids[currentPlayer.id]?.[fruit])
     : false;
 
   const changeCount = (fruit: Fruit, amount: number) => {
@@ -75,18 +124,14 @@ export function useFruitMarketGame() {
   };
 
   const startGame = () => {
-    const deck = FRUITS.flatMap((fruit) =>
-      Array.from({ length: counts[fruit] }, () => fruit),
-    );
-    for (let index = deck.length - 1; index > 0; index -= 1) {
-      const other = Math.floor(Math.random() * (index + 1));
-      [deck[index], deck[other]] = [deck[other], deck[index]];
-    }
+    if (!setupReady) return;
+
+    const fruitPairs = createFruitPairs(counts);
     setPlayers(
       participants.map((name, id) => ({
         id,
         name,
-        fruits: [deck[id * 2], deck[id * 2 + 1]],
+        fruits: fruitPairs[id],
         income: 0,
         usedSpecial: false,
       })),
@@ -109,6 +154,19 @@ export function useFruitMarketGame() {
   const selectPlayer = (playerId: number) => {
     setActivePlayerId(playerId);
     setRoomOpen(false);
+    setSpecial("none");
+  };
+
+  const leaveDealerRoomWithoutSubmitting = () => {
+    if (activePlayerId !== null) {
+      setBids((previous) => {
+        const nextBids = { ...previous };
+        delete nextBids[activePlayerId];
+        return nextBids;
+      });
+    }
+    setSpecial("none");
+    closePrivateRoom();
   };
 
   const selectSpecial = (nextSpecial: FruitMarketSpecial) => {
@@ -117,10 +175,7 @@ export function useFruitMarketGame() {
       nextSpecial === "replace" ? currentPlayerFruits[0] : marketFruits[0];
     setTargetFruit(nextTargetFruit);
     if (nextSpecial === "replace") {
-      setReplacementFruit(
-        marketFruits.find((fruit) => fruit !== nextTargetFruit) ??
-          nextTargetFruit,
-      );
+      setReplacementFruit(replacementFruitOptions[0] ?? nextTargetFruit);
     }
   };
 
@@ -136,7 +191,7 @@ export function useFruitMarketGame() {
   };
 
   const submitBids = () => {
-    if (!currentPlayer) return;
+    if (!currentPlayer || !bidComplete) return;
     let nextPlayers = players;
     let nextSecretFruits = secretFruits;
 
@@ -247,9 +302,11 @@ export function useFruitMarketGame() {
     participants,
     requiredCount,
     totalCount,
+    maxFruitCount,
     marketFruits,
     currentPlayer,
     currentPlayerFruits,
+    replacementFruitOptions,
     bidFruits,
     setupReady,
     bidComplete,
@@ -260,6 +317,8 @@ export function useFruitMarketGame() {
     selectSpecial,
     setPlayerBid,
     submitBids,
+    closePrivateRoom,
+    leaveDealerRoomWithoutSubmitting,
     nextRound,
   };
 }
