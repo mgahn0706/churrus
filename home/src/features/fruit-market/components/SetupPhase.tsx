@@ -20,6 +20,7 @@ export default function SetupPhase({ game }: SetupPhaseProps) {
     participants,
     requiredCount,
     totalCount,
+    maxFruitCount,
     setupReady,
     changeCount,
     startGame,
@@ -135,7 +136,14 @@ export default function SetupPhase({ game }: SetupPhaseProps) {
           </Box>
           {!setupReady && (
             <Typography variant="body2" color="text.secondary" mt={1.5}>
-              참가자 2명 이상, 과일 2종 이상, 총 {requiredCount}개가 필요합니다.
+              참가자 2명 이상, 과일 2종 이상, 총 {requiredCount}개가
+              필요하며 같은 과일은 최대 {participants.length}개까지 가능합니다.
+            </Typography>
+          )}
+          {participants.length > 0 && maxFruitCount > participants.length && (
+            <Typography variant="body2" color="error.main" mt={0.75}>
+              한 사람이 같은 과일을 두 개 받지 않으려면 특정 과일 수량이
+              참가자 수를 넘을 수 없습니다.
             </Typography>
           )}
         </Box>

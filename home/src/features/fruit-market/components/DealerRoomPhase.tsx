@@ -8,6 +8,7 @@ import {
   Select,
   Typography,
 } from "@mui/material";
+import { ArrowBackRounded } from "@mui/icons-material";
 import {
   formatFruitMarketMoney as money,
   FRUIT_META,
@@ -38,11 +39,13 @@ export default function DealerRoomPhase({ game }: DealerRoomPhaseProps) {
     setReplacementFruit,
     currentPlayerFruits,
     marketFruits,
+    replacementFruitOptions,
     bidFruits,
     bidComplete,
     selectSpecial,
     setPlayerBid,
     submitBids,
+    leaveDealerRoomWithoutSubmitting,
   } = game;
 
   if (!currentPlayer) return null;
@@ -82,7 +85,12 @@ export default function DealerRoomPhase({ game }: DealerRoomPhaseProps) {
                 }
               >
                 <MenuItem value="secret">비밀</MenuItem>
-                <MenuItem value="replace">교체</MenuItem>
+                <MenuItem
+                  value="replace"
+                  disabled={replacementFruitOptions.length === 0}
+                >
+                  교체
+                </MenuItem>
               </Select>
               <Select
                 value={targetFruit}
@@ -106,13 +114,11 @@ export default function DealerRoomPhase({ game }: DealerRoomPhaseProps) {
                     setReplacementFruit(event.target.value as Fruit)
                   }
                 >
-                  {marketFruits
-                    .filter((fruit) => fruit !== targetFruit)
-                    .map((fruit) => (
-                      <MenuItem key={fruit} value={fruit}>
-                        {FRUIT_META[fruit].emoji} {fruit}로 교체
-                      </MenuItem>
-                    ))}
+                  {replacementFruitOptions.map((fruit) => (
+                    <MenuItem key={fruit} value={fruit}>
+                      {FRUIT_META[fruit].emoji} {fruit}로 교체
+                    </MenuItem>
+                  ))}
                 </Select>
               )}
             </Box>
@@ -152,17 +158,31 @@ export default function DealerRoomPhase({ game }: DealerRoomPhaseProps) {
             </Paper>
           ))}
         </Box>
-        <Button
-          variant="contained"
-          size="large"
-          disabled={!bidComplete}
-          onClick={submitBids}
-          sx={{ mt: 3, bgcolor: "#30241C" }}
-        >
-          {bidPlayerIds.length === players.length - 1
-            ? "라운드 마감"
-            : "희망가 제출"}
-        </Button>
+        <Box display="flex" flexWrap="wrap" gap={1.25} mt={3}>
+          <Button
+            variant="outlined"
+            size="large"
+            onClick={leaveDealerRoomWithoutSubmitting}
+            startIcon={<ArrowBackRounded />}
+            sx={{
+              borderColor: "#30241C",
+              color: "#30241C",
+            }}
+          >
+            돌아가기
+          </Button>
+          <Button
+            variant="contained"
+            size="large"
+            disabled={!bidComplete}
+            onClick={submitBids}
+            sx={{ bgcolor: "#30241C" }}
+          >
+            {bidPlayerIds.length === players.length - 1
+              ? "라운드 마감"
+              : "희망가 제출"}
+          </Button>
+        </Box>
       </Box>
     </FruitMarketStage>
   );
