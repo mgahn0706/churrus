@@ -636,7 +636,7 @@ export default function QuizStatsPage() {
                 문제적 추러스 통계
               </Typography>
               <Typography color="#667085" fontSize={15} mt={1}>
-                필터 조건에 맞는 세부 통계를 깔끔하게 볼 수 있습니다.
+                다양한 문제적 추러스 통계를 확인할 수 있어요.
               </Typography>
             </Box>
           </Box>
@@ -754,28 +754,28 @@ export default function QuizStatsPage() {
           <Grid container spacing={2} mb={3}>
             <Grid item xs={12} sm={6} md={3}>
               <StatCard
-                label="현재 문제 수"
+                label="총 문제 수"
                 value={`${filteredQuizzes.length}`}
                 helper="필터 적용 후 기준"
               />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <StatCard
-                label="현재 모임 수"
+                label="역대 열린 모임 수"
                 value={`${meetingCount}`}
                 helper={`모임당 평균 ${averageQuizCountPerMeeting}문제`}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <StatCard
-                label="현재 출제자 수"
+                label="문제적 추러스에 기여한 총 출제자 수"
                 value={`${creatorCount}`}
                 helper="creators 배열 기준"
               />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <StatCard
-                label="가장 큰 모임"
+                label="한 모임에서 가장 많은 문제 수"
                 value={`${busiestMeetingQuizCount}`}
                 helper={
                   busiestMeeting
