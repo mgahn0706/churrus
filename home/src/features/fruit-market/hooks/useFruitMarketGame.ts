@@ -25,31 +25,121 @@ const shuffle = <T,>(items: T[]) => {
   return nextItems;
 };
 
-const createFruitPairs = (counts: Record<Fruit, number>) => {
-  const remaining = shuffle(
-    FRUITS.map((fruit) => ({
-      fruit,
-      count: counts[fruit],
-    })).filter(({ count }) => count > 0),
+const canCreateNonMatchingPairs = (
+  counts: Record<Fruit, number>,
+  pairCount: number,
+) => Math.max(0, ...Object.values(counts)) <= pairCount;
+
+const createCountKey = (counts: Record<Fruit, number>) =>
+  FRUITS.map((fruit) => counts[fruit]).join(",");
+
+const countValidPairDistributions = (
+  counts: Record<Fruit, number>,
+  memo: Map<string, number>,
+): number => {
+  const totalCount = Object.values(counts).reduce(
+    (sum, count) => sum + count,
+    0,
   );
+  if (totalCount === 0) return 1;
+
+  const pairCount = totalCount / 2;
+  if (!canCreateNonMatchingPairs(counts, pairCount)) return 0;
+
+  const key = createCountKey(counts);
+  const memoized = memo.get(key);
+  if (memoized !== undefined) return memoized;
+
+  let distributionCount = 0;
+  FRUITS.forEach((firstFruit, firstIndex) => {
+    FRUITS.slice(firstIndex + 1).forEach((secondFruit) => {
+      if (counts[firstFruit] === 0 || counts[secondFruit] === 0) return;
+
+      distributionCount +=
+        counts[firstFruit] *
+        counts[secondFruit] *
+        countValidPairDistributions(
+          {
+            ...counts,
+            [firstFruit]: counts[firstFruit] - 1,
+            [secondFruit]: counts[secondFruit] - 1,
+          },
+          memo,
+        );
+    });
+  });
+
+  memo.set(key, distributionCount);
+  return distributionCount;
+};
+
+const pickWeightedRandom = <T,>(
+  candidates: Array<{ value: T; weight: number }>,
+) => {
+  const totalWeight = candidates.reduce(
+    (sum, candidate) => sum + candidate.weight,
+    0,
+  );
+  let target = Math.random() * totalWeight;
+
+  for (const candidate of candidates) {
+    target -= candidate.weight;
+    if (target < 0) return candidate.value;
+  }
+
+  return candidates[candidates.length - 1].value;
+};
+
+const createFruitPairs = (counts: Record<Fruit, number>) => {
+  const remaining = { ...counts };
+  const totalCount = Object.values(remaining).reduce(
+    (sum, count) => sum + count,
+    0,
+  );
+  const pairCount = totalCount / 2;
   const pairs: [Fruit, Fruit][] = [];
+  const distributionMemo = new Map<string, number>();
 
-  while (remaining.length > 0) {
-    remaining.sort((a, b) => b.count - a.count);
-    const first = remaining[0];
-    const second = remaining[1];
+  for (let pairIndex = 0; pairIndex < pairCount; pairIndex += 1) {
+    const candidates: Array<{ value: [Fruit, Fruit]; weight: number }> = [];
 
-    if (!second) break;
+    FRUITS.forEach((firstFruit, firstIndex) => {
+      FRUITS.slice(firstIndex + 1).forEach((secondFruit) => {
+        if (remaining[firstFruit] === 0 || remaining[secondFruit] === 0) return;
 
-    pairs.push([first.fruit, second.fruit]);
-    first.count -= 1;
-    second.count -= 1;
+        const nextRemaining = {
+          ...remaining,
+          [firstFruit]: remaining[firstFruit] - 1,
+          [secondFruit]: remaining[secondFruit] - 1,
+        };
 
-    for (let index = remaining.length - 1; index >= 0; index -= 1) {
-      if (remaining[index].count === 0) {
-        remaining.splice(index, 1);
-      }
+        const validFutureDistributionCount = countValidPairDistributions(
+          nextRemaining,
+          distributionMemo,
+        );
+        if (validFutureDistributionCount === 0) return;
+
+        candidates.push({
+          value:
+            Math.random() < 0.5
+              ? [firstFruit, secondFruit]
+              : [secondFruit, firstFruit],
+          weight:
+            remaining[firstFruit] *
+            remaining[secondFruit] *
+            validFutureDistributionCount,
+        });
+      });
+    });
+
+    if (candidates.length === 0) {
+      throw new Error("Cannot create fruit pairs from the current counts.");
     }
+
+    const [firstFruit, secondFruit] = pickWeightedRandom(candidates);
+    pairs.push([firstFruit, secondFruit]);
+    remaining[firstFruit] -= 1;
+    remaining[secondFruit] -= 1;
   }
 
   return shuffle(pairs);
