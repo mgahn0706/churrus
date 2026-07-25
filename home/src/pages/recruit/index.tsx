@@ -48,12 +48,8 @@ export default function RecruitPage() {
             inset: 0,
             background:
               "radial-gradient(500px 300px at 85% 10%, rgba(217, 226, 255, 0.35), transparent 70%), radial-gradient(420px 240px at 5% 60%, rgba(255, 241, 230, 0.45), transparent 70%)",
-            animation: "pulseGlow 14s ease-in-out infinite",
+            opacity: 0.85,
             pointerEvents: "none",
-          },
-          "@keyframes pulseGlow": {
-            "0%, 100%": { opacity: 0.75 },
-            "50%": { opacity: 1 },
           },
         }}
       >
@@ -209,8 +205,7 @@ export default function RecruitPage() {
                     mb: 1.5,
                     borderRadius: "16px",
                     boxShadow: "0 16px 36px rgba(15, 23, 42, 0.08)",
-                    background: "rgba(255,255,255,0.8)",
-                    backdropFilter: "blur(12px)",
+                    background: "rgba(255,255,255,0.94)",
                     "::before": { display: "none" },
                     "&.Mui-expanded": {
                       margin: "0 auto 12px",

@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Checkbox,
+  Chip,
   FormControlLabel,
   MenuItem,
   Paper,
@@ -12,6 +13,7 @@ import { ArrowBackRounded } from "@mui/icons-material";
 import {
   formatFruitMarketMoney as money,
   FRUIT_META,
+  PRICE_OPTIONS,
 } from "@/features/fruit-market/constants";
 import { FruitMarketGame } from "@/features/fruit-market/hooks/useFruitMarketGame";
 import {
@@ -132,29 +134,52 @@ export default function DealerRoomPhase({ game }: DealerRoomPhaseProps) {
               sx={{
                 p: 2,
                 display: "flex",
-                alignItems: "center",
+                alignItems: { xs: "flex-start", sm: "center" },
                 justifyContent: "space-between",
+                flexDirection: { xs: "column", sm: "row" },
+                gap: 1.5,
                 borderRadius: 3,
               }}
             >
               <FruitChip fruit={fruit} />
-              <Select
-                displayEmpty
-                value={bids[currentPlayer.id]?.[fruit] ?? ""}
-                onChange={(event) =>
-                  setPlayerBid(fruit, Number(event.target.value))
-                }
-                sx={{ minWidth: 150 }}
+              <Box
+                display="flex"
+                flexWrap="wrap"
+                gap={0.75}
+                role="radiogroup"
+                aria-label={`${fruit} 희망가`}
+                width={{ xs: "100%", sm: "auto" }}
               >
-                <MenuItem value="" disabled>
-                  희망가 선택
-                </MenuItem>
-                {[1000, 2000, 3000, 4000, 5000].map((value) => (
-                  <MenuItem key={value} value={value}>
-                    {money(value)}
-                  </MenuItem>
+                {PRICE_OPTIONS.map((value) => (
+                  <Chip
+                    key={value}
+                    label={money(value)}
+                    clickable
+                    role="radio"
+                    aria-checked={
+                      bids[currentPlayer.id]?.[fruit] === value
+                    }
+                    color={
+                      bids[currentPlayer.id]?.[fruit] === value
+                        ? "primary"
+                        : "default"
+                    }
+                    variant={
+                      bids[currentPlayer.id]?.[fruit] === value
+                        ? "filled"
+                        : "outlined"
+                    }
+                    onClick={() => setPlayerBid(fruit, value)}
+                    sx={{
+                      fontWeight: 700,
+                      ...(bids[currentPlayer.id]?.[fruit] === value && {
+                        bgcolor: "#30241C",
+                        "&:hover": { bgcolor: "#4B392C" },
+                      }),
+                    }}
+                  />
                 ))}
-              </Select>
+              </Box>
             </Paper>
           ))}
         </Box>
