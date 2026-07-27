@@ -19,6 +19,7 @@ import { bluemoonClues } from "./bluemoon/clues";
 import { mountainSuspects, mountainVictim } from "./mountain/suspects";
 import { mountainClues } from "./mountain/clues";
 import { kpopSuspects, kpopVictim } from "./kpop/suspects";
+import { kpopClues } from "./kpop/clues";
 import { novelistSuspects, novelistVictim } from "./novelist/suspects";
 import { novelistClues } from "./novelist/clues";
 import { subwaySuspects, subwayVictim } from "./subway/suspects";
@@ -220,10 +221,10 @@ export const scenarios: ScenarioType[] = [
     histories: ["2025년 여름 대이동"],
     isInDevelopment: true,
     description: "케이팝 아이돌 그룹 내에서 발생한 살인사건",
-    places: [],
+    places: ["lounge", "outdoor"],
     suspects: kpopSuspects,
     victims: [kpopVictim],
-    clues: [],
+    clues: kpopClues,
     color: "#e91e63",
   },
   {

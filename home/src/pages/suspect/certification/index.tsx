@@ -20,7 +20,9 @@ export default function Certification() {
 
   useEffect(() => {
     setCertificationCards(
-      scenarioId === "all" ? getAllCertificationCards() : getCertificationCards()
+      scenarioId === "all"
+        ? getAllCertificationCards()
+        : getCertificationCards()
     );
   }, [scenarioId]);
 
@@ -57,13 +59,6 @@ export default function Certification() {
               mt={2}
             >
               시나리오를 완료하면 인증 카드가 열립니다.
-            </Typography>
-          </Box>
-        </FadeInSection>
-        <FadeInSection>
-          <Box width="100%" px={2} mt={2} sx={{ boxSizing: "border-box" }}>
-            <Typography color="lightgray" fontSize="14px" textAlign="center">
-              완료한 시나리오가 없다면 아직 카드가 표시되지 않습니다.
             </Typography>
           </Box>
         </FadeInSection>
