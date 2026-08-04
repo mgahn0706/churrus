@@ -241,7 +241,7 @@ export const clubroomClues: ClueType[] = [
     y: 22,
     image: getClubroomClueImage(22),
     description:
-      "구애인의 맥북이다. eTL 사이트가 켜져 있으며, 과제를 제시간에 제출한 기록이 남아 있다.",
+      "구애인의 맥북이다. eTL 사이트가 켜져 있으며, 과제를 제시간에 제출한 기록이 남아 있다. eduroam 접속 기록은 10월 17일 오후 8시 ~ 오후 11시 5분.",
     type: "additional",
     place: 21,
   },
