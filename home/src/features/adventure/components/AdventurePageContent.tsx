@@ -7,7 +7,7 @@ import {
 import { Box, Button, Chip, IconButton, Typography } from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { ADVENTURE_JOURNEYS } from "../fixtures";
 import { AdventureCoordinate, AdventureJourney } from "../types";
 
@@ -407,19 +407,35 @@ const JourneyMap = ({ journey }: JourneyMapProps) => {
 
 export default function AdventurePageContent() {
   const router = useRouter();
-  const journeyTabsRef = useRef<HTMLDivElement>(null);
+  const journeyTabRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+  const journeyTabTouchStartRef = useRef<{ x: number; y: number } | null>(
+    null
+  );
   const [selectedJourneyId, setSelectedJourneyId] = useState(
     ADVENTURE_JOURNEYS[0].id
   );
   const selectedJourney =
     ADVENTURE_JOURNEYS.find((journey) => journey.id === selectedJourneyId) ??
     ADVENTURE_JOURNEYS[0];
-  const scrollJourneyTabs = (direction: -1 | 1) => {
-    journeyTabsRef.current?.scrollBy({
-      left: direction * 260,
-      behavior: "smooth",
-    });
+  const selectedJourneyIndex = SORTED_ADVENTURE_JOURNEYS.findIndex(
+    (journey) => journey.id === selectedJourney.id
+  );
+  const selectAdjacentJourney = (direction: -1 | 1) => {
+    const adjacentJourney =
+      SORTED_ADVENTURE_JOURNEYS[selectedJourneyIndex + direction];
+
+    if (adjacentJourney) {
+      setSelectedJourneyId(adjacentJourney.id);
+    }
   };
+
+  useEffect(() => {
+    journeyTabRefs.current[selectedJourneyId]?.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest",
+      inline: "nearest",
+    });
+  }, [selectedJourneyId]);
 
   return (
     <Box
@@ -561,8 +577,9 @@ export default function AdventurePageContent() {
             }}
           >
             <IconButton
-              aria-label="다음 대이동 보기"
-              onClick={() => scrollJourneyTabs(-1)}
+              aria-label="더 최근 대이동 보기"
+              disabled={selectedJourneyIndex <= 0}
+              onClick={() => selectAdjacentJourney(-1)}
               sx={{
                 flexShrink: 0,
                 width: 34,
@@ -579,9 +596,38 @@ export default function AdventurePageContent() {
               <ChevronLeftRounded />
             </IconButton>
             <Box
-              ref={journeyTabsRef}
               role="tablist"
               aria-label="대이동 연도 선택"
+              onTouchStart={(event) => {
+                const touch = event.touches[0];
+                journeyTabTouchStartRef.current = {
+                  x: touch.clientX,
+                  y: touch.clientY,
+                };
+              }}
+              onTouchEnd={(event) => {
+                const start = journeyTabTouchStartRef.current;
+                const touch = event.changedTouches[0];
+                journeyTabTouchStartRef.current = null;
+
+                if (!start || !touch) {
+                  return;
+                }
+
+                const horizontalDistance = touch.clientX - start.x;
+                const verticalDistance = touch.clientY - start.y;
+                if (
+                  Math.abs(horizontalDistance) < 40 ||
+                  Math.abs(horizontalDistance) <= Math.abs(verticalDistance)
+                ) {
+                  return;
+                }
+
+                selectAdjacentJourney(horizontalDistance < 0 ? 1 : -1);
+              }}
+              onTouchCancel={() => {
+                journeyTabTouchStartRef.current = null;
+              }}
               sx={{
                 display: "flex",
                 gap: 1,
@@ -599,6 +645,9 @@ export default function AdventurePageContent() {
                 return (
                   <Button
                     key={journey.id}
+                    ref={(element) => {
+                      journeyTabRefs.current[journey.id] = element;
+                    }}
                     role="tab"
                     aria-selected={isSelected}
                     onClick={() => setSelectedJourneyId(journey.id)}
@@ -664,7 +713,10 @@ export default function AdventurePageContent() {
             </Box>
             <IconButton
               aria-label="이전 대이동 보기"
-              onClick={() => scrollJourneyTabs(1)}
+              disabled={
+                selectedJourneyIndex >= SORTED_ADVENTURE_JOURNEYS.length - 1
+              }
+              onClick={() => selectAdjacentJourney(1)}
               sx={{
                 flexShrink: 0,
                 width: 34,
