@@ -34,7 +34,7 @@ export const scenarios: ScenarioType[] = [
   {
     title: "스타트업 살인사건",
     creators: ["안민규"],
-    numberOfSuspects: 4,
+    numberOfSuspects: 3,
     backgroundImage: "/image/suspect/scenario/startup/startup-main.png",
     id: "startup",
     isInDevelopment: false,
