@@ -424,10 +424,11 @@ export default function AdventurePageContent() {
   return (
     <Box
       sx={{
-        height: "100dvh",
+        minHeight: "100dvh",
         bgcolor: PAGE_BACKGROUND,
         color: "#F2F8FA",
-        overflow: "hidden",
+        overflowX: "hidden",
+        overflowY: { xs: "auto", lg: "hidden" },
         position: "relative",
         backgroundImage:
           "radial-gradient(circle at 78% 18%, rgba(85,246,255,0.1), transparent 26%), radial-gradient(circle at 8% 70%, rgba(155,123,255,0.1), transparent 28%)",
@@ -485,7 +486,8 @@ export default function AdventurePageContent() {
           position: "relative",
           zIndex: 1,
           width: "100%",
-          height: { xs: "calc(100dvh - 52px)", md: "calc(100dvh - 58px)" },
+          height: { xs: "auto", lg: "calc(100dvh - 58px)" },
+          minHeight: { xs: "calc(100dvh - 52px)", lg: 0 },
           maxWidth: 1440,
           mx: "auto",
           px: { xs: 2, md: 5 },
@@ -493,7 +495,6 @@ export default function AdventurePageContent() {
           boxSizing: "border-box",
           display: "flex",
           flexDirection: "column",
-          minHeight: 0,
         }}
       >
         <Box
@@ -690,8 +691,8 @@ export default function AdventurePageContent() {
             alignItems: "stretch",
             flex: 1,
             minHeight: 0,
-            height: "100%",
-            overflow: "hidden",
+            height: { xs: "auto", lg: "100%" },
+            overflow: { xs: "visible", lg: "hidden" },
           }}
         >
           <Box
@@ -701,7 +702,16 @@ export default function AdventurePageContent() {
               minHeight: 0,
             }}
           >
-            <Box sx={{ flex: 1, minHeight: 0 }}>
+            <Box
+              sx={{
+                flex: 1,
+                minHeight: 0,
+                height: {
+                  xs: "clamp(360px, calc(100dvh - 210px), 580px)",
+                  lg: "100%",
+                },
+              }}
+            >
               <JourneyMap journey={selectedJourney} />
             </Box>
           </Box>
