@@ -42,6 +42,7 @@ export const boxSuspects: SuspectType[] = [
   },
   {
     name: "군의관",
+    image: "/image/suspect/scenario/box/profile/gun_ug.png",
     age: 65,
     gender: "male",
     job: "의관",
