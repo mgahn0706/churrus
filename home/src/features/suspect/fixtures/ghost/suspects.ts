@@ -6,7 +6,7 @@ export const ghostSuspect: SuspectType[] = [
     image: "/image/suspect/scenario/ghost/profile/sunwoo_md.png",
     age: 38,
     gender: "female",
-    job: "무당 · 귀신의 집 설계 자문",
+    job: "무당",
     description:
       "영험한 점쟁이로 이름난 선우무당입니다. 2016년 ‘추서운 이야기’의 설계 자문을 맡았고, 지금도 귀신의 집을 자주 찾아 직원들과도 안면이 있습니다.",
     statement:
@@ -28,11 +28,11 @@ export const ghostSuspect: SuspectType[] = [
       "제가 처녀귀신 역할을 고집한 건 여동생이 그 일을 했기 때문이에요. 하지만 그 애가 죽은 일과 우물안 씨의 죽음을 억지로 연결하지 마세요. 전 손님을 안내하고 제 자리에서 일했을 뿐입니다. 누군가 플래시라이트 연출을 이용했다면, 그건 내부 구조를 아는 사람이라면 누구나 생각할 수 있는 일 아닌가요?",
   },
   {
-    name: "마퇴사",
+    name: "마스크",
     image: "/image/suspect/scenario/ghost/profile/ma_sk.png",
     age: 23,
     gender: "female",
-    job: "전 우물 안 처녀귀신 알바",
+    job: "마스크를 쓴 행인",
     description:
       "작년부터 올해 5월까지 ‘추서운 이야기’에서 우물 안 처녀귀신을 연기했습니다. 직장 내 괴롭힘 끝에 퇴사한 뒤로는 귀신의 집에 발길을 끊었습니다.",
     statement:
@@ -60,7 +60,7 @@ export const ghostVictim: VictimType = {
   image: "/image/suspect/scenario/ghost/profile/woo_ma.png",
   age: 24,
   gender: "female",
-  job: "귀신의 집 처녀귀신 알바",
+  job: "귀신의 집 알바 · 처녀귀신",
   statement: "",
   description:
     "추추어드벤처의 귀신의 집 ‘추서운 이야기’에서 우물 안 처녀귀신을 연기하던 알바생. 평소 일하던 우물의 방 우물 안에서, 현장의 금줄에 교살된 채 발견되었다.",
