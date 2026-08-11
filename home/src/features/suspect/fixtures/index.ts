@@ -29,6 +29,8 @@ import { clubroomClues } from "./clubroom/clues";
 import { hotelSuspects, hotelVictim } from "./hotel/suspects";
 import { hotelClues } from "./hotel/clues";
 import { hotelPrologue } from "./hotel/prologue";
+import { ghostSuspect, ghostVictim } from "./ghost/suspects";
+import { boxSuspects, boxVictim } from "./box/suspects";
 
 export const scenarios: ScenarioType[] = [
   {
@@ -243,5 +245,37 @@ export const scenarios: ScenarioType[] = [
     clues: hotelClues,
     color: "#8e8e93",
     prologue: hotelPrologue,
+  },
+  {
+    title: "귀신의 집 살인사건",
+    creators: ["정해찬", "손주영", "안민규"],
+    gameType: "CLUE",
+    numberOfSuspects: 4,
+    backgroundImage: "/image/suspect/scenario/ghost/ghost-main.png",
+    id: "ghost",
+    histories: [],
+    isInDevelopment: true,
+    description: "귀신의 집에서 발생한 살인사건",
+    places: ["haunted_house", "waiting_room", "houses"],
+    suspects: ghostSuspect,
+    victims: [ghostVictim],
+    clues: [],
+    color: "#6b7280",
+  },
+  {
+    id: "box",
+    title: "뒤주 살인사건",
+    creators: ["강재호", "고민우", "김태연", "김혜린", "오수진", "안민규"],
+    gameType: "CLUE",
+    numberOfSuspects: 3,
+    histories: [],
+    backgroundImage: "/image/suspect/scenario/box/box-main.png",
+    isInDevelopment: true,
+    description: "1762년 7월 12일, 뒤주 안에서 시체가 발견되었다.",
+    places: [],
+    suspects: boxSuspects,
+    victims: [boxVictim],
+    clues: [],
+    color: "#a16a02",
   },
 ];
