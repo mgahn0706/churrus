@@ -12,6 +12,7 @@ export default function Suspect() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const router = useRouter();
   const current = scenarios[currentIndex];
+  const creators = current.creators.filter(Boolean);
   const itemRefs = useRef<Array<HTMLDivElement | null>>([]);
   const listRef = useRef<HTMLDivElement | null>(null);
   const currentIndexRef = useRef(0);
@@ -641,7 +642,7 @@ export default function Suspect() {
                 }}
               >
                 <Typography sx={{ fontSize: 13, opacity: 0.7, mb: 0.5 }}>
-                  용의자 목록
+                  용의자
                 </Typography>
                 <Box
                   sx={{ display: "flex", flexDirection: "column", gap: 0.8 }}
@@ -676,6 +677,22 @@ export default function Suspect() {
                     {current.histories.join(" · ")}
                   </Typography>
                 </Box>
+              )}
+
+              {creators.length > 0 && (
+                <Typography
+                  sx={{
+                    mt: 2,
+                    pt: 1.5,
+                    borderTop: "1px solid rgba(132,158,185,0.08)",
+                    fontSize: 10,
+                    letterSpacing: 0.7,
+                    lineHeight: 1.5,
+                    color: "rgba(255,255,255,0.38)",
+                  }}
+                >
+                  제작: {creators.join(", ")}
+                </Typography>
               )}
             </Box>
           </Box>

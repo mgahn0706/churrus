@@ -199,7 +199,7 @@ export const scenarios: ScenarioType[] = [
   {
     id: "bluemoon",
     title: "푸른 달 살인사건",
-    creators: [""],
+    creators: ["김시영", "김태연", "조준호"],
     gameType: "TEXT",
     numberOfSuspects: 6,
     histories: ["2026년 겨울 대이동"],
@@ -215,7 +215,7 @@ export const scenarios: ScenarioType[] = [
   },
   {
     title: "케이팝 데몬 헌터스 살인사건",
-    creators: [],
+    creators: ["김수인", "김태연", "정해찬", "조경아"],
     gameType: "CLUE",
     numberOfSuspects: 5,
     backgroundImage: "/image/suspect/scenario/kpop/kpop-main.png",
