@@ -40,6 +40,18 @@ export const boxSuspects: SuspectType[] = [
     finalArgument:
       "창을 들고 문을 지킨다고 해서 제가 살인을 저지를 수 있는 것은 아닙니다. 저는 받은 명령대로 자리를 지켰습니다.",
   },
+  {
+    name: "군의관",
+    age: 65,
+    gender: "male",
+    job: "의관",
+    description:
+      "궁 안의 환자들을 돌보는 노련한 의관입니다. 사건 당일에도 환자의 약을 달이고 있었습니다.",
+    statement:
+      "저는 밤새 약방에서 처방한 약을 달였습니다. 세자저하의 상태를 확인한 적은 있으나, 뒤주가 있는 폐궁에는 가지 않았습니다.",
+    finalArgument:
+      "약을 다루는 사람이니 의심받을 것은 예상했습니다. 그러나 검시 결과 독의 흔적은 없었고, 제가 약방을 비운 시각도 기록으로 확인할 수 있습니다.",
+  },
 ];
 
 export const boxVictim: VictimType = {

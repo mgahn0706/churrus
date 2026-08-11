@@ -267,7 +267,7 @@ export const scenarios: ScenarioType[] = [
     title: "뒤주 살인사건",
     creators: ["강재호", "고민우", "김태연", "김혜린", "오수진", "안민규"],
     gameType: "CLUE",
-    numberOfSuspects: 3,
+    numberOfSuspects: 4,
     histories: [],
     backgroundImage: "/image/suspect/scenario/box/box-main.png",
     isInDevelopment: true,
