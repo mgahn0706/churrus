@@ -31,6 +31,8 @@ import { hotelClues } from "./hotel/clues";
 import { hotelPrologue } from "./hotel/prologue";
 import { ghostSuspect, ghostVictim } from "./ghost/suspects";
 import { boxSuspects, boxVictim } from "./box/suspects";
+import { ghostClues } from "./ghost/clues";
+import { boxClues } from "./box/clues";
 
 export const scenarios: ScenarioType[] = [
   {
@@ -256,10 +258,11 @@ export const scenarios: ScenarioType[] = [
     histories: [],
     isInDevelopment: true,
     description: "귀신의 집에서 발생한 살인사건",
-    places: ["haunted_house", "waiting_room", "houses"],
+    // TODO: Restore individual places when the haunted-house map assets are added.
+    places: [],
     suspects: ghostSuspect,
     victims: [ghostVictim],
-    clues: [],
+    clues: ghostClues,
     color: "#6b7280",
   },
   {
@@ -275,7 +278,7 @@ export const scenarios: ScenarioType[] = [
     places: [],
     suspects: boxSuspects,
     victims: [boxVictim],
-    clues: [],
+    clues: boxClues,
     color: "#a16a02",
   },
 ];
