@@ -698,6 +698,27 @@ export const CONNECTIONS2026: ConnectionsType[] = [
     week: 34,
     quiz: [
       {
+        words: ["가락시장", "대방", "신사", "교대"],
+        description: "서울의 환승역",
+      },
+      {
+        words: ["사람", "나라", "도움", "목숨"],
+        description: "구할 수 있는 것",
+      },
+      {
+        words: ["양자", "명분", "장난", "짚신"],
+        description: "삼을 수 있는 것",
+      },
+      {
+        words: ["가이", "색", "금", "먹"],
+        description: "칠할 수 있는 것",
+      },
+    ],
+  },
+  {
+    week: 35,
+    quiz: [
+      {
         words: ["카카오", "우리", "기업", "하나"],
         description: "대한민국의 은행 이름",
       },
