@@ -715,4 +715,67 @@ export const CONNECTIONS2026: ConnectionsType[] = [
       },
     ],
   },
+  {
+    week: 35,
+    quiz: [
+      {
+        words: ["전기", "기계", "조선", "방산"],
+        description: "산업",
+      },
+      {
+        words: ["절단", "신라", "명장", "지표"],
+        description: "__ 면",
+      },
+      {
+        words: ["위인", "숫자", "점자", "홀로그램"],
+        description: "지폐에서 볼 수 있는 것",
+      },
+      {
+        words: ["짱구", "축구공", "주사위", "바퀴"],
+        description: "굴러가는 것",
+      },
+    ],
+  },
+  {
+    week: 36,
+    quiz: [
+      {
+        words: ["온수", "수원", "용산", "개봉"],
+        description: "1호선 지하철역",
+      },
+      {
+        words: ["오만", "백조", "구경", "이해"],
+        description: "숫자",
+      },
+      {
+        words: ["물", "산", "두루미", "거북"],
+        description: "십장생",
+      },
+      {
+        words: ["와인", "주스", "발사믹", "잼"],
+        description: "포도로 만드는 액체",
+      },
+    ],
+  },
+  {
+    week: 37,
+    quiz: [
+      {
+        words: ["팽이", "광대", "주황", "독"],
+        description: "__ 버섯",
+      },
+      {
+        words: ["누이", "비", "구슬", "고개"],
+        description: "여우 __",
+      },
+      {
+        words: ["비린내", "땀", "바람", "눈물"],
+        description: "날 수 있는 것",
+      },
+      {
+        words: ["발레리노", "왕자", "박수", "형"],
+        description: "남성",
+      },
+    ],
+  },
 ];
