@@ -9,10 +9,13 @@ import {
   DialogTitle,
   Tab,
   Tabs,
+  ThemeProvider,
   Typography,
 } from "@mui/material";
 import { useRouter } from "next/router";
-import { ReactNode, SyntheticEvent, useEffect, useState } from "react";
+import { ReactNode, SyntheticEvent, useEffect, useMemo, useState } from "react";
+import { createScenarioTheme } from "@/features/suspect/components/createScenarioTheme";
+import { scenarios } from "@/features/suspect/fixtures";
 import { saveScenarioCertification } from "@/features/suspect/libs/certification";
 import { DetectiveNoteType } from "@/features/suspect/types";
 import { AnswerRevealSequence } from "./AnswerRevealSequence";
@@ -44,6 +47,15 @@ export function ScenarioAnswerPage({
   culpritsButtonLabel = "용의자 롤카드 PDF 다운로드",
 }: ScenarioAnswerPageProps) {
   const router = useRouter();
+  const scenarioTheme = useMemo(() => {
+    const scenario = scenarios.find((candidate) => candidate.id === scenarioKey);
+
+    if (!scenario) {
+      throw new Error(`Scenario not found: ${scenarioKey}`);
+    }
+
+    return createScenarioTheme(scenario.color);
+  }, [scenarioKey]);
   const [isLoading, setIsLoading] = useState(false);
   const [isSuspectAccused, setIsSuspectAccused] = useState(false);
   const [tabValue, setTabValue] = useState("confess");
@@ -69,31 +81,33 @@ export function ScenarioAnswerPage({
 
   if (!isSuspectAccused) {
     return (
-      <Dialog open>
-        <DialogTitle>
-          <Typography variant="h6" component="h2">
-            이용 안내
-          </Typography>
-        </DialogTitle>
-        <DialogContent>
-          <Typography sx={{ mt: 2 }}>{missingDescription}</Typography>
-        </DialogContent>
-        <DialogActions>
-          {isLoading ? (
-            <CircularProgress color="inherit" />
-          ) : (
-            <Button
-              disabled={isLoading}
-              onClick={() => {
-                setIsLoading(true);
-                router.push(`/suspect/scenario/${scenarioKey}`);
-              }}
-            >
-              확인
-            </Button>
-          )}
-        </DialogActions>
-      </Dialog>
+      <ThemeProvider theme={scenarioTheme}>
+        <Dialog open>
+          <DialogTitle>
+            <Typography variant="h6" component="h2">
+              이용 안내
+            </Typography>
+          </DialogTitle>
+          <DialogContent>
+            <Typography sx={{ mt: 2 }}>{missingDescription}</Typography>
+          </DialogContent>
+          <DialogActions>
+            {isLoading ? (
+              <CircularProgress color="inherit" />
+            ) : (
+              <Button
+                disabled={isLoading}
+                onClick={() => {
+                  setIsLoading(true);
+                  router.push(`/suspect/scenario/${scenarioKey}`);
+                }}
+              >
+                확인
+              </Button>
+            )}
+          </DialogActions>
+        </Dialog>
+      </ThemeProvider>
     );
   }
 
@@ -102,86 +116,92 @@ export function ScenarioAnswerPage({
   ) as DetectiveNoteType;
 
   return (
-    <Box sx={{ backgroundColor: "black" }}>
-      <AnswerRevealSequence {...reveal(submittedAnswer)} />
+    <ThemeProvider theme={scenarioTheme}>
+      <Box sx={{ backgroundColor: "black" }}>
+        <AnswerRevealSequence {...reveal(submittedAnswer)} />
 
-      <Box display="block" color="white" mx={15} mt={15}>
-        <Tabs
-          value={tabValue}
-          onChange={(_event: SyntheticEvent, newValue: string) =>
-            setTabValue(newValue)
-          }
-          textColor="inherit"
-          indicatorColor="primary"
-          aria-label="scenario answer tabs"
-        >
-          <Tab sx={{ fontSize: "20px" }} value="confess" label="범인의 고백" />
-          {renderAdditional && (
+        <Box display="block" color="white" mx={15} mt={15}>
+          <Tabs
+            value={tabValue}
+            onChange={(_event: SyntheticEvent, newValue: string) =>
+              setTabValue(newValue)
+            }
+            textColor="inherit"
+            indicatorColor="primary"
+            aria-label="scenario answer tabs"
+          >
+            <Tab sx={{ fontSize: "20px" }} value="confess" label="범인의 고백" />
+            {renderAdditional && (
+              <Tab
+                sx={{ fontSize: "20px" }}
+                value="additional"
+                label="추가 질문 해답"
+              />
+            )}
+            <Tab sx={{ fontSize: "20px" }} value="solution" label="사건 풀이법" />
             <Tab
               sx={{ fontSize: "20px" }}
-              value="additional"
-              label="추가 질문 해답"
+              value="culprits"
+              label={culpritsTabLabel}
             />
-          )}
-          <Tab sx={{ fontSize: "20px" }} value="solution" label="사건 풀이법" />
-          <Tab sx={{ fontSize: "20px" }} value="culprits" label={culpritsTabLabel} />
-        </Tabs>
+          </Tabs>
 
-        <TabPanel value={tabValue} index="confess">
-          {renderConfess(submittedAnswer)}
-        </TabPanel>
-
-        {renderAdditional && (
-          <TabPanel value={tabValue} index="additional">
-            {renderAdditional(submittedAnswer)}
+          <TabPanel value={tabValue} index="confess">
+            {renderConfess(submittedAnswer)}
           </TabPanel>
-        )}
 
-        <TabPanel value={tabValue} index="solution">
-          {renderSolution(submittedAnswer)}
-        </TabPanel>
+          {renderAdditional && (
+            <TabPanel value={tabValue} index="additional">
+              {renderAdditional(submittedAnswer)}
+            </TabPanel>
+          )}
 
-        <TabPanel value={tabValue} index="culprits">
-          <Box display="flex" justifyContent="center" alignItems="center" mt={10}>
-            <Button
-              variant="contained"
-              color="info"
-              href={culpritsHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              sx={{ mb: 10 }}
-            >
-              {culpritsButtonLabel}
-              <LaunchRounded sx={{ ml: 1, fontSize: 20 }} />
-            </Button>
-          </Box>
-        </TabPanel>
+          <TabPanel value={tabValue} index="solution">
+            {renderSolution(submittedAnswer)}
+          </TabPanel>
+
+          <TabPanel value={tabValue} index="culprits">
+            <Box display="flex" justifyContent="center" alignItems="center" mt={10}>
+              <Button
+                variant="contained"
+                color="primary"
+                href={culpritsHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                sx={{ mb: 10 }}
+              >
+                {culpritsButtonLabel}
+                <LaunchRounded sx={{ ml: 1, fontSize: 20 }} />
+              </Button>
+            </Box>
+          </TabPanel>
+        </Box>
+
+        <Box display="flex" justifyContent="center" alignItems="center" gap={2} mt={10}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => {
+              localStorage.removeItem(scenarioKey);
+              router.push(`/suspect/certification?scenario=${scenarioKey}`);
+            }}
+            sx={{ mb: 20 }}
+          >
+            인증카드 보러가기
+          </Button>
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={() => {
+              localStorage.removeItem(scenarioKey);
+              router.push("/suspect");
+            }}
+            sx={{ mb: 20 }}
+          >
+            메인 화면으로 돌아가기
+          </Button>
+        </Box>
       </Box>
-
-      <Box display="flex" justifyContent="center" alignItems="center" gap={2} mt={10}>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => {
-            localStorage.removeItem(scenarioKey);
-            router.push(`/suspect/certification?scenario=${scenarioKey}`);
-          }}
-          sx={{ mb: 20 }}
-        >
-          인증카드 보러가기
-        </Button>
-        <Button
-          variant="outlined"
-          color="primary"
-          onClick={() => {
-            localStorage.removeItem(scenarioKey);
-            router.push("/suspect");
-          }}
-          sx={{ mb: 20 }}
-        >
-          메인 화면으로 돌아가기
-        </Button>
-      </Box>
-    </Box>
+    </ThemeProvider>
   );
 }

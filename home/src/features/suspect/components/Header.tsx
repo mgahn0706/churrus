@@ -11,16 +11,26 @@ function HeaderButton({
 }) {
   return (
     <Box
+      component="button"
+      type="button"
       px={{ xs: "8px", sm: "12px" }}
       py="4px"
       sx={{
         cursor: "pointer",
+        border: 0,
+        color: "inherit",
+        font: "inherit",
         backgroundColor: "rgba(0, 0, 0, 0)",
         "&:hover": {
           backgroundColor: "rgb(60, 60, 60)",
         },
         transition: "all 0.3s ease-in-out",
         borderRadius: "2px",
+        outline: "none",
+        "&:focus-visible": {
+          backgroundColor: "rgba(255,255,255,0.08)",
+          boxShadow: "0 0 0 2px rgba(111,174,255,0.5)",
+        },
       }}
       onClick={onClick}
     >
@@ -65,8 +75,27 @@ export default function Header() {
       {/* Left: Logo & Navigation */}
       <Box display="flex" alignItems="center" minWidth={0}>
         <Box
+          component="button"
+          type="button"
           mr={{ xs: 1.5, sm: 4 }}
-          sx={{ cursor: "pointer", display: "flex", alignItems: "center" }}
+          sx={{
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            border: 0,
+            p: 0,
+            borderRadius: "2px",
+            color: "inherit",
+            font: "inherit",
+            backgroundColor: "transparent",
+            outline: "none",
+            transition: "background-color 180ms ease, box-shadow 180ms ease",
+            "&:hover": { backgroundColor: "rgba(255,255,255,0.05)" },
+            "&:focus-visible": {
+              backgroundColor: "rgba(255,255,255,0.08)",
+              boxShadow: "0 0 0 2px rgba(111,174,255,0.5)",
+            },
+          }}
           onClick={() => router.push("/suspect")}
         >
           <Typography
@@ -95,6 +124,8 @@ export default function Header() {
 
       <Box display="flex" alignItems="center" gap={{ xs: 0.5, sm: 1 }}>
         <Box
+          component="button"
+          type="button"
           onClick={() => router.push("/")}
           sx={{
             cursor: "pointer",
@@ -102,11 +133,20 @@ export default function Header() {
             py: "6px",
             borderRadius: "999px",
             color: "rgba(255,255,255,0.68)",
+            border: 0,
+            font: "inherit",
+            backgroundColor: "transparent",
             transition: "color 0.2s ease, background-color 0.2s ease",
+            outline: "none",
             display: { xs: "none", sm: "block" },
             "&:hover": {
               color: "rgba(255,255,255,0.92)",
               backgroundColor: "rgba(255,255,255,0.06)",
+            },
+            "&:focus-visible": {
+              color: "rgba(255,255,255,0.96)",
+              backgroundColor: "rgba(255,255,255,0.08)",
+              boxShadow: "0 0 0 2px rgba(111,174,255,0.5)",
             },
           }}
         >
@@ -123,6 +163,10 @@ export default function Header() {
               bgcolor: "rgba(255,255,255,0.1)",
               "&:hover": {
                 bgcolor: "rgba(255,255,255,0.2)",
+              },
+              "&:focus-visible": {
+                bgcolor: "rgba(255,255,255,0.18)",
+                boxShadow: "0 0 0 2px rgba(111,174,255,0.5)",
               },
               borderRadius: "50%",
               transition: "all 0.3s ease",

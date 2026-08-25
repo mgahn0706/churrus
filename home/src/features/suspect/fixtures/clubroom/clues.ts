@@ -57,7 +57,7 @@ export const clubroomClues: ClueType[] = [
     y: 72.107,
     image: getClubroomClueImage(5),
     description:
-      "비밀번호로 여는 동아리방 도어락이다. 문이 열린 시각이 자동으로 기록되며, 기록을 조작하는 것은 불가능하다. 기록된 시각은 20:30, 20:45, 22:00, 22:40, 23:00, 23:05, 04:00, 04:03, 05:00, 05:03, 11:30이다.",
+      "비밀번호로 여는 동아리방 도어락이다. 문이 열린 시각이 자동으로 기록되며, 기록을 조작하는 것은 불가능하다. 기록된 시각은 20:30, 20:45, 22:00, 22:40, 23:00, 23:05, 04:00, 04:03, 05:00, 05:05, 11:30이다.",
     type: "basic",
     place: "room",
   },
@@ -176,7 +176,8 @@ export const clubroomClues: ClueType[] = [
     x: 22,
     y: 36,
     image: getClubroomClueImage(16),
-    description: "쓰레기통 안에 은색 반지가 버려져 있다.",
+    description:
+      "쓰레기통 안에 은색 반지가 버려져 있다. KAI ❤️ NHJ라고 새겨져 있다.",
     type: "additional",
     place: 14,
   },
@@ -240,7 +241,7 @@ export const clubroomClues: ClueType[] = [
     y: 22,
     image: getClubroomClueImage(22),
     description:
-      "구애인의 맥북이다. eTL 사이트가 켜져 있으며, 과제를 제시간에 제출한 기록이 남아 있다.",
+      "구애인의 맥북이다. eTL 사이트가 켜져 있으며, 과제를 제시간에 제출한 기록이 남아 있다. eduroam 접속 기록은 10월 17일 오후 8시 ~ 오후 11시 5분.",
     type: "additional",
     place: 21,
   },
@@ -284,7 +285,7 @@ export const clubroomClues: ClueType[] = [
     y: 14.876,
     image: getClubroomClueImage(26),
     description:
-      "동아리방에서 발견된 엑스트라 버진 올리브오일 병이다. 어느 정도 사용된 상태이다.",
+      "동아리방에서 발견된 엑스트라 버진 올리브오일 병이다. 어느 정도 사용된 상태이다. 2026년 3월부터 동아리방에 있던 것으로, 스티커 제거를 위해 있던 것으로 보인다.",
     type: "basic",
     place: "room",
   },

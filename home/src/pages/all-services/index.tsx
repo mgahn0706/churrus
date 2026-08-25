@@ -15,6 +15,7 @@ import {
   InfoRounded,
   LockRounded,
   MailRounded,
+  MapRounded,
   PetsRounded,
   PsychologyRounded,
   PublicRounded,
@@ -85,6 +86,11 @@ export default function AllServicesPage() {
           <CategorizedLayout>
             <ServiceButton label="추러스 홈" url="/" icon={<HomeRounded />} />
             <ServiceButton label="소개" url="/about" icon={<InfoRounded />} />
+            <ServiceButton
+              label="MT 대이동"
+              url="/adventure"
+              icon={<MapRounded />}
+            />
             <ServiceButton
               label="지원하기"
               url="/recruit"
