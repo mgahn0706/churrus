@@ -737,7 +737,7 @@ export const CONNECTIONS2026: ConnectionsType[] = [
     ],
   },
   {
-    week: 35,
+    week: 36,
     quiz: [
       {
         words: ["코트", "셔츠", "재킷", "카디건"],
@@ -758,7 +758,7 @@ export const CONNECTIONS2026: ConnectionsType[] = [
     ],
   },
   {
-    week: 36,
+    week: 37,
     quiz: [
       {
         words: ["사자", "호랑이", "표범", "치타"],
@@ -779,7 +779,7 @@ export const CONNECTIONS2026: ConnectionsType[] = [
     ],
   },
   {
-    week: 37,
+    week: 38,
     quiz: [
       {
         words: ["송편", "떡국", "약과", "전"],
@@ -800,7 +800,7 @@ export const CONNECTIONS2026: ConnectionsType[] = [
     ],
   },
   {
-    week: 38,
+    week: 39,
     quiz: [
       {
         words: ["헤라", "아테나", "아폴론", "아르테미스"],
@@ -821,7 +821,7 @@ export const CONNECTIONS2026: ConnectionsType[] = [
     ],
   },
   {
-    week: 39,
+    week: 40,
     quiz: [
       {
         words: ["뉴턴", "와트", "파스칼", "볼트"],
@@ -842,7 +842,7 @@ export const CONNECTIONS2026: ConnectionsType[] = [
     ],
   },
   {
-    week: 35,
+    week: 41,
     quiz: [
       {
         words: ["전기", "기계", "조선", "방산"],
@@ -863,7 +863,7 @@ export const CONNECTIONS2026: ConnectionsType[] = [
     ],
   },
   {
-    week: 36,
+    week: 42,
     quiz: [
       {
         words: ["온수", "수원", "용산", "개봉"],
@@ -884,7 +884,7 @@ export const CONNECTIONS2026: ConnectionsType[] = [
     ],
   },
   {
-    week: 37,
+    week: 43,
     quiz: [
       {
         words: ["팽이", "광대", "주황", "독"],
