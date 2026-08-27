@@ -21,12 +21,22 @@ const SORTED_ADVENTURE_JOURNEYS = [...ADVENTURE_JOURNEYS].sort(
     SEASON_ORDER[left.season] - SEASON_ORDER[right.season]
 );
 
-const createRoutePath = (points: AdventureCoordinate[]) => {
+const createRoutePath = (
+  points: AdventureCoordinate[],
+  useDirectSegments = false
+) => {
   if (points.length === 0) {
     return "";
   }
 
   const commands = [`M ${points[0].x} ${points[0].y}`];
+  if (useDirectSegments) {
+    points.slice(1).forEach((point) => {
+      commands.push(`L ${point.x} ${point.y}`);
+    });
+    return commands.join(" ");
+  }
+
   points.slice(1).forEach((point, index) => {
     const previousPoint = points[index];
     const deltaX = point.x - previousPoint.x;
@@ -140,14 +150,26 @@ const JourneyMap = ({ journey }: JourneyMapProps) => {
     });
   }, [journey]);
   const renderRoute = useMemo(
-    () =>
-      renderStops.map(({ x, y }) => ({
-        x,
-        y,
-      })),
-    [renderStops]
+    () => {
+      if (journey.route.length > journey.stops.length) {
+        return journey.route.map((point) => ({
+          x: point.x,
+          y: point.y * (MAP_VIEWBOX_HEIGHT / 100),
+        }));
+      }
+
+      return renderStops.map(({ x, y }) => ({ x, y }));
+    },
+    [journey.route, journey.stops.length, renderStops]
   );
-  const routePath = useMemo(() => createRoutePath(renderRoute), [renderRoute]);
+  const routePath = useMemo(
+    () =>
+      createRoutePath(
+        renderRoute,
+        journey.route.length > journey.stops.length
+      ),
+    [journey.route.length, journey.stops.length, renderRoute]
+  );
   const firstStop = journey.stops[0];
   const finalStop = journey.stops[journey.stops.length - 1];
   return (
@@ -156,7 +178,7 @@ const JourneyMap = ({ journey }: JourneyMapProps) => {
         position: "relative",
         width: "100%",
         height: "100%",
-        minHeight: 0,
+        minHeight: { xs: 320, lg: 0 },
         borderRadius: { xs: "22px", md: "30px" },
         overflow: "hidden",
         border: "1px solid rgba(85, 246, 255, 0.18)",
@@ -164,6 +186,10 @@ const JourneyMap = ({ journey }: JourneyMapProps) => {
         background: `radial-gradient(circle at 76% 30%, ${journey.secondaryColor}18, transparent 36%), radial-gradient(circle at 36% 68%, ${journey.accentColor}12, transparent 38%), #070B12`,
         boxShadow:
           "0 40px 100px rgba(0, 0, 0, 0.52), inset 0 0 80px rgba(85, 246, 255, 0.04)",
+        "& .adventure-map-image": {
+          objectFit: { xs: "cover", sm: "contain" },
+          objectPosition: "center",
+        },
       }}
     >
       <Image
@@ -171,9 +197,9 @@ const JourneyMap = ({ journey }: JourneyMapProps) => {
         alt="서울 지도 위 대이동 경로"
         fill
         priority
+        className="adventure-map-image"
         sizes="(max-width: 900px) calc(100vw - 32px), 840px"
         style={{
-          objectFit: "contain",
           filter: "grayscale(1) brightness(0.3) contrast(1.08)",
           opacity: 0.62,
         }}
@@ -209,7 +235,8 @@ const JourneyMap = ({ journey }: JourneyMapProps) => {
             animation: "routeFlow 6.8s linear infinite",
           },
           "& .map-label": {
-            fontSize: { xs: "2.25px", sm: "1.8px", md: "1.52px" },
+            display: { xs: "none", sm: "inline" },
+            fontSize: { sm: "1.8px", md: "1.52px" },
           },
           "@media (prefers-reduced-motion: reduce)": {
             "& .route-flow": {
@@ -387,15 +414,30 @@ const JourneyMap = ({ journey }: JourneyMapProps) => {
             sx={{
               mt: 0.4,
               display: "flex",
-              alignItems: "baseline",
+              alignItems: "flex-start",
               justifyContent: "space-between",
-              gap: 1,
+              gap: 0.75,
             }}
           >
-            <Typography sx={{ fontSize: 15, fontWeight: 800 }}>
+            <Typography
+              sx={{
+                minWidth: 0,
+                fontSize: { xs: 13, sm: 15 },
+                fontWeight: 800,
+                overflowWrap: "anywhere",
+              }}
+            >
               {firstStop?.name ?? "미정"}
             </Typography>
-            <Typography sx={{ color: "#7E909A", fontSize: 9 }}>
+            <Typography
+              sx={{
+                maxWidth: "48%",
+                color: "#7E909A",
+                fontSize: 9,
+                textAlign: "right",
+                overflowWrap: "anywhere",
+              }}
+            >
               → {finalStop?.name ?? "미정"}
             </Typography>
           </Box>
@@ -574,6 +616,7 @@ export default function AdventurePageContent() {
               gap: 1,
               width: { xs: "100%", md: "min(720px, 55vw)" },
               maxWidth: "100%",
+              minWidth: 0,
             }}
           >
             <IconButton
@@ -595,6 +638,47 @@ export default function AdventurePageContent() {
             >
               <ChevronLeftRounded />
             </IconButton>
+            <Box
+              aria-live="polite"
+              sx={{
+                display: { xs: "flex", md: "none" },
+                minWidth: 0,
+                flex: 1,
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 0.75,
+                px: 1,
+                py: 0.9,
+                border: `1px solid ${selectedJourney.accentColor}55`,
+                borderRadius: "12px",
+                bgcolor: `${selectedJourney.accentColor}12`,
+              }}
+            >
+              <Typography
+                sx={{
+                  flexShrink: 0,
+                  color: selectedJourney.accentColor,
+                  fontSize: 11,
+                  fontWeight: 800,
+                  letterSpacing: "0.1em",
+                }}
+              >
+                {selectedJourney.year} {selectedJourney.season}
+              </Typography>
+              <Typography
+                sx={{
+                  minWidth: 0,
+                  color: "#C5D0D5",
+                  fontSize: 11,
+                  fontWeight: 700,
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {selectedJourney.title}
+              </Typography>
+            </Box>
             <Box
               role="tablist"
               aria-label="대이동 연도 선택"
@@ -629,7 +713,7 @@ export default function AdventurePageContent() {
                 journeyTabTouchStartRef.current = null;
               }}
               sx={{
-                display: "flex",
+                display: { xs: "none", md: "flex" },
                 gap: 1,
                 minWidth: 0,
                 flex: 1,
@@ -745,6 +829,7 @@ export default function AdventurePageContent() {
             minHeight: 0,
             height: { xs: "auto", lg: "100%" },
             overflow: { xs: "visible", lg: "hidden" },
+            minWidth: 0,
           }}
         >
           <Box
@@ -759,7 +844,8 @@ export default function AdventurePageContent() {
                 flex: 1,
                 minHeight: 0,
                 height: {
-                  xs: "clamp(360px, calc(100dvh - 210px), 580px)",
+                  xs: "min(112vw, 430px)",
+                  sm: "clamp(360px, 54dvh, 460px)",
                   lg: "100%",
                 },
               }}
@@ -779,14 +865,15 @@ export default function AdventurePageContent() {
               boxShadow:
                 "inset 0 1px 0 rgba(255,255,255,0.07), 0 24px 70px rgba(0,0,0,0.2)",
               p: { xs: 2, md: 2.5 },
-              display: { xs: "none", lg: "flex" },
+              display: "flex",
               flexDirection: "column",
               minHeight: 0,
-              height: "100%",
-              maxHeight: "100%",
+              minWidth: 0,
+              height: { xs: "auto", lg: "100%" },
+              maxHeight: { xs: "none", lg: "100%" },
               boxSizing: "border-box",
               overflowX: "hidden",
-              overflowY: "scroll",
+              overflowY: { xs: "visible", lg: "scroll" },
               overscrollBehavior: "contain",
               scrollbarGutter: "stable",
               scrollbarWidth: "thin",
@@ -859,6 +946,19 @@ export default function AdventurePageContent() {
             >
               {selectedJourney.subtitle}
             </Typography>
+            {selectedJourney.description && (
+              <Typography
+                sx={{
+                  mt: 1.5,
+                  color: "#D4DFE3",
+                  fontSize: 13,
+                  lineHeight: 1.7,
+                  wordBreak: "keep-all",
+                }}
+              >
+                {selectedJourney.description}
+              </Typography>
+            )}
             <Box
               sx={{
                 mt: 2.4,
@@ -891,6 +991,7 @@ export default function AdventurePageContent() {
 
             <Box
               sx={{
+                display: { xs: "none", lg: "block" },
                 mt: 2.6,
                 pt: 2,
                 borderTop: "1px solid rgba(255,255,255,0.07)",
@@ -907,7 +1008,14 @@ export default function AdventurePageContent() {
                 ROUTE DETAIL
               </Typography>
             </Box>
-            <Box sx={{ mt: 1.5, pr: 0.5, flexShrink: 0 }}>
+            <Box
+              sx={{
+                display: { xs: "none", lg: "block" },
+                mt: 1.5,
+                pr: 0.5,
+                flexShrink: 0,
+              }}
+            >
               {selectedJourney.stops.map((stop, index) => (
                 <Box
                   key={stop.id}
@@ -950,9 +1058,17 @@ export default function AdventurePageContent() {
                         display: "flex",
                         justifyContent: "space-between",
                         gap: 1,
+                        minWidth: 0,
                       }}
                     >
-                      <Typography sx={{ fontSize: 13, fontWeight: 800 }}>
+                      <Typography
+                        sx={{
+                          minWidth: 0,
+                          fontSize: 13,
+                          fontWeight: 800,
+                          overflowWrap: "anywhere",
+                        }}
+                      >
                         {stop.name}
                       </Typography>
                       <Typography
@@ -967,16 +1083,18 @@ export default function AdventurePageContent() {
                         {stop.area}
                       </Typography>
                     </Box>
-                    <Typography
-                      sx={{
-                        color: "#71838D",
-                        fontSize: 10,
-                        mt: 0.4,
-                        lineHeight: 1.45,
-                      }}
-                    >
-                      {stop.description}
-                    </Typography>
+                    {stop.description && (
+                      <Typography
+                        sx={{
+                          color: "#71838D",
+                          fontSize: 10,
+                          mt: 0.4,
+                          lineHeight: 1.45,
+                        }}
+                      >
+                        {stop.description}
+                      </Typography>
+                    )}
                   </Box>
                 </Box>
               ))}

@@ -18,6 +18,7 @@ export interface AdventureJourney {
   season: "여름" | "겨울";
   title: string;
   subtitle: string;
+  description?: string;
   meetingId?: string;
   distance: string;
   duration: string;
