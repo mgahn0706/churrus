@@ -170,8 +170,6 @@ const JourneyMap = ({ journey }: JourneyMapProps) => {
       ),
     [journey.route.length, journey.stops.length, renderRoute]
   );
-  const firstStop = journey.stops[0];
-  const finalStop = journey.stops[journey.stops.length - 1];
   return (
     <Box
       sx={{
@@ -372,76 +370,6 @@ const JourneyMap = ({ journey }: JourneyMapProps) => {
         >
           ROUTE ARCHIVE
         </Typography>
-      </Box>
-      <Box
-        sx={{
-          display: { xs: "block", lg: "none" },
-          position: "absolute",
-          left: 14,
-          right: 14,
-          bottom: 14,
-          px: 1.8,
-          py: 1.3,
-          borderRadius: "16px",
-          background: `linear-gradient(135deg, ${journey.secondaryColor}24, rgba(10,18,28,0.48) 46%, ${journey.accentColor}14)`,
-          border: `1px solid ${journey.accentColor}35`,
-          boxShadow:
-            "inset 0 1px 0 rgba(255,255,255,0.08), 0 14px 40px rgba(0,0,0,0.2)",
-        }}
-      >
-        <Box
-          sx={{
-            position: "absolute",
-            top: 0,
-            left: 18,
-            right: 18,
-            height: 1,
-            background: `linear-gradient(90deg, transparent, ${journey.secondaryColor}, ${journey.accentColor}, transparent)`,
-          }}
-        />
-        <Box>
-          <Typography
-            sx={{
-              color: journey.accentColor,
-              fontSize: 8,
-              fontWeight: 800,
-              letterSpacing: "0.16em",
-            }}
-          >
-            ROUTE
-          </Typography>
-          <Box
-            sx={{
-              mt: 0.4,
-              display: "flex",
-              alignItems: "flex-start",
-              justifyContent: "space-between",
-              gap: 0.75,
-            }}
-          >
-            <Typography
-              sx={{
-                minWidth: 0,
-                fontSize: { xs: 13, sm: 15 },
-                fontWeight: 800,
-                overflowWrap: "anywhere",
-              }}
-            >
-              {firstStop?.name ?? "미정"}
-            </Typography>
-            <Typography
-              sx={{
-                maxWidth: "48%",
-                color: "#7E909A",
-                fontSize: 9,
-                textAlign: "right",
-                overflowWrap: "anywhere",
-              }}
-            >
-              → {finalStop?.name ?? "미정"}
-            </Typography>
-          </Box>
-        </Box>
       </Box>
     </Box>
   );
@@ -1083,18 +1011,6 @@ export default function AdventurePageContent() {
                         {stop.area}
                       </Typography>
                     </Box>
-                    {stop.description && (
-                      <Typography
-                        sx={{
-                          color: "#71838D",
-                          fontSize: 10,
-                          mt: 0.4,
-                          lineHeight: 1.45,
-                        }}
-                      >
-                        {stop.description}
-                      </Typography>
-                    )}
                   </Box>
                 </Box>
               ))}
