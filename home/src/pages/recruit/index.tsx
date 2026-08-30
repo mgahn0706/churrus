@@ -30,7 +30,7 @@ const FAQList: Record<string, string> = {
 };
 export default function RecruitPage() {
   const { isMobileWidth } = useMobileWidth();
-  const isRecruitClosed = true;
+  const isRecruitClosed = false;
   return (
     <>
       <Head>
@@ -72,7 +72,7 @@ export default function RecruitPage() {
               wordBreak: "keep-all",
             }}
           >
-            추러스 26-1기 신입 회원 모집
+            추러스 26-2기 신입 회원 모집
           </Typography>
           <Typography
             mt={2}
@@ -84,7 +84,7 @@ export default function RecruitPage() {
                 "'SF Pro Text', 'Apple SD Gothic Neo', 'Pretendard', sans-serif",
             }}
           >
-            추러스 26-1기 신입 회원 모집이 마감되었습니다. (3/2 ~ 3/7)
+            8.30 (일) ~ 9.4 (금) 23:59
           </Typography>
         </Box>
         <Box textAlign="center" py={{ xs: "90px", md: "130px" }} px="10vw">
@@ -116,8 +116,7 @@ export default function RecruitPage() {
                   "'SF Pro Text', 'Apple SD Gothic Neo', 'Pretendard', sans-serif",
               }}
             >
-              지원해주셔서 감사합니다. 이번 모집은 마감되어 지원서 제출이
-              어렵습니다.
+              아래 지원 링크에서 지원서를 작성해 주세요.
             </Typography>
             <Button
               disabled={isRecruitClosed}
@@ -148,13 +147,13 @@ export default function RecruitPage() {
               }}
               onClick={() => {
                 window.open(
-                  "https://forms.gle/zhwBzDtjAH2NQw1k6",
+                  "https://forms.gle/TWoCcDvX9w2SspV17",
                   "_blank",
                   "noopener noreferrer"
                 );
               }}
             >
-              모집 마감
+              지원하기
             </Button>
             <Typography
               mt={2}
@@ -166,8 +165,7 @@ export default function RecruitPage() {
                   "'SF Pro Text', 'Apple SD Gothic Neo', 'Pretendard', sans-serif",
               }}
             >
-              추러스 26-1기 신입 회원 모집이 마감되었습니다. 다음 모집에서
-              뵙겠습니다.
+              *지원자가 많을 시 조기 마감될 수 있습니다
             </Typography>
           </Box>
         </Box>
