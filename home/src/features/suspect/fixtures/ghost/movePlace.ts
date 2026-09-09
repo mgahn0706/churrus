@@ -1,4 +1,18 @@
 import { MovePlaceButtonType } from "@/features/suspect/types";
 
-// TODO: Add map transitions when the scenario maps are available.
-export const ghostMoveButton: MovePlaceButtonType[] = [];
+export const ghostMoveButton: MovePlaceButtonType[] = [
+  {
+    from: "haunted-house",
+    to: "staff",
+    x: 94,
+    y: 50,
+    direction: "right",
+  },
+  {
+    from: "staff",
+    to: "haunted-house",
+    x: 84,
+    y: 91,
+    direction: "down",
+  },
+];

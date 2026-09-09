@@ -1,4 +1,32 @@
 import { MovePlaceButtonType } from "@/features/suspect/types";
 
-// TODO: Add map transitions when the scenario maps are available.
-export const boxMoveButton: MovePlaceButtonType[] = [];
+export const boxMoveButton: MovePlaceButtonType[] = [
+  {
+    from: "palace",
+    to: "market",
+    x: 2,
+    y: 48,
+    direction: "left",
+  },
+  {
+    from: "market",
+    to: "palace",
+    x: 94,
+    y: 48,
+    direction: "right",
+  },
+  {
+    from: "palace",
+    to: "abandoned-palace",
+    x: 94,
+    y: 48,
+    direction: "right",
+  },
+  {
+    from: "abandoned-palace",
+    to: "palace",
+    x: 2,
+    y: 48,
+    direction: "left",
+  },
+];
