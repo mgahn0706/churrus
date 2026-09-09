@@ -315,8 +315,8 @@ export const boxClues: ClueType[] = [
     id: 29,
     image: "/image/suspect/scenario/box/clues/box-29.png",
     title: "다리",
-    x: 75.391,
-    y: 52.066,
+    x: 84.562,
+    y: 69.938,
     description:
       "허벅지와 무릎 부근에 크고 작은 멍이 여러 개 남아 있다. 생긴지 매우 오래 된 듯 하다",
     type: "basic",
