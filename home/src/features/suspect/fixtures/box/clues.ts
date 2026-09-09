@@ -399,4 +399,15 @@ export const boxClues: ClueType[] = [
     type: "basic",
     place: "palace",
   },
+  {
+    id: 37,
+    image: "/image/suspect/scenario/box/clues/box-37.png",
+    title: "관상감 기록지",
+    x: 78.272,
+    y: 87.19,
+    type: "basic",
+    place: "palace",
+    description:
+      "관상감에서 작성한 강우 기록. 7월 12일 오전 00시 20분, 소나기 내리기 시작.",
+  },
 ];
