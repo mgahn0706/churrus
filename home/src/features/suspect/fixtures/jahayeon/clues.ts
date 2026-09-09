@@ -54,11 +54,13 @@ export const jahayeonClues: ClueType[] = [
     image: "/image/suspect/scenario/jahayeon/clues/jahayeon-3.png",
     description:
       "피해자 김하연의 스마트폰이다. 기종은 갤럭시 노트 10으로, 자하연 근처 돌 위에 놓여져있었다. 남은 배터리는 14%. 얼굴인식, 지문, PIN 중 하나만 입력해도 잠금이 해제된다.",
-    type: "locked",
+    type: "basic",
     place: "pond",
-    password: "0912",
-    passwordHint:
-      "자하연 근처에 있던 스마트폰. 비밀번호 힌트는 'birthday'라고 표시된다.",
+    lock: {
+      method: "password",
+      password: "0912",
+      hint: "자하연 근처에 있던 스마트폰. 비밀번호 힌트는 'birthday'라고 표시된다.",
+    },
   },
   {
     id: 4,

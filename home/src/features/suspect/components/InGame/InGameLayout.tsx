@@ -23,7 +23,7 @@ import { ClueDetailView } from "./ClueDetailView";
 import { ClueButton } from "./ClueButton";
 import ClueDashboardModal from "./ClueDashboardModal";
 import MovePlaceButton from "./MovePlaceButton";
-import PasswordInputModal from "./PasswordInputModal";
+import ClueUnlockModal from "./ClueUnlockModal";
 import PrologueModal from "./PrologueModal";
 import SuspectsInfoCard from "./SuspectsInfoCard";
 import SuspectVoteModal from "./SuspectVoteModal";
@@ -64,7 +64,7 @@ export default function InGameLayout({
     | "prologue"
     | "suspects"
     | "dashboard"
-    | "password"
+    | "unlock"
     | "memo"
     | "vote"
     | null
@@ -144,6 +144,12 @@ export default function InGameLayout({
     });
   };
 
+  const openClue = (clue: ClueType) => {
+    recordInteraction(`단서 ${clue.id} ${clue.title}`);
+    setOpenedClueId(clue.id);
+    markClueAsChecked(clue.id);
+  };
+
   const handleMapClick = (
     event: React.MouseEvent<HTMLImageElement | HTMLDivElement>
   ) => {
@@ -210,10 +216,7 @@ export default function InGameLayout({
           <ClueDetailView
             clueData={openedClue}
             onClose={() => {
-              if (
-                openedClue.type === "additional" &&
-                typeof openedClue.place !== "string"
-              ) {
+              if (typeof openedClue.place !== "string") {
                 setOpenedClueId(openedClue.place);
                 return;
               }
@@ -223,8 +226,13 @@ export default function InGameLayout({
         )}
         {visibleClues.map((clue) => {
           const isChecked = checkedClueList.includes(clue.id);
+          const isUnlocked =
+            !clue.lock ||
+            isChecked ||
+            (clue.lock.method === "clue" &&
+              checkedClueList.includes(clue.lock.clueId));
           const clueStatus =
-            clue.type === "locked"
+            !isUnlocked
               ? "locked"
               : isChecked && uncheckedAdditionalParentIds.has(clue.id)
                 ? "pending"
@@ -238,32 +246,30 @@ export default function InGameLayout({
               clue={clue}
               status={clueStatus}
               onClick={() => {
-                if (clue.type === "locked") {
-                  setOpenedModal("password");
+                if (!isUnlocked && clue.lock) {
+                  setOpenedModal("unlock");
                   setUnlockingClue(clue);
                   return;
                 }
 
-                recordInteraction(`단서 ${clue.id} ${clue.title}`);
-                setOpenedClueId(clue.id);
-                markClueAsChecked(clue.id);
+                openClue(clue);
               }}
             />
           );
         })}
 
-        <PasswordInputModal
+        <ClueUnlockModal
           targetClue={unlockingClue}
-          isOpen={openedModal === "password"}
+          isOpen={openedModal === "unlock"}
           onClose={() => {
             handleCloseModal();
             setUnlockingClue(null);
           }}
           onSuccess={() => {
-            setOpenedClueId(unlockingClue?.id ?? null);
-            if (unlockingClue?.id) {
-              markClueAsChecked(unlockingClue.id);
+            if (unlockingClue) {
+              openClue(unlockingClue);
             }
+            handleCloseModal();
             setUnlockingClue(null);
           }}
         />

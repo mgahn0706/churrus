@@ -1,16 +1,32 @@
 import { ClueData } from "@/pages/api/getCluesWithKeyword";
 
-export interface ClueType {
+interface ClueBase {
   id: number;
   image: string;
   title: string;
   x: number;
   y: number;
   description: string;
-  type: "basic" | "additional" | "locked";
-  password?: string;
-  passwordHint?: string;
   place: string | number;
+}
+
+interface PasswordClueLock {
+  method: "password";
+  password: string;
+  hint?: string;
+}
+
+interface PrerequisiteClueLock {
+  method: "clue";
+  clueId: number;
+  hint?: string;
+}
+
+export type ClueLock = PasswordClueLock | PrerequisiteClueLock;
+
+export interface ClueType extends ClueBase {
+  type: "basic" | "additional";
+  lock?: ClueLock;
 }
 
 export interface MovePlaceButtonType {

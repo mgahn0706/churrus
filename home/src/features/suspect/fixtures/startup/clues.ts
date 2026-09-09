@@ -304,12 +304,14 @@ export const startUpClues: ClueType[] = [
     y: 71.44,
 
     description: "한채원의 PC이다. 안에 여러가지 파일들이 저장되어있다.",
-    type: "locked",
+    type: "basic",
     image: "/image/suspect/scenario/startup/clues/startup-24.png",
     place: "office",
-    password: "0801",
-    passwordHint:
-      "한채원의 PC는 잠겨있다. 비밀번호 힌트로 '내 생일' 이라고 적혀있다.",
+    lock: {
+      method: "password",
+      password: "0801",
+      hint: "한채원의 PC는 잠겨있다. 비밀번호 힌트로 '내 생일' 이라고 적혀있다.",
+    },
   },
   {
     id: 25,

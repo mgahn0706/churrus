@@ -269,11 +269,13 @@ export const subwayClues: ClueType[] = [
     y: 49.587,
     image: "/image/suspect/scenario/subway/clues/subway-23.png",
     description: "전공익의 개인 사물함이다.",
-    type: "locked",
+    type: "basic",
     place: "B1",
-    password: "0605",
-    passwordHint:
-      "전공익의 잠겨있는 개인 사물함 비밀번호. 힌트는 Birthday❤️라고 써있다.",
+    lock: {
+      method: "password",
+      password: "0605",
+      hint: "전공익의 잠겨있는 개인 사물함 비밀번호. 힌트는 Birthday❤️라고 써있다.",
+    },
   },
   {
     id: 24,

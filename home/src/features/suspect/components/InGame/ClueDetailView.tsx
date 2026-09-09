@@ -108,6 +108,7 @@ export function ClueDetailView({
               sx={{
                 wordBreak: "keep-all",
                 lineHeight: "2",
+                whiteSpace: "pre-line",
               }}
             >
               {clueData.description}
