@@ -59,7 +59,7 @@ export const boxSuspects: SuspectType[] = [
 export const boxVictim: VictimType = {
   name: "추도세자",
   image: "/image/suspect/scenario/box/profile/chu_dsj.png",
-  age: 27,
+  age: 28,
   gender: "male",
   job: "조선의 왕세자",
   description:
