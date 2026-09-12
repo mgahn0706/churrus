@@ -145,7 +145,7 @@ export const boxClues: ClueType[] = [
     description:
       "여러 약재가 의관의 방에 있다. 개수는 산조인 7알, 백복령 8조각, 황련 8조각, 고삼 9뿌리, 생강 7쪽, 길경 8조각이다. 다른 약재는 무엇인지 알기 힘들다.",
     type: "basic",
-    place: "market",
+    place: "palace",
   },
   {
     id: 14,
