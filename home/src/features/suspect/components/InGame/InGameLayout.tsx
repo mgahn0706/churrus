@@ -112,6 +112,9 @@ export default function InGameLayout({
 
   const openedClue: ClueType | null =
     scenario.clues.find((clue) => clue.id === openedClueId) ?? null;
+  const mapImageSrc = currentPlace
+    ? `/image/suspect/scenario/${scenario.id}/map/${scenario.id}-${currentPlace}.png`
+    : scenario.backgroundImage;
 
   const markClueAsChecked = (clueId: number) => {
     setCheckedClueList((prev) => {
@@ -183,7 +186,7 @@ export default function InGameLayout({
       <Box>
         <Image
           priority
-          src={`/image/suspect/scenario/${scenario.id}/map/${scenario.id}-${currentPlace}.png`}
+          src={mapImageSrc}
           alt="맵 이미지"
           fill
           style={{

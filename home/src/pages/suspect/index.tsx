@@ -12,6 +12,7 @@ export default function Suspect() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const router = useRouter();
   const current = scenarios[currentIndex];
+  const creators = current.creators.filter(Boolean);
   const itemRefs = useRef<Array<HTMLDivElement | null>>([]);
   const listRef = useRef<HTMLDivElement | null>(null);
   const currentIndexRef = useRef(0);
@@ -43,15 +44,26 @@ export default function Suspect() {
   ) => (
     <Box
       key={person.name}
+      tabIndex={0}
       sx={{
         display: "flex",
         alignItems: "center",
         gap: 1.1,
         p: 1,
-        borderRadius: 2,
-        background: "rgba(255,255,255,0.03)",
-        border: "1px solid rgba(255,255,255,0.05)",
+        borderRadius: 1.5,
+        background: "rgba(255,255,255,0.028)",
+        border: "1px solid rgba(132,158,185,0.12)",
         minWidth: 0,
+        outline: "none",
+        transition: "background-color 180ms ease, border-color 180ms ease",
+        "&:hover": {
+          background: "rgba(255,255,255,0.05)",
+          borderColor: "rgba(132,158,185,0.2)",
+        },
+        "&:focus-visible": {
+          borderColor: "rgba(111,174,255,0.62)",
+          boxShadow: "0 0 0 2px rgba(111,174,255,0.16)",
+        },
       }}
     >
       <Box
@@ -98,7 +110,7 @@ export default function Suspect() {
           <Typography
             sx={{
               fontSize: 12,
-              opacity: 0.58,
+              opacity: 0.72,
               lineHeight: 1.2,
               whiteSpace: "nowrap",
               flexShrink: 0,
@@ -110,7 +122,7 @@ export default function Suspect() {
         <Typography
           sx={{
             fontSize: 12,
-            opacity: 0.72,
+            opacity: 0.8,
             lineHeight: 1.35,
             whiteSpace: "nowrap",
             overflow: "hidden",
@@ -129,23 +141,6 @@ export default function Suspect() {
   useEffect(() => {
     currentIndexRef.current = currentIndex;
   }, [currentIndex]);
-
-  useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => {
-      if (e.key === "Tab") {
-        e.preventDefault();
-        const nextIndex = e.shiftKey
-          ? currentIndexRef.current - 1
-          : currentIndexRef.current + 1;
-        changeIndex(nextIndex);
-      }
-
-      if (e.key === "Enter") handleSelect();
-    };
-
-    window.addEventListener("keydown", handleKey);
-    return () => window.removeEventListener("keydown", handleKey);
-  }, [changeIndex, handleSelect]);
 
   useEffect(() => {
     const node = itemRefs.current[currentIndex];
@@ -265,7 +260,18 @@ export default function Suspect() {
                 return (
                   <Box
                     key={s.id}
+                    role="button"
+                    tabIndex={0}
+                    aria-pressed={active}
                     onClick={() => changeIndex(index)}
+                    onFocus={() => changeIndex(index)}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter" || event.key === " ") {
+                        event.preventDefault();
+                        if (active) handleSelect();
+                        else changeIndex(index);
+                      }
+                    }}
                     ref={(el: HTMLDivElement | null) => {
                       itemRefs.current[index] = el;
                     }}
@@ -276,13 +282,25 @@ export default function Suspect() {
                       cursor: "pointer",
                       overflow: "hidden",
                       background: active
-                        ? `linear-gradient(135deg, ${s.color}2f, rgba(255,255,255,0.03))`
+                        ? `linear-gradient(135deg, ${s.color}38, rgba(255,255,255,0.045))`
                         : "rgba(255,255,255,0.02)",
                       borderBottom: "1px solid rgba(255,255,255,0.05)",
+                      boxShadow: active
+                        ? "inset 3px 0 0 rgba(111,174,255,0.72)"
+                        : "none",
+                      outline: "none",
                       transition:
-                        "background-color 200ms ease, border-color 200ms ease",
+                        "background 200ms ease, border-color 200ms ease, box-shadow 200ms ease",
                       "&:hover": {
                         borderColor: `${s.color}55`,
+                        background: active
+                          ? `linear-gradient(135deg, ${s.color}40, rgba(255,255,255,0.055))`
+                          : "rgba(255,255,255,0.045)",
+                      },
+                      "&:focus-visible": {
+                        boxShadow: active
+                          ? "inset 3px 0 0 rgba(126,185,255,0.9), inset 0 0 0 1px rgba(126,185,255,0.62)"
+                          : "inset 0 0 0 1px rgba(126,185,255,0.62)",
                       },
                       flexShrink: 0,
                     }}
@@ -298,7 +316,7 @@ export default function Suspect() {
                         style={{
                           objectFit: "cover",
                           filter: active
-                            ? "brightness(1)"
+                            ? "brightness(1.04)"
                             : "brightness(0.6) grayscale(40%)",
                           transition: "filter .6s ease",
                         }}
@@ -319,7 +337,7 @@ export default function Suspect() {
                         position: "absolute",
                         inset: 0,
                         background: `linear-gradient(to right, ${s.color}${
-                          active ? "40" : "18"
+                          active ? "48" : "18"
                         }, transparent 65%)`,
                       }}
                     />
@@ -384,7 +402,7 @@ export default function Suspect() {
                   style={{
                     objectFit: "cover",
                     objectPosition: "center",
-                    filter: "brightness(0.65)",
+                    filter: "brightness(0.72)",
                     transition: "opacity .4s ease",
                   }}
                 />
@@ -449,9 +467,12 @@ export default function Suspect() {
                     icon={<PeopleAlt />}
                     label={`용의자 ${current.numberOfSuspects}명`}
                     sx={{
-                      bgcolor: `${current.color}22`,
-                      color: current.color,
-                      border: `1px solid ${current.color}55`,
+                      bgcolor: `${current.color}30`,
+                      color: "rgba(255,255,255,0.9)",
+                      border: `1px solid ${current.color}78`,
+                      "& .MuiChip-icon": {
+                        color: "rgba(255,255,255,0.82)",
+                      },
                     }}
                   />
                   <Chip
@@ -462,9 +483,12 @@ export default function Suspect() {
                         : "키워드 검색형"
                     }
                     sx={{
-                      bgcolor: `${current.color}22`,
-                      color: current.color,
-                      border: `1px solid ${current.color}55`,
+                      bgcolor: `${current.color}30`,
+                      color: "rgba(255,255,255,0.9)",
+                      border: `1px solid ${current.color}78`,
+                      "& .MuiChip-icon": {
+                        color: "rgba(255,255,255,0.82)",
+                      },
                     }}
                   />
                 </Box>
@@ -472,7 +496,7 @@ export default function Suspect() {
                 <Typography
                   sx={{
                     fontSize: "clamp(14px, 1.1vw, 18px)",
-                    opacity: 0.85,
+                    opacity: 0.9,
                     lineHeight: 1.72,
                     maxWidth: 560,
                     mb: { xs: 1.2, md: 1.75 },
@@ -494,11 +518,17 @@ export default function Suspect() {
                     background: current.color,
                     color: "#fff",
                     boxShadow: `0 10px 30px ${current.color}55`,
-                    transition: "all .3s ease",
+                    outline: "none",
+                    transition:
+                      "transform 180ms ease, box-shadow 180ms ease, filter 180ms ease",
                     "&:hover": {
-                      transform: "translateY(-3px)",
-                      boxShadow: `0 15px 40px ${current.color}88`,
+                      transform: "translateY(-1px)",
+                      boxShadow: `0 12px 34px ${current.color}72`,
                       background: current.color,
+                      filter: "brightness(1.06)",
+                    },
+                    "&:focus-visible": {
+                      boxShadow: `0 0 0 3px rgba(255,255,255,0.2), 0 12px 34px ${current.color}72`,
                     },
                   }}
                 >
@@ -523,6 +553,28 @@ export default function Suspect() {
               position: "relative",
               overflow: { xs: "visible", md: "hidden" },
               minHeight: 0,
+              "&::before": {
+                content: '""',
+                position: "absolute",
+                top: 12,
+                right: 12,
+                width: 18,
+                height: 18,
+                borderTop: "1px solid rgba(111,174,255,0.18)",
+                borderRight: "1px solid rgba(111,174,255,0.18)",
+                pointerEvents: "none",
+              },
+              "&::after": {
+                content: '""',
+                position: "absolute",
+                bottom: 12,
+                left: 12,
+                width: 18,
+                height: 18,
+                borderBottom: "1px solid rgba(111,174,255,0.14)",
+                borderLeft: "1px solid rgba(111,174,255,0.14)",
+                pointerEvents: "none",
+              },
             }}
           >
             <Box
@@ -534,21 +586,27 @@ export default function Suspect() {
                 pointerEvents: "none",
               }}
             />
-            <Box sx={{ px: 1, pt: 1 }}>
-              <Typography sx={{ fontSize: 12, letterSpacing: 2, opacity: 0.6 }}>
-                SCENARIO DETAIL
+            <Box
+              sx={{
+                px: 1,
+                pt: 1,
+                pb: 1.5,
+                borderBottom: "1px solid rgba(111,174,255,0.24)",
+              }}
+            >
+              <Typography sx={{ fontSize: 12, letterSpacing: 2, opacity: 0.7 }}>
+                CASE FILE {String(currentIndex + 1).padStart(2, "0")}
               </Typography>
-              <Typography sx={{ fontSize: 18, fontWeight: 800, mt: 0.5 }}>
+              <Typography
+                sx={{
+                  mt: 0.6,
+                  fontSize: 15,
+                  fontWeight: 700,
+                  lineHeight: 1.35,
+                  color: "rgba(255,255,255,0.88)",
+                }}
+              >
                 {current.title}
-              </Typography>
-            </Box>
-
-            <Box sx={{ px: 1 }}>
-              <Typography sx={{ fontSize: 13, opacity: 0.6, mb: 0.5 }}>
-                시나리오 설명
-              </Typography>
-              <Typography sx={{ fontSize: 14, lineHeight: 1.7, opacity: 0.9 }}>
-                {current.description}
               </Typography>
             </Box>
 
@@ -561,7 +619,7 @@ export default function Suspect() {
                 "&::-webkit-scrollbar": { display: "none" },
               }}
             >
-              <Typography sx={{ fontSize: 13, opacity: 0.6, mb: 0.5 }}>
+              <Typography sx={{ fontSize: 13, opacity: 0.7, mb: 0.5 }}>
                 피해자
               </Typography>
               <Box sx={{ display: "flex", flexDirection: "column", gap: 0.8 }}>
@@ -570,15 +628,21 @@ export default function Suspect() {
                     renderPersonCard(victim, current.backgroundImage)
                   )
                 ) : (
-                  <Typography sx={{ fontSize: 13, opacity: 0.5 }}>
+                  <Typography sx={{ fontSize: 13, opacity: 0.62 }}>
                     피해자 정보를 준비 중입니다.
                   </Typography>
                 )}
               </Box>
 
-              <Box sx={{ mt: 2 }}>
-                <Typography sx={{ fontSize: 13, opacity: 0.6, mb: 0.5 }}>
-                  용의자 목록
+              <Box
+                sx={{
+                  mt: 2.25,
+                  pt: 2,
+                  borderTop: "1px solid rgba(132,158,185,0.12)",
+                }}
+              >
+                <Typography sx={{ fontSize: 13, opacity: 0.7, mb: 0.5 }}>
+                  용의자
                 </Typography>
                 <Box
                   sx={{ display: "flex", flexDirection: "column", gap: 0.8 }}
@@ -588,23 +652,48 @@ export default function Suspect() {
                       renderPersonCard(suspect, current.backgroundImage)
                     )
                   ) : (
-                    <Typography sx={{ fontSize: 13, opacity: 0.5 }}>
+                    <Typography sx={{ fontSize: 13, opacity: 0.62 }}>
                       용의자 정보를 준비 중입니다.
                     </Typography>
                   )}
                 </Box>
               </Box>
-            </Box>
 
-            <Box sx={{ px: 1, mt: "auto" }}>
-              <Typography sx={{ fontSize: 12, opacity: 0.45, mb: 0.5 }}>
-                기록
-              </Typography>
-              <Typography sx={{ fontSize: 12, opacity: 0.5, lineHeight: 1.6 }}>
-                {current.histories && current.histories.length > 0
-                  ? current.histories.join(" · ")
-                  : "기록이 없습니다."}
-              </Typography>
+              {current.histories && current.histories.length > 0 && (
+                <Box
+                  sx={{
+                    mt: 2.25,
+                    pt: 2,
+                    mb: 1,
+                    borderTop: "1px solid rgba(132,158,185,0.12)",
+                  }}
+                >
+                  <Typography sx={{ fontSize: 12, opacity: 0.65, mb: 0.5 }}>
+                    기록
+                  </Typography>
+                  <Typography
+                    sx={{ fontSize: 12, opacity: 0.68, lineHeight: 1.6 }}
+                  >
+                    {current.histories.join(" · ")}
+                  </Typography>
+                </Box>
+              )}
+
+              {creators.length > 0 && (
+                <Typography
+                  sx={{
+                    mt: 2,
+                    pt: 1.5,
+                    borderTop: "1px solid rgba(132,158,185,0.08)",
+                    fontSize: 10,
+                    letterSpacing: 0.7,
+                    lineHeight: 1.5,
+                    color: "rgba(255,255,255,0.38)",
+                  }}
+                >
+                  제작: {creators.join(", ")}
+                </Typography>
+              )}
             </Box>
           </Box>
         </Box>

@@ -38,7 +38,7 @@ export default function ServiceButton({
     >
       <Box
         display="flex"
-        justifyContent="flex-start"
+        justifyContent="center"
         alignItems="center"
         borderRadius="10px"
         width="32px"

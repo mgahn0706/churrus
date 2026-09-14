@@ -19,6 +19,7 @@ import { bluemoonClues } from "./bluemoon/clues";
 import { mountainSuspects, mountainVictim } from "./mountain/suspects";
 import { mountainClues } from "./mountain/clues";
 import { kpopSuspects, kpopVictim } from "./kpop/suspects";
+import { kpopClues } from "./kpop/clues";
 import { novelistSuspects, novelistVictim } from "./novelist/suspects";
 import { novelistClues } from "./novelist/clues";
 import { subwaySuspects, subwayVictim } from "./subway/suspects";
@@ -28,12 +29,16 @@ import { clubroomClues } from "./clubroom/clues";
 import { hotelSuspects, hotelVictim } from "./hotel/suspects";
 import { hotelClues } from "./hotel/clues";
 import { hotelPrologue } from "./hotel/prologue";
+import { ghostSuspect, ghostVictim } from "./ghost/suspects";
+import { boxSuspects, boxVictim } from "./box/suspects";
+import { ghostClues } from "./ghost/clues";
+import { boxClues } from "./box/clues";
 
 export const scenarios: ScenarioType[] = [
   {
     title: "스타트업 살인사건",
     creators: ["안민규"],
-    numberOfSuspects: 4,
+    numberOfSuspects: 3,
     backgroundImage: "/image/suspect/scenario/startup/startup-main.png",
     id: "startup",
     isInDevelopment: false,
@@ -196,7 +201,7 @@ export const scenarios: ScenarioType[] = [
   {
     id: "bluemoon",
     title: "푸른 달 살인사건",
-    creators: [""],
+    creators: ["김시영", "김태연", "조준호"],
     gameType: "TEXT",
     numberOfSuspects: 6,
     histories: ["2026년 겨울 대이동"],
@@ -212,7 +217,7 @@ export const scenarios: ScenarioType[] = [
   },
   {
     title: "케이팝 데몬 헌터스 살인사건",
-    creators: [],
+    creators: ["김수인", "김태연", "정해찬", "조경아"],
     gameType: "CLUE",
     numberOfSuspects: 5,
     backgroundImage: "/image/suspect/scenario/kpop/kpop-main.png",
@@ -220,10 +225,10 @@ export const scenarios: ScenarioType[] = [
     histories: ["2025년 여름 대이동"],
     isInDevelopment: true,
     description: "케이팝 아이돌 그룹 내에서 발생한 살인사건",
-    places: [],
+    places: ["lounge", "outdoor"],
     suspects: kpopSuspects,
     victims: [kpopVictim],
-    clues: [],
+    clues: kpopClues,
     color: "#e91e63",
   },
   {
@@ -242,5 +247,38 @@ export const scenarios: ScenarioType[] = [
     clues: hotelClues,
     color: "#8e8e93",
     prologue: hotelPrologue,
+  },
+  {
+    title: "귀신의 집 살인사건",
+    creators: ["정해찬", "손주영", "안민규"],
+    gameType: "CLUE",
+    numberOfSuspects: 4,
+    backgroundImage: "/image/suspect/scenario/ghost/ghost-main.png",
+    id: "ghost",
+    histories: [],
+    isInDevelopment: true,
+    description: "귀신의 집에서 발생한 살인사건",
+    // TODO: Restore individual places when the haunted-house map assets are added.
+    places: [],
+    suspects: ghostSuspect,
+    victims: [ghostVictim],
+    clues: ghostClues,
+    color: "#6b7280",
+  },
+  {
+    id: "box",
+    title: "뒤주 살인사건",
+    creators: ["강재호", "고민우", "김태연", "김혜린", "오수진", "안민규"],
+    gameType: "CLUE",
+    numberOfSuspects: 4,
+    histories: [],
+    backgroundImage: "/image/suspect/scenario/box/box-main.png",
+    isInDevelopment: true,
+    description: "1762년 7월 12일, 뒤주 안에서 시체가 발견되었다.",
+    places: [],
+    suspects: boxSuspects,
+    victims: [boxVictim],
+    clues: boxClues,
+    color: "#a16a02",
   },
 ];
