@@ -256,7 +256,7 @@ export const scenarios: ScenarioType[] = [
     backgroundImage: "/image/suspect/scenario/ghost/ghost-main.png",
     id: "ghost",
     histories: [],
-    isInDevelopment: true,
+    isInDevelopment: false,
     description: "귀신의 집에서 발생한 살인사건",
     places: ["haunted-house", "staff", "theme-park"],
     suspects: ghostSuspect,
