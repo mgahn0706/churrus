@@ -167,7 +167,7 @@ export default function Churrus() {
           >
             <Box
               display="flex"
-              width={["100%", "100%", "60%"]}
+              width={{ md: "calc(100% - 64px)", xl: "60%" }}
               flexDirection="column"
             >
               <Typography
