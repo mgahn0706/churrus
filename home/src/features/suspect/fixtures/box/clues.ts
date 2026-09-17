@@ -110,7 +110,7 @@ export const boxClues: ClueType[] = [
     x: 51,
     y: 23,
     description:
-      '"30년 전, 전 중전이 뒤주에 갇혀 죽었습니다. 그때 이후로 폐궁이 되고 궁궐을 옮긴 것이옵니다. 그 광경을 지켜보던 어린 딸이 참 불쌍하게 보였지요."',
+      '"30년 전, 전 중전이 뒤주에 갇혀 죽었습니다. 그때 이후로 폐궁이 되고 궁궐을 옮긴 것이옵니다. 그 광경을 지켜보던 어린 딸이 참 불쌍하게 보였지요. 아, 근데 혹시 옷 안사실래요? 저고리 허리끈 바지 세트에 10냥~"',
     type: "basic",
     place: "market",
   },
@@ -128,13 +128,12 @@ export const boxClues: ClueType[] = [
   {
     id: 12,
     image: "/image/suspect/scenario/box/clues/box-12.png",
-    title: "흰옷 가게",
-    x: 32.422,
-    y: 26.963,
-    description:
-      "저고리, 허리끈, 바지를 한 벌로 파는 장터의 옷 가게이다. 같은 흰옷 여러 벌이 진열되어 있다.",
+    title: "흰 종이",
+    x: 83.371,
+    y: 56.405,
+    description: "배홍동의 방 근처에서 발견된 흰 종이. 접혀있다.",
     type: "basic",
-    place: "market",
+    place: "palace",
   },
   {
     id: 13,
@@ -360,8 +359,7 @@ export const boxClues: ClueType[] = [
     title: "바지",
     x: 27.232,
     y: 74.277,
-    description:
-      "폐궁 회랑 바닥에 흰 바지 한 벌이 벗어 놓은 듯 구겨져 있다.",
+    description: "폐궁 회랑 바닥에 흰 바지 한 벌이 벗어 놓은 듯 구겨져 있다.",
     type: "basic",
     place: "abandoned-palace",
   },
