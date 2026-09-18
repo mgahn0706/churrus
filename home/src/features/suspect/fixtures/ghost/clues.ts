@@ -513,7 +513,7 @@ export const ghostClues: ClueType[] = [
     title: "손거울의 스마트폰",
     x: 13.449,
     y: 15.909,
-    image: `${GHOST_CLUE_IMAGE_PATH}/ghost-33.png`,
+    image: `${GHOST_CLUE_IMAGE_PATH}/ghost-48.png`,
     description: "손거울의 스마트폰",
     type: "basic",
     place: "haunted-house",
