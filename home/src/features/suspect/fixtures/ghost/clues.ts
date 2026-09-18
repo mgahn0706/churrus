@@ -81,7 +81,7 @@ export const ghostClues: ClueType[] = [
   },
   {
     id: 8,
-    title: "첫 번째 손님의 증언",
+    title: "손님 1의 증언",
     x: 16,
     y: 18,
     image: `${GHOST_CLUE_IMAGE_PATH}/ghost-8.png`,
@@ -92,7 +92,7 @@ export const ghostClues: ClueType[] = [
   },
   {
     id: 9,
-    title: "두 번째 손님의 증언",
+    title: "손님 2의 증언",
     x: 16,
     y: 30,
     image: `${GHOST_CLUE_IMAGE_PATH}/ghost-9.png`,
@@ -103,7 +103,7 @@ export const ghostClues: ClueType[] = [
   },
   {
     id: 10,
-    title: "세 번째 손님의 증언",
+    title: "손님 3의 증언",
     x: 16,
     y: 42,
     image: `${GHOST_CLUE_IMAGE_PATH}/ghost-10.png`,
@@ -218,7 +218,7 @@ export const ghostClues: ClueType[] = [
     y: 41.921,
     image: `${GHOST_CLUE_IMAGE_PATH}/ghost-20.png`,
     description:
-      "선우무당의 품에 있던 항아리다. 부적과 기괴한 내용물이 들어 있으며, 바닥 원주의 약 3분의 2가 긁혀 있다.",
+      "선우무당의 품에서 발견된 오래된 항아리다. 안에는 오래된 부적과 뱀의 허물 등 기괴한 내용물이 들어 있다. 그중 비교적 새것으로 보이는 부적 한 장에는 붉은 글씨로 ‘woo_ma’라고 적혀 있다. 항아리 바닥 원주의 약 3분의 2가 긁혀 있다.",
     type: "additional",
     place: 43,
   },
@@ -302,7 +302,7 @@ export const ghostClues: ClueType[] = [
     y: 49,
     image: `${GHOST_CLUE_IMAGE_PATH}/ghost-28.png`,
     description:
-      "선우무당의 기록이다. 항아리, 뱀, 부적과 금줄을 이용해 살귀를 가두고 저주를 내리는 굿의 준비물과 순서가 적혀 있다.",
+      "선우무당이 작성한 무속 기록이다. ‘살귀굿’이라는 의식에 관한 내용이 적혀 있다. 흉지의 나쁜 기운을 단지 안에 오랫동안 모아 두었다가, 저주할 대상을 가리키는 이름이나 글귀를 적은 부적을 단지 안에 넣으면 그 기운이 대상에게 향해 재앙을 불러오고 운명을 뒤튼다고 한다.",
     type: "additional",
     place: 43,
   },
@@ -324,7 +324,7 @@ export const ghostClues: ClueType[] = [
     y: 69,
     image: `${GHOST_CLUE_IMAGE_PATH}/ghost-30.png`,
     description:
-      "추서운 이야기 부지는 기운이 좋지 않은 흉지이며, 오래 머물 자리가 아니라는 타 무당의 과거 기록이다.",
+      "2016년 추서운 이야기 건설 당시 작성된 부지 조사 기록이다. 해당 부지는 기운이 매우 좋지 않은 ‘흉지’이며 오래 머물 자리가 아니라는 내용이 적혀 있다. 한쪽에는 선우무당의 필체로 ‘이곳의 살기를 단지에 봉한다.’라는 메모가 남아 있다.",
     type: "additional",
     place: 43,
   },
@@ -352,13 +352,13 @@ export const ghostClues: ClueType[] = [
   },
   {
     id: 33,
-    title: "손거울의 스마트폰",
+    title: "캘린더",
     x: 13.449,
     y: 15.909,
     image: `${GHOST_CLUE_IMAGE_PATH}/ghost-33.png`,
     description: "손거울의 달력에서 8월 15일이 강하게 표시되어 있다.",
-    type: "basic",
-    place: "haunted-house",
+    type: "additional",
+    place: 48,
   },
   {
     id: 34,
@@ -377,7 +377,8 @@ export const ghostClues: ClueType[] = [
     x: 13.5,
     y: 39,
     image: `${GHOST_CLUE_IMAGE_PATH}/ghost-35.png`,
-    description: "선우무당 점집의 명함.",
+    description:
+      "손거울의 가방에서 발견된 선우무당 점집의 오래된 명함이다. 뒷면에는 필체로 '신을 받을 팔자는 아님. 너무 빠지지 말 것.'이라고 적혀 있다.",
     type: "additional",
     place: 44,
   },
@@ -388,7 +389,7 @@ export const ghostClues: ClueType[] = [
     y: 73,
     image: `${GHOST_CLUE_IMAGE_PATH}/ghost-36.png`,
     description:
-      "손거울이 거울귀신 연출을 열심히 하지 않는다는 불만이 반복해서 접수되어 있습니다. 같은 직원 뿐만 아니라 손님들에게까지 불만이 접수되었어요. 그렇다고 자르기엔, 요즘 지원자도 적어서...",
+      "요즘 손거울 씨가 거울귀신 연출을 거의 제대로 안 했어요. 타이밍을 놓쳐 손님이 먼저 발견하는 일도 있었고, '하나도 안 무섭다'는 불만도 계속 들어왔습니다. 리메이크 전에는 이렇게까지 성의가 없지는 않았는데, 거울귀신으로 배역이 바뀐 뒤부터 특히 심해졌어요.",
     type: "basic",
     place: "staff",
   },
@@ -494,5 +495,27 @@ export const ghostClues: ClueType[] = [
     description: "우물안의 스마트폰이다.",
     type: "additional",
     place: 1,
+  },
+
+  {
+    id: 47,
+    title: "배역 변경 요청 기록",
+    x: 13.449,
+    y: 20.909,
+    description:
+      "손거울이 관리자에게 보낸 메시지다. 리메이크 이후 거울귀신 역할을 맡게 된 뒤에도 '혹시 처녀귀신 자리가 비게 되면 제가 맡을 수 있을까요?'라고 여러 차례 문의한 기록이 남아 있다.",
+    image: `${GHOST_CLUE_IMAGE_PATH}/ghost-47.png`,
+    type: "additional",
+    place: 48,
+  },
+  {
+    id: 48,
+    title: "손거울의 스마트폰",
+    x: 13.449,
+    y: 15.909,
+    image: `${GHOST_CLUE_IMAGE_PATH}/ghost-33.png`,
+    description: "손거울의 스마트폰",
+    type: "basic",
+    place: "haunted-house",
   },
 ];
