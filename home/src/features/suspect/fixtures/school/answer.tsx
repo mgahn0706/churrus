@@ -103,6 +103,6 @@ export const schoolAnswerConfig: ScenarioAnswerConfig = {
     </>
   ),
   culpritsHref:
-    "https://drive.google.com/file/d/1_eUjJDHCuuSfHP-pe6XVwE7d98-2KmkF/view?usp=drive_link",
+    "https://drive.google.com/file/d/1SNKGKCuYQXUY2yQFiYUeGBtBNl-Ekf2d/view?usp=drive_link",
   culpritsTabLabel: "용의자 롤카드",
 };

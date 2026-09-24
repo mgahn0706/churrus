@@ -180,7 +180,12 @@ export default function Churrus() {
               >
                 정기 퍼즐
               </Typography>
-              <Box display="flex" justifyContent="space-between">
+              <Box
+                display="grid"
+                gridTemplateColumns="repeat(3, minmax(0, 245px))"
+                justifyContent="center"
+                gap={3}
+              >
                 <DesktopPuzzleCard
                   src="/image/logo/spellingbee-logo.png"
                   title={`${spellingBeeDate}일째 스펠링비`}
