@@ -1,4 +1,5 @@
 import { useResponsiveValue } from "@/hooks/useResponsiveValue";
+import { CRIME_SCENE_URL } from "@/utils/externalUrls";
 
 import {
   Mail,
@@ -48,7 +49,7 @@ const desktopHeaderMenuItems = [
   },
   {
     text: "협동 크라임씬",
-    url: "/suspect",
+    url: CRIME_SCENE_URL,
   },
   {
     text: "소개",
@@ -149,7 +150,13 @@ export default function GlobalHeader() {
               <DesktopTopMenu
                 key={item.text}
                 label={item.text}
-                onClick={() => router.push(item.url)}
+                onClick={() => {
+                  if (item.url.startsWith("http")) {
+                    window.location.assign(item.url);
+                    return;
+                  }
+                  router.push(item.url);
+                }}
               />
             ))}
           </Box>

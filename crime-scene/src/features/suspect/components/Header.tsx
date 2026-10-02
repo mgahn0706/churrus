@@ -96,7 +96,7 @@ export default function Header() {
               boxShadow: "0 0 0 2px rgba(111,174,255,0.5)",
             },
           }}
-          onClick={() => router.push("/suspect")}
+          onClick={() => router.push("/scenarios")}
         >
           <Typography
             fontWeight="bolder"
@@ -113,11 +113,11 @@ export default function Header() {
         <Box display="flex">
           <HeaderButton
             text="규칙"
-            onClick={() => router.push("/suspect/rules")}
+            onClick={() => router.push("/scenarios/rules")}
           />
           <HeaderButton
             text="인증 카드"
-            onClick={() => router.push("/suspect/certification")}
+            onClick={() => router.push("/scenarios/certification")}
           />
         </Box>
       </Box>

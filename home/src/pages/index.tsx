@@ -22,6 +22,7 @@ import { CROSSWORDS } from "@/features/crosswords/fixtures";
 import Head from "next/head";
 import { useEffect, useRef, useState } from "react";
 import { getCalendarYearWeek } from "@/utils/calendarWeek";
+import { CRIME_SCENE_URL } from "@/utils/externalUrls";
 
 const WORD_PUZZLE_CONTENTS = [
   {
@@ -411,7 +412,7 @@ export default function Churrus() {
                     backgroundColor: "rgba(255, 255, 255, 0.1)",
                   },
                 }}
-                onClick={() => router.push("/suspect")}
+                onClick={() => window.location.assign(CRIME_SCENE_URL)}
               >
                 진범 찾으러 가기
                 <ArrowForwardIos

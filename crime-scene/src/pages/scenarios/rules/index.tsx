@@ -171,7 +171,7 @@ export default function Rules() {
               size="large"
               variant="outlined"
               onClick={() => {
-                router.push("/suspect");
+                router.push("/scenarios");
               }}
             >
               지금 플레이

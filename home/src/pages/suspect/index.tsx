@@ -1,8 +1,7 @@
 import { ArrowForwardRounded, SearchRounded } from "@mui/icons-material";
 import { Box, Button, Typography } from "@mui/material";
+import { CRIME_SCENE_URL } from "@/utils/externalUrls";
 import Head from "next/head";
-
-const CRIME_SCENE_URL = "https://churrus-crime-scene.vercel.app";
 
 export default function SuspectMovedPage() {
   return (

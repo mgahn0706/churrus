@@ -1,5 +1,5 @@
 import { DetectiveNoteType } from "@/features/suspect/types";
-import { bluemoonAdditionalQuestions } from "@/features/suspect/fixtures/bluemoon/additionalQuestions";
+import { hotelAdditionalQuestions } from "@/features/suspect/fixtures/hotel/additionalQuestions";
 import {
   Box,
   Button,
@@ -19,7 +19,7 @@ const darkTheme = createTheme({
   },
 });
 
-const bluemoonQuestions: {
+const hotelQuestions: {
   id: number;
   question: string;
   variant: "dropdown" | "input";
@@ -28,36 +28,36 @@ const bluemoonQuestions: {
 }[] = [
   {
     id: 1,
-    question: "김관우를 죽인 범인은 누구인가요?",
+    question: "유교수를 살해한 범인은 누구인가요?",
     variant: "dropdown",
     required: true,
-    options: ["김선민", "가영", "임연화", "량타오췬", "허순", "연부농"],
+    options: ["임원생", "양연구", "민청소", "문실장"],
   },
   {
     id: 2,
-    question: "살해 방법은 무엇이라고 생각하나요?",
+    question: "살해 방법은 무엇인가요?",
     required: true,
     variant: "input",
   },
   {
     id: 3,
-    question: "살해 동기는 무엇이라고 생각하나요?",
+    question: "살해 동기는 무엇인가요?",
     required: true,
     variant: "input",
   },
-  ...bluemoonAdditionalQuestions.map((item, index) => ({
+  ...hotelAdditionalQuestions.map((item, index) => ({
     id: index + 4,
     question: item.question,
     variant: "input" as const,
   })),
 ];
 
-export default function BluemoonSubmit() {
+export default function HotelSubmit() {
   const [questionStep, setQuestionStep] = useState(0);
   const [answers, setAnswers] = useState<string[]>(
-    new Array(bluemoonQuestions.length).fill("")
+    new Array(hotelQuestions.length).fill("")
   );
-  const currentQuestion = bluemoonQuestions[questionStep];
+  const currentQuestion = hotelQuestions[questionStep];
   const router = useRouter();
 
   return (
@@ -81,13 +81,15 @@ export default function BluemoonSubmit() {
           width="50vw"
         >
           <Typography variant="body1">
-            {currentQuestion.id} / {bluemoonQuestions.length}
+            {currentQuestion.id} / {hotelQuestions.length}
           </Typography>
           <Typography
             variant="h4"
             fontWeight="bold"
             mb={3}
-            sx={{ wordBreak: "keep-all" }}
+            sx={{
+              wordBreak: "keep-all",
+            }}
           >
             {currentQuestion.question} {currentQuestion.required && "*"}
           </Typography>
@@ -121,14 +123,15 @@ export default function BluemoonSubmit() {
                 setAnswers(newAnswers);
               }}
             >
-              {currentQuestion.options?.map((option) => (
-                <MenuItem key={option} value={option}>
-                  {option}
-                </MenuItem>
-              ))}
+              {currentQuestion.options?.map((option) => {
+                return (
+                  <MenuItem key={option} value={option}>
+                    {option}
+                  </MenuItem>
+                );
+              })}
             </Select>
           )}
-
           <Box display="flex" gap={1}>
             {currentQuestion.id !== 1 && (
               <Button
@@ -155,12 +158,11 @@ export default function BluemoonSubmit() {
 
             <Button
               disabled={
-                [answers.slice(0, 3)].some((answerGroup, index) =>
-                  answerGroup.some(
-                    (answer) =>
-                      bluemoonQuestions[index].required && answer.trim() === ""
-                  )
-                ) && questionStep === bluemoonQuestions.length - 1
+                hotelQuestions.some(
+                  (question, index) =>
+                    question.required && answers[index].trim() === ""
+                ) &&
+                questionStep === hotelQuestions.length - 1
               }
               variant="contained"
               sx={{
@@ -176,7 +178,7 @@ export default function BluemoonSubmit() {
                 },
               }}
               onClick={() => {
-                if (questionStep === bluemoonQuestions.length - 1) {
+                if (questionStep === hotelQuestions.length - 1) {
                   const note: DetectiveNoteType = {
                     accusedSuspect: answers[0],
                     howDunnit: answers[1],
@@ -184,14 +186,14 @@ export default function BluemoonSubmit() {
                     additionalQuestionAnswers: answers.slice(3),
                     memo: "",
                   };
-                  localStorage.setItem("bluemoon", JSON.stringify(note));
-                  router.push(`/suspect/scenario/bluemoon/answer`);
+                  localStorage.setItem("hotel", JSON.stringify(note));
+                  router.push(`/scenarios/scenario/hotel/answer`);
                 } else {
                   setQuestionStep(questionStep + 1);
                 }
               }}
             >
-              {questionStep === bluemoonQuestions.length - 1 ? "제출" : "다음"}
+              {questionStep === hotelQuestions.length - 1 ? "제출" : "다음"}
             </Button>
           </Box>
         </Box>

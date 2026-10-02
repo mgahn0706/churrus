@@ -99,7 +99,7 @@ export function ScenarioAnswerPage({
                 disabled={isLoading}
                 onClick={() => {
                   setIsLoading(true);
-                  router.push(`/suspect/scenario/${scenarioKey}`);
+                  router.push(`/scenarios/scenario/${scenarioKey}`);
                 }}
               >
                 확인
@@ -183,7 +183,7 @@ export function ScenarioAnswerPage({
             color="primary"
             onClick={() => {
               localStorage.removeItem(scenarioKey);
-              router.push(`/suspect/certification?scenario=${scenarioKey}`);
+              router.push(`/scenarios/certification?scenario=${scenarioKey}`);
             }}
             sx={{ mb: 20 }}
           >
@@ -194,7 +194,7 @@ export function ScenarioAnswerPage({
             color="primary"
             onClick={() => {
               localStorage.removeItem(scenarioKey);
-              router.push("/suspect");
+              router.push("/scenarios");
             }}
             sx={{ mb: 20 }}
           >

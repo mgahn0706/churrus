@@ -17,7 +17,13 @@ export default function ServiceButton({
   const router = useRouter();
   return (
     <ButtonBase
-      onClick={() => router.push(url)}
+      onClick={() => {
+        if (url.startsWith("http")) {
+          window.location.assign(url);
+          return;
+        }
+        router.push(url);
+      }}
       sx={{
         width: "100%",
         display: "flex",

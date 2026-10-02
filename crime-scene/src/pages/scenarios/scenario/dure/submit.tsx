@@ -187,7 +187,7 @@ export default function DureSubmit() {
                     memo: "",
                   };
                   localStorage.setItem("dure", JSON.stringify(note));
-                  router.push(`/suspect/scenario/dure/answer`);
+                  router.push(`/scenarios/scenario/dure/answer`);
                 } else {
                   setQuestionStep(questionStep + 1);
                 }

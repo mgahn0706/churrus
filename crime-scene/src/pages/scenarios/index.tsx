@@ -23,7 +23,7 @@ export default function Suspect() {
   };
 
   const handleSelect = useCallback(() => {
-    router.push(`/suspect/scenario/${current.id}`);
+    router.push(`/scenarios/scenario/${current.id}`);
   }, [current.id, router]);
 
   const changeIndex = useCallback((index: number) => {

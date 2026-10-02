@@ -24,6 +24,7 @@ import {
   SearchRounded,
 } from "@mui/icons-material";
 import { Box, Typography } from "@mui/material";
+import { CRIME_SCENE_URL } from "@/utils/externalUrls";
 import Head from "next/head";
 
 const CategorizedLayout = ({ children }: { children: React.ReactNode }) => {
@@ -108,7 +109,7 @@ export default function AllServicesPage() {
             />
             <ServiceButton
               label="협동 크라임씬"
-              url="/suspect"
+              url={CRIME_SCENE_URL}
               icon={<SearchRounded />}
             />
           </CategorizedLayout>

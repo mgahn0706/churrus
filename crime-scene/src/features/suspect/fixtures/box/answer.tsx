@@ -90,5 +90,5 @@ export const boxAnswerConfig: ScenarioAnswerConfig = {
     </>
   ),
   additional: [],
-  culpritsHref: "/suspect/scenario/box",
+  culpritsHref: "/scenarios/scenario/box",
 };

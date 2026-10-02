@@ -24,6 +24,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useRouter } from "next/router";
+import { CRIME_SCENE_URL } from "@/utils/externalUrls";
 import { Fragment } from "react";
 
 const leftNavigationMenuItems: Record<
@@ -43,7 +44,7 @@ const leftNavigationMenuItems: Record<
     },
     {
       text: "협동 크라임씬",
-      url: "/suspect",
+      url: CRIME_SCENE_URL,
       icon: <Search />,
     },
     {
@@ -123,6 +124,10 @@ export default function LeftDrawer({
                   alignItems="flex-start"
                   disablePadding
                   onClick={() => {
+                    if (item.url.startsWith("http")) {
+                      window.location.assign(item.url);
+                      return;
+                    }
                     router.push(item.url);
                   }}
                 >
