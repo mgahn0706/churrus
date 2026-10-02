@@ -1,0 +1,49 @@
+{
+  "name": "suspect-game",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "bee": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ts-node -r tsconfig-paths/register src/features/spelling-bee/libs/quizMaker.ts",
+    "anagram": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ts-node -r tsconfig-paths/register src/features/spelling-bee/libs/anagramFinder.ts",
+    "puzzle": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ts-node -r tsconfig-paths/register src/features/spelling-bee/libs/englishWordFinder.ts",
+    "connections": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ts-node src/features/connections/generateFixtures.ts"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@mui/icons-material": "^5.11.16",
+    "@mui/material": "^5.12.2",
+    "@types/node": "18.15.11",
+    "@types/react": "18.0.33",
+    "@types/react-dom": "18.0.11",
+    "@vercel/analytics": "^1.3.1",
+    "autoprefixer": "10.4.14",
+    "dayjs": "^1.11.10",
+    "es-hangul": "^2.3.8",
+    "eslint": "8.38.0",
+    "eslint-config-next": "13.3.0",
+    "hangul-js": "^0.2.6",
+    "next": "13.3.0",
+    "playroomkit": "^0.0.96",
+    "postcss": "8.4.21",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-material-ui-carousel": "^3.4.2",
+    "react-modal": "^3.16.1",
+    "react-modal-video": "^2.0.1",
+    "react-qr-code": "^2.0.18",
+    "react-type-animation": "^3.1.0",
+    "sass": "^1.63.6",
+    "ts-node": "^10.9.2",
+    "typescript": "5.0.4",
+    "usehooks-ts": "^2.9.1"
+  },
+  "devDependencies": {
+    "@types/react-modal": "^3.16.0",
+    "@types/react-modal-video": "^1.2.0"
+  }
+}
