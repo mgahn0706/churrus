@@ -52,6 +52,11 @@ const WORD_PUZZLE_CONTENTS = [
 ];
 
 const BACKGROUND_COLOR = "#F5F6FA";
+const MAIN_CONTENT_WIDTH = {
+  xs: "100%",
+  md: "calc(100% - 64px)",
+  xl: "60%",
+};
 
 export default function Churrus() {
   const router = useRouter();
@@ -168,7 +173,7 @@ export default function Churrus() {
           >
             <Box
               display="flex"
-              width={{ md: "calc(100% - 64px)", xl: "60%" }}
+              width={MAIN_CONTENT_WIDTH}
               flexDirection="column"
             >
               <Typography
@@ -184,7 +189,7 @@ export default function Churrus() {
               <Box
                 display="grid"
                 gridTemplateColumns="repeat(3, minmax(0, 245px))"
-                justifyContent="center"
+                justifyContent="space-between"
                 gap={3}
               >
                 <DesktopPuzzleCard
@@ -247,7 +252,7 @@ export default function Churrus() {
             display="flex"
             justifyContent="center"
           >
-            <Box width={["100%", "100%", "60%"]} mb={5}>
+            <Box width={MAIN_CONTENT_WIDTH} mb={5}>
               <Box
                 display="flex"
                 width={1}
@@ -333,7 +338,7 @@ export default function Churrus() {
             justifyContent="center"
           >
             <Box
-              width="60%"
+              width={MAIN_CONTENT_WIDTH}
               display="flex"
               justifyContent="space-between"
               color="white"
