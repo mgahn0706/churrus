@@ -1,8 +1,8 @@
 import { MeetingType } from "../../types";
 
 export const MEETING_IDS = [
-  "2026-9-BONUS",
   "2026-9",
+  "2026-9-BONUS",
   "OT-1",
   "2026-MOVE-1",
   "2026-7",
