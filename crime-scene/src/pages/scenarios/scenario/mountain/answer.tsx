@@ -1,4 +1,4 @@
-import { createScenarioAnswerPage } from "@/features/suspect/components/createScenarioAnswerPage";
-import { mountainAnswerConfig } from "@/features/suspect/fixtures/mountain/answer";
+import { createScenarioAnswerPage } from "@/components/createScenarioAnswerPage";
+import { mountainAnswerConfig } from "@/fixtures/mountain/answer";
 
 export default createScenarioAnswerPage(mountainAnswerConfig);

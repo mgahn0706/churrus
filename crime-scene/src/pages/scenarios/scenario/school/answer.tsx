@@ -1,4 +1,4 @@
-import { createScenarioAnswerPage } from "@/features/suspect/components/createScenarioAnswerPage";
-import { schoolAnswerConfig } from "@/features/suspect/fixtures/school/answer";
+import { createScenarioAnswerPage } from "@/components/createScenarioAnswerPage";
+import { schoolAnswerConfig } from "@/fixtures/school/answer";
 
 export default createScenarioAnswerPage(schoolAnswerConfig);

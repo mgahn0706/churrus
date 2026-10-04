@@ -1,6 +1,6 @@
-import InTextGame from "@/features/suspect/components/InTextGame";
-import { scenarios } from "@/features/suspect/fixtures";
-import { TextScenarioType } from "@/features/suspect/types";
+import InTextGame from "@/components/InTextGame";
+import { scenarios } from "@/fixtures";
+import { TextScenarioType } from "@/types";
 
 export default function School() {
   const schoolScenario = scenarios.find(

@@ -1,11 +1,11 @@
-import { FadeInSection } from "@/features/suspect/components/FadeInSection";
-import CertificationCard from "@/features/suspect/components/Certification/CertificationCard";
-import Header from "@/features/suspect/components/Header";
+import { FadeInSection } from "@/components/FadeInSection";
+import CertificationCard from "@/components/Certification/CertificationCard";
+import Header from "@/components/Header";
 import {
   getAllCertificationCards,
   getCertificationCards,
-} from "@/features/suspect/libs/certification";
-import { CertificationCardType } from "@/features/suspect/types";
+} from "@/libs/certification";
+import { CertificationCardType } from "@/types";
 import { Box, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";

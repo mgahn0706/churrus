@@ -1,4 +1,4 @@
-import { createScenarioAnswerPage } from "@/features/suspect/components/createScenarioAnswerPage";
-import { serialAnswerConfig } from "@/features/suspect/fixtures/serial/answer";
+import { createScenarioAnswerPage } from "@/components/createScenarioAnswerPage";
+import { serialAnswerConfig } from "@/fixtures/serial/answer";
 
 export default createScenarioAnswerPage(serialAnswerConfig);

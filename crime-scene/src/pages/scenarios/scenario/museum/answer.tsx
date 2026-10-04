@@ -1,4 +1,4 @@
-import { createScenarioAnswerPage } from "@/features/suspect/components/createScenarioAnswerPage";
-import { museumAnswerConfig } from "@/features/suspect/fixtures/museum/answer";
+import { createScenarioAnswerPage } from "@/components/createScenarioAnswerPage";
+import { museumAnswerConfig } from "@/fixtures/museum/answer";
 
 export default createScenarioAnswerPage(museumAnswerConfig);

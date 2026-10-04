@@ -1,10 +1,10 @@
-import InGameLayout from "@/features/suspect/components/InGame/InGameLayout";
-import { createScenarioTheme } from "@/features/suspect/components/createScenarioTheme";
-import { scenarios } from "@/features/suspect/fixtures";
-import { boxAdditionalQuestions } from "@/features/suspect/fixtures/box/clues";
-import { boxMoveButton } from "@/features/suspect/fixtures/box/movePlace";
-import { BoxPrologue } from "@/features/suspect/fixtures/box/prologue";
-import { ClueScenarioType } from "@/features/suspect/types";
+import InGameLayout from "@/components/InGame/InGameLayout";
+import { createScenarioTheme } from "@/components/createScenarioTheme";
+import { scenarios } from "@/fixtures";
+import { boxAdditionalQuestions } from "@/fixtures/box/clues";
+import { boxMoveButton } from "@/fixtures/box/movePlace";
+import { BoxPrologue } from "@/fixtures/box/prologue";
+import { ClueScenarioType } from "@/types";
 import { ThemeProvider } from "@mui/material";
 
 export default function BoxScenario() {

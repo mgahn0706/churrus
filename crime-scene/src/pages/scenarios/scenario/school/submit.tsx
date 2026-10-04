@@ -1,5 +1,5 @@
-import { DetectiveNoteType } from "@/features/suspect/types";
-import { schoolAdditionalQuestions } from "@/features/suspect/fixtures/school/additionalQuestions";
+import { DetectiveNoteType } from "@/types";
+import { schoolAdditionalQuestions } from "@/fixtures/school/additionalQuestions";
 import {
   Box,
   Button,

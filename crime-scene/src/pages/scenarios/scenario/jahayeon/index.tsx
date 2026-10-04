@@ -1,10 +1,10 @@
-import InGameLayout from "@/features/suspect/components/InGame/InGameLayout";
-import { createScenarioTheme } from "@/features/suspect/components/createScenarioTheme";
-import { scenarios } from "@/features/suspect/fixtures";
-import { jahayeonAdditionalQuestions } from "@/features/suspect/fixtures/jahayeon/clues";
-import { jahayeonMoveButton } from "@/features/suspect/fixtures/jahayeon/movePlace";
-import { JahayeonPrologue } from "@/features/suspect/fixtures/jahayeon/prologue";
-import { ClueScenarioType } from "@/features/suspect/types";
+import InGameLayout from "@/components/InGame/InGameLayout";
+import { createScenarioTheme } from "@/components/createScenarioTheme";
+import { scenarios } from "@/fixtures";
+import { jahayeonAdditionalQuestions } from "@/fixtures/jahayeon/clues";
+import { jahayeonMoveButton } from "@/fixtures/jahayeon/movePlace";
+import { JahayeonPrologue } from "@/fixtures/jahayeon/prologue";
+import { ClueScenarioType } from "@/types";
 import { ThemeProvider } from "@mui/material";
 
 export default function Jahayeon() {

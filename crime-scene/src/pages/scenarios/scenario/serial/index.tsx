@@ -1,10 +1,10 @@
-import InGameLayout from "@/features/suspect/components/InGame/InGameLayout";
-import { createScenarioTheme } from "@/features/suspect/components/createScenarioTheme";
-import { scenarios } from "@/features/suspect/fixtures";
-import { serialAdditionalQuestions } from "@/features/suspect/fixtures/serial/clues";
-import { serialMoveButton } from "@/features/suspect/fixtures/serial/movePlace";
-import { SerialPrologue } from "@/features/suspect/fixtures/serial/prologue";
-import { ClueScenarioType } from "@/features/suspect/types";
+import InGameLayout from "@/components/InGame/InGameLayout";
+import { createScenarioTheme } from "@/components/createScenarioTheme";
+import { scenarios } from "@/fixtures";
+import { serialAdditionalQuestions } from "@/fixtures/serial/clues";
+import { serialMoveButton } from "@/fixtures/serial/movePlace";
+import { SerialPrologue } from "@/fixtures/serial/prologue";
+import { ClueScenarioType } from "@/types";
 import { ThemeProvider } from "@mui/material";
 
 export default function Serial() {

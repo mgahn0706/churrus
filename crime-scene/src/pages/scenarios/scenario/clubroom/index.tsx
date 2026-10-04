@@ -1,10 +1,10 @@
-import InGameLayout from "@/features/suspect/components/InGame/InGameLayout";
-import { createScenarioTheme } from "@/features/suspect/components/createScenarioTheme";
-import { scenarios } from "@/features/suspect/fixtures";
-import { clubroomAdditionalQuestions } from "@/features/suspect/fixtures/clubroom/clues";
-import { clubroomMoveButton } from "@/features/suspect/fixtures/clubroom/movePlace";
-import { ClubroomPrologue } from "@/features/suspect/fixtures/clubroom/prologue";
-import { ClueScenarioType } from "@/features/suspect/types";
+import InGameLayout from "@/components/InGame/InGameLayout";
+import { createScenarioTheme } from "@/components/createScenarioTheme";
+import { scenarios } from "@/fixtures";
+import { clubroomAdditionalQuestions } from "@/fixtures/clubroom/clues";
+import { clubroomMoveButton } from "@/fixtures/clubroom/movePlace";
+import { ClubroomPrologue } from "@/fixtures/clubroom/prologue";
+import { ClueScenarioType } from "@/types";
 import { ThemeProvider } from "@mui/material";
 
 export default function Clubroom() {

@@ -1,4 +1,4 @@
-import { createScenarioAnswerPage } from "@/features/suspect/components/createScenarioAnswerPage";
-import { subwayAnswerConfig } from "@/features/suspect/fixtures/subway/answer";
+import { createScenarioAnswerPage } from "@/components/createScenarioAnswerPage";
+import { subwayAnswerConfig } from "@/fixtures/subway/answer";
 
 export default createScenarioAnswerPage(subwayAnswerConfig);

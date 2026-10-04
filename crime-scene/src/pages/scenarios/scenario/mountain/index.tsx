@@ -1,10 +1,10 @@
-import InGameLayout from "@/features/suspect/components/InGame/InGameLayout";
-import { createScenarioTheme } from "@/features/suspect/components/createScenarioTheme";
-import { scenarios } from "@/features/suspect/fixtures";
-import { mountainAdditionalQuestions } from "@/features/suspect/fixtures/mountain/clues";
-import { mountainMoveButton } from "@/features/suspect/fixtures/mountain/movePlace";
-import { MountainPrologue } from "@/features/suspect/fixtures/mountain/prologue";
-import { ClueScenarioType } from "@/features/suspect/types";
+import InGameLayout from "@/components/InGame/InGameLayout";
+import { createScenarioTheme } from "@/components/createScenarioTheme";
+import { scenarios } from "@/fixtures";
+import { mountainAdditionalQuestions } from "@/fixtures/mountain/clues";
+import { mountainMoveButton } from "@/fixtures/mountain/movePlace";
+import { MountainPrologue } from "@/fixtures/mountain/prologue";
+import { ClueScenarioType } from "@/types";
 import { ThemeProvider } from "@mui/material";
 
 export default function Mountain() {

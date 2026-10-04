@@ -1,4 +1,4 @@
-import { createScenarioAnswerPage } from "@/features/suspect/components/createScenarioAnswerPage";
-import { clubroomAnswerConfig } from "@/features/suspect/fixtures/clubroom/answer";
+import { createScenarioAnswerPage } from "@/components/createScenarioAnswerPage";
+import { clubroomAnswerConfig } from "@/fixtures/clubroom/answer";
 
 export default createScenarioAnswerPage(clubroomAnswerConfig);

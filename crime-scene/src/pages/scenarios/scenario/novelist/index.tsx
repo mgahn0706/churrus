@@ -1,10 +1,10 @@
-import InGameLayout from "@/features/suspect/components/InGame/InGameLayout";
-import { createScenarioTheme } from "@/features/suspect/components/createScenarioTheme";
-import { scenarios } from "@/features/suspect/fixtures";
-import { novelistAdditionalQuestions } from "@/features/suspect/fixtures/novelist/clues";
-import { novelistMoveButton } from "@/features/suspect/fixtures/novelist/movePlace";
-import { NovelistPrologue } from "@/features/suspect/fixtures/novelist/prologue";
-import { ClueScenarioType } from "@/features/suspect/types";
+import InGameLayout from "@/components/InGame/InGameLayout";
+import { createScenarioTheme } from "@/components/createScenarioTheme";
+import { scenarios } from "@/fixtures";
+import { novelistAdditionalQuestions } from "@/fixtures/novelist/clues";
+import { novelistMoveButton } from "@/fixtures/novelist/movePlace";
+import { NovelistPrologue } from "@/fixtures/novelist/prologue";
+import { ClueScenarioType } from "@/types";
 import { ThemeProvider } from "@mui/material";
 
 export default function Novelist() {

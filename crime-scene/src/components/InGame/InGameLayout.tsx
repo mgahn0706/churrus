@@ -1,0 +1,409 @@
+import { Box, Button, Grow, IconButton, Paper, Tooltip } from "@mui/material";
+import Image from "next/image";
+import LightBulbIcon from "@mui/icons-material/Lightbulb";
+import PersonSearchIcon from "@mui/icons-material/PersonSearch";
+import InfoIcon from "@mui/icons-material/Info";
+import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
+import HowToVoteIcon from "@mui/icons-material/HowToVote";
+import MenuOpenIcon from "@mui/icons-material/MenuOpen";
+import MenuIcon from "@mui/icons-material/Menu";
+import { useEffect, useState } from "react";
+
+import { scenarios } from "@/fixtures";
+import {
+  AdditionalQuestionType,
+  ClueType,
+  ClueScenarioType,
+  MovePlaceButtonType,
+} from "@/types";
+import MemoModal from "./MemoModal";
+import { useMobileWidth } from "@/hooks/useMobileWIdth";
+import MobileWidthAlertModal from "../MobileWidthAlertModal";
+import { ClueDetailView } from "./ClueDetailView";
+import { ClueButton } from "./ClueButton";
+import ClueDashboardModal from "./ClueDashboardModal";
+import MovePlaceButton from "./MovePlaceButton";
+import ClueUnlockModal from "./ClueUnlockModal";
+import PrologueModal from "./PrologueModal";
+import SuspectsInfoCard from "./SuspectsInfoCard";
+import SuspectVoteModal from "./SuspectVoteModal";
+import InteractionScoreBadge from "./InteractionScoreBadge";
+import usePreventUnload from "@/hooks/usePreventUnload";
+import Head from "next/head";
+
+interface InGameLayoutProps {
+  prologue: React.ReactNode;
+  movePlaceButton: MovePlaceButtonType[];
+  scenario: ClueScenarioType;
+  additionalQuestions: AdditionalQuestionType[];
+}
+
+interface InteractionLogItem {
+  label: string;
+  elapsedMs: number;
+}
+
+const getInteractionStartStorageKey = (scenarioId: string) =>
+  `${scenarioId}-interaction-started-at`;
+
+const getInteractionLogStorageKey = (scenarioId: string) =>
+  `${scenarioId}-interaction-log`;
+
+export default function InGameLayout({
+  prologue,
+  movePlaceButton,
+  scenario,
+  additionalQuestions,
+}: InGameLayoutProps) {
+  const episodeNumber =
+    scenarios.findIndex((candidate) => candidate.id === scenario.id) + 1;
+  const [openedClueId, setOpenedClueId] = useState<number | null>(null);
+  const [currentPlace, setCurrentPlace] = useState(scenario.places[0] ?? "");
+  const [checkedClueList, setCheckedClueList] = useState<number[]>([]);
+  const [openedModal, setOpenedModal] = useState<
+    | "prologue"
+    | "suspects"
+    | "dashboard"
+    | "unlock"
+    | "memo"
+    | "vote"
+    | null
+  >("prologue");
+  const [unlockingClue, setUnlockingClue] = useState<ClueType | null>(null);
+  const [isQuickMenuOpen, setIsQuickMenuOpen] = useState(false);
+  const [sessionStartedAt, setSessionStartedAt] = useState<number>(() => Date.now());
+  const [interactionLog, setInteractionLog] = useState<InteractionLogItem[]>([]);
+
+  const handleCloseModal = () => {
+    setOpenedModal(null);
+  };
+
+  useEffect(() => {
+    setCurrentPlace(scenario.places[0] ?? "");
+  }, [scenario.id, scenario.places]);
+
+  useEffect(() => {
+    const startStorageKey = getInteractionStartStorageKey(scenario.id);
+    const logStorageKey = getInteractionLogStorageKey(scenario.id);
+
+    const savedStartedAt = localStorage.getItem(startStorageKey);
+    const nextStartedAt = savedStartedAt ? Number(savedStartedAt) : Date.now();
+
+    if (!savedStartedAt) {
+      localStorage.setItem(startStorageKey, String(nextStartedAt));
+    }
+
+    setSessionStartedAt(nextStartedAt);
+
+    const savedLog = localStorage.getItem(logStorageKey);
+    if (!savedLog) {
+      setInteractionLog([]);
+      return;
+    }
+
+    try {
+      setInteractionLog(JSON.parse(savedLog) as InteractionLogItem[]);
+    } catch {
+      setInteractionLog([]);
+    }
+  }, [scenario.id]);
+
+  usePreventUnload();
+
+  const openedClue: ClueType | null =
+    scenario.clues.find((clue) => clue.id === openedClueId) ?? null;
+  const mapImageSrc = currentPlace
+    ? `/image/scenario/${scenario.id}/map/${scenario.id}-${currentPlace}.png`
+    : scenario.backgroundImage;
+
+  const markClueAsChecked = (clueId: number) => {
+    setCheckedClueList((prev) => {
+      if (prev.includes(clueId)) {
+        return prev;
+      }
+      return [...prev, clueId];
+    });
+  };
+
+  const recordInteraction = (label: string) => {
+    setInteractionLog((prev) => {
+      const nextLog = [
+        ...prev,
+        {
+          label,
+          elapsedMs: Date.now() - sessionStartedAt,
+        },
+      ];
+
+      localStorage.setItem(
+        getInteractionLogStorageKey(scenario.id),
+        JSON.stringify(nextLog)
+      );
+
+      return nextLog;
+    });
+  };
+
+  const openClue = (clue: ClueType) => {
+    recordInteraction(`단서 ${clue.id} ${clue.title}`);
+    setOpenedClueId(clue.id);
+    markClueAsChecked(clue.id);
+  };
+
+  const handleMapClick = (
+    event: React.MouseEvent<HTMLImageElement | HTMLDivElement>
+  ) => {
+    if (process.env.NODE_ENV !== "development") {
+      return;
+    }
+
+    const x = ((100 * event.pageX) / window.innerWidth).toFixed(3);
+    const y = ((100 * event.pageY) / window.innerHeight).toFixed(3);
+    navigator.clipboard?.writeText(`x: ${x}, y: ${y},`);
+  };
+
+  const visibleClues = scenario.clues.filter((clue) => {
+    return (
+      clue.place === currentPlace ||
+      (clue.place === openedClueId && clue.type === "additional")
+    );
+  });
+  const uncheckedAdditionalParentIds = new Set(
+    scenario.clues
+      .filter(
+        (clue) =>
+          clue.type === "additional" &&
+          typeof clue.place === "number" &&
+          !checkedClueList.includes(clue.id)
+      )
+      .map((clue) => clue.place)
+  );
+
+  const { isMobileWidth } = useMobileWidth();
+  if (isMobileWidth) {
+    return <MobileWidthAlertModal open />;
+  }
+
+  return (
+    <>
+      <Head>
+        <title>{`협동 크라임씬: ${scenario.title}`}</title>
+      </Head>
+      <Box>
+        <Image
+          priority
+          src={mapImageSrc}
+          alt="맵 이미지"
+          fill
+          style={{
+            zIndex: -1,
+          }}
+          onClick={handleMapClick}
+        />
+
+        {openedModal === "memo" && (
+          <MemoModal
+            scenarioKeyword={scenario.id}
+            isOpen={openedModal === "memo"}
+            onClose={() => setOpenedModal(null)}
+            suspects={scenario.suspects}
+            questions={additionalQuestions}
+            isAllClueSearched={checkedClueList.length === scenario.clues.length}
+          />
+        )}
+
+        {openedClue !== null && (
+          <ClueDetailView
+            clueData={openedClue}
+            onClose={() => {
+              if (typeof openedClue.place !== "string") {
+                setOpenedClueId(openedClue.place);
+                return;
+              }
+              setOpenedClueId(null);
+            }}
+          />
+        )}
+        {visibleClues.map((clue) => {
+          const isChecked = checkedClueList.includes(clue.id);
+          const isUnlocked =
+            !clue.lock ||
+            isChecked ||
+            (clue.lock.method === "clue" &&
+              checkedClueList.includes(clue.lock.clueId));
+          const clueStatus =
+            !isUnlocked
+              ? "locked"
+              : isChecked && uncheckedAdditionalParentIds.has(clue.id)
+                ? "pending"
+                : isChecked
+                ? "checked"
+                : "default";
+
+          return (
+            <ClueButton
+              key={clue.id}
+              clue={clue}
+              status={clueStatus}
+              onClick={() => {
+                if (!isUnlocked && clue.lock) {
+                  setOpenedModal("unlock");
+                  setUnlockingClue(clue);
+                  return;
+                }
+
+                openClue(clue);
+              }}
+            />
+          );
+        })}
+
+        <ClueUnlockModal
+          targetClue={unlockingClue}
+          isOpen={openedModal === "unlock"}
+          onClose={() => {
+            handleCloseModal();
+            setUnlockingClue(null);
+          }}
+          onSuccess={() => {
+            if (unlockingClue) {
+              openClue(unlockingClue);
+            }
+            handleCloseModal();
+            setUnlockingClue(null);
+          }}
+        />
+
+        {movePlaceButton.map((button) => {
+          return (
+            button.from === currentPlace && (
+              <MovePlaceButton
+                key={`${button.from}-${button.to}`}
+                direction={button.direction}
+                x={button.x}
+                y={button.y}
+                onClick={() => {
+                  recordInteraction(`이동 ${button.from} -> ${button.to}`);
+                  setCurrentPlace(button.to);
+                }}
+              />
+            )
+          );
+        })}
+        <ClueDashboardModal
+          clues={scenario.clues}
+          isOpen={openedModal === "dashboard"}
+          checkedClueList={checkedClueList}
+          onClose={handleCloseModal}
+        />
+        <SuspectsInfoCard
+          isOpen={openedModal === "suspects"}
+          victims={scenario.victims}
+          suspects={scenario.suspects}
+          onClose={handleCloseModal}
+        />
+        <SuspectVoteModal
+          isOpen={openedModal === "vote"}
+          suspects={scenario.suspects}
+          scenarioTitle={scenario.title}
+          episodeNumber={episodeNumber > 0 ? episodeNumber : 1}
+          onClose={handleCloseModal}
+        />
+        <PrologueModal
+          prolougeContent={prologue}
+          isOpen={openedModal === "prologue"}
+          onClose={handleCloseModal}
+          onClickSuspects={() => setOpenedModal("suspects")}
+        />
+        <Box
+          sx={{
+            position: "absolute",
+            right: 16,
+            top: 16,
+            zIndex: 1000,
+          }}
+        >
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={isQuickMenuOpen ? <MenuOpenIcon /> : <MenuIcon />}
+            onClick={() => setIsQuickMenuOpen((prev) => !prev)}
+            sx={{
+              minWidth: 92,
+              borderRadius: 2,
+              textTransform: "none",
+              boxShadow: 2,
+            }}
+          >
+            도구
+          </Button>
+
+          <Grow in={isQuickMenuOpen} timeout={180} unmountOnExit>
+            <Paper
+              elevation={3}
+              sx={{
+                position: "absolute",
+                top: 44,
+                right: 0,
+                p: 0.6,
+                borderRadius: 3,
+                display: "flex",
+                flexDirection: "column",
+                gap: 0.4,
+                backgroundColor: "rgba(255,255,255,0.82)",
+                backdropFilter: "blur(6px)",
+              }}
+            >
+              <Tooltip title="추리 노트" placement="left">
+                <IconButton
+                  color="primary"
+                  onClick={() => setOpenedModal("memo")}
+                  size="small"
+                >
+                  <LibraryBooksIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="단서 현황" placement="left">
+                <IconButton
+                  color="primary"
+                  onClick={() => setOpenedModal("dashboard")}
+                  size="small"
+                >
+                  <LightBulbIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="용의자/피해자 정보" placement="left">
+                <IconButton
+                  color="primary"
+                  onClick={() => setOpenedModal("suspects")}
+                  size="small"
+                >
+                  <PersonSearchIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="용의자 투표" placement="left">
+                <IconButton
+                  color="primary"
+                  onClick={() => setOpenedModal("vote")}
+                  size="small"
+                >
+                  <HowToVoteIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="공개된 정보" placement="left">
+                <IconButton
+                  color="primary"
+                  onClick={() => setOpenedModal("prologue")}
+                  size="small"
+                >
+                  <InfoIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+            </Paper>
+          </Grow>
+        </Box>
+        <InteractionScoreBadge count={interactionLog.length} />
+      </Box>
+    </>
+  );
+}

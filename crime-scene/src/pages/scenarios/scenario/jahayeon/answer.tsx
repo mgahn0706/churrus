@@ -1,4 +1,4 @@
-import { createScenarioAnswerPage } from "@/features/suspect/components/createScenarioAnswerPage";
-import { jahayeonAnswerConfig } from "@/features/suspect/fixtures/jahayeon/answer";
+import { createScenarioAnswerPage } from "@/components/createScenarioAnswerPage";
+import { jahayeonAnswerConfig } from "@/fixtures/jahayeon/answer";
 
 export default createScenarioAnswerPage(jahayeonAnswerConfig);

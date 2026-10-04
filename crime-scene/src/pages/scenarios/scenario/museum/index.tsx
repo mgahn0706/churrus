@@ -1,10 +1,10 @@
-import InGameLayout from "@/features/suspect/components/InGame/InGameLayout";
-import { createScenarioTheme } from "@/features/suspect/components/createScenarioTheme";
-import { scenarios } from "@/features/suspect/fixtures";
-import { museumAdditionalQuestions } from "@/features/suspect/fixtures/museum/clues";
-import { museumMoveButton } from "@/features/suspect/fixtures/museum/movePlace";
-import { MuseumPrologue } from "@/features/suspect/fixtures/museum/prologue";
-import { ClueScenarioType } from "@/features/suspect/types";
+import InGameLayout from "@/components/InGame/InGameLayout";
+import { createScenarioTheme } from "@/components/createScenarioTheme";
+import { scenarios } from "@/fixtures";
+import { museumAdditionalQuestions } from "@/fixtures/museum/clues";
+import { museumMoveButton } from "@/fixtures/museum/movePlace";
+import { MuseumPrologue } from "@/fixtures/museum/prologue";
+import { ClueScenarioType } from "@/types";
 import { ThemeProvider } from "@mui/material";
 
 export default function Museum() {

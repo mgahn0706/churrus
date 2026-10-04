@@ -5,8 +5,8 @@ import { PlayArrowRounded, PeopleAlt, Search } from "@mui/icons-material";
 import { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { scenarios } from "@/features/suspect/fixtures";
-import Header from "@/features/suspect/components/Header";
+import { scenarios } from "@/fixtures";
+import Header from "@/components/Header";
 
 export default function Suspect() {
   const [currentIndex, setCurrentIndex] = useState(0);

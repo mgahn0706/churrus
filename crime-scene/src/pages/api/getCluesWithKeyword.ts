@@ -2,20 +2,20 @@
 import {
   schoolClues,
   schoolKeywordIds,
-} from "@/features/suspect/fixtures/school/clues";
+} from "@/fixtures/school/clues";
 
 import {
   dureClues,
   dureKeywordIds,
-} from "@/features/suspect/fixtures/dure/clues";
+} from "@/fixtures/dure/clues";
 import {
   bluemoonClues,
   bluemoonKeywordIds,
-} from "@/features/suspect/fixtures/bluemoon/clues";
+} from "@/fixtures/bluemoon/clues";
 import {
   hotelClues,
   hotelKeywordIds,
-} from "@/features/suspect/fixtures/hotel/clues";
+} from "@/fixtures/hotel/clues";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 interface BaseClueData {

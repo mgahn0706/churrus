@@ -1,4 +1,4 @@
-import { createScenarioAnswerPage } from "@/features/suspect/components/createScenarioAnswerPage";
-import { paradeAnswerConfig } from "@/features/suspect/fixtures/parade/answer";
+import { createScenarioAnswerPage } from "@/components/createScenarioAnswerPage";
+import { paradeAnswerConfig } from "@/fixtures/parade/answer";
 
 export default createScenarioAnswerPage(paradeAnswerConfig);

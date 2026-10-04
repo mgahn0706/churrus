@@ -1,10 +1,10 @@
-import InGameLayout from "@/features/suspect/components/InGame/InGameLayout";
-import { createScenarioTheme } from "@/features/suspect/components/createScenarioTheme";
-import { scenarios } from "@/features/suspect/fixtures";
-import { kpopAdditionalQuestions } from "@/features/suspect/fixtures/kpop/clues";
-import { kpopMoveButton } from "@/features/suspect/fixtures/kpop/movePlace";
-import { KpopPrologue } from "@/features/suspect/fixtures/kpop/prologue";
-import { ClueScenarioType } from "@/features/suspect/types";
+import InGameLayout from "@/components/InGame/InGameLayout";
+import { createScenarioTheme } from "@/components/createScenarioTheme";
+import { scenarios } from "@/fixtures";
+import { kpopAdditionalQuestions } from "@/fixtures/kpop/clues";
+import { kpopMoveButton } from "@/fixtures/kpop/movePlace";
+import { KpopPrologue } from "@/fixtures/kpop/prologue";
+import { ClueScenarioType } from "@/types";
 import { ThemeProvider } from "@mui/material";
 
 export default function Kpop() {

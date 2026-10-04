@@ -1,10 +1,10 @@
-import InGameLayout from "@/features/suspect/components/InGame/InGameLayout";
-import { createScenarioTheme } from "@/features/suspect/components/createScenarioTheme";
-import { scenarios } from "@/features/suspect/fixtures";
-import { subwayAdditionalQuestions } from "@/features/suspect/fixtures/subway/clues";
-import { subwayMoveButton } from "@/features/suspect/fixtures/subway/movePlace";
-import { SubwayPrologue } from "@/features/suspect/fixtures/subway/prologue";
-import { ClueScenarioType } from "@/features/suspect/types";
+import InGameLayout from "@/components/InGame/InGameLayout";
+import { createScenarioTheme } from "@/components/createScenarioTheme";
+import { scenarios } from "@/fixtures";
+import { subwayAdditionalQuestions } from "@/fixtures/subway/clues";
+import { subwayMoveButton } from "@/fixtures/subway/movePlace";
+import { SubwayPrologue } from "@/fixtures/subway/prologue";
+import { ClueScenarioType } from "@/types";
 import { ThemeProvider } from "@mui/material";
 
 export default function Subway() {

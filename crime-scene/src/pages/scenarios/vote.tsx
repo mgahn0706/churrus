@@ -8,7 +8,7 @@ import {
   getPlayroomVoteSuspectsStateKey,
   loadPlayroomKit,
   withPlayroomTimeout,
-} from "@/features/suspect/libs/playroomVote";
+} from "@/libs/playroomVote";
 
 type VoteSuspect = {
   image?: string;

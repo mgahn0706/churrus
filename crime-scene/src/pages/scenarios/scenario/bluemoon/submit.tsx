@@ -1,5 +1,5 @@
-import { DetectiveNoteType } from "@/features/suspect/types";
-import { bluemoonAdditionalQuestions } from "@/features/suspect/fixtures/bluemoon/additionalQuestions";
+import { DetectiveNoteType } from "@/types";
+import { bluemoonAdditionalQuestions } from "@/fixtures/bluemoon/additionalQuestions";
 import {
   Box,
   Button,

@@ -1,4 +1,4 @@
-import { createScenarioAnswerPage } from "@/features/suspect/components/createScenarioAnswerPage";
-import { dureAnswerConfig } from "@/features/suspect/fixtures/dure/answer";
+import { createScenarioAnswerPage } from "@/components/createScenarioAnswerPage";
+import { dureAnswerConfig } from "@/fixtures/dure/answer";
 
 export default createScenarioAnswerPage(dureAnswerConfig);

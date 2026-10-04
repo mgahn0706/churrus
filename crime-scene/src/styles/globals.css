@@ -20,6 +20,6 @@ body {
 
 @font-face {
   font-family: "NanumSquareEB";
-  src: url(/suspect-game/public/fonts/NanumSquareEB.ttf);
+  src: url(/fonts/NanumSquareEB.ttf);
   font-weight: 500;
 }

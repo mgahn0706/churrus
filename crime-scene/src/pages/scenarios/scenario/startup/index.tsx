@@ -1,10 +1,10 @@
-import InGameLayout from "@/features/suspect/components/InGame/InGameLayout";
-import { createScenarioTheme } from "@/features/suspect/components/createScenarioTheme";
-import { scenarios } from "@/features/suspect/fixtures";
-import { startupAdditionalQuestions } from "@/features/suspect/fixtures/startup/clues";
-import { startUpMoveButton } from "@/features/suspect/fixtures/startup/movePlace";
-import { StartUpPrologue } from "@/features/suspect/fixtures/startup/prologue";
-import { ClueScenarioType } from "@/features/suspect/types";
+import InGameLayout from "@/components/InGame/InGameLayout";
+import { createScenarioTheme } from "@/components/createScenarioTheme";
+import { scenarios } from "@/fixtures";
+import { startupAdditionalQuestions } from "@/fixtures/startup/clues";
+import { startUpMoveButton } from "@/fixtures/startup/movePlace";
+import { StartUpPrologue } from "@/fixtures/startup/prologue";
+import { ClueScenarioType } from "@/types";
 import { ThemeProvider } from "@mui/material";
 
 export default function Startup() {

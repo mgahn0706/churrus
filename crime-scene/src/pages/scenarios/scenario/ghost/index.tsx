@@ -1,10 +1,10 @@
-import InGameLayout from "@/features/suspect/components/InGame/InGameLayout";
-import { createScenarioTheme } from "@/features/suspect/components/createScenarioTheme";
-import { scenarios } from "@/features/suspect/fixtures";
-import { ghostAdditionalQuestions } from "@/features/suspect/fixtures/ghost/clues";
-import { ghostMoveButton } from "@/features/suspect/fixtures/ghost/movePlace";
-import { GhostPrologue } from "@/features/suspect/fixtures/ghost/prologue";
-import { ClueScenarioType } from "@/features/suspect/types";
+import InGameLayout from "@/components/InGame/InGameLayout";
+import { createScenarioTheme } from "@/components/createScenarioTheme";
+import { scenarios } from "@/fixtures";
+import { ghostAdditionalQuestions } from "@/fixtures/ghost/clues";
+import { ghostMoveButton } from "@/fixtures/ghost/movePlace";
+import { GhostPrologue } from "@/fixtures/ghost/prologue";
+import { ClueScenarioType } from "@/types";
 import { ThemeProvider } from "@mui/material";
 
 export default function GhostScenario() {
