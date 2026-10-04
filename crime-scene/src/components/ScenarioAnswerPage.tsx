@@ -15,7 +15,7 @@ import {
 import { useRouter } from "next/router";
 import { ReactNode, SyntheticEvent, useEffect, useMemo, useState } from "react";
 import { createScenarioTheme } from "@/components/createScenarioTheme";
-import { scenarios } from "@/fixtures";
+import { scenarioCatalog } from "@/fixtures";
 import { saveScenarioCertification } from "@/libs/certification";
 import { DetectiveNoteType } from "@/types";
 import { AnswerRevealSequence } from "./AnswerRevealSequence";
@@ -48,7 +48,7 @@ export function ScenarioAnswerPage({
 }: ScenarioAnswerPageProps) {
   const router = useRouter();
   const scenarioTheme = useMemo(() => {
-    const scenario = scenarios.find((candidate) => candidate.id === scenarioKey);
+    const scenario = scenarioCatalog.find((candidate) => candidate.id === scenarioKey);
 
     if (!scenario) {
       throw new Error(`Scenario not found: ${scenarioKey}`);

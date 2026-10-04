@@ -1,16 +1,10 @@
 import InTextGame from "@/components/InTextGame";
-import { scenarios } from "@/fixtures";
-import { TextScenarioType } from "@/types";
+import { createTextScenario } from "@/fixtures";
+import { hotelClues } from "@/fixtures/hotel/clues";
+import { hotelPrologue } from "@/fixtures/hotel/prologue";
+
+const hotelScenario = createTextScenario("hotel", hotelClues, hotelPrologue);
 
 export default function Hotel() {
-  const hotelScenario = scenarios.find(
-    (scenario): scenario is TextScenarioType =>
-      scenario.id === "hotel" && scenario.gameType === "TEXT"
-  );
-
-  if (!hotelScenario) {
-    throw new Error("Scenario not found");
-  }
-
   return <InTextGame scenario={hotelScenario} />;
 }

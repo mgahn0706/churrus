@@ -1,29 +1,25 @@
 import InGameLayout from "@/components/InGame/InGameLayout";
 import { createScenarioTheme } from "@/components/createScenarioTheme";
-import { scenarios } from "@/fixtures";
-import { museumAdditionalQuestions } from "@/fixtures/museum/clues";
+import { createClueScenario } from "@/fixtures";
+import {
+  museumAdditionalQuestions,
+  museumClues,
+} from "@/fixtures/museum/clues";
 import { museumMoveButton } from "@/fixtures/museum/movePlace";
 import { MuseumPrologue } from "@/fixtures/museum/prologue";
-import { ClueScenarioType } from "@/types";
 import { ThemeProvider } from "@mui/material";
 
-export default function Museum() {
-  const museumScenario = scenarios.find(
-    (scenario): scenario is ClueScenarioType =>
-      scenario.id === "museum" && scenario.gameType === "CLUE"
-  );
+const museumScenario = createClueScenario("museum", {
+  clues: museumClues,
+  movePlaceButtons: museumMoveButton,
+  prologue: <MuseumPrologue />,
+  additionalQuestions: museumAdditionalQuestions,
+});
 
-  if (!museumScenario) {
-    throw new Error("Scenario not found");
-  }
+export default function Museum() {
   return (
     <ThemeProvider theme={createScenarioTheme(museumScenario.color)}>
-      <InGameLayout
-        movePlaceButton={museumMoveButton}
-        prologue={<MuseumPrologue />}
-        scenario={museumScenario}
-        additionalQuestions={museumAdditionalQuestions}
-      />
+      <InGameLayout scenario={museumScenario} />
     </ThemeProvider>
   );
 }

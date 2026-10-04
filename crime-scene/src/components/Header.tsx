@@ -124,9 +124,8 @@ export default function Header() {
 
       <Box display="flex" alignItems="center" gap={{ xs: 0.5, sm: 1 }}>
         <Box
-          component="button"
-          type="button"
-          onClick={() => router.push("/")}
+          component="a"
+          href="https://churrus.vercel.app"
           sx={{
             cursor: "pointer",
             px: "10px",
@@ -135,6 +134,7 @@ export default function Header() {
             color: "rgba(255,255,255,0.68)",
             border: 0,
             font: "inherit",
+            textDecoration: "none",
             backgroundColor: "transparent",
             transition: "color 0.2s ease, background-color 0.2s ease",
             outline: "none",

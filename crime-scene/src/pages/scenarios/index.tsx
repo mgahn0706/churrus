@@ -5,13 +5,13 @@ import { PlayArrowRounded, PeopleAlt, Search } from "@mui/icons-material";
 import { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { scenarios } from "@/fixtures";
+import { scenarioCatalog } from "@/fixtures";
 import Header from "@/components/Header";
 
 export default function Suspect() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const router = useRouter();
-  const current = scenarios[currentIndex];
+  const current = scenarioCatalog[currentIndex];
   const creators = current.creators.filter(Boolean);
   const itemRefs = useRef<Array<HTMLDivElement | null>>([]);
   const listRef = useRef<HTMLDivElement | null>(null);
@@ -27,7 +27,7 @@ export default function Suspect() {
   }, [current.id, router]);
 
   const changeIndex = useCallback((index: number) => {
-    const safeIndex = (index + scenarios.length) % scenarios.length;
+    const safeIndex = (index + scenarioCatalog.length) % scenarioCatalog.length;
     if (safeIndex === currentIndexRef.current) return;
     setCurrentIndex(safeIndex);
   }, []);
@@ -254,7 +254,7 @@ export default function Suspect() {
                   pointerEvents: "none",
                 }}
               />
-              {scenarios.map((s, index) => {
+              {scenarioCatalog.map((s, index) => {
                 const active = index === currentIndex;
 
                 return (

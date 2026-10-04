@@ -1,42 +1,28 @@
-import { ScenarioType } from "@/types";
+import type {
+  ClueData,
+  ClueScenarioType,
+  ClueType,
+  ScenarioSummary,
+  TextScenarioType,
+} from "@/types";
 import { startUpSuspects, startUpVictim } from "./startup/suspects";
 import { schoolSuspects, schoolVictim } from "./school/suspects";
 import { jahayeonSuspects, jahayeonVictim } from "./jahayeon/suspects";
 import { dureSuspects, dureVictim } from "./dure/suspects";
-import { durePrologue } from "./dure/prologue";
-import { schoolPrologue } from "./school/prologue";
-import { bluemoonPrologue } from "./bluemoon/prologue";
-import { startUpClues } from "./startup/clues";
-import { jahayeonClues } from "./jahayeon/clues";
-import { schoolClues } from "./school/clues";
-import { dureClues } from "./dure/clues";
 import { museumSuspects, museumVictim } from "./museum/suspects";
-import { museumClues } from "./museum/clues";
 import { serialSuspects, serialVictims } from "./serial/suspects";
-import { serialClues } from "./serial/clues";
 import { bluemoonSuspects, bluemoonVictim } from "./bluemoon/suspects";
-import { bluemoonClues } from "./bluemoon/clues";
 import { mountainSuspects, mountainVictim } from "./mountain/suspects";
-import { mountainClues } from "./mountain/clues";
 import { kpopSuspects, kpopVictim } from "./kpop/suspects";
-import { kpopClues } from "./kpop/clues";
 import { novelistSuspects, novelistVictim } from "./novelist/suspects";
-import { novelistClues } from "./novelist/clues";
 import { subwaySuspects, subwayVictim } from "./subway/suspects";
-import { subwayClues } from "./subway/clues";
 import { clubroomSuspects, clubroomVictim } from "./clubroom/suspects";
-import { clubroomClues } from "./clubroom/clues";
 import { hotelSuspects, hotelVictim } from "./hotel/suspects";
-import { hotelClues } from "./hotel/clues";
-import { hotelPrologue } from "./hotel/prologue";
 import { ghostSuspect, ghostVictim } from "./ghost/suspects";
 import { boxSuspects, boxVictim } from "./box/suspects";
-import { ghostClues } from "./ghost/clues";
-import { boxClues } from "./box/clues";
-import { paradeClues } from "./parade/clues";
 import { paradeSuspects, paradeVictims } from "./parade/suspects";
 
-export const scenarios: ScenarioType[] = [
+export const scenarioCatalog = [
   {
     title: "스타트업 살인사건",
     creators: ["안민규"],
@@ -49,7 +35,6 @@ export const scenarios: ScenarioType[] = [
     gameType: "CLUE",
     suspects: startUpSuspects,
     victims: [startUpVictim],
-    clues: startUpClues,
     color: "#3B4CCA",
   },
   {
@@ -64,8 +49,6 @@ export const scenarios: ScenarioType[] = [
     description: "와부고등학교 교실에서 한 학생이 사망한 사건",
     suspects: schoolSuspects,
     victims: [schoolVictim],
-    prologue: schoolPrologue,
-    clues: schoolClues,
     color: "#ef4444",
   },
   {
@@ -80,7 +63,6 @@ export const scenarios: ScenarioType[] = [
     places: ["pond", "dorm", "house"],
     suspects: jahayeonSuspects,
     victims: [jahayeonVictim],
-    clues: jahayeonClues,
     color: "#0891b2",
   },
   {
@@ -95,8 +77,6 @@ export const scenarios: ScenarioType[] = [
     places: ["3F", "4F"],
     suspects: dureSuspects,
     victims: [dureVictim],
-    prologue: durePrologue,
-    clues: dureClues,
     color: "#ffcc00",
   },
   {
@@ -111,7 +91,6 @@ export const scenarios: ScenarioType[] = [
     places: ["A", "B"],
     suspects: museumSuspects,
     victims: [museumVictim],
-    clues: museumClues,
     color: "#d97706",
   },
   {
@@ -125,7 +104,6 @@ export const scenarios: ScenarioType[] = [
     places: ["28", "301"],
     suspects: serialSuspects,
     victims: serialVictims,
-    clues: serialClues,
     color: "#9333ea",
     histories: ["2026년 5월 정기모임"],
   },
@@ -141,7 +119,6 @@ export const scenarios: ScenarioType[] = [
     histories: ["2026년 6월 정기모임"],
     suspects: mountainSuspects,
     victims: [mountainVictim],
-    clues: mountainClues,
     color: "#34c759",
   },
   {
@@ -156,7 +133,6 @@ export const scenarios: ScenarioType[] = [
     description: "추리소설계의 거장과 함께한 신년회에서 발생한 의문의 살인사건",
     suspects: novelistSuspects,
     victims: [novelistVictim],
-    clues: novelistClues,
     color: "#ac7f5e",
   },
 
@@ -172,7 +148,6 @@ export const scenarios: ScenarioType[] = [
     places: ["1F", "B1", "B2"],
     suspects: subwaySuspects,
     victims: [subwayVictim],
-    clues: subwayClues,
     color: "#00A84D",
   },
   {
@@ -187,7 +162,6 @@ export const scenarios: ScenarioType[] = [
     places: ["room", "recycling", "homes"],
     suspects: clubroomSuspects,
     victims: [clubroomVictim],
-    clues: clubroomClues,
     color: "#f59e0b",
   },
   {
@@ -202,8 +176,6 @@ export const scenarios: ScenarioType[] = [
     places: ["village"],
     suspects: bluemoonSuspects,
     victims: [bluemoonVictim],
-    prologue: bluemoonPrologue,
-    clues: bluemoonClues,
     color: "#1e6df4",
   },
   {
@@ -218,7 +190,6 @@ export const scenarios: ScenarioType[] = [
     places: ["lounge", "outdoor"],
     suspects: kpopSuspects,
     victims: [kpopVictim],
-    clues: kpopClues,
     color: "#e91e63",
   },
   {
@@ -233,9 +204,7 @@ export const scenarios: ScenarioType[] = [
     places: [],
     suspects: hotelSuspects,
     victims: [hotelVictim],
-    clues: hotelClues,
     color: "#8e8e93",
-    prologue: hotelPrologue,
   },
   {
     title: "귀신의 집 살인사건",
@@ -249,7 +218,6 @@ export const scenarios: ScenarioType[] = [
     places: ["haunted-house", "staff", "theme-park"],
     suspects: ghostSuspect,
     victims: [ghostVictim],
-    clues: ghostClues,
     color: "#6b7280",
   },
   {
@@ -264,7 +232,6 @@ export const scenarios: ScenarioType[] = [
     places: ["palace", "market", "abandoned-palace"],
     suspects: boxSuspects,
     victims: [boxVictim],
-    clues: boxClues,
     color: "#a16a02",
   },
   {
@@ -279,7 +246,48 @@ export const scenarios: ScenarioType[] = [
     places: [],
     suspects: paradeSuspects,
     victims: paradeVictims,
-    clues: paradeClues,
     color: "#BF5AF2",
   },
-];
+] satisfies ScenarioSummary[];
+
+export type ScenarioId = (typeof scenarioCatalog)[number]["id"];
+
+const getScenarioSummary = (id: ScenarioId): ScenarioSummary => {
+  const scenario = scenarioCatalog.find((candidate) => candidate.id === id);
+
+  if (!scenario) {
+    throw new Error(`Scenario not found: ${id}`);
+  }
+
+  return scenario;
+};
+
+export const createClueScenario = (
+  id: ScenarioId,
+  content: Pick<
+    ClueScenarioType,
+    "clues" | "prologue" | "movePlaceButtons" | "additionalQuestions"
+  >
+): ClueScenarioType => {
+  const scenario = getScenarioSummary(id);
+
+  if (scenario.gameType !== "CLUE") {
+    throw new Error(`Scenario is not a clue game: ${id}`);
+  }
+
+  return { ...scenario, gameType: "CLUE", ...content };
+};
+
+export const createTextScenario = (
+  id: ScenarioId,
+  clues: ClueData[],
+  prologue: string[]
+): TextScenarioType => {
+  const scenario = getScenarioSummary(id);
+
+  if (scenario.gameType !== "TEXT") {
+    throw new Error(`Scenario is not a text game: ${id}`);
+  }
+
+  return { ...scenario, gameType: "TEXT", clues, prologue };
+};

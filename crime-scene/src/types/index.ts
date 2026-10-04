@@ -1,4 +1,22 @@
-import { ClueData } from "@/pages/api/getCluesWithKeyword";
+import type { ReactNode } from "react";
+
+interface BaseClueData {
+  id: number;
+  text: string;
+  from: string;
+}
+
+export type ClueData = BaseClueData &
+  (
+    | {
+        images: [string, ...string[]];
+        physicalClueId: number;
+      }
+    | {
+        images?: never;
+        physicalClueId?: never;
+      }
+  );
 
 interface ClueBase {
   id: number;
@@ -50,7 +68,7 @@ export interface SuspectType {
 
 export type VictimType = SuspectType;
 
-interface ScenarioBase {
+export interface ScenarioSummary {
   color: string;
   title: string;
   creators: string[];
@@ -62,18 +80,21 @@ interface ScenarioBase {
   suspects: SuspectType[];
   victims: VictimType[];
   places: string[];
+  gameType: "TEXT" | "CLUE";
 }
 
-export interface TextScenarioType extends ScenarioBase {
+export interface TextScenarioType extends ScenarioSummary {
   gameType: "TEXT";
   prologue: string[];
   clues: ClueData[];
 }
 
-export interface ClueScenarioType extends ScenarioBase {
+export interface ClueScenarioType extends ScenarioSummary {
   gameType: "CLUE";
-  prologue?: string[];
+  prologue: ReactNode;
   clues: ClueType[];
+  movePlaceButtons: MovePlaceButtonType[];
+  additionalQuestions: AdditionalQuestionType[];
 }
 
 export type ScenarioType = TextScenarioType | ClueScenarioType;

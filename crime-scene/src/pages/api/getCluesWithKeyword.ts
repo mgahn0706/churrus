@@ -16,25 +16,8 @@ import {
   hotelClues,
   hotelKeywordIds,
 } from "@/fixtures/hotel/clues";
+import type { ClueData } from "@/types";
 import type { NextApiRequest, NextApiResponse } from "next";
-
-interface BaseClueData {
-  id: number;
-  text: string;
-  from: string;
-}
-
-export type ClueData = BaseClueData &
-  (
-    | {
-        images: [string, ...string[]];
-        physicalClueId: number;
-      }
-    | {
-        images?: never;
-        physicalClueId?: never;
-      }
-  );
 
 type Scenario = {
   keywordIds: Record<string, number[]>;

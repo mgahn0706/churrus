@@ -9,13 +9,8 @@ import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useEffect, useState } from "react";
 
-import { scenarios } from "@/fixtures";
-import {
-  AdditionalQuestionType,
-  ClueType,
-  ClueScenarioType,
-  MovePlaceButtonType,
-} from "@/types";
+import { scenarioCatalog } from "@/fixtures";
+import { ClueType, ClueScenarioType } from "@/types";
 import MemoModal from "./MemoModal";
 import { useMobileWidth } from "@/hooks/useMobileWIdth";
 import MobileWidthAlertModal from "../MobileWidthAlertModal";
@@ -32,10 +27,7 @@ import usePreventUnload from "@/hooks/usePreventUnload";
 import Head from "next/head";
 
 interface InGameLayoutProps {
-  prologue: React.ReactNode;
-  movePlaceButton: MovePlaceButtonType[];
   scenario: ClueScenarioType;
-  additionalQuestions: AdditionalQuestionType[];
 }
 
 interface InteractionLogItem {
@@ -49,14 +41,9 @@ const getInteractionStartStorageKey = (scenarioId: string) =>
 const getInteractionLogStorageKey = (scenarioId: string) =>
   `${scenarioId}-interaction-log`;
 
-export default function InGameLayout({
-  prologue,
-  movePlaceButton,
-  scenario,
-  additionalQuestions,
-}: InGameLayoutProps) {
+export default function InGameLayout({ scenario }: InGameLayoutProps) {
   const episodeNumber =
-    scenarios.findIndex((candidate) => candidate.id === scenario.id) + 1;
+    scenarioCatalog.findIndex((candidate) => candidate.id === scenario.id) + 1;
   const [openedClueId, setOpenedClueId] = useState<number | null>(null);
   const [currentPlace, setCurrentPlace] = useState(scenario.places[0] ?? "");
   const [checkedClueList, setCheckedClueList] = useState<number[]>([]);
@@ -207,7 +194,7 @@ export default function InGameLayout({
             isOpen={openedModal === "memo"}
             onClose={() => setOpenedModal(null)}
             suspects={scenario.suspects}
-            questions={additionalQuestions}
+            questions={scenario.additionalQuestions}
             isAllClueSearched={checkedClueList.length === scenario.clues.length}
           />
         )}
@@ -274,7 +261,7 @@ export default function InGameLayout({
           }}
         />
 
-        {movePlaceButton.map((button) => {
+        {scenario.movePlaceButtons.map((button) => {
           return (
             button.from === currentPlace && (
               <MovePlaceButton
@@ -310,7 +297,7 @@ export default function InGameLayout({
           onClose={handleCloseModal}
         />
         <PrologueModal
-          prolougeContent={prologue}
+          prolougeContent={scenario.prologue}
           isOpen={openedModal === "prologue"}
           onClose={handleCloseModal}
           onClickSuspects={() => setOpenedModal("suspects")}

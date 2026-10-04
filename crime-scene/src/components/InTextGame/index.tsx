@@ -19,7 +19,7 @@ import {
 import { useState } from "react";
 import TextGameHeader, { PhysicalClue } from "./TextGameHeader";
 import { ContentPasteSearchOutlined, Close, Search } from "@mui/icons-material";
-import { ClueData } from "@/pages/api/getCluesWithKeyword";
+import type { ClueData } from "@/types";
 import { FadeInSection } from "../FadeInSection";
 import { TextScenarioType } from "../../types";
 import { createScenarioTheme } from "../createScenarioTheme";
@@ -198,7 +198,7 @@ export default function InTextGame({ scenario }: InTextGameProps) {
       </Dialog>
       <Box bgcolor="black" minHeight="100vh" py="60px" px="10vw">
         <TextGameHeader
-          scenarioId={scenario.id}
+          scenario={scenario}
           acquiredPhysicalClues={acquiredPhysicalClues}
         />
         {currentStep === "PROLOGUE" && (

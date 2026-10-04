@@ -1,4 +1,4 @@
-import { ClueData } from "@/pages/api/getCluesWithKeyword";
+import type { ClueData } from "@/types";
 
 export const hotelKeywordIds: Record<string, number[]> = {
   "10살": [44],
