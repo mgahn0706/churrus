@@ -413,10 +413,8 @@ export default function Suspect() {
                 sx={{
                   position: "absolute",
                   inset: 0,
-                  background: `
-                  linear-gradient(to right, rgba(0,0,0,0.95), rgba(0,0,0,0.7) 45%, transparent 70%),
-                  linear-gradient(to top, rgba(0,0,0,0.85), transparent 60%)
-                `,
+                  background:
+                    "linear-gradient(to top right, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.56) 30%, rgba(0,0,0,0.14) 58%, transparent 78%)",
                 }}
               />
 
