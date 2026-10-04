@@ -33,6 +33,8 @@ import { ghostSuspect, ghostVictim } from "./ghost/suspects";
 import { boxSuspects, boxVictim } from "./box/suspects";
 import { ghostClues } from "./ghost/clues";
 import { boxClues } from "./box/clues";
+import { paradeClues } from "./parade/clues";
+import { paradeSuspects, paradeVictims } from "./parade/suspects";
 
 export const scenarios: ScenarioType[] = [
   {
@@ -279,5 +281,21 @@ export const scenarios: ScenarioType[] = [
     victims: [boxVictim],
     clues: boxClues,
     color: "#a16a02",
+  },
+  {
+    id: "parade",
+    title: "",
+    creators: [],
+    gameType: "CLUE",
+    numberOfSuspects: 0,
+    histories: [],
+    backgroundImage: "/image/suspect/scenario/parade/parade-main.png",
+    isInDevelopment: true,
+    description: "",
+    places: [],
+    suspects: paradeSuspects,
+    victims: paradeVictims,
+    clues: paradeClues,
+    color: "#000000",
   },
 ];
