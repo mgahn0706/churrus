@@ -377,18 +377,19 @@ export default function Suspect() {
             {/* ================= RIGHT PANEL ================= */}
             <Box
               sx={{
-                flex: 1,
+                flex: { xs: "0 0 auto", md: 1 },
                 position: "relative",
-                overflow: { xs: "visible", md: "hidden" },
-                minHeight: { xs: 360, md: "auto" },
+                overflow: "hidden",
+                minHeight: { xs: 416, sm: 500, md: "auto" },
               }}
             >
               {/* HERO IMAGE */}
               <Box
                 sx={{
-                  position: "relative",
+                  position: "absolute",
+                  inset: 0,
                   width: "100%",
-                  height: { xs: 220, sm: 280, md: "100%" },
+                  height: "100%",
                 }}
               >
                 <Image
@@ -413,8 +414,10 @@ export default function Suspect() {
                 sx={{
                   position: "absolute",
                   inset: 0,
-                  background:
-                    "linear-gradient(to top right, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.56) 30%, rgba(0,0,0,0.14) 58%, transparent 78%)",
+                  background: `
+                    linear-gradient(to right, #000 0%, rgba(0,0,0,0.78) 8%, rgba(0,0,0,0.35) 22%, rgba(0,0,0,0.08) 42%, transparent 55%),
+                    linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.62) 25%, rgba(0,0,0,0.18) 55%, transparent 75%)
+                  `,
                 }}
               />
 
@@ -436,7 +439,9 @@ export default function Suspect() {
                   bottom: { md: 100 },
                   left: { md: 90 },
                   maxWidth: 700,
-                  p: { xs: 2.5, sm: 3, md: 0 },
+                  px: { xs: 2.5, sm: 3, md: 0 },
+                  pt: { xs: "240px", sm: "300px", md: 0 },
+                  pb: { xs: 2.5, sm: 3, md: 0 },
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "flex-start",
@@ -463,7 +468,7 @@ export default function Suspect() {
                 >
                   <Chip
                     icon={<PeopleAlt />}
-                    label={`용의자 ${current.numberOfSuspects}명`}
+                    label={`용의자 ${current.suspects.length}명`}
                     sx={{
                       bgcolor: `${current.color}30`,
                       color: "rgba(255,255,255,0.9)",
@@ -540,10 +545,11 @@ export default function Suspect() {
           <Box
             sx={{
               width: { xs: "100%", md: 300 },
+              boxSizing: "border-box",
               display: "flex",
               flexDirection: "column",
               gap: 2,
-              borderRadius: 4,
+              borderRadius: 5,
               p: { xs: 2, md: 2 },
               background: "rgba(255,255,255,0.04)",
               border: `1px solid ${current.color}33`,

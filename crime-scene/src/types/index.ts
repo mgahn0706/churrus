@@ -54,7 +54,6 @@ interface ScenarioBase {
   color: string;
   title: string;
   creators: string[];
-  numberOfSuspects: number;
   backgroundImage: string;
   id: string;
   isInDevelopment: boolean;
