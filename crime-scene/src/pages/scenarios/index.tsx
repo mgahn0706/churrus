@@ -448,11 +448,24 @@ export default function Suspect() {
                 }}
               >
                 <Typography
+                  lang="en"
+                  sx={{
+                    mb: { xs: 0.6, md: 0.7 },
+                    fontSize: "clamp(9px, 0.75vw, 11px)",
+                    fontWeight: 600,
+                    lineHeight: 1.3,
+                    letterSpacing: "0.12em",
+                    color: "rgba(255,255,255,0.46)",
+                  }}
+                >
+                  {current.englishTitle}
+                </Typography>
+                <Typography
                   sx={{
                     fontSize: "clamp(28px, 4vw, 52px)",
                     fontWeight: 800,
                     lineHeight: 1.06,
-                    mb: { xs: 0.9, md: 1.2 },
+                    mb: { xs: 1.2, md: 1.5 },
                   }}
                 >
                   {current.title}
@@ -461,24 +474,29 @@ export default function Suspect() {
                 <Box
                   sx={{
                     display: "flex",
-                    gap: 1,
-                    mb: { xs: 1.1, md: 1.5 },
+                    gap: 0.75,
+                    mb: { xs: 3, md: 4 },
                     flexWrap: "wrap",
                   }}
                 >
                   <Chip
+                    size="small"
                     icon={<PeopleAlt />}
                     label={`용의자 ${current.suspects.length}명`}
                     sx={{
-                      bgcolor: `${current.color}30`,
-                      color: "rgba(255,255,255,0.9)",
-                      border: `1px solid ${current.color}78`,
+                      height: 28,
+                      bgcolor: "rgba(5,9,15,0.48)",
+                      color: "rgba(255,255,255,0.76)",
+                      border: `1px solid ${current.color}52`,
+                      fontSize: 12,
                       "& .MuiChip-icon": {
-                        color: "rgba(255,255,255,0.82)",
+                        color: "rgba(255,255,255,0.62)",
+                        fontSize: 17,
                       },
                     }}
                   />
                   <Chip
+                    size="small"
                     icon={<Search />}
                     label={
                       current.gameType === "CLUE"
@@ -486,37 +504,30 @@ export default function Suspect() {
                         : "키워드 검색형"
                     }
                     sx={{
-                      bgcolor: `${current.color}30`,
-                      color: "rgba(255,255,255,0.9)",
-                      border: `1px solid ${current.color}78`,
+                      height: 28,
+                      bgcolor: "rgba(5,9,15,0.48)",
+                      color: "rgba(255,255,255,0.76)",
+                      border: `1px solid ${current.color}52`,
+                      fontSize: 12,
                       "& .MuiChip-icon": {
-                        color: "rgba(255,255,255,0.82)",
+                        color: "rgba(255,255,255,0.62)",
+                        fontSize: 17,
                       },
                     }}
                   />
                 </Box>
 
-                <Typography
-                  sx={{
-                    fontSize: "clamp(14px, 1.1vw, 18px)",
-                    opacity: 0.9,
-                    lineHeight: 1.72,
-                    maxWidth: 560,
-                    mb: { xs: 1.2, md: 1.75 },
-                  }}
-                >
-                  {current.description}
-                </Typography>
-
                 <Button
-                  startIcon={<PlayArrowRounded />}
+                  startIcon={
+                    current.isInDevelopment ? undefined : <PlayArrowRounded />
+                  }
                   onClick={handleSelect}
                   disabled={current.isInDevelopment}
                   sx={{
                     px: 3,
                     py: 1.2,
                     borderRadius: 999,
-                    fontWeight: 600,
+                    fontWeight: 700,
                     fontSize: 14,
                     background: current.color,
                     color: "#fff",
@@ -535,7 +546,7 @@ export default function Suspect() {
                     },
                   }}
                 >
-                  조사 시작
+                  {current.isInDevelopment ? "준비 중" : "조사 시작"}
                 </Button>
               </Box>
             </Box>
@@ -548,7 +559,7 @@ export default function Suspect() {
               boxSizing: "border-box",
               display: "flex",
               flexDirection: "column",
-              gap: 2,
+              gap: 1.5,
               borderRadius: 5,
               p: { xs: 2, md: 2 },
               background: "rgba(255,255,255,0.04)",
@@ -594,17 +605,23 @@ export default function Suspect() {
               sx={{
                 px: 1,
                 pt: 1,
-                pb: 1.5,
-                borderBottom: "1px solid rgba(111,174,255,0.24)",
+                pb: 0.75,
               }}
             >
-              <Typography sx={{ fontSize: 12, letterSpacing: 2, opacity: 0.7 }}>
+              <Typography
+                sx={{
+                  fontSize: 10,
+                  fontWeight: 700,
+                  letterSpacing: 1.8,
+                  color: "rgba(255,255,255,0.48)",
+                }}
+              >
                 CASE FILE {String(currentIndex + 1).padStart(2, "0")}
               </Typography>
               <Typography
                 sx={{
-                  mt: 0.6,
-                  fontSize: 15,
+                  mt: 0.7,
+                  fontSize: 16,
                   fontWeight: 700,
                   lineHeight: 1.35,
                   color: "rgba(255,255,255,0.88)",
@@ -612,6 +629,18 @@ export default function Suspect() {
               >
                 {current.title}
               </Typography>
+              {current.description && (
+                <Typography
+                  sx={{
+                    mt: 0.45,
+                    fontSize: 12,
+                    lineHeight: 1.55,
+                    color: "rgba(255,255,255,0.64)",
+                  }}
+                >
+                  {current.description}
+                </Typography>
+              )}
             </Box>
 
             <Box
@@ -623,7 +652,15 @@ export default function Suspect() {
                 "&::-webkit-scrollbar": { display: "none" },
               }}
             >
-              <Typography sx={{ fontSize: 13, opacity: 0.7, mb: 0.5 }}>
+              <Typography
+                sx={{
+                  fontSize: 11,
+                  fontWeight: 700,
+                  letterSpacing: "0.08em",
+                  color: "rgba(255,255,255,0.56)",
+                  mb: 0.75,
+                }}
+              >
                 피해자
               </Typography>
               <Box sx={{ display: "flex", flexDirection: "column", gap: 0.8 }}>
@@ -645,7 +682,15 @@ export default function Suspect() {
                   borderTop: "1px solid rgba(132,158,185,0.12)",
                 }}
               >
-                <Typography sx={{ fontSize: 13, opacity: 0.7, mb: 0.5 }}>
+                <Typography
+                  sx={{
+                    fontSize: 11,
+                    fontWeight: 700,
+                    letterSpacing: "0.08em",
+                    color: "rgba(255,255,255,0.56)",
+                    mb: 0.75,
+                  }}
+                >
                   용의자
                 </Typography>
                 <Box

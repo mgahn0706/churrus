@@ -71,6 +71,7 @@ export type VictimType = SuspectType;
 export interface ScenarioSummary {
   color: string;
   title: string;
+  englishTitle: string;
   creators: string[];
   backgroundImage: string;
   id: string;

@@ -25,6 +25,7 @@ import { paradeSuspects, paradeVictims } from "./parade/suspects";
 export const scenarioCatalog = [
   {
     title: "스타트업 살인사건",
+    englishTitle: "Murder at the Startup",
     creators: ["안민규"],
     backgroundImage: "/image/scenario/startup/startup-main.png",
     id: "startup",
@@ -39,6 +40,7 @@ export const scenarioCatalog = [
   },
   {
     title: "와부고 살인사건",
+    englishTitle: "Murder at the Wabu High School",
     creators: ["안민규"],
     gameType: "TEXT",
     histories: ["2023년 10월 정기모임", "2024년 3월 OT", "2026년 9월 OT"],
@@ -53,6 +55,7 @@ export const scenarioCatalog = [
   },
   {
     title: "자하연 살인사건",
+    englishTitle: "Murder at the Jahayeon Pond",
     creators: ["안민규"],
     gameType: "CLUE",
     backgroundImage: "/image/scenario/jahayeon/jahayeon-main.png",
@@ -67,6 +70,7 @@ export const scenarioCatalog = [
   },
   {
     title: "두레문예관 살인사건",
+    englishTitle: "Murder at the Dure Arts Center",
     creators: ["강재호", "고재준", "김지훈", "김현준", "안민규"],
     gameType: "TEXT",
     backgroundImage: "/image/scenario/dure/dure-main.png",
@@ -81,6 +85,7 @@ export const scenarioCatalog = [
   },
   {
     title: "추러스 박물관 살인사건",
+    englishTitle: "Murder at the Churrus Museum",
     creators: ["김지훈", "안민규"],
     gameType: "CLUE",
     backgroundImage: "/image/scenario/museum/museum-main.png",
@@ -96,6 +101,7 @@ export const scenarioCatalog = [
   {
     id: "serial",
     title: "28동-301동 연쇄 살인사건",
+    englishTitle: "Murder in the Buildings 28 and 301",
     creators: ["안민규"],
     gameType: "CLUE",
     backgroundImage: "/image/scenario/serial/serial-main.png",
@@ -110,6 +116,7 @@ export const scenarioCatalog = [
   {
     id: "mountain",
     title: "청룡산 살인사건",
+    englishTitle: "Murder on the Cheongnyong Mountain",
     creators: ["조경아", "김태연", "안민규"],
     gameType: "CLUE",
     backgroundImage: "/image/scenario/mountain/mountain-main.png",
@@ -123,6 +130,7 @@ export const scenarioCatalog = [
   },
   {
     title: "추리소설가 살인사건",
+    englishTitle: "Murder of the Mystery Novelist",
     creators: ["김지훈", "안민규"],
     gameType: "CLUE",
     histories: [],
@@ -139,6 +147,7 @@ export const scenarioCatalog = [
   {
     id: "subway",
     title: "서울대입구역 살인사건",
+    englishTitle: "Murder at the SNU Subway Station",
     creators: ["안민규"],
     gameType: "CLUE",
     histories: [],
@@ -153,6 +162,7 @@ export const scenarioCatalog = [
   {
     id: "clubroom",
     title: "동아리방 살인사건",
+    englishTitle: "Murder in the Clubroom",
     creators: ["허정", "강재호", "오수진", "안민규"],
     gameType: "CLUE",
     histories: [],
@@ -167,6 +177,7 @@ export const scenarioCatalog = [
   {
     id: "bluemoon",
     title: "푸른 달 살인사건",
+    englishTitle: "Murder in the Blue Moon Village",
     creators: ["김시영", "김태연", "조준호"],
     gameType: "TEXT",
     histories: ["2026년 겨울 대이동"],
@@ -180,6 +191,7 @@ export const scenarioCatalog = [
   },
   {
     title: "케이팝 데몬 헌터스 살인사건",
+    englishTitle: "Murder of the K-pop Demon Hunters",
     creators: ["김수인", "김태연", "정해찬", "조경아"],
     gameType: "CLUE",
     backgroundImage: "/image/scenario/kpop/kpop-main.png",
@@ -194,6 +206,7 @@ export const scenarioCatalog = [
   },
   {
     title: "호텔 살인사건",
+    englishTitle: "Murder at the Snowbound Hotel",
     creators: ["안민규"],
     gameType: "TEXT",
     backgroundImage: "/image/scenario/hotel/hotel-main.png",
@@ -208,6 +221,7 @@ export const scenarioCatalog = [
   },
   {
     title: "귀신의 집 살인사건",
+    englishTitle: "Murder in the Haunted House",
     creators: ["정해찬", "손주영", "안민규"],
     gameType: "CLUE",
     backgroundImage: "/image/scenario/ghost/ghost-main.png",
@@ -223,6 +237,7 @@ export const scenarioCatalog = [
   {
     id: "box",
     title: "뒤주 살인사건",
+    englishTitle: "Murder in the Rice Chest",
     creators: ["강재호", "고민우", "김태연", "김혜린", "오수진", "안민규"],
     gameType: "CLUE",
     histories: [],
@@ -237,6 +252,7 @@ export const scenarioCatalog = [
   {
     id: "parade",
     title: "퍼레이드 살인사건",
+    englishTitle: "Murder at the Dark Fantasy Parade",
     creators: ["안민규"],
     gameType: "CLUE",
     histories: [],
