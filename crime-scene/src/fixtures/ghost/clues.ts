@@ -119,7 +119,7 @@ export const ghostClues: ClueType[] = [
     y: 24.277,
     image: `${GHOST_CLUE_IMAGE_PATH}/ghost-11.png`,
     description:
-      "7시 30분 팀은 완주, 8시 팀과 8시 30분 팀은 관의 방에서 중도포기, 9시 팀은 완주한 것으로 기록되어 있다.",
+      "7시 30분 팀은 완주, 8시 팀은 관의 방에서, 8시 30분 팀은 거울의 방에서 중도포기, 9시 팀은 완주한 것으로 기록되어 있다.",
     type: "basic",
     place: "staff",
   },
