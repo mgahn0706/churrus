@@ -407,7 +407,7 @@ export const hotelClues: ClueData[] = [
   },
   {
     id: 16,
-    text: "임원생 휴대전호를 보니, 오후 11시에 유교수로부터 온 전화 기록이 있었어요. 그러고 11시 5분에 이어서 양연구가 임원생에게 전화한 기록이 있네요.",
+    text: "임원생 휴대화를 보니, 오후 11시에 유교수로부터 온 전화 기록이 있었어요. 그러고 11시 5분에 이어서 양연구가 임원생에게 전화한 기록이 있네요.",
     from: "조수",
   },
   {
@@ -435,9 +435,7 @@ export const hotelClues: ClueData[] = [
     text: "크롬친화세포종 치료약 관련 임상실험 참가자 명단이에요.",
     from: "조수",
     physicalClueId: 2,
-    images: [
-      "/image/scenario/hotel/clues/clinical_trial_participant_list.png",
-    ],
+    images: ["/image/scenario/hotel/clues/clinical_trial_participant_list.png"],
   },
   {
     id: 22,
@@ -576,9 +574,7 @@ export const hotelClues: ClueData[] = [
     text: "여기 홍연구 씨의 요양병원 기록 자료입니다.",
     from: "조수",
     physicalClueId: 6,
-    images: [
-      "/image/scenario/hotel/clues/hong_researcher_medical_record.png",
-    ],
+    images: ["/image/scenario/hotel/clues/hong_researcher_medical_record.png"],
   },
   {
     id: 47,
