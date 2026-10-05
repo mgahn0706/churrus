@@ -1,5 +1,6 @@
 import { CertificationCardType } from "@/types";
 import { Box, Typography } from "@mui/material";
+import Image from "next/image";
 import { useState } from "react";
 
 export default function CertificationCard({
@@ -9,7 +10,6 @@ export default function CertificationCard({
   card: CertificationCardType;
   onClick?: () => void;
 }) {
-  const [isHovered, setIsHovered] = useState(false);
   const [isFlipped, setIsFlipped] = useState(false);
   const solvedLabel = card.historyLabel ?? card.date;
 
@@ -19,8 +19,6 @@ export default function CertificationCard({
         setIsFlipped((previous) => !previous);
         onClick?.();
       }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       sx={{
         position: "relative",
         width: "100%",
@@ -29,11 +27,18 @@ export default function CertificationCard({
         borderRadius: "20px",
         cursor: "pointer",
         perspective: "1400px",
-        transform: `translateY(${isHovered ? "-4px" : "0px"}) scale(${isHovered ? 1.01 : 1})`,
+        contentVisibility: "auto",
+        containIntrinsicSize: "360px 504px",
+        transform: "translateY(0) scale(1)",
         transition: "transform 180ms ease, box-shadow 180ms ease",
-        boxShadow: isHovered
-          ? `0 0 24px ${card.color}33, 0 24px 56px rgba(0,0,0,0.28)`
-          : `0 0 10px ${card.color}22, 0 14px 36px rgba(0,0,0,0.22)`,
+        boxShadow: `0 0 10px ${card.color}22, 0 14px 36px rgba(0,0,0,0.22)`,
+        "&:hover": {
+          transform: "translateY(-4px) scale(1.01)",
+          boxShadow: `0 0 24px ${card.color}33, 0 24px 56px rgba(0,0,0,0.28)`,
+        },
+        "&:hover .certification-card-shine": {
+          transform: "translateX(18%) rotate(8deg)",
+        },
       }}
     >
       <Box
@@ -51,17 +56,21 @@ export default function CertificationCard({
           sx={{
             position: "absolute",
             inset: 0,
-            backgroundImage: `url(${card.posterImage})`,
-            backgroundPosition: "center",
-            backgroundSize: "cover",
-            backgroundRepeat: "no-repeat",
             opacity: isFlipped ? 0 : 1,
             transform: `scale(${isFlipped ? 0.98 : 1})`,
             transition: "opacity 220ms ease, transform 220ms ease",
             pointerEvents: isFlipped ? "none" : "auto",
           }}
         >
+          <Image
+            src={card.posterImage}
+            alt={`${card.title} 인증 카드`}
+            fill
+            sizes="(max-width: 600px) calc(100vw - 32px), 360px"
+            style={{ objectFit: "cover" }}
+          />
           <Box
+            className="certification-card-shine"
             sx={{
               position: "absolute",
               inset: 0,
@@ -76,7 +85,7 @@ export default function CertificationCard({
               inset: "-18%",
               background:
                 "linear-gradient(115deg, transparent 36%, rgba(255,255,255,0.18) 49%, transparent 62%)",
-              transform: `translateX(${isHovered ? "18%" : "-28%"}) rotate(8deg)`,
+              transform: "translateX(-28%) rotate(8deg)",
               transition: "transform 320ms ease",
               opacity: 0.75,
               pointerEvents: "none",
