@@ -243,7 +243,7 @@ export const scenarioCatalog = [
     backgroundImage: "/image/scenario/parade/parade-main.png",
     isInDevelopment: true,
     description: "또 다른 추추어드벤처에서 펼쳐지는 신비하고 기묘한 살인사건",
-    places: [],
+    places: ["theme-park", "staff", "storage"],
     suspects: paradeSuspects,
     victims: paradeVictims,
     color: "#BF5AF2",
