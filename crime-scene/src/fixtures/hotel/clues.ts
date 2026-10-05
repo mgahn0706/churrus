@@ -323,6 +323,7 @@ export const hotelKeywordIds: Record<string, number[]> = {
   화장실: [89],
   확인서: [95],
   환자: [35, 72],
+  휴대폰: [16, 49],
   휴대전화: [16, 49],
   흉기: [7, 52],
 };
