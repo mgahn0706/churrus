@@ -1,4 +1,4 @@
-import { ClueData } from "@/pages/api/getCluesWithKeyword";
+import type { ClueData } from "@/types";
 
 export const dureKeywordIds: Record<string, number[]> = {
   "100만원": [45],

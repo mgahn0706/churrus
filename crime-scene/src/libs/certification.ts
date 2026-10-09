@@ -1,4 +1,4 @@
-import { scenarios } from "@/fixtures";
+import { scenarioCatalog } from "@/fixtures";
 import { CertificationCardType } from "@/types";
 
 const CERTIFICATION_STORAGE_KEY = "cert-cards";
@@ -7,7 +7,7 @@ function buildCertificationCard(
   scenarioId: string,
   isSuccess: boolean
 ): CertificationCardType | null {
-  const scenario = scenarios.find((item) => item.id === scenarioId);
+  const scenario = scenarioCatalog.find((item) => item.id === scenarioId);
 
   if (!scenario) {
     return null;
@@ -50,7 +50,7 @@ function getStoredScenarioIds(): string[] {
 export function getAllCertificationCards(): CertificationCardType[] {
   const storedScenarioIds = new Set(getStoredScenarioIds());
 
-  return scenarios
+  return scenarioCatalog
     .map((scenario) =>
       buildCertificationCard(scenario.id, storedScenarioIds.has(scenario.id))
     )

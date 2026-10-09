@@ -21,10 +21,11 @@ import MapModal from "./MapModal";
 import SuspectsInfoCard from "../InGame/SuspectsInfoCard";
 import SuspectVoteModal from "../InGame/SuspectVoteModal";
 import { ErrorOutline } from "@mui/icons-material";
-import { scenarios } from "../../fixtures";
+import { scenarioCatalog } from "@/fixtures";
+import type { TextScenarioType } from "@/types";
 
 interface TextGameHeaderProps {
-  scenarioId: string;
+  scenario: TextScenarioType;
   acquiredPhysicalClues: PhysicalClue[];
 }
 
@@ -42,7 +43,7 @@ const emojiMap: Record<string, string> = {
 };
 
 export default function TextGameHeader({
-  scenarioId,
+  scenario,
   acquiredPhysicalClues,
 }: TextGameHeaderProps) {
   const router = useRouter();
@@ -52,8 +53,7 @@ export default function TextGameHeader({
   const [selectedPhysicalClue, setSelectedPhysicalClue] =
     useState<PhysicalClue | null>(null);
 
-  const scenarioIndex = scenarios.findIndex((s) => s.id === scenarioId);
-  const scenario = scenarios.find((s) => s.id === scenarioId)!;
+  const scenarioIndex = scenarioCatalog.findIndex((s) => s.id === scenario.id);
   const { victims, suspects, places, title } = scenario;
   const shouldShowMap = places.length > 0;
   const physicalClues =
@@ -78,7 +78,7 @@ export default function TextGameHeader({
     <>
       {shouldShowMap && (
         <MapModal
-          scenarioId={scenarioId}
+          scenarioId={scenario.id}
           isOpen={modalState === "MAP"}
           onClose={() => {
             setModalState(null);
@@ -330,7 +330,7 @@ export default function TextGameHeader({
             </Button>
             <Button
               onClick={() => {
-                router.push(`/scenarios/scenario/${scenarioId}/submit`);
+                router.push(`/scenarios/scenario/${scenario.id}/submit`);
               }}
             >
               최종 제출
@@ -357,7 +357,7 @@ export default function TextGameHeader({
       >
         <Box>
           <Typography fontWeight="bolder" fontSize={16}>
-            {title} {emojiMap[scenarioId]}
+            {title} {emojiMap[scenario.id]}
           </Typography>
         </Box>
         <Box display="flex" justifyContent="space-between" mr={5}>

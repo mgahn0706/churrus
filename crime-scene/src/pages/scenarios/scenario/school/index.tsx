@@ -1,15 +1,14 @@
 import InTextGame from "@/components/InTextGame";
-import { scenarios } from "@/fixtures";
-import { TextScenarioType } from "@/types";
+import { createTextScenario } from "@/fixtures";
+import { schoolClues } from "@/fixtures/school/clues";
+import { schoolPrologue } from "@/fixtures/school/prologue";
+
+const schoolScenario = createTextScenario(
+  "school",
+  schoolClues,
+  schoolPrologue
+);
 
 export default function School() {
-  const schoolScenario = scenarios.find(
-    (scenario): scenario is TextScenarioType =>
-      scenario.id === "school" && scenario.gameType === "TEXT"
-  );
-
-  if (!schoolScenario) {
-    throw new Error("Scenario not found");
-  }
   return <InTextGame scenario={schoolScenario} />;
 }

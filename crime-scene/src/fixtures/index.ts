@@ -1,46 +1,32 @@
-import { ScenarioType } from "@/types";
+import type {
+  ClueData,
+  ClueScenarioType,
+  ClueType,
+  ScenarioSummary,
+  TextScenarioType,
+} from "@/types";
 import { startUpSuspects, startUpVictim } from "./startup/suspects";
 import { schoolSuspects, schoolVictim } from "./school/suspects";
 import { jahayeonSuspects, jahayeonVictim } from "./jahayeon/suspects";
 import { dureSuspects, dureVictim } from "./dure/suspects";
-import { durePrologue } from "./dure/prologue";
-import { schoolPrologue } from "./school/prologue";
-import { bluemoonPrologue } from "./bluemoon/prologue";
-import { startUpClues } from "./startup/clues";
-import { jahayeonClues } from "./jahayeon/clues";
-import { schoolClues } from "./school/clues";
-import { dureClues } from "./dure/clues";
 import { museumSuspects, museumVictim } from "./museum/suspects";
-import { museumClues } from "./museum/clues";
 import { serialSuspects, serialVictims } from "./serial/suspects";
-import { serialClues } from "./serial/clues";
 import { bluemoonSuspects, bluemoonVictim } from "./bluemoon/suspects";
-import { bluemoonClues } from "./bluemoon/clues";
 import { mountainSuspects, mountainVictim } from "./mountain/suspects";
-import { mountainClues } from "./mountain/clues";
 import { kpopSuspects, kpopVictim } from "./kpop/suspects";
-import { kpopClues } from "./kpop/clues";
 import { novelistSuspects, novelistVictim } from "./novelist/suspects";
-import { novelistClues } from "./novelist/clues";
 import { subwaySuspects, subwayVictim } from "./subway/suspects";
-import { subwayClues } from "./subway/clues";
 import { clubroomSuspects, clubroomVictim } from "./clubroom/suspects";
-import { clubroomClues } from "./clubroom/clues";
 import { hotelSuspects, hotelVictim } from "./hotel/suspects";
-import { hotelClues } from "./hotel/clues";
-import { hotelPrologue } from "./hotel/prologue";
 import { ghostSuspect, ghostVictim } from "./ghost/suspects";
 import { boxSuspects, boxVictim } from "./box/suspects";
-import { ghostClues } from "./ghost/clues";
-import { boxClues } from "./box/clues";
-import { paradeClues } from "./parade/clues";
 import { paradeSuspects, paradeVictims } from "./parade/suspects";
 
-export const scenarios: ScenarioType[] = [
+export const scenarioCatalog = [
   {
     title: "스타트업 살인사건",
+    englishTitle: "Murder at the Startup",
     creators: ["안민규"],
-    numberOfSuspects: 3,
     backgroundImage: "/image/scenario/startup/startup-main.png",
     id: "startup",
     isInDevelopment: false,
@@ -50,14 +36,13 @@ export const scenarios: ScenarioType[] = [
     gameType: "CLUE",
     suspects: startUpSuspects,
     victims: [startUpVictim],
-    clues: startUpClues,
     color: "#3B4CCA",
   },
   {
     title: "와부고 살인사건",
+    englishTitle: "Murder at the Wabu High School",
     creators: ["안민규"],
     gameType: "TEXT",
-    numberOfSuspects: 3,
     histories: ["2023년 10월 정기모임", "2024년 3월 OT", "2026년 9월 OT"],
     backgroundImage: "/image/scenario/school/school-main.png",
     id: "school",
@@ -66,15 +51,13 @@ export const scenarios: ScenarioType[] = [
     description: "와부고등학교 교실에서 한 학생이 사망한 사건",
     suspects: schoolSuspects,
     victims: [schoolVictim],
-    prologue: schoolPrologue,
-    clues: schoolClues,
     color: "#ef4444",
   },
   {
     title: "자하연 살인사건",
+    englishTitle: "Murder at the Jahayeon Pond",
     creators: ["안민규"],
     gameType: "CLUE",
-    numberOfSuspects: 4,
     backgroundImage: "/image/scenario/jahayeon/jahayeon-main.png",
     id: "jahayeon",
     isInDevelopment: false,
@@ -83,14 +66,13 @@ export const scenarios: ScenarioType[] = [
     places: ["pond", "dorm", "house"],
     suspects: jahayeonSuspects,
     victims: [jahayeonVictim],
-    clues: jahayeonClues,
     color: "#0891b2",
   },
   {
     title: "두레문예관 살인사건",
+    englishTitle: "Murder at the Dure Arts Center",
     creators: ["강재호", "고재준", "김지훈", "김현준", "안민규"],
     gameType: "TEXT",
-    numberOfSuspects: 4,
     backgroundImage: "/image/scenario/dure/dure-main.png",
     id: "dure",
     isInDevelopment: false,
@@ -99,48 +81,44 @@ export const scenarios: ScenarioType[] = [
     places: ["3F", "4F"],
     suspects: dureSuspects,
     victims: [dureVictim],
-    prologue: durePrologue,
-    clues: dureClues,
     color: "#ffcc00",
   },
   {
     title: "추러스 박물관 살인사건",
+    englishTitle: "Murder at the Churrus Museum",
     creators: ["김지훈", "안민규"],
     gameType: "CLUE",
-    numberOfSuspects: 3,
     backgroundImage: "/image/scenario/museum/museum-main.png",
     id: "museum",
-    isInDevelopment: true,
+    isInDevelopment: false,
     histories: ["2023년 9월 OT"],
     description: "추러스 박물관에서 발생한 기괴한 살인사건",
     places: ["A", "B"],
     suspects: museumSuspects,
     victims: [museumVictim],
-    clues: museumClues,
     color: "#d97706",
   },
   {
     id: "serial",
     title: "28동-301동 연쇄 살인사건",
+    englishTitle: "Murder in the Buildings 28 and 301",
     creators: ["안민규"],
     gameType: "CLUE",
-    numberOfSuspects: 3,
     backgroundImage: "/image/scenario/serial/serial-main.png",
     isInDevelopment: false,
     description: "서울대학교 28동과 301동에서 동시에 사람이 추락사했다.",
     places: ["28", "301"],
     suspects: serialSuspects,
     victims: serialVictims,
-    clues: serialClues,
     color: "#9333ea",
     histories: ["2026년 5월 정기모임"],
   },
   {
     id: "mountain",
     title: "청룡산 살인사건",
+    englishTitle: "Murder on the Cheongnyong Mountain",
     creators: ["조경아", "김태연", "안민규"],
     gameType: "CLUE",
-    numberOfSuspects: 4,
     backgroundImage: "/image/scenario/mountain/mountain-main.png",
     isInDevelopment: false,
     description: "청룡산 등산로에서 발생한 의문의 추락사건",
@@ -148,48 +126,45 @@ export const scenarios: ScenarioType[] = [
     histories: ["2026년 6월 정기모임"],
     suspects: mountainSuspects,
     victims: [mountainVictim],
-    clues: mountainClues,
     color: "#34c759",
   },
   {
     title: "추리소설가 살인사건",
+    englishTitle: "Murder of the Mystery Novelist",
     creators: ["김지훈", "안민규"],
     gameType: "CLUE",
-    numberOfSuspects: 4,
     histories: [],
     backgroundImage: "/image/scenario/novelist/novelist-main.png",
     id: "novelist",
-    isInDevelopment: true,
+    isInDevelopment: false,
     places: ["room", "lounge"],
     description: "추리소설계의 거장과 함께한 신년회에서 발생한 의문의 살인사건",
     suspects: novelistSuspects,
     victims: [novelistVictim],
-    clues: novelistClues,
     color: "#ac7f5e",
   },
 
   {
     id: "subway",
     title: "서울대입구역 살인사건",
+    englishTitle: "Murder at the SNU Subway Station",
     creators: ["안민규"],
     gameType: "CLUE",
-    numberOfSuspects: 4,
     histories: [],
     backgroundImage: "/image/scenario/subway/subway-main.png",
-    isInDevelopment: true,
+    isInDevelopment: false,
     description: "2020년 4월, 서울대입구역에서 일어난 사망 사건",
     places: ["1F", "B1", "B2"],
     suspects: subwaySuspects,
     victims: [subwayVictim],
-    clues: subwayClues,
     color: "#00A84D",
   },
   {
     id: "clubroom",
     title: "동아리방 살인사건",
+    englishTitle: "Murder in the Clubroom",
     creators: ["허정", "강재호", "오수진", "안민규"],
     gameType: "CLUE",
-    numberOfSuspects: 4,
     histories: [],
     backgroundImage: "/image/scenario/clubroom/clubroom-main.png",
     isInDevelopment: true,
@@ -197,15 +172,14 @@ export const scenarios: ScenarioType[] = [
     places: ["room", "recycling", "homes"],
     suspects: clubroomSuspects,
     victims: [clubroomVictim],
-    clues: clubroomClues,
     color: "#f59e0b",
   },
   {
     id: "bluemoon",
     title: "푸른 달 살인사건",
+    englishTitle: "Murder in the Blue Moon Village",
     creators: ["김시영", "김태연", "조준호"],
     gameType: "TEXT",
-    numberOfSuspects: 6,
     histories: ["2026년 겨울 대이동"],
     backgroundImage: "/image/scenario/bluemoon/bluemoon-main.png",
     isInDevelopment: false,
@@ -213,15 +187,13 @@ export const scenarios: ScenarioType[] = [
     places: ["village"],
     suspects: bluemoonSuspects,
     victims: [bluemoonVictim],
-    prologue: bluemoonPrologue,
-    clues: bluemoonClues,
     color: "#1e6df4",
   },
   {
     title: "케이팝 데몬 헌터스 살인사건",
+    englishTitle: "Murder of the K-pop Demon Hunters",
     creators: ["김수인", "김태연", "정해찬", "조경아"],
     gameType: "CLUE",
-    numberOfSuspects: 5,
     backgroundImage: "/image/scenario/kpop/kpop-main.png",
     id: "kpop",
     histories: ["2025년 여름 대이동"],
@@ -230,31 +202,28 @@ export const scenarios: ScenarioType[] = [
     places: ["lounge", "outdoor"],
     suspects: kpopSuspects,
     victims: [kpopVictim],
-    clues: kpopClues,
     color: "#e91e63",
   },
   {
     title: "호텔 살인사건",
+    englishTitle: "Murder at the Snowbound Hotel",
     creators: ["안민규"],
     gameType: "TEXT",
-    numberOfSuspects: 4,
     backgroundImage: "/image/scenario/hotel/hotel-main.png",
     id: "hotel",
     histories: [],
-    isInDevelopment: true,
+    isInDevelopment: false,
     description: "한 겨울, 눈 내린 호텔에서 발생한 실종 사건",
     places: [],
     suspects: hotelSuspects,
     victims: [hotelVictim],
-    clues: hotelClues,
     color: "#8e8e93",
-    prologue: hotelPrologue,
   },
   {
     title: "귀신의 집 살인사건",
+    englishTitle: "Murder in the Haunted House",
     creators: ["정해찬", "손주영", "안민규"],
     gameType: "CLUE",
-    numberOfSuspects: 4,
     backgroundImage: "/image/scenario/ghost/ghost-main.png",
     id: "ghost",
     histories: [],
@@ -263,15 +232,14 @@ export const scenarios: ScenarioType[] = [
     places: ["haunted-house", "staff", "theme-park"],
     suspects: ghostSuspect,
     victims: [ghostVictim],
-    clues: ghostClues,
     color: "#6b7280",
   },
   {
     id: "box",
     title: "뒤주 살인사건",
+    englishTitle: "Murder in the Rice Chest",
     creators: ["강재호", "고민우", "김태연", "김혜린", "오수진", "안민규"],
     gameType: "CLUE",
-    numberOfSuspects: 4,
     histories: [],
     backgroundImage: "/image/scenario/box/box-main.png",
     isInDevelopment: false,
@@ -279,23 +247,63 @@ export const scenarios: ScenarioType[] = [
     places: ["palace", "market", "abandoned-palace"],
     suspects: boxSuspects,
     victims: [boxVictim],
-    clues: boxClues,
     color: "#a16a02",
   },
   {
     id: "parade",
     title: "퍼레이드 살인사건",
-    creators: [],
+    englishTitle: "Murder at the Dark Fantasy Parade",
+    creators: ["안민규"],
     gameType: "CLUE",
-    numberOfSuspects: 0,
     histories: [],
     backgroundImage: "/image/scenario/parade/parade-main.png",
     isInDevelopment: true,
-    description: "",
-    places: [],
+    description: "또 다른 추추어드벤처에서 펼쳐지는 신비하고 기묘한 살인사건",
+    places: ["theme-park", "staff", "storage"],
     suspects: paradeSuspects,
     victims: paradeVictims,
-    clues: paradeClues,
-    color: "#000000",
+    color: "#BF5AF2",
   },
-];
+] satisfies ScenarioSummary[];
+
+export type ScenarioId = (typeof scenarioCatalog)[number]["id"];
+
+const getScenarioSummary = (id: ScenarioId): ScenarioSummary => {
+  const scenario = scenarioCatalog.find((candidate) => candidate.id === id);
+
+  if (!scenario) {
+    throw new Error(`Scenario not found: ${id}`);
+  }
+
+  return scenario;
+};
+
+export const createClueScenario = (
+  id: ScenarioId,
+  content: Pick<
+    ClueScenarioType,
+    "clues" | "prologue" | "movePlaceButtons" | "additionalQuestions"
+  >
+): ClueScenarioType => {
+  const scenario = getScenarioSummary(id);
+
+  if (scenario.gameType !== "CLUE") {
+    throw new Error(`Scenario is not a clue game: ${id}`);
+  }
+
+  return { ...scenario, gameType: "CLUE", ...content };
+};
+
+export const createTextScenario = (
+  id: ScenarioId,
+  clues: ClueData[],
+  prologue: string[]
+): TextScenarioType => {
+  const scenario = getScenarioSummary(id);
+
+  if (scenario.gameType !== "TEXT") {
+    throw new Error(`Scenario is not a text game: ${id}`);
+  }
+
+  return { ...scenario, gameType: "TEXT", clues, prologue };
+};

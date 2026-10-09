@@ -1,29 +1,25 @@
 import InGameLayout from "@/components/InGame/InGameLayout";
 import { createScenarioTheme } from "@/components/createScenarioTheme";
-import { scenarios } from "@/fixtures";
-import { jahayeonAdditionalQuestions } from "@/fixtures/jahayeon/clues";
+import { createClueScenario } from "@/fixtures";
+import {
+  jahayeonAdditionalQuestions,
+  jahayeonClues,
+} from "@/fixtures/jahayeon/clues";
 import { jahayeonMoveButton } from "@/fixtures/jahayeon/movePlace";
 import { JahayeonPrologue } from "@/fixtures/jahayeon/prologue";
-import { ClueScenarioType } from "@/types";
 import { ThemeProvider } from "@mui/material";
 
-export default function Jahayeon() {
-  const jahayeonScenario = scenarios.find(
-    (scenario): scenario is ClueScenarioType =>
-      scenario.id === "jahayeon" && scenario.gameType === "CLUE"
-  );
+const jahayeonScenario = createClueScenario("jahayeon", {
+  clues: jahayeonClues,
+  movePlaceButtons: jahayeonMoveButton,
+  prologue: <JahayeonPrologue />,
+  additionalQuestions: jahayeonAdditionalQuestions,
+});
 
-  if (!jahayeonScenario) {
-    throw new Error("Scenario not found");
-  }
+export default function Jahayeon() {
   return (
     <ThemeProvider theme={createScenarioTheme(jahayeonScenario.color)}>
-      <InGameLayout
-        movePlaceButton={jahayeonMoveButton}
-        prologue={<JahayeonPrologue />}
-        scenario={jahayeonScenario}
-        additionalQuestions={jahayeonAdditionalQuestions}
-      />
+      <InGameLayout scenario={jahayeonScenario} />
     </ThemeProvider>
   );
 }

@@ -1,4 +1,4 @@
-import { ClueData } from "@/pages/api/getCluesWithKeyword";
+import type { ClueData } from "@/types";
 
 export const schoolKeywordIds: Record<string, number[]> = {
   가방: [40, 47, 55, 77, 93],

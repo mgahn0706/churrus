@@ -1,30 +1,25 @@
 import InGameLayout from "@/components/InGame/InGameLayout";
 import { createScenarioTheme } from "@/components/createScenarioTheme";
-import { scenarios } from "@/fixtures";
-import { mountainAdditionalQuestions } from "@/fixtures/mountain/clues";
+import { createClueScenario } from "@/fixtures";
+import {
+  mountainAdditionalQuestions,
+  mountainClues,
+} from "@/fixtures/mountain/clues";
 import { mountainMoveButton } from "@/fixtures/mountain/movePlace";
 import { MountainPrologue } from "@/fixtures/mountain/prologue";
-import { ClueScenarioType } from "@/types";
 import { ThemeProvider } from "@mui/material";
 
+const mountainScenario = createClueScenario("mountain", {
+  clues: mountainClues,
+  movePlaceButtons: mountainMoveButton,
+  prologue: <MountainPrologue />,
+  additionalQuestions: mountainAdditionalQuestions,
+});
+
 export default function Mountain() {
-  const mountainScenario = scenarios.find(
-    (scenario): scenario is ClueScenarioType =>
-      scenario.id === "mountain" && scenario.gameType === "CLUE"
-  );
-
-  if (!mountainScenario) {
-    throw new Error("Scenario not found");
-  }
-
   return (
     <ThemeProvider theme={createScenarioTheme(mountainScenario.color)}>
-      <InGameLayout
-        movePlaceButton={mountainMoveButton}
-        prologue={<MountainPrologue />}
-        scenario={mountainScenario}
-        additionalQuestions={mountainAdditionalQuestions}
-      />
+      <InGameLayout scenario={mountainScenario} />
     </ThemeProvider>
   );
 }
