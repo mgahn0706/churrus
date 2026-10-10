@@ -1,13 +1,16 @@
 {
-  "dependencies": {
-    "@vercel/analytics": "^1.3.1",
-    "dayjs": "^1.11.10",
-    "sass": "^1.64.1",
-    "yarn": "^1.22.21"
-  },
-  "name": "suspect-web",
+  "name": "churrus-monorepo",
   "version": "1.0.0",
-  "main": "index.js",
+  "private": true,
+  "packageManager": "yarn@1.22.21",
+  "workspaces": [
+    "home",
+    "crime-scene"
+  ],
+  "scripts": {
+    "build:home": "yarn workspace churrus-home build",
+    "build:crime-scene": "yarn workspace churrus-crime-scene build"
+  },
   "repository": "https://github.com/mgahn0706/suspect-web.git",
   "author": "Force, Mingyu <mgahn0706@snu.ac.kr>",
   "license": "MIT"
