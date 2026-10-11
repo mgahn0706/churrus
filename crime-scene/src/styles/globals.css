@@ -17,9 +17,3 @@ body {
     --background-end-rgb: 0, 0, 0;
   }
 }
-
-@font-face {
-  font-family: "NanumSquareEB";
-  src: url(/fonts/NanumSquareEB.ttf);
-  font-weight: 500;
-}
