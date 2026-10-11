@@ -12,7 +12,7 @@ import {
   ThemeProvider,
   Typography,
 } from "@mui/material";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { ReactNode, SyntheticEvent, useEffect, useMemo, useState } from "react";
 import { createScenarioTheme } from "@/components/createScenarioTheme";
 import { scenarioCatalog } from "@/fixtures";

@@ -24,7 +24,6 @@ import SuspectsInfoCard from "./SuspectsInfoCard";
 import SuspectVoteModal from "./SuspectVoteModal";
 import InteractionScoreBadge from "./InteractionScoreBadge";
 import usePreventUnload from "@/hooks/usePreventUnload";
-import Head from "next/head";
 
 interface InGameLayoutProps {
   scenario: ClueScenarioType;
@@ -60,6 +59,10 @@ export default function InGameLayout({ scenario }: InGameLayoutProps) {
   const [isQuickMenuOpen, setIsQuickMenuOpen] = useState(false);
   const [sessionStartedAt, setSessionStartedAt] = useState<number>(() => Date.now());
   const [interactionLog, setInteractionLog] = useState<InteractionLogItem[]>([]);
+
+  useEffect(() => {
+    document.title = `협동 크라임씬: ${scenario.title}`;
+  }, [scenario.title]);
 
   const handleCloseModal = () => {
     setOpenedModal(null);
@@ -173,9 +176,6 @@ export default function InGameLayout({ scenario }: InGameLayoutProps) {
 
   return (
     <>
-      <Head>
-        <title>{`협동 크라임씬: ${scenario.title}`}</title>
-      </Head>
       <Box>
         <Image
           priority

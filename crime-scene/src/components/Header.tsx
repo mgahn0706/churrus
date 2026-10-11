@@ -1,6 +1,6 @@
 import { VolumeUpRounded } from "@mui/icons-material";
 import { Box, Typography, IconButton, Tooltip } from "@mui/material";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 function HeaderButton({
   text,

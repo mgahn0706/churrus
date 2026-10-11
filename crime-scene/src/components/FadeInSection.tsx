@@ -1,6 +1,5 @@
 import { Box } from "@mui/material";
 import {
-  MutableRefObject,
   ReactNode,
   useEffect,
   useRef,
@@ -15,13 +14,16 @@ export function FadeInSection({
   transform?: string;
 }) {
   const [isVisible, setVisible] = useState(false);
-  const domRef = useRef() as MutableRefObject<HTMLDivElement>;
+  const domRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
+    if (!domRef.current) return;
+
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => setVisible(entry.isIntersecting));
     });
     observer.observe(domRef.current);
-    return;
+
+    return () => observer.disconnect();
   }, []);
   return (
     <Box

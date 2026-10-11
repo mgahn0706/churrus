@@ -1,6 +1,5 @@
 import { Box } from "@mui/material";
 import {
-  MutableRefObject,
   ReactNode,
   useEffect,
   useRef,
@@ -9,9 +8,11 @@ import {
 
 export function ShakeTextSection({ children }: { children: ReactNode }) {
   const [isVisible, setVisible] = useState(false);
-  const domRef = useRef() as MutableRefObject<HTMLDivElement>;
+  const domRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (!domRef.current) return;
+
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => setVisible(entry.isIntersecting));
     });

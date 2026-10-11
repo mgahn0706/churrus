@@ -20,7 +20,7 @@ import {
   Typography,
 } from "@mui/material";
 import FinalConfirmModal from "./FinalConfirmModal";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Close } from "@mui/icons-material";
 

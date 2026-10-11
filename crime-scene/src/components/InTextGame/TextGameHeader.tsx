@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import HowToVoteIcon from "@mui/icons-material/HowToVote";
 import { Close } from "@mui/icons-material";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import MapModal from "./MapModal";
 import SuspectsInfoCard from "../InGame/SuspectsInfoCard";
