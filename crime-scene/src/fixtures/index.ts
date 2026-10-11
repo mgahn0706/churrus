@@ -1,7 +1,6 @@
 import type {
   ClueData,
   ClueScenarioType,
-  ClueType,
   ScenarioSummary,
   TextScenarioType,
 } from "@/types";
