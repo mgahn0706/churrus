@@ -3,12 +3,6 @@ import { ScenarioAnswerConfig } from "@/types/answerPage";
 
 export const clubroomAnswerConfig: ScenarioAnswerConfig = {
   scenarioKey: "clubroom",
-  missingDescription: (
-    <>
-      아직 동아리방 살인사건의 진범이 지목되지 않았습니다. <br />
-      게임을 진행해서 진범을 찾아주세요.
-    </>
-  ),
   reveal: createScenarioReveal({
     culprit: "오지인",
     imageSrc: "/image/scenario/clubroom/clubroom-reveal.png",

@@ -15,7 +15,6 @@ export type ScenarioAdditionalAnswerItem = {
 
 export type ScenarioAnswerConfig = {
   scenarioKey: string;
-  missingDescription: ReactNode;
   reveal: (submittedAnswer: DetectiveNoteType) => React.ComponentProps<
     typeof AnswerRevealSequence
   >;

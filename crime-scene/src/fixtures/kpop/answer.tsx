@@ -4,12 +4,6 @@ import { ScenarioAnswerConfig } from "@/types/answerPage";
 
 export const kpopAnswerConfig: ScenarioAnswerConfig = {
   scenarioKey: "kpop",
-  missingDescription: (
-    <>
-      아직 케이팝 데몬 헌터스 살인사건의 진범이 지목되지 않았습니다. <br />
-      게임을 진행해서 진범을 찾아주세요.
-    </>
-  ),
   reveal: createScenarioReveal({
     culprit: "에덴",
     imageSrc: "/image/scenario/kpop/kpop-reveal.png",

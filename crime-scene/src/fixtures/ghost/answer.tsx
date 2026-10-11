@@ -3,9 +3,6 @@ import { ScenarioAnswerConfig } from "@/types/answerPage";
 
 export const ghostAnswerConfig: ScenarioAnswerConfig = {
   scenarioKey: "ghost",
-  missingDescription: (
-    <>아직 귀신의 집 살인사건의 답안이 제출되지 않았습니다.</>
-  ),
   reveal: createScenarioReveal({
     culprit: "기귀신",
     imageSrc: "/image/scenario/ghost/ghost-reveal.png",

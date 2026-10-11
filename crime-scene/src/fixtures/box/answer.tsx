@@ -3,7 +3,6 @@ import { ScenarioAnswerConfig } from "@/types/answerPage";
 
 export const boxAnswerConfig: ScenarioAnswerConfig = {
   scenarioKey: "box",
-  missingDescription: <>아직 뒤주 살인사건의 답안이 제출되지 않았습니다.</>,
   reveal: createScenarioReveal({
     culprit: "배홍동",
     imageSrc: "/image/scenario/box/box-reveal.png",

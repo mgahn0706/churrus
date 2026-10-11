@@ -1,4 +1,3 @@
-import { ReactNode } from "react";
 import { ScenarioAnswerPage } from "@/components/ScenarioAnswerPage";
 import {
   ScenarioAdditionalAnswerList,
@@ -41,7 +40,6 @@ export function createScenarioAnswerPage(config: ScenarioAnswerConfig) {
     return (
       <ScenarioAnswerPage
         scenarioKey={config.scenarioKey}
-        missingDescription={config.missingDescription}
         reveal={config.reveal}
         renderConfess={(submittedAnswer) => (
           <ScenarioAnswerText>

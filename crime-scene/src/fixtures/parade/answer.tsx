@@ -3,7 +3,6 @@ import { ScenarioAnswerConfig } from "@/types/answerPage";
 
 export const paradeAnswerConfig: ScenarioAnswerConfig = {
   scenarioKey: "parade",
-  missingDescription: <></>,
   reveal: createScenarioReveal({
     culprit: "한캔들",
     imageSrc: "/image/scenario/parade/parade-reveal.png",

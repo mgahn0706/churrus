@@ -3,12 +3,6 @@ import { ScenarioAnswerConfig } from "@/types/answerPage";
 
 export const bluemoonAnswerConfig: ScenarioAnswerConfig = {
   scenarioKey: "bluemoon",
-  missingDescription: (
-    <>
-      아직 푸른 달 살인사건의 최종 제출이 진행되지 않았습니다. <br />
-      게임을 진행한 뒤 답안을 제출해주세요.
-    </>
-  ),
   reveal: (submittedAnswer) => ({
     accusedText: submittedAnswer.accusedSuspect || "답변 없음",
     culpritText: "김선민",

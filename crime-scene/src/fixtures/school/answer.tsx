@@ -4,12 +4,6 @@ import { ScenarioAnswerConfig } from "@/types/answerPage";
 
 export const schoolAnswerConfig: ScenarioAnswerConfig = {
   scenarioKey: "school",
-  missingDescription: (
-    <>
-      아직 와부고 살인사건의 진범이 지목되지 않았습니다. <br />
-      게임을 진행해서 진범을 찾아주세요.
-    </>
-  ),
   reveal: createScenarioReveal({
     culprit: "손민혜",
     imageSrc: "/image/scenario/school/school-reveal.png",

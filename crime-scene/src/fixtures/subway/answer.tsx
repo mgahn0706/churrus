@@ -4,12 +4,6 @@ import { ScenarioAnswerConfig } from "@/types/answerPage";
 
 export const subwayAnswerConfig: ScenarioAnswerConfig = {
   scenarioKey: "subway",
-  missingDescription: (
-    <>
-      아직 지하철 살인사건의 진범이 지목되지 않았습니다. <br />
-      게임을 진행해서 진범을 찾아주세요.
-    </>
-  ),
   reveal: createScenarioReveal({
     culprit: "홍셰프",
     imageSrc: "/image/scenario/subway/subway-reveal.png",

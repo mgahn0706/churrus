@@ -108,12 +108,6 @@ const hotelSolution = (
 
 export const hotelAnswerConfig: ScenarioAnswerConfig = {
   scenarioKey: "hotel",
-  missingDescription: (
-    <>
-      아직 호텔 살인사건의 진범이 지목되지 않았습니다. <br />
-      게임을 진행해서 진범을 찾아주세요.
-    </>
-  ),
   reveal: createScenarioReveal({
     culprit: HOTEL_CULPRIT,
     imageSrc: "/image/scenario/hotel/hotel-reveal.png",

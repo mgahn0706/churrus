@@ -3,12 +3,6 @@ import { ScenarioAnswerConfig } from "@/types/answerPage";
 
 export const startupAnswerConfig: ScenarioAnswerConfig = {
   scenarioKey: "startup",
-  missingDescription: (
-    <>
-      아직 스타트업 살인사건의 진범이 지목되지 않았습니다. <br />
-      게임을 진행해서 진범을 찾아주세요.
-    </>
-  ),
   reveal: createScenarioReveal({
     culprit: "김성균",
     imageSrc: "/image/scenario/startup/startup-reveal.png",

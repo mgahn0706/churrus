@@ -4,12 +4,6 @@ import { ScenarioAnswerConfig } from "@/types/answerPage";
 
 export const museumAnswerConfig: ScenarioAnswerConfig = {
   scenarioKey: "museum",
-  missingDescription: (
-    <>
-      아직 추러스 박물관 살인사건의 진범이 지목되지 않았습니다. <br />
-      게임을 진행해서 진범을 찾아주세요.
-    </>
-  ),
   reveal: createScenarioReveal({
     culprit: "강컨서",
     imageSrc: "/image/scenario/museum/museum-reveal.png",

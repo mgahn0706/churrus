@@ -23,7 +23,6 @@ import TabPanel from "./Answer/TabPanel";
 
 type ScenarioAnswerPageProps = {
   scenarioKey: string;
-  missingDescription: ReactNode;
   reveal: (submittedAnswer: DetectiveNoteType) => React.ComponentProps<
     typeof AnswerRevealSequence
   >;
@@ -37,7 +36,6 @@ type ScenarioAnswerPageProps = {
 
 export function ScenarioAnswerPage({
   scenarioKey,
-  missingDescription,
   reveal,
   renderAdditional,
   renderConfess,
@@ -47,15 +45,16 @@ export function ScenarioAnswerPage({
   culpritsButtonLabel = "용의자 롤카드 PDF 다운로드",
 }: ScenarioAnswerPageProps) {
   const router = useRouter();
-  const scenarioTheme = useMemo(() => {
+  const scenario = useMemo(() => {
     const scenario = scenarioCatalog.find((candidate) => candidate.id === scenarioKey);
 
     if (!scenario) {
       throw new Error(`Scenario not found: ${scenarioKey}`);
     }
 
-    return createScenarioTheme(scenario.color);
+    return scenario;
   }, [scenarioKey]);
+  const scenarioTheme = useMemo(() => createScenarioTheme(scenario.color), [scenario.color]);
   const [isLoading, setIsLoading] = useState(false);
   const [isSuspectAccused, setIsSuspectAccused] = useState(false);
   const [tabValue, setTabValue] = useState("confess");
@@ -89,7 +88,10 @@ export function ScenarioAnswerPage({
             </Typography>
           </DialogTitle>
           <DialogContent>
-            <Typography sx={{ mt: 2 }}>{missingDescription}</Typography>
+            <Typography sx={{ mt: 2 }}>
+              아직 {scenario.title}의 범인이 지목되지 않았습니다. <br />
+              게임을 진행해서 범인을 찾아주세요.
+            </Typography>
           </DialogContent>
           <DialogActions>
             {isLoading ? (
