@@ -18,6 +18,7 @@ import { SuspectType } from "@/types";
 interface UseSuspectVoteModalParams {
   episodeNumber: number;
   isOpen: boolean;
+  scenarioId: string;
   scenarioTitle: string;
   suspects: SuspectType[];
 }
@@ -25,12 +26,13 @@ interface UseSuspectVoteModalParams {
 export const useSuspectVoteModal = ({
   episodeNumber,
   isOpen,
+  scenarioId,
   scenarioTitle,
   suspects,
 }: UseSuspectVoteModalParams) => {
   const roomStorageKey = useMemo(
-    () => `suspect-vote-room-${episodeNumber}-${scenarioTitle}`,
-    [episodeNumber, scenarioTitle]
+    () => `suspect-vote-room-${scenarioId}`,
+    [scenarioId]
   );
   const [origin, setOrigin] = useState("");
   const [roomCode, setRoomCode] = useState<string | null>(null);

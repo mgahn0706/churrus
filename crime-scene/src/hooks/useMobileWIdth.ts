@@ -1,10 +1,6 @@
-import { useEffect, useState } from "react";
+import { useMediaQuery } from "@mui/material";
 
 export const useMobileWidth = () => {
-  const [isMobileWidth, setIsWindowMobileWidth] = useState<boolean>(false);
-
-  useEffect(() => {
-    setIsWindowMobileWidth(window.innerWidth < 768);
-  }, []);
+  const isMobileWidth = useMediaQuery("(max-width:767px)", { noSsr: true });
   return { isMobileWidth };
 };

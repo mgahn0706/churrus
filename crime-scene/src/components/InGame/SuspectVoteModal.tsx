@@ -15,6 +15,7 @@ import { SuspectType } from "@/types";
 interface SuspectVoteModalProps {
   isOpen: boolean;
   suspects: SuspectType[];
+  scenarioId: string;
   scenarioTitle: string;
   episodeNumber: number;
   onClose: () => void;
@@ -23,6 +24,7 @@ interface SuspectVoteModalProps {
 export default function SuspectVoteModal({
   isOpen,
   suspects,
+  scenarioId,
   scenarioTitle,
   episodeNumber,
   onClose,
@@ -55,6 +57,7 @@ export default function SuspectVoteModal({
   } = useSuspectVoteModal({
     episodeNumber,
     isOpen,
+    scenarioId,
     scenarioTitle,
     suspects,
   });

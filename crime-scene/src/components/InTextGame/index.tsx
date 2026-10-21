@@ -3,7 +3,6 @@ import {
   Button,
   ButtonBase,
   Chip,
-  CircularProgress,
   Dialog,
   DialogContent,
   DialogTitle,
@@ -17,12 +16,13 @@ import {
 } from "@mui/material";
 
 import { useState } from "react";
-import TextGameHeader, { PhysicalClue } from "./TextGameHeader";
-import { ContentPasteSearchOutlined, Close, Search } from "@mui/icons-material";
-import type { ClueData } from "@/types";
+import TextGameHeader from "./TextGameHeader";
+import { ContentPasteSearchOutlined, Search } from "@mui/icons-material";
+import type { ClueData, PhysicalClue } from "@/types";
 import { FadeInSection } from "../FadeInSection";
 import { TextScenarioType } from "../../types";
 import { createScenarioTheme } from "../createScenarioTheme";
+import PhysicalClueDialog from "./PhysicalClueDialog";
 
 const ProgressBar = ({
   checkedCount,
@@ -65,31 +65,28 @@ interface InTextGameProps {
 
 export default function InTextGame({ scenario }: InTextGameProps) {
   const scenarioTheme = createScenarioTheme(scenario.color, "dark");
-  const [prolougeStep, setProlougeStep] = useState(0);
-  const [selectedPhysicalClue, setSelectedPhysicalClue] = useState<{
-    id: number;
-    images: [string, ...string[]];
-  } | null>(null);
+  const [prologueStep, setPrologueStep] = useState(0);
+  const [selectedPhysicalClue, setSelectedPhysicalClue] =
+    useState<PhysicalClue | null>(null);
 
   const [openAllHistory, setOpenAllHistory] = useState(false);
 
-  const [currentStep, setCurrentStep] = useState<
-    "PROLOGUE" | "INTERROGATE" | "INVESTIGATE"
-  >("PROLOGUE");
+  const [currentStep, setCurrentStep] = useState<"PROLOGUE" | "INVESTIGATE">(
+    "PROLOGUE"
+  );
   const [searchKeyword, setSearchKeyword] = useState<string>("");
   const [searchedClues, setSearchedClues] = useState<ClueData[] | null>([]);
   const [searchHistory, setSearchHistory] = useState<string[]>([]);
   const [recentlySearchedKeywords, setRecentlySearchedKeywords] = useState<
     string[]
   >([]);
-  const [checkedClues, setCheckedClues] = useState<boolean[]>(
-    new Array(scenario.clues?.length ?? 0).fill(false)
+  const [checkedClueIds, setCheckedClueIds] = useState<Set<number>>(
+    () => new Set()
   );
-  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const acquiredPhysicalClues = scenario.clues.reduce<PhysicalClue[]>(
-    (physicalClues, clue, index) => {
-      if (checkedClues[index] && clue.physicalClueId !== undefined) {
+    (physicalClues, clue) => {
+      if (checkedClueIds.has(clue.id) && clue.physicalClueId !== undefined) {
         physicalClues.push({
           id: clue.physicalClueId,
           images: clue.images,
@@ -102,32 +99,38 @@ export default function InTextGame({ scenario }: InTextGameProps) {
     []
   );
 
-  const handleSearch = async () => {
+  const handleSearch = () => {
     if (!searchKeyword) return;
 
     // remove spaces from search keyword
     const trimmedKeyword = searchKeyword.replace(/\s+/g, "").toUpperCase();
 
-    setIsLoading(true);
-    setSearchedClues([]);
-    const response = await fetch(
-      `/api/getCluesWithKeyword?keyword=${trimmedKeyword}&scenarioId=${scenario.id}`
+    const matchingIds =
+      scenario.keywordIds[trimmedKeyword] ??
+      Object.entries(scenario.keywordIds).find(
+        ([candidate]) => candidate.toUpperCase() === trimmedKeyword
+      )?.[1];
+    const clueById = new Map(scenario.clues.map((clue) => [clue.id, clue]));
+    const clues = matchingIds
+      ?.map((clueId) => clueById.get(clueId))
+      .filter((clue): clue is ClueData => clue !== undefined);
+    const searchResult = clues?.length ? clues : null;
+
+    setSearchedClues(searchResult);
+    setRecentlySearchedKeywords((previous) =>
+      [...previous, trimmedKeyword].slice(-5)
     );
-    const clues = (await response.json()) as ClueData[] | null;
-    setSearchedClues(clues);
-    setRecentlySearchedKeywords(
-      [...recentlySearchedKeywords, trimmedKeyword].slice(-5)
+    setSearchHistory((previous) =>
+      previous.includes(trimmedKeyword)
+        ? previous
+        : [trimmedKeyword, ...previous]
     );
-    setIsLoading(false);
-    if (clues) {
-      if (!searchHistory.includes(trimmedKeyword)) {
-        setSearchHistory([trimmedKeyword, ...searchHistory]);
-      }
-      setCheckedClues(
-        checkedClues.map((isChecked, index) => {
-          return clues.some((clue) => clue.id === index + 1) || isChecked;
-        })
-      );
+    if (searchResult) {
+      setCheckedClueIds((previous) => {
+        const next = new Set(previous);
+        searchResult.forEach((clue) => next.add(clue.id));
+        return next;
+      });
     }
     setSearchKeyword("");
   };
@@ -153,49 +156,10 @@ export default function InTextGame({ scenario }: InTextGameProps) {
           </DialogContent>
         </Dialog>
       }
-      <Dialog
-        open={selectedPhysicalClue !== null}
+      <PhysicalClueDialog
+        clue={selectedPhysicalClue}
         onClose={() => setSelectedPhysicalClue(null)}
-        maxWidth="md"
-        fullWidth
-      >
-        <DialogTitle>
-          {selectedPhysicalClue &&
-            `${selectedPhysicalClue.id}번 실물단서`}
-          <IconButton
-            aria-label="닫기"
-            onClick={() => setSelectedPhysicalClue(null)}
-            sx={{ position: "absolute", right: 8, top: 8 }}
-          >
-            <Close />
-          </IconButton>
-        </DialogTitle>
-        <DialogContent>
-          {selectedPhysicalClue && (
-            <Box
-              display="grid"
-              gridTemplateColumns={{
-                xs: "1fr",
-                md:
-                  selectedPhysicalClue.images.length > 1
-                    ? "repeat(2, minmax(0, 1fr))"
-                    : "1fr",
-              }}
-              gap={2}
-            >
-              {selectedPhysicalClue.images.map((image, index) => (
-                <Box
-                  key={`${image}-${index}`}
-                  component="img"
-                  src={image}
-                  alt={`${selectedPhysicalClue.id}번 실물단서 ${index + 1}`}
-                  sx={{ display: "block", width: "100%", height: "auto" }}
-                />
-              ))}
-            </Box>
-          )}
-        </DialogContent>
-      </Dialog>
+      />
       <Box bgcolor="black" minHeight="100vh" py="60px" px="10vw">
         <TextGameHeader
           scenario={scenario}
@@ -204,17 +168,17 @@ export default function InTextGame({ scenario }: InTextGameProps) {
         {currentStep === "PROLOGUE" && (
           <Box mt={6} color="white">
             <Typography mr={1} variant="h5" color="white">
-              {scenario.prologue![prolougeStep]}
+              {scenario.prologue[prologueStep]}
             </Typography>
             <Button
               variant="text"
               size="large"
               onClick={() => {
-                if (prolougeStep === scenario.prologue!.length - 1) {
+                if (prologueStep === scenario.prologue.length - 1) {
                   setCurrentStep("INVESTIGATE");
                   return;
                 }
-                setProlougeStep(prolougeStep + 1);
+                setPrologueStep((previous) => previous + 1);
               }}
             >
               {"다음 >"}
@@ -231,8 +195,8 @@ export default function InTextGame({ scenario }: InTextGameProps) {
             flexDirection={"column"}
           >
             <ProgressBar
-              checkedCount={checkedClues.filter((c) => c).length}
-              totalCount={scenario.clues?.length ?? 0}
+              checkedCount={checkedClueIds.size}
+              totalCount={scenario.clues.length}
             />
 
             <Box
@@ -317,7 +281,6 @@ export default function InTextGame({ scenario }: InTextGameProps) {
               gap={2}
               mt={7}
             >
-              {isLoading && <CircularProgress />}
               {searchedClues?.map((clue) => {
                 return (
                   <FadeInSection key={clue.id}>
@@ -332,6 +295,7 @@ export default function InTextGame({ scenario }: InTextGameProps) {
                               setSelectedPhysicalClue({
                                 id: clue.physicalClueId,
                                 images: clue.images,
+                                text: clue.text,
                               })
                             }
                             sx={{

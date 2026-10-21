@@ -21,7 +21,10 @@ import { ghostSuspect, ghostVictim } from "./ghost/suspects";
 import { boxSuspects, boxVictim } from "./box/suspects";
 import { paradeSuspects, paradeVictims } from "./parade/suspects";
 
-export const scenarioCatalog = [
+const defineScenarioCatalog = <const T extends ScenarioSummary[]>(catalog: T) =>
+  catalog;
+
+export const scenarioCatalog = defineScenarioCatalog([
   {
     title: "스타트업 살인사건",
     englishTitle: "Murder at the Startup",
@@ -42,6 +45,7 @@ export const scenarioCatalog = [
     englishTitle: "Murder at the Wabu High School",
     creators: ["안민규"],
     gameType: "TEXT",
+    emoji: "🏫",
     histories: ["2023년 10월 정기모임", "2024년 3월 OT", "2026년 9월 OT"],
     backgroundImage: "/image/scenario/school/school-main.png",
     id: "school",
@@ -72,6 +76,7 @@ export const scenarioCatalog = [
     englishTitle: "Murder at the Dure Arts Center",
     creators: ["강재호", "고재준", "김지훈", "김현준", "안민규"],
     gameType: "TEXT",
+    emoji: "🎭",
     backgroundImage: "/image/scenario/dure/dure-main.png",
     id: "dure",
     isInDevelopment: false,
@@ -166,7 +171,7 @@ export const scenarioCatalog = [
     gameType: "CLUE",
     histories: [],
     backgroundImage: "/image/scenario/clubroom/clubroom-main.png",
-    isInDevelopment: true,
+    isInDevelopment: false,
     description: "동아리방에서 자고 있는 줄 알았던 회장이 살해된 사건",
     places: ["room", "recycling", "homes"],
     suspects: clubroomSuspects,
@@ -179,6 +184,7 @@ export const scenarioCatalog = [
     englishTitle: "Murder in the Blue Moon Village",
     creators: ["김시영", "김태연", "조준호"],
     gameType: "TEXT",
+    emoji: "🌕",
     histories: ["2026년 겨울 대이동"],
     backgroundImage: "/image/scenario/bluemoon/bluemoon-main.png",
     isInDevelopment: false,
@@ -208,6 +214,7 @@ export const scenarioCatalog = [
     englishTitle: "Murder at the Snowbound Hotel",
     creators: ["안민규"],
     gameType: "TEXT",
+    emoji: "🏨",
     backgroundImage: "/image/scenario/hotel/hotel-main.png",
     id: "hotel",
     histories: [],
@@ -256,25 +263,30 @@ export const scenarioCatalog = [
     gameType: "CLUE",
     histories: [],
     backgroundImage: "/image/scenario/parade/parade-main.png",
-    isInDevelopment: true,
+    isInDevelopment: false,
     description: "또 다른 추추어드벤처에서 펼쳐지는 신비하고 기묘한 살인사건",
     places: ["theme-park", "staff", "storage"],
     suspects: paradeSuspects,
     victims: paradeVictims,
     color: "#BF5AF2",
   },
-] satisfies ScenarioSummary[];
+]);
 
 export type ScenarioId = (typeof scenarioCatalog)[number]["id"];
 
-const getScenarioSummary = (id: ScenarioId): ScenarioSummary => {
-  const scenario = scenarioCatalog.find((candidate) => candidate.id === id);
+const getScenarioSummary = (
+  id: ScenarioId
+): ScenarioSummary & { episodeNumber: number } => {
+  const scenarioIndex = scenarioCatalog.findIndex(
+    (candidate) => candidate.id === id
+  );
+  const scenario = scenarioCatalog[scenarioIndex];
 
   if (!scenario) {
     throw new Error(`Scenario not found: ${id}`);
   }
 
-  return scenario;
+  return { ...scenario, episodeNumber: scenarioIndex + 1 };
 };
 
 export const createClueScenario = (
@@ -290,13 +302,36 @@ export const createClueScenario = (
     throw new Error(`Scenario is not a clue game: ${id}`);
   }
 
+  const clueIds = new Set(content.clues.map((clue) => clue.id));
+  if (clueIds.size !== content.clues.length) {
+    throw new Error(`Scenario has duplicate clue IDs: ${id}`);
+  }
+
+  const places = new Set(scenario.places);
+  for (const clue of content.clues) {
+    if (typeof clue.place === "string" && !places.has(clue.place)) {
+      throw new Error(`Unknown clue place in ${id}: ${clue.place}`);
+    }
+    if (typeof clue.place === "number" && !clueIds.has(clue.place)) {
+      throw new Error(`Unknown parent clue in ${id}: ${clue.place}`);
+    }
+    if (clue.lock?.method === "clue" && !clueIds.has(clue.lock.clueId)) {
+      throw new Error(`Unknown lock prerequisite in ${id}: ${clue.lock.clueId}`);
+    }
+  }
+
+  for (const move of content.movePlaceButtons) {
+    if (!places.has(move.from) || !places.has(move.to)) {
+      throw new Error(`Unknown move place in ${id}: ${move.from} -> ${move.to}`);
+    }
+  }
+
   return { ...scenario, gameType: "CLUE", ...content };
 };
 
 export const createTextScenario = (
   id: ScenarioId,
-  clues: ClueData[],
-  prologue: string[]
+  content: Pick<TextScenarioType, "clues" | "keywordIds" | "prologue">
 ): TextScenarioType => {
   const scenario = getScenarioSummary(id);
 
@@ -304,5 +339,22 @@ export const createTextScenario = (
     throw new Error(`Scenario is not a text game: ${id}`);
   }
 
-  return { ...scenario, gameType: "TEXT", clues, prologue };
+  if (content.prologue.length === 0) {
+    throw new Error(`Scenario has no prologue: ${id}`);
+  }
+
+  const clueIds = new Set(content.clues.map((clue) => clue.id));
+  if (clueIds.size !== content.clues.length) {
+    throw new Error(`Scenario has duplicate clue IDs: ${id}`);
+  }
+
+  for (const [keyword, ids] of Object.entries(content.keywordIds)) {
+    for (const clueId of ids) {
+      if (!clueIds.has(clueId)) {
+        throw new Error(`Unknown clue ID for ${id}/${keyword}: ${clueId}`);
+      }
+    }
+  }
+
+  return { ...scenario, gameType: "TEXT", ...content };
 };

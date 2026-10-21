@@ -2,10 +2,14 @@
 
 import InTextGame from "@/components/InTextGame";
 import { createTextScenario } from "@/fixtures";
-import { hotelClues } from "@/fixtures/hotel/clues";
+import { hotelClues, hotelKeywordIds } from "@/fixtures/hotel/clues";
 import { hotelPrologue } from "@/fixtures/hotel/prologue";
 
-const hotelScenario = createTextScenario("hotel", hotelClues, hotelPrologue);
+const hotelScenario = createTextScenario("hotel", {
+  clues: hotelClues,
+  keywordIds: hotelKeywordIds,
+  prologue: hotelPrologue,
+});
 
 export default function Hotel() {
   return <InTextGame scenario={hotelScenario} />;

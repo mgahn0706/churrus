@@ -9,7 +9,6 @@ import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useEffect, useState } from "react";
 
-import { scenarioCatalog } from "@/fixtures";
 import { ClueType, ClueScenarioType } from "@/types";
 import MemoModal from "./MemoModal";
 import { useMobileWidth } from "@/hooks/useMobileWIdth";
@@ -41,8 +40,6 @@ const getInteractionLogStorageKey = (scenarioId: string) =>
   `${scenarioId}-interaction-log`;
 
 export default function InGameLayout({ scenario }: InGameLayoutProps) {
-  const episodeNumber =
-    scenarioCatalog.findIndex((candidate) => candidate.id === scenario.id) + 1;
   const [openedClueId, setOpenedClueId] = useState<number | null>(null);
   const [currentPlace, setCurrentPlace] = useState(scenario.places[0] ?? "");
   const [checkedClueList, setCheckedClueList] = useState<number[]>([]);
@@ -59,6 +56,7 @@ export default function InGameLayout({ scenario }: InGameLayoutProps) {
   const [isQuickMenuOpen, setIsQuickMenuOpen] = useState(false);
   const [sessionStartedAt, setSessionStartedAt] = useState<number>(() => Date.now());
   const [interactionLog, setInteractionLog] = useState<InteractionLogItem[]>([]);
+  const [isInteractionLogLoaded, setIsInteractionLogLoaded] = useState(false);
 
   useEffect(() => {
     document.title = `협동 크라임씬: ${scenario.title}`;
@@ -69,17 +67,16 @@ export default function InGameLayout({ scenario }: InGameLayoutProps) {
   };
 
   useEffect(() => {
-    setCurrentPlace(scenario.places[0] ?? "");
-  }, [scenario.id, scenario.places]);
-
-  useEffect(() => {
     const startStorageKey = getInteractionStartStorageKey(scenario.id);
     const logStorageKey = getInteractionLogStorageKey(scenario.id);
 
-    const savedStartedAt = localStorage.getItem(startStorageKey);
-    const nextStartedAt = savedStartedAt ? Number(savedStartedAt) : Date.now();
+    const savedStartedAt = Number(localStorage.getItem(startStorageKey));
+    const nextStartedAt =
+      Number.isFinite(savedStartedAt) && savedStartedAt > 0
+        ? savedStartedAt
+        : Date.now();
 
-    if (!savedStartedAt) {
+    if (!Number.isFinite(savedStartedAt) || savedStartedAt <= 0) {
       localStorage.setItem(startStorageKey, String(nextStartedAt));
     }
 
@@ -88,17 +85,40 @@ export default function InGameLayout({ scenario }: InGameLayoutProps) {
     const savedLog = localStorage.getItem(logStorageKey);
     if (!savedLog) {
       setInteractionLog([]);
+      setIsInteractionLogLoaded(true);
       return;
     }
 
     try {
-      setInteractionLog(JSON.parse(savedLog) as InteractionLogItem[]);
+      const parsedLog: unknown = JSON.parse(savedLog);
+      const isValidLog =
+        Array.isArray(parsedLog) &&
+        parsedLog.every(
+          (item): item is InteractionLogItem =>
+            typeof item === "object" &&
+            item !== null &&
+            typeof (item as InteractionLogItem).label === "string" &&
+            Number.isFinite((item as InteractionLogItem).elapsedMs) &&
+            (item as InteractionLogItem).elapsedMs >= 0
+        );
+      setInteractionLog(isValidLog ? parsedLog : []);
     } catch {
       setInteractionLog([]);
+    } finally {
+      setIsInteractionLogLoaded(true);
     }
   }, [scenario.id]);
 
-  usePreventUnload();
+  useEffect(() => {
+    if (!isInteractionLogLoaded) return;
+
+    localStorage.setItem(
+      getInteractionLogStorageKey(scenario.id),
+      JSON.stringify(interactionLog)
+    );
+  }, [interactionLog, isInteractionLogLoaded, scenario.id]);
+
+  usePreventUnload(checkedClueList.length > 0);
 
   const openedClue: ClueType | null =
     scenario.clues.find((clue) => clue.id === openedClueId) ?? null;
@@ -116,22 +136,13 @@ export default function InGameLayout({ scenario }: InGameLayoutProps) {
   };
 
   const recordInteraction = (label: string) => {
-    setInteractionLog((prev) => {
-      const nextLog = [
-        ...prev,
-        {
-          label,
-          elapsedMs: Date.now() - sessionStartedAt,
-        },
-      ];
-
-      localStorage.setItem(
-        getInteractionLogStorageKey(scenario.id),
-        JSON.stringify(nextLog)
-      );
-
-      return nextLog;
-    });
+    setInteractionLog((previous) => [
+      ...previous,
+      {
+        label,
+        elapsedMs: Date.now() - sessionStartedAt,
+      },
+    ]);
   };
 
   const openClue = (clue: ClueType) => {
@@ -292,8 +303,9 @@ export default function InGameLayout({ scenario }: InGameLayoutProps) {
         <SuspectVoteModal
           isOpen={openedModal === "vote"}
           suspects={scenario.suspects}
+          scenarioId={scenario.id}
           scenarioTitle={scenario.title}
-          episodeNumber={episodeNumber > 0 ? episodeNumber : 1}
+          episodeNumber={scenario.episodeNumber}
           onClose={handleCloseModal}
         />
         <PrologueModal

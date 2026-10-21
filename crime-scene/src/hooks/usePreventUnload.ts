@@ -1,18 +1,18 @@
 import { useEffect } from "react";
 
-export default function usePreventUnload() {
-  const preventClose = (e: BeforeUnloadEvent) => {
-    e.preventDefault();
-    e.returnValue = ""; // Chrome에서 동작하도록;
-  };
-
+export default function usePreventUnload(shouldPrevent: boolean) {
   useEffect(() => {
-    (() => {
-      window.addEventListener("beforeunload", preventClose);
-    })();
+    if (!shouldPrevent) return;
+
+    const preventClose = (event: BeforeUnloadEvent) => {
+      event.preventDefault();
+      event.returnValue = "";
+    };
+
+    window.addEventListener("beforeunload", preventClose);
 
     return () => {
       window.removeEventListener("beforeunload", preventClose);
     };
-  }, []);
+  }, [shouldPrevent]);
 }

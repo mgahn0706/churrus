@@ -21,26 +21,13 @@ import MapModal from "./MapModal";
 import SuspectsInfoCard from "../InGame/SuspectsInfoCard";
 import SuspectVoteModal from "../InGame/SuspectVoteModal";
 import { ErrorOutline } from "@mui/icons-material";
-import { scenarioCatalog } from "@/fixtures";
-import type { TextScenarioType } from "@/types";
+import type { PhysicalClue, TextScenarioType } from "@/types";
+import PhysicalClueDialog from "./PhysicalClueDialog";
 
 interface TextGameHeaderProps {
   scenario: TextScenarioType;
   acquiredPhysicalClues: PhysicalClue[];
 }
-
-export interface PhysicalClue {
-  id: number;
-  images: [string, ...string[]];
-  text: string;
-}
-
-const emojiMap: Record<string, string> = {
-  bluemoon: "🌕",
-  dure: "🎭",
-  hotel: "🏨",
-  school: "🏫",
-};
 
 export default function TextGameHeader({
   scenario,
@@ -53,23 +40,19 @@ export default function TextGameHeader({
   const [selectedPhysicalClue, setSelectedPhysicalClue] =
     useState<PhysicalClue | null>(null);
 
-  const scenarioIndex = scenarioCatalog.findIndex((s) => s.id === scenario.id);
   const { victims, suspects, places, title } = scenario;
   const shouldShowMap = places.length > 0;
-  const physicalClues =
-    scenario.gameType === "TEXT"
-      ? scenario.clues.reduce<PhysicalClue[]>((clues, clue) => {
-          if (clue.physicalClueId !== undefined) {
-            clues.push({
-              id: clue.physicalClueId,
-              images: clue.images,
-              text: clue.text,
-            });
-          }
+  const physicalClues = scenario.clues.reduce<PhysicalClue[]>((clues, clue) => {
+    if (clue.physicalClueId !== undefined) {
+      clues.push({
+        id: clue.physicalClueId,
+        images: clue.images,
+        text: clue.text,
+      });
+    }
 
-          return clues;
-        }, [])
-      : [];
+    return clues;
+  }, []);
   const acquiredPhysicalCluesById = new Map(
     acquiredPhysicalClues.map((clue) => [clue.id, clue])
   );
@@ -223,58 +206,10 @@ export default function TextGameHeader({
           )}
         </DialogContent>
       </Dialog>
-      <Dialog
-        open={selectedPhysicalClue !== null}
+      <PhysicalClueDialog
+        clue={selectedPhysicalClue}
         onClose={() => setSelectedPhysicalClue(null)}
-        fullWidth
-        maxWidth="lg"
-        sx={{ zIndex: 1400 }}
-      >
-        <DialogTitle>
-          {selectedPhysicalClue && `${selectedPhysicalClue.id}번 실물단서`}
-          <IconButton
-            aria-label="닫기"
-            onClick={() => setSelectedPhysicalClue(null)}
-            sx={{ position: "absolute", right: 8, top: 8 }}
-          >
-            <Close />
-          </IconButton>
-        </DialogTitle>
-        <DialogContent>
-          {selectedPhysicalClue && (
-            <Box
-              display="grid"
-              gridTemplateColumns={{
-                xs: "1fr",
-                md:
-                  selectedPhysicalClue.images.length > 1
-                    ? "repeat(2, minmax(0, 1fr))"
-                    : "1fr",
-              }}
-              gap={2}
-              sx={{
-                justifyItems: "center",
-              }}
-            >
-              {selectedPhysicalClue.images.map((image, index) => (
-                <Box
-                  key={`${image}-${index}`}
-                  component="img"
-                  src={image}
-                  alt={`${selectedPhysicalClue.id}번 실물단서 ${index + 1}`}
-                  sx={{
-                    display: "block",
-                    maxWidth: "100%",
-                    maxHeight: "75vh",
-                    width: "auto",
-                    height: "auto",
-                  }}
-                />
-              ))}
-            </Box>
-          )}
-        </DialogContent>
-      </Dialog>
+      />
       <SuspectsInfoCard
         victims={victims}
         suspects={suspects}
@@ -286,8 +221,9 @@ export default function TextGameHeader({
       <SuspectVoteModal
         isOpen={modalState === "VOTE"}
         suspects={suspects}
+        scenarioId={scenario.id}
         scenarioTitle={title}
-        episodeNumber={scenarioIndex >= 0 ? scenarioIndex + 1 : 1}
+        episodeNumber={scenario.episodeNumber}
         onClose={() => {
           setModalState(null);
         }}
@@ -357,18 +293,17 @@ export default function TextGameHeader({
       >
         <Box>
           <Typography fontWeight="bolder" fontSize={16}>
-            {title} {emojiMap[scenario.id]}
+            {title} {scenario.emoji}
           </Typography>
         </Box>
         <Box display="flex" justifyContent="space-between" mr={5}>
-          {shouldShowMap ? (
-            <Box
-              mx={1}
-              py={1}
-              px={2}
-              borderRadius="2px"
+          {shouldShowMap && (
+            <ButtonBase
               sx={{
-                cursor: "pointer",
+                mx: 1,
+                px: 2,
+                py: 1,
+                borderRadius: "2px",
                 transition: "all 0.3s ease-in-out",
                 "&:hover": {
                   backgroundColor: "rgb(60, 60, 60)",
@@ -381,15 +316,15 @@ export default function TextGameHeader({
               <Typography fontWeight="bolder" fontSize={16}>
                 지도
               </Typography>
-            </Box>
-          ) : (
-            <Box
-              mx={1}
-              py={1}
-              px={2}
-              borderRadius="2px"
+            </ButtonBase>
+          )}
+          {physicalClues.length > 0 && (
+            <ButtonBase
               sx={{
-                cursor: "pointer",
+                mx: 1,
+                px: 2,
+                py: 1,
+                borderRadius: "2px",
                 transition: "all 0.3s ease-in-out",
                 "&:hover": {
                   backgroundColor: "rgb(60, 60, 60)",
@@ -400,15 +335,14 @@ export default function TextGameHeader({
               <Typography fontWeight="bolder" fontSize={16}>
                 실물단서
               </Typography>
-            </Box>
+            </ButtonBase>
           )}
-          <Box
-            mx={1}
-            py={1}
-            px={2}
-            borderRadius="2px"
+          <ButtonBase
             sx={{
-              cursor: "pointer",
+              mx: 1,
+              px: 2,
+              py: 1,
+              borderRadius: "2px",
               "&:hover": {
                 backgroundColor: "rgb(60, 60, 60)",
               },
@@ -418,17 +352,16 @@ export default function TextGameHeader({
             <Typography fontWeight="bolder" fontSize={16}>
               인물
             </Typography>
-          </Box>
-          <Box
-            mx={1}
-            px={2}
-            py={1}
-            borderRadius="2px"
-            display="flex"
-            alignItems="center"
-            gap={0.8}
+          </ButtonBase>
+          <ButtonBase
             sx={{
-              cursor: "pointer",
+              mx: 1,
+              px: 2,
+              py: 1,
+              borderRadius: "2px",
+              display: "flex",
+              alignItems: "center",
+              gap: 0.8,
               "&:hover": {
                 backgroundColor: "rgb(60, 60, 60)",
               },
@@ -439,14 +372,13 @@ export default function TextGameHeader({
             <Typography fontWeight="bolder" fontSize={16}>
               투표
             </Typography>
-          </Box>
-          <Box
-            mx={1}
-            px={2}
-            py={1}
-            borderRadius="2px"
+          </ButtonBase>
+          <ButtonBase
             sx={{
-              cursor: "pointer",
+              mx: 1,
+              px: 2,
+              py: 1,
+              borderRadius: "2px",
               "&:hover": {
                 backgroundColor: "rgb(60, 60, 60)",
               },
@@ -456,7 +388,7 @@ export default function TextGameHeader({
             <Typography fontWeight="bolder" fontSize={16}>
               최종 제출
             </Typography>
-          </Box>
+          </ButtonBase>
         </Box>
       </Box>
     </>

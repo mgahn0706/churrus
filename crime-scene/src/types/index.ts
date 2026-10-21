@@ -18,6 +18,12 @@ export type ClueData = BaseClueData &
       }
   );
 
+export interface PhysicalClue {
+  id: number;
+  images: [string, ...string[]];
+  text: string;
+}
+
 interface ClueBase {
   id: number;
   image: string;
@@ -82,15 +88,19 @@ export interface ScenarioSummary {
   victims: VictimType[];
   places: string[];
   gameType: "TEXT" | "CLUE";
+  emoji?: string;
 }
 
 export interface TextScenarioType extends ScenarioSummary {
+  episodeNumber: number;
   gameType: "TEXT";
   prologue: string[];
   clues: ClueData[];
+  keywordIds: Record<string, number[]>;
 }
 
 export interface ClueScenarioType extends ScenarioSummary {
+  episodeNumber: number;
   gameType: "CLUE";
   prologue: ReactNode;
   clues: ClueType[];
