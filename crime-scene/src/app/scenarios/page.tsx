@@ -170,6 +170,22 @@ export default function Suspect() {
         overflow: "hidden",
       }}
     >
+      <Typography
+        component="h1"
+        sx={{
+          position: "absolute",
+          width: 1,
+          height: 1,
+          p: 0,
+          m: -1,
+          overflow: "hidden",
+          clip: "rect(0, 0, 0, 0)",
+          whiteSpace: "nowrap",
+          border: 0,
+        }}
+      >
+        추러스 온라인 협동 크라임씬 시나리오
+      </Typography>
       {/* Ambient animated background */}
       <Box
         sx={{

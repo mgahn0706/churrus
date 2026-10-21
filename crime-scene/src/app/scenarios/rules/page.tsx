@@ -93,6 +93,7 @@ export default function Rules() {
           <Box width="100%" pt={{ xs: "88px", md: "100px" }} mb={{ xs: "56px", md: "100px" }}>
             <ShakeTextSection>
               <Typography
+                component="h1"
                 color="white"
                 fontWeight="bold"
                 fontSize={{ xs: "36px", md: "48px" }}
