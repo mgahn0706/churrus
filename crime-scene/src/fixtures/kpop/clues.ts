@@ -13,7 +13,7 @@ export const kpopAdditionalQuestions = createAdditionalQuestions([
 export const kpopClues: ClueType[] = [
   {
     id: 1,
-    title: "스텝의 증언 1",
+    title: "스텝의 증언: 수상한 사람",
     x: 51.786,
     y: 17.166,
     image: `${KPOP_CLUE_IMAGE_PATH}/kpop-1.png`,
@@ -34,7 +34,7 @@ export const kpopClues: ClueType[] = [
   },
   {
     id: 3,
-    title: "하루에 대한 소문",
+    title: "인터넷 기사",
     x: 31.424,
     y: 11.477,
     image: `${KPOP_CLUE_IMAGE_PATH}/kpop-3.png`,
@@ -60,13 +60,13 @@ export const kpopClues: ClueType[] = [
     y: 73.453,
     image: `${KPOP_CLUE_IMAGE_PATH}/kpop-5.png`,
     description:
-      "‘딸인 마사가 하루를 너무 보고 싶어 해서 석PD에게 부탁했다. 얼마 전부터 하루 영상만 끊임없이 보고 있었다.’",
+      "‘딸인 마사가 하루를 너무 보고 싶어 해서 석PD에게 부탁했죠. 얼마 전부터 하루 영상만 끊임없이 보고 있었던데.’",
     type: "basic",
     place: "lounge",
   },
   {
     id: 6,
-    title: "출연자의 증언 1",
+    title: "출연자의 증언",
     x: 67.144,
     y: 73.453,
     image: `${KPOP_CLUE_IMAGE_PATH}/kpop-6.png`,
@@ -108,7 +108,7 @@ export const kpopClues: ClueType[] = [
   },
   {
     id: 10,
-    title: "스텝의 증언 2",
+    title: "CCTV 관리자의 증언",
     x: 12,
     y: 75,
     image: `${KPOP_CLUE_IMAGE_PATH}/kpop-10.png`,
@@ -151,7 +151,7 @@ export const kpopClues: ClueType[] = [
   },
   {
     id: 14,
-    title: "출연자의 증언 2",
+    title: "출연자의 증언: 석PD에 대해",
     x: 9.542,
     y: 9.78,
     image: `${KPOP_CLUE_IMAGE_PATH}/kpop-14.png`,
@@ -224,7 +224,7 @@ export const kpopClues: ClueType[] = [
     description:
       "이브의 집에서 뜨개질 바늘과 실이 발견되었다. 많이 사용한 듯 보인다.",
     type: "basic",
-    place: "lounge",
+    place: "outdoor",
   },
   {
     id: 21,
@@ -260,7 +260,7 @@ export const kpopClues: ClueType[] = [
   },
   {
     id: 24,
-    title: "에덴의 휴대전화 1",
+    title: "에덴의 휴대전화",
     x: 20,
     y: 18,
     image: `${KPOP_CLUE_IMAGE_PATH}/kpop-24.png`,
@@ -335,7 +335,7 @@ export const kpopClues: ClueType[] = [
   },
   {
     id: 31,
-    title: "에덴의 휴대전화 2",
+    title: "카카오톡 내역",
     x: 20,
     y: 32,
     image: `${KPOP_CLUE_IMAGE_PATH}/kpop-31.png`,
