@@ -202,7 +202,7 @@ export const scenarioCatalog = defineScenarioCatalog([
     backgroundImage: "/image/scenario/kpop/kpop-main.png",
     id: "kpop",
     histories: ["2025년 여름 대이동"],
-    isInDevelopment: true,
+    isInDevelopment: false,
     description: "케이팝 아이돌 그룹 내에서 발생한 살인사건",
     places: ["lounge", "outdoor"],
     suspects: kpopSuspects,
