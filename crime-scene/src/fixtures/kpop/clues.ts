@@ -1,7 +1,7 @@
 import { ClueType } from "@/types";
 import { createAdditionalQuestions } from "../utils";
 
-export const KPOP_CLUE_IMAGE_PATH = "/images/kpop/clues";
+export const KPOP_CLUE_IMAGE_PATH = "/image/scenario/kpop/clues";
 
 export const kpopAdditionalQuestions = createAdditionalQuestions([
   {
