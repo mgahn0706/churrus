@@ -148,10 +148,15 @@ export default function CrypticPage() {
     setShake(false);
   };
 
-  useEffect(() => {
+  const changeCrypticDate = (
+    getNextDate: (previous: { year: number; week: number }) => {
+      year: number;
+      week: number;
+    }
+  ) => {
     resetCryptic();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [crypticDate.year, crypticDate.week]);
+    setCrypticDate(getNextDate);
+  };
 
   if (!selectedCryptic) return null;
 
@@ -250,8 +255,8 @@ export default function CrypticPage() {
           disabled={disablePrev}
           color="primary"
           onClick={() => {
-            setCrypticDate((prev) => {
-              if (selectedCryptic.week === 1) {
+            changeCrypticDate((prev) => {
+              if (prev.week === 1) {
                 const prevYear = prev.year - 1;
                 const prevLen = CRYPTIC_PROBLEMS[prevYear]?.length ?? 1;
                 return { year: prevYear, week: prevLen };
@@ -271,7 +276,10 @@ export default function CrypticPage() {
               value={crypticDate.year}
               disableUnderline
               onChange={(e) => {
-                setCrypticDate({ year: Number(e.target.value), week: 1 });
+                changeCrypticDate(() => ({
+                  year: Number(e.target.value),
+                  week: 1,
+                }));
               }}
               inputProps={{
                 IconComponent: () => null,
@@ -307,10 +315,10 @@ export default function CrypticPage() {
               value={crypticDate.week}
               disableUnderline
               onChange={(e) => {
-                setCrypticDate({
+                changeCrypticDate(() => ({
                   year: crypticDate.year,
                   week: Number(e.target.value),
-                });
+                }));
               }}
               inputProps={{
                 IconComponent: () => null,
@@ -348,13 +356,13 @@ export default function CrypticPage() {
           disabled={disableNext}
           color="primary"
           onClick={() => {
-            setCrypticDate((prev) => {
+            changeCrypticDate((prev) => {
               const len =
                 Math.min(
                   CRYPTIC_PROBLEMS[prev.year]?.length ?? 1,
                   WEEKS_PER_YEAR
                 ) || 1;
-              if (selectedCryptic.week === len) {
+              if (prev.week === len) {
                 return { year: prev.year + 1, week: 1 };
               }
               return { year: prev.year, week: prev.week + 1 };
