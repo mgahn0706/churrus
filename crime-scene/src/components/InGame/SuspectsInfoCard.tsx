@@ -80,28 +80,44 @@ export default function SuspectsInfoCard({
   return (
     <Dialog open={isOpen} maxWidth="lg" fullWidth>
       <DialogTitle sx={{ pb: 1 }}>
-        <Typography variant="h6" fontWeight={700}>
+        <Typography
+          variant="h6"
+          sx={{
+            fontWeight: 700,
+          }}
+        >
           용의자 / 피해자 정보
         </Typography>
       </DialogTitle>
 
       <DialogContent dividers sx={{ p: 0 }}>
         <Box
-          display="grid"
-          gridTemplateColumns={{ xs: "1fr", md: "300px 1fr" }}
-          minHeight={430}
+          sx={{
+            display: "grid",
+            gridTemplateColumns: { xs: "1fr", md: "300px 1fr" },
+            minHeight: 430,
+          }}
         >
           <Box sx={{ p: 2, backgroundColor: "action.hover" }}>
             {victims.length > 0 && (
               <>
                 <Typography
                   variant="caption"
-                  color="text.secondary"
-                  sx={{ letterSpacing: 0.7 }}
+                  sx={{
+                    color: "text.secondary",
+                    letterSpacing: 0.7,
+                  }}
                 >
                   피해자
                 </Typography>
-                <Box mt={1} display="flex" flexDirection="column" gap={0.4}>
+                <Box
+                  sx={{
+                    mt: 1,
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 0.4,
+                  }}
+                >
                   {victims.map((victim) => {
                     const selected =
                       selectedProfile?.role === "victim" &&
@@ -113,7 +129,10 @@ export default function SuspectsInfoCard({
                         variant="text"
                         color="primary"
                         onClick={() =>
-                          setSelectedProfile({ role: "victim", name: victim.name })
+                          setSelectedProfile({
+                            role: "victim",
+                            name: victim.name,
+                          })
                         }
                         sx={{
                           justifyContent: "flex-start",
@@ -134,20 +153,46 @@ export default function SuspectsInfoCard({
                           },
                         }}
                       >
-                        <Avatar src={victim.image} sx={{ width: 28, height: 28, mr: 1 }} />
-                        <Box textAlign="left">
-                          <Box display="flex" alignItems="center" gap={0.5}>
-                            <Typography fontWeight={700} fontSize={13}>
+                        <Avatar
+                          src={victim.image}
+                          sx={{ width: 28, height: 28, mr: 1 }}
+                        />
+                        <Box
+                          sx={{
+                            textAlign: "left",
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 0.5,
+                            }}
+                          >
+                            <Typography
+                              sx={{
+                                fontWeight: 700,
+                                fontSize: 13,
+                              }}
+                            >
                               {victim.name} ({victim.age})
                             </Typography>
                             <Box
-                              color={selected ? "inherit" : "text.secondary"}
-                              display="flex"
+                              sx={{
+                                color: selected ? "inherit" : "text.secondary",
+                                display: "flex",
+                              }}
                             >
                               {genderIcon(victim.gender)}
                             </Box>
                           </Box>
-                          <Typography fontSize={11}>{victim.job}</Typography>
+                          <Typography
+                            sx={{
+                              fontSize: 11,
+                            }}
+                          >
+                            {victim.job}
+                          </Typography>
                         </Box>
                       </Button>
                     );
@@ -159,12 +204,21 @@ export default function SuspectsInfoCard({
 
             <Typography
               variant="caption"
-              color="text.secondary"
-              sx={{ letterSpacing: 0.7 }}
+              sx={{
+                color: "text.secondary",
+                letterSpacing: 0.7,
+              }}
             >
               용의자
             </Typography>
-            <Box mt={1} display="flex" flexDirection="column" gap={0.4}>
+            <Box
+              sx={{
+                mt: 1,
+                display: "flex",
+                flexDirection: "column",
+                gap: 0.4,
+              }}
+            >
               {suspects.map((suspect) => {
                 const selected =
                   selectedProfile?.role === "suspect" &&
@@ -176,7 +230,10 @@ export default function SuspectsInfoCard({
                     variant="text"
                     color="primary"
                     onClick={() =>
-                      setSelectedProfile({ role: "suspect", name: suspect.name })
+                      setSelectedProfile({
+                        role: "suspect",
+                        name: suspect.name,
+                      })
                     }
                     sx={{
                       justifyContent: "flex-start",
@@ -199,20 +256,43 @@ export default function SuspectsInfoCard({
                       src={suspect.image}
                       sx={{ width: 28, height: 28, mr: 1 }}
                     />
-                    <Box textAlign="left">
-                      <Box display="flex" alignItems="center" gap={0.5}>
-                        <Typography fontWeight={700} fontSize={13}>
+                    <Box
+                      sx={{
+                        textAlign: "left",
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 0.5,
+                        }}
+                      >
+                        <Typography
+                          sx={{
+                            fontWeight: 700,
+                            fontSize: 13,
+                          }}
+                        >
                           {suspect.name} ({suspect.age})
                         </Typography>
                         <Box
-                          display="flex"
-                          alignItems="center"
-                          color={selected ? "inherit" : "text.secondary"}
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            color: selected ? "inherit" : "text.secondary",
+                          }}
                         >
                           {genderIcon(suspect.gender)}
                         </Box>
                       </Box>
-                      <Typography fontSize={11}>{suspect.job}</Typography>
+                      <Typography
+                        sx={{
+                          fontSize: 11,
+                        }}
+                      >
+                        {suspect.job}
+                      </Typography>
                     </Box>
                   </Button>
                 );
@@ -224,37 +304,81 @@ export default function SuspectsInfoCard({
             {selectedPerson ? (
               <>
                 <Box
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="space-between"
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
                 >
-                  <Box display="flex" alignItems="center" gap={1.2}>
-                    <Avatar src={selectedPerson.image} sx={{ width: 92, height: 92 }} />
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 1.2,
+                    }}
+                  >
+                    <Avatar
+                      src={selectedPerson.image}
+                      sx={{ width: 92, height: 92 }}
+                    />
                     <Box>
-                      <Box display="flex" alignItems="center" gap={0.6}>
-                        <Typography variant="h4" fontWeight={700}>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 0.6,
+                        }}
+                      >
+                        <Typography
+                          variant="h4"
+                          sx={{
+                            fontWeight: 700,
+                          }}
+                        >
                           {selectedPerson.name}
                         </Typography>
-                        <Typography color="text.secondary">
+                        <Typography
+                          sx={{
+                            color: "text.secondary",
+                          }}
+                        >
                           ({selectedPerson.age})
                         </Typography>
-                        <Box color="text.secondary" display="flex">
+                        <Box
+                          sx={{
+                            color: "text.secondary",
+                            display: "flex",
+                          }}
+                        >
                           {genderIcon(selectedPerson.gender)}
                         </Box>
                       </Box>
-                      <Box display="flex" alignItems="center">
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
                         <WorkIcon
                           sx={{ color: "text.secondary", width: 16, mr: 0.7 }}
                         />
-                        <Typography color="text.secondary">
+                        <Typography
+                          sx={{
+                            color: "text.secondary",
+                          }}
+                        >
                           {selectedPerson.job}
                         </Typography>
                       </Box>
                     </Box>
                   </Box>
                   <Chip
-                    label={selectedPerson.role === "suspect" ? "용의자" : "피해자"}
-                    color={selectedPerson.role === "suspect" ? "primary" : "default"}
+                    label={
+                      selectedPerson.role === "suspect" ? "용의자" : "피해자"
+                    }
+                    color={
+                      selectedPerson.role === "suspect" ? "primary" : "default"
+                    }
                     variant="outlined"
                     size="small"
                   />
@@ -262,7 +386,13 @@ export default function SuspectsInfoCard({
 
                 <Divider sx={{ my: 2 }} />
 
-                <Typography variant="subtitle2" color="text.secondary" mb={0.8}>
+                <Typography
+                  variant="subtitle2"
+                  sx={{
+                    color: "text.secondary",
+                    mb: 0.8,
+                  }}
+                >
                   자기소개
                 </Typography>
                 <Typography
@@ -277,7 +407,11 @@ export default function SuspectsInfoCard({
                       variant="outlined"
                       color="primary"
                       endIcon={
-                        isStatementOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />
+                        isStatementOpen ? (
+                          <ExpandLessIcon />
+                        ) : (
+                          <ExpandMoreIcon />
+                        )
                       }
                       sx={{ textTransform: "none", mb: 0.6 }}
                       onClick={() => setIsStatementOpen((prev) => !prev)}
@@ -286,7 +420,9 @@ export default function SuspectsInfoCard({
                     </Button>
 
                     {isStatementOpen && (
-                      <Typography sx={{ lineHeight: 1.9, wordBreak: "keep-all" }}>
+                      <Typography
+                        sx={{ lineHeight: 1.9, wordBreak: "keep-all" }}
+                      >
                         {selectedPerson.statement}
                       </Typography>
                     )}
@@ -294,7 +430,13 @@ export default function SuspectsInfoCard({
                 )}
               </>
             ) : (
-              <Typography color="text.secondary">인물을 선택하세요.</Typography>
+              <Typography
+                sx={{
+                  color: "text.secondary",
+                }}
+              >
+                인물을 선택하세요.
+              </Typography>
             )}
           </Box>
         </Box>

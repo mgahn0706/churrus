@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { DetectiveNoteType } from "@/types";
 import { schoolAdditionalQuestions } from "@/fixtures/school/additionalQuestions";
@@ -59,34 +59,42 @@ const schoolQuestions: {
 export default function SchoolSubmit() {
   const [questionStep, setQuestionStep] = useState(0);
   const [answers, setAnswers] = useState<string[]>(
-    new Array(schoolQuestions.length).fill("")
+    new Array(schoolQuestions.length).fill(""),
   );
   const currentQuestion = schoolQuestions[questionStep];
   const router = useRouter();
   return (
     <ThemeProvider theme={darkTheme}>
       <Box
-        display="flex"
-        flexDirection="column"
-        justifyContent="center"
-        alignItems="center"
-        width="100vw"
-        height="100vh"
         sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100vw",
+          height: "100vh",
           backgroundColor: "black",
           color: "white",
         }}
       >
         <Box
-          display="flex"
-          justifyContent="flex-start"
-          flexDirection="column"
-          width="50vw"
+          sx={{
+            display: "flex",
+            justifyContent: "flex-start",
+            flexDirection: "column",
+            width: "50vw",
+          }}
         >
           <Typography variant="body1">
             {currentQuestion.id} / {schoolQuestions.length}
           </Typography>
-          <Typography variant="h4" fontWeight="bold" mb={3}>
+          <Typography
+            variant="h4"
+            sx={{
+              fontWeight: "bold",
+              mb: 3,
+            }}
+          >
             {currentQuestion.question} {currentQuestion.required && "*"}
           </Typography>
 
@@ -107,7 +115,8 @@ export default function SchoolSubmit() {
           )}
           {currentQuestion.variant === "dropdown" && (
             <Select
-              placeholder="범인 지목"
+              displayEmpty
+              renderValue={(value) => value || "범인 지목"}
               value={answers[questionStep]}
               required={currentQuestion.required}
               sx={{
@@ -128,7 +137,12 @@ export default function SchoolSubmit() {
               })}
             </Select>
           )}
-          <Box display="flex" gap={1}>
+          <Box
+            sx={{
+              display: "flex",
+              gap: 1,
+            }}
+          >
             {currentQuestion.id !== 1 && (
               <Button
                 sx={{

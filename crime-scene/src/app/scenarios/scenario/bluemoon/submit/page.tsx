@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { DetectiveNoteType } from "@/types";
 import { bluemoonAdditionalQuestions } from "@/fixtures/bluemoon/additionalQuestions";
@@ -57,7 +57,7 @@ const bluemoonQuestions: {
 export default function BluemoonSubmit() {
   const [questionStep, setQuestionStep] = useState(0);
   const [answers, setAnswers] = useState<string[]>(
-    new Array(bluemoonQuestions.length).fill("")
+    new Array(bluemoonQuestions.length).fill(""),
   );
   const currentQuestion = bluemoonQuestions[questionStep];
   const router = useRouter();
@@ -65,31 +65,35 @@ export default function BluemoonSubmit() {
   return (
     <ThemeProvider theme={darkTheme}>
       <Box
-        display="flex"
-        flexDirection="column"
-        justifyContent="center"
-        alignItems="center"
-        width="100vw"
-        height="100vh"
         sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100vw",
+          height: "100vh",
           backgroundColor: "black",
           color: "white",
         }}
       >
         <Box
-          display="flex"
-          justifyContent="flex-start"
-          flexDirection="column"
-          width="50vw"
+          sx={{
+            display: "flex",
+            justifyContent: "flex-start",
+            flexDirection: "column",
+            width: "50vw",
+          }}
         >
           <Typography variant="body1">
             {currentQuestion.id} / {bluemoonQuestions.length}
           </Typography>
           <Typography
             variant="h4"
-            fontWeight="bold"
-            mb={3}
-            sx={{ wordBreak: "keep-all" }}
+            sx={{
+              fontWeight: "bold",
+              mb: 3,
+              wordBreak: "keep-all",
+            }}
           >
             {currentQuestion.question} {currentQuestion.required && "*"}
           </Typography>
@@ -111,7 +115,8 @@ export default function BluemoonSubmit() {
           )}
           {currentQuestion.variant === "dropdown" && (
             <Select
-              placeholder="범인 지목"
+              displayEmpty
+              renderValue={(value) => value || "범인 지목"}
               value={answers[questionStep]}
               required={currentQuestion.required}
               sx={{
@@ -131,7 +136,12 @@ export default function BluemoonSubmit() {
             </Select>
           )}
 
-          <Box display="flex" gap={1}>
+          <Box
+            sx={{
+              display: "flex",
+              gap: 1,
+            }}
+          >
             {currentQuestion.id !== 1 && (
               <Button
                 sx={{
@@ -160,8 +170,8 @@ export default function BluemoonSubmit() {
                 [answers.slice(0, 3)].some((answerGroup, index) =>
                   answerGroup.some(
                     (answer) =>
-                      bluemoonQuestions[index].required && answer.trim() === ""
-                  )
+                      bluemoonQuestions[index].required && answer.trim() === "",
+                  ),
                 ) && questionStep === bluemoonQuestions.length - 1
               }
               variant="contained"

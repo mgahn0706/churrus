@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { DetectiveNoteType } from "@/types";
 import { hotelAdditionalQuestions } from "@/fixtures/hotel/additionalQuestions";
@@ -57,7 +57,7 @@ const hotelQuestions: {
 export default function HotelSubmit() {
   const [questionStep, setQuestionStep] = useState(0);
   const [answers, setAnswers] = useState<string[]>(
-    new Array(hotelQuestions.length).fill("")
+    new Array(hotelQuestions.length).fill(""),
   );
   const currentQuestion = hotelQuestions[questionStep];
   const router = useRouter();
@@ -65,31 +65,33 @@ export default function HotelSubmit() {
   return (
     <ThemeProvider theme={darkTheme}>
       <Box
-        display="flex"
-        flexDirection="column"
-        justifyContent="center"
-        alignItems="center"
-        width="100vw"
-        height="100vh"
         sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100vw",
+          height: "100vh",
           backgroundColor: "black",
           color: "white",
         }}
       >
         <Box
-          display="flex"
-          justifyContent="flex-start"
-          flexDirection="column"
-          width="50vw"
+          sx={{
+            display: "flex",
+            justifyContent: "flex-start",
+            flexDirection: "column",
+            width: "50vw",
+          }}
         >
           <Typography variant="body1">
             {currentQuestion.id} / {hotelQuestions.length}
           </Typography>
           <Typography
             variant="h4"
-            fontWeight="bold"
-            mb={3}
             sx={{
+              fontWeight: "bold",
+              mb: 3,
               wordBreak: "keep-all",
             }}
           >
@@ -113,7 +115,8 @@ export default function HotelSubmit() {
           )}
           {currentQuestion.variant === "dropdown" && (
             <Select
-              placeholder="범인 지목"
+              displayEmpty
+              renderValue={(value) => value || "범인 지목"}
               value={answers[questionStep]}
               required={currentQuestion.required}
               sx={{
@@ -134,7 +137,12 @@ export default function HotelSubmit() {
               })}
             </Select>
           )}
-          <Box display="flex" gap={1}>
+          <Box
+            sx={{
+              display: "flex",
+              gap: 1,
+            }}
+          >
             {currentQuestion.id !== 1 && (
               <Button
                 sx={{
@@ -162,9 +170,8 @@ export default function HotelSubmit() {
               disabled={
                 hotelQuestions.some(
                   (question, index) =>
-                    question.required && answers[index].trim() === ""
-                ) &&
-                questionStep === hotelQuestions.length - 1
+                    question.required && answers[index].trim() === "",
+                ) && questionStep === hotelQuestions.length - 1
               }
               variant="contained"
               sx={{

@@ -13,28 +13,37 @@ function HeaderButton({
     <Box
       component="button"
       type="button"
-      px={{ xs: "8px", sm: "12px" }}
-      py="4px"
+      onClick={onClick}
       sx={{
+        px: { xs: "8px", sm: "12px" },
+        py: "4px",
         cursor: "pointer",
         border: 0,
         color: "inherit",
         font: "inherit",
         backgroundColor: "rgba(0, 0, 0, 0)",
+
         "&:hover": {
           backgroundColor: "rgb(60, 60, 60)",
         },
+
         transition: "all 0.3s ease-in-out",
         borderRadius: "2px",
         outline: "none",
+
         "&:focus-visible": {
           backgroundColor: "rgba(255,255,255,0.08)",
           boxShadow: "0 0 0 2px rgba(111,174,255,0.5)",
         },
       }}
-      onClick={onClick}
     >
-      <Typography fontSize={{ xs: 14, sm: 16 }}>{text}</Typography>
+      <Typography
+        sx={{
+          fontSize: { xs: 14, sm: 16 },
+        }}
+      >
+        {text}
+      </Typography>
     </Box>
   );
 }
@@ -47,38 +56,45 @@ export default function Header() {
     window.open(
       "https://youtube.com/playlist?list=PLUpIDGJHdYTT19y4F7LxG7MQnDW4PI0VK&si=fO4IV6OuvUg9PIjH",
       "_blank",
-      "noopener,noreferrer"
+      "noopener,noreferrer",
     );
   };
 
   return (
     <Box
-      color="white"
-      display="flex"
-      justifyContent="space-between"
-      alignItems="center"
-      position="fixed"
-      top={0}
-      left={0}
-      width="100%"
-      px={{ xs: "12px", sm: "24px" }}
-      py={{ xs: "8px", sm: 0 }}
-      minHeight="60px"
-      zIndex={100}
-      bgcolor="rgba(0, 0, 0, 0)"
       sx={{
+        color: "white",
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        position: "fixed",
+        top: 0,
+        left: 0,
+        width: "100%",
+        px: { xs: "12px", sm: "24px" },
+        py: { xs: "8px", sm: 0 },
+        minHeight: "60px",
+        zIndex: 100,
+        bgcolor: "rgba(0, 0, 0, 0)",
         backdropFilter: "blur(60px)",
         boxSizing: "border-box",
         gap: 1,
       }}
     >
       {/* Left: Logo & Navigation */}
-      <Box display="flex" alignItems="center" minWidth={0}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          minWidth: 0,
+        }}
+      >
         <Box
           component="button"
           type="button"
-          mr={{ xs: 1.5, sm: 4 }}
+          onClick={() => router.push("/scenarios")}
           sx={{
+            mr: { xs: 1.5, sm: 4 },
             cursor: "pointer",
             display: "flex",
             alignItems: "center",
@@ -91,18 +107,18 @@ export default function Header() {
             outline: "none",
             transition: "background-color 180ms ease, box-shadow 180ms ease",
             "&:hover": { backgroundColor: "rgba(255,255,255,0.05)" },
+
             "&:focus-visible": {
               backgroundColor: "rgba(255,255,255,0.08)",
               boxShadow: "0 0 0 2px rgba(111,174,255,0.5)",
             },
           }}
-          onClick={() => router.push("/scenarios")}
         >
           <Typography
-            fontWeight="bolder"
-            fontSize={{ xs: 14, sm: 16 }}
-            mr={1}
             sx={{
+              fontWeight: "bolder",
+              fontSize: { xs: 14, sm: 16 },
+              mr: 1,
               whiteSpace: "nowrap",
             }}
           >
@@ -110,7 +126,11 @@ export default function Header() {
           </Typography>
         </Box>
 
-        <Box display="flex">
+        <Box
+          sx={{
+            display: "flex",
+          }}
+        >
           <HeaderButton
             text="규칙"
             onClick={() => router.push("/scenarios/rules")}
@@ -122,7 +142,13 @@ export default function Header() {
         </Box>
       </Box>
 
-      <Box display="flex" alignItems="center" gap={{ xs: 0.5, sm: 1 }}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          gap: { xs: 0.5, sm: 1 },
+        }}
+      >
         <Box
           component="a"
           href="https://churrus.vercel.app"
@@ -150,7 +176,12 @@ export default function Header() {
             },
           }}
         >
-          <Typography fontSize={13} fontWeight={500}>
+          <Typography
+            sx={{
+              fontSize: 13,
+              fontWeight: 500,
+            }}
+          >
             추러스 사이트로 돌아가기
           </Typography>
         </Box>

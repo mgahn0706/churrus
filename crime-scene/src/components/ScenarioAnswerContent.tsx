@@ -9,11 +9,7 @@ const answerTextSx = {
   wordBreak: "keep-all",
 } as const;
 
-export function ScenarioAnswerText({
-  children,
-}: {
-  children: ReactNode;
-}) {
+export function ScenarioAnswerText({ children }: { children: ReactNode }) {
   return (
     <Typography variant="body1" color="white" sx={answerTextSx}>
       {children}
@@ -21,13 +17,17 @@ export function ScenarioAnswerText({
   );
 }
 
-export function ScenarioSolutionText({
-  children,
-}: {
-  children: ReactNode;
-}) {
+export function ScenarioSolutionText({ children }: { children: ReactNode }) {
   return (
-    <Typography variant="body1" mb={2} sx={answerTextSx}>
+    <Typography
+      variant="body1"
+      sx={[
+        {
+          mb: 2,
+        },
+        ...(Array.isArray(answerTextSx) ? answerTextSx : [answerTextSx]),
+      ]}
+    >
       {children}
     </Typography>
   );
@@ -49,7 +49,12 @@ export function ScenarioAdditionalAnswerList({
           <ListItem key={index} sx={{ my: 3 }}>
             <ListItemText
               primary={
-                <Typography variant="h6" mb={2}>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    mb: 2,
+                  }}
+                >
                   {item.question}
                 </Typography>
               }

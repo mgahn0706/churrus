@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { Avatar, Box, CircularProgress, Typography } from "@mui/material";
 import { useSearchParams } from "next/navigation";
@@ -20,13 +20,16 @@ type VoteSuspect = {
 
 function SuspectVoteContent() {
   const searchParams = useSearchParams();
-  const [playroomModule, setPlayroomModule] =
-    useState<Awaited<ReturnType<typeof loadPlayroomKit>> | null>(null);
+  const [playroomModule, setPlayroomModule] = useState<Awaited<
+    ReturnType<typeof loadPlayroomKit>
+  > | null>(null);
   const [isReady, setIsReady] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
   const [pageError, setPageError] = useState<string | null>(null);
   const [suspects, setSuspects] = useState<VoteSuspect[]>([]);
-  const [selectedSuspectName, setSelectedSuspectName] = useState<string | null>(null);
+  const [selectedSuspectName, setSelectedSuspectName] = useState<string | null>(
+    null,
+  );
   const [isVoteLocked, setIsVoteLocked] = useState(false);
 
   const roomCode = searchParams?.get("room")?.toUpperCase() ?? "";
@@ -41,40 +44,41 @@ function SuspectVoteContent() {
     setSuspects([]);
     setIsVoteLocked(false);
 
-      try {
-        const nextPlayroomModule = await loadPlayroomKit();
-        await withPlayroomTimeout(
+    try {
+      const nextPlayroomModule = await loadPlayroomKit();
+      await withPlayroomTimeout(
         nextPlayroomModule.insertCoin({
           skipLobby: true,
           roomCode,
           gameId: "suspect-realtime-vote",
-          }),
-          6000
-        );
+        }),
+        6000,
+      );
 
-        const suspectsState = await withPlayroomTimeout(
-          nextPlayroomModule.waitForState<VoteSuspect[]>(
-            getPlayroomVoteSuspectsStateKey()
-          ),
-          4000
-        );
+      const suspectsState = await withPlayroomTimeout(
+        nextPlayroomModule.waitForState<VoteSuspect[]>(
+          getPlayroomVoteSuspectsStateKey(),
+        ),
+        4000,
+      );
 
-        if (!suspectsState?.length) {
-          throw new Error("SUSPECTS_UNAVAILABLE");
-        }
+      if (!suspectsState?.length) {
+        throw new Error("SUSPECTS_UNAVAILABLE");
+      }
 
       const lockedState =
         (await withPlayroomTimeout(
-          nextPlayroomModule.waitForState<boolean>(getPlayroomVoteLockedStateKey()),
-          4000
+          nextPlayroomModule.waitForState<boolean>(
+            getPlayroomVoteLockedStateKey(),
+          ),
+          4000,
         ).catch(() => false)) ?? false;
 
       setSuspects(suspectsState);
       setIsVoteLocked(Boolean(lockedState));
       setSelectedSuspectName(
-        (nextPlayroomModule.myPlayer().getState(
-          getPlayroomVoteStateKey()
-        ) as string | undefined) ?? null
+        (nextPlayroomModule.myPlayer().getState(getPlayroomVoteStateKey()) as
+          string | undefined) ?? null,
       );
       setPlayroomModule(nextPlayroomModule);
       setIsReady(true);
@@ -105,7 +109,7 @@ function SuspectVoteContent() {
 
     const syncLockedState = () => {
       setIsVoteLocked(
-        Boolean(playroomModule.getState?.(getPlayroomVoteLockedStateKey()))
+        Boolean(playroomModule.getState?.(getPlayroomVoteLockedStateKey())),
       );
     };
 
@@ -123,7 +127,9 @@ function SuspectVoteContent() {
     }
 
     setSelectedSuspectName(suspectName);
-    playroomModule.myPlayer().setState(getPlayroomVoteStateKey(), suspectName, true);
+    playroomModule
+      .myPlayer()
+      .setState(getPlayroomVoteStateKey(), suspectName, true);
   };
 
   return (
@@ -139,10 +145,21 @@ function SuspectVoteContent() {
     >
       <Box sx={{ width: "100%", maxWidth: 560, mx: "auto" }}>
         <Box sx={{ textAlign: "center", mb: 3.5 }}>
-          <Typography fontSize={12} sx={{ opacity: 0.66 }}>
+          <Typography
+            sx={{
+              fontSize: 12,
+              opacity: 0.66,
+            }}
+          >
             ROOM {roomCode || "-"}
           </Typography>
-          <Typography variant="h5" fontWeight={800} mt={1}>
+          <Typography
+            variant="h5"
+            sx={{
+              fontWeight: 800,
+              mt: 1,
+            }}
+          >
             용의자 투표
           </Typography>
           <Typography sx={{ mt: 0.7, opacity: 0.68, fontSize: 14 }}>
@@ -167,7 +184,13 @@ function SuspectVoteContent() {
               px: 3,
             }}
           >
-            <Typography fontWeight={700}>{pageError}</Typography>
+            <Typography
+              sx={{
+                fontWeight: 700,
+              }}
+            >
+              {pageError}
+            </Typography>
             <Typography sx={{ opacity: 0.66, fontSize: 13 }}>
               호스트가 투표 방을 다시 열어야 합니다
             </Typography>
@@ -221,7 +244,12 @@ function SuspectVoteContent() {
                 backdropFilter: "blur(16px)",
               }}
             >
-              <Typography fontSize={13} fontWeight={700}>
+              <Typography
+                sx={{
+                  fontSize: 13,
+                  fontWeight: 700,
+                }}
+              >
                 {isVoteLocked
                   ? "호스트가 최종 투표 결과를 공개했습니다"
                   : "원하는 용의자 한 명에게 투표하세요"}
@@ -239,56 +267,65 @@ function SuspectVoteContent() {
                 gap: 1.4,
               }}
             >
-            {suspects.map((suspect) => {
-              const selected = selectedSuspectName === suspect.name;
+              {suspects.map((suspect) => {
+                const selected = selectedSuspectName === suspect.name;
 
-              return (
-                <Box
-                  key={suspect.name}
-                  onClick={() => handleVote(suspect.name)}
-                  sx={{
-                    p: 1.3,
-                    borderRadius: 4,
-                    border: "1px solid",
-                    borderColor: selected
-                      ? "rgba(96, 165, 250, 0.8)"
-                      : "rgba(255,255,255,0.1)",
-                    background: selected
-                      ? "linear-gradient(180deg, rgba(37,99,235,0.32) 0%, rgba(255,255,255,0.08) 100%)"
-                      : "linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%)",
-                    boxShadow: selected
-                      ? "0 18px 36px rgba(37, 99, 235, 0.18)"
-                      : "none",
-                    backdropFilter: "blur(18px)",
-                    cursor: isVoteLocked ? "not-allowed" : "pointer",
-                    opacity: isVoteLocked ? 0.56 : 1,
-                    pointerEvents: isVoteLocked ? "none" : "auto",
-                  }}
-                >
-                  <Avatar
-                    src={suspect.image || ""}
-                    alt={suspect.name}
+                return (
+                  <Box
+                    key={suspect.name}
+                    onClick={() => handleVote(suspect.name)}
                     sx={{
-                      width: "100%",
-                      height: "auto",
-                      aspectRatio: "1 / 1",
-                      borderRadius: 3,
-                      mb: 1.2,
+                      p: 1.3,
+                      borderRadius: 4,
+                      border: "1px solid",
+                      borderColor: selected
+                        ? "rgba(96, 165, 250, 0.8)"
+                        : "rgba(255,255,255,0.1)",
+                      background: selected
+                        ? "linear-gradient(180deg, rgba(37,99,235,0.32) 0%, rgba(255,255,255,0.08) 100%)"
+                        : "linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%)",
+                      boxShadow: selected
+                        ? "0 18px 36px rgba(37, 99, 235, 0.18)"
+                        : "none",
+                      backdropFilter: "blur(18px)",
+                      cursor: isVoteLocked ? "not-allowed" : "pointer",
+                      opacity: isVoteLocked ? 0.56 : 1,
+                      pointerEvents: isVoteLocked ? "none" : "auto",
                     }}
-                    variant="rounded"
-                  />
-                  <Typography fontWeight={700} textAlign="center">
-                    {suspect.name}
-                  </Typography>
-                  <Typography
-                    textAlign="center"
-                    sx={{ mt: 0.4, opacity: 0.62, fontSize: 12 }}
                   >
-                    {suspect.job}
-                  </Typography>
-                </Box>
-              );
-            })}
+                    <Avatar
+                      src={suspect.image || ""}
+                      alt={suspect.name}
+                      sx={{
+                        width: "100%",
+                        height: "auto",
+                        aspectRatio: "1 / 1",
+                        borderRadius: 3,
+                        mb: 1.2,
+                      }}
+                      variant="rounded"
+                    />
+                    <Typography
+                      sx={{
+                        fontWeight: 700,
+                        textAlign: "center",
+                      }}
+                    >
+                      {suspect.name}
+                    </Typography>
+                    <Typography
+                      sx={{
+                        textAlign: "center",
+                        mt: 0.4,
+                        opacity: 0.62,
+                        fontSize: 12,
+                      }}
+                    >
+                      {suspect.job}
+                    </Typography>
+                  </Box>
+                );
+              })}
             </Box>
             {isVoteLocked && (
               <Box
@@ -313,7 +350,12 @@ function SuspectVoteContent() {
                     border: "1px solid rgba(255,255,255,0.14)",
                   }}
                 >
-                  <Typography fontSize={13} fontWeight={700}>
+                  <Typography
+                    sx={{
+                      fontSize: 13,
+                      fontWeight: 700,
+                    }}
+                  >
                     투표 수정이 비활성화되었습니다
                   </Typography>
                 </Box>

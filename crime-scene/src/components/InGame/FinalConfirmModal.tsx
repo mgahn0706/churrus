@@ -34,10 +34,21 @@ export default function FinalConfirmModal({
   return (
     <Dialog open={isOpen} maxWidth="sm" fullWidth>
       <DialogTitle sx={{ pb: 1 }}>
-        <Typography variant="h6" fontWeight={700}>
+        <Typography
+          variant="h6"
+          sx={{
+            fontWeight: 700,
+          }}
+        >
           최종 결정
         </Typography>
-        <Typography variant="body2" color="text.secondary" sx={{ mt: 0.75 }}>
+        <Typography
+          variant="body2"
+          sx={{
+            color: "text.secondary",
+            mt: 0.75,
+          }}
+        >
           제출 전에 선택한 용의자와 최종 진술을 한 번 더 확인하세요.
         </Typography>
       </DialogTitle>
@@ -55,15 +66,30 @@ export default function FinalConfirmModal({
           }}
         >
           <Box>
-            <Typography variant="caption" color="text.secondary">
+            <Typography
+              variant="caption"
+              sx={{
+                color: "text.secondary",
+              }}
+            >
               진범 지목
             </Typography>
-            <Typography variant="h6" color="text.primary" fontWeight={700}>
+            <Typography
+              variant="h6"
+              sx={{
+                color: "text.primary",
+                fontWeight: 700,
+              }}
+            >
               {suspect.name}
             </Typography>
           </Box>
           <Box sx={{ flexGrow: 1 }} />
-          <Avatar src={suspect.image} alt={suspect.name} sx={{ width: 56, height: 56 }} />
+          <Avatar
+            src={suspect.image}
+            alt={suspect.name}
+            sx={{ width: 56, height: 56 }}
+          />
         </Box>
 
         <Box
@@ -74,7 +100,13 @@ export default function FinalConfirmModal({
             gap: 1.5,
           }}
         >
-          <Typography variant="subtitle2" color="text.primary" fontWeight={600}>
+          <Typography
+            variant="subtitle2"
+            sx={{
+              color: "text.primary",
+              fontWeight: 600,
+            }}
+          >
             최종 진술
           </Typography>
 

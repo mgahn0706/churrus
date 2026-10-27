@@ -82,7 +82,12 @@ export default function MemoModal({
   };
 
   const requiredInputBadge = (
-    <Typography color="error" ml={1}>
+    <Typography
+      color="error"
+      sx={{
+        ml: 1,
+      }}
+    >
       *
     </Typography>
   );
@@ -105,10 +110,24 @@ export default function MemoModal({
             <Close />
           </IconButton>
         </DialogTitle>
-        <Box display="flex" width="100%" justifyContent="space-around">
-          <Box width={550}>
+        <Box
+          sx={{
+            display: "flex",
+            width: "100%",
+            justifyContent: "space-around",
+          }}
+        >
+          <Box
+            sx={{
+              width: 550,
+            }}
+          >
             <DialogContent>
-              <Box mb={2}>
+              <Box
+                sx={{
+                  mb: 2,
+                }}
+              >
                 <InputLabel
                   id="whodunnit"
                   sx={{ fontWeight: "bold", display: "flex" }}
@@ -138,7 +157,11 @@ export default function MemoModal({
                   ))}
                 </Select>
               </Box>
-              <Box mb={2}>
+              <Box
+                sx={{
+                  mb: 2,
+                }}
+              >
                 {" "}
                 <InputLabel
                   id="howdunnit"
@@ -175,7 +198,12 @@ export default function MemoModal({
               />
             </DialogContent>
             <DialogContent>
-              <DialogContentText sx={{ fontWeight: "bold" }} mb={1}>
+              <DialogContentText
+                sx={{
+                  mb: 1,
+                  fontWeight: "bold",
+                }}
+              >
                 추가 질문
               </DialogContentText>
               {questions.length === 0 && (
@@ -184,7 +212,12 @@ export default function MemoModal({
                 </DialogContentText>
               )}
               {questions.map((question, idx) => (
-                <Box mb={1} key={question.no}>
+                <Box
+                  key={question.no}
+                  sx={{
+                    mb: 1,
+                  }}
+                >
                   <InputLabel id={`additionalQuestion-${idx}`}>
                     {question.question}
                   </InputLabel>
@@ -209,7 +242,11 @@ export default function MemoModal({
             </DialogContent>
           </Box>
           <Divider flexItem orientation="vertical" />
-          <Box width={550}>
+          <Box
+            sx={{
+              width: 550,
+            }}
+          >
             <DialogContent>
               <InputLabel id="memo" sx={{ fontWeight: "bold" }}>
                 메모

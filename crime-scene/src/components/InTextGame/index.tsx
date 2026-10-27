@@ -37,14 +37,21 @@ const ProgressBar = ({
   return (
     <Tooltip title={`조사 진행도 (${checkedCount} / ${totalCount})`}>
       <Box
-        position="absolute"
-        top="60px"
-        right="20px"
-        display="flex"
-        alignItems="center"
-        width="200px"
+        sx={{
+          position: "absolute",
+          top: "60px",
+          right: "20px",
+          display: "flex",
+          alignItems: "center",
+          width: "200px",
+        }}
       >
-        <Box width="100%" mr={1}>
+        <Box
+          sx={{
+            width: "100%",
+            mr: 1,
+          }}
+        >
           <LinearProgress
             color="primary"
             variant="determinate"
@@ -72,7 +79,7 @@ export default function InTextGame({ scenario }: InTextGameProps) {
   const [openAllHistory, setOpenAllHistory] = useState(false);
 
   const [currentStep, setCurrentStep] = useState<"PROLOGUE" | "INVESTIGATE">(
-    "PROLOGUE"
+    "PROLOGUE",
   );
   const [searchKeyword, setSearchKeyword] = useState<string>("");
   const [searchedClues, setSearchedClues] = useState<ClueData[] | null>([]);
@@ -81,7 +88,7 @@ export default function InTextGame({ scenario }: InTextGameProps) {
     string[]
   >([]);
   const [checkedClueIds, setCheckedClueIds] = useState<Set<number>>(
-    () => new Set()
+    () => new Set(),
   );
 
   const acquiredPhysicalClues = scenario.clues.reduce<PhysicalClue[]>(
@@ -96,7 +103,7 @@ export default function InTextGame({ scenario }: InTextGameProps) {
 
       return physicalClues;
     },
-    []
+    [],
   );
 
   const handleSearch = () => {
@@ -108,7 +115,7 @@ export default function InTextGame({ scenario }: InTextGameProps) {
     const matchingIds =
       scenario.keywordIds[trimmedKeyword] ??
       Object.entries(scenario.keywordIds).find(
-        ([candidate]) => candidate.toUpperCase() === trimmedKeyword
+        ([candidate]) => candidate.toUpperCase() === trimmedKeyword,
       )?.[1];
     const clueById = new Map(scenario.clues.map((clue) => [clue.id, clue]));
     const clues = matchingIds
@@ -118,12 +125,12 @@ export default function InTextGame({ scenario }: InTextGameProps) {
 
     setSearchedClues(searchResult);
     setRecentlySearchedKeywords((previous) =>
-      [...previous, trimmedKeyword].slice(-5)
+      [...previous, trimmedKeyword].slice(-5),
     );
     setSearchHistory((previous) =>
       previous.includes(trimmedKeyword)
         ? previous
-        : [trimmedKeyword, ...previous]
+        : [trimmedKeyword, ...previous],
     );
     if (searchResult) {
       setCheckedClueIds((previous) => {
@@ -141,7 +148,14 @@ export default function InTextGame({ scenario }: InTextGameProps) {
         <Dialog open={openAllHistory} onClose={() => setOpenAllHistory(false)}>
           <DialogTitle>검색 기록 전체</DialogTitle>
           <DialogContent>
-            <Box display="flex" flexWrap="wrap" gap={1} mt={1}>
+            <Box
+              sx={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: 1,
+                mt: 1,
+              }}
+            >
               {searchHistory.map((keyword) => (
                 <Chip
                   label={keyword}
@@ -160,14 +174,32 @@ export default function InTextGame({ scenario }: InTextGameProps) {
         clue={selectedPhysicalClue}
         onClose={() => setSelectedPhysicalClue(null)}
       />
-      <Box bgcolor="black" minHeight="100vh" py="60px" px="10vw">
+      <Box
+        sx={{
+          bgcolor: "black",
+          minHeight: "100vh",
+          py: "60px",
+          px: "10vw",
+        }}
+      >
         <TextGameHeader
           scenario={scenario}
           acquiredPhysicalClues={acquiredPhysicalClues}
         />
         {currentStep === "PROLOGUE" && (
-          <Box mt={6} color="white">
-            <Typography mr={1} variant="h5" color="white">
+          <Box
+            sx={{
+              mt: 6,
+              color: "white",
+            }}
+          >
+            <Typography
+              variant="h5"
+              color="white"
+              sx={{
+                mr: 1,
+              }}
+            >
               {scenario.prologue[prologueStep]}
             </Typography>
             <Button
@@ -187,12 +219,14 @@ export default function InTextGame({ scenario }: InTextGameProps) {
         )}
         {currentStep === "INVESTIGATE" && (
           <Box
-            color="white"
-            lineHeight={"2rem"}
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            flexDirection={"column"}
+            sx={{
+              color: "white",
+              lineHeight: "2rem",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "column",
+            }}
           >
             <ProgressBar
               checkedCount={checkedClueIds.size}
@@ -200,11 +234,13 @@ export default function InTextGame({ scenario }: InTextGameProps) {
             />
 
             <Box
-              display="flex"
-              flexDirection="column"
-              width={400}
-              mt={6}
-              gap={1.5}
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                width: 400,
+                mt: 6,
+                gap: 1.5,
+              }}
             >
               <Paper
                 sx={{
@@ -228,7 +264,9 @@ export default function InTextGame({ scenario }: InTextGameProps) {
                   }}
                   placeholder="조사 키워드를 입력하세요."
                   value={searchKeyword}
-                  onChange={(e) => setSearchKeyword(e.target.value.toUpperCase())}
+                  onChange={(e) =>
+                    setSearchKeyword(e.target.value.toUpperCase())
+                  }
                 />
                 <Tooltip
                   title="'시체'를 검색해보세요."
@@ -249,10 +287,12 @@ export default function InTextGame({ scenario }: InTextGameProps) {
               </Paper>
 
               <Box
-                display="flex"
-                width="100%"
-                justifyContent="flex-start"
-                gap={1}
+                sx={{
+                  display: "flex",
+                  width: "100%",
+                  justifyContent: "flex-start",
+                  gap: 1,
+                }}
               >
                 {searchHistory.slice(0, MAX_VISIBLE).map((keyword) => (
                   <Chip
@@ -274,19 +314,37 @@ export default function InTextGame({ scenario }: InTextGameProps) {
             </Box>
 
             <Box
-              display="flex"
-              justifyContent="center"
-              alignContent="center"
-              flexDirection="column"
-              gap={2}
-              mt={7}
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignContent: "center",
+                flexDirection: "column",
+                gap: 2,
+                mt: 7,
+              }}
             >
               {searchedClues?.map((clue) => {
                 return (
                   <FadeInSection key={clue.id}>
-                    <Box minWidth="80vw">
-                      <Box display="flex" alignItems="center" gap={1} mb={0.5}>
-                        <Typography variant="h6" color="#eeeeee">
+                    <Box
+                      sx={{
+                        minWidth: "80vw",
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 1,
+                          mb: 0.5,
+                        }}
+                      >
+                        <Typography
+                          variant="h6"
+                          sx={{
+                            color: "#eeeeee",
+                          }}
+                        >
                           {clue.from}
                         </Typography>
                         {clue.physicalClueId !== undefined && (
@@ -317,7 +375,12 @@ export default function InTextGame({ scenario }: InTextGameProps) {
                               fontSize="small"
                               sx={{ color: "#f6c85f" }}
                             />
-                            <Typography component="span" fontWeight="bold">
+                            <Typography
+                              component="span"
+                              sx={{
+                                fontWeight: "bold",
+                              }}
+                            >
                               {clue.physicalClueId}번 실물단서
                             </Typography>
                           </ButtonBase>
@@ -325,8 +388,10 @@ export default function InTextGame({ scenario }: InTextGameProps) {
                       </Box>
                       <Typography
                         variant="h5"
-                        fontWeight="bold"
-                        lineHeight="2rem"
+                        sx={{
+                          fontWeight: "bold",
+                          lineHeight: "2rem",
+                        }}
                       >
                         "{clue.text}"
                       </Typography>
@@ -336,7 +401,11 @@ export default function InTextGame({ scenario }: InTextGameProps) {
               })}
               {!searchedClues && (
                 <FadeInSection>
-                  <Box minWidth="80vw">
+                  <Box
+                    sx={{
+                      minWidth: "80vw",
+                    }}
+                  >
                     <Typography variant="h5">
                       {
                         recentlySearchedKeywords[

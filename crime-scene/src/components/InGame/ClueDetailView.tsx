@@ -25,15 +25,12 @@ const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
     children: React.ReactElement;
   },
-  ref: React.Ref<unknown>
+  ref: React.Ref<unknown>,
 ) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export function ClueDetailView({
-  clueData,
-  onClose,
-}: ClueDetailViewProps) {
+export function ClueDetailView({ clueData, onClose }: ClueDetailViewProps) {
   const [isImageLoading, setIsImageLoading] = useState(true);
 
   useEffect(() => {
@@ -51,7 +48,7 @@ export function ClueDetailView({
       fullScreen
       open
       onClose={onClose}
-      TransitionComponent={Transition}
+      slots={{ transition: Transition }}
       sx={{ zIndex: 1080 }}
     >
       <AppBar
@@ -79,8 +76,20 @@ export function ClueDetailView({
           </Typography>
         </Toolbar>
       </AppBar>
-      <Box display="flex" mt={4}>
-        <Box display="flex" ml="50px" mr="100px" my={"50px"}>
+      <Box
+        sx={{
+          display: "flex",
+          mt: 4,
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            ml: "50px",
+            mr: "100px",
+            my: "50px",
+          }}
+        >
           <Image
             priority
             onLoadingComplete={() => setIsImageLoading(false)}
@@ -100,9 +109,18 @@ export function ClueDetailView({
             />
           )}
         </Box>
-        <Box display="flex">
+        <Box
+          sx={{
+            display: "flex",
+          }}
+        >
           <Divider orientation="vertical" flexItem />
-          <Box mx={"50px"} mt="150px">
+          <Box
+            sx={{
+              mx: "50px",
+              mt: "150px",
+            }}
+          >
             <Typography
               variant="h5"
               sx={{

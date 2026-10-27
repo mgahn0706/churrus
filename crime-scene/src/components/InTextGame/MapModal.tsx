@@ -53,7 +53,11 @@ export default function MapModal({
           </TabPanel>
         </>
       ) : (
-        <Box p={4}>
+        <Box
+          sx={{
+            p: 4,
+          }}
+        >
           <Typography>지도 정보가 아직 준비되지 않았습니다.</Typography>
         </Box>
       )}

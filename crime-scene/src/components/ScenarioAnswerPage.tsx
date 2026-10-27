@@ -23,9 +23,9 @@ import TabPanel from "./Answer/TabPanel";
 
 type ScenarioAnswerPageProps = {
   scenarioKey: string;
-  reveal: (submittedAnswer: DetectiveNoteType) => React.ComponentProps<
-    typeof AnswerRevealSequence
-  >;
+  reveal: (
+    submittedAnswer: DetectiveNoteType,
+  ) => React.ComponentProps<typeof AnswerRevealSequence>;
   renderAdditional?: (submittedAnswer: DetectiveNoteType) => ReactNode;
   renderConfess: (submittedAnswer: DetectiveNoteType) => ReactNode;
   renderSolution: (submittedAnswer: DetectiveNoteType) => ReactNode;
@@ -46,7 +46,9 @@ export function ScenarioAnswerPage({
 }: ScenarioAnswerPageProps) {
   const router = useRouter();
   const scenario = useMemo(() => {
-    const scenario = scenarioCatalog.find((candidate) => candidate.id === scenarioKey);
+    const scenario = scenarioCatalog.find(
+      (candidate) => candidate.id === scenarioKey,
+    );
 
     if (!scenario) {
       throw new Error(`Scenario not found: ${scenarioKey}`);
@@ -54,7 +56,10 @@ export function ScenarioAnswerPage({
 
     return scenario;
   }, [scenarioKey]);
-  const scenarioTheme = useMemo(() => createScenarioTheme(scenario.color), [scenario.color]);
+  const scenarioTheme = useMemo(
+    () => createScenarioTheme(scenario.color),
+    [scenario.color],
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [isSuspectAccused, setIsSuspectAccused] = useState(false);
   const [tabValue, setTabValue] = useState("confess");
@@ -114,7 +119,7 @@ export function ScenarioAnswerPage({
   }
 
   const submittedAnswer = JSON.parse(
-    localStorage.getItem(scenarioKey) ?? ""
+    localStorage.getItem(scenarioKey) ?? "",
   ) as DetectiveNoteType;
 
   return (
@@ -122,7 +127,14 @@ export function ScenarioAnswerPage({
       <Box sx={{ backgroundColor: "black" }}>
         <AnswerRevealSequence {...reveal(submittedAnswer)} />
 
-        <Box display="block" color="white" mx={15} mt={15}>
+        <Box
+          sx={{
+            display: "block",
+            color: "white",
+            mx: 15,
+            mt: 15,
+          }}
+        >
           <Tabs
             value={tabValue}
             onChange={(_event: SyntheticEvent, newValue: string) =>
@@ -132,7 +144,11 @@ export function ScenarioAnswerPage({
             indicatorColor="primary"
             aria-label="scenario answer tabs"
           >
-            <Tab sx={{ fontSize: "20px" }} value="confess" label="범인의 고백" />
+            <Tab
+              sx={{ fontSize: "20px" }}
+              value="confess"
+              label="범인의 고백"
+            />
             {renderAdditional && (
               <Tab
                 sx={{ fontSize: "20px" }}
@@ -140,7 +156,11 @@ export function ScenarioAnswerPage({
                 label="추가 질문 해답"
               />
             )}
-            <Tab sx={{ fontSize: "20px" }} value="solution" label="사건 풀이법" />
+            <Tab
+              sx={{ fontSize: "20px" }}
+              value="solution"
+              label="사건 풀이법"
+            />
             <Tab
               sx={{ fontSize: "20px" }}
               value="culprits"
@@ -163,7 +183,14 @@ export function ScenarioAnswerPage({
           </TabPanel>
 
           <TabPanel value={tabValue} index="culprits">
-            <Box display="flex" justifyContent="center" alignItems="center" mt={10}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                mt: 10,
+              }}
+            >
               <Button
                 variant="contained"
                 color="primary"
@@ -179,7 +206,15 @@ export function ScenarioAnswerPage({
           </TabPanel>
         </Box>
 
-        <Box display="flex" justifyContent="center" alignItems="center" gap={2} mt={10}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: 2,
+            mt: 10,
+          }}
+        >
           <Button
             variant="contained"
             color="primary"

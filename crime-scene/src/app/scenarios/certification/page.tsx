@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { FadeInSection } from "@/components/FadeInSection";
 import CertificationCard from "@/components/Certification/CertificationCard";
@@ -23,7 +23,7 @@ function CertificationContent() {
     setCertificationCards(
       scenarioId === "all"
         ? getAllCertificationCards()
-        : getCertificationCards()
+        : getCertificationCards(),
     );
   }, [scenarioId]);
 
@@ -35,60 +35,81 @@ function CertificationContent() {
       <Header />
       <Box
         sx={{
+          width: "100%",
           minHeight: "100dvh",
+
           background:
             "radial-gradient(circle at top, rgba(81,115,255,0.16), transparent 30%), #04070d",
+
           overflowX: "clip",
           boxSizing: "border-box",
         }}
-        width="100%"
       >
         <FadeInSection>
-          <Box width="100%" pt="110px" px={2} sx={{ boxSizing: "border-box" }}>
+          <Box
+            sx={{
+              width: "100%",
+              pt: "110px",
+              px: 2,
+              boxSizing: "border-box",
+            }}
+          >
             <Typography
               color="white"
-              fontWeight="bold"
-              fontSize={{ xs: "28px", md: "40px" }}
-              textAlign="center"
+              sx={{
+                fontWeight: "bold",
+                fontSize: { xs: "28px", md: "40px" },
+                textAlign: "center",
+              }}
             >
               사건을 끝까지 추적한 기록
             </Typography>
             <Typography
-              color="rgba(255,255,255,0.68)"
-              fontSize={{ xs: 15, md: 18 }}
-              textAlign="center"
-              mt={2}
+              sx={{
+                color: "rgba(255,255,255,0.68)",
+                fontSize: { xs: 15, md: 18 },
+                textAlign: "center",
+                mt: 2,
+              }}
             >
               시나리오를 완료하면 인증 카드가 열립니다.
             </Typography>
           </Box>
         </FadeInSection>
         <Box
-          width="100%"
-          px={{ xs: 2, md: 4 }}
-          py={{ xs: 4, md: 6 }}
-          display="flex"
-          justifyContent="center"
-          sx={{ boxSizing: "border-box" }}
+          sx={{
+            width: "100%",
+            px: { xs: 2, md: 4 },
+            py: { xs: 4, md: 6 },
+            display: "flex",
+            justifyContent: "center",
+            boxSizing: "border-box",
+          }}
         >
           <Box
-            width="100%"
-            maxWidth="1280px"
-            display="grid"
-            gridTemplateColumns={{
-              xs: "1fr",
-              sm: "repeat(2, minmax(0, 1fr))",
-              lg: "repeat(3, minmax(0, 1fr))",
+            sx={{
+              width: "100%",
+              maxWidth: "1280px",
+              display: "grid",
+
+              gridTemplateColumns: {
+                xs: "1fr",
+                sm: "repeat(2, minmax(0, 1fr))",
+                lg: "repeat(3, minmax(0, 1fr))",
+              },
+
+              gap: 4,
             }}
-            gap={4}
           >
             {!showEmptyState ? (
               certificationCards.map((card) => (
                 <Box
                   key={card.scenarioId}
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="stretch"
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "stretch",
+                  }}
                 >
                   <CertificationCard card={card} />
                 </Box>

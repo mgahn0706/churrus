@@ -75,7 +75,12 @@ export default function SuspectVoteResultsGrid({
                   boxShadow: "0 10px 24px rgba(0,0,0,0.16)",
                 }}
               />
-              <Typography fontWeight={800} fontSize={{ xs: 13, md: 14 }}>
+              <Typography
+                sx={{
+                  fontWeight: 800,
+                  fontSize: { xs: 13, md: 14 },
+                }}
+              >
                 {suspect.name}
               </Typography>
               <Typography
@@ -167,7 +172,12 @@ export default function SuspectVoteResultsGrid({
                 "0 10px 30px rgba(0,0,0,0.22), inset 0 1px 0 rgba(255,255,255,0.08)",
             }}
           >
-            <Typography fontSize={13} fontWeight={700}>
+            <Typography
+              sx={{
+                fontSize: 13,
+                fontWeight: 700,
+              }}
+            >
               결과가 숨겨져 있습니다
             </Typography>
           </Box>

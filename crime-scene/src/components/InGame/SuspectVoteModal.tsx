@@ -4,7 +4,14 @@ import HowToVoteIcon from "@mui/icons-material/HowToVote";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { Box, Button, Dialog, IconButton, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Dialog,
+  IconButton,
+  Stack,
+  Typography,
+} from "@mui/material";
 import QRCode from "react-qr-code";
 
 import { ShakeTextSection } from "@/components/ShakeTextSection";
@@ -67,9 +74,11 @@ export default function SuspectVoteModal({
       fullScreen
       open={isOpen}
       onClose={onClose}
-      PaperProps={{
-        sx: {
-          overflow: "hidden",
+      slotProps={{
+        paper: {
+          sx: {
+            overflow: "hidden",
+          },
         },
       }}
     >
@@ -208,7 +217,13 @@ export default function SuspectVoteModal({
                 mb: 1.8,
               }}
             >
-              <Box display="flex" alignItems="center" gap={1.2}>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1.2,
+                }}
+              >
                 <Box
                   sx={{
                     width: 42,
@@ -224,20 +239,27 @@ export default function SuspectVoteModal({
                   <HowToVoteIcon />
                 </Box>
                 <Box>
-                  <Typography fontWeight={800} fontSize={{ xs: 22, md: 28 }}>
+                  <Typography
+                    sx={{
+                      fontWeight: 800,
+                      fontSize: { xs: 22, md: 28 },
+                    }}
+                  >
                     실시간 범인지목
                   </Typography>
                   <Typography
-                    fontSize={12}
-                    sx={{ color: "rgba(226,232,240,0.72)" }}
+                    sx={{
+                      fontSize: 12,
+                      color: "rgba(226,232,240,0.72)",
+                    }}
                   >
                     범인은 누구?
                   </Typography>
                 </Box>
               </Box>
               <Typography
-                fontSize={13}
                 sx={{
+                  fontSize: 13,
                   color: "rgba(226,232,240,0.84)",
                   px: 1.2,
                   py: 0.55,
@@ -274,12 +296,17 @@ export default function SuspectVoteModal({
                   mb: 1.6,
                 }}
               >
-                <Typography fontWeight={800} fontSize={{ xs: 17, md: 19 }}>
+                <Typography
+                  sx={{
+                    fontWeight: 800,
+                    fontSize: { xs: 17, md: 19 },
+                  }}
+                >
                   실시간 투표
                 </Typography>
                 <Typography
-                  fontSize={13}
                   sx={{
+                    fontSize: 13,
                     color: "rgba(226,232,240,0.82)",
                     px: 1.2,
                     py: 0.5,
@@ -312,12 +339,21 @@ export default function SuspectVoteModal({
                       textTransform: "none",
                       fontWeight: 700,
                     }}
-                    >
-                      {isOpeningRoom ? "투표 방 생성 중" : "투표 방 열기"}
-                    </Button>
+                  >
+                    {isOpeningRoom ? "투표 방 생성 중" : "투표 방 열기"}
+                  </Button>
                   {roomError && (
-                    <Box textAlign="center">
-                      <Typography fontSize={13} color="#fca5a5">
+                    <Box
+                      sx={{
+                        textAlign: "center",
+                      }}
+                    >
+                      <Typography
+                        sx={{
+                          fontSize: 13,
+                          color: "#fca5a5",
+                        }}
+                      >
                         {roomError}
                       </Typography>
                       <Button
@@ -375,7 +411,12 @@ export default function SuspectVoteModal({
                     }}
                   >
                     <Box sx={{ minWidth: 0 }}>
-                      <Typography fontSize={11} sx={{ opacity: 0.56 }}>
+                      <Typography
+                        sx={{
+                          fontSize: 11,
+                          opacity: 0.56,
+                        }}
+                      >
                         투표 링크
                       </Typography>
                       <Typography

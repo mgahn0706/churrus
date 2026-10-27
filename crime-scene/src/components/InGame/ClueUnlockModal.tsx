@@ -81,7 +81,11 @@ export default function ClueUnlockModal({
       </DialogTitle>
       <DialogContent>
         <DialogContentText>{lock.hint}</DialogContentText>
-        <Box mt={6}>
+        <Box
+          sx={{
+            mt: 6,
+          }}
+        >
           <TextField
             autoFocus
             error={isPasswordIncorrect}
@@ -90,14 +94,16 @@ export default function ClueUnlockModal({
                 ? "비밀번호가 틀렸습니다."
                 : `비밀번호는 ${passwordLength}자입니다.`
             }
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <LockIcon />
-                </InputAdornment>
-              ),
+            slotProps={{
+              input: {
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <LockIcon />
+                  </InputAdornment>
+                ),
+              },
+              htmlInput: { maxLength: passwordLength },
             }}
-            inputProps={{ maxLength: passwordLength }}
             label="비밀번호"
             fullWidth
             value={password}

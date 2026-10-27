@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { DetectiveNoteType } from "@/types";
 import { dureAdditionalQuestions } from "@/fixtures/dure/additionalQuestions";
@@ -57,38 +57,40 @@ const dureQuestions: {
 export default function DureSubmit() {
   const [questionStep, setQuestionStep] = useState(0);
   const [answers, setAnswers] = useState<string[]>(
-    new Array(dureQuestions.length).fill("")
+    new Array(dureQuestions.length).fill(""),
   );
   const currentQuestion = dureQuestions[questionStep];
   const router = useRouter();
   return (
     <ThemeProvider theme={darkTheme}>
       <Box
-        display="flex"
-        flexDirection="column"
-        justifyContent="center"
-        alignItems="center"
-        width="100vw"
-        height="100vh"
         sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100vw",
+          height: "100vh",
           backgroundColor: "black",
           color: "white",
         }}
       >
         <Box
-          display="flex"
-          justifyContent="flex-start"
-          flexDirection="column"
-          width="50vw"
+          sx={{
+            display: "flex",
+            justifyContent: "flex-start",
+            flexDirection: "column",
+            width: "50vw",
+          }}
         >
           <Typography variant="body1">
             {currentQuestion.id} / {dureQuestions.length}
           </Typography>
           <Typography
             variant="h4"
-            fontWeight="bold"
-            mb={3}
             sx={{
+              fontWeight: "bold",
+              mb: 3,
               wordBreak: "keep-all",
             }}
           >
@@ -112,7 +114,8 @@ export default function DureSubmit() {
           )}
           {currentQuestion.variant === "dropdown" && (
             <Select
-              placeholder="범인 지목"
+              displayEmpty
+              renderValue={(value) => value || "범인 지목"}
               value={answers[questionStep]}
               required={currentQuestion.required}
               sx={{
@@ -133,7 +136,12 @@ export default function DureSubmit() {
               })}
             </Select>
           )}
-          <Box display="flex" gap={1}>
+          <Box
+            sx={{
+              display: "flex",
+              gap: 1,
+            }}
+          >
             {currentQuestion.id !== 1 && (
               <Button
                 sx={{
@@ -162,8 +170,8 @@ export default function DureSubmit() {
                 [answers.slice(0, 3)].some((answerGroup, index) =>
                   answerGroup.some(
                     (answer) =>
-                      dureQuestions[index].required && answer.trim() === ""
-                  )
+                      dureQuestions[index].required && answer.trim() === "",
+                  ),
                 ) && questionStep === dureQuestions.length - 1
               }
               variant="contained"

@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { FadeInSection } from "@/components/FadeInSection";
 import Header from "@/components/Header";
@@ -21,15 +21,20 @@ function RuleCard({
   return (
     <FadeInSection>
       <Box
-        display="flex"
-        flexDirection={{ xs: "column", md: align === "left" ? "row" : "row-reverse" }}
-        gap={{ xs: 3, md: 12 }}
-        justifyContent="center"
-        alignItems="center"
-        width={{ xs: "100%", md: "80%" }}
-        px={{ xs: 2, sm: 3, md: 0 }}
-        mb={{ xs: 8, md: 30 }}
-        mx="auto"
+        sx={{
+          display: "flex",
+          flexDirection: {
+            xs: "column",
+            md: align === "left" ? "row" : "row-reverse",
+          },
+          gap: { xs: 3, md: 12 },
+          justifyContent: "center",
+          alignItems: "center",
+          width: { xs: "100%", md: "80%" },
+          px: { xs: 2, sm: 3, md: 0 },
+          mb: { xs: 8, md: 30 },
+          mx: "auto",
+        }}
       >
         <Box
           sx={{
@@ -45,15 +50,19 @@ function RuleCard({
             style={{ width: "100%", height: "auto" }}
           />
         </Box>
-        <Box width={{ xs: "100%", md: "700px" }}>
+        <Box
+          sx={{
+            width: { xs: "100%", md: "700px" },
+          }}
+        >
           <ShakeTextSection>
             <Typography
               color="white"
-              fontSize={{ xs: "32px", md: "48px" }}
               variant="h2"
-              mb={1}
-              fontWeight="bold"
               sx={{
+                fontSize: { xs: "32px", md: "48px" },
+                mb: 1,
+                fontWeight: "bold",
                 wordBreak: "keep-all",
                 textAlign: { xs: "left", md: "inherit" },
               }}
@@ -64,8 +73,8 @@ function RuleCard({
           <Typography
             color="lightgray"
             variant="body1"
-            fontSize={{ xs: "18px", md: "28px" }}
             sx={{
+              fontSize: { xs: "18px", md: "28px" },
               wordBreak: "keep-all",
               lineHeight: { xs: 1.7, md: "inherit" },
             }}
@@ -84,20 +93,30 @@ export default function Rules() {
     <>
       <Header />
       <Box
-        sx={{ backgroundColor: "black" }}
-        width="100%"
-        height="100%"
-        pb={{ xs: "120px", md: "300px" }}
+        sx={{
+          width: "100%",
+          height: "100%",
+          pb: { xs: "120px", md: "300px" },
+          backgroundColor: "black",
+        }}
       >
         <FadeInSection>
-          <Box width="100%" pt={{ xs: "88px", md: "100px" }} mb={{ xs: "56px", md: "100px" }}>
+          <Box
+            sx={{
+              width: "100%",
+              pt: { xs: "88px", md: "100px" },
+              mb: { xs: "56px", md: "100px" },
+            }}
+          >
             <ShakeTextSection>
               <Typography
                 component="h1"
                 color="white"
-                fontWeight="bold"
-                fontSize={{ xs: "36px", md: "48px" }}
-                textAlign="center"
+                sx={{
+                  fontWeight: "bold",
+                  fontSize: { xs: "36px", md: "48px" },
+                  textAlign: "center",
+                }}
               >
                 규칙
               </Typography>
@@ -120,11 +139,26 @@ export default function Rules() {
         />
 
         <FadeInSection>
-          <Box textAlign="center">
-            <Typography variant="h2" mb={{ xs: 3, md: 6 }} fontSize={{ xs: "32px", md: undefined }}>
+          <Box
+            sx={{
+              textAlign: "center",
+            }}
+          >
+            <Typography
+              variant="h2"
+              sx={{
+                mb: { xs: 3, md: 6 },
+                fontSize: { xs: "32px", md: undefined },
+              }}
+            >
               점수표
             </Typography>
-            <Box mb={{ xs: 8, md: 20 }} px={{ xs: 2, md: 0 }}>
+            <Box
+              sx={{
+                mb: { xs: 8, md: 20 },
+                px: { xs: 2, md: 0 },
+              }}
+            >
               <Image
                 src="/image/rules/score.png"
                 width={800}
@@ -165,8 +199,20 @@ export default function Rules() {
           align="right"
         />
         <FadeInSection>
-          <Box textAlign="center" px={2}>
-            <Typography variant="h5" fontWeight="bold" mb={2} fontSize={{ xs: "24px", md: undefined }}>
+          <Box
+            sx={{
+              textAlign: "center",
+              px: 2,
+            }}
+          >
+            <Typography
+              variant="h5"
+              sx={{
+                fontWeight: "bold",
+                mb: 2,
+                fontSize: { xs: "24px", md: undefined },
+              }}
+            >
               범인을 어서 잡고 싶다면?
             </Typography>
 

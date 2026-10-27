@@ -1,10 +1,5 @@
 import { Box } from "@mui/material";
-import {
-  ReactNode,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 
 export function FadeInSection({
   children,
@@ -27,9 +22,6 @@ export function FadeInSection({
   }, []);
   return (
     <Box
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
       style={{
         color: "white",
         padding: "16px",
@@ -41,6 +33,11 @@ export function FadeInSection({
         display: "flex",
       }}
       ref={domRef}
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
     >
       {children}
     </Box>

@@ -1,5 +1,11 @@
 import { Close } from "@mui/icons-material";
-import { Box, Dialog, DialogContent, DialogTitle, IconButton } from "@mui/material";
+import {
+  Box,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+} from "@mui/material";
 
 import type { PhysicalClue } from "@/types";
 
@@ -27,16 +33,18 @@ export default function PhysicalClueDialog({
       <DialogContent>
         {clue && (
           <Box
-            display="grid"
-            gridTemplateColumns={{
-              xs: "1fr",
-              md:
-                clue.images.length > 1
-                  ? "repeat(2, minmax(0, 1fr))"
-                  : "1fr",
+            sx={{
+              display: "grid",
+
+              gridTemplateColumns: {
+                xs: "1fr",
+                md:
+                  clue.images.length > 1 ? "repeat(2, minmax(0, 1fr))" : "1fr",
+              },
+
+              gap: 2,
+              justifyItems: "center",
             }}
-            gap={2}
-            sx={{ justifyItems: "center" }}
           >
             {clue.images.map((image, index) => (
               <Box

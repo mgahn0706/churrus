@@ -36,8 +36,19 @@ export default function PrologueModal({
   return (
     <Dialog open={isOpen} maxWidth="md" fullWidth>
       <DialogTitle sx={{ pb: 1.2 }}>
-        <Box display="flex" alignItems="center" justifyContent="space-between">
-          <Typography variant="h6" fontWeight={700}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <Typography
+            variant="h6"
+            sx={{
+              fontWeight: 700,
+            }}
+          >
             공개된 정보
           </Typography>
         </Box>

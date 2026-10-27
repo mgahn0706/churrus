@@ -40,13 +40,26 @@ export function AnswerRevealSequence({
   return (
     <>
       <ShakeTextSection>
-        <Typography variant="h1" color="white" mt={40} mb={20}>
+        <Typography
+          variant="h1"
+          color="white"
+          sx={{
+            mt: 40,
+            mb: 20,
+          }}
+        >
           {accusedText}
         </Typography>
       </ShakeTextSection>
 
       <FadeInSection>
-        <Box display="flex" justifyContent="center" mb={40}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            mb: 40,
+          }}
+        >
           <PlayButtonIcon
             sx={{
               opacity: 0.2,
@@ -60,14 +73,28 @@ export function AnswerRevealSequence({
 
       {showYouText && (
         <ShakeTextSection>
-          <Typography variant="h1" color="white" mt={40} mb={20}>
+          <Typography
+            variant="h1"
+            color="white"
+            sx={{
+              mt: 40,
+              mb: 20,
+            }}
+          >
             당신은
           </Typography>
         </ShakeTextSection>
       )}
 
       <ShakeTextSection>
-        <Typography variant="h1" color="white" mt={70} mb={100}>
+        <Typography
+          variant="h1"
+          color="white"
+          sx={{
+            mt: 70,
+            mb: 100,
+          }}
+        >
           {targetText}
         </Typography>
       </ShakeTextSection>
@@ -76,10 +103,12 @@ export function AnswerRevealSequence({
         <Typography
           variant="h1"
           color="white"
-          fontWeight="bold"
-          mt={50}
-          mb={resultSubtext ? 120 : 20}
-          textAlign="center"
+          sx={{
+            fontWeight: "bold",
+            mt: 50,
+            mb: resultSubtext ? 120 : 20,
+            textAlign: "center",
+          }}
         >
           {resultText}
         </Typography>
@@ -90,9 +119,11 @@ export function AnswerRevealSequence({
           <Typography
             variant="h3"
             color="white"
-            fontWeight="bold"
-            mb={100}
-            textAlign="center"
+            sx={{
+              fontWeight: "bold",
+              mb: 100,
+              textAlign: "center",
+            }}
           >
             {resultSubtext}
           </Typography>
@@ -100,7 +131,12 @@ export function AnswerRevealSequence({
       )}
 
       <FadeInSection>
-        <Box display="flex" justifyContent="center">
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
           <Image
             src={imageSrc}
             alt={imageAlt}
@@ -112,7 +148,12 @@ export function AnswerRevealSequence({
       </FadeInSection>
 
       <FadeInSection>
-        <Box display="flex" justifyContent="center">
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
           <Typography variant="h2" color="white">
             진범: {culpritText}
           </Typography>
@@ -120,8 +161,18 @@ export function AnswerRevealSequence({
       </FadeInSection>
 
       <FadeInSection>
-        <Box textAlign="center">
-          <Typography variant="h5" color="white" mt={1}>
+        <Box
+          sx={{
+            textAlign: "center",
+          }}
+        >
+          <Typography
+            variant="h5"
+            color="white"
+            sx={{
+              mt: 1,
+            }}
+          >
             {methodLabel}: {methodText}
           </Typography>
           <Typography variant="body2" color="gray">
@@ -131,7 +182,11 @@ export function AnswerRevealSequence({
       </FadeInSection>
 
       <FadeInSection>
-        <Box textAlign="center">
+        <Box
+          sx={{
+            textAlign: "center",
+          }}
+        >
           <Typography variant="h5" color="white">
             {motiveLabel}: {motiveText}
           </Typography>

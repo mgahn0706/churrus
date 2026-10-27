@@ -20,7 +20,7 @@ import { useState } from "react";
 import MapModal from "./MapModal";
 import SuspectsInfoCard from "../InGame/SuspectsInfoCard";
 import SuspectVoteModal from "../InGame/SuspectVoteModal";
-import { ErrorOutline } from "@mui/icons-material";
+import { ErrorOutlineOutlined } from "@mui/icons-material";
 import type { PhysicalClue, TextScenarioType } from "@/types";
 import PhysicalClueDialog from "./PhysicalClueDialog";
 
@@ -54,7 +54,7 @@ export default function TextGameHeader({
     return clues;
   }, []);
   const acquiredPhysicalCluesById = new Map(
-    acquiredPhysicalClues.map((clue) => [clue.id, clue])
+    acquiredPhysicalClues.map((clue) => [clue.id, clue]),
   );
 
   return (
@@ -91,14 +91,18 @@ export default function TextGameHeader({
         <DialogContent>
           {physicalClues.length > 0 ? (
             <Box
-              display="grid"
-              gridTemplateColumns={{
-                xs: "1fr",
-                sm: "repeat(2, minmax(0, 1fr))",
-                lg: "repeat(4, minmax(0, 1fr))",
+              sx={{
+                display: "grid",
+
+                gridTemplateColumns: {
+                  xs: "1fr",
+                  sm: "repeat(2, minmax(0, 1fr))",
+                  lg: "repeat(4, minmax(0, 1fr))",
+                },
+
+                gap: 1,
+                width: "100%",
               }}
-              gap={1}
-              width="100%"
             >
               {physicalClues.map((clue) => {
                 const acquiredClue = acquiredPhysicalCluesById.get(clue.id);
@@ -153,15 +157,27 @@ export default function TextGameHeader({
                         }}
                       />
                     </Box>
-                    <Box minWidth={0}>
-                      <Typography fontWeight="bold" fontSize="0.875rem" mb={0.5}>
+                    <Box
+                      sx={{
+                        minWidth: 0,
+                      }}
+                    >
+                      <Typography
+                        sx={{
+                          fontWeight: "bold",
+                          fontSize: "0.875rem",
+                          mb: 0.5,
+                        }}
+                      >
                         {clue.id}번 실물단서
                       </Typography>
                       <Typography
                         variant="body2"
-                        color="text.secondary"
-                        fontSize="0.75rem"
-                        lineHeight={1.4}
+                        sx={{
+                          color: "text.secondary",
+                          fontSize: "0.75rem",
+                          lineHeight: 1.4,
+                        }}
                       >
                         {acquiredClue.text}
                       </Typography>
@@ -170,26 +186,40 @@ export default function TextGameHeader({
                 ) : (
                   <Box
                     key={clue.id}
-                    minWidth={0}
-                    p={1}
-                    border="1px solid"
-                    borderColor="divider"
-                    borderRadius={1}
-                    display="grid"
-                    gridTemplateColumns={{
-                      xs: "1fr",
-                      sm: "110px minmax(0, 1fr)",
+                    sx={{
+                      minWidth: 0,
+                      p: 1,
+                      border: "1px solid",
+                      borderColor: "divider",
+                      borderRadius: 1,
+                      display: "grid",
+
+                      gridTemplateColumns: {
+                        xs: "1fr",
+                        sm: "110px minmax(0, 1fr)",
+                      },
+
+                      gap: 1,
+                      alignItems: "center",
                     }}
-                    gap={1}
-                    alignItems="center"
                   >
-                    <Skeleton variant="rectangular" height={110} animation={false} />
-                    <Box minWidth={0}>
+                    <Skeleton
+                      variant="rectangular"
+                      height={110}
+                      animation={false}
+                    />
+                    <Box
+                      sx={{
+                        minWidth: 0,
+                      }}
+                    >
                       <Typography
-                        color="text.secondary"
-                        fontWeight="bold"
-                        fontSize="0.875rem"
-                        mb={0.5}
+                        sx={{
+                          color: "text.secondary",
+                          fontWeight: "bold",
+                          fontSize: "0.875rem",
+                          mb: 0.5,
+                        }}
                       >
                         미획득 실물단서
                       </Typography>
@@ -234,8 +264,8 @@ export default function TextGameHeader({
           zIndex: 1000,
         }}
       >
-        <DialogTitle alignItems="center" variant="h5">
-          <ErrorOutline
+        <DialogTitle variant="h5" sx={{ alignItems: "center" }}>
+          <ErrorOutlineOutlined
             sx={{
               mr: 1,
             }}
@@ -254,7 +284,9 @@ export default function TextGameHeader({
             <ListItem>범인은 누구인가요?</ListItem>
             <ListItem>살해 방법은 무엇인가요?</ListItem>
             <ListItem>살해 동기는 무엇인가요?</ListItem>
-            <ListItem>...외 다른 인물들의 숨은 이야기에 관한 추가 질문들</ListItem>
+            <ListItem>
+              ...외 다른 인물들의 숨은 이야기에 관한 추가 질문들
+            </ListItem>
           </List>
           <DialogActions>
             <Button
@@ -275,28 +307,39 @@ export default function TextGameHeader({
         </DialogContent>
       </Dialog>
       <Box
-        color="white"
-        display="flex"
-        justifyContent="space-between"
-        alignItems={"center"}
-        position="fixed"
-        top={0}
-        left={0}
-        width="100%"
-        px="24px"
-        height="60px"
-        zIndex={100}
-        bgcolor={"rgba(0, 0, 0, 0)"}
         sx={{
+          color: "white",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          px: "24px",
+          height: "60px",
+          zIndex: 100,
+          bgcolor: "rgba(0, 0, 0, 0)",
           backdropFilter: "blur(60px)",
         }}
       >
         <Box>
-          <Typography fontWeight="bolder" fontSize={16}>
+          <Typography
+            sx={{
+              fontWeight: "bolder",
+              fontSize: 16,
+            }}
+          >
             {title} {scenario.emoji}
           </Typography>
         </Box>
-        <Box display="flex" justifyContent="space-between" mr={5}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            mr: 5,
+          }}
+        >
           {shouldShowMap && (
             <ButtonBase
               sx={{
@@ -313,7 +356,12 @@ export default function TextGameHeader({
                 setModalState("MAP");
               }}
             >
-              <Typography fontWeight="bolder" fontSize={16}>
+              <Typography
+                sx={{
+                  fontWeight: "bolder",
+                  fontSize: 16,
+                }}
+              >
                 지도
               </Typography>
             </ButtonBase>
@@ -332,7 +380,12 @@ export default function TextGameHeader({
               }}
               onClick={() => setModalState("PHYSICAL_CLUES")}
             >
-              <Typography fontWeight="bolder" fontSize={16}>
+              <Typography
+                sx={{
+                  fontWeight: "bolder",
+                  fontSize: 16,
+                }}
+              >
                 실물단서
               </Typography>
             </ButtonBase>
@@ -349,7 +402,12 @@ export default function TextGameHeader({
             }}
             onClick={() => setModalState("SUSPECT")}
           >
-            <Typography fontWeight="bolder" fontSize={16}>
+            <Typography
+              sx={{
+                fontWeight: "bolder",
+                fontSize: 16,
+              }}
+            >
               인물
             </Typography>
           </ButtonBase>
@@ -369,7 +427,12 @@ export default function TextGameHeader({
             onClick={() => setModalState("VOTE")}
           >
             <HowToVoteIcon sx={{ fontSize: 18 }} />
-            <Typography fontWeight="bolder" fontSize={16}>
+            <Typography
+              sx={{
+                fontWeight: "bolder",
+                fontSize: 16,
+              }}
+            >
               투표
             </Typography>
           </ButtonBase>
@@ -385,7 +448,12 @@ export default function TextGameHeader({
             }}
             onClick={() => setModalState("SUBMIT")}
           >
-            <Typography fontWeight="bolder" fontSize={16}>
+            <Typography
+              sx={{
+                fontWeight: "bolder",
+                fontSize: 16,
+              }}
+            >
               최종 제출
             </Typography>
           </ButtonBase>

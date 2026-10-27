@@ -51,11 +51,21 @@ export default function ClueDashboardModal({
           p: 3,
         }}
       >
-        <Typography variant="h5" fontWeight={700}>
+        <Typography
+          variant="h5"
+          sx={{
+            fontWeight: 700,
+          }}
+        >
           단서 현황
         </Typography>
 
-        <Typography mt={0.6} color="text.secondary">
+        <Typography
+          sx={{
+            mt: 0.6,
+            color: "text.secondary",
+          }}
+        >
           확인한 단서: {checkedCount} / {totalCount} ({progressPercent}%)
         </Typography>
 
@@ -66,10 +76,12 @@ export default function ClueDashboardModal({
         />
 
         <Box
-          display="grid"
-          gridTemplateColumns="repeat(auto-fill, minmax(44px, 1fr))"
-          mt={2.4}
-          gap={1.2}
+          sx={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(44px, 1fr))",
+            mt: 2.4,
+            gap: 1.2,
+          }}
         >
           {clues.map((clue) => {
             const isChecked = checkedClueList.includes(clue.id);
@@ -85,7 +97,9 @@ export default function ClueDashboardModal({
                     justifyContent: "center",
                     fontWeight: 700,
                     fontSize: 14,
-                    color: isChecked ? "primary.contrastText" : "text.secondary",
+                    color: isChecked
+                      ? "primary.contrastText"
+                      : "text.secondary",
                     backgroundColor: isChecked ? "primary.main" : "grey.200",
                     border: "1px solid",
                     borderColor: isChecked ? "primary.main" : "grey.300",
@@ -99,7 +113,13 @@ export default function ClueDashboardModal({
           })}
         </Box>
 
-        <Box display="flex" justifyContent="flex-end" mt={2.5}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "flex-end",
+            mt: 2.5,
+          }}
+        >
           <Button variant="outlined" onClick={onClose}>
             닫기
           </Button>
