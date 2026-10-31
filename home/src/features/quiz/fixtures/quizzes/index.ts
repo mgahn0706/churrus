@@ -1,6 +1,129 @@
 import { QuizType } from "../../types";
 
 export const QuizData: Record<string, QuizType[]> = {
+  "2026-10": [
+    {
+      "id": "2026-10-1",
+      "meetingId": "2026-10",
+      "quizNumber": 1,
+      "title": "드라큘라 백작님은 정말 최고야!",
+      "creators": [
+        "조준호"
+      ],
+      "quizImageSource": "/image/quiz/2026-10-1.png",
+      "answer": "meat",
+      "tags": [
+        "KNOWLEDGE"
+      ]
+    },
+    {
+      "id": "2026-10-2",
+      "meetingId": "2026-10",
+      "quizNumber": 2,
+      "title": "동생 강시의 숙제를 돌려놔!",
+      "creators": [
+        "고우승"
+      ],
+      "quizImageSource": "/image/quiz/2026-10-2.png",
+      "answer": "LEMON",
+      "tags": [
+        "PUZZLE"
+      ]
+    },
+    {
+      "id": "2026-10-3",
+      "meetingId": "2026-10",
+      "quizNumber": 3,
+      "title": "저주받은 물건",
+      "creators": [
+        "고민우"
+      ],
+      "quizImageSource": "/image/quiz/2026-10-3.png",
+      "answer": "OREO",
+      "tags": [
+        "KNOWLEDGE",
+        "LATERAL_THINKING"
+      ]
+    },
+    {
+      "id": "2026-10-4",
+      "meetingId": "2026-10",
+      "quizNumber": 4,
+      "title": "미라는 아직 목말라 있다",
+      "creators": [],
+      "quizImageSource": "/image/quiz/2026-10-4.png",
+      "answer": null,
+      "tags": [
+        "KNOWLEDGE",
+        "WORD",
+        "RIDDLE",
+        "ENIGMATIC"
+      ]
+    },
+    {
+      "id": "2026-10-5",
+      "meetingId": "2026-10",
+      "quizNumber": 5,
+      "title": "방랑자",
+      "creators": [
+        "권현수"
+      ],
+      "quizImageSource": "/image/quiz/2026-10-5.png",
+      "answer": "pumpkin",
+      "tags": [
+        "HARD",
+        "ENIGMATIC"
+      ]
+    },
+    {
+      "id": "2026-10-6",
+      "meetingId": "2026-10",
+      "quizNumber": 6,
+      "title": "마녀의 저주",
+      "creators": [
+        "오수진"
+      ],
+      "quizImageSource": "/image/quiz/2026-10-6.png",
+      "answer": "wicked",
+      "tags": [
+        "WORD",
+        "RIDDLE"
+      ]
+    },
+    {
+      "id": "2026-10-7",
+      "meetingId": "2026-10",
+      "quizNumber": 7,
+      "title": "Reincarnation",
+      "creators": [
+        "윤원준"
+      ],
+      "quizImageSource": "/image/quiz/2026-10-7.png",
+      "answer": "사파이어",
+      "tags": [
+        "HARD",
+        "PUZZLE",
+        "KNOWLEDGE",
+        "LATERAL_THINKING"
+      ]
+    },
+    {
+      "id": "2026-10-8",
+      "meetingId": "2026-10",
+      "quizNumber": 8,
+      "title": "퍼레이드",
+      "creators": [
+        "정해찬"
+      ],
+      "quizImageSource": "/image/quiz/2026-10-8.png",
+      "answer": "파라오",
+      "tags": [
+        "KNOWLEDGE",
+        "ENIGMATIC"
+      ]
+    }
+  ],
+
   "2026-9-BONUS": [
     {
       id: "2026-9-BONUS-1",
