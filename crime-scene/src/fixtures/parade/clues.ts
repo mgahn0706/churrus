@@ -152,8 +152,7 @@ export const paradeClues: ClueType[] = [
     x: 67,
     y: 9,
     image: `${PARADE_CLUE_IMAGE_PATH}/parade-14.png`,
-    description:
-      "분장실 작업대에 깔린 테이블보다. 모서리에 주배우의 피가 닦인 자국과 가윗날 모양의 눌림이 있다. 범인이 가위를 닦은 뒤 원래 자리에 돌려놓은 것으로 보인다.",
+    description: "분장실 작업대에 깔린 테이블보다. 핏자국이 묻어있다.",
     type: "basic",
     place: "staff",
   },

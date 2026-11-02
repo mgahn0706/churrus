@@ -89,5 +89,6 @@ export const boxAnswerConfig: ScenarioAnswerConfig = {
     </>
   ),
   additional: [],
-  culpritsHref: "/scenarios/scenario/box",
+  culpritsHref:
+    "https://drive.google.com/file/d/1SNKGKCuYQXUY2yQFiYUeGBtBNl-Ekf2d/view?usp=sharing",
 };
