@@ -2,7 +2,75 @@ import { Box, Typography } from "@mui/material";
 import Image from "next/image";
 import { MEETINGS } from "../../fixtures/meetings";
 import { useRouter } from "next/router";
+import { useEffect, useRef, useState } from "react";
 import { getMeetingCreators } from "../../domain";
+
+const CREATOR_SCROLL_SPEED = 120; // pixels per second
+
+function SlidingCreators({
+  creators,
+  isHovered,
+}: {
+  creators: string[];
+  isHovered: boolean;
+}) {
+  const viewportRef = useRef<HTMLParagraphElement>(null);
+  const label = creators.join(", ");
+
+  useEffect(() => {
+    const viewport = viewportRef.current;
+    if (!viewport) return;
+
+    if (!isHovered) {
+      viewport.scrollLeft = 0;
+      return;
+    }
+
+    const scrollDistance = viewport.scrollWidth - viewport.clientWidth;
+    if (scrollDistance <= 0) return;
+
+    const duration = (scrollDistance / CREATOR_SCROLL_SPEED) * 1000;
+    let startTime: number | undefined;
+    let frameId: number;
+
+    const slide = (timestamp: number) => {
+      startTime ??= timestamp;
+      const progress = Math.min((timestamp - startTime) / duration, 1);
+      viewport.scrollLeft = scrollDistance * progress;
+
+      if (progress < 1) {
+        frameId = requestAnimationFrame(slide);
+      }
+    };
+
+    frameId = requestAnimationFrame(slide);
+    return () => cancelAnimationFrame(frameId);
+  }, [isHovered, label]);
+
+  return (
+    <Typography
+      ref={viewportRef}
+      color="#606B80"
+      fontSize="12px"
+      sx={{
+        width: 1,
+        overflowX: "auto",
+        whiteSpace: "nowrap",
+        scrollbarWidth: "none",
+        "&::-webkit-scrollbar": { display: "none" },
+      }}
+    >
+      <Box
+        component="span"
+        sx={{
+          display: "inline-block",
+        }}
+      >
+        {label}
+      </Box>
+    </Typography>
+  );
+}
 
 export default function MeetingCard({
   meetingId,
@@ -12,6 +80,7 @@ export default function MeetingCard({
   size?: "small" | "medium";
 }) {
   const router = useRouter();
+  const [isHovered, setIsHovered] = useState(false);
 
   const imageHeight = size === "small" ? 40 : 72;
 
@@ -28,6 +97,8 @@ export default function MeetingCard({
       py={1}
       gap={size === "small" ? 1 : 2}
       borderRadius="12px"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       onClick={() => {
         router.push(`/meetings/${meeting.id}`);
       }}
@@ -63,15 +134,15 @@ export default function MeetingCard({
         flexDirection="column"
         justifyContent="space-between"
         height={1}
+        minWidth={0}
       >
         <Box
           display="flex"
           flexDirection="column"
           maxWidth={["200px", "300px", "500px"]}
-          sx={{
-            wordBreak: "keep-all",
-            textOverflow: "ellipsis",
-          }}
+          minWidth={0}
+          width={1}
+          sx={{ wordBreak: "keep-all" }}
         >
           <Typography
             color="#121212"
@@ -81,9 +152,7 @@ export default function MeetingCard({
             {meeting.title}
           </Typography>
           {size !== "small" && (
-            <Typography color="#606B80" fontSize="12px">
-              {creators.join(", ")}
-            </Typography>
+            <SlidingCreators creators={creators} isHovered={isHovered} />
           )}
         </Box>
 
