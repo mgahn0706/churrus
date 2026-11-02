@@ -1,4 +1,5 @@
-import { Box, Button, Grid, Typography } from "@mui/material";
+import { Box, Button, Grid, IconButton, Typography } from "@mui/material";
+import { ArrowBackRounded } from "@mui/icons-material";
 import { useRouter } from "next/router";
 
 import Head from "next/head";
@@ -118,6 +119,23 @@ export default function MeetingPage() {
               </Typography>
             </Box>
           </Box>
+          <IconButton
+            aria-label="모임별 문제 목록으로 돌아가기"
+            onClick={() => router.push("/quiz")}
+            sx={{
+              position: "absolute",
+              top: 16,
+              left: 16,
+              zIndex: 3,
+              color: "#FFFFFF",
+              bgcolor: "rgba(96, 107, 128, 0.5)",
+              "&:hover": {
+                bgcolor: "rgba(96, 107, 128, 0.7)",
+              },
+            }}
+          >
+            <ArrowBackRounded />
+          </IconButton>
         </Box>
         <Box
           mx={[4, 6, 12]}

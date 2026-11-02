@@ -39,7 +39,7 @@ export const QuizData: Record<string, QuizType[]> = {
       title: "미라는 아직 목말라 있다",
       creators: ["임영진"],
       quizImageSource: "/image/quiz/2026-10-4.png",
-      answer: null,
+      answer: "아이스크림",
       tags: ["KNOWLEDGE", "WORD", "RIDDLE", "ENIGMATIC"],
     },
     {

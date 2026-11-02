@@ -79,8 +79,8 @@ export const compareQuizzesByChronology = (
   rightQuiz: QuizType
 ) => {
   const meetingOrderDifference =
-    (MEETING_ORDER_BY_ID[leftQuiz.meetingId] ?? Number.MAX_SAFE_INTEGER) -
-    (MEETING_ORDER_BY_ID[rightQuiz.meetingId] ?? Number.MAX_SAFE_INTEGER);
+    (MEETING_ORDER_BY_ID[rightQuiz.meetingId] ?? -1) -
+    (MEETING_ORDER_BY_ID[leftQuiz.meetingId] ?? -1);
 
   if (meetingOrderDifference !== 0) {
     return meetingOrderDifference;

@@ -154,9 +154,7 @@ export default function QuizPage() {
             alignItems="center"
             justifyContent="space-between"
             maxWidth="1200px"
-            width={1}
-            px={[1, 2, 0]}
-            boxSizing="border-box"
+            width={["calc(100% - 32px)", "calc(100% - 32px)", "100%"]}
           >
             <Box display="flex" alignItems="center" minWidth={0}>
               <ChurrusLogoButton onClick={() => router.push("/")} />
@@ -217,9 +215,7 @@ export default function QuizPage() {
           display="flex"
           flexDirection="column"
           maxWidth={1200}
-          width={1}
-          px={[2, 2, 0]}
-          boxSizing="border-box"
+          width={["calc(100% - 32px)", "calc(100% - 32px)", "100%"]}
           textAlign={["left", "left", "center"]}
         >
           <Typography
@@ -249,7 +245,7 @@ export default function QuizPage() {
         </Box>
 
         <Box
-          width="100%"
+          width={["calc(100% - 32px)", "calc(100% - 32px)", "100%"]}
           mt={2}
           maxWidth={1200}
           position="relative"
@@ -292,28 +288,20 @@ export default function QuizPage() {
           <Box
             component="form"
             onSubmit={handleAnswerSubmit}
-            width="100%"
-            display="flex"
-            justifyContent="center"
+            width={["calc(100% - 32px)", "calc(100% - 32px)", "100%"]}
+            maxWidth={1200}
           >
             <Box
               display="flex"
               flexDirection="column"
-              justifyContent="center"
               mt={4}
-              maxWidth={1200}
-              width={["calc(100vw - 32px)", "calc(100vw - 32px)", "70vw"]}
-              mx="auto"
-              boxSizing="border-box"
+              width="100%"
             >
               <Typography
                 color="#212837"
                 fontSize={12}
                 fontWeight={400}
-                sx={{
-                  ml: [0, 1, 2],
-                  width: "100%",
-                }}
+                width="100%"
               >
                 정답 형식: {answerFormat()}
               </Typography>
@@ -321,7 +309,6 @@ export default function QuizPage() {
                 <Box
                   display="flex"
                   alignItems="center"
-                  justifyContent="center"
                   gap={[1.5, 2, 3]}
                   flexDirection={["column", "column", "row"]}
                   width="100%"
@@ -335,17 +322,12 @@ export default function QuizPage() {
                     }}
                     InputProps={{
                       sx: {
-                        width: "100%",
-                        maxWidth: 950,
                         borderRadius: "20px",
                         py: "2px",
                         height: "40px",
                       },
                     }}
-                    sx={{
-                      width: "100%",
-                      maxWidth: ["none", "none", 950],
-                    }}
+                    sx={{ flex: ["none", "none", "1 1 0"], minWidth: 0 }}
                     placeholder={
                       quiz.answer
                         ? "정답을 입력해주세요."
@@ -353,25 +335,9 @@ export default function QuizPage() {
                     }
                   />
                   <Button
-                    fullWidth
                     sx={{
-                      display: ["block", "block", "none"],
-                      color: "white",
-                      bgcolor: "#318AE1",
-                      height: "40px",
-                      borderRadius: "20px",
-                      "&:hover": {
-                        bgcolor: "#1B4B7B",
-                      },
-                    }}
-                    type="submit"
-                  >
-                    제출
-                  </Button>
-                  <Button
-                    sx={{
-                      minWidth: "220px",
-                      display: ["none", "none", "block"],
+                      width: ["100%", "100%", 220],
+                      flexShrink: 0,
                       color: "white",
                       bgcolor: "#318AE1",
                       height: "40px",
