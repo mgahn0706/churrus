@@ -142,7 +142,7 @@ export const paradeClues: ClueType[] = [
     y: 9,
     image: `${PARADE_CLUE_IMAGE_PATH}/parade-13.png`,
     description:
-      "분장실 테이블 위에서 발견된 재단용 가위다. 급히 닦아낸 듯하지만 이음새에 주배우의 혈흔이 남아 있고, 날의 폭과 피해자의 목에 난 자상이 일치한다. 실제 살해 흉기로 보인다.",
+      "분장실 테이블 위에서 발견된 재단용 가위다. 급히 닦아낸 듯하지만 이음새에 혈흔이 남아 있다.",
     type: "basic",
     place: "staff",
   },
