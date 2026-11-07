@@ -9,10 +9,10 @@ export default function QuizTagGridView() {
   const cardXs = useResponsiveValue([12, 6, 4]);
 
   return (
-    <Box mt={7}>
+    <Box mt={[3, 4, 7]}>
       <Grid
         container
-        rowSpacing={[0, 1, 1]}
+        rowSpacing={[1.5, 1, 1]}
         columnSpacing={[0, 0, 3]}
         width="100%"
       >
@@ -20,11 +20,11 @@ export default function QuizTagGridView() {
           <Grid item xs={cardXs} key={tagGroup.tag}>
             <Box
               display="flex"
-              height={72}
+              minHeight={[80, 88, 88]}
               width={1}
               alignItems="center"
-              py={1}
-              gap={2}
+              py={[0.5, 1, 1]}
+              gap={[1.5, 2, 2]}
               borderRadius="12px"
               onClick={() => {
                 router.push(`/tags/${tagGroup.slug}`);
@@ -37,58 +37,69 @@ export default function QuizTagGridView() {
               }}
             >
               <Box
-                width={72}
-                height={72}
-                minWidth={72}
+                width={[64, 72, 72]}
+                height={[64, 72, 72]}
+                minWidth={[64, 72, 72]}
                 borderRadius="12px"
                 overflow="hidden"
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
                 bgcolor="#FEFEFD"
                 position="relative"
               >
-                <Box
-                  position="absolute"
-                  top={7}
-                  right={7}
-                  bottom={7}
-                  left={7}
-                  borderRadius="10px"
-                  overflow="hidden"
-                >
-                  <Image
-                    className="quiz-tag-thumb-image"
-                    src={tagGroup.imageSource}
-                    alt={tagGroup.label}
-                    fill
-                    sizes="64px"
-                    style={{
-                      objectFit: "cover",
-                      transition: "transform 0.2s ease",
-                    }}
-                  />
-                </Box>
+                <Image
+                  className="quiz-tag-thumb-image"
+                  src={tagGroup.imageSource}
+                  alt={tagGroup.label}
+                  fill
+                  sizes="72px"
+                  style={{
+                    objectFit: "cover",
+                    transition: "transform 0.2s ease",
+                  }}
+                />
               </Box>
               <Box
                 display="flex"
                 flexDirection="column"
-                justifyContent="space-between"
-                height={1}
+                justifyContent="center"
+                height={["auto", 72, 72]}
+                minHeight={[64, 72, 72]}
+                minWidth={0}
               >
                 <Box
                   display="flex"
                   flexDirection="column"
                   maxWidth={["200px", "300px", "500px"]}
+                  minWidth={0}
+                  overflow="hidden"
                 >
-                  <Typography color="#121212" fontSize="18px" fontWeight={500}>
+                  <Typography
+                    color="#121212"
+                    fontSize={[16, 18, 18]}
+                    fontWeight={500}
+                    lineHeight={1.3}
+                    sx={{
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: ["normal", "nowrap", "nowrap"],
+                    }}
+                  >
                     {tagGroup.label}
                   </Typography>
-                  <Typography color="#606B80" fontSize="12px">
+                  <Typography
+                    color="#606B80"
+                    fontSize="12px"
+                    lineHeight={1.3}
+                    sx={{
+                      display: "-webkit-box",
+                      WebkitBoxOrient: "vertical",
+                      WebkitLineClamp: [2, 1, 1],
+                      overflow: "hidden",
+                    }}
+                  >
                     {tagGroup.shortDescription}
                   </Typography>
                 </Box>
-                <Typography color="#606B80" fontSize="12px" sx={{ mb: 1 }}>
+                <Typography color="#606B80" fontSize="12px" mt={0.5} flexShrink={0}>
                   문제 {tagGroup.quizCount}개
                 </Typography>
               </Box>

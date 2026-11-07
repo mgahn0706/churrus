@@ -18,14 +18,13 @@ export default function QuizMeetingGridView({
 
   return (
     <>
-      {meetingYearGroups.map(({ year, meetingIds }) => (
-        <Box key={year}>
+      {meetingYearGroups.map(({ year, meetingIds }, index) => (
+        <Box key={year} pt={index === 0 ? [3, 3, 6] : 6}>
           <Typography
             fontSize={20}
             fontWeight={700}
             fontFamily="NanumSquareEB"
             color="#212837"
-            mt={6}
             mb={2}
           >
             {year}

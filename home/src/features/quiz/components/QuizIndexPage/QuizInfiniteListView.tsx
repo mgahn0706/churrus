@@ -1,6 +1,7 @@
 import {
   ArrowDownwardRounded,
   CloseRounded,
+  LocalOfferRounded,
   SearchRounded,
 } from "@mui/icons-material";
 import {
@@ -35,7 +36,65 @@ const normalizeSearchValue = (value: string) => value.trim().toLowerCase();
 type QuizStatusFilter = "all" | "solved" | "unsolved";
 type QuizSortField = "meeting" | "status" | "title" | "creator";
 type QuizSortDirection = "asc" | "desc";
-const LIST_TOOLBAR_TOP = ["96px", "104px", "122px"];
+
+const MOBILE_SORT_OPTIONS = [
+  {
+    value: "meeting-desc",
+    field: "meeting",
+    direction: "desc",
+    label: "최신순",
+    shortLabel: "최신순",
+  },
+  {
+    value: "meeting-asc",
+    field: "meeting",
+    direction: "asc",
+    label: "오래된순",
+    shortLabel: "오래된순",
+  },
+  {
+    value: "status-asc",
+    field: "status",
+    direction: "asc",
+    label: "미해결 먼저",
+    shortLabel: "미해결순",
+  },
+  {
+    value: "status-desc",
+    field: "status",
+    direction: "desc",
+    label: "풀이 완료 먼저",
+    shortLabel: "완료순",
+  },
+  {
+    value: "title-asc",
+    field: "title",
+    direction: "asc",
+    label: "제목 가나다순",
+    shortLabel: "제목↑",
+  },
+  {
+    value: "title-desc",
+    field: "title",
+    direction: "desc",
+    label: "제목 역순",
+    shortLabel: "제목↓",
+  },
+  {
+    value: "creator-asc",
+    field: "creator",
+    direction: "asc",
+    label: "출제자 가나다순",
+    shortLabel: "출제자↑",
+  },
+  {
+    value: "creator-desc",
+    field: "creator",
+    direction: "desc",
+    label: "출제자 역순",
+    shortLabel: "출제자↓",
+  },
+] as const;
 
 const getQuizSearchText = (quiz: QuizType) => {
   const meeting = getMeetingById(quiz.meetingId);
@@ -190,14 +249,14 @@ export default function QuizInfiniteListView({
   const visibleQuizzes = filteredQuizzes.slice(0, visibleCount);
 
   return (
-    <Box mt={5}>
+    <Box mt={[2, 3, 5]}>
       <Box
-        position="sticky"
-        top={LIST_TOOLBAR_TOP}
+        position={["static", "static", "sticky"]}
+        top="144px"
         zIndex={9}
         mx={[-0.5, -0.5, -1]}
         px={[0.5, 0.5, 1]}
-        py={1}
+        py={[0.5, 0.5, 1]}
         mb={1}
         sx={{
           backdropFilter: "blur(10px)",
@@ -219,6 +278,7 @@ export default function QuizInfiniteListView({
             alignItems="center"
             flex="1 1 280px"
             minWidth={[1, 220, 280]}
+            minHeight={36}
             maxWidth={["none", "none", 420]}
             px={1}
             border="1px solid #E5EAF1"
@@ -253,15 +313,15 @@ export default function QuizInfiniteListView({
           <Box
             display="flex"
             alignItems="center"
-            justifyContent="flex-end"
+            justifyContent={["space-between", "space-between", "flex-end"]}
             gap={1}
-            flexWrap="wrap"
+            flexWrap={["nowrap", "nowrap", "wrap"]}
             flex="0 0 auto"
             width={["100%", "100%", "auto"]}
             minWidth={0}
           >
             <Box
-              display="flex"
+              display={["none", "none", "flex"]}
               alignItems="center"
               justifyContent="center"
               minHeight={36}
@@ -284,14 +344,33 @@ export default function QuizInfiniteListView({
                 태그
               </Typography>
             </Box>
+            <IconButton
+              aria-label="태그 표시"
+              aria-pressed={showTags}
+              onClick={() => setShowTags((currentValue) => !currentValue)}
+              sx={{
+                display: ["inline-flex", "inline-flex", "none"],
+                order: 3,
+                width: 36,
+                height: 36,
+                flexShrink: 0,
+                color: showTags ? "#318AE1" : "#6B7280",
+                bgcolor: showTags ? "#EAF4FF" : "rgba(255, 255, 255, 0.9)",
+                border: "1px solid #E5EAF1",
+              }}
+            >
+              <LocalOfferRounded sx={{ fontSize: 18 }} />
+            </IconButton>
             <Select
+              aria-label="풀이 상태"
               size="small"
               value={statusFilter}
               onChange={(event) =>
                 setStatusFilter(event.target.value as QuizStatusFilter)
               }
               sx={{
-                minWidth: 104,
+                flex: [1, 1, "none"],
+                minWidth: [0, 0, 104],
                 bgcolor: "rgba(255, 255, 255, 0.9)",
                 borderRadius: "12px",
                 "& .MuiOutlinedInput-notchedOutline": {
@@ -305,9 +384,49 @@ export default function QuizInfiniteListView({
                 },
               }}
             >
-              <MenuItem value="all">전체</MenuItem>
+              <MenuItem value="all">모든 상태</MenuItem>
               <MenuItem value="solved">풀이 완료</MenuItem>
               <MenuItem value="unsolved">미해결</MenuItem>
+            </Select>
+            <Select
+              aria-label="문제 정렬"
+              size="small"
+              value={`${sortField}-${sortDirection}`}
+              onChange={(event) => {
+                const selectedOption = MOBILE_SORT_OPTIONS.find(
+                  (option) => option.value === event.target.value
+                );
+                if (selectedOption) {
+                  setSortField(selectedOption.field);
+                  setSortDirection(selectedOption.direction);
+                }
+              }}
+              renderValue={(value) =>
+                MOBILE_SORT_OPTIONS.find((option) => option.value === value)
+                  ?.shortLabel ?? "정렬"
+              }
+              sx={{
+                display: ["flex", "flex", "none"],
+                flex: 1,
+                minWidth: 0,
+                bgcolor: "rgba(255, 255, 255, 0.9)",
+                borderRadius: "12px",
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "#E5EAF1",
+                },
+                "& .MuiSelect-select": {
+                  py: 0.75,
+                  fontSize: 13,
+                  color: "#6B7280",
+                  fontWeight: 500,
+                },
+              }}
+            >
+              {MOBILE_SORT_OPTIONS.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
             </Select>
           </Box>
         </Box>

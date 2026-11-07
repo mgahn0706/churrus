@@ -7,10 +7,13 @@ import {
   Skeleton,
   TextField,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import {
+  ArrowBackRounded,
   ChevronLeftRounded,
   ChevronRightRounded,
   CloseRounded,
@@ -34,7 +37,9 @@ const BACKGROUND_COLOR = "#F5F6FA";
 const uppercaseRegex = /^[A-Z\s]+$/;
 const lowercaseRegex = /^[a-z\s]+$/;
 const numericRegex = /^[0-9.\s]+$/;
-const koreanRegex = /^[가-힣\s]+$/;
+const koreanRegex = /^[가-힣ㄱ-ㅎㅏ-ㅣ\s]+$/;
+const symbolRegex = /[^A-Za-z0-9가-힣ㄱ-ㅎㅏ-ㅣ\s]/;
+const letterRegex = /[A-Za-z가-힣ㄱ-ㅎㅏ-ㅣ]/;
 
 export default function QuizPage() {
   const router = useRouter();
@@ -122,7 +127,16 @@ export default function QuizPage() {
     if (koreanRegex.test(quiz.answer)) {
       return "한글";
     }
-    return "입력할 수 없음. 충분히 고민한 후 정답을 확인해주세요.";
+    if (symbolRegex.test(quiz.answer)) {
+      return "기호 포함";
+    }
+    if (letterRegex.test(quiz.answer) && /[0-9]/.test(quiz.answer)) {
+      return "문자·숫자 혼합";
+    }
+    if (/[A-Z]/.test(quiz.answer) && /[a-z]/.test(quiz.answer)) {
+      return "영어 대소문자 혼합";
+    }
+    return "문자 혼합";
   };
 
   return (
@@ -140,7 +154,7 @@ export default function QuizPage() {
         <Box
           display="flex"
           alignItems="center"
-          height={60}
+          height={[80, 80, 60]}
           width="100%"
           justifyContent="center"
           position="fixed"
@@ -150,51 +164,79 @@ export default function QuizPage() {
           }}
         >
           <Box
-            display="flex"
+            display="grid"
             alignItems="center"
-            justifyContent="space-between"
             maxWidth="1200px"
             width={["calc(100% - 32px)", "calc(100% - 32px)", "100%"]}
+            sx={{
+              gridTemplateColumns: {
+                xs: "minmax(0, 1fr) auto",
+                md: "auto minmax(0, 1fr) auto",
+              },
+              gridTemplateRows: { xs: "40px 40px", md: "60px" },
+              gridTemplateAreas: {
+                xs: '"back answer" "navigation navigation"',
+                md: '"back navigation answer"',
+              },
+            }}
           >
-            <Box display="flex" alignItems="center" minWidth={0}>
-              <ChurrusLogoButton onClick={() => router.push("/")} />
-
-              <Box
-                display="flex"
-                alignItems="center"
-                ml={[1, 2, 2]}
-                minWidth={0}
-              >
+            <IconButton
+              aria-label={`${meeting?.title ?? "모임"} 문제 목록으로 돌아가기`}
+              onClick={() => router.push(`/meetings/${quiz.meetingId}`)}
+              sx={{
+                gridArea: "back",
+                justifySelf: "start",
+                color: "#202837",
+                width: 36,
+                height: 36,
+                border: "1px solid #DDE4ED",
+                bgcolor: "rgba(255, 255, 255, 0.82)",
+                "&:hover": { bgcolor: "#EAF4FF" },
+              }}
+            >
+              <ArrowBackRounded />
+            </IconButton>
+            <Box
+              display="flex"
+              alignItems="center"
+              minWidth={0}
+              ml={[0, 0, 2]}
+              sx={{ gridArea: "navigation" }}
+            >
+              <Box minWidth={0}>
                 <HeaderButton onClick={() => setIsQuizListDrawerOpen(true)}>
                   {meeting?.title}
                 </HeaderButton>
-                <IconButton
-                  disabled={!prevQuizId}
-                  onClick={() => {
-                    setIsImageLoading(true);
-                    if (prevQuizId) {
-                      router.push(`/quiz/${prevQuizId}`);
-                    }
-                  }}
-                >
-                  <ChevronLeftRounded />
-                </IconButton>
-                <IconButton
-                  disabled={!nextQuizId}
-                  onClick={() => {
-                    setIsImageLoading(true);
-                    if (nextQuizId) {
-                      router.push(`/quiz/${nextQuizId}`);
-                    }
-                  }}
-                >
-                  <ChevronRightRounded />
-                </IconButton>
               </Box>
+              <IconButton
+                aria-label="이전 문제"
+                disabled={!prevQuizId}
+                onClick={() => {
+                  setIsImageLoading(true);
+                  if (prevQuizId) {
+                    router.push(`/quiz/${prevQuizId}`);
+                  }
+                }}
+              >
+                <ChevronLeftRounded />
+              </IconButton>
+              <IconButton
+                aria-label="다음 문제"
+                disabled={!nextQuizId}
+                onClick={() => {
+                  setIsImageLoading(true);
+                  if (nextQuizId) {
+                    router.push(`/quiz/${nextQuizId}`);
+                  }
+                }}
+              >
+                <ChevronRightRounded />
+              </IconButton>
             </Box>
             {!isAnswerPage && (
               <Button
                 sx={{
+                  gridArea: "answer",
                   color: "#202837",
                   fontWeight: 700,
                   fontSize: 14,
@@ -219,9 +261,10 @@ export default function QuizPage() {
           textAlign={["left", "left", "center"]}
         >
           <Typography
-            fontSize={24}
+            fontSize={[18, 20, 22]}
             fontWeight={700}
-            mt={12}
+            lineHeight={1.3}
+            mt={[11, 11, 8]}
             color="#202837"
             width="fit-content"
           >
@@ -230,8 +273,9 @@ export default function QuizPage() {
           </Typography>
           {isAnswerPage && (
             <Typography
-              fontSize={24}
+              fontSize={[20, 21, 22]}
               fontWeight={700}
+              lineHeight={1.3}
               color="#318AE1"
               width="fit-content"
             >
@@ -239,14 +283,14 @@ export default function QuizPage() {
             </Typography>
           )}
 
-          <Typography fontSize={12} color="#606B80" width="fit-content">
+          <Typography fontSize={11} color="#606B80" width="fit-content">
             {getQuizCreatorsLabel(quiz)}
           </Typography>
         </Box>
 
         <Box
           width={["calc(100% - 32px)", "calc(100% - 32px)", "100%"]}
-          mt={2}
+          mt={[1.5, 1.5, 2]}
           maxWidth={1200}
           position="relative"
           sx={{
@@ -302,6 +346,7 @@ export default function QuizPage() {
                 fontSize={12}
                 fontWeight={400}
                 width="100%"
+                pl={2}
               >
                 정답 형식: {answerFormat()}
               </Typography>
@@ -383,6 +428,10 @@ const HeaderButton = ({ disabled, children, onClick }: DesktopTopMenuProps) => {
         color: "#232937",
         fontWeight: 500,
         fontSize: 14,
+        maxWidth: "100%",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        whiteSpace: "nowrap",
       }}
       disabled={disabled}
       onClick={onClick}
@@ -391,19 +440,6 @@ const HeaderButton = ({ disabled, children, onClick }: DesktopTopMenuProps) => {
     </Button>
   );
 };
-
-const ChurrusLogoButton = ({ onClick }: { onClick?: () => void }) => (
-  <Image
-    onClick={onClick}
-    style={{
-      cursor: "pointer",
-    }}
-    alt="churrus-logo"
-    width={30}
-    height={25}
-    src="/image/churrus-icon.svg"
-  />
-);
 
 interface QuizListDrawerProps {
   isOpen: boolean;
@@ -423,9 +459,16 @@ const QuizListDrawer = ({
   onClickMeeting,
 }: QuizListDrawerProps) => {
   const meeting = quizList[0] ? MEETINGS[quizList[0].meetingId] : undefined;
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
 
   return (
-    <Drawer anchor="bottom" open={isOpen} onClose={onClose}>
+    <Drawer
+      anchor={isDesktop ? "left" : "bottom"}
+      open={isOpen}
+      onClose={onClose}
+      PaperProps={{ sx: { width: isDesktop ? 420 : "100%", maxWidth: "100vw" } }}
+    >
       <Box
         display="flex"
         alignItems="center"
@@ -466,7 +509,13 @@ const QuizListDrawer = ({
           <CloseRounded />
         </IconButton>
       </Box>
-      <Grid container spacing={1} py={2} maxHeight="520px" overflow="scroll">
+      <Grid
+        container
+        spacing={1}
+        py={2}
+        maxHeight={isDesktop ? "calc(100dvh - 100px)" : "520px"}
+        overflow="auto"
+      >
         {quizList.map((quiz) => (
           <Grid item xs={12} key={quiz.id} ml={4}>
             <QuizCard
