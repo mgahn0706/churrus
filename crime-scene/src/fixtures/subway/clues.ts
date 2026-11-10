@@ -127,7 +127,7 @@ export const subwayClues: ClueType[] = [
     y: 24,
     image: "/image/scenario/subway/clues/subway-10.png",
     description:
-      "추리스 커피 로고가 각인된 투명한 플라스틱 컵이다. 하나에는 재활용품 칸이 아니라 음료 버리는 곳 위에 놓여 있다. 다른 하나는 재활용품 칸에 정확히 버려져 있으며 립스틱은 없다.",
+      "추리스 커피 로고가 각인된 투명한 플라스틱 컵이다. 립스틱이 묻은 것은 재활용품 칸이 아니라 음료 버리는 곳 위에 놓여 있다.",
     type: "additional",
     place: 9,
   },
