@@ -20,6 +20,8 @@ import { hotelSuspects, hotelVictim } from "./hotel/suspects";
 import { ghostSuspect, ghostVictim } from "./ghost/suspects";
 import { boxSuspects, boxVictim } from "./box/suspects";
 import { paradeSuspects, paradeVictims } from "./parade/suspects";
+import { jjajangSuspects, jjajangVictim } from "./jjajang/suspects";
+import { circusSuspects, circusVictim } from "./circus/suspects";
 
 const defineScenarioCatalog = <const T extends ScenarioSummary[]>(catalog: T) =>
   catalog;
@@ -270,6 +272,37 @@ export const scenarioCatalog = defineScenarioCatalog([
     victims: paradeVictims,
     color: "#BF5AF2",
   },
+  {
+    id: "jjajang",
+    title: "짜장짜장 살인사건",
+    englishTitle: "The Jjajang Murder",
+    creators: [],
+    gameType: "TEXT",
+    emoji: "🍜",
+    histories: [],
+    backgroundImage: "/image/scenario/jjajang/jjajang-main.png",
+    isInDevelopment: false,
+    description: "짜장면집 영업이 끝난 밤, 사장이 숨진 채 발견되었다.",
+    places: [],
+    suspects: jjajangSuspects,
+    victims: [jjajangVictim],
+    color: "#422006",
+  },
+  {
+    id: "circus",
+    title: "인간 서커스 살인사건",
+    englishTitle: "Murder at the Human Circus",
+    creators: [],
+    gameType: "CLUE",
+    histories: [],
+    backgroundImage: "/image/scenario/circus/circus-main.png",
+    isInDevelopment: false,
+    description: "폐막 공연을 앞둔 인간 서커스에서 단장이 숨진 채 발견되었다.",
+    places: ["ring", "backstage"],
+    suspects: circusSuspects,
+    victims: [circusVictim],
+    color: "#991b1b",
+  },
 ]);
 
 export type ScenarioId = (typeof scenarioCatalog)[number]["id"];
@@ -316,13 +349,17 @@ export const createClueScenario = (
       throw new Error(`Unknown parent clue in ${id}: ${clue.place}`);
     }
     if (clue.lock?.method === "clue" && !clueIds.has(clue.lock.clueId)) {
-      throw new Error(`Unknown lock prerequisite in ${id}: ${clue.lock.clueId}`);
+      throw new Error(
+        `Unknown lock prerequisite in ${id}: ${clue.lock.clueId}`
+      );
     }
   }
 
   for (const move of content.movePlaceButtons) {
     if (!places.has(move.from) || !places.has(move.to)) {
-      throw new Error(`Unknown move place in ${id}: ${move.from} -> ${move.to}`);
+      throw new Error(
+        `Unknown move place in ${id}: ${move.from} -> ${move.to}`
+      );
     }
   }
 

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="서커스 무대 뒤 사무 공간과 복도">
+  <defs><linearGradient id="floor" x2="0" y2="1"><stop stop-color="#3b2524"/><stop offset="1" stop-color="#1b1012"/></linearGradient></defs>
+  <rect width="1600" height="900" fill="#13090b"/>
+  <rect x="65" y="70" width="1470" height="755" rx="22" fill="url(#floor)" stroke="#b98b5b" stroke-width="12"/>
+  <path d="M535 70v755M1070 70v755M65 440h1470" fill="none" stroke="#ad7b59" stroke-width="18"/>
+  <rect x="135" y="130" width="285" height="210" rx="12" fill="#6e2528" stroke="#d7ad72" stroke-width="9"/>
+  <rect x="655" y="155" width="290" height="152" rx="15" fill="#5b3330" stroke="#b99166" stroke-width="8"/>
+  <path d="M705 205h190m-190 40h190" stroke="#d8b17c" stroke-width="8"/>
+  <rect x="1180" y="120" width="250" height="230" rx="12" fill="#512326" stroke="#d7ad72" stroke-width="8"/>
+  <path d="M1225 190h160m-160 50h160" stroke="#b99166" stroke-width="7"/>
+  <path d="M570 515h460v245H570Z" fill="#563b36" stroke="#ad7b59" stroke-width="7"/>
+  <path d="M125 560h240v175H125Z" fill="#6d2228" stroke="#d0a770" stroke-width="8"/>
+  <path d="m275 610-65 40 65 40" fill="none" stroke="#f3ce92" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

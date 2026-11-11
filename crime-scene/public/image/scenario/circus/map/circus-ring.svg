@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="서커스 무대와 객석, 조명실">
+  <defs><radialGradient id="floor"><stop stop-color="#6d2e25"/><stop offset="1" stop-color="#1c0b0d"/></radialGradient><pattern id="seats" width="84" height="72" patternUnits="userSpaceOnUse"><circle cx="42" cy="36" r="19" fill="#6c2528" stroke="#c18358" stroke-width="3"/></pattern></defs>
+  <rect width="1600" height="900" fill="#170b0c"/>
+  <rect x="55" y="55" width="1490" height="790" rx="90" fill="url(#seats)" stroke="#bf9466" stroke-width="12"/>
+  <ellipse cx="790" cy="495" rx="465" ry="287" fill="url(#floor)" stroke="#e0b376" stroke-width="25"/>
+  <ellipse cx="790" cy="495" rx="351" ry="206" fill="#854034" stroke="#b78253" stroke-width="8"/>
+  <path d="M790 295v400M440 495h700" stroke="#dca968" stroke-opacity=".3" stroke-width="5"/>
+  <rect x="1115" y="110" width="365" height="215" rx="12" fill="#302021" stroke="#d8b077" stroke-width="8"/>
+  <path d="M1160 180h275m-275 45h275m-275 45h275" stroke="#d7a05c" stroke-width="7" opacity=".7"/>
+  <path d="M1200 650h230v145h-230z" fill="#571920" stroke="#d6a465" stroke-width="8"/>
+  <path d="m1270 690 55 35-55 35" fill="none" stroke="#f6d28d" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
