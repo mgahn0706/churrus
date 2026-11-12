@@ -275,7 +275,7 @@ export const scenarioCatalog = defineScenarioCatalog([
   {
     id: "jjajang",
     title: "초능력자 살인사건",
-    englishTitle: "The Psychic Murder",
+    englishTitle: "Murder of the Psychic",
     creators: [],
     gameType: "TEXT",
     emoji: "🔮",

@@ -34,7 +34,7 @@ export const psychicVictim: VictimType = {
   name: "최소장",
   age: 52,
   gender: "male",
-  job: "초능력 연구소 소장",
-  description: "시연회가 끝난 뒤 예지 실험의 원본 기록을 확인하려 했다.",
+  job: "초능력 연구소 소장 · 초능력자",
+  description: "초능력을 지닌 연구소 소장. 시연회가 끝난 뒤 예지 실험의 원본 기록을 확인하려 했다.",
   statement: "",
 };
