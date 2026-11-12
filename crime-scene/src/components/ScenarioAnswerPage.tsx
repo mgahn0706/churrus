@@ -67,7 +67,13 @@ export function ScenarioAnswerPage({
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    const storedValue = localStorage.getItem(scenarioKey);
+    let storedValue = localStorage.getItem(scenarioKey);
+    if (storedValue == null && scenarioKey === "psychic") {
+      storedValue = localStorage.getItem("jjajang");
+      if (storedValue != null) {
+        localStorage.setItem(scenarioKey, storedValue);
+      }
+    }
     if (storedValue == null) {
       setIsSuspectAccused(false);
       return;

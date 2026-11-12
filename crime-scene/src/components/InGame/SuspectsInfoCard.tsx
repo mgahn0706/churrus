@@ -69,12 +69,10 @@ export default function SuspectsInfoCard({
     return suspect ? { ...suspect, role: "suspect" as const } : null;
   }, [selectedProfile, victims, suspects]);
 
-  const genderIcon = (gender: "male" | "female") => {
-    return gender === "male" ? (
-      <Male fontSize="small" />
-    ) : (
-      <Female fontSize="small" />
-    );
+  const genderIcon = (gender?: "male" | "female") => {
+    if (gender === "male") return <Male fontSize="small" />;
+    if (gender === "female") return <Female fontSize="small" />;
+    return null;
   };
 
   return (

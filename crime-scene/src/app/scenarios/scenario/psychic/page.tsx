@@ -2,10 +2,10 @@
 
 import InTextGame from "@/components/InTextGame";
 import { createTextScenario } from "@/fixtures";
-import { psychicClues, psychicKeywordIds } from "@/fixtures/jjajang/clues";
-import { psychicPrologue } from "@/fixtures/jjajang/prologue";
+import { psychicClues, psychicKeywordIds } from "@/fixtures/psychic/clues";
+import { psychicPrologue } from "@/fixtures/psychic/prologue";
 
-const psychicScenario = createTextScenario("jjajang", {
+const psychicScenario = createTextScenario("psychic", {
   clues: psychicClues,
   keywordIds: psychicKeywordIds,
   prologue: psychicPrologue,

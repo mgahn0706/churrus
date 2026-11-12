@@ -20,7 +20,7 @@ import { hotelSuspects, hotelVictim } from "./hotel/suspects";
 import { ghostSuspect, ghostVictim } from "./ghost/suspects";
 import { boxSuspects, boxVictim } from "./box/suspects";
 import { paradeSuspects, paradeVictims } from "./parade/suspects";
-import { psychicSuspects, psychicVictim } from "./jjajang/suspects";
+import { psychicSuspects, psychicVictim } from "./psychic/suspects";
 import { circusSuspects, circusVictim } from "./circus/suspects";
 
 const defineScenarioCatalog = <const T extends ScenarioSummary[]>(catalog: T) =>
@@ -273,14 +273,14 @@ export const scenarioCatalog = defineScenarioCatalog([
     color: "#BF5AF2",
   },
   {
-    id: "jjajang",
+    id: "psychic",
     title: "초능력자 살인사건",
     englishTitle: "Murder of the Psychic",
     creators: [],
     gameType: "TEXT",
     emoji: "🔮",
     histories: [],
-    backgroundImage: "/image/scenario/jjajang/jjajang-main.png",
+    backgroundImage: "/image/scenario/psychic/psychic-main.png",
     isInDevelopment: false,
     description: "초능력 연구소의 시연회가 끝난 밤, 소장이 숨진 채 발견되었다.",
     places: [],
@@ -296,8 +296,8 @@ export const scenarioCatalog = defineScenarioCatalog([
     gameType: "CLUE",
     histories: [],
     backgroundImage: "/image/scenario/circus/circus-main.png",
-    isInDevelopment: false,
-    description: "폐막 공연을 앞둔 인간 서커스에서 단장이 숨진 채 발견되었다.",
+    isInDevelopment: true,
+    description: "인간 서커스의 단장 프레디가 숨진 채 발견되었다.",
     places: ["ring", "backstage"],
     suspects: circusSuspects,
     victims: [circusVictim],

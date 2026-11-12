@@ -1,6 +1,6 @@
 "use client";
 
-import { psychicSuspects } from "@/fixtures/jjajang/suspects";
+import { psychicSuspects } from "@/fixtures/psychic/suspects";
 import type { DetectiveNoteType } from "@/types";
 import { Box, Button, MenuItem, Stack, TextField, ThemeProvider, Typography } from "@mui/material";
 import { createScenarioTheme } from "@/components/createScenarioTheme";
@@ -23,8 +23,8 @@ export default function PsychicSubmit() {
       additionalQuestionAnswers: [],
       memo: "",
     };
-    localStorage.setItem("jjajang", JSON.stringify(note));
-    router.push("/scenarios/scenario/jjajang/answer");
+    localStorage.setItem("psychic", JSON.stringify(note));
+    router.push("/scenarios/scenario/psychic/answer");
   };
 
   return (

@@ -64,8 +64,8 @@ export interface MovePlaceButtonType {
 export interface SuspectType {
   name: string;
   image?: string;
-  age: number;
-  gender: "male" | "female";
+  age: number | "???";
+  gender?: "male" | "female";
   job: string;
   description: string;
   finalArgument?: string;

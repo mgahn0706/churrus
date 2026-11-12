@@ -39,8 +39,17 @@ function getStoredScenarioIds(): string[] {
       return [];
     }
 
-    return parsedValue.filter(
-      (value): value is string => typeof value === "string" && value.length > 0
+    return Array.from(
+      new Set(
+        parsedValue
+          .filter(
+            (value): value is string =>
+              typeof value === "string" && value.length > 0
+          )
+          .map((scenarioId) =>
+            scenarioId === "jjajang" ? "psychic" : scenarioId
+          )
+      )
     );
   } catch {
     return [];

@@ -19,7 +19,7 @@ export default function Suspect() {
   const genderLabel = (gender?: string) => {
     if (gender === "male") return "남";
     if (gender === "female") return "여";
-    return "N/A";
+    return null;
   };
 
   const handleSelect = useCallback(() => {
@@ -35,8 +35,8 @@ export default function Suspect() {
   const renderPersonCard = (
     person: {
       name: string;
-      age: number;
-      gender: "male" | "female";
+      age: number | "???";
+      gender?: "male" | "female";
       job: string;
       image?: string;
     },
@@ -116,7 +116,8 @@ export default function Suspect() {
               flexShrink: 0,
             }}
           >
-            {person.age}세 · {genderLabel(person.gender)}
+            {typeof person.age === "number" ? `${person.age}세` : person.age}
+            {genderLabel(person.gender) && ` · ${genderLabel(person.gender)}`}
           </Typography>
         </Box>
         <Typography
