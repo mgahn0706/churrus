@@ -23,6 +23,7 @@ import { FadeInSection } from "../FadeInSection";
 import { TextScenarioType } from "../../types";
 import { createScenarioTheme } from "../createScenarioTheme";
 import PhysicalClueDialog from "./PhysicalClueDialog";
+import usePreventUnload from "@/hooks/usePreventUnload";
 
 const ProgressBar = ({
   checkedCount,
@@ -71,6 +72,8 @@ interface InTextGameProps {
 }
 
 export default function InTextGame({ scenario }: InTextGameProps) {
+  usePreventUnload(true);
+
   const scenarioTheme = createScenarioTheme(scenario.color, "dark");
   const [prologueStep, setPrologueStep] = useState(0);
   const [selectedPhysicalClue, setSelectedPhysicalClue] =

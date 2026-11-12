@@ -1,4 +1,4 @@
-import { Box, Button, Grow, IconButton, Paper, Tooltip } from "@mui/material";
+import { Box, Button, Grow, Paper } from "@mui/material";
 import Image from "next/image";
 import LightBulbIcon from "@mui/icons-material/Lightbulb";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
@@ -38,6 +38,17 @@ const getInteractionStartStorageKey = (scenarioId: string) =>
 
 const getInteractionLogStorageKey = (scenarioId: string) =>
   `${scenarioId}-interaction-log`;
+
+const quickMenuButtonSx = {
+  justifyContent: "flex-start",
+  textAlign: "left",
+  textTransform: "none",
+  color: "text.primary",
+  px: 1.5,
+  py: 1,
+  fontWeight: 600,
+  "& .MuiButton-startIcon": { color: "primary.main" },
+} as const;
 
 export default function InGameLayout({ scenario }: InGameLayoutProps) {
   const [openedClueId, setOpenedClueId] = useState<number | null>(null);
@@ -118,7 +129,7 @@ export default function InGameLayout({ scenario }: InGameLayoutProps) {
     );
   }, [interactionLog, isInteractionLogLoaded, scenario.id]);
 
-  usePreventUnload(checkedClueList.length > 0);
+  usePreventUnload(true);
 
   const openedClue: ClueType | null =
     scenario.clues.find((clue) => clue.id === openedClueId) ?? null;
@@ -326,78 +337,74 @@ export default function InGameLayout({ scenario }: InGameLayoutProps) {
             variant="contained"
             color="primary"
             startIcon={isQuickMenuOpen ? <MenuOpenIcon /> : <MenuIcon />}
+            aria-expanded={isQuickMenuOpen}
+            aria-controls="investigation-tools-menu"
             onClick={() => setIsQuickMenuOpen((prev) => !prev)}
             sx={{
-              minWidth: 92,
+              minWidth: 120,
               borderRadius: 2,
               textTransform: "none",
               boxShadow: 2,
             }}
           >
-            도구
+            조사 도구
           </Button>
 
           <Grow in={isQuickMenuOpen} timeout={180} unmountOnExit>
             <Paper
+              id="investigation-tools-menu"
+              component="nav"
+              aria-label="조사 도구"
               elevation={3}
               sx={{
                 position: "absolute",
-                top: 44,
+                top: 48,
                 right: 0,
-                p: 0.6,
+                width: 216,
+                p: 1,
                 borderRadius: 3,
                 display: "flex",
                 flexDirection: "column",
-                gap: 0.4,
-                backgroundColor: "rgba(255,255,255,0.82)",
+                gap: 0.5,
+                backgroundColor: "rgba(255,255,255,0.96)",
                 backdropFilter: "blur(6px)",
               }}
             >
-              <Tooltip title="추리 노트" placement="left">
-                <IconButton
-                  color="primary"
-                  onClick={() => setOpenedModal("memo")}
-                  size="small"
-                >
-                  <LibraryBooksIcon fontSize="small" />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="단서 현황" placement="left">
-                <IconButton
-                  color="primary"
-                  onClick={() => setOpenedModal("dashboard")}
-                  size="small"
-                >
-                  <LightBulbIcon fontSize="small" />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="용의자/피해자 정보" placement="left">
-                <IconButton
-                  color="primary"
-                  onClick={() => setOpenedModal("suspects")}
-                  size="small"
-                >
-                  <PersonSearchIcon fontSize="small" />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="용의자 투표" placement="left">
-                <IconButton
-                  color="primary"
-                  onClick={() => setOpenedModal("vote")}
-                  size="small"
-                >
-                  <HowToVoteIcon fontSize="small" />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="공개된 정보" placement="left">
-                <IconButton
-                  color="primary"
-                  onClick={() => setOpenedModal("prologue")}
-                  size="small"
-                >
-                  <InfoIcon fontSize="small" />
-                </IconButton>
-              </Tooltip>
+              <Button
+                startIcon={<LibraryBooksIcon fontSize="small" />}
+                onClick={() => setOpenedModal("memo")}
+                sx={quickMenuButtonSx}
+              >
+                추리 노트
+              </Button>
+              <Button
+                startIcon={<LightBulbIcon fontSize="small" />}
+                onClick={() => setOpenedModal("dashboard")}
+                sx={quickMenuButtonSx}
+              >
+                단서 현황
+              </Button>
+              <Button
+                startIcon={<PersonSearchIcon fontSize="small" />}
+                onClick={() => setOpenedModal("suspects")}
+                sx={quickMenuButtonSx}
+              >
+                용의자·피해자 정보
+              </Button>
+              <Button
+                startIcon={<HowToVoteIcon fontSize="small" />}
+                onClick={() => setOpenedModal("vote")}
+                sx={quickMenuButtonSx}
+              >
+                용의자 투표
+              </Button>
+              <Button
+                startIcon={<InfoIcon fontSize="small" />}
+                onClick={() => setOpenedModal("prologue")}
+                sx={quickMenuButtonSx}
+              >
+                공개된 정보
+              </Button>
             </Paper>
           </Grow>
         </Box>

@@ -1,8 +1,9 @@
-import {
+import type {
   AdditionalQuestionType,
   DetectiveNoteType,
   SuspectType,
 } from "@/types";
+import { Close } from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -11,18 +12,16 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Divider,
   IconButton,
-  InputLabel,
   MenuItem,
-  Select,
+  Tab,
+  Tabs,
   TextField,
   Typography,
 } from "@mui/material";
-import FinalConfirmModal from "./FinalConfirmModal";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Close } from "@mui/icons-material";
+import FinalConfirmModal from "./FinalConfirmModal";
 
 const INIT_NOTE: DetectiveNoteType = {
   accusedSuspect: "",
@@ -49,29 +48,28 @@ export default function MemoModal({
   isAllClueSearched,
   scenarioKeyword,
 }: MemoModalProps) {
+  const router = useRouter();
+  const [note, setNote] = useState<DetectiveNoteType>(INIT_NOTE);
+  const [section, setSection] = useState<"main" | "additional">("main");
+  const [questionIndex, setQuestionIndex] = useState(0);
   const [isFinalConfirmModalOpen, setIsFinalConfirmModalOpen] = useState(false);
   const [isUnsaveAlertModalOpen, setIsUnsaveAlertModalOpen] = useState(false);
-  const handleNoteSave = () => {
-    localStorage.setItem(scenarioKeyword, JSON.stringify(note));
-  };
-  const [note, setNote] = useState<DetectiveNoteType>(INIT_NOTE);
-
-  const router = useRouter();
 
   useEffect(() => {
     const savedNote = localStorage.getItem(scenarioKeyword);
-    if (savedNote) {
-      setNote({
-        ...JSON.parse(savedNote),
-      });
-      return;
-    }
-
-    setNote(INIT_NOTE);
+    setNote(savedNote ? JSON.parse(savedNote) : INIT_NOTE);
   }, [scenarioKeyword]);
 
-  const isAllRequiredFilled =
-    note.accusedSuspect && note.howDunnit && note.whyDunnit;
+  const currentQuestion = questions[questionIndex];
+  const isAllRequiredFilled = [
+    note.accusedSuspect,
+    note.howDunnit,
+    note.whyDunnit,
+  ].every((answer) => answer.trim().length > 0);
+
+  const handleNoteSave = () => {
+    localStorage.setItem(scenarioKeyword, JSON.stringify(note));
+  };
 
   const isNoteChanged = () => {
     const savedNote = localStorage.getItem(scenarioKeyword);
@@ -81,23 +79,30 @@ export default function MemoModal({
     );
   };
 
-  const requiredInputBadge = (
-    <Typography
-      color="error"
-      sx={{
-        ml: 1,
-      }}
-    >
-      *
-    </Typography>
-  );
-
   return (
     <>
-      <Dialog open={isOpen} fullWidth maxWidth="lg">
-        <DialogTitle>
+      <Dialog
+        open={isOpen}
+        fullWidth
+        maxWidth="lg"
+        slotProps={{
+          paper: {
+            sx: {
+              height: "min(760px, calc(100dvh - 32px))",
+              maxHeight: "calc(100dvh - 32px)",
+              overflow: "hidden",
+              display: "flex",
+              flexDirection: "column",
+            },
+          },
+        }}
+      >
+        <DialogTitle
+          sx={{ flexShrink: 0, borderBottom: 1, borderColor: "divider" }}
+        >
           추리 노트
           <IconButton
+            aria-label="추리 노트 닫기"
             onClick={() => {
               if (isNoteChanged()) {
                 setIsUnsaveAlertModalOpen(true);
@@ -110,160 +115,204 @@ export default function MemoModal({
             <Close />
           </IconButton>
         </DialogTitle>
+
         <Box
           sx={{
-            display: "flex",
-            width: "100%",
-            justifyContent: "space-around",
+            flex: 1,
+            minHeight: 0,
+            display: "grid",
+            gridTemplateColumns: "minmax(0, 1fr) minmax(0, 1fr)",
+            overflow: "hidden",
           }}
         >
           <Box
             sx={{
-              width: 550,
+              p: 3,
+              minWidth: 0,
+              minHeight: 0,
+              display: "flex",
+              flexDirection: "column",
             }}
           >
-            <DialogContent>
-              <Box
-                sx={{
-                  mb: 2,
-                }}
-              >
-                <InputLabel
-                  id="whodunnit"
-                  sx={{ fontWeight: "bold", display: "flex" }}
-                >
-                  범인은 누구인가요? {requiredInputBadge}
-                </InputLabel>
-                <Select
-                  id="whodunnit"
-                  autoWidth={false}
-                  required
-                  sx={{
-                    width: 100,
-                  }}
-                  value={note.accusedSuspect}
-                  onChange={(e) =>
-                    setNote({ ...note, accusedSuspect: e.target.value })
-                  }
-                >
-                  <MenuItem value="">
-                    {" "}
-                    <em>선택 안됨</em>
-                  </MenuItem>
-                  {suspects.map((suspect) => (
-                    <MenuItem key={suspect.name} value={suspect.name}>
-                      {suspect.name ?? "선택 안됨"}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </Box>
-              <Box
-                sx={{
-                  mb: 2,
-                }}
-              >
-                {" "}
-                <InputLabel
-                  id="howdunnit"
-                  sx={{ fontWeight: "bold", display: "flex" }}
-                >
-                  살해 방법은 무엇인가요? {requiredInputBadge}
-                </InputLabel>
-                <TextField
-                  fullWidth
-                  id="howdunnit"
-                  required
-                  placeholder="살해 방법"
-                  value={note.howDunnit}
-                  onChange={(e) =>
-                    setNote({ ...note, howDunnit: e.target.value })
-                  }
-                />
-              </Box>
-              <InputLabel
-                id="whydunnit"
-                sx={{ fontWeight: "bold", display: "flex" }}
-              >
-                살해 동기는 무엇인가요? {requiredInputBadge}
-              </InputLabel>{" "}
-              <TextField
-                id="whydunnit"
-                fullWidth
-                required
-                placeholder="살해 동기"
-                value={note.whyDunnit}
-                onChange={(e) =>
-                  setNote({ ...note, whyDunnit: e.target.value })
-                }
+            <Tabs
+              value={section}
+              onChange={(_event, value: "main" | "additional") =>
+                setSection(value)
+              }
+              aria-label="추리 노트 항목"
+              variant="fullWidth"
+            >
+              <Tab value="main" label="최종 추리" />
+              <Tab
+                value="additional"
+                label={`추가 질문 (${questions.length})`}
+                disabled={questions.length === 0}
               />
-            </DialogContent>
-            <DialogContent>
-              <DialogContentText
-                sx={{
-                  mb: 1,
-                  fontWeight: "bold",
-                }}
-              >
-                추가 질문
-              </DialogContentText>
-              {questions.length === 0 && (
-                <DialogContentText>
-                  이 시나리오에는 추가 질문이 존재하지 않습니다.
-                </DialogContentText>
-              )}
-              {questions.map((question, idx) => (
+            </Tabs>
+
+            <Box sx={{ pt: 3, flex: 1, minHeight: 0, overflow: "hidden" }}>
+              {section === "main" ? (
                 <Box
-                  key={question.no}
-                  sx={{
-                    mb: 1,
-                  }}
+                  sx={{ display: "flex", flexDirection: "column", gap: 2.5 }}
                 >
-                  <InputLabel id={`additionalQuestion-${idx}`}>
-                    {question.question}
-                  </InputLabel>
                   <TextField
-                    id={`additionalQuestion-${idx}`}
-                    placeholder="답변"
+                    select
                     fullWidth
-                    value={note.additionalQuestionAnswers[idx]}
-                    onChange={(e) =>
-                      setNote({
-                        ...note,
-                        additionalQuestionAnswers: [
-                          ...note.additionalQuestionAnswers.slice(0, idx),
-                          e.target.value,
-                          ...note.additionalQuestionAnswers.slice(idx + 1),
-                        ],
-                      })
+                    required
+                    label="범인은 누구인가요?"
+                    value={note.accusedSuspect}
+                    onChange={(event) =>
+                      setNote({ ...note, accusedSuspect: event.target.value })
+                    }
+                  >
+                    <MenuItem value="">
+                      <em>선택 안됨</em>
+                    </MenuItem>
+                    {suspects.map((suspect) => (
+                      <MenuItem key={suspect.name} value={suspect.name}>
+                        {suspect.name}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                  <TextField
+                    fullWidth
+                    required
+                    label="살해 방법은 무엇인가요?"
+                    value={note.howDunnit}
+                    onChange={(event) =>
+                      setNote({ ...note, howDunnit: event.target.value })
+                    }
+                  />
+                  <TextField
+                    fullWidth
+                    required
+                    label="살해 동기는 무엇인가요?"
+                    value={note.whyDunnit}
+                    onChange={(event) =>
+                      setNote({ ...note, whyDunnit: event.target.value })
                     }
                   />
                 </Box>
-              ))}
-            </DialogContent>
+              ) : currentQuestion ? (
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    height: "100%",
+                    minHeight: 0,
+                  }}
+                >
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{ mb: 2 }}
+                  >
+                    {questionIndex + 1} / {questions.length}
+                  </Typography>
+                  <Typography
+                    sx={{ fontWeight: 700, mb: 2, wordBreak: "keep-all" }}
+                  >
+                    {currentQuestion.question}
+                  </Typography>
+                  <TextField
+                    fullWidth
+                    multiline
+                    minRows={3}
+                    maxRows={5}
+                    aria-label={`${questionIndex + 1}번 추가 질문 답변`}
+                    placeholder="답변"
+                    value={note.additionalQuestionAnswers[questionIndex] ?? ""}
+                    onChange={(event) => {
+                      const answers = [...note.additionalQuestionAnswers];
+                      answers[questionIndex] = event.target.value;
+                      setNote({ ...note, additionalQuestionAnswers: answers });
+                    }}
+                  />
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      mt: "auto",
+                      pt: 2,
+                    }}
+                  >
+                    <Button
+                      disabled={questionIndex === 0}
+                      onClick={() => setQuestionIndex((index) => index - 1)}
+                    >
+                      이전 질문
+                    </Button>
+                    <Button
+                      disabled={questionIndex === questions.length - 1}
+                      onClick={() => setQuestionIndex((index) => index + 1)}
+                    >
+                      다음 질문
+                    </Button>
+                  </Box>
+                </Box>
+              ) : null}
+            </Box>
           </Box>
-          <Divider flexItem orientation="vertical" />
+
           <Box
             sx={{
-              width: 550,
+              p: 3,
+              minWidth: 0,
+              minHeight: 0,
+              display: "flex",
+              flexDirection: "column",
+              borderLeft: 1,
+              borderColor: "divider",
             }}
           >
-            <DialogContent>
-              <InputLabel id="memo" sx={{ fontWeight: "bold" }}>
-                메모
-              </InputLabel>
-              <TextField
-                id="memo"
-                fullWidth
-                placeholder="잊기 쉬운 용의자들의 알리바이, 증거 등을 메모해보세요."
-                multiline
-                rows={27}
-                value={note.memo}
-                onChange={(e) => setNote({ ...note, memo: e.target.value })}
-              />
-            </DialogContent>
+            <Typography
+              component="label"
+              htmlFor="detective-memo"
+              sx={{ fontWeight: 700, mb: 2 }}
+            >
+              메모
+            </Typography>
+            <Box
+              component="textarea"
+              id="detective-memo"
+              aria-label="추리 메모"
+              placeholder="잊기 쉬운 용의자들의 알리바이, 증거 등을 메모해보세요."
+              value={note.memo}
+              onChange={(event) =>
+                setNote({ ...note, memo: event.target.value })
+              }
+              sx={{
+                flex: 1,
+                minHeight: 0,
+                width: "100%",
+                p: 2,
+                resize: "none",
+                overflowY: "auto",
+                border: 1,
+                borderColor: "divider",
+                borderRadius: 1,
+                bgcolor: "transparent",
+                color: "text.primary",
+                font: "inherit",
+                lineHeight: 1.6,
+                "&:focus-visible": {
+                  outline: "2px solid",
+                  outlineColor: "primary.main",
+                },
+              }}
+            />
           </Box>
         </Box>
-        <DialogActions>
+
+        <DialogActions
+          sx={{
+            flexShrink: 0,
+            borderTop: 1,
+            borderColor: "divider",
+            px: 3,
+            py: 2,
+          }}
+        >
           <Button
             size="large"
             onClick={() => {
@@ -276,27 +325,24 @@ export default function MemoModal({
           <Button
             size="large"
             disabled={!isAllRequiredFilled}
-            onClick={() => {
-              setIsFinalConfirmModalOpen(true);
-            }}
+            onClick={() => setIsFinalConfirmModalOpen(true)}
           >
             최종 제출
           </Button>
         </DialogActions>
       </Dialog>
+
       <FinalConfirmModal
         isOpen={isFinalConfirmModalOpen}
         isAllClueSearched={isAllClueSearched}
-        suspect={suspects.find((suspects) => {
-          return suspects.name === note.accusedSuspect;
-        })}
+        suspect={suspects.find(
+          (suspect) => suspect.name === note.accusedSuspect,
+        )}
         onConfirm={() => {
-          localStorage.setItem(scenarioKeyword, JSON.stringify(note));
+          handleNoteSave();
           router.push(`/scenarios/scenario/${scenarioKeyword}/answer`);
         }}
-        onClose={() => {
-          setIsFinalConfirmModalOpen(false);
-        }}
+        onClose={() => setIsFinalConfirmModalOpen(false)}
       />
       <Dialog open={isUnsaveAlertModalOpen}>
         <DialogTitle>저장되지 않은 변경 사항이 있습니다.</DialogTitle>
