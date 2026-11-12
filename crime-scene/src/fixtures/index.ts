@@ -20,7 +20,7 @@ import { hotelSuspects, hotelVictim } from "./hotel/suspects";
 import { ghostSuspect, ghostVictim } from "./ghost/suspects";
 import { boxSuspects, boxVictim } from "./box/suspects";
 import { paradeSuspects, paradeVictims } from "./parade/suspects";
-import { jjajangSuspects, jjajangVictim } from "./jjajang/suspects";
+import { psychicSuspects, psychicVictim } from "./jjajang/suspects";
 import { circusSuspects, circusVictim } from "./circus/suspects";
 
 const defineScenarioCatalog = <const T extends ScenarioSummary[]>(catalog: T) =>
@@ -274,18 +274,18 @@ export const scenarioCatalog = defineScenarioCatalog([
   },
   {
     id: "jjajang",
-    title: "짜장짜장 살인사건",
-    englishTitle: "The Jjajang Murder",
+    title: "초능력자 살인사건",
+    englishTitle: "The Psychic Murder",
     creators: [],
     gameType: "TEXT",
-    emoji: "🍜",
+    emoji: "🔮",
     histories: [],
     backgroundImage: "/image/scenario/jjajang/jjajang-main.png",
     isInDevelopment: false,
-    description: "짜장면집 영업이 끝난 밤, 사장이 숨진 채 발견되었다.",
+    description: "초능력 연구소의 시연회가 끝난 밤, 소장이 숨진 채 발견되었다.",
     places: [],
-    suspects: jjajangSuspects,
-    victims: [jjajangVictim],
+    suspects: psychicSuspects,
+    victims: [psychicVictim],
     color: "#422006",
   },
   {

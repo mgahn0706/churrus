@@ -1,40 +1,40 @@
 import type { SuspectType, VictimType } from "@/types";
 
-export const jjajangSuspects: SuspectType[] = [
+export const psychicSuspects: SuspectType[] = [
   {
-    name: "강주방",
-    age: 38,
+    name: "강서윤",
+    age: 29,
+    gender: "female",
+    job: "독심술 시연자",
+    description: "상대의 생각을 읽는 능력을 시연한다. 최근 소장과 출연 계약을 두고 다퉜다.",
+    statement: "밤 8시 40분부터 진행자와 공개 인터뷰를 했어요. 제 모습은 방송 영상에 남아 있습니다.",
+    finalArgument: "계약 때문에 화가 난 건 맞지만, 사건이 벌어진 동안 저는 인터뷰 중이었습니다.",
+  },
+  {
+    name: "오재민",
+    age: 33,
     gender: "male",
-    job: "주방장",
-    description: "개업 때부터 주방을 맡았다. 최근 사장과 메뉴 개편 문제로 다퉜다.",
-    statement: "밤 8시 반부터 마지막 주문을 만들었어요. 8시 50분까지 주방을 비운 적 없습니다.",
-    finalArgument: "사장님과 다툰 건 맞지만, 그 시간엔 밀린 주문을 만들고 있었어요.",
+    job: "염동력 시연자",
+    description: "물체를 움직이는 능력을 시연한다. 연구비 배분 문제로 소장에게 불만이 있었다.",
+    statement: "그 시간엔 메인홀에서 시연을 하고 있었어요. 관객과 카메라가 계속 보고 있었습니다.",
+    finalArgument: "제 능력을 의심하셔도 좋습니다. 하지만 당시 제 동선은 영상으로 확인할 수 있어요.",
   },
   {
-    name: "이배달",
-    age: 27,
+    name: "윤하린",
+    age: 31,
     gender: "female",
-    job: "배달 기사",
-    description: "사건 당일 마지막 배달을 맡았다. 미지급 배달비 때문에 사장에게 항의했다.",
-    statement: "8시 35분에 가게를 나갔고, 먼 곳에 배달하고 돌아왔어요. 사장님을 다시 본 건 발견 때예요.",
-    finalArgument: "배달 기록을 보세요. 그때 저는 가게 밖에 있었습니다.",
-  },
-  {
-    name: "박경리",
-    age: 34,
-    gender: "female",
-    job: "가게 경리",
-    description: "매출 장부와 정산을 담당한다. 사장과 장부 원본을 두고 갈등이 있었다.",
-    statement: "8시 20분에 퇴근했어요. 사장님이 나중에 장부를 보자고 하셨지만 저는 돌아가지 않았습니다.",
-    finalArgument: "출입 기록에 제 이름이 있다 해도, 제가 사장님을 해쳤다는 뜻은 아니잖아요.",
+    job: "예지력 시연자",
+    description: "미래를 예측하는 실험의 핵심 참가자다. 소장이 실험 원본을 요구한 뒤 불안해했다.",
+    statement: "8시 20분에 연구소를 나갔어요. 소장님이 원본을 보자고 하셨지만 다시 돌아가지는 않았습니다.",
+    finalArgument: "관찰실에 갔다는 기록만으로 제가 소장님을 해쳤다고 단정할 수는 없잖아요.",
   },
 ];
 
-export const jjajangVictim: VictimType = {
-  name: "최사장",
+export const psychicVictim: VictimType = {
+  name: "최소장",
   age: 52,
   gender: "male",
-  job: "짜장짜장 사장",
-  description: "가게를 운영하며 그날 밤 매출 장부를 확인하려 했다.",
+  job: "초능력 연구소 소장",
+  description: "시연회가 끝난 뒤 예지 실험의 원본 기록을 확인하려 했다.",
   statement: "",
 };

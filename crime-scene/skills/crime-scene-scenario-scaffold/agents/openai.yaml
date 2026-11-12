@@ -1,0 +1,4 @@
+interface:
+  display_name: "Crime Scene Scenario Scaffold"
+  short_description: "Create scenario boilerplate from basic story details"
+  default_prompt: "Use $crime-scene-scenario-scaffold to add a new crime-scene scenario from my basic information."

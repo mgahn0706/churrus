@@ -2,15 +2,15 @@
 
 import InTextGame from "@/components/InTextGame";
 import { createTextScenario } from "@/fixtures";
-import { jjajangClues, jjajangKeywordIds } from "@/fixtures/jjajang/clues";
-import { jjajangPrologue } from "@/fixtures/jjajang/prologue";
+import { psychicClues, psychicKeywordIds } from "@/fixtures/jjajang/clues";
+import { psychicPrologue } from "@/fixtures/jjajang/prologue";
 
-const jjajangScenario = createTextScenario("jjajang", {
-  clues: jjajangClues,
-  keywordIds: jjajangKeywordIds,
-  prologue: jjajangPrologue,
+const psychicScenario = createTextScenario("jjajang", {
+  clues: psychicClues,
+  keywordIds: psychicKeywordIds,
+  prologue: psychicPrologue,
 });
 
-export default function Jjajang() {
-  return <InTextGame scenario={jjajangScenario} />;
+export default function PsychicScenario() {
+  return <InTextGame scenario={psychicScenario} />;
 }
