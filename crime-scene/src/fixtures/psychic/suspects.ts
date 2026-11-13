@@ -3,8 +3,9 @@ import type { SuspectType, VictimType } from "@/types";
 export const psychicSuspects: SuspectType[] = [
   {
     name: "실험체 A",
+    image: "/image/scenario/psychic/profile/exp_a.png",
     age: 22,
-    gender: "female",
+    gender: "male",
     job: "실험체",
     description: "상대의 생각을 읽는 능력을 시연한다. 최근 소장과 실험 참여 계약을 두고 다퉜다.",
     statement: "밤 8시 40분부터 진행자와 공개 인터뷰를 했어요. 제 모습은 방송 영상에 남아 있습니다.",
@@ -12,8 +13,9 @@ export const psychicSuspects: SuspectType[] = [
   },
   {
     name: "실험체 B",
+    image: "/image/scenario/psychic/profile/exp_b.png",
     age: 24,
-    gender: "male",
+    gender: "female",
     job: "실험체",
     description: "물체를 움직이는 능력을 시연한다. 실험 보상 문제로 소장에게 불만이 있었다.",
     statement: "그 시간엔 메인홀에서 시연을 하고 있었어요. 관객과 카메라가 계속 보고 있었습니다.",
@@ -21,6 +23,7 @@ export const psychicSuspects: SuspectType[] = [
   },
   {
     name: "실험체 C",
+    image: "/image/scenario/psychic/profile/exp_c.png",
     age: 25,
     gender: "female",
     job: "실험체",
@@ -32,6 +35,7 @@ export const psychicSuspects: SuspectType[] = [
 
 export const psychicVictim: VictimType = {
   name: "김짜장",
+  image: "/image/scenario/psychic/profile/kim_jj.png",
   age: 50,
   gender: "male",
   job: "초능력 연구소장",
