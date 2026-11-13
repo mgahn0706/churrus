@@ -86,7 +86,15 @@ export default function ClueDashboardModal({
           {clues.map((clue) => {
             const isChecked = checkedClueList.includes(clue.id);
             return (
-              <Tooltip arrow key={clue.id} title={clue.title}>
+              <Tooltip
+                arrow
+                key={clue.id}
+                title={
+                  clue.location
+                    ? `${clue.title} · ${clue.location}`
+                    : clue.title
+                }
+              >
                 <Box
                   sx={{
                     width: 40,

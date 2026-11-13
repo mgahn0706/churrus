@@ -153,45 +153,79 @@ export default function MemoModal({
             <Box sx={{ pt: 3, flex: 1, minHeight: 0, overflow: "hidden" }}>
               {section === "main" ? (
                 <Box
-                  sx={{ display: "flex", flexDirection: "column", gap: 2.5 }}
+                  sx={{ display: "flex", flexDirection: "column", gap: 3 }}
                 >
-                  <TextField
-                    select
-                    fullWidth
-                    required
-                    label="범인은 누구인가요?"
-                    value={note.accusedSuspect}
-                    onChange={(event) =>
-                      setNote({ ...note, accusedSuspect: event.target.value })
-                    }
-                  >
-                    <MenuItem value="">
-                      <em>선택 안됨</em>
-                    </MenuItem>
-                    {suspects.map((suspect) => (
-                      <MenuItem key={suspect.name} value={suspect.name}>
-                        {suspect.name}
+                  <Box>
+                    <Typography
+                      component="label"
+                      htmlFor="accused-suspect"
+                      sx={{ display: "block", fontWeight: 700, mb: 1 }}
+                    >
+                      범인은 누구인가요?
+                    </Typography>
+                    <TextField
+                      id="accused-suspect"
+                      select
+                      fullWidth
+                      size="small"
+                      required
+                      value={note.accusedSuspect}
+                      onChange={(event) =>
+                        setNote({ ...note, accusedSuspect: event.target.value })
+                      }
+                    >
+                      <MenuItem value="">
+                        <em>용의자를 선택하세요</em>
                       </MenuItem>
-                    ))}
-                  </TextField>
-                  <TextField
-                    fullWidth
-                    required
-                    label="살해 방법은 무엇인가요?"
-                    value={note.howDunnit}
-                    onChange={(event) =>
-                      setNote({ ...note, howDunnit: event.target.value })
-                    }
-                  />
-                  <TextField
-                    fullWidth
-                    required
-                    label="살해 동기는 무엇인가요?"
-                    value={note.whyDunnit}
-                    onChange={(event) =>
-                      setNote({ ...note, whyDunnit: event.target.value })
-                    }
-                  />
+                      {suspects.map((suspect) => (
+                        <MenuItem key={suspect.name} value={suspect.name}>
+                          {suspect.name}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                  </Box>
+                  <Box>
+                    <Typography
+                      component="label"
+                      htmlFor="murder-method"
+                      sx={{ display: "block", fontWeight: 700, mb: 1 }}
+                    >
+                      살해 방법은 무엇인가요?
+                    </Typography>
+                    <TextField
+                      id="murder-method"
+                      fullWidth
+                      required
+                      multiline
+                      minRows={2}
+                      maxRows={3}
+                      value={note.howDunnit}
+                      onChange={(event) =>
+                        setNote({ ...note, howDunnit: event.target.value })
+                      }
+                    />
+                  </Box>
+                  <Box>
+                    <Typography
+                      component="label"
+                      htmlFor="murder-motive"
+                      sx={{ display: "block", fontWeight: 700, mb: 1 }}
+                    >
+                      살해 동기는 무엇인가요?
+                    </Typography>
+                    <TextField
+                      id="murder-motive"
+                      fullWidth
+                      required
+                      multiline
+                      minRows={2}
+                      maxRows={3}
+                      value={note.whyDunnit}
+                      onChange={(event) =>
+                        setNote({ ...note, whyDunnit: event.target.value })
+                      }
+                    />
+                  </Box>
                 </Box>
               ) : currentQuestion ? (
                 <Box
@@ -285,6 +319,7 @@ export default function MemoModal({
                 flex: 1,
                 minHeight: 0,
                 width: "100%",
+                boxSizing: "border-box",
                 p: 2,
                 resize: "none",
                 overflowY: "auto",

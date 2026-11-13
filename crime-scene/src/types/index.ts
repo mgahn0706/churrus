@@ -31,6 +31,7 @@ interface ClueBase {
   x: number;
   y: number;
   description: string;
+  location?: string;
   place: string | number;
 }
 

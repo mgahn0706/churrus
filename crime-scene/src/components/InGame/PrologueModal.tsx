@@ -35,7 +35,7 @@ export default function PrologueModal({
   }, [isOpen]);
   return (
     <Dialog open={isOpen} maxWidth="md" fullWidth>
-      <DialogTitle sx={{ pb: 1.2 }}>
+      <DialogTitle component="div" sx={{ pb: 1.2 }}>
         <Box
           sx={{
             display: "flex",
@@ -45,6 +45,7 @@ export default function PrologueModal({
         >
           <Typography
             variant="h6"
+            component="h2"
             sx={{
               fontWeight: 700,
             }}

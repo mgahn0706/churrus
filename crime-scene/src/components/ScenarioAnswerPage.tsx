@@ -93,11 +93,7 @@ export function ScenarioAnswerPage({
     return (
       <ThemeProvider theme={scenarioTheme}>
         <Dialog open>
-          <DialogTitle>
-            <Typography variant="h6" component="h2">
-              이용 안내
-            </Typography>
-          </DialogTitle>
+          <DialogTitle>이용 안내</DialogTitle>
           <DialogContent>
             <Typography sx={{ mt: 2 }}>
               아직 {scenario.title}의 범인이 지목되지 않았습니다. <br />

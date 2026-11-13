@@ -33,9 +33,10 @@ export default function FinalConfirmModal({
   }
   return (
     <Dialog open={isOpen} maxWidth="sm" fullWidth>
-      <DialogTitle sx={{ pb: 1 }}>
+      <DialogTitle component="div" sx={{ pb: 1 }}>
         <Typography
           variant="h6"
+          component="h2"
           sx={{
             fontWeight: 700,
           }}

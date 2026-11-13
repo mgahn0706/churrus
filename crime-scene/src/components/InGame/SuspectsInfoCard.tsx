@@ -80,6 +80,7 @@ export default function SuspectsInfoCard({
       <DialogTitle sx={{ pb: 1 }}>
         <Typography
           variant="h6"
+          component="span"
           sx={{
             fontWeight: 700,
           }}
