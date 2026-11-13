@@ -87,7 +87,7 @@ export interface ScenarioSummary {
   suspects: SuspectType[];
   victims: VictimType[];
   places: string[];
-  gameType: "TEXT" | "CLUE";
+  gameType: "TEXT" | "CLUE" | "INTERROGATION";
   emoji?: string;
 }
 
@@ -108,7 +108,78 @@ export interface ClueScenarioType extends ScenarioSummary {
   additionalQuestions: AdditionalQuestionType[];
 }
 
-export type ScenarioType = TextScenarioType | ClueScenarioType;
+export interface InterrogationEvidence {
+  id: string;
+  title: string;
+  description: string;
+}
+
+export interface InterrogationSource {
+  id: string;
+  locationId: string;
+  title: string;
+  description: string;
+  evidence: InterrogationEvidence;
+}
+
+export interface InterrogationMapLocation {
+  id: string;
+  title: string;
+  x: number;
+  y: number;
+}
+
+export interface InterrogationDialogueLine {
+  text: string;
+  speaker?: string;
+  portrait?: string;
+}
+
+export interface InterrogationCombination {
+  id: string;
+  evidenceIds: [string, string];
+  result: InterrogationEvidence;
+  explanation: string;
+}
+
+export interface InterrogationQuestion {
+  id: string;
+  prompt: string;
+  answer: string;
+  challenge?: {
+    evidenceId: string;
+    response: string;
+    revealedEvidence?: InterrogationEvidence;
+  };
+}
+
+export interface InterrogationPhase {
+  id: string;
+  title: string;
+  intro: string;
+  mapImage?: string;
+  locations: InterrogationMapLocation[];
+  sources: InterrogationSource[];
+  combinations: InterrogationCombination[];
+  interrogations: {
+    suspectName: string;
+    questions: InterrogationQuestion[];
+  }[];
+  requiredCombinationIds: string[];
+  requiredQuestionIds: string[];
+}
+
+export interface InterrogationScenarioType extends ScenarioSummary {
+  episodeNumber: number;
+  gameType: "INTERROGATION";
+  prologue: (string | InterrogationDialogueLine)[];
+  phases: InterrogationPhase[];
+}
+
+export type ScenarioType =
+  | TextScenarioType
+  | ClueScenarioType
+  | InterrogationScenarioType;
 
 export interface AdditionalQuestionType {
   no: number;

@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "test:interrogation": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"CommonJS\",\"rootDir\":\".\"}' node --test -r ts-node/register/transpile-only src/features/interrogation/engine.test.cjs",
     "start": "next start",
     "lint": "eslint .",
     "bee": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ts-node -r tsconfig-paths/register src/features/spelling-bee/libs/quizMaker.ts",

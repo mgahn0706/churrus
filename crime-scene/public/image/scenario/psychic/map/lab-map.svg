@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="연구소 평면도">
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#718079" stroke-opacity=".09" stroke-width="1"/>
+    </pattern>
+    <linearGradient id="floor" x2="1" y2="1">
+      <stop stop-color="#17201d"/>
+      <stop offset="1" stop-color="#0a1110"/>
+    </linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="14"/></filter>
+  </defs>
+  <rect width="1600" height="900" fill="#080d0c"/>
+  <rect width="1600" height="900" fill="url(#grid)"/>
+  <path d="M105 168H1495V763H105Z" fill="url(#floor)" stroke="#758e7e" stroke-width="11"/>
+  <path d="M105 485H520V763H105ZM520 168H1090V588H520ZM1090 485H1495V763H1090Z" fill="#1d2824" stroke="#6e8678" stroke-width="8"/>
+  <path d="M520 588H1090V763H520ZM1090 168H1495V485H1090ZM105 168H520V485H105Z" fill="#15201c" stroke="#53685c" stroke-width="7"/>
+  <path d="M405 485H465M720 588H800M1170 485H1230" stroke="#d8bd81" stroke-width="14" stroke-linecap="round"/>
+  <path d="M520 650H1090" stroke="#b9d6bf" stroke-opacity=".14" stroke-width="72" filter="url(#glow)"/>
+  <path d="M520 650H1090" stroke="#b9d6bf" stroke-opacity=".18" stroke-width="3" stroke-dasharray="12 16"/>
+  <g fill="none" stroke="#91a994" stroke-opacity=".18" stroke-width="4">
+    <rect x="160" y="220" width="280" height="170" rx="6"/>
+    <rect x="620" y="235" width="370" height="210" rx="6"/>
+    <rect x="1180" y="560" width="220" height="110" rx="6"/>
+    <circle cx="795" cy="340" r="78"/>
+  </g>
+  <g fill="#d6e0d1" opacity=".22" font-family="sans-serif" font-size="22" letter-spacing="6">
+    <text x="130" y="135">RESEARCH FACILITY / FLOOR PLAN</text>
+    <text x="1260" y="813">N  ↑</text>
+  </g>
+  <path d="M104 795H1496" stroke="#a6b5a1" stroke-opacity=".18" stroke-width="2"/>
+</svg>

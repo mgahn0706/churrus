@@ -1,16 +1,14 @@
 "use client";
 
-import InTextGame from "@/components/InTextGame";
-import { createTextScenario } from "@/fixtures";
-import { psychicClues, psychicKeywordIds } from "@/fixtures/psychic/clues";
-import { psychicPrologue } from "@/fixtures/psychic/prologue";
+import InInterrogationGame from "@/components/InInterrogationGame";
+import { createInterrogationScenario } from "@/fixtures";
+import { psychicInterrogationContent } from "@/fixtures/psychic/interrogation";
 
-const psychicScenario = createTextScenario("psychic", {
-  clues: psychicClues,
-  keywordIds: psychicKeywordIds,
-  prologue: psychicPrologue,
-});
+const psychicScenario = createInterrogationScenario(
+  "psychic",
+  psychicInterrogationContent,
+);
 
 export default function PsychicScenario() {
-  return <InTextGame scenario={psychicScenario} />;
+  return <InInterrogationGame scenario={psychicScenario} />;
 }

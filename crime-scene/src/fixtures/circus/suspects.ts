@@ -3,6 +3,7 @@ import type { SuspectType, VictimType } from "@/types";
 export const circusSuspects: SuspectType[] = [
   {
     name: "로디",
+    image: "/image/scenario/circus/profile/rody.png",
     age: "???",
     job: "연구소장",
     description: "연구소장",
@@ -10,6 +11,7 @@ export const circusSuspects: SuspectType[] = [
   },
   {
     name: "트릭시",
+    image: "/image/scenario/circus/profile/trixie.png",
     age: "???",
     job: "관객",
     description: "관객",
@@ -17,6 +19,7 @@ export const circusSuspects: SuspectType[] = [
   },
   {
     name: "레이놀드",
+    image: "/image/scenario/circus/profile/reynold.png",
     age: "???",
     job: "사육사",
     description: "사육사",
@@ -24,8 +27,9 @@ export const circusSuspects: SuspectType[] = [
   },
   {
     name: "빅 보스",
+    image: "/image/scenario/circus/profile/big_boss.png",
     age: "???",
-    job: "마피아",
+    job: "투자자",
     description: "VIP",
     statement: "아직 공개된 진술이 없습니다.",
   },
@@ -33,6 +37,7 @@ export const circusSuspects: SuspectType[] = [
 
 export const circusVictim: VictimType = {
   name: "프레디",
+  image: "/image/scenario/circus/profile/freddy.png",
   age: "???",
   job: "서커스 단장",
   description: "인간 서커스의 단장",
