@@ -1,12 +1,8 @@
-"use client";
-
-import InGameLayout from "@/components/InGame/InGameLayout";
-import { createScenarioTheme } from "@/components/createScenarioTheme";
 import { createClueScenario } from "@/fixtures";
 import { circusAdditionalQuestions, circusClues } from "@/fixtures/circus/clues";
 import { circusMoveButtons } from "@/fixtures/circus/movePlace";
 import { CircusPrologue } from "@/fixtures/circus/prologue";
-import { ThemeProvider } from "@mui/material";
+import CircusGame from "./CircusGame";
 
 const circusScenario = createClueScenario("circus", {
   clues: circusClues,
@@ -16,9 +12,5 @@ const circusScenario = createClueScenario("circus", {
 });
 
 export default function CircusScenario() {
-  return (
-    <ThemeProvider theme={createScenarioTheme(circusScenario.color)}>
-      <InGameLayout scenario={circusScenario} />
-    </ThemeProvider>
-  );
+  return <CircusGame scenario={circusScenario} />;
 }
