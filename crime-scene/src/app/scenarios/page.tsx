@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { Box, Button, Typography, Chip } from "@mui/material";
 import { PlayArrowRounded, PeopleAlt, Search } from "@mui/icons-material";
@@ -518,6 +518,8 @@ export default function Suspect() {
                     label={
                       current.gameType === "CLUE"
                         ? "단서 탐색형"
+                        : current.gameType === "INTERROGATION"
+                        ? "용의자 신문형"
                         : "키워드 검색형"
                     }
                     sx={{

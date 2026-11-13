@@ -1,9 +1,11 @@
 import type {
   ClueData,
   ClueScenarioType,
+  InterrogationScenarioType,
   ScenarioSummary,
   TextScenarioType,
 } from "@/types";
+import { validateInterrogationPhases } from "@/features/interrogation/engine";
 import { startUpSuspects, startUpVictim } from "./startup/suspects";
 import { schoolSuspects, schoolVictim } from "./school/suspects";
 import { jahayeonSuspects, jahayeonVictim } from "./jahayeon/suspects";
@@ -277,11 +279,11 @@ export const scenarioCatalog = defineScenarioCatalog([
     title: "초능력자 살인사건",
     englishTitle: "Murder of the Psychic",
     creators: [],
-    gameType: "TEXT",
+    gameType: "INTERROGATION",
     emoji: "🔮",
     histories: [],
     backgroundImage: "/image/scenario/psychic/psychic-main.png",
-    isInDevelopment: false,
+    isInDevelopment: true,
     description: "초능력 연구소의 시연회가 끝난 밤, 소장이 숨진 채 발견되었다.",
     places: [],
     suspects: psychicSuspects,
@@ -394,4 +396,23 @@ export const createTextScenario = (
   }
 
   return { ...scenario, gameType: "TEXT", ...content };
+};
+
+export const createInterrogationScenario = (
+  id: ScenarioId,
+  content: Pick<InterrogationScenarioType, "prologue" | "phases">
+): InterrogationScenarioType => {
+  const scenario = getScenarioSummary(id);
+
+  if (scenario.gameType !== "INTERROGATION") {
+    throw new Error(`Scenario is not an interrogation game: ${id}`);
+  }
+
+  validateInterrogationPhases(
+    id,
+    content.phases,
+    scenario.suspects.map((suspect) => suspect.name)
+  );
+
+  return { ...scenario, gameType: "INTERROGATION", ...content };
 };
