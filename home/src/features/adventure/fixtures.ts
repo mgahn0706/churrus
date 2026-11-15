@@ -1,4 +1,8 @@
 import { AdventureJourney } from "./types";
+import {
+  FALL_ROUTE_FLOW_PATHS,
+  FALL_ROUTE_TRANSFORM,
+} from "./fallRoutePath";
 
 const SEOUL_BOUNDS = {
   west: 126.764,
@@ -18,7 +22,115 @@ const toSeoulCoordinate = (latitude: number, longitude: number) => ({
     100,
 });
 
+const toReferenceCoordinate = (x: number, y: number) => ({
+  x: ((x - 8) * 200) / 2454,
+  y: ((y + 341) * 200) / 2048,
+});
+
 export const ADVENTURE_JOURNEYS: AdventureJourney[] = [
+  {
+    id: "thief-hunt-2026-fall",
+    year: 2026,
+    season: "가을",
+    title: "도둑잡기",
+    subtitle: "2026 가을 대이동",
+    description:
+      "봄/가을 대이동으로 변경된 첫 대이동이자 팀마다 장소를 선택해서 가는 최초의 대이동. 보드게임을 훔쳐간 괴도 추팡을 잡아 공항을 수색하라!",
+    referenceImageSource: "/image/adventure/2026-fall.png",
+    referenceFlowPaths: FALL_ROUTE_FLOW_PATHS,
+    referenceRouteTransform: FALL_ROUTE_TRANSFORM,
+    fullRoute:
+      "서울대학교 220동 → 서울대 정문 → 만족커피 또는 신림 뚜레쥬르 → 홍대 레드로드발전소 또는 당산나루소공원 → 김포공항역 → 김포공항 → 아일랜드이너프 마곡점",
+    distance: "7 NODES",
+    duration: "FALL",
+    playbackDurationMs: 13000,
+    accentColor: "#FF9400",
+    secondaryColor: "#FFD295",
+    stops: [
+      {
+        id: "snu-220-2026-fall",
+        name: "서울대학교 220동",
+        area: "START",
+        description: "대이동 출발지",
+        progress: 0,
+        coordinate: toReferenceCoordinate(567, 523),
+      },
+      {
+        id: "snu-gate-2026-fall",
+        name: "서울대 정문",
+        area: "관악구",
+        description: "교내에서 나오는 지점",
+        progress: 0.12,
+        coordinate: toReferenceCoordinate(548, 509),
+      },
+      {
+        id: "manjok-2026-fall",
+        name: "만족커피",
+        area: "관악구",
+        description: "팀별 선택 장소",
+        progress: 0.38,
+        coordinate: toReferenceCoordinate(545, 442),
+        showOnMap: false,
+      },
+      {
+        id: "sillim-tous-les-jours-2026-fall",
+        name: "신림 뚜레쥬르",
+        area: "관악구",
+        description: "팀별 선택 장소",
+        progress: 0.38,
+        coordinate: toReferenceCoordinate(480, 454),
+      },
+      {
+        id: "red-road-2026-fall",
+        name: "홍대 레드로드발전소",
+        area: "마포구",
+        description: "팀별 선택 장소",
+        progress: 0.55,
+        coordinate: toReferenceCoordinate(475, 193),
+      },
+      {
+        id: "dangsan-park-2026-fall",
+        name: "당산나루소공원",
+        area: "영등포구",
+        description: "팀별 선택 장소",
+        progress: 0.55,
+        coordinate: toReferenceCoordinate(423, 275),
+      },
+      {
+        id: "gimpo-station-2026-fall",
+        name: "김포공항역",
+        area: "강서구",
+        description: "공항으로 가는 지점",
+        progress: 0.72,
+        coordinate: toReferenceCoordinate(139, 184),
+      },
+      {
+        id: "gimpo-airport-2026-fall",
+        name: "김포공항",
+        area: "강서구",
+        description: "공항 수색 지점",
+        progress: 0.83,
+        coordinate: toReferenceCoordinate(145, 183),
+        showOnMap: false,
+      },
+      {
+        id: "island-enough-magok-2026-fall",
+        name: "아일랜드이너프 마곡점",
+        area: "FINAL NODE",
+        description: "최종 집결지",
+        progress: 0.94,
+        coordinate: toReferenceCoordinate(247, 153),
+      },
+    ],
+    route: [
+      toReferenceCoordinate(567, 523),
+      toReferenceCoordinate(548, 509),
+      toReferenceCoordinate(480, 454),
+      toReferenceCoordinate(423, 275),
+      toReferenceCoordinate(139, 184),
+      toReferenceCoordinate(247, 153),
+    ],
+  },
   {
     id: "time-travel-2026-summer",
     year: 2026,
@@ -105,7 +217,8 @@ export const ADVENTURE_JOURNEYS: AdventureJourney[] = [
     season: "겨울",
     title: "푸른 달 살인사건",
     meetingId: "2026-MT-1",
-    subtitle:
+    subtitle: "2026 겨울 대이동",
+    description:
       "푸른 달이 뜨는 밤, OO를 죽이면 OOO이 연결된다. 조선에 살고 있던 당신은 서울대학교 28동에서 눈을 뜬다. 다른 용의자와 상호작용하여 김관우를 죽인 범인을 찾고, 원래 시간대로 돌아가야 하는 대이동.",
     distance: "6 NODES",
     duration: "WINTER",
@@ -178,7 +291,8 @@ export const ADVENTURE_JOURNEYS: AdventureJourney[] = [
     season: "여름",
     title: "케이팝 데몬 헌터스",
     meetingId: "2025-8",
-    subtitle:
+    subtitle: "2025 여름 대이동",
+    description:
       "HaEvE의 아이돌 이브가 살해당했다. 범인은 우리 중에 있어! 이브를 살해한 범인을 찾기 위해 증거를 모으자. 우리 중에 악령도 숨어있는 것 같다. 대이동 도중 크라임씬이 진행된 최초의 대이동.",
     distance: "5 NODES",
     duration: "SUMMER",
@@ -241,7 +355,8 @@ export const ADVENTURE_JOURNEYS: AdventureJourney[] = [
     season: "겨울",
     title: "추징어 게임",
     meetingId: "2025-2",
-    subtitle:
+    subtitle: "2025 겨울 대이동",
+    description:
       "저랑 게임 한 판 하시죠. 추징어 게임에 참여하기 위한 모험. 우리 팀의 이동을 방해하는 호스트가 있다? 최초로 장소 순서가 팀마다 달랐던 대이동.",
     distance: "6 NODES",
     duration: "WINTER",
@@ -313,7 +428,8 @@ export const ADVENTURE_JOURNEYS: AdventureJourney[] = [
     season: "여름",
     title: "지구에 불시착한 선발대",
     meetingId: "2024-8",
-    subtitle:
+    subtitle: "2024 여름 대이동",
+    description:
       "‘지구’라는 외계 행성을 먼저 탐사하다 연락이 두절된 선발대를 구조하라! 서울대입구역부터 홍대까지 2호선을 반대로 타는, 최장 거리의 대이동.",
     distance: "8 NODES",
     duration: "SUMMER",
@@ -403,7 +519,8 @@ export const ADVENTURE_JOURNEYS: AdventureJourney[] = [
     season: "겨울",
     title: "추러스 회장을 지켜라",
     meetingId: "2024-2",
-    subtitle:
+    subtitle: "2024 겨울 대이동",
+    description:
       "열심히 용산까지 갔는데, 다시 사당으로 돌아오라고? 엠티 파티룸에서는 추러스 시상식에서 폭탄 테러범의 위협을 막기 위한 두뇌 게임이 진행되었다.",
     distance: "7 NODES",
     duration: "WINTER",
@@ -484,7 +601,8 @@ export const ADVENTURE_JOURNEYS: AdventureJourney[] = [
     season: "여름",
     title: "사기경마 대이동",
     meetingId: "2023-8",
-    subtitle:
+    subtitle: "2023 여름 대이동",
+    description:
       "엠티 최종 장소에서 더 지니어스 <사기경마>를 진행했던 대이동. 당시 흉기 난동 사건으로 인해 대이동이 취소되고 교내 강의실에서 진행되었다.",
     distance: "8 NODES",
     duration: "SUMMER",
@@ -574,7 +692,8 @@ export const ADVENTURE_JOURNEYS: AdventureJourney[] = [
     season: "겨울",
     title: "스폰지밥을 찾아서",
     meetingId: "2023-2",
-    subtitle:
+    subtitle: "2023 겨울 대이동",
+    description:
       "‘물’이 테마였던 대이동. 스폰지밥을 찾아서 한강 위쪽으로 갔다가 다시 사당으로 돌아왔다. 엠티 파티룸에서는 임원진 중 한 명이 독살당했다.",
     distance: "7 NODES",
     duration: "WINTER",
@@ -655,7 +774,8 @@ export const ADVENTURE_JOURNEYS: AdventureJourney[] = [
     season: "여름",
     title: "토끼를 찾아라",
     meetingId: "2022-8",
-    subtitle:
+    subtitle: "2022 여름 대이동",
+    description:
       "벌주부전 테마의 대이동이자 코로나 이후 첫 대이동. 순수 이동 거리가 가장 길었다. 엠티 장소에 갔더니 회장님이 칼에 찔려 죽었던, 충격적 대이동.",
     distance: "8 NODES",
     duration: "SUMMER",
@@ -745,7 +865,8 @@ export const ADVENTURE_JOURNEYS: AdventureJourney[] = [
     season: "겨울",
     title: "추링맨",
     meetingId: "2020-MT",
-    subtitle:
+    subtitle: "2020 겨울 대이동",
+    description:
       "기록상으로 남아있는 최초의 대이동. 사당역 사물함과 국립중앙박물관의 행사를 이용한 점이 인상적이다. 엠티에서도 문제적 추러스를 풀었다.",
     distance: "6 NODES",
     duration: "WINTER",

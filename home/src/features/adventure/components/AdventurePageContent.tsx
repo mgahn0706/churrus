@@ -14,7 +14,7 @@ import { AdventureCoordinate, AdventureJourney } from "../types";
 const PAGE_BACKGROUND = "#05070D";
 const PANEL_BACKGROUND = "rgba(11, 17, 29, 0.48)";
 const MAP_VIEWBOX_HEIGHT = (2048 / 2454) * 100;
-const SEASON_ORDER = { 여름: 0, 겨울: 1 } as const;
+const SEASON_ORDER = { 가을: 0, 여름: 1, 겨울: 2 } as const;
 const SORTED_ADVENTURE_JOURNEYS = [...ADVENTURE_JOURNEYS].sort(
   (left, right) =>
     right.year - left.year ||
@@ -108,59 +108,56 @@ const JourneyMap = ({ journey }: JourneyMapProps) => {
   const renderStops = useMemo(() => {
     const placedLabels: LabelBounds[] = [];
 
-    return journey.stops.map((stop) => {
-      const x = stop.coordinate.x;
-      const y = stop.coordinate.y * (MAP_VIEWBOX_HEIGHT / 100);
-      const labelWidth = getLabelWidth(stop.name);
-      const preferredAnchors: Array<"start" | "end"> =
-        x > 58 ? ["end", "start"] : ["start", "end"];
-      const candidates = LABEL_VERTICAL_OFFSETS.flatMap((verticalOffset) =>
-        preferredAnchors.map((textAnchor) => {
-          const labelX = x + (textAnchor === "start" ? 1.45 : -1.45);
-          const labelY = y + verticalOffset;
-          const bounds = {
-            left: textAnchor === "start" ? labelX : labelX - labelWidth,
-            right: textAnchor === "start" ? labelX + labelWidth : labelX,
-            top: labelY - 2.25,
-            bottom: labelY + 0.55,
-          };
-          return { labelX, labelY, textAnchor, bounds };
-        })
-      );
-      const placement =
-        candidates.find(
-          ({ bounds }) =>
-            bounds.left >= 1 &&
-            bounds.right <= 99 &&
-            bounds.top >= 1 &&
-            bounds.bottom <= MAP_VIEWBOX_HEIGHT - 1 &&
-            !overlapsLabel(bounds, placedLabels)
-        ) ??
-        candidates.find(
-          ({ bounds }) =>
-            bounds.left >= 1 &&
-            bounds.right <= 99 &&
-            bounds.top >= 1 &&
-            bounds.bottom <= MAP_VIEWBOX_HEIGHT - 1
-        ) ??
-        candidates[0];
+    return journey.stops
+      .filter((stop) => stop.showOnMap !== false)
+      .map((stop) => {
+        const x = stop.coordinate.x;
+        const y = stop.coordinate.y * (MAP_VIEWBOX_HEIGHT / 100);
+        const labelWidth = getLabelWidth(stop.name);
+        const preferredAnchors: Array<"start" | "end"> =
+          x > 58 ? ["end", "start"] : ["start", "end"];
+        const candidates = LABEL_VERTICAL_OFFSETS.flatMap((verticalOffset) =>
+          preferredAnchors.map((textAnchor) => {
+            const labelX = x + (textAnchor === "start" ? 1.45 : -1.45);
+            const labelY = y + verticalOffset;
+            const bounds = {
+              left: textAnchor === "start" ? labelX : labelX - labelWidth,
+              right: textAnchor === "start" ? labelX + labelWidth : labelX,
+              top: labelY - 2.25,
+              bottom: labelY + 0.55,
+            };
+            return { labelX, labelY, textAnchor, bounds };
+          })
+        );
+        const placement =
+          candidates.find(
+            ({ bounds }) =>
+              bounds.left >= 1 &&
+              bounds.right <= 99 &&
+              bounds.top >= 1 &&
+              bounds.bottom <= MAP_VIEWBOX_HEIGHT - 1 &&
+              !overlapsLabel(bounds, placedLabels)
+          ) ??
+          candidates.find(
+            ({ bounds }) =>
+              bounds.left >= 1 &&
+              bounds.right <= 99 &&
+              bounds.top >= 1 &&
+              bounds.bottom <= MAP_VIEWBOX_HEIGHT - 1
+          ) ??
+          candidates[0];
 
-      placedLabels.push(placement.bounds);
-      return { stop, x, y, ...placement };
-    });
+        placedLabels.push(placement.bounds);
+        return { stop, x, y, ...placement };
+      });
   }, [journey]);
   const renderRoute = useMemo(
-    () => {
-      if (journey.route.length > journey.stops.length) {
-        return journey.route.map((point) => ({
-          x: point.x,
-          y: point.y * (MAP_VIEWBOX_HEIGHT / 100),
-        }));
-      }
-
-      return renderStops.map(({ x, y }) => ({ x, y }));
-    },
-    [journey.route, journey.stops.length, renderStops]
+    () =>
+      journey.route.map((point) => ({
+        x: point.x,
+        y: point.y * (MAP_VIEWBOX_HEIGHT / 100),
+      })),
+    [journey.route]
   );
   const routePath = useMemo(
     () =>
@@ -170,6 +167,7 @@ const JourneyMap = ({ journey }: JourneyMapProps) => {
       ),
     [journey.route.length, journey.stops.length, renderRoute]
   );
+  const routePaths = journey.referenceFlowPaths ?? [routePath];
   return (
     <Box
       sx={{
@@ -185,7 +183,7 @@ const JourneyMap = ({ journey }: JourneyMapProps) => {
         boxShadow:
           "0 40px 100px rgba(0, 0, 0, 0.52), inset 0 0 80px rgba(85, 246, 255, 0.04)",
         "& .adventure-map-image": {
-          objectFit: { xs: "cover", sm: "contain" },
+          objectFit: "contain",
           objectPosition: "center",
         },
       }}
@@ -232,6 +230,9 @@ const JourneyMap = ({ journey }: JourneyMapProps) => {
           "& .route-flow": {
             animation: "routeFlow 6.8s linear infinite",
           },
+          "& .route-flow-reference": {
+            animationDuration: "18s",
+          },
           "& .map-label": {
             display: { xs: "none", sm: "inline" },
             fontSize: { sm: "1.8px", md: "1.52px" },
@@ -240,43 +241,60 @@ const JourneyMap = ({ journey }: JourneyMapProps) => {
             "& .route-flow": {
               animationDuration: "12s",
             },
+            "& .route-flow-reference": {
+              animationDuration: "28s",
+            },
           },
         }}
       >
-        <path
-          d={routePath}
-          fill="none"
-          stroke={journey.accentColor}
-          strokeWidth="4.5"
-          opacity="0.08"
-          vectorEffect="non-scaling-stroke"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path
-          d={routePath}
-          fill="none"
-          stroke={journey.accentColor}
-          strokeWidth="1.4"
-          opacity="0.46"
-          vectorEffect="non-scaling-stroke"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path
-          key={journey.id}
-          d={routePath}
-          pathLength="100"
-          fill="none"
-          stroke={journey.accentColor}
-          strokeWidth="2.4"
-          strokeDasharray="24 76"
-          opacity="0.92"
-          vectorEffect="non-scaling-stroke"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="route-flow"
-        />
+        <g transform={journey.referenceRouteTransform}>
+          {routePaths.map((path, index) => (
+            <g key={`${journey.id}-route-${index}`}>
+              <path
+                d={path}
+                fill="none"
+                stroke={journey.accentColor}
+                strokeWidth="4.5"
+                opacity="0.08"
+                vectorEffect="non-scaling-stroke"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d={path}
+                fill="none"
+                stroke={journey.accentColor}
+                strokeWidth="1.4"
+                opacity="0.46"
+                vectorEffect="non-scaling-stroke"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d={path}
+                pathLength="100"
+                fill="none"
+                stroke={journey.accentColor}
+                strokeWidth="2.4"
+                strokeDasharray={journey.referenceFlowPaths ? "8 92" : "24 76"}
+                opacity="0.92"
+                vectorEffect="non-scaling-stroke"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className={
+                  journey.referenceFlowPaths
+                    ? "route-flow route-flow-reference"
+                    : "route-flow"
+                }
+                style={
+                  journey.referenceFlowPaths
+                    ? { animationDelay: `-${(index * 2.3) % 18}s` }
+                    : undefined
+                }
+              />
+            </g>
+          ))}
+        </g>
         {renderStops.map(({ stop, x, y, labelX, labelY, textAnchor }) => {
           const needsLeader = Math.abs(labelY - y) > 3.2;
           return (
@@ -387,6 +405,21 @@ export default function AdventurePageContent() {
   const selectedJourney =
     ADVENTURE_JOURNEYS.find((journey) => journey.id === selectedJourneyId) ??
     ADVENTURE_JOURNEYS[0];
+  const relatedMaterialHref = selectedJourney.meetingId
+    ? `/meetings/${selectedJourney.meetingId}`
+    : selectedJourney.referenceImageSource;
+  const routeStopGroups = selectedJourney.stops.reduce<AdventureJourney["stops"][]>(
+    (groups, stop) => {
+      const currentGroup = groups[groups.length - 1];
+      if (currentGroup?.[0].progress === stop.progress) {
+        currentGroup.push(stop);
+      } else {
+        groups.push([stop]);
+      }
+      return groups;
+    },
+    []
+  );
   const selectedJourneyIndex = SORTED_ADVENTURE_JOURNEYS.findIndex(
     (journey) => journey.id === selectedJourney.id
   );
@@ -839,12 +872,13 @@ export default function AdventurePageContent() {
               >
                 {selectedJourney.title}
               </Typography>
-              {selectedJourney.meetingId && (
+              {relatedMaterialHref && (
                 <IconButton
-                  aria-label={`${selectedJourney.title} 모임 페이지로 이동`}
-                  onClick={() =>
-                    router.push(`/meetings/${selectedJourney.meetingId}`)
-                  }
+                  component="a"
+                  href={relatedMaterialHref}
+                  target={selectedJourney.meetingId ? undefined : "_blank"}
+                  rel={selectedJourney.meetingId ? undefined : "noopener noreferrer"}
+                  aria-label={`${selectedJourney.title} 관련 자료 보기`}
                   sx={{
                     flexShrink: 0,
                     width: 34,
@@ -874,19 +908,17 @@ export default function AdventurePageContent() {
             >
               {selectedJourney.subtitle}
             </Typography>
-            {selectedJourney.description && (
-              <Typography
-                sx={{
-                  mt: 1.5,
-                  color: "#D4DFE3",
-                  fontSize: 13,
-                  lineHeight: 1.7,
-                  wordBreak: "keep-all",
-                }}
-              >
-                {selectedJourney.description}
-              </Typography>
-            )}
+            <Typography
+              sx={{
+                mt: 1.5,
+                color: "#D4DFE3",
+                fontSize: 13,
+                lineHeight: 1.7,
+                wordBreak: "keep-all",
+              }}
+            >
+              {selectedJourney.description}
+            </Typography>
             <Box
               sx={{
                 mt: 2.4,
@@ -913,7 +945,8 @@ export default function AdventurePageContent() {
                   wordBreak: "keep-all",
                 }}
               >
-                {selectedJourney.stops.map((stop) => stop.name).join(" → ")}
+                {selectedJourney.fullRoute ??
+                  selectedJourney.stops.map((stop) => stop.name).join(" → ")}
               </Typography>
             </Box>
 
@@ -944,17 +977,17 @@ export default function AdventurePageContent() {
                 flexShrink: 0,
               }}
             >
-              {selectedJourney.stops.map((stop, index) => (
+              {routeStopGroups.map((stops, index) => (
                 <Box
-                  key={stop.id}
+                  key={stops[0].id}
                   sx={{
                     position: "relative",
                     display: "grid",
                     gridTemplateColumns: "16px minmax(0, 1fr)",
                     gap: 1.2,
-                    pb: index === selectedJourney.stops.length - 1 ? 0 : 2.2,
+                    pb: index === routeStopGroups.length - 1 ? 0 : 2.2,
                     "&::after":
-                      index === selectedJourney.stops.length - 1
+                      index === routeStopGroups.length - 1
                         ? undefined
                         : {
                             content: '""',
@@ -997,7 +1030,7 @@ export default function AdventurePageContent() {
                           overflowWrap: "anywhere",
                         }}
                       >
-                        {stop.name}
+                        {stops.map((stop) => stop.name).join(" 또는 ")}
                       </Typography>
                       <Typography
                         sx={{
@@ -1008,7 +1041,7 @@ export default function AdventurePageContent() {
                           whiteSpace: "nowrap",
                         }}
                       >
-                        {stop.area}
+                        {stops.length > 1 ? "선택 지점" : stops[0].area}
                       </Typography>
                     </Box>
                   </Box>

@@ -10,16 +10,21 @@ export interface AdventureStop {
   description: string;
   progress: number;
   coordinate: AdventureCoordinate;
+  showOnMap?: boolean;
 }
 
 export interface AdventureJourney {
   id: string;
   year: number;
-  season: "여름" | "겨울";
+  season: "여름" | "가을" | "겨울";
   title: string;
   subtitle: string;
-  description?: string;
+  description: string;
   meetingId?: string;
+  referenceImageSource?: string;
+  referenceFlowPaths?: readonly string[];
+  referenceRouteTransform?: string;
+  fullRoute?: string;
   distance: string;
   duration: string;
   playbackDurationMs: number;
