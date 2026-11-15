@@ -1,5 +1,6 @@
 import { MEETINGS } from "@/features/quiz/fixtures/meetings";
 import { QuizType } from "@/features/quiz/types";
+import { getQuizThumbnailSource } from "@/features/quiz/domain";
 import {
   Box,
   Card,
@@ -33,7 +34,7 @@ export default function HomeQuizCard({ quiz }: { quiz: QuizType }) {
       >
         <CardMedia
           component="img"
-          image={quiz.quizImageSource}
+          image={getQuizThumbnailSource(quiz)}
           title="Quiz"
           sx={{
             height: 120,

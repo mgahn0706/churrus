@@ -1,10 +1,13 @@
+export type QuizImageSource = string | readonly [string, ...string[]];
+
 export interface QuizType {
   id: string;
   meetingId: string;
   quizNumber: number;
   title: string;
   creators: string[];
-  quizImageSource: string;
+  quizImageSource: QuizImageSource;
+  answerImageSource?: QuizImageSource;
   answer: string | null;
   tags: Tags[];
 }

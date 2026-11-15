@@ -4,31 +4,32 @@ import {
   Drawer,
   Grid,
   IconButton,
-  Skeleton,
   TextField,
   Typography,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
 import { useRouter } from "next/router";
-import Image from "next/image";
 import {
   ArrowBackRounded,
   ChevronLeftRounded,
   ChevronRightRounded,
   CloseRounded,
 } from "@mui/icons-material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Head from "next/head";
 import { QuizType } from "@/features/quiz/types";
 import QuizCard from "@/features/quiz/components/QuizCard";
+import QuizImage from "@/features/quiz/components/QuizImage";
 import { MEETINGS } from "@/features/quiz/fixtures/meetings";
 import {
+  getAnswerImageSources,
   getMeetingById,
   getMeetingQuizzes,
   getPrevNextQuizIds,
   getQuizById,
   getQuizCreatorsLabel,
+  getQuizImageSources,
 } from "@/features/quiz/domain";
 import useSolvedQuizzes from "@/features/quiz/hooks/useSolvedQuizzes";
 
@@ -46,40 +47,12 @@ export default function QuizPage() {
   const { isSolved, markSolved } = useSolvedQuizzes();
 
   const [inputAnswer, setInputAnswer] = useState("");
-  const [isImageLoading, setIsImageLoading] = useState(true);
-  const [imageAspectRatio, setImageAspectRatio] = useState(16 / 9);
   const [isQuizListDrawerOpen, setIsQuizListDrawerOpen] = useState(false);
 
   const { id } = router.query;
   const quizId = Array.isArray(id) ? id[0] : id;
   const isAnswerPage = Array.isArray(id) ? id[1] === "answer" : false;
   const quiz = quizId ? getQuizById(quizId) : null;
-  const quizImageSrc = quiz
-    ? isAnswerPage
-      ? `/image/quiz/${quiz.id}-answer.png`
-      : quiz.quizImageSource
-    : null;
-
-  useEffect(() => {
-    if (!quizImageSrc) {
-      return;
-    }
-
-    setIsImageLoading(true);
-
-    const image = new window.Image();
-    image.src = quizImageSrc;
-    image.onload = () => {
-      if (image.naturalWidth > 0 && image.naturalHeight > 0) {
-        setImageAspectRatio(image.naturalWidth / image.naturalHeight);
-      }
-      setIsImageLoading(false);
-    };
-    image.onerror = () => {
-      setImageAspectRatio(16 / 9);
-      setIsImageLoading(false);
-    };
-  }, [quizImageSrc]);
 
   if (!id) {
     return <div>loading...</div>;
@@ -91,10 +64,12 @@ export default function QuizPage() {
 
   const meeting = getMeetingById(quiz.meetingId);
   const { prevQuizId, nextQuizId } = getPrevNextQuizIds(quiz);
-  const resolvedQuizImageSrc = quizImageSrc ?? quiz.quizImageSource;
+  const imageSources = isAnswerPage
+    ? getAnswerImageSources(quiz)
+    : getQuizImageSources(quiz);
+  const imageLabel = isAnswerPage ? `${quiz.title} 정답` : quiz.title;
 
   const handleSolvedQuiz = () => {
-    setIsImageLoading(true);
     markSolved(quiz.id);
   };
 
@@ -212,7 +187,6 @@ export default function QuizPage() {
                 aria-label="이전 문제"
                 disabled={!prevQuizId}
                 onClick={() => {
-                  setIsImageLoading(true);
                   if (prevQuizId) {
                     router.push(`/quiz/${prevQuizId}`);
                   }
@@ -224,7 +198,6 @@ export default function QuizPage() {
                 aria-label="다음 문제"
                 disabled={!nextQuizId}
                 onClick={() => {
-                  setIsImageLoading(true);
                   if (nextQuizId) {
                     router.push(`/quiz/${nextQuizId}`);
                   }
@@ -292,41 +265,22 @@ export default function QuizPage() {
           width={["calc(100% - 32px)", "calc(100% - 32px)", "100%"]}
           mt={[1.5, 1.5, 2]}
           maxWidth={1200}
-          position="relative"
-          sx={{
-            aspectRatio: imageAspectRatio,
-          }}
+          display="flex"
+          flexDirection="column"
+          gap={2}
         >
-          {isImageLoading && (
-            <Skeleton
-              variant="rectangular"
-              animation="wave"
-              sx={{
-                bgcolor: "rgba(255, 255, 255, 0.7)",
-                borderRadius: "12px",
-                position: "absolute",
-                inset: 0,
-              }}
+          {imageSources.map((imageSource, index) => (
+            <QuizImage
+              key={`${quiz.id}-${isAnswerPage}-${imageSource}-${index}`}
+              src={imageSource}
+              alt={
+                imageSources.length > 1
+                  ? `${imageLabel} ${index + 1}/${imageSources.length}`
+                  : imageLabel
+              }
+              priority={index === 0}
             />
-          )}
-          <Image
-            src={resolvedQuizImageSrc}
-            alt={quiz.title}
-            width={1200}
-            height={Math.round(1200 / imageAspectRatio)}
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "contain",
-              borderRadius: "12px",
-              opacity: isImageLoading ? 0 : 1,
-              transition: "opacity 0.2s ease",
-            }}
-            priority
-            unoptimized
-            onLoadingComplete={() => setIsImageLoading(false)}
-            onError={() => setIsImageLoading(false)}
-          />
+          ))}
         </Box>
         {!isAnswerPage && (
           <Box

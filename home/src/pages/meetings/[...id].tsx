@@ -3,7 +3,6 @@ import { ArrowBackRounded } from "@mui/icons-material";
 import { useRouter } from "next/router";
 
 import Head from "next/head";
-import { MEETINGS } from "@/features/quiz/fixtures/meetings";
 
 import QuizCard from "@/features/quiz/components/QuizCard";
 import Image from "next/image";
@@ -12,7 +11,9 @@ import GlobalHeader from "@/components/Navigation/GlobalHeader";
 import useSolvedQuizzes from "@/features/quiz/hooks/useSolvedQuizzes";
 import {
   getMeetingCreators,
+  getMeetingById,
   getMeetingQuizzes,
+  getQuizThumbnailSource,
   getRandomOtherMeetingIds,
 } from "@/features/quiz/domain";
 
@@ -33,7 +34,7 @@ export default function MeetingPage() {
     );
   }
   const meetingId = Array.isArray(id) ? id[0] : id;
-  const meeting = meetingId ? MEETINGS[meetingId] : undefined;
+  const meeting = meetingId ? getMeetingById(meetingId) : undefined;
 
   if (!meeting) {
     return (
@@ -85,7 +86,9 @@ export default function MeetingPage() {
             }}
             src={
               meeting.imageSource ??
-              meetingQuizzes[0]?.quizImageSource ??
+              (meetingQuizzes[0]
+                ? getQuizThumbnailSource(meetingQuizzes[0])
+                : undefined) ??
               "/image/quiz/meeting/default.png"
             }
             fill

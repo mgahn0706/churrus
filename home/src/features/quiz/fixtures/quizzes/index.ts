@@ -1,6 +1,159 @@
 import { QuizType } from "../../types";
 
 export const QuizData: Record<string, QuizType[]> = {
+  "2026-MOVE-FALL": [
+    {
+      "id": "2026-MOVE-FALL-1",
+      "meetingId": "2026-MOVE-FALL",
+      "quizNumber": 1,
+      "title": "아아",
+      "creators": [
+        "최아준"
+      ],
+      "quizImageSource": [
+        "/image/quiz/2026-ADVENTURE-AUTUMN-1-1.png"
+      ],
+      "answer": "샤아래",
+      "tags": [
+        "PATTERN",
+        "ADVENTURE"
+      ]
+    },
+    {
+      "id": "2026-MOVE-FALL-2",
+      "meetingId": "2026-MOVE-FALL",
+      "quizNumber": 2,
+      "title": "새로운 글자야구",
+      "creators": [
+        "이재욱"
+      ],
+      "quizImageSource": [
+        "/image/quiz/2026-ADVENTURE-AUTUMN-1-2.png"
+      ],
+      "answer": "서울대입구",
+      "tags": [
+        "PUZZLE",
+        "KNOWLEDGE",
+        "ADVENTURE"
+      ]
+    },
+    {
+      "id": "2026-MOVE-FALL-3",
+      "meetingId": "2026-MOVE-FALL",
+      "quizNumber": 3,
+      "title": "머미를 구하시오 [4점]",
+      "creators": [
+        "고민우"
+      ],
+      "quizImageSource": [
+        "/image/quiz/2026-ADVENTURE-AUTUMN-1-3.png"
+      ],
+      "answer": "신림역",
+      "tags": [
+        "MATHEMATICS",
+        "ADVENTURE",
+        "KNOWLEDGE"
+      ]
+    },
+    {
+      "id": "2026-MOVE-FALL-4",
+      "meetingId": "2026-MOVE-FALL",
+      "quizNumber": 4,
+      "title": "추팡의 색다른 미래계획",
+      "creators": [
+        "김시영"
+      ],
+      "quizImageSource": [
+        "/image/quiz/2026-ADVENTURE-AUTUMN-1-4.png"
+      ],
+      "answer": "홍대입구",
+      "tags": [
+        "LATERAL_THINKING",
+        "PATTERN",
+        "RIDDLE",
+        "ADVENTURE"
+      ]
+    },
+    {
+      "id": "2026-MOVE-FALL-5",
+      "meetingId": "2026-MOVE-FALL",
+      "quizNumber": 5,
+      "title": "Reverie",
+      "creators": [
+        "윤원준"
+      ],
+      "quizImageSource": [
+        "/image/quiz/2026-ADVENTURE-AUTUMN-1-5.png"
+      ],
+      "answer": "당산",
+      "tags": [
+        "HARD",
+        "ADVENTURE",
+        "KNOWLEDGE",
+        "PUZZLE"
+      ]
+    },
+    {
+      "id": "2026-MOVE-FALL-6",
+      "meetingId": "2026-MOVE-FALL",
+      "quizNumber": 6,
+      "title": "A와 B와 C, 그리고 초록과 노랑과 회색",
+      "creators": [
+        "고우승"
+      ],
+      "quizImageSource": [
+        "/image/quiz/2026-ADVENTURE-AUTUMN-1-6.png"
+      ],
+      "answer": "김포공항",
+      "tags": [
+        "RIDDLE",
+        "WORD",
+        "ADVENTURE",
+        "KNOWLEDGE"
+      ]
+    },
+    {
+      "id": "2026-MOVE-FALL-7",
+      "meetingId": "2026-MOVE-FALL",
+      "quizNumber": 7,
+      "title": "서쪽에서 만나요",
+      "creators": [
+        "권현수"
+      ],
+      "quizImageSource": [
+        "/image/quiz/2026-ADVENTURE-AUTUMN-1-7.png",
+        "/image/quiz/2026-ADVENTURE-AUTUMN-1-7-2.png"
+      ],
+      "answerImageSource": [
+        "/image/quiz/2026-ADVENTURE-AUTUMN-1-7-answer.png",
+        "/image/quiz/2026-ADVENTURE-AUTUMN-1-7-answer-2.png"
+      ],
+      "answer": "WELLIS",
+      "tags": [
+        "ONLY_FOR_MEETING",
+        "ADVENTURE"
+      ]
+    },
+    {
+      "id": "2026-MOVE-FALL-8",
+      "meetingId": "2026-MOVE-FALL",
+      "quizNumber": 8,
+      "title": "심심한 추팡",
+      "creators": [
+        "허현"
+      ],
+      "quizImageSource": [
+        "/image/quiz/2026-ADVENTURE-AUTUMN-1-8.png",
+        "/image/quiz/2026-ADVENTURE-AUTUMN-1-8-2.png"
+      ],
+      "answer": "양천향고",
+      "tags": [
+        "PUZZLE",
+        "ADVENTURE"
+      ]
+    }
+  ],
+
   "2026-10": [
     {
       id: "2026-10-1",
@@ -433,10 +586,10 @@ export const QuizData: Record<string, QuizType[]> = {
     },
   ],
 
-  "2026-MOVE-1": [
+  "2026-MOVE-SUMMER": [
     {
-      id: "2026-MOVE-1-1",
-      meetingId: "2026-MOVE-1",
+      id: "2026-MOVE-SUMMER-1",
+      meetingId: "2026-MOVE-SUMMER",
       quizNumber: 1,
       title: "우연히 문 앞에 떨어져 있던 문제",
       creators: ["조준호"],
@@ -445,8 +598,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["EASY", "PATTERN", "ADVENTURE"],
     },
     {
-      id: "2026-MOVE-1-2",
-      meetingId: "2026-MOVE-1",
+      id: "2026-MOVE-SUMMER-2",
+      meetingId: "2026-MOVE-SUMMER",
       quizNumber: 2,
       title: "2026년",
       creators: ["김규민"],
@@ -455,8 +608,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["ADVENTURE", "KNOWLEDGE"],
     },
     {
-      id: "2026-MOVE-1-3",
-      meetingId: "2026-MOVE-1",
+      id: "2026-MOVE-SUMMER-3",
+      meetingId: "2026-MOVE-SUMMER",
       quizNumber: 3,
       title: "1906년 - 1",
       creators: ["고우승"],
@@ -465,8 +618,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["ADVENTURE", "ENIGMATIC"],
     },
     {
-      id: "2026-MOVE-1-4",
-      meetingId: "2026-MOVE-1",
+      id: "2026-MOVE-SUMMER-4",
+      meetingId: "2026-MOVE-SUMMER",
       quizNumber: 4,
       title: "1906년 - 2",
       creators: ["김시영"],
@@ -475,8 +628,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["ADVENTURE"],
     },
     {
-      id: "2026-MOVE-1-5",
-      meetingId: "2026-MOVE-1",
+      id: "2026-MOVE-SUMMER-5",
+      meetingId: "2026-MOVE-SUMMER",
       quizNumber: 5,
       title: "2055년",
       creators: ["김진하"],
@@ -485,8 +638,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["EASY", "WORD", "RIDDLE", "ADVENTURE"],
     },
     {
-      id: "2026-MOVE-1-6",
-      meetingId: "2026-MOVE-1",
+      id: "2026-MOVE-SUMMER-6",
+      meetingId: "2026-MOVE-SUMMER",
       quizNumber: 6,
       title: "1562년",
       creators: ["정해찬"],
@@ -495,8 +648,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["PATTERN", "ADVENTURE", "ENIGMATIC", "WORD"],
     },
     {
-      id: "2026-MOVE-1-7",
-      meetingId: "2026-MOVE-1",
+      id: "2026-MOVE-SUMMER-7",
+      meetingId: "2026-MOVE-SUMMER",
       quizNumber: 7,
       title: "390년",
       creators: ["권현수"],
@@ -505,8 +658,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["EASY", "ADVENTURE"],
     },
     {
-      id: "2026-MOVE-1-8",
-      meetingId: "2026-MOVE-1",
+      id: "2026-MOVE-SUMMER-8",
+      meetingId: "2026-MOVE-SUMMER",
       quizNumber: 8,
       title: "Recursive",
       creators: ["윤원준"],
@@ -515,8 +668,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["HARD", "WORD", "RIDDLE", "ADVENTURE", "PUZZLE"],
     },
     {
-      id: "2026-MOVE-1-9",
-      meetingId: "2026-MOVE-1",
+      id: "2026-MOVE-SUMMER-9",
+      meetingId: "2026-MOVE-SUMMER",
       quizNumber: 9,
       title: "Travel",
       creators: ["정해찬"],
@@ -525,8 +678,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["PATTERN", "ADVENTURE", "WORD"],
     },
     {
-      id: "2026-MOVE-1-10",
-      meetingId: "2026-MOVE-1",
+      id: "2026-MOVE-SUMMER-10",
+      meetingId: "2026-MOVE-SUMMER",
       quizNumber: 10,
       title: "Puzzle",
       creators: ["김진하"],
@@ -535,8 +688,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["EASY", "GEOMETRY", "ADVENTURE"],
     },
     {
-      id: "2026-MOVE-1-11",
-      meetingId: "2026-MOVE-1",
+      id: "2026-MOVE-SUMMER-11",
+      meetingId: "2026-MOVE-SUMMER",
       quizNumber: 11,
       title: "Paradise Happiness",
       creators: ["김규민"],
@@ -1190,10 +1343,10 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["META"],
     },
   ],
-  "2026-MT-1": [
+  "2026-MOVE-WINTER": [
     {
-      id: "2026-MT-1-0",
-      meetingId: "2026-MT-1",
+      id: "2026-MOVE-WINTER-1",
+      meetingId: "2026-MOVE-WINTER",
       quizNumber: 1,
       title: "푸른 달",
       creators: ["안민규"],
@@ -1202,8 +1355,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["EASY", "ADVENTURE"],
     },
     {
-      id: "2026-MT-1-1",
-      meetingId: "2026-MT-1",
+      id: "2026-MOVE-WINTER-2",
+      meetingId: "2026-MOVE-WINTER",
       quizNumber: 2,
       title: "𐦊𐦕𐦍에서 𐦊𐦕𐦍로",
       creators: ["강재호"],
@@ -1212,8 +1365,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["ADVENTURE"],
     },
     {
-      id: "2026-MT-1-2",
-      meetingId: "2026-MT-1",
+      id: "2026-MOVE-WINTER-3",
+      meetingId: "2026-MOVE-WINTER",
       quizNumber: 3,
       title: "同面象錄",
       creators: ["이예준"],
@@ -1222,8 +1375,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["KNOWLEDGE", "ADVENTURE"],
     },
     {
-      id: "2026-MT-1-3",
-      meetingId: "2026-MT-1",
+      id: "2026-MOVE-WINTER-4",
+      meetingId: "2026-MOVE-WINTER",
       quizNumber: 4,
       title: "대화창",
       creators: ["김시영"],
@@ -1232,8 +1385,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["ADVENTURE"],
     },
     {
-      id: "2026-MT-1-4",
-      meetingId: "2026-MT-1",
+      id: "2026-MOVE-WINTER-5",
+      meetingId: "2026-MOVE-WINTER",
       quizNumber: 5,
       title: "육십",
       creators: ["안민규"],
@@ -1242,8 +1395,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["ADVENTURE"],
     },
     {
-      id: "2026-MT-1-5",
-      meetingId: "2026-MT-1",
+      id: "2026-MOVE-WINTER-6",
+      meetingId: "2026-MOVE-WINTER",
       quizNumber: 6,
       title: "연결",
       creators: ["조준호"],
@@ -1252,8 +1405,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["ADVENTURE"],
     },
     {
-      id: "2026-MT-1-6",
-      meetingId: "2026-MT-1",
+      id: "2026-MOVE-WINTER-7",
+      meetingId: "2026-MOVE-WINTER",
       quizNumber: 7,
       title: "서울",
       creators: ["김시영"],
@@ -1262,8 +1415,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["ADVENTURE"],
     },
     {
-      id: "2026-MT-1-7",
-      meetingId: "2026-MT-1",
+      id: "2026-MOVE-WINTER-8",
+      meetingId: "2026-MOVE-WINTER",
       quizNumber: 8,
       title: "생신",
       creators: ["류정환"],
@@ -1272,8 +1425,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["ADVENTURE", "DEDUCTION"],
     },
     {
-      id: "2026-MT-1-8",
-      meetingId: "2026-MT-1",
+      id: "2026-MOVE-WINTER-9",
+      meetingId: "2026-MOVE-WINTER",
       quizNumber: 9,
       title: "전설",
       creators: ["조준호"],
@@ -1896,10 +2049,10 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["KNOWLEDGE", "LATERAL_THINKING"],
     },
   ],
-  "2025-8": [
+  "2025-MOVE-SUMMER": [
     {
-      id: "2025-8-1",
-      meetingId: "2025-8",
+      id: "2025-MOVE-SUMMER-1",
+      meetingId: "2025-MOVE-SUMMER",
       quizNumber: 1,
       title: "악령 찾기",
       creators: ["안민규"],
@@ -1908,8 +2061,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["EASY", "ADVENTURE", "LATERAL_THINKING", "ONLY_FOR_MEETING"],
     },
     {
-      id: "2025-8-2",
-      meetingId: "2025-8",
+      id: "2025-MOVE-SUMMER-2",
+      meetingId: "2025-MOVE-SUMMER",
       quizNumber: 2,
       title: "첫번째 이야기, 출발",
       creators: ["김시영"],
@@ -1918,8 +2071,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["ADVENTURE", "LATERAL_THINKING", "KNOWLEDGE", "WORD", "HARD"],
     },
     {
-      id: "2025-8-3",
-      meetingId: "2025-8",
+      id: "2025-MOVE-SUMMER-3",
+      meetingId: "2025-MOVE-SUMMER",
       quizNumber: 3,
       title: "25년 Forbidden 컴백",
       creators: ["정해찬"],
@@ -1928,8 +2081,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["ENIGMATIC", "HARD", "WORD"],
     },
     {
-      id: "2025-8-4",
-      meetingId: "2025-8",
+      id: "2025-MOVE-SUMMER-4",
+      meetingId: "2025-MOVE-SUMMER",
       quizNumber: 4,
       title: "사짜보이즈",
       creators: ["안민규"],
@@ -1938,8 +2091,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["ADVENTURE", "KNOWLEDGE", "WORD"],
     },
     {
-      id: "2025-8-5",
-      meetingId: "2025-8",
+      id: "2025-MOVE-SUMMER-5",
+      meetingId: "2025-MOVE-SUMMER",
       quizNumber: 5,
       title: "Binary Law of...",
       creators: ["조경아"],
@@ -1948,8 +2101,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["ADVENTURE", "PATTERN"],
     },
     {
-      id: "2025-8-6",
-      meetingId: "2025-8",
+      id: "2025-MOVE-SUMMER-6",
+      meetingId: "2025-MOVE-SUMMER",
       quizNumber: 6,
       title: "사진 금지",
       creators: ["김규민"],
@@ -1958,8 +2111,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["ADVENTURE", "KNOWLEDGE", "WORD", "EASY"],
     },
     {
-      id: "2025-8-7",
-      meetingId: "2025-8",
+      id: "2025-MOVE-SUMMER-7",
+      meetingId: "2025-MOVE-SUMMER",
       quizNumber: 7,
       title: "수사의 기초",
       creators: ["김수인"],
@@ -1968,8 +2121,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["ADVENTURE", "PATTERN", "WORD"],
     },
     {
-      id: "2025-8-8",
-      meetingId: "2025-8",
+      id: "2025-MOVE-SUMMER-8",
+      meetingId: "2025-MOVE-SUMMER",
       quizNumber: 8,
       title: "Slant Logic",
       creators: ["이예준"],
@@ -1978,8 +2131,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["ADVENTURE", "PUZZLE"],
     },
     {
-      id: "2025-8-9",
-      meetingId: "2025-8",
+      id: "2025-MOVE-SUMMER-9",
+      meetingId: "2025-MOVE-SUMMER",
       quizNumber: 9,
       title: "정보 수집",
       creators: ["김태연"],
@@ -2420,10 +2573,10 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["WORD", "PATTERN", "META"],
     },
   ],
-  "2025-2": [
+  "2025-MOVE-WINTER": [
     {
-      id: "2025-2-1",
-      meetingId: "2025-2",
+      id: "2025-MOVE-WINTER-1",
+      meetingId: "2025-MOVE-WINTER",
       quizNumber: 1,
       title: "저랑 게임 한 판 하시죠",
       creators: ["안민규"],
@@ -2432,8 +2585,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["EASY", "DEDUCTION"],
     },
     {
-      id: "2025-2-2",
-      meetingId: "2025-2",
+      id: "2025-MOVE-WINTER-2",
+      meetingId: "2025-MOVE-WINTER",
       quizNumber: 2,
       title: "'Cross'word",
       creators: ["임혁"],
@@ -2442,8 +2595,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["WORD", "PUZZLE"],
     },
     {
-      id: "2025-2-3",
-      meetingId: "2025-2",
+      id: "2025-MOVE-WINTER-3",
+      meetingId: "2025-MOVE-WINTER",
       quizNumber: 3,
       title: "이음을 끊어라",
       creators: ["고재준"],
@@ -2452,8 +2605,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["KNOWLEDGE", "ENIGMATIC"],
     },
     {
-      id: "2025-2-4",
-      meetingId: "2025-2",
+      id: "2025-MOVE-WINTER-4",
+      meetingId: "2025-MOVE-WINTER",
       quizNumber: 4,
       title: "세상은 돈 뿐이다",
       creators: ["정해찬"],
@@ -2462,8 +2615,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["ENIGMATIC", "WORD"],
     },
     {
-      id: "2025-2-5",
-      meetingId: "2025-2",
+      id: "2025-MOVE-WINTER-5",
+      meetingId: "2025-MOVE-WINTER",
       quizNumber: 5,
       title: "여가 활동",
       creators: ["김수인"],
@@ -2472,8 +2625,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["ADVENTURE"],
     },
     {
-      id: "2025-2-6",
-      meetingId: "2025-2",
+      id: "2025-MOVE-WINTER-6",
+      meetingId: "2025-MOVE-WINTER",
       quizNumber: 6,
       title: "길을 따라서",
       creators: ["김진하"],
@@ -2482,8 +2635,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["KNOWLEDGE", "PATTERN"],
     },
     {
-      id: "2025-2-7",
-      meetingId: "2025-2",
+      id: "2025-MOVE-WINTER-7",
+      meetingId: "2025-MOVE-WINTER",
       quizNumber: 7,
       title: "몸으로 말해요",
       creators: ["조준호"],
@@ -2492,8 +2645,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["EASY", "WORD", "LATERAL_THINKING"],
     },
     {
-      id: "2025-2-8",
-      meetingId: "2025-2",
+      id: "2025-MOVE-WINTER-8",
+      meetingId: "2025-MOVE-WINTER",
       quizNumber: 8,
       title: "교집합",
       creators: ["김태연"],
@@ -2502,8 +2655,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["DEDUCTION", "META"],
     },
     {
-      id: "2025-2-9",
-      meetingId: "2025-2",
+      id: "2025-MOVE-WINTER-9",
+      meetingId: "2025-MOVE-WINTER",
       quizNumber: 9,
       title: "최종 게임 장소는",
       creators: ["안민규"],
@@ -2840,10 +2993,10 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["EASY", "KNOWLEDGE"],
     },
   ],
-  "2020-MT": [
+  "2020-MOVE-WINTER": [
     {
-      id: "2020-MT-1",
-      meetingId: "2020-MT",
+      id: "2020-MOVE-WINTER-1",
+      meetingId: "2020-MOVE-WINTER",
       quizNumber: 1,
       title: "네번째 살해장소를 찾아라!",
       creators: ["이경희"],
@@ -2852,8 +3005,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["EASY", "ADVENTURE"],
     },
     {
-      id: "2020-MT-2",
-      meetingId: "2020-MT",
+      id: "2020-MOVE-WINTER-2",
+      meetingId: "2020-MOVE-WINTER",
       quizNumber: 2,
       title: "산업스파이",
       creators: ["안준영"],
@@ -2862,8 +3015,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["ADVENTURE"],
     },
     {
-      id: "2020-MT-3",
-      meetingId: "2020-MT",
+      id: "2020-MOVE-WINTER-3",
+      meetingId: "2020-MOVE-WINTER",
       quizNumber: 3,
       title: "사당역 탐정사무소의 위치는?",
       creators: ["이경희"],
@@ -2872,8 +3025,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["ADVENTURE"],
     },
     {
-      id: "2020-MT-4",
-      meetingId: "2020-MT",
+      id: "2020-MOVE-WINTER-4",
+      meetingId: "2020-MOVE-WINTER",
       quizNumber: 4,
       title: "거울나라 초대장",
       creators: ["이지원"],
@@ -2882,8 +3035,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["ADVENTURE", "ONLY_FOR_MEETING", "HARD"],
     },
     {
-      id: "2020-MT-5",
-      meetingId: "2020-MT",
+      id: "2020-MOVE-WINTER-5",
+      meetingId: "2020-MOVE-WINTER",
       quizNumber: 5,
       title: "오늘 일정",
       creators: ["이유빈"],
@@ -2893,8 +3046,8 @@ export const QuizData: Record<string, QuizType[]> = {
     },
 
     {
-      id: "2020-MT-6",
-      meetingId: "2020-MT",
+      id: "2020-MOVE-WINTER-6",
+      meetingId: "2020-MOVE-WINTER",
       quizNumber: 6,
       title: "아이낮잠",
       creators: ["고재준"],
@@ -2945,10 +3098,10 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["PUZZLE"],
     },
   ],
-  "2024-8": [
+  "2024-MOVE-SUMMER": [
     {
-      id: "2024-8-1",
-      meetingId: "2024-8",
+      id: "2024-MOVE-SUMMER-1",
+      meetingId: "2024-MOVE-SUMMER",
       quizNumber: 1,
       title: "행성 '지구'를 향해",
       creators: ["김태연"],
@@ -2957,8 +3110,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["EASY", "ADVENTURE"],
     },
     {
-      id: "2024-8-2",
-      meetingId: "2024-8",
+      id: "2024-MOVE-SUMMER-2",
+      meetingId: "2024-MOVE-SUMMER",
       quizNumber: 2,
       title: "설레는 입구",
       creators: ["김현준"],
@@ -2967,8 +3120,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["EASY", "ADVENTURE"],
     },
     {
-      id: "2024-8-3",
-      meetingId: "2024-8",
+      id: "2024-MOVE-SUMMER-3",
+      meetingId: "2024-MOVE-SUMMER",
       quizNumber: 3,
       title: "강력한 남동풍 지역",
       creators: ["안민규"],
@@ -2977,8 +3130,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["ADVENTURE", "ONLY_FOR_MEETING"],
     },
     {
-      id: "2024-8-4",
-      meetingId: "2024-8",
+      id: "2024-MOVE-SUMMER-4",
+      meetingId: "2024-MOVE-SUMMER",
       quizNumber: 4,
       title: "세 개의 별이 빛나는 마당",
       creators: ["김태연"],
@@ -2987,8 +3140,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["ADVENTURE", "ONLY_FOR_MEETING"],
     },
     {
-      id: "2024-8-5",
-      meetingId: "2024-8",
+      id: "2024-MOVE-SUMMER-5",
+      meetingId: "2024-MOVE-SUMMER",
       quizNumber: 5,
       title: "잡시일새래",
       creators: ["홍경아"],
@@ -2997,8 +3150,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["EASY", "ADVENTURE", "ONLY_FOR_MEETING"],
     },
     {
-      id: "2024-8-6",
-      meetingId: "2024-8",
+      id: "2024-MOVE-SUMMER-6",
+      meetingId: "2024-MOVE-SUMMER",
       quizNumber: 6,
       title: "건조한 대기 지역",
       creators: ["김현준"],
@@ -3007,8 +3160,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["HARD", "ADVENTURE"],
     },
     {
-      id: "2024-8-7",
-      meetingId: "2024-8",
+      id: "2024-MOVE-SUMMER-7",
+      meetingId: "2024-MOVE-SUMMER",
       quizNumber: 7,
       title: "Dangerous Dynamic Plateau",
       creators: ["안민규"],
@@ -3017,8 +3170,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["HARD", "ADVENTURE"],
     },
     {
-      id: "2024-8-8",
-      meetingId: "2024-8",
+      id: "2024-MOVE-SUMMER-8",
+      meetingId: "2024-MOVE-SUMMER",
       quizNumber: 8,
       title: "지구 팜플렛",
       creators: ["김규민"],
@@ -3335,10 +3488,10 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["RIDDLE", "KNOWLEDGE"],
     },
   ],
-  "2023-2": [
+  "2023-MOVE-WINTER": [
     {
-      id: "2023-2-1",
-      meetingId: "2023-2",
+      id: "2023-MOVE-WINTER-1",
+      meetingId: "2023-MOVE-WINTER",
       quizNumber: 1,
       title: "Find the hidden letters!",
       creators: ["홍경아"],
@@ -3347,8 +3500,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["EASY", "MATHEMATICS", "ADVENTURE"],
     },
     {
-      id: "2023-2-2",
-      meetingId: "2023-2",
+      id: "2023-MOVE-WINTER-2",
+      meetingId: "2023-MOVE-WINTER",
       quizNumber: 2,
       title: "Roman Numbers",
       creators: ["이유빈", "고재준"],
@@ -3357,8 +3510,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["HARD", "PATTERN", "ADVENTURE", "LATERAL_THINKING"],
     },
     {
-      id: "2023-2-3",
-      meetingId: "2023-2",
+      id: "2023-MOVE-WINTER-3",
+      meetingId: "2023-MOVE-WINTER",
       quizNumber: 3,
       title: "Magic Conch",
       creators: ["고재준"],
@@ -3367,8 +3520,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["HARD", "PATTERN", "ADVENTURE"],
     },
     {
-      id: "2023-2-4",
-      meetingId: "2023-2",
+      id: "2023-MOVE-WINTER-4",
+      meetingId: "2023-MOVE-WINTER",
       quizNumber: 4,
       title: "Churible",
       creators: ["안민규"],
@@ -3377,8 +3530,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["RIDDLE", "LATERAL_THINKING", "PATTERN", "ADVENTURE"],
     },
     {
-      id: "2023-2-5",
-      meetingId: "2023-2",
+      id: "2023-MOVE-WINTER-5",
+      meetingId: "2023-MOVE-WINTER",
       quizNumber: 5,
       title: "Let the game begin",
       creators: ["홍경아"],
@@ -3387,8 +3540,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["DEDUCTION", "ADVENTURE"],
     },
     {
-      id: "2023-2-6",
-      meetingId: "2023-2",
+      id: "2023-MOVE-WINTER-6",
+      meetingId: "2023-MOVE-WINTER",
       quizNumber: 6,
       title: "Anaconda",
       creators: ["안민규"],
@@ -3397,10 +3550,10 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["EASY", "ENIGMATIC", "ADVENTURE", "WORD"],
     },
   ],
-  "2022-8": [
+  "2022-MOVE-SUMMER": [
     {
-      id: "2022-8-1",
-      meetingId: "2022-8",
+      id: "2022-MOVE-SUMMER-1",
+      meetingId: "2022-MOVE-SUMMER",
       quizNumber: 1,
       title: "십아숙희",
       creators: ["고재준"],
@@ -3409,8 +3562,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["ENIGMATIC", "KNOWLEDGE", "ADVENTURE"],
     },
     {
-      id: "2022-8-2",
-      meetingId: "2022-8",
+      id: "2022-MOVE-SUMMER-2",
+      meetingId: "2022-MOVE-SUMMER",
       quizNumber: 2,
       title: "흑돌과 백돌",
       creators: ["이유빈"],
@@ -3419,8 +3572,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["ADVENTURE", "PUZZLE", "DEDUCTION"],
     },
     {
-      id: "2022-8-3",
-      meetingId: "2022-8",
+      id: "2022-MOVE-SUMMER-3",
+      meetingId: "2022-MOVE-SUMMER",
       quizNumber: 3,
       title: "팔괘와 시조",
       creators: ["안민규"],
@@ -3429,8 +3582,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["LATERAL_THINKING", "ENIGMATIC", "KNOWLEDGE", "ADVENTURE"],
     },
     {
-      id: "2022-8-4",
-      meetingId: "2022-8",
+      id: "2022-MOVE-SUMMER-4",
+      meetingId: "2022-MOVE-SUMMER",
       quizNumber: 4,
       title: "전쟁",
       creators: ["조동우"],
@@ -3439,8 +3592,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["ADVENTURE", "ENIGMATIC", "PUZZLE"],
     },
     {
-      id: "2022-8-5",
-      meetingId: "2022-8",
+      id: "2022-MOVE-SUMMER-5",
+      meetingId: "2022-MOVE-SUMMER",
       quizNumber: 5,
       title: "해태의 시",
       creators: ["고재준"],
@@ -3449,8 +3602,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["HARD", "ADVENTURE", "LATERAL_THINKING", "KNOWLEDGE"],
     },
     {
-      id: "2022-8-6",
-      meetingId: "2022-8",
+      id: "2022-MOVE-SUMMER-6",
+      meetingId: "2022-MOVE-SUMMER",
       quizNumber: 6,
       title: "도망가는 토끼를 잡아라",
       creators: ["이유빈"],
@@ -3459,10 +3612,10 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["HARD", "ADVENTURE", "RIDDLE", "ONLY_FOR_MEETING"],
     },
   ],
-  "2023-8": [
+  "2023-MOVE-SUMMER": [
     {
-      id: "2023-8-1",
-      meetingId: "2023-8",
+      id: "2023-MOVE-SUMMER-1",
+      meetingId: "2023-MOVE-SUMMER",
       quizNumber: 1,
       title: "카카오톡",
       creators: ["고재준"],
@@ -3471,8 +3624,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["EASY", "PUZZLE", "ADVENTURE"],
     },
     {
-      id: "2023-8-2",
-      meetingId: "2023-8",
+      id: "2023-MOVE-SUMMER-2",
+      meetingId: "2023-MOVE-SUMMER",
       quizNumber: 2,
       title: "###",
       creators: ["고재준"],
@@ -3481,8 +3634,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["EASY", "PATTERN", "ADVENTURE"],
     },
     {
-      id: "2023-8-3",
-      meetingId: "2023-8",
+      id: "2023-MOVE-SUMMER-3",
+      meetingId: "2023-MOVE-SUMMER",
       quizNumber: 3,
       title: "나와 같이가면 보일거에요",
       creators: ["안민규"],
@@ -3491,8 +3644,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["EASY", "ADVENTURE", "WORD", "RIDDLE"],
     },
     {
-      id: "2023-8-4",
-      meetingId: "2023-8",
+      id: "2023-MOVE-SUMMER-4",
+      meetingId: "2023-MOVE-SUMMER",
       quizNumber: 4,
       title: "다들 어디로 가는거지?",
       creators: ["김지훈"],
@@ -3501,8 +3654,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["ADVENTURE", "WORD", "PUZZLE", "HARD"],
     },
     {
-      id: "2023-8-5",
-      meetingId: "2023-8",
+      id: "2023-MOVE-SUMMER-5",
+      meetingId: "2023-MOVE-SUMMER",
       quizNumber: 5,
       title: "제 형누나가 되어주세요!",
       creators: ["김지훈"],
@@ -3511,8 +3664,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["ADVENTURE", "WORD", "LATERAL_THINKING"],
     },
     {
-      id: "2023-8-6",
-      meetingId: "2023-8",
+      id: "2023-MOVE-SUMMER-6",
+      meetingId: "2023-MOVE-SUMMER",
       quizNumber: 6,
       title: "54, 55, 56",
       creators: ["육준형"],
@@ -3521,8 +3674,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["ENIGMATIC", "ADVENTURE", "GEOMETRY"],
     },
     {
-      id: "2023-8-7",
-      meetingId: "2023-8",
+      id: "2023-MOVE-SUMMER-7",
+      meetingId: "2023-MOVE-SUMMER",
       quizNumber: 7,
       title: "도너츠 냄새",
       creators: ["육준형"],
@@ -3531,8 +3684,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["KNOWLEDGE", "ADVENTURE"],
     },
     {
-      id: "2023-8-8",
-      meetingId: "2023-8",
+      id: "2023-MOVE-SUMMER-8",
+      meetingId: "2023-MOVE-SUMMER",
       quizNumber: 8,
       title: "Watch",
       creators: ["안민규"],
@@ -3541,10 +3694,10 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["ADVENTURE", "KNOWLEDGE", "PUZZLE"],
     },
   ],
-  "2024-2": [
+  "2024-MOVE-WINTER": [
     {
-      id: "2024-2-1",
-      meetingId: "2024-2",
+      id: "2024-MOVE-WINTER-1",
+      meetingId: "2024-MOVE-WINTER",
       quizNumber: 1,
       title: "대이동 시작",
       creators: ["안민규"],
@@ -3553,8 +3706,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["ONLY_FOR_MEETING", "ADVENTURE", "LATERAL_THINKING", "EASY"],
     },
     {
-      id: "2024-2-2",
-      meetingId: "2024-2",
+      id: "2024-MOVE-WINTER-2",
+      meetingId: "2024-MOVE-WINTER",
       quizNumber: 2,
       title: "무엇의 사진일까",
       creators: ["김태연"],
@@ -3563,8 +3716,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["EASY", "ADVENTURE"],
     },
     {
-      id: "2024-2-3",
-      meetingId: "2024-2",
+      id: "2024-MOVE-WINTER-3",
+      meetingId: "2024-MOVE-WINTER",
       quizNumber: 3,
       title: "의문의 구조",
       creators: ["김태연"],
@@ -3573,8 +3726,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["PATTERN", "ADVENTURE", "EASY"],
     },
     {
-      id: "2024-2-4",
-      meetingId: "2024-2",
+      id: "2024-MOVE-WINTER-4",
+      meetingId: "2024-MOVE-WINTER",
       quizNumber: 4,
       title: "글자들의 달리기",
       creators: ["김태연"],
@@ -3583,8 +3736,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["WORD", "ADVENTURE"],
     },
     {
-      id: "2024-2-5",
-      meetingId: "2024-2",
+      id: "2024-MOVE-WINTER-5",
+      meetingId: "2024-MOVE-WINTER",
       quizNumber: 5,
       title: "쪼개진 노선도?",
       creators: ["강재호"],
@@ -3593,8 +3746,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["ADVENTURE", "WORD", "KNOWLEDGE"],
     },
     {
-      id: "2024-2-6",
-      meetingId: "2024-2",
+      id: "2024-MOVE-WINTER-6",
+      meetingId: "2024-MOVE-WINTER",
       quizNumber: 6,
       title: "추러스 커넥션",
       creators: ["김지훈"],
@@ -3603,8 +3756,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["WORD", "ADVENTURE"],
     },
     {
-      id: "2024-2-7",
-      meetingId: "2024-2",
+      id: "2024-MOVE-WINTER-7",
+      meetingId: "2024-MOVE-WINTER",
       quizNumber: 7,
       title: "무지개 수식",
       creators: ["김지훈"],
@@ -3613,8 +3766,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["ADVENTURE", "LATERAL_THINKING", "KNOWLEDGE", "ENIGMATIC", "HARD"],
     },
     {
-      id: "2024-2-8",
-      meetingId: "2024-2",
+      id: "2024-MOVE-WINTER-8",
+      meetingId: "2024-MOVE-WINTER",
       quizNumber: 8,
       title: "조각난 그림",
       creators: ["강재호"],
@@ -3623,8 +3776,8 @@ export const QuizData: Record<string, QuizType[]> = {
       tags: ["EASY", "KNOWLEDGE", "PUZZLE"],
     },
     {
-      id: "2024-2-9",
-      meetingId: "2024-2",
+      id: "2024-MOVE-WINTER-9",
+      meetingId: "2024-MOVE-WINTER",
       quizNumber: 9,
       title: "범인이 남긴 마지막 단서",
       creators: ["박상현"],

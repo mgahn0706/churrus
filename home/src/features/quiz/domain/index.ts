@@ -8,7 +8,12 @@ import {
   QUIZ_TAGS,
 } from "../fixtures/tagName";
 import { QuizData } from "../fixtures/quizzes";
-import { MeetingType, QuizType, Tags } from "../types";
+import { MeetingType, QuizImageSource, QuizType, Tags } from "../types";
+import {
+  getLegacyQuizId,
+  resolveMeetingId,
+  resolveQuizId,
+} from "./adventureIds";
 
 export const ALL_QUIZZES = MEETING_IDS.flatMap((meetingId) => QuizData[meetingId]);
 
@@ -40,13 +45,30 @@ export const MEETING_YEAR_GROUPS = Object.entries(MEETING_IDS_BY_YEAR)
     ),
   }));
 
-export const getQuizById = (quizId: string) => QUIZ_BY_ID[quizId];
+export const getQuizById = (quizId: string) => QUIZ_BY_ID[resolveQuizId(quizId)];
+
+const toImageSources = (source: QuizImageSource): readonly string[] =>
+  typeof source === "string" ? [source] : source;
+
+export const getQuizImageSources = (quiz: QuizType): readonly string[] =>
+  toImageSources(quiz.quizImageSource);
+
+export const getAnswerImageSources = (quiz: QuizType): readonly string[] =>
+  toImageSources(
+    quiz.answerImageSource ??
+      `/image/quiz/${getLegacyQuizId(quiz.id)}-answer.png`
+  );
+
+export const getQuizThumbnailSource = (quiz: QuizType): string =>
+  typeof quiz.quizImageSource === "string"
+    ? quiz.quizImageSource
+    : quiz.quizImageSource[0];
 
 export const getMeetingById = (meetingId: string): MeetingType | undefined =>
-  MEETINGS[meetingId];
+  MEETINGS[resolveMeetingId(meetingId)];
 
 export const getMeetingQuizzes = (meetingId: string): QuizType[] =>
-  QuizData[meetingId] ?? [];
+  QuizData[resolveMeetingId(meetingId)] ?? [];
 
 export const getQuizCreators = (quiz: QuizType): string[] => quiz.creators;
 

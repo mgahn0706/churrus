@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { QuizType } from "../../types";
 import { CheckCircleRounded } from "@mui/icons-material";
-import { getQuizCreatorsLabel } from "../../domain";
+import { getQuizCreatorsLabel, getQuizThumbnailSource } from "../../domain";
 
 interface QuizCardProps {
   quiz: QuizType;
@@ -59,7 +59,7 @@ export default function QuizCard({
             className="meeting-card-image"
             width={124}
             height={70}
-            src={quiz.quizImageSource}
+            src={getQuizThumbnailSource(quiz)}
             alt={quiz.title}
             unoptimized
             style={{ objectFit: "cover" }}
