@@ -32,7 +32,7 @@ export const ADVENTURE_JOURNEYS: AdventureJourney[] = [
     id: "thief-hunt-2026-fall",
     year: 2026,
     season: "가을",
-    title: "도둑잡기",
+    title: "괴도 추팡",
     meetingId: "2026-MOVE-FALL",
     subtitle: "2026 가을 대이동",
     description:
