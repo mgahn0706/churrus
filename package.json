@@ -3,10 +3,19 @@
   "version": "1.0.0",
   "private": true,
   "packageManager": "yarn@1.22.21",
-  "workspaces": [
-    "home",
-    "crime-scene"
-  ],
+  "workspaces": {
+    "packages": [
+      "home",
+      "crime-scene"
+    ],
+    "nohoist": [
+      "churrus-crime-scene/eslint-config-next",
+      "churrus-crime-scene/next",
+      "churrus-crime-scene/next/**",
+      "churrus-crime-scene/react-qr-code",
+      "churrus-crime-scene/react-qr-code/**"
+    ]
+  },
   "scripts": {
     "build:home": "yarn workspace churrus-home build",
     "build:crime-scene": "yarn workspace churrus-crime-scene build"

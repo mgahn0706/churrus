@@ -27,7 +27,7 @@
     "dayjs": "^1.11.10",
     "es-hangul": "^2.3.8",
     "hangul-js": "^0.2.6",
-    "next": "^16.4.3",
+    "next": "16.4.6",
     "playroomkit": "^0.0.97",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
