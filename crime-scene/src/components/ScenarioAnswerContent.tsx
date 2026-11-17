@@ -11,7 +11,7 @@ const answerTextSx = {
 
 export function ScenarioAnswerText({ children }: { children: ReactNode }) {
   return (
-    <Typography variant="body1" color="white" sx={answerTextSx}>
+    <Typography component="div" variant="body1" color="white" sx={answerTextSx}>
       {children}
     </Typography>
   );
@@ -20,6 +20,7 @@ export function ScenarioAnswerText({ children }: { children: ReactNode }) {
 export function ScenarioSolutionText({ children }: { children: ReactNode }) {
   return (
     <Typography
+      component="div"
       variant="body1"
       sx={[
         {

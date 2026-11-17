@@ -113,11 +113,14 @@ export interface InterrogationEvidence {
   id: string;
   title: string;
   description: string;
+  image?: string;
 }
 
 export interface InterrogationSource {
   id: string;
   locationId: string;
+  x?: number;
+  y?: number;
   title: string;
   description: string;
   evidence: InterrogationEvidence;
@@ -136,6 +139,14 @@ export interface InterrogationDialogueLine {
   portrait?: string;
 }
 
+export type InterrogationScript = string | (string | InterrogationDialogueLine)[];
+
+export interface InterrogationConversationChoice {
+  id: string;
+  question: string;
+  answer: InterrogationScript;
+}
+
 export interface InterrogationCombination {
   id: string;
   evidenceIds: [string, string];
@@ -145,11 +156,14 @@ export interface InterrogationCombination {
 
 export interface InterrogationQuestion {
   id: string;
+  evidenceId?: string;
+  evidenceIds?: string[];
   prompt: string;
-  answer: string;
+  answer: InterrogationScript;
+  revealedEvidence?: InterrogationEvidence;
   challenge?: {
     evidenceId: string;
-    response: string;
+    response: InterrogationScript;
     revealedEvidence?: InterrogationEvidence;
   };
 }
@@ -157,13 +171,18 @@ export interface InterrogationQuestion {
 export interface InterrogationPhase {
   id: string;
   title: string;
-  intro: string;
+  intro: InterrogationScript;
+  timeLabel?: string;
+  energyLimit?: number;
+  finalInterrogation?: boolean;
   mapImage?: string;
   locations: InterrogationMapLocation[];
   sources: InterrogationSource[];
   combinations: InterrogationCombination[];
   interrogations: {
     suspectName: string;
+    conversation?: InterrogationScript;
+    conversationChoices?: InterrogationConversationChoice[];
     questions: InterrogationQuestion[];
   }[];
   requiredCombinationIds: string[];
@@ -175,6 +194,7 @@ export interface InterrogationScenarioType extends ScenarioSummary {
   gameType: "INTERROGATION";
   prologue: (string | InterrogationDialogueLine)[];
   phases: InterrogationPhase[];
+  fallbackAnswers?: InterrogationScript[];
 }
 
 export type ScenarioType =

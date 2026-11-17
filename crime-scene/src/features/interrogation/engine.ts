@@ -1,4 +1,4 @@
-import type { InterrogationEvidence, InterrogationPhase } from "@/types";
+import type { InterrogationEvidence, InterrogationPhase, InterrogationQuestion } from "@/types";
 
 export interface InterrogationProgress {
   started: boolean;
@@ -9,6 +9,7 @@ export interface InterrogationProgress {
   askedQuestionIds: string[];
   resolvedQuestionIds: string[];
   completedPhaseIds: string[];
+  energySpentByPhase: Record<string, number>;
 }
 
 export const initialInterrogationProgress: InterrogationProgress = {
@@ -20,7 +21,14 @@ export const initialInterrogationProgress: InterrogationProgress = {
   askedQuestionIds: [],
   resolvedQuestionIds: [],
   completedPhaseIds: [],
+  energySpentByPhase: {},
 };
+
+export const evidenceInstanceId = (phaseId: string, evidenceId: string) =>
+  `${phaseId}::${evidenceId}`;
+
+export const interrogationStorageKey = (scenarioId: string) =>
+  `interrogation-${scenarioId}-v3`;
 
 export function readInterrogationProgress(
   raw: string | null,
@@ -51,6 +59,17 @@ export function readInterrogationProgress(
       askedQuestionIds: ids("askedQuestionIds"),
       resolvedQuestionIds: ids("resolvedQuestionIds"),
       completedPhaseIds: ids("completedPhaseIds"),
+      energySpentByPhase:
+        value.energySpentByPhase && typeof value.energySpentByPhase === "object"
+          ? Object.fromEntries(
+              Object.entries(value.energySpentByPhase).filter(
+                ([, spent]) =>
+                  typeof spent === "number" &&
+                  Number.isInteger(spent) &&
+                  spent >= 0,
+              ),
+            )
+          : {},
     };
   } catch {
     return initialInterrogationProgress;
@@ -69,6 +88,25 @@ export function findCombination(
       (first === firstEvidenceId && second === secondEvidenceId) ||
       (first === secondEvidenceId && second === firstEvidenceId),
   );
+}
+
+const questionEvidenceIds = (question: InterrogationQuestion) =>
+  question.evidenceIds ?? (question.evidenceId ? [question.evidenceId] : []);
+
+export function findInterrogationQuestion(
+  interrogation: InterrogationPhase["interrogations"][number],
+  selectedEvidenceIds: string[],
+) {
+  if (
+    selectedEvidenceIds.length === 0 ||
+    new Set(selectedEvidenceIds).size !== selectedEvidenceIds.length
+  ) return undefined;
+  const selectedKey = [...selectedEvidenceIds].sort().join("\u0000");
+  return interrogation.questions.find((question) => {
+    const required = questionEvidenceIds(question);
+    return required.length === selectedEvidenceIds.length &&
+      [...required].sort().join("\u0000") === selectedKey;
+  });
 }
 
 export function isPhaseReady(
@@ -95,24 +133,28 @@ export function isPhaseReady(
 export function getCollectedEvidence(
   phases: InterrogationPhase[],
   collectedEvidenceIds: string[],
-): InterrogationEvidence[] {
+): (InterrogationEvidence & { instanceId: string })[] {
   const collected = new Set(collectedEvidenceIds);
-  const evidence: InterrogationEvidence[] = [];
+  const evidence: (InterrogationEvidence & { instanceId: string })[] = [];
 
   for (const phase of phases) {
-    for (const source of phase.sources) evidence.push(source.evidence);
+    for (const source of phase.sources)
+      evidence.push({ ...source.evidence, instanceId: evidenceInstanceId(phase.id, source.evidence.id) });
     for (const combination of phase.combinations)
-      evidence.push(combination.result);
+      evidence.push({ ...combination.result, instanceId: evidenceInstanceId(phase.id, combination.result.id) });
     for (const interrogation of phase.interrogations) {
       for (const question of interrogation.questions) {
+        if (question.revealedEvidence) {
+          evidence.push({ ...question.revealedEvidence, instanceId: evidenceInstanceId(phase.id, question.revealedEvidence.id) });
+        }
         if (question.challenge?.revealedEvidence) {
-          evidence.push(question.challenge.revealedEvidence);
+          evidence.push({ ...question.challenge.revealedEvidence, instanceId: evidenceInstanceId(phase.id, question.challenge.revealedEvidence.id) });
         }
       }
     }
   }
 
-  return evidence.filter((item) => collected.has(item.id));
+  return evidence.filter((item) => collected.has(item.instanceId));
 }
 
 export function validateInterrogationPhases(
@@ -157,6 +199,14 @@ export function validateInterrogationPhases(
     const combinationPairs = new Set<string>();
     const phaseQuestionIds = new Set<string>();
     const phaseSuspectNames = new Set<string>();
+    const phaseEvidenceIds = new Set<string>();
+
+    if (phase.energyLimit !== undefined && (!Number.isInteger(phase.energyLimit) || phase.energyLimit < 1)) {
+      throw new Error(`Invalid energy limit in ${scenarioId}: ${phase.id}`);
+    }
+    if (phase.finalInterrogation && phase.sources.length) {
+      throw new Error(`Final interrogation cannot have sources in ${scenarioId}: ${phase.id}`);
+    }
 
     for (const source of phase.sources) {
       addUnique(sourceIds, source.id, "source");
@@ -165,7 +215,14 @@ export function validateInterrogationPhases(
           `Unknown source location in ${scenarioId}: ${source.locationId}`,
         );
       }
-      addUnique(evidenceIds, source.evidence.id, "evidence");
+      if (
+        (source.x !== undefined && (!Number.isFinite(source.x) || source.x < 0 || source.x > 100)) ||
+        (source.y !== undefined && (!Number.isFinite(source.y) || source.y < 0 || source.y > 100))
+      ) {
+        throw new Error(`Invalid source position in ${scenarioId}: ${source.id}`);
+      }
+      addUnique(phaseEvidenceIds, source.evidence.id, "evidence");
+      evidenceIds.add(evidenceInstanceId(phase.id, source.evidence.id));
     }
 
     for (const combination of phase.combinations) {
@@ -188,10 +245,10 @@ export function validateInterrogationPhases(
         throw new Error(`Duplicate combination pair in ${scenarioId}: ${pair}`);
       }
       combinationPairs.add(pair);
-      addUnique(evidenceIds, combination.result.id, "evidence");
+      addUnique(phaseEvidenceIds, combination.result.id, "evidence");
+      evidenceIds.add(evidenceInstanceId(phase.id, combination.result.id));
     }
 
-    const phaseEvidenceIds = new Set(evidenceIds);
     for (const interrogation of phase.interrogations) {
       if (!suspectNames.includes(interrogation.suspectName)) {
         throw new Error(
@@ -204,16 +261,43 @@ export function validateInterrogationPhases(
         );
       }
       phaseSuspectNames.add(interrogation.suspectName);
+      const questionPairs = new Set<string>();
       for (const question of interrogation.questions) {
         addUnique(questionIds, question.id, "question");
         phaseQuestionIds.add(question.id);
+        if (question.evidenceId && question.evidenceIds) {
+          throw new Error(`Ambiguous question evidence in ${scenarioId}: ${question.id}`);
+        }
+        const inputs = questionEvidenceIds(question);
+        if (question.evidenceIds && inputs.length === 0) {
+          throw new Error(`Question needs evidence in ${scenarioId}: ${question.id}`);
+        }
+        if (new Set(inputs).size !== inputs.length) {
+          throw new Error(`Duplicate question evidence in ${scenarioId}: ${question.id}`);
+        }
+        for (const inputId of inputs) {
+          if (!evidenceIds.has(inputId)) {
+            throw new Error(`Unknown question evidence in ${scenarioId}: ${inputId}`);
+          }
+        }
+        if (inputs.length) {
+          const key = [...inputs].sort().join("\u0000");
+          if (questionPairs.has(key)) {
+            throw new Error(`Duplicate interrogation combination in ${scenarioId}: ${question.id}`);
+          }
+          questionPairs.add(key);
+        }
+        if (question.revealedEvidence) {
+          addUnique(phaseEvidenceIds, question.revealedEvidence.id, "evidence");
+          evidenceIds.add(evidenceInstanceId(phase.id, question.revealedEvidence.id));
+        }
         if (question.challenge?.revealedEvidence) {
           addUnique(
-            evidenceIds,
+            phaseEvidenceIds,
             question.challenge.revealedEvidence.id,
             "evidence",
           );
-          phaseEvidenceIds.add(question.challenge.revealedEvidence.id);
+          evidenceIds.add(evidenceInstanceId(phase.id, question.challenge.revealedEvidence.id));
         }
       }
     }
@@ -222,7 +306,7 @@ export function validateInterrogationPhases(
       for (const question of interrogation.questions) {
         if (
           question.challenge &&
-          !phaseEvidenceIds.has(question.challenge.evidenceId)
+          !evidenceIds.has(question.challenge.evidenceId)
         ) {
           throw new Error(
             `Unknown challenge evidence in ${scenarioId}: ${question.challenge.evidenceId}`,

@@ -1,128 +1,213 @@
 import { Box, Typography } from "@mui/material";
-import type { InterrogationMapLocation } from "@/types";
+import { evidenceInstanceId } from "@/features/interrogation/engine";
+import type { InterrogationMapLocation, InterrogationSource } from "@/types";
 
 export default function ResearchMap({
   image,
   locations,
+  sources,
+  people,
+  collectedEvidenceIds,
+  phaseId,
   onSelect,
+  onSelectPerson,
 }: {
   image?: string;
   locations: InterrogationMapLocation[];
-  onSelect: (locationId: string) => void;
+  sources: InterrogationSource[];
+  people: { name: string; image?: string }[];
+  collectedEvidenceIds: string[];
+  phaseId: string;
+  onSelect: (source: InterrogationSource) => void;
+  onSelectPerson: (name: string) => void;
 }) {
   return (
     <Box
       sx={{
         position: "relative",
-        width: "min(100%, 1500px)",
-        aspectRatio: "16 / 9",
-        minHeight: { xs: 420, md: 0 },
-        mx: "auto",
+        width: "100%",
+        height: "100%",
         overflow: "hidden",
-        border: "1px solid rgba(223,202,157,.5)",
-        boxShadow: "0 28px 90px rgba(0,0,0,.7), inset 0 0 70px rgba(0,0,0,.55)",
         bgcolor: "#111b18",
-        backgroundImage: image ? `url(${image})` : undefined,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
       }}
     >
       <Box
         sx={{
           position: "absolute",
-          inset: 0,
-          background:
-            "linear-gradient(180deg, rgba(3,8,7,.2), transparent 45%, rgba(3,8,7,.35))",
+          inset: -24,
+          backgroundImage: image ? `url(${image})` : undefined,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          filter: "blur(18px) brightness(.35)",
+          opacity: .45,
           pointerEvents: "none",
         }}
       />
-      <Typography
+      <Box
         sx={{
           position: "absolute",
-          top: { xs: 18, md: 28 },
-          left: { xs: 20, md: 36 },
-          color: "#e9d6ac",
-          fontSize: { xs: 13, md: 17 },
-          letterSpacing: ".22em",
-          fontWeight: 800,
-          textShadow: "0 2px 14px #000",
+          left: "50%",
+          top: "50%",
+          transform: "translate(-50%, -50%)",
+          width: { xs: "min(125%, 177.777dvh)", md: "min(100%, 177.777dvh)" },
+          aspectRatio: "16 / 9",
+          backgroundImage: image ? `url(${image})` : undefined,
+          backgroundSize: "100% 100%",
+          backgroundPosition: "center",
+          boxShadow: "0 0 40px rgba(0,0,0,.4)",
         }}
       >
-        INVESTIGATION MAP
-      </Typography>
-      {locations.map((location) => (
         <Box
-          component="button"
-          type="button"
-          key={location.id}
-          onClick={() => onSelect(location.id)}
-          aria-label={`${location.title} 조사`}
           sx={{
             position: "absolute",
-            left: `${location.x}%`,
-            top: `${location.y}%`,
-            transform: "translate(-50%, -50%)",
-            border: 0,
-            bgcolor: "transparent",
-            color: "white",
-            cursor: "pointer",
-            display: "grid",
-            justifyItems: "center",
-            gap: 0.5,
-            p: 1,
-            minWidth: 100,
-            "&:hover .map-marker, &:focus-visible .map-marker": {
-              transform: "scale(1.2)",
-              boxShadow: "0 0 0 9px rgba(240,191,103,.2), 0 0 28px #e9b86f",
-            },
-            "&:focus-visible": {
-              outline: "2px solid #ffdd9a",
-              outlineOffset: 4,
-            },
+            inset: 0,
+            background:
+              "linear-gradient(180deg, rgba(3,8,7,.2), transparent 45%, rgba(3,8,7,.35))",
+            pointerEvents: "none",
           }}
-        >
-          <Box
-            className="map-marker"
+        />
+        {sources.map((source) => {
+          const location = locations.find((item) => item.id === source.locationId);
+          const siblings = sources.filter((item) => item.locationId === source.locationId);
+          const spread = siblings.indexOf(source) - (siblings.length - 1) / 2;
+          const x = source.x ?? (location?.x ?? 50) + spread * 8;
+          const y = source.y ?? (location?.y ?? 50) + spread * 12;
+          const collected = collectedEvidenceIds.includes(evidenceInstanceId(phaseId, source.evidence.id));
+          return (
+            <Box
+            component="button"
+            type="button"
+            key={source.id}
+            onClick={() => onSelect(source)}
+            aria-label={`${source.title}, ${collected ? "다시 보기" : "조사"}`}
             sx={{
-              width: { xs: 22, md: 30 },
-              height: { xs: 22, md: 30 },
-              border: "3px solid #ffe3ad",
-              borderRadius: "50%",
-              bgcolor: "#9f642c",
-              boxShadow: "0 0 0 7px rgba(240,191,103,.15), 0 0 20px #e9b86f",
-              transition: "transform .18s ease, box-shadow .18s ease",
-            }}
-          />
-          <Typography
-            component="span"
-            sx={{
-              px: 1.4,
-              py: 0.5,
-              bgcolor: "rgba(3,9,8,.88)",
-              border: "1px solid rgba(238,211,160,.7)",
-              fontWeight: 800,
-              fontSize: { xs: 12, md: 16 },
-              whiteSpace: "nowrap",
-              textShadow: "0 2px 6px #000",
+              position: "absolute",
+              left: `${x}%`,
+              top: `${y}%`,
+              transform: "translate(-50%, -50%)",
+              border: 0,
+              bgcolor: "transparent",
+              color: "white",
+              cursor: "pointer",
+              display: "grid",
+              justifyItems: "center",
+              gap: .5,
+              p: .5,
+              minWidth: 56,
+              minHeight: 44,
+              "&:hover .map-marker, &:focus-visible .map-marker": {
+                transform: "scale(1.25)",
+                boxShadow: "0 0 0 5px rgba(240,191,103,.2), 0 0 14px #e9b86f",
+              },
+              "&:focus-visible": {
+                outline: "2px solid #ffdd9a",
+                outlineOffset: 4,
+              },
             }}
           >
-            {location.title}
-          </Typography>
-        </Box>
-      ))}
-      {locations.length === 0 && (
-        <Typography
-          sx={{
-            position: "absolute",
-            left: "50%",
-            top: "50%",
-            transform: "translate(-50%, -50%)",
-            color: "#e6d2aa",
-          }}
-        >
-          지도에 조사 장소를 추가해 주세요.
-        </Typography>
-      )}
+            <Box
+              className="map-marker"
+              sx={{
+                position: "relative",
+                width: { xs: 9, md: 11 },
+                height: { xs: 9, md: 11 },
+                border: "2px solid #ffe3ad",
+                borderRadius: "50%",
+                bgcolor: collected ? "#65736b" : "#d9a465",
+                boxShadow: "0 0 0 3px rgba(240,191,103,.14), 0 0 10px #e9b86f",
+                transition: "transform .18s ease, box-shadow .18s ease",
+                ...(!collected && {
+                  "&::after": {
+                    content: '""',
+                    position: "absolute",
+                    inset: -3,
+                    border: "1px solid #ffe3ad",
+                    borderRadius: "50%",
+                    animation: "investigationPulse 2.4s ease-out infinite",
+                  },
+                }),
+                "@keyframes investigationPulse": {
+                  "0%": { transform: "scale(.8)", opacity: .8 },
+                  "100%": { transform: "scale(1.5)", opacity: 0 },
+                },
+              }}
+            />
+            <Typography
+              component="span"
+              sx={{
+                px: .8,
+                py: .3,
+                bgcolor: "rgba(3,9,8,.88)",
+                fontWeight: 700,
+                fontSize: { xs: 10, md: 12 },
+                whiteSpace: "nowrap",
+              }}
+            >
+              {source.title}
+            </Typography>
+            </Box>
+          );
+        })}
+        {people.map((person, index) => {
+          const position = [
+            { x: 34, y: 36 },
+            { x: 52, y: 62 },
+            { x: 68, y: 36 },
+            { x: 43, y: 22 },
+          ][index] ?? { x: 50, y: 50 };
+          return (
+            <Box
+              component="button"
+              type="button"
+              key={person.name}
+              onClick={() => onSelectPerson(person.name)}
+              aria-label={`${person.name}와 대화`}
+              sx={{
+                position: "absolute",
+                left: `${position.x}%`,
+                top: `${position.y}%`,
+                transform: "translate(-50%, -50%)",
+                border: 0,
+                bgcolor: "transparent",
+                color: "#fff",
+                cursor: "pointer",
+                display: "grid",
+                justifyItems: "center",
+                gap: .5,
+                p: .5,
+                minWidth: 56,
+                minHeight: 44,
+                "&:focus-visible": { outline: "2px solid #ffdd9a", outlineOffset: 4 },
+                "&:hover .person-portrait, &:focus-visible .person-portrait": {
+                  transform: "scale(1.08)",
+                  borderColor: "#f1d19a",
+                },
+              }}
+            >
+              <Box
+                component="img"
+                className="person-portrait"
+                src={person.image}
+                alt=""
+                sx={{
+                  width: { xs: 42, md: 62 },
+                  height: { xs: 42, md: 62 },
+                  objectFit: "cover",
+                  objectPosition: "center 22%",
+                  border: "2px solid rgba(224,240,232,.78)",
+                  borderRadius: "50%",
+                  bgcolor: "#1a2421",
+                  boxShadow: "0 2px 10px rgba(0,0,0,.6)",
+                  transition: "transform .18s ease, border-color .18s ease",
+                }}
+              />
+              <Typography component="span" sx={{ px: .8, py: .3, bgcolor: "rgba(3,9,8,.88)", fontWeight: 700, fontSize: { xs: 10, md: 12 }, whiteSpace: "nowrap" }}>
+                {person.name}
+              </Typography>
+            </Box>
+          );
+        })}
+      </Box>
     </Box>
   );
 }

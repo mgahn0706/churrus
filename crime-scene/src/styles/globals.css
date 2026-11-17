@@ -1,3 +1,26 @@
+@font-face {
+  font-family: Galmuri11;
+  src: url("/fonts/galmuri/Galmuri11.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Galmuri11;
+  src: url("/fonts/galmuri/Galmuri11-Bold.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+
+.interrogation-game,
+.interrogation-game *,
+.interrogation-evidence-dialog,
+.interrogation-evidence-dialog * {
+  font-family: Galmuri11, sans-serif !important;
+}
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;

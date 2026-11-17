@@ -1,40 +1,77 @@
 "use client";
 
-import { Box, Button, ThemeProvider, Typography } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Snackbar,
+  ThemeProvider,
+  Typography,
+} from "@mui/material";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createScenarioTheme } from "@/components/createScenarioTheme";
 import {
   findCombination,
+  findInterrogationQuestion,
+  evidenceInstanceId,
   getCollectedEvidence,
   initialInterrogationProgress,
+  interrogationStorageKey,
   isPhaseReady,
   readInterrogationProgress,
   type InterrogationProgress,
 } from "@/features/interrogation/engine";
 import usePreventUnload from "@/hooks/usePreventUnload";
 import type {
+  InterrogationConversationChoice,
   InterrogationDialogueLine,
-  InterrogationQuestion,
   InterrogationScenarioType,
+  InterrogationScript,
   InterrogationSource,
 } from "@/types";
 import DialogueBox from "./DialogueBox";
+import { playSelectSound, primeDialogueAudio } from "./dialogueSound";
+import EvidenceSelectionGrid from "./EvidenceSelectionGrid";
+import EvidenceTab from "./EvidenceTab";
 import ResearchMap from "./ResearchMap";
 
-type GameView = "map" | "location" | "logic" | "interrogation";
+type GameView = "map" | "logic" | "interrogation" | "evidence";
 type DialogueSequence = {
   lines: InterrogationDialogueLine[];
   index: number;
   grantEvidenceId?: string;
+  choices?: InterrogationConversationChoice[];
+  askedChoiceIds?: string[];
+  showChoices?: boolean;
+  choiceSpeaker?: string;
+  choicePortrait?: string;
 };
 
-const theme = createScenarioTheme("#bd874e", "dark");
+const theme = createScenarioTheme("#bd874e", "dark", "Galmuri11, sans-serif");
 const addId = (ids: string[], id: string) =>
   ids.includes(id) ? ids : [...ids, id];
 const asDialogue = (line: string | InterrogationDialogueLine) =>
   typeof line === "string" ? { text: line } : line;
-
+const asDialogueSequence = (
+  script: InterrogationScript,
+  speaker: string,
+  portrait?: string,
+): InterrogationDialogueLine[] => {
+  const lines = Array.isArray(script) ? script : [script];
+  if (lines.length === 0) return [{ speaker, portrait, text: "지금은 할 말이 없습니다." }];
+  return lines.map((line) => {
+    if (typeof line === "string") return { speaker, portrait, text: line };
+    return {
+      ...line,
+      speaker: line.speaker ?? speaker,
+      portrait: line.portrait ?? (line.speaker && line.speaker !== speaker ? undefined : portrait),
+    };
+  });
+};
 const menuButtonSx = {
   color: "#f3dfbb",
   border: "1px solid rgba(231,201,148,.55)",
@@ -43,6 +80,7 @@ const menuButtonSx = {
   fontWeight: 800,
   px: 2,
   "&:hover": { bgcolor: "rgba(167,112,55,.4)", borderColor: "#f1d19a" },
+  "&:focus-visible": { outline: "2px solid #ffdc9a", outlineOffset: 2 },
   "&.Mui-disabled": {
     color: "rgba(243,223,187,.35)",
     borderColor: "rgba(231,201,148,.16)",
@@ -55,19 +93,22 @@ export default function InInterrogationGame({
   scenario: InterrogationScenarioType;
 }) {
   const router = useRouter();
-  const storageKey = `interrogation-${scenario.id}-v2`;
+  const storageKey = interrogationStorageKey(scenario.id);
   const [progress, setProgress] = useState<InterrogationProgress>(
     initialInterrogationProgress,
   );
   const [loaded, setLoaded] = useState(false);
   const [view, setView] = useState<GameView>("map");
-  const [locationId, setLocationId] = useState("");
   const [selectedEvidenceIds, setSelectedEvidenceIds] = useState<string[]>([]);
   const [selectedSuspectName, setSelectedSuspectName] = useState("");
   const [selectedQuestionId, setSelectedQuestionId] = useState("");
-  const [presentedEvidenceId, setPresentedEvidenceId] = useState("");
-  const [showInventory, setShowInventory] = useState(false);
+  const [questionEvidenceIds, setQuestionEvidenceIds] = useState<string[]>([]);
+  const [focusedMapEvidenceId, setFocusedMapEvidenceId] = useState("");
   const [dialogue, setDialogue] = useState<DialogueSequence | null>(null);
+  const [phaseIntroIndex, setPhaseIntroIndex] = useState(0);
+  const [energyWarning, setEnergyWarning] = useState(false);
+  const [newEvidenceToast, setNewEvidenceToast] = useState<{ key: number; title: string } | null>(null);
+  const mainRef = useRef<HTMLDivElement | null>(null);
 
   usePreventUnload(true);
 
@@ -80,43 +121,63 @@ export default function InInterrogationGame({
     if (loaded) localStorage.setItem(storageKey, JSON.stringify(progress));
   }, [loaded, progress, storageKey]);
 
+  useEffect(() => {
+    primeDialogueAudio();
+    const onClick = (event: MouseEvent) => {
+      if (!(event.target instanceof Element)) return;
+      const button = event.target.closest("button");
+      if (!button || button.matches(':disabled, [aria-disabled="true"], [data-no-select-sfx]')) return;
+      playSelectSound();
+    };
+    document.addEventListener("click", onClick, true);
+    return () => document.removeEventListener("click", onClick, true);
+  }, []);
+
   const phase = scenario.phases.find(
     (item) => !progress.completedPhaseIds.includes(item.id),
   );
   const phaseId = phase?.id;
 
   useEffect(() => {
-    setView("map");
-    setLocationId("");
-    setSelectedEvidenceIds([]);
+    if (!loaded) return;
+    setView(phase?.finalInterrogation ? "interrogation" : "map");
+    setQuestionEvidenceIds([]);
     setSelectedSuspectName("");
+    setSelectedEvidenceIds([]);
     setSelectedQuestionId("");
-    setPresentedEvidenceId("");
+    setFocusedMapEvidenceId("");
     setDialogue(null);
-  }, [phaseId]);
+    setPhaseIntroIndex(0);
+    setEnergyWarning(false);
+  }, [phaseId, phase?.finalInterrogation, loaded]);
 
-  const evidence = getCollectedEvidence(
-    scenario.phases,
-    progress.collectedEvidenceIds,
+  useEffect(() => {
+    mainRef.current?.scrollTo(0, 0);
+  }, [view, phaseId]);
+
+  const evidence = useMemo(
+    () => getCollectedEvidence(scenario.phases, progress.collectedEvidenceIds),
+    [scenario.phases, progress.collectedEvidenceIds],
   );
-  const phaseNumber = phase
-    ? scenario.phases.findIndex((item) => item.id === phase.id) + 1
-    : scenario.phases.length;
-  const canConnect = evidence.length >= 2;
-  const canInterrogate = Boolean(
-    phase?.combinations.some((item) =>
-      progress.solvedCombinationIds.includes(item.id),
+  const focusedMapEvidence = evidence.find((item) => item.instanceId === focusedMapEvidenceId);
+  const people = useMemo(
+    () => [...scenario.suspects, ...scenario.victims].filter((person) =>
+      phase?.interrogations.some((item) => item.suspectName === person.name),
     ),
+    [scenario.suspects, scenario.victims, phase],
   );
-  const selectedLocation = phase?.locations.find(
-    (item) => item.id === locationId,
-  );
-  const locationSources = phase?.sources.filter(
-    (item) => item.locationId === locationId,
+  const canConnect = Boolean(phase?.combinations.length) && evidence.length >= 2;
+  const energySpent = phase ? progress.energySpentByPhase[phase.id] ?? 0 : 0;
+  const energyLimit = phase?.energyLimit ?? 4;
+  const energyRemaining = Math.max(0, energyLimit - energySpent);
+  const canAdvance = Boolean(
+    phase?.finalInterrogation ||
+    energySpent >= energyLimit ||
+    (phase && isPhaseReady(phase, progress)),
   );
   const activeSuspectName =
     selectedSuspectName || phase?.interrogations[0]?.suspectName || "";
-  const activeSuspect = scenario.suspects.find(
+  const activeSuspect = [...scenario.suspects, ...scenario.victims].find(
     (item) => item.name === activeSuspectName,
   );
   const activeInterrogation = phase?.interrogations.find(
@@ -128,6 +189,23 @@ export default function InInterrogationGame({
   const phaseIntroPending = Boolean(
     phase?.intro && !progress.seenPhaseIds.includes(phase.id),
   );
+  const phaseIntroLines = useMemo(
+    () => phase ? asDialogueSequence(phase.intro, "나") : [],
+    [phase],
+  );
+  const visiblePhaseIntroIndex = Math.min(phaseIntroIndex, phaseIntroLines.length - 1);
+
+  const spendEnergy = (amount = 1) => {
+    if (!phase) return;
+    if (energySpent + amount >= energyLimit) setEnergyWarning(true);
+    setProgress((previous) => ({
+      ...previous,
+      energySpentByPhase: {
+        ...previous.energySpentByPhase,
+        [phase.id]: (previous.energySpentByPhase[phase.id] ?? 0) + amount,
+      },
+    }));
+  };
 
   const queueDialogue = (
     lines: InterrogationDialogueLine[],
@@ -136,30 +214,67 @@ export default function InInterrogationGame({
     setDialogue({ lines, index: 0, grantEvidenceId });
   };
 
+  const showEvidenceToast = (title: string) => {
+    setNewEvidenceToast((previous) => ({ key: (previous?.key ?? 0) + 1, title }));
+  };
+
   const advanceDialogue = () => {
     if (!dialogue) return;
     if (dialogue.index < dialogue.lines.length - 1) {
       setDialogue({ ...dialogue, index: dialogue.index + 1 });
       return;
     }
+    if (dialogue.choices?.some((choice) => !dialogue.askedChoiceIds?.includes(choice.id))) {
+      setDialogue({ ...dialogue, showChoices: true });
+      return;
+    }
     if (dialogue.grantEvidenceId) {
       const id = dialogue.grantEvidenceId;
-      setProgress((previous) => ({
-        ...previous,
-        collectedEvidenceIds: addId(previous.collectedEvidenceIds, id),
-      }));
+      const isNew = !progress.collectedEvidenceIds.includes(id);
+      const nextProgress = {
+        ...progress,
+        collectedEvidenceIds: addId(progress.collectedEvidenceIds, id),
+      };
+      localStorage.setItem(storageKey, JSON.stringify(nextProgress));
+      setProgress(nextProgress);
+      setFocusedMapEvidenceId(id);
+      if (isNew) {
+        showEvidenceToast(getCollectedEvidence(scenario.phases, [id])[0]?.title ?? "새 단서");
+      }
     }
     setDialogue(null);
   };
 
-  const inspectSource = (source: InterrogationSource) => {
-    queueDialogue(
-      [
-        { speaker: source.title, text: source.description },
-        { speaker: "단서 확보", text: source.evidence.description },
+  const chooseConversationQuestion = (choice: InterrogationConversationChoice) => {
+    if (!dialogue?.choiceSpeaker) return;
+    setDialogue({
+      ...dialogue,
+      lines: [
+        { speaker: "나", text: choice.question },
+        ...asDialogueSequence(choice.answer, dialogue.choiceSpeaker, dialogue.choicePortrait),
       ],
-      source.evidence.id,
-    );
+      index: 0,
+      showChoices: false,
+      askedChoiceIds: addId(dialogue.askedChoiceIds ?? [], choice.id),
+    });
+  };
+
+  const inspectSource = (source: InterrogationSource) => {
+    if (!phase) return;
+    const instanceId = evidenceInstanceId(phase.id, source.evidence.id);
+    const isNew = !progress.collectedEvidenceIds.includes(instanceId);
+    if (isNew && energySpent + 1 >= energyLimit) setEnergyWarning(true);
+    const nextProgress = {
+      ...progress,
+      collectedEvidenceIds: addId(progress.collectedEvidenceIds, instanceId),
+      energySpentByPhase: isNew
+        ? { ...progress.energySpentByPhase, [phase.id]: energySpent + 1 }
+        : progress.energySpentByPhase,
+    };
+    localStorage.setItem(storageKey, JSON.stringify(nextProgress));
+    setProgress(nextProgress);
+    setFocusedMapEvidenceId(instanceId);
+    if (isNew) showEvidenceToast(source.evidence.title);
   };
 
   const combineEvidence = () => {
@@ -191,32 +306,82 @@ export default function InInterrogationGame({
           text: combination.result.description,
         },
       ],
-      combination.result.id,
+      evidenceInstanceId(phase.id, combination.result.id),
     );
   };
 
-  const askQuestion = (question: InterrogationQuestion) => {
-    setSelectedQuestionId(question.id);
-    setPresentedEvidenceId("");
-    setProgress((previous) => ({
-      ...previous,
-      askedQuestionIds: addId(previous.askedQuestionIds, question.id),
-      resolvedQuestionIds: question.challenge
-        ? previous.resolvedQuestionIds
-        : addId(previous.resolvedQuestionIds, question.id),
-    }));
+  const askSelectedEvidence = (name: string) => {
+    if (!phase || questionEvidenceIds.length === 0) return;
+    const interrogation = phase.interrogations.find((item) => item.suspectName === name);
+    if (!interrogation) return;
+    primeDialogueAudio();
+    const person = people.find((item) => item.name === name);
+    const question = findInterrogationQuestion(interrogation, questionEvidenceIds);
+    spendEnergy();
+    if (question) {
+      setProgress((previous) => ({
+        ...previous,
+        askedQuestionIds: addId(previous.askedQuestionIds, question.id),
+        resolvedQuestionIds: question.challenge
+          ? previous.resolvedQuestionIds
+          : addId(previous.resolvedQuestionIds, question.id),
+      }));
+    }
+    setSelectedSuspectName(name);
+    setSelectedQuestionId(question?.challenge ? question.id : "");
+    setView("interrogation");
+    const selectedTitles = questionEvidenceIds
+      .map((id) => evidence.find((item) => item.instanceId === id)?.title)
+      .filter(Boolean);
     queueDialogue([
       {
-        speaker: activeSuspectName,
-        portrait: activeSuspect?.image,
-        text: question.answer,
+        speaker: "나",
+        text: question?.prompt ?? (selectedTitles.length === 1
+          ? `${selectedTitles[0]}에 대해서는?`
+          : "이 단서들을 함께 보면요?"),
       },
-    ]);
+      ...asDialogueSequence(
+        question?.answer ?? scenario.fallbackAnswers?.[Math.floor(Math.random() * scenario.fallbackAnswers.length)] ?? "그 단서에 대해서는 할 말이 없습니다.",
+        name,
+        person?.image,
+      ),
+    ], question?.revealedEvidence
+      ? evidenceInstanceId(phase.id, question.revealedEvidence.id)
+      : undefined);
   };
 
-  const presentEvidence = () => {
-    if (!activeQuestion?.challenge || !presentedEvidenceId) return;
-    if (presentedEvidenceId !== activeQuestion.challenge.evidenceId) {
+  const toggleQuestionEvidence = useCallback((id: string) => {
+    setQuestionEvidenceIds((previous) =>
+      previous.includes(id) ? previous.filter((item) => item !== id) : [...previous, id],
+    );
+  }, []);
+
+  const talkToPerson = (name: string, stayOnMap = false) => {
+    const interrogation = phase?.interrogations.find((item) => item.suspectName === name);
+    if (!interrogation) return;
+    primeDialogueAudio();
+    const person = people.find((item) => item.name === name);
+    spendEnergy();
+    setSelectedSuspectName(name);
+    setSelectedQuestionId("");
+    if (!stayOnMap) setView("interrogation");
+    setDialogue({
+      lines: asDialogueSequence(interrogation.conversation ?? [
+        { speaker: "나", text: "지금 잠깐 이야기할 수 있나요?" },
+        person?.statement ?? "지금은 할 말이 없습니다.",
+      ], name, person?.image),
+      index: 0,
+      choices: interrogation.conversationChoices,
+      askedChoiceIds: [],
+      choiceSpeaker: name,
+      choicePortrait: person?.image,
+    });
+  };
+
+  const presentEvidence = (instanceId: string) => {
+    if (!activeQuestion?.challenge) return;
+    primeDialogueAudio();
+    if (instanceId !== activeQuestion.challenge.evidenceId) {
       queueDialogue([
         {
           speaker: activeSuspectName,
@@ -234,20 +399,19 @@ export default function InInterrogationGame({
       ),
     }));
     queueDialogue(
-      [
-        {
-          speaker: activeSuspectName,
-          portrait: activeSuspect?.image,
-          text: activeQuestion.challenge.response,
-        },
-      ],
-      activeQuestion.challenge.revealedEvidence?.id,
+      asDialogueSequence(
+        activeQuestion.challenge.response,
+        activeSuspectName,
+        activeSuspect?.image,
+      ),
+      activeQuestion.challenge.revealedEvidence
+        ? evidenceInstanceId(phase!.id, activeQuestion.challenge.revealedEvidence.id)
+        : undefined,
     );
   };
 
   const changeView = (nextView: GameView) => {
     setView(nextView);
-    setShowInventory(false);
     setSelectedQuestionId("");
   };
 
@@ -261,9 +425,11 @@ export default function InInterrogationGame({
     return (
       <ThemeProvider theme={theme}>
         <Box
+          className="interrogation-game"
           sx={{
             position: "relative",
             minHeight: "100dvh",
+            fontFamily: "Galmuri11, sans-serif",
             bgcolor: "#080d0c",
             overflow: "hidden",
             backgroundImage: `linear-gradient(180deg, rgba(4,7,8,.58), rgba(4,7,8,.15) 45%, rgba(4,7,8,.9)), url(${scenario.backgroundImage})`,
@@ -271,36 +437,11 @@ export default function InInterrogationGame({
             backgroundPosition: "center",
           }}
         >
-          <Typography
-            sx={{
-              position: "absolute",
-              top: { xs: 24, md: 48 },
-              left: { xs: 24, md: "7%" },
-              color: "#f1dfbe",
-              fontSize: { xs: 18, md: 28 },
-              fontWeight: 800,
-              textShadow: "0 3px 18px #000",
-            }}
-          >
-            {scenario.title}
-          </Typography>
-          <Typography
-            sx={{
-              position: "absolute",
-              top: { xs: 55, md: 88 },
-              left: { xs: 24, md: "7%" },
-              color: "#dcc49a",
-              letterSpacing: ".18em",
-              fontSize: 12,
-            }}
-          >
-            PROLOGUE ·{" "}
-            {Math.min(progress.storyIndex + 1, scenario.prologue.length)} /{" "}
-            {scenario.prologue.length}
-          </Typography>
           <DialogueBox
             key={`story-${progress.storyIndex}`}
             line={line}
+            hasNext={progress.storyIndex < scenario.prologue.length - 1}
+            endLabel="조사 시작 →"
             onAdvance={() => {
               if (progress.storyIndex < scenario.prologue.length - 1) {
                 setProgress((previous) => ({
@@ -321,8 +462,10 @@ export default function InInterrogationGame({
     return (
       <ThemeProvider theme={theme}>
         <Box
+          className="interrogation-game"
           sx={{
             minHeight: "100dvh",
+            fontFamily: "Galmuri11, sans-serif",
             bgcolor: "#080d0c",
             color: "#f1dfbe",
             display: "grid",
@@ -350,168 +493,89 @@ export default function InInterrogationGame({
     );
   }
 
-  const sceneBackground = phase.mapImage
-    ? `linear-gradient(180deg, rgba(4,8,8,.62), rgba(4,8,8,.92)), url(${phase.mapImage})`
-    : undefined;
-
   return (
     <ThemeProvider theme={theme}>
       <Box
+        className="interrogation-game"
         sx={{
           position: "relative",
-          minHeight: "100dvh",
+          height: "100dvh",
+          fontFamily: "Galmuri11, sans-serif",
           bgcolor: "#080d0c",
           color: "#f8edda",
           overflow: "hidden",
-          backgroundImage:
-            "radial-gradient(circle at 50% 30%, #1c2922, #080d0c 72%)",
         }}
       >
         <Box
           component="header"
           sx={{
-            position: "relative",
-            zIndex: 5,
+            position: "absolute",
+            top: { xs: 12, md: 20 },
+            left: { xs: 12, md: 24 },
+            right: { xs: 12, md: 24 },
+            zIndex: 20,
             display: "flex",
-            flexWrap: "wrap",
-            alignItems: "center",
+            alignItems: "flex-start",
             justifyContent: "space-between",
-            gap: 2,
-            px: { xs: 2, md: 5 },
-            py: 2,
-            borderBottom: "1px solid rgba(225,200,158,.3)",
-            bgcolor: "rgba(4,8,8,.82)",
+            gap: 1,
+            pointerEvents: "none",
           }}
         >
-          <Box>
-            <Typography
-              sx={{ color: "#d9b77d", fontSize: 12, letterSpacing: ".16em" }}
-            >
-              PHASE {phaseNumber} / {scenario.phases.length}
-            </Typography>
-            <Typography sx={{ fontSize: { xs: 18, md: 23 }, fontWeight: 800 }}>
-              {phase.title}
-            </Typography>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1, px: 1.5, py: 1, bgcolor: "rgba(4,8,8,.78)", backdropFilter: "blur(10px)", borderRadius: 1 }}>
+            <Typography sx={{ fontSize: 12, whiteSpace: "nowrap" }}>{phase.timeLabel}</Typography>
+            <Typography sx={{ color: "#d9b77d", fontSize: 12, whiteSpace: "nowrap" }}>⚡ {energyRemaining}/{energyLimit}</Typography>
           </Box>
-          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
-            <Button sx={menuButtonSx} onClick={() => changeView("map")}>
-              지도
-            </Button>
-            <Button sx={menuButtonSx} onClick={() => setShowInventory(true)}>
-              단서함 · {evidence.length}
-            </Button>
+          {canAdvance && (
             <Button
-              sx={menuButtonSx}
-              disabled={!canConnect}
-              onClick={() => changeView("logic")}
-            >
-              단서 연결
-            </Button>
-            <Button
-              sx={menuButtonSx}
-              disabled={!canInterrogate}
-              onClick={() => changeView("interrogation")}
-            >
-              심문
-            </Button>
-            {isPhaseReady(phase, progress) && (
-              <Button
-                sx={{ ...menuButtonSx, bgcolor: "#a36a35" }}
-                onClick={() =>
+              sx={{ ...menuButtonSx, pointerEvents: "auto", bgcolor: "rgba(4,8,8,.86)", borderColor: "#d9b77d", fontSize: 12 }}
+              onClick={() => {
+                if (phase.finalInterrogation) {
+                  router.push(`/scenarios/scenario/${scenario.id}/submit`);
+                } else {
                   setProgress((previous) => ({
                     ...previous,
-                    completedPhaseIds: addId(
-                      previous.completedPhaseIds,
-                      phase.id,
-                    ),
-                  }))
+                    completedPhaseIds: addId(previous.completedPhaseIds, phase.id),
+                  }));
                 }
-              >
-                {phaseNumber === scenario.phases.length
-                  ? "조사 마치기"
-                  : "다음 페이즈"}
-              </Button>
-            )}
-          </Box>
+              }}
+            >
+              {phase.finalInterrogation ? "답변 제출 →" : "다음 시간 →"}
+            </Button>
+          )}
         </Box>
+
+        {energyWarning && (
+          <Alert
+            severity="warning"
+            onClose={() => setEnergyWarning(false)}
+            sx={{ position: "fixed", top: 108, right: 16, zIndex: 60, maxWidth: 380 }}
+          >
+            에너지 소진 · 계속 진행 가능
+          </Alert>
+        )}
 
         <Box
           component="main"
+          ref={mainRef}
           sx={{
-            position: "relative",
-            minHeight: "calc(100dvh - 90px)",
-            px: { xs: 1.5, md: 4 },
-            py: { xs: 2, md: 3 },
+            position: "absolute",
+            inset: 0,
+            overflowX: "hidden",
+            overflowY: view === "logic" ? "auto" : "hidden",
+            overscrollBehavior: "contain",
           }}
         >
           {view === "map" && (
             <ResearchMap
               image={phase.mapImage}
               locations={phase.locations}
-              onSelect={(id) => {
-                setLocationId(id);
-                changeView("location");
-              }}
+              sources={phase.sources}
+              people={people}
+              collectedEvidenceIds={progress.collectedEvidenceIds}
+              phaseId={phase.id}
+              onSelect={inspectSource}
+              onSelectPerson={(name) => talkToPerson(name, true)}
             />
-          )}
-
-          {view === "location" && (
-            <Box
-              sx={{
-                position: "absolute",
-                inset: 0,
-                px: { xs: 3, md: "8%" },
-                py: { xs: 4, md: 6 },
-                backgroundImage: sceneBackground,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-              }}
-            >
-              <Button sx={menuButtonSx} onClick={() => changeView("map")}>
-                ← 지도로
-              </Button>
-              <Typography
-                variant="h3"
-                sx={{
-                  mt: 4,
-                  mb: 4,
-                  fontWeight: 900,
-                  textShadow: "0 4px 18px #000",
-                }}
-              >
-                {selectedLocation?.title}
-              </Typography>
-              {locationSources?.length ? (
-                <Box sx={{ display: "grid", gap: 1.5, maxWidth: 600 }}>
-                  {locationSources.map((source) => (
-                    <Button
-                      key={source.id}
-                      onClick={() => inspectSource(source)}
-                      sx={{
-                        ...menuButtonSx,
-                        py: 1.8,
-                        justifyContent: "space-between",
-                        textAlign: "left",
-                        fontSize: 18,
-                      }}
-                    >
-                      {source.title}
-                      <span>
-                        {progress.collectedEvidenceIds.includes(
-                          source.evidence.id,
-                        )
-                          ? "확인됨"
-                          : "조사하기 →"}
-                      </span>
-                    </Button>
-                  ))}
-                </Box>
-              ) : (
-                <Typography sx={{ fontSize: 20, color: "#d3c3aa" }}>
-                  아직 조사할 대상이 없습니다.
-                </Typography>
-              )}
-            </Box>
           )}
 
           {view === "logic" && (
@@ -551,25 +615,25 @@ export default function InInterrogationGame({
                       p: 1,
                     }}
                   >
-                    {evidence.find(
-                      (item) => item.id === selectedEvidenceIds[slot],
-                    )?.title || `단서 ${slot + 1}`}
+                      {evidence.find(
+                        (item) => item.instanceId === selectedEvidenceIds[slot],
+                      )?.title || `단서 ${slot + 1}`}
                   </Box>
                 ))}
               </Box>
               <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1.5, mb: 4 }}>
                 {evidence.map((item) => {
-                  const selected = selectedEvidenceIds.includes(item.id);
+                  const selected = selectedEvidenceIds.includes(item.instanceId);
                   return (
                     <Button
-                      key={item.id}
+                      key={item.instanceId}
                       onClick={() =>
                         setSelectedEvidenceIds((previous) =>
                           selected
-                            ? previous.filter((id) => id !== item.id)
+                            ? previous.filter((id) => id !== item.instanceId)
                             : previous.length < 2
-                              ? [...previous, item.id]
-                              : [previous[1], item.id],
+                              ? [...previous, item.instanceId]
+                              : [previous[1], item.instanceId],
                         )
                       }
                       sx={{
@@ -596,208 +660,192 @@ export default function InInterrogationGame({
           {view === "interrogation" && (
             <Box
               sx={{
-                maxWidth: 1400,
+                position: "absolute",
+                top: { xs: 62, md: 72 },
+                bottom: { xs: "calc(82px + env(safe-area-inset-bottom))", md: 96 },
+                left: 0,
+                right: 0,
+                width: "min(100%, 1200px)",
                 mx: "auto",
-                minHeight: "calc(100dvh - 150px)",
-                position: "relative",
+                px: { xs: 1.5, md: 3 },
+                display: "grid",
+                gridTemplateRows: "auto minmax(0, 1fr)",
+                gap: { xs: 1, md: 1.5 },
+                minHeight: 0,
+                overflow: "hidden",
               }}
             >
-              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mb: 2 }}>
-                {phase.interrogations.map((item) => (
+              <Box sx={{ display: "grid", gridTemplateColumns: `repeat(${people.length}, minmax(0, 1fr))`, gap: .75 }}>
+                {people.map((person) => (
                   <Button
-                    key={item.suspectName}
+                    key={person.name}
+                    aria-pressed={activeSuspectName === person.name}
+                    onClick={() => {
+                      setSelectedSuspectName(person.name);
+                      setSelectedQuestionId("");
+                    }}
                     sx={{
                       ...menuButtonSx,
-                      bgcolor:
-                        activeSuspectName === item.suspectName
-                          ? "#815329"
-                          : "rgba(10,18,17,.85)",
-                    }}
-                    onClick={() => {
-                      setSelectedSuspectName(item.suspectName);
-                      setSelectedQuestionId("");
-                      setPresentedEvidenceId("");
+                      minWidth: 0,
+                      minHeight: { xs: 48, md: 64 },
+                      p: .5,
+                      display: "flex",
+                      gap: { xs: .25, md: 1 },
+                      flexDirection: { xs: "column", md: "row" },
+                      bgcolor: activeSuspectName === person.name ? "#624022" : "rgba(6,12,12,.72)",
                     }}
                   >
-                    {item.suspectName}
+                    {person.image && <Box component="img" src={person.image} alt="" sx={{ width: { xs: 24, md: 40 }, height: { xs: 24, md: 40 }, objectFit: "cover", borderRadius: "50%" }} />}
+                    <Typography component="span" sx={{ fontSize: { xs: 10, md: 13 }, whiteSpace: "nowrap" }}>{person.name}</Typography>
                   </Button>
                 ))}
               </Box>
-              <Box
-                sx={{
-                  display: "grid",
-                  gridTemplateColumns: {
-                    xs: "1fr",
-                    md: "minmax(260px, 1fr) minmax(340px, 1fr)",
-                  },
-                  gap: 3,
-                }}
-              >
-                <Box
-                  sx={{
-                    position: "relative",
-                    minHeight: { xs: 280, md: 570 },
-                    overflow: "hidden",
-                  }}
-                >
-                  {activeSuspect?.image && (
-                    <Box
-                      component="img"
-                      src={activeSuspect.image}
-                      alt={activeSuspect.name}
-                      sx={{
-                        width: "100%",
-                        height: { xs: 280, md: 570 },
-                        objectFit: "contain",
-                        objectPosition: "bottom",
-                        filter: "drop-shadow(0 12px 26px #000)",
-                      }}
-                    />
-                  )}
-                  <Typography
+              <Box sx={{ display: "grid", gridTemplateColumns: { xs: "minmax(0, .95fr) minmax(0, 1.05fr)", md: "minmax(0, 1fr) minmax(0, 1.15fr)" }, gap: { xs: .75, md: 1.5 }, minHeight: 0 }}>
+                <Box sx={{ minWidth: 0, minHeight: 0, display: "flex", flexDirection: "column", border: "1px solid rgba(231,201,148,.24)", bgcolor: "rgba(6,12,12,.78)" }}>
+                  <Typography sx={{ flexShrink: 0, px: 1.25, py: 1, fontSize: { xs: 11, md: 13 }, color: "#d9b77d", borderBottom: "1px solid rgba(231,201,148,.18)" }}>단서 {evidence.length} · 선택 {questionEvidenceIds.length}</Typography>
+                  <Box
+                    role="region"
+                    aria-label="신문할 단서 목록"
+                    tabIndex={0}
                     sx={{
-                      position: "absolute",
-                      bottom: 10,
-                      left: 20,
-                      fontSize: 28,
-                      fontWeight: 900,
-                      textShadow: "0 3px 12px #000",
+                      flex: "1 1 0",
+                      minHeight: 0,
+                      overflowY: "auto",
+                      overscrollBehavior: "contain",
+                      touchAction: "pan-y",
+                      WebkitOverflowScrolling: "touch",
+                      scrollbarGutter: "stable",
+                      scrollbarWidth: "thin",
+                      scrollbarColor: "#8a704d transparent",
+                      p: { xs: .75, md: 1 },
+                      "&:focus-visible": { outline: "2px solid #ffdc9a", outlineOffset: -2 },
+                      "&::-webkit-scrollbar": { width: 7 },
+                      "&::-webkit-scrollbar-thumb": { bgcolor: "#8a704d", borderRadius: 4 },
                     }}
                   >
-                    {activeSuspectName}
-                  </Typography>
+                    <EvidenceSelectionGrid evidence={evidence} selectedIds={questionEvidenceIds} onToggle={toggleQuestionEvidence} />
+                  </Box>
                 </Box>
-                <Box sx={{ pt: { xs: 0, md: 5 } }}>
-                  <Typography
-                    sx={{ color: "#d9b77d", letterSpacing: ".2em", mb: 2 }}
-                  >
-                    INTERROGATION
-                  </Typography>
-                  <Typography variant="h4" sx={{ mb: 3, fontWeight: 900 }}>
-                    무엇을 물을까?
-                  </Typography>
-                  {activeInterrogation?.questions.length ? (
-                    <Box sx={{ display: "grid", gap: 1.5 }}>
-                      {activeInterrogation.questions.map((question) => (
-                        <Button
-                          key={question.id}
-                          sx={{
-                            ...menuButtonSx,
-                            justifyContent: "space-between",
-                            textAlign: "left",
-                            py: 1.5,
-                            fontSize: 17,
-                          }}
-                          onClick={() => askQuestion(question)}
-                        >
-                          {question.prompt}
-                          {progress.resolvedQuestionIds.includes(question.id) &&
-                            " ✓"}
+                <Box sx={{ minWidth: 0, minHeight: 0, display: "flex", flexDirection: "column", border: "1px solid rgba(231,201,148,.24)", bgcolor: "rgba(6,12,12,.65)", overflow: "hidden" }}>
+                  <Box sx={{ flex: 1, minHeight: 0, position: "relative", overflow: "hidden" }}>
+                    {activeSuspect?.image && <Box component="img" src={activeSuspect.image} alt={activeSuspectName} sx={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 28%" }} />}
+                    <Typography sx={{ position: "absolute", left: 10, right: 10, bottom: 8, fontSize: { xs: 14, md: 22 }, fontWeight: 800, textShadow: "0 2px 12px #000" }}>{activeSuspectName}</Typography>
+                  </Box>
+                  {activeQuestion?.challenge && progress.askedQuestionIds.includes(activeQuestion.id) && (
+                    <Box sx={{ display: "flex", gap: .5, p: .75, flexWrap: "wrap", maxHeight: 94, overflowY: "auto" }}>
+                      {questionEvidenceIds.map((id) => (
+                        <Button key={id} sx={{ ...menuButtonSx, fontSize: 11, px: 1 }} onClick={() => presentEvidence(id)}>
+                          {evidence.find((item) => item.instanceId === id)?.title} 제시
                         </Button>
                       ))}
                     </Box>
-                  ) : (
-                    <Typography sx={{ color: "#c8bda8" }}>
-                      아직 준비된 질문이 없습니다.
-                    </Typography>
                   )}
-                  {activeQuestion?.challenge &&
-                    progress.askedQuestionIds.includes(activeQuestion.id) && (
-                      <Box sx={{ mt: 4 }}>
-                        <Typography
-                          sx={{ mb: 1.5, fontWeight: 700, color: "#efd9ac" }}
-                        >
-                          이 진술에 제시할 단서
-                        </Typography>
-                        <Box
-                          sx={{
-                            display: "flex",
-                            flexWrap: "wrap",
-                            gap: 1,
-                            maxHeight: 170,
-                            overflowY: "auto",
-                          }}
-                        >
-                          {evidence.map((item) => (
-                            <Button
-                              key={item.id}
-                              sx={{
-                                ...menuButtonSx,
-                                bgcolor:
-                                  presentedEvidenceId === item.id
-                                    ? "#815329"
-                                    : "rgba(10,18,17,.85)",
-                              }}
-                              onClick={() => setPresentedEvidenceId(item.id)}
-                            >
-                              {item.title}
-                            </Button>
-                          ))}
-                        </Box>
-                        <Button
-                          sx={{ ...menuButtonSx, mt: 2, px: 4 }}
-                          disabled={!presentedEvidenceId}
-                          onClick={presentEvidence}
-                        >
-                          이 단서를 제시한다
-                        </Button>
-                      </Box>
-                    )}
+                  <Button
+                    sx={{ ...menuButtonSx, m: { xs: .75, md: 1 }, minHeight: { xs: 44, md: 52 }, bgcolor: "#815329" }}
+                    disabled={questionEvidenceIds.length === 0}
+                    onClick={() => askSelectedEvidence(activeSuspectName)}
+                  >
+                    신문 {questionEvidenceIds.length > 0 ? "⚡1" : ""}
+                  </Button>
                 </Box>
               </Box>
             </Box>
           )}
+          {view === "evidence" && (
+            <EvidenceTab scenario={scenario} evidence={evidence} />
+          )}
         </Box>
 
-        {showInventory && (
-          <Box
-            sx={{
-              position: "absolute",
-              inset: 0,
-              zIndex: 30,
-              bgcolor: "rgba(2,5,5,.92)",
-              px: { xs: 3, md: "10%" },
-              py: 5,
-              overflowY: "auto",
-            }}
-          >
-            <Button sx={menuButtonSx} onClick={() => setShowInventory(false)}>
-              ← 돌아가기
-            </Button>
-            <Typography variant="h3" sx={{ mt: 5, mb: 4, fontWeight: 900 }}>
-              단서함
-            </Typography>
-            <Box
-              sx={{
-                display: "grid",
-                gridTemplateColumns: { xs: "1fr", md: "repeat(2, 1fr)" },
-                gap: 2,
-              }}
+        <Box
+          component="nav"
+          aria-label="게임 메뉴"
+          sx={{
+            position: "absolute",
+            left: "50%",
+            bottom: { xs: "calc(12px + env(safe-area-inset-bottom))", md: 22 },
+            transform: "translateX(-50%)",
+            zIndex: 20,
+            display: "flex",
+            gap: .5,
+            p: .6,
+            bgcolor: "rgba(4,8,8,.88)",
+            backdropFilter: "blur(12px)",
+            border: "1px solid rgba(231,201,148,.35)",
+            borderRadius: 2,
+            boxShadow: "0 8px 30px rgba(0,0,0,.45)",
+          }}
+        >
+          {!phase.finalInterrogation && (
+            <Button
+              aria-pressed={view === "map"}
+              onClick={() => changeView("map")}
+              sx={{ color: "#d7c6a7", minWidth: 64, px: { xs: 1, md: 2 }, fontWeight: 700 }}
             >
-              {evidence.map((item, index) => (
-                <Box
-                  key={item.id}
-                  sx={{ borderTop: "1px solid rgba(232,205,156,.6)", py: 2 }}
-                >
-                  <Typography sx={{ color: "#c9a36e", fontSize: 13 }}>
-                    EVIDENCE {String(index + 1).padStart(2, "0")}
-                  </Typography>
-                  <Typography variant="h6" sx={{ fontWeight: 800, my: 0.5 }}>
-                    {item.title}
-                  </Typography>
-                  <Typography sx={{ color: "#c9c7bd", lineHeight: 1.7 }}>
-                    {item.description}
-                  </Typography>
+              지도
+            </Button>
+          )}
+          {phase.combinations.length > 0 && (
+            <Button disabled={!canConnect} onClick={() => changeView("logic")} sx={{ color: "#d7c6a7", minWidth: 64, px: 1 }}>
+              연결
+            </Button>
+          )}
+          <Button
+            aria-pressed={view === "interrogation"}
+            onClick={() => changeView("interrogation")}
+            sx={{ minWidth: { xs: 84, md: 110 }, px: { xs: 1.5, md: 2.5 }, py: 1.1, fontWeight: 800, color: "#fff4df", bgcolor: view === "interrogation" ? "#a36a35" : "rgba(163,106,53,.55)", "&:hover": { bgcolor: "#bd874e" } }}
+          >
+            신문
+          </Button>
+          <Button
+            aria-pressed={view === "evidence"}
+            onClick={() => changeView("evidence")}
+            sx={{ minWidth: { xs: 88, md: 120 }, px: { xs: 1.5, md: 2.5 }, py: 1.1, fontWeight: 800, color: "#fff4df", bgcolor: view === "evidence" ? "#a36a35" : "rgba(163,106,53,.55)", "&:hover": { bgcolor: "#bd874e" } }}
+          >
+            단서함
+          </Button>
+        </Box>
+
+        <Dialog
+          className="interrogation-evidence-dialog"
+          open={Boolean(focusedMapEvidence)}
+          onClose={() => setFocusedMapEvidenceId("")}
+          fullWidth
+          maxWidth="md"
+          aria-label="단서 보기"
+          slotProps={{ paper: { sx: { bgcolor: "#101816", color: "#f8edda", border: "1px solid rgba(231,201,148,.4)", borderRadius: 1, maxHeight: "85dvh", m: 1.5 } } }}
+        >
+          <DialogTitle sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 1, px: 2, py: 1, borderBottom: "1px solid rgba(231,201,148,.18)" }}>
+            <Typography component="span" sx={{ fontSize: 14, color: "#d9b77d" }}>단서</Typography>
+            <Button sx={{ color: "#d9b77d" }} onClick={() => setFocusedMapEvidenceId("")}>닫기</Button>
+          </DialogTitle>
+          <DialogContent sx={{ p: { xs: 2, md: 3 } }}>
+            {focusedMapEvidence && (
+              <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: focusedMapEvidence.image ? "minmax(0, 1.2fr) minmax(260px, .8fr)" : "1fr" }, gap: 2, alignItems: "start" }}>
+                {focusedMapEvidence.image && <Box component="img" src={focusedMapEvidence.image} alt={focusedMapEvidence.title} sx={{ width: "100%", maxHeight: "60dvh", objectFit: "contain", bgcolor: "#070c0b" }} />}
+                <Box>
+                  <Typography sx={{ color: "#b99c75", fontSize: 12, mb: 1 }}>{scenario.phases.find((item) => focusedMapEvidence.instanceId.startsWith(`${item.id}::`))?.timeLabel}</Typography>
+                  <Typography sx={{ fontSize: { xs: 20, md: 24 }, fontWeight: 800, mb: 2 }}>{focusedMapEvidence.title}</Typography>
+                  <Typography sx={{ fontSize: { xs: 15, md: 17 }, lineHeight: 1.7, whiteSpace: "pre-wrap", wordBreak: "keep-all" }}>{focusedMapEvidence.description}</Typography>
                 </Box>
-              ))}
-            </Box>
-            {evidence.length === 0 && (
-              <Typography sx={{ color: "#c9c7bd" }}>
-                아직 확보한 단서가 없습니다.
-              </Typography>
+              </Box>
             )}
+          </DialogContent>
+        </Dialog>
+
+        <Snackbar
+          key={newEvidenceToast?.key ?? "empty"}
+          className="interrogation-evidence-dialog"
+          open={Boolean(newEvidenceToast)}
+          autoHideDuration={2200}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          onClose={() => setNewEvidenceToast(null)}
+          sx={{ top: { xs: 64, md: 76 }, zIndex: 1500 }}
+        >
+          <Box role="status" sx={{ px: 2, py: 1, bgcolor: "#1b2923", color: "#f8edda", border: "1px solid #d9b77d", borderRadius: .5, boxShadow: "0 8px 28px rgba(0,0,0,.45)", fontSize: 13, fontWeight: 800 }}>
+            단서 획득 · {newEvidenceToast?.title}
           </Box>
-        )}
+        </Snackbar>
+
 
         {phaseIntroPending && !dialogue && (
           <Box
@@ -809,14 +857,20 @@ export default function InInterrogationGame({
             }}
           >
             <DialogueBox
-              key={`phase-intro-${phase.id}`}
-              line={{ speaker: phase.title, text: phase.intro }}
-              onAdvance={() =>
-                setProgress((previous) => ({
-                  ...previous,
-                  seenPhaseIds: addId(previous.seenPhaseIds, phase.id),
-                }))
-              }
+              key={`phase-intro-${phase.id}-${visiblePhaseIntroIndex}`}
+              line={phaseIntroLines[visiblePhaseIntroIndex]}
+              hasNext={visiblePhaseIntroIndex < phaseIntroLines.length - 1}
+              endLabel="계속 →"
+              onAdvance={() => {
+                if (visiblePhaseIntroIndex < phaseIntroLines.length - 1) {
+                  setPhaseIntroIndex(visiblePhaseIntroIndex + 1);
+                } else {
+                  setProgress((previous) => ({
+                    ...previous,
+                    seenPhaseIds: addId(previous.seenPhaseIds, phase.id),
+                  }));
+                }
+              }}
             />
           </Box>
         )}
@@ -832,6 +886,11 @@ export default function InInterrogationGame({
             <DialogueBox
               key={`${dialogue.lines[dialogue.index].speaker}-${dialogue.index}-${dialogue.lines[dialogue.index].text}`}
               line={dialogue.lines[dialogue.index]}
+              hasNext={dialogue.index < dialogue.lines.length - 1}
+              endLabel={dialogue.choices?.some((choice) => !dialogue.askedChoiceIds?.includes(choice.id)) ? "질문 선택 →" : "닫기"}
+              choices={dialogue.showChoices ? dialogue.choices?.filter((choice) => !dialogue.askedChoiceIds?.includes(choice.id)) : undefined}
+              onChoose={chooseConversationQuestion}
+              onCloseChoices={() => setDialogue(null)}
               onAdvance={advanceDialogue}
             />
           </Box>

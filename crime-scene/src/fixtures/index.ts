@@ -283,8 +283,8 @@ export const scenarioCatalog = defineScenarioCatalog([
     emoji: "🔮",
     histories: [],
     backgroundImage: "/image/scenario/psychic/psychic-main.png",
-    isInDevelopment: true,
-    description: "초능력 연구소의 시연회가 끝난 밤, 소장이 숨진 채 발견되었다.",
+    isInDevelopment: false,
+    description: "초능력 알약을 먹은 아침부터 연구소를 조사하고, 자정의 사건을 추리한다.",
     places: [],
     suspects: psychicSuspects,
     victims: [psychicVictim],
@@ -400,7 +400,7 @@ export const createTextScenario = (
 
 export const createInterrogationScenario = (
   id: ScenarioId,
-  content: Pick<InterrogationScenarioType, "prologue" | "phases">
+  content: Pick<InterrogationScenarioType, "prologue" | "phases" | "fallbackAnswers">
 ): InterrogationScenarioType => {
   const scenario = getScenarioSummary(id);
 
@@ -411,7 +411,7 @@ export const createInterrogationScenario = (
   validateInterrogationPhases(
     id,
     content.phases,
-    scenario.suspects.map((suspect) => suspect.name)
+    [...scenario.suspects, ...scenario.victims].map((person) => person.name)
   );
 
   return { ...scenario, gameType: "INTERROGATION", ...content };
