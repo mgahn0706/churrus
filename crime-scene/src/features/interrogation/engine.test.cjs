@@ -10,8 +10,9 @@ const {
   readInterrogationProgress,
   validateInterrogationPhases,
 } = require("./engine.ts");
-const { deriveSharedSources, ensureSharedSourceNumbers, materializeSharedSources } = require("./sharedSources.ts");
+const { deriveSharedSources, ensureSharedSourceNumbers, materializeSharedSources, spreadSharedSourcePositions } = require("./sharedSources.ts");
 const { deriveSharedQuestions, materializeSharedQuestions } = require("./sharedQuestions.ts");
+const { phasePeople } = require("./phasePeople.ts");
 
 const phase = {
   id: "phase-1",
@@ -195,19 +196,23 @@ test("공유 단서는 표시 페이즈와 변경 페이즈에 따라 펼쳐진�
   const baseSource = { ...phase.sources[0], x: 40, y: 60 };
   const phases = [
     { id: "morning", sources: [baseSource], combinations: [], interrogations: [] },
-    { id: "afternoon", sources: [{ ...baseSource, id: "afternoon-source" }], combinations: [], interrogations: [] },
-    { id: "evening", sources: [{ ...baseSource, id: "evening-source", evidence: { ...baseSource.evidence, title: "바뀐 A" } }], combinations: [], interrogations: [] },
+    { id: "afternoon", sources: [{ ...baseSource, id: "afternoon-source", x: 70, y: 20 }], combinations: [], interrogations: [] },
+    { id: "evening", sources: [{ ...baseSource, id: "evening-source", x: 80, y: 30, evidence: { ...baseSource.evidence, title: "바뀐 A" } }], combinations: [], interrogations: [] },
   ];
   const [shared] = deriveSharedSources(phases);
   assert.deepEqual(shared.visiblePhaseIds, ["morning", "afternoon", "evening"]);
   assert.deepEqual(Object.keys(shared.changes), ["evening"]);
 
   shared.base.evidence.title = "기본 A";
+  shared.base.x = 25;
+  shared.base.y = 35;
   shared.visiblePhaseIds = ["morning", "evening"];
   const expanded = materializeSharedSources(phases, [shared]);
   assert.equal(expanded[0].sources[0].evidence.title, "기본 A");
+  assert.deepEqual([expanded[0].sources[0].x, expanded[0].sources[0].y], [25, 35]);
   assert.deepEqual(expanded[1].sources, []);
   assert.equal(expanded[2].sources[0].evidence.title, "바뀐 A");
+  assert.deepEqual([expanded[2].sources[0].x, expanded[2].sources[0].y], [25, 35]);
   assert.equal(expanded[2].sources[0].id, "evening-source");
   assert.equal(expanded[2].sources[0].versionPhaseId, "evening");
 
@@ -235,6 +240,51 @@ test("공유 단서 번호는 순서와 페이즈가 달라도 유지된다", ()
   const inserted = [{ id: "new", number: Math.max(...old.map((source) => source.number)) + 1 }, ...old];
   assert.deepEqual(ensureSharedSourceNumbers(inserted).map((source) => source.number), [8, 1, 7, 2]);
   assert.deepEqual(ensureSharedSourceNumbers([old[2], old[0]]).map((source) => source.number), [2, 1]);
+});
+
+test("페이즈마다 인물을 숨기거나 새 인물의 지도 위치를 지정할 수 있다", () => {
+  const custom = { name: "새 인물", x: 64, y: 38 };
+  const configured = {
+    ...phase,
+    people: [custom],
+    interrogations: [...phase.interrogations, { suspectName: custom.name, questions: [] }],
+    requiredQuestionIds: [],
+  };
+  assert.deepEqual(phasePeople(configured), [custom]);
+  assert.equal(phasePeople(phase)[0].name, "실험체 A");
+  assert.doesNotThrow(() => validateInterrogationPhases("psychic", [configured], ["실험체 A", custom.name]));
+  assert.throws(() => validateInterrogationPhases("psychic", [{ ...configured, people: [{ ...custom, x: 101 }] }], ["실험체 A", custom.name]));
+  assert.throws(() => validateInterrogationPhases("psychic", [{ ...configured, people: [custom], interrogations: phase.interrogations }], ["실험체 A", custom.name]));
+  assert.throws(() => validateInterrogationPhases("psychic", [{ ...configured, requiredQuestionIds: ["question-a"] }], ["실험체 A", custom.name]));
+});
+
+test("겹친 단서는 자동으로 벌어지고 옮긴 단서의 자리는 우선 유지된다", () => {
+  const shared = Array.from({ length: 13 }, (_, index) => ({
+    id: `clue-${index}`, number: index + 1,
+    visiblePhaseIds: ["morning", "evening"], changes: {}, sourceIds: {}, order: {},
+    base: { x: 50, y: 50, title: `단서 ${index}`, description: "", evidence: { id: `clue-${index}`, title: `단서 ${index}`, description: "" } },
+  }));
+  const assertSeparated = (sources) => {
+    for (let left = 0; left < sources.length; left += 1) {
+      for (let right = left + 1; right < sources.length; right += 1) {
+        const dx = Math.abs(sources[left].base.x - sources[right].base.x);
+        const dy = Math.abs(sources[left].base.y - sources[right].base.y);
+        assert.ok(dx >= 20 || dy >= 16, `${sources[left].id}와 ${sources[right].id}가 겹침`);
+      }
+    }
+  };
+  const placed = spreadSharedSourcePositions(shared);
+  assertSeparated(placed);
+  assert.deepEqual(spreadSharedSourcePositions(placed), placed);
+
+  const moved = spreadSharedSourcePositions(placed.map((source) => source.id === "clue-7"
+    ? { ...source, base: { ...source.base, x: 50, y: 50 } }
+    : source), "clue-7");
+  assert.deepEqual([moved[7].base.x, moved[7].base.y], [50, 50]);
+  assertSeparated(moved);
+  const phases = [{ id: "morning", sources: [], combinations: [], interrogations: [] }, { id: "evening", sources: [], combinations: [], interrogations: [] }];
+  const expanded = materializeSharedSources(phases, moved);
+  assert.deepEqual(expanded[0].sources.map((source) => [source.x, source.y]), expanded[1].sources.map((source) => [source.x, source.y]));
 });
 
 test("단서 비밀번호는 변경 페이즈에 따라 적용되고 빈 비밀번호는 거부된다", () => {

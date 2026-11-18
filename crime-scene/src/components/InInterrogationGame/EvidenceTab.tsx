@@ -17,7 +17,7 @@ export default memo(function EvidenceTab({
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const listScrollTop = useRef(0);
   const focusedEvidence = evidence.find((item) => item.instanceId === focusedEvidenceId);
-  const people = [...scenario.suspects, ...scenario.victims];
+  const people = [...scenario.suspects, ...scenario.victims, ...(scenario.people ?? [])];
   const focusedPerson = people.find((item) => item.name === focusedPersonName);
 
   const focusEvidence = useCallback((id: string) => {

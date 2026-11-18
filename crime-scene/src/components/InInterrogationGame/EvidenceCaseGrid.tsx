@@ -26,8 +26,8 @@ export default memo(function EvidenceCaseGrid({
 }) {
   const newestFirst = useMemo(() => [...evidence].reverse(), [evidence]);
   const people = useMemo(
-    () => [...scenario.suspects, ...scenario.victims],
-    [scenario.suspects, scenario.victims],
+    () => [...scenario.suspects, ...scenario.victims, ...(scenario.people ?? [])],
+    [scenario.suspects, scenario.victims, scenario.people],
   );
 
   return (

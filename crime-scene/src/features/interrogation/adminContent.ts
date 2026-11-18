@@ -10,7 +10,7 @@ import type { SharedQuestion } from "./sharedQuestions";
 
 export type EditableInterrogationContent = Pick<
   InterrogationScenarioType,
-  "prologue" | "phases" | "fallbackAnswers"
+  "prologue" | "phases" | "fallbackAnswers" | "people"
 > & { sharedSources?: SharedSource[]; sharedQuestions?: SharedQuestion[] };
 
 export function scriptLines(
@@ -55,6 +55,10 @@ export function validateAdminContent(
   if (scriptLines(content.prologue).every((line) => !line.text.trim())) return "프롤로그 대사를 한 줄 이상 입력하세요.";
   if (content.phases.length === 0) return "페이즈를 한 개 이상 입력하세요.";
   if (!content.phases.some((phase) => phase.finalInterrogation)) return "최종 추리 페이즈가 필요합니다.";
+  const allNames = [...suspectNames, ...(content.people ?? []).map((person) => person.name)];
+  if (new Set(allNames).size !== allNames.length || (content.people ?? []).some((person) => !person.name.trim())) {
+    return "인물 이름이 비었거나 중복되었습니다.";
+  }
   for (const phase of content.phases) {
     if (phase.fallbackAnswers && phase.fallbackAnswers.some((answer) => scriptLines(answer).every((line) => !line.text.trim()))) {
       return `${phase.title}: 기본 응답 대사를 입력하세요.`;
@@ -90,7 +94,7 @@ export function validateAdminContent(
     }
   }
   try {
-    validateInterrogationPhases("psychic", content.phases, suspectNames);
+    validateInterrogationPhases("psychic", content.phases, allNames);
     return null;
   } catch (error) {
     return error instanceof Error ? error.message : "콘텐츠를 확인해 주세요.";
@@ -130,6 +134,11 @@ export function isEditableContent(value: unknown): value is EditableInterrogatio
   const location = (item: unknown) => record(item) &&
     typeof item.id === "string" && typeof item.title === "string" &&
     typeof item.x === "number" && typeof item.y === "number";
+  const personProfile = (item: unknown) => record(item) && typeof item.name === "string" &&
+    (item.image === undefined || typeof item.image === "string") &&
+    (item.description === undefined || typeof item.description === "string");
+  const mapPerson = (item: unknown) => record(item) && typeof item.name === "string" &&
+    typeof item.x === "number" && typeof item.y === "number";
   const source = (item: unknown) => record(item) &&
     typeof item.id === "string" && (item.locationId === undefined || typeof item.locationId === "string") &&
     (item.versionPhaseId === undefined || typeof item.versionPhaseId === "string") &&
@@ -168,6 +177,7 @@ export function isEditableContent(value: unknown): value is EditableInterrogatio
     (item.finalInterrogation === undefined || typeof item.finalInterrogation === "boolean") &&
     (item.fallbackAnswers === undefined || (Array.isArray(item.fallbackAnswers) && item.fallbackAnswers.every(script))) &&
     Array.isArray(item.locations) && item.locations.every(location) &&
+    (item.people === undefined || (Array.isArray(item.people) && item.people.every(mapPerson))) &&
     Array.isArray(item.sources) && item.sources.every(source) &&
     Array.isArray(item.combinations) && item.combinations.every(combination) &&
     Array.isArray(item.interrogations) && item.interrogations.every(interrogation) &&
@@ -175,17 +185,18 @@ export function isEditableContent(value: unknown): value is EditableInterrogatio
 
   return record(value) && Array.isArray(value.prologue) && value.prologue.every(line) &&
     Array.isArray(value.phases) && value.phases.length > 0 && value.phases.every(phase) &&
+    (value.people === undefined || (Array.isArray(value.people) && value.people.every(personProfile))) &&
     (value.fallbackAnswers === undefined || (Array.isArray(value.fallbackAnswers) && value.fallbackAnswers.every(script))) &&
     (value.sharedSources === undefined || (Array.isArray(value.sharedSources) && value.sharedSources.every(sharedSource))) &&
     (value.sharedQuestions === undefined || (Array.isArray(value.sharedQuestions) && value.sharedQuestions.every(sharedQuestion)));
 }
 
 export function toInterrogationTypeScript(content: EditableInterrogationContent) {
-  const gameContent = { prologue: content.prologue, phases: content.phases, fallbackAnswers: content.fallbackAnswers };
+  const gameContent = { prologue: content.prologue, phases: content.phases, fallbackAnswers: content.fallbackAnswers, people: content.people };
   return [
     'import type { InterrogationScenarioType } from "@/types";',
     "",
-    'export const psychicInterrogationContent: Pick<InterrogationScenarioType, "prologue" | "phases" | "fallbackAnswers"> =',
+    'export const psychicInterrogationContent: Pick<InterrogationScenarioType, "prologue" | "phases" | "fallbackAnswers" | "people"> =',
     `  ${JSON.stringify(gameContent, null, 2)};`,
     "",
   ].join("\n");

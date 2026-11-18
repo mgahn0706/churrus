@@ -18,9 +18,10 @@ import {
 } from "@/features/interrogation/adminContent";
 import { psychicInterrogationContent } from "@/fixtures/psychic/interrogation";
 import { psychicSuspects, psychicVictim } from "@/fixtures/psychic/suspects";
-import { deriveSharedSources, ensureSharedSourceNumbers, materializeSharedSources, sharedSourceAtPhase, type SharedSource } from "@/features/interrogation/sharedSources";
+import { deriveSharedSources, ensureSharedSourceNumbers, materializeSharedSources, spreadSharedSourcePositions, type SharedSource } from "@/features/interrogation/sharedSources";
 import { deriveSharedQuestions, materializeSharedQuestions, type SharedQuestion } from "@/features/interrogation/sharedQuestions";
-import type { InterrogationEvidence, InterrogationPhase, InterrogationQuestion, InterrogationScript } from "@/types";
+import { defaultPersonPosition, phasePeople } from "@/features/interrogation/phasePeople";
+import type { InterrogationEvidence, InterrogationMapPerson, InterrogationPhase, InterrogationQuestion, InterrogationScript } from "@/types";
 
 const theme = createScenarioTheme("#bd874e", "dark", "Galmuri11, sans-serif");
 const draftKey = "psychic-interrogation-admin-v2";
@@ -37,6 +38,7 @@ const currentMapLocations = [
 const updateLegacyMap = (draft: EditableInterrogationContent) => {
   const next = structuredClone(draft);
   for (const phase of next.phases) {
+    phase.people ??= phasePeople(phase);
     const hasLegacyLocations = phase.locations.some((location) =>
       location.id === "observation" || (location.id === "entrance" && location.x === 18 && location.y === 69));
     if (phase.mapImage !== legacyMapImage && !(phase.mapImage === currentMapImage && hasLegacyLocations)) continue;
@@ -84,7 +86,8 @@ const normalizeMapCoordinates = (draft: EditableInterrogationContent) => {
     });
     phase.locations = [];
   }
-  next.sharedSources = ensureSharedSourceNumbers(next.sharedSources ?? deriveSharedSources(next.phases));
+  next.sharedSources = spreadSharedSourcePositions(ensureSharedSourceNumbers(next.sharedSources ?? deriveSharedSources(next.phases)));
+  next.people ??= [];
   next.phases = materializeSharedSources(next.phases, next.sharedSources);
   next.sharedQuestions ??= deriveSharedQuestions(next.phases);
   next.phases = materializeSharedQuestions(next.phases, next.sharedQuestions);
@@ -108,54 +111,66 @@ function Section({ title, action, children, order }: { title: string; action?: R
   );
 }
 
-function MapPreview({ phase, sourceNumbers, onMoveSource }: { phase: InterrogationPhase; sourceNumbers: Map<string, number>; onMoveSource: (index: number, x: number, y: number) => void }) {
+type MapDragTarget = { kind: "source"; index: number } | { kind: "person"; name: string };
+
+function MapPreview({ phase, sourceNumbers, people, onMoveSource, onMovePerson }: {
+  phase: InterrogationPhase;
+  sourceNumbers: Map<string, number>;
+  people: InterrogationMapPerson[];
+  onMoveSource: (index: number, x: number, y: number) => void;
+  onMovePerson: (name: string, x: number, y: number) => void;
+}) {
   const mapRef = useRef<HTMLDivElement | null>(null);
-  const dragRef = useRef<{ index: number; pointerId: number; offsetX: number; offsetY: number } | null>(null);
-  const [dragPosition, setDragPosition] = useState<{ index: number; x: number; y: number } | null>(null);
+  const dragRef = useRef<(MapDragTarget & { pointerId: number; offsetX: number; offsetY: number }) | null>(null);
+  const [dragPosition, setDragPosition] = useState<(MapDragTarget & { x: number; y: number }) | null>(null);
   const clamp = (value: number) => Math.max(0, Math.min(100, Math.round(value * 10) / 10));
   const positionFromPointer = (event: ReactPointerEvent<HTMLElement>) => {
     const bounds = mapRef.current?.getBoundingClientRect();
     const drag = dragRef.current;
     if (!bounds || !drag) return null;
     return {
-      index: drag.index,
+      ...(drag.kind === "source" ? { kind: "source" as const, index: drag.index } : { kind: "person" as const, name: drag.name }),
       x: clamp((event.clientX - bounds.left - drag.offsetX) / bounds.width * 100),
       y: clamp((event.clientY - bounds.top - drag.offsetY) / bounds.height * 100),
     };
   };
+  const startDrag = (event: ReactPointerEvent<HTMLElement>, target: MapDragTarget, x: number, y: number) => {
+    if (!event.isPrimary || event.button !== 0) return;
+    const bounds = mapRef.current?.getBoundingClientRect();
+    if (!bounds) return;
+    dragRef.current = { ...target, pointerId: event.pointerId, offsetX: event.clientX - bounds.left - x / 100 * bounds.width, offsetY: event.clientY - bounds.top - y / 100 * bounds.height };
+    event.currentTarget.setPointerCapture(event.pointerId);
+  };
+  const finishDrag = (event: ReactPointerEvent<HTMLElement>) => {
+    if (dragRef.current?.pointerId !== event.pointerId) return;
+    const position = positionFromPointer(event);
+    dragRef.current = null;
+    setDragPosition(null);
+    if (!position) return;
+    if (position.kind === "source") onMoveSource(position.index, position.x, position.y);
+    else onMovePerson(position.name, position.x, position.y);
+  };
   if (!phase.mapImage) return null;
   return (
     <Box sx={{ display: "grid", gap: 1 }}>
-      <Typography sx={{ color: "#b8ac98", fontSize: 12 }}>주황색 단서를 끌어 지도 위 원하는 곳에 놓으세요.</Typography>
+      <Typography sx={{ color: "#b8ac98", fontSize: 12 }}>주황색 단서와 파란 인물을 끌어 놓으세요. 겹치는 단서는 가까운 빈자리로 자동 이동합니다.</Typography>
       <Box ref={mapRef} sx={{ position: "relative", width: "100%", maxWidth: 720, aspectRatio: "16 / 9", backgroundImage: `url(${phase.mapImage})`, backgroundSize: "100% 100%", border: "1px solid rgba(231,201,148,.3)", bgcolor: "#111b18", overflow: "hidden" }}>
         {phase.sources.map((source, index) => {
           const number = sourceNumbers.get(source.evidence.id);
-          const x = dragPosition?.index === index ? dragPosition.x : source.x ?? 50;
-          const y = dragPosition?.index === index ? dragPosition.y : source.y ?? 50;
+          const x = dragPosition?.kind === "source" && dragPosition.index === index ? dragPosition.x : source.x ?? 50;
+          const y = dragPosition?.kind === "source" && dragPosition.index === index ? dragPosition.y : source.y ?? 50;
           return (
             <Tooltip key={source.id} title={`#${number ?? "?"} · ${source.title || "새 단서"}`}>
               <Box
                 component="button"
                 type="button"
                 aria-label={`단서 ${number ?? "?"} ${source.title || "새 단서"} 위치 이동`}
-                onPointerDown={(event) => {
-                  if (!event.isPrimary || event.button !== 0) return;
-                  const bounds = mapRef.current?.getBoundingClientRect();
-                  if (!bounds) return;
-                  dragRef.current = { index, pointerId: event.pointerId, offsetX: event.clientX - bounds.left - x / 100 * bounds.width, offsetY: event.clientY - bounds.top - y / 100 * bounds.height };
-                  event.currentTarget.setPointerCapture(event.pointerId);
-                }}
+                onPointerDown={(event) => startDrag(event, { kind: "source", index }, x, y)}
                 onPointerMove={(event) => {
                   if (dragRef.current?.pointerId !== event.pointerId) return;
                   setDragPosition(positionFromPointer(event));
                 }}
-                onPointerUp={(event) => {
-                  if (dragRef.current?.pointerId !== event.pointerId) return;
-                  const position = positionFromPointer(event);
-                  dragRef.current = null;
-                  setDragPosition(null);
-                  if (position) onMoveSource(position.index, position.x, position.y);
-                }}
+                onPointerUp={finishDrag}
                 onPointerCancel={() => { dragRef.current = null; setDragPosition(null); }}
                 onKeyDown={(event) => {
                   const offset = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }[event.key];
@@ -163,16 +178,41 @@ function MapPreview({ phase, sourceNumbers, onMoveSource }: { phase: Interrogati
                   event.preventDefault();
                   onMoveSource(index, clamp(x + offset[0]), clamp(y + offset[1]));
                 }}
-                sx={{ position: "absolute", left: `${x}%`, top: `${y}%`, transform: "translate(-50%, -50%)", width: 28, height: 28, p: 0, border: "2px solid #fff1cf", borderRadius: "50%", bgcolor: "#a76426", color: "#fff", fontSize: 12, fontWeight: 800, boxShadow: "0 0 0 3px rgba(0,0,0,.7)", cursor: dragPosition?.index === index ? "grabbing" : "grab", touchAction: "none", zIndex: dragPosition?.index === index ? 2 : 1, "&:focus-visible": { outline: "2px solid #fff1cf", outlineOffset: 3 } }}
+                sx={{ position: "absolute", left: `${x}%`, top: `${y}%`, transform: "translate(-50%, -50%)", width: 28, height: 28, p: 0, border: "2px solid #fff1cf", borderRadius: "50%", bgcolor: "#a76426", color: "#fff", fontSize: 12, fontWeight: 800, boxShadow: "0 0 0 3px rgba(0,0,0,.7)", cursor: dragPosition?.kind === "source" && dragPosition.index === index ? "grabbing" : "grab", touchAction: "none", zIndex: dragPosition?.kind === "source" && dragPosition.index === index ? 3 : 1, "&:focus-visible": { outline: "2px solid #fff1cf", outlineOffset: 3 } }}
               >
                 {number ?? "?"}
               </Box>
             </Tooltip>
           );
         })}
+        {people.map((person) => {
+          const x = dragPosition?.kind === "person" && dragPosition.name === person.name ? dragPosition.x : person.x;
+          const y = dragPosition?.kind === "person" && dragPosition.name === person.name ? dragPosition.y : person.y;
+          return <Tooltip key={person.name} title={`${person.name} 위치 이동`}>
+            <Box
+              component="button"
+              type="button"
+              aria-label={`${person.name} 위치 이동`}
+              onPointerDown={(event) => startDrag(event, { kind: "person", name: person.name }, x, y)}
+              onPointerMove={(event) => { if (dragRef.current?.pointerId === event.pointerId) setDragPosition(positionFromPointer(event)); }}
+              onPointerUp={finishDrag}
+              onPointerCancel={() => { dragRef.current = null; setDragPosition(null); }}
+              onKeyDown={(event) => {
+                const offset = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }[event.key];
+                if (!offset) return;
+                event.preventDefault();
+                onMovePerson(person.name, clamp(x + offset[0]), clamp(y + offset[1]));
+              }}
+              sx={{ position: "absolute", left: `${x}%`, top: `${y}%`, transform: "translate(-50%, -50%)", minWidth: 32, height: 32, px: .5, border: "2px solid #d6edff", borderRadius: "50%", bgcolor: "#315f76", color: "#fff", fontSize: 12, fontWeight: 800, boxShadow: "0 0 0 3px rgba(0,0,0,.7)", cursor: dragPosition?.kind === "person" && dragPosition.name === person.name ? "grabbing" : "grab", touchAction: "none", zIndex: dragPosition?.kind === "person" && dragPosition.name === person.name ? 4 : 2, "&:focus-visible": { outline: "2px solid #d6edff", outlineOffset: 3 } }}
+            >{person.name === "김짜장" ? "소장" : person.name.replace("실험체 ", "")}</Box>
+          </Tooltip>;
+        })}
       </Box>
       <Box sx={{ display: "flex", flexWrap: "wrap", gap: .75, maxWidth: 720 }}>
         {phase.sources.map((source) => <Chip key={source.id} size="small" label={`#${sourceNumbers.get(source.evidence.id) ?? "?"} · ${source.title || "새 단서"}`} />)}
+      </Box>
+      <Box sx={{ display: "flex", flexWrap: "wrap", gap: .75, maxWidth: 720 }}>
+        {people.map((person) => <Chip key={person.name} size="small" color="info" label={person.name} />)}
       </Box>
     </Box>
   );
@@ -196,6 +236,8 @@ export default function PsychicAdminEditor() {
   const [phaseArea, setPhaseArea] = useState<"interrogation" | "dialogue" | "evidence" | "settings">("interrogation");
   const [phaseIndex, setPhaseIndex] = useState(0);
   const [personName, setPersonName] = useState("");
+  const [newPersonName, setNewPersonName] = useState("");
+  const [newPersonImage, setNewPersonImage] = useState("");
   const [questionSearch, setQuestionSearch] = useState("");
   const [expandedSourceId, setExpandedSourceId] = useState<string | null>(null);
   const [expandedQuestionId, setExpandedQuestionId] = useState<string | null>(null);
@@ -241,9 +283,12 @@ export default function PsychicAdminEditor() {
     return () => window.clearTimeout(timer);
   }, [content]);
   const phase = content.phases[phaseIndex];
-  const personIndex = phase?.interrogations.findIndex((item) => item.suspectName === personName) ?? -1;
-  const activePersonIndex = personIndex >= 0 ? personIndex : 0;
-  const person = phase?.interrogations[activePersonIndex];
+  const visiblePeople = phase ? phasePeople(phase) : [];
+  const visibleNames = new Set(visiblePeople.map((item) => item.name));
+  const visibleInterrogations = phase?.interrogations.filter((item) => visibleNames.has(item.suspectName)) ?? [];
+  const person = visibleInterrogations.find((item) => item.suspectName === personName) ?? visibleInterrogations[0];
+  const activePersonIndex = phase?.interrogations.findIndex((item) => item.suspectName === person?.suspectName) ?? -1;
+  const personCatalog = [...psychicSuspects, psychicVictim, ...(content.people ?? [])];
   const options = useMemo(() => evidenceOptions(content, phaseIndex), [content, phaseIndex]);
   const clueOptions = useMemo(() => {
     const byId = new Map<string, { id: string; label: string; description: string }>();
@@ -255,11 +300,14 @@ export default function PsychicAdminEditor() {
   }, [content]);
   const sourceNumbers = useMemo(() => new Map((content.sharedSources ?? []).map((source) => [source.id, source.number ?? 0])), [content.sharedSources]);
 
-  const update = (edit: (next: EditableInterrogationContent) => void, rebuild: "none" | "questions" | "all" = "none") => {
+  const update = (edit: (next: EditableInterrogationContent) => void, rebuild: "none" | "questions" | "all" = "none", preferredSourceId?: string) => {
     setContent((previous) => {
       const next = structuredClone(previous);
       edit(next);
-      if (rebuild === "all" && next.sharedSources) next.phases = materializeSharedSources(next.phases, next.sharedSources);
+      if (rebuild === "all" && next.sharedSources) {
+        next.sharedSources = spreadSharedSourcePositions(next.sharedSources, preferredSourceId);
+        next.phases = materializeSharedSources(next.phases, next.sharedSources);
+      }
       if (rebuild !== "none" && next.sharedQuestions) next.phases = materializeSharedQuestions(next.phases, next.sharedQuestions);
       return next;
     });
@@ -271,11 +319,11 @@ export default function PsychicAdminEditor() {
       const question = next.sharedQuestions?.find((item) => item.id === id);
       if (question) edit(question);
     }, "questions");
-  const editSharedSource = (id: string, edit: (source: SharedSource, phases: InterrogationPhase[]) => void) =>
+  const editSharedSource = (id: string, edit: (source: SharedSource, phases: InterrogationPhase[]) => void, moved = false) =>
     update((next) => {
       const source = next.sharedSources?.find((item) => item.id === id);
       if (source) edit(source, next.phases);
-    }, "all");
+    }, "all", moved ? id : undefined);
   const addSharedSource = () => {
     const evidence = emptyEvidence();
     setExpandedSourceId(evidence.id);
@@ -304,6 +352,41 @@ export default function PsychicAdminEditor() {
         base: { prompt: "", answer: [""] }, changes: {}, questionIds: {}, evidenceRefs: {}, order: {},
       });
     }, "questions");
+  };
+  const togglePhasePerson = (name: string, visible: boolean) => {
+    editPhase((next) => {
+      next.people ??= phasePeople(next);
+      if (visible && !next.people.some((item) => item.name === name)) {
+        next.people.push({ name, ...defaultPersonPosition(name, next.people.length) });
+        if (!next.interrogations.some((item) => item.suspectName === name)) {
+          next.interrogations.push({ suspectName: name, conversation: [], conversationChoices: [], questions: [] });
+        }
+      } else if (!visible) {
+        next.people = next.people.filter((item) => item.name !== name);
+        const hiddenQuestionIds = new Set(next.interrogations.find((item) => item.suspectName === name)?.questions.map((item) => item.id) ?? []);
+        next.requiredQuestionIds = next.requiredQuestionIds.filter((id) => !hiddenQuestionIds.has(id));
+      }
+    }, "questions");
+    if (visible) setPersonName(name);
+    else if (personName === name) setPersonName("");
+  };
+  const addPerson = () => {
+    const name = newPersonName.trim();
+    if (!name || personCatalog.some((item) => item.name === name)) {
+      setNotice("새 인물의 이름을 입력하고 중복되지 않는지 확인하세요.");
+      return;
+    }
+    update((next) => {
+      next.people ??= [];
+      next.people.push({ name, image: newPersonImage.trim() || undefined, description: "" });
+      const current = next.phases[phaseIndex];
+      current.people ??= phasePeople(current);
+      current.people.push({ name, ...defaultPersonPosition(name, current.people.length) });
+      current.interrogations.push({ suspectName: name, conversation: [], conversationChoices: [], questions: [] });
+    }, "questions");
+    setPersonName(name);
+    setNewPersonName("");
+    setNewPersonImage("");
   };
 
   const exportCode = () => {
@@ -353,7 +436,7 @@ export default function PsychicAdminEditor() {
         id, title: "새 조사", timeLabel: "", energyLimit: 3,
         intro: [{ speaker: "나", text: "" }], mapImage: next.phases[0]?.mapImage,
         fallbackAnswers: [],
-        locations: [], sources: [],
+        locations: [], people: suspectNames.map((name, index) => ({ name, ...defaultPersonPosition(name, index) })), sources: [],
         combinations: [],
         interrogations: suspectNames.map((suspectName) => ({
           suspectName, conversation: [], conversationChoices: [], questions: [],
@@ -454,7 +537,7 @@ export default function PsychicAdminEditor() {
             <Box sx={{ display: "grid", gap: 2, minWidth: 0 }}>
               {view === "prologue" && (
                 <Section title="프롤로그">
-                  <ScriptEditor label="시작 대사" value={content.prologue} onChange={(lines) => update((next) => { next.prologue = lines; })} />
+                  <ScriptEditor label="시작 대사" value={content.prologue} additionalSpeakers={content.people} onChange={(lines) => update((next) => { next.prologue = lines; })} />
                 </Section>
               )}
               {view === "fallback" && (
@@ -463,7 +546,7 @@ export default function PsychicAdminEditor() {
                     <Accordion key={index} disableGutters slotProps={{ transition: { unmountOnExit: true } }} sx={{ bgcolor: "#121d19", color: "#f8edda" }}>
                       <AccordionSummary expandIcon={<ExpandMoreRounded sx={{ color: "#d9b77d" }} />}>응답 {index + 1}</AccordionSummary>
                       <AccordionDetails sx={{ display: "grid", gap: 1 }}>
-                        <ScriptEditor label="대사" value={answer} onChange={(lines) => update((next) => { next.fallbackAnswers![index] = lines; })} />
+                        <ScriptEditor label="대사" value={answer} additionalSpeakers={content.people} onChange={(lines) => update((next) => { next.fallbackAnswers![index] = lines; })} />
                         <Button color="error" size="small" onClick={() => update((next) => { next.fallbackAnswers!.splice(index, 1); })}>응답 삭제</Button>
                       </AccordionDetails>
                     </Accordion>
@@ -494,17 +577,18 @@ export default function PsychicAdminEditor() {
                       <TextField size="small" type="number" label="에너지" value={phase.energyLimit ?? 4} onChange={(event) => editPhase((next) => { next.energyLimit = Number(event.target.value); })} />
                       <TextField size="small" label="지도 이미지 경로" value={phase.mapImage ?? ""} onChange={(event) => editPhase((next) => { next.mapImage = event.target.value; })} sx={{ gridColumn: "1 / -1" }} />
                     </Box>
-                    <MapPreview phase={phase} sourceNumbers={sourceNumbers} onMoveSource={(index, x, y) => {
+                    <MapPreview phase={phase} sourceNumbers={sourceNumbers} people={visiblePeople} onMovePerson={(name, x, y) => {
+                      editPhase((next) => {
+                        const entry = next.people?.find((item) => item.name === name);
+                        if (entry) { entry.x = x; entry.y = y; }
+                      });
+                    }} onMoveSource={(index, x, y) => {
                       const sourceId = phase.sources[index]?.evidence.id;
                       if (!sourceId) return;
-                      editSharedSource(sourceId, (source, phases) => {
-                        const firstVisible = phases.find((item) => source.visiblePhaseIds.includes(item.id))?.id;
-                        const state = phase.id === firstVisible
-                          ? source.base
-                          : (source.changes[phase.id] ??= structuredClone(sharedSourceAtPhase(source, phases, phase.id)));
-                        state.x = x;
-                        state.y = y;
-                      });
+                      editSharedSource(sourceId, (source) => {
+                        source.base.x = x;
+                        source.base.y = y;
+                      }, true);
                     }} />
                   </Section>
                   }
@@ -514,7 +598,7 @@ export default function PsychicAdminEditor() {
                       <Accordion key={index} disableGutters slotProps={{ transition: { unmountOnExit: true } }} sx={{ bgcolor: "#121d19", color: "#f8edda" }}>
                         <AccordionSummary expandIcon={<ExpandMoreRounded sx={{ color: "#d9b77d" }} />}>응답 {index + 1}</AccordionSummary>
                         <AccordionDetails sx={{ display: "grid", gap: 1 }}>
-                          <ScriptEditor label="신문 답변" value={answer} onChange={(lines) => editPhase((next) => { next.fallbackAnswers![index] = lines; })} />
+                          <ScriptEditor label="신문 답변" value={answer} additionalSpeakers={content.people} onChange={(lines) => editPhase((next) => { next.fallbackAnswers![index] = lines; })} />
                           <Button color="error" size="small" sx={{ justifySelf: "end" }} onClick={() => editPhase((next) => { next.fallbackAnswers!.splice(index, 1); })}>응답 삭제</Button>
                         </AccordionDetails>
                       </Accordion>
@@ -558,18 +642,35 @@ export default function PsychicAdminEditor() {
                     ))}
                   </Section>}
 
+                  {phaseArea === "dialogue" && <Section title="등장 인물">
+                    <Typography sx={{ color: "#b8ac98", fontSize: 12 }}>이 페이즈에 보일 인물을 선택하세요. 위치는 설정 탭 지도에서 파란 표시를 끌어 옮깁니다.</Typography>
+                    <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
+                      {personCatalog.map((entry) => <FormControlLabel key={entry.name} control={<Checkbox size="small" checked={visibleNames.has(entry.name)} onChange={(event) => togglePhasePerson(entry.name, event.target.checked)} />} label={entry.name} sx={{ "& .MuiFormControlLabel-label": { fontSize: 13 } }} />)}
+                    </Box>
+                    <Box sx={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 1 }}>
+                      <TextField size="small" label="새 인물 이름" value={newPersonName} onChange={(event) => setNewPersonName(event.target.value)} />
+                      <TextField size="small" label="인물 이미지 경로" value={newPersonImage} onChange={(event) => setNewPersonImage(event.target.value)} placeholder="/image/..." />
+                      <Button size="small" startIcon={<AddRounded />} onClick={addPerson}>인물 추가</Button>
+                    </Box>
+                    {(content.people ?? []).map((entry, index) => <Box key={entry.name} sx={{ display: "flex", flexWrap: "wrap", gap: 1, alignItems: "center" }}>
+                      <Typography sx={{ minWidth: 100, fontSize: 13 }}>{entry.name}</Typography>
+                      <TextField size="small" label="이미지 경로" value={entry.image ?? ""} onChange={(event) => update((next) => { next.people![index].image = event.target.value; })} />
+                      <TextField size="small" label="인물 설명" value={entry.description ?? ""} onChange={(event) => update((next) => { next.people![index].description = event.target.value; })} sx={{ flexGrow: 1 }} />
+                    </Box>)}
+                  </Section>}
+
                   {phaseArea === "dialogue" && <Section title="시작 대사">
-                    <ScriptEditor label="페이즈 시작 대사" value={phase.intro} onChange={(lines) => editPhase((next) => { next.intro = lines; })} />
+                    <ScriptEditor label="페이즈 시작 대사" value={phase.intro} additionalSpeakers={content.people} onChange={(lines) => editPhase((next) => { next.intro = lines; })} />
                   </Section>}
 
                   {(phaseArea === "dialogue" || phaseArea === "interrogation") && <Section title={phaseArea === "dialogue" ? "인물 대화" : "단서 신문"} order={1}>
                     <Stack direction="row" spacing={.75} sx={{ flexWrap: "wrap", gap: .75, "& > *": { marginLeft: "0 !important" } }}>
-                      {phase.interrogations.map((item) => <Button key={item.suspectName} variant={person?.suspectName === item.suspectName ? "contained" : "outlined"} size="small" onClick={() => { setPersonName(item.suspectName); setQuestionSearch(""); }} sx={{ whiteSpace: "nowrap" }}>{item.suspectName}{phaseArea === "interrogation" ? ` · ${(content.sharedQuestions ?? []).filter((question) => question.suspectName === item.suspectName).length}` : ""}</Button>)}
+                      {visibleInterrogations.map((item) => <Button key={item.suspectName} variant={person?.suspectName === item.suspectName ? "contained" : "outlined"} size="small" onClick={() => { setPersonName(item.suspectName); setQuestionSearch(""); }} sx={{ whiteSpace: "nowrap" }}>{item.suspectName}{phaseArea === "interrogation" ? ` · ${(content.sharedQuestions ?? []).filter((question) => question.suspectName === item.suspectName).length}` : ""}</Button>)}
                     </Stack>
                     {person && (
                       <>
                         {phaseArea === "dialogue" && <>
-                        <ScriptEditor label={`${person.suspectName} 기본 대화`} value={person.conversation} defaultSpeaker={person.suspectName} onChange={(lines) => editPhase((next) => { next.interrogations[activePersonIndex].conversation = lines; })} />
+                        <ScriptEditor label={`${person.suspectName} 기본 대화`} value={person.conversation} defaultSpeaker={person.suspectName} additionalSpeakers={content.people} onChange={(lines) => editPhase((next) => { next.interrogations[activePersonIndex].conversation = lines; })} />
                         <Box sx={{ display: "grid", gap: 1 }}>
                           <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                             <Typography sx={{ color: "#d9b77d", fontSize: 13, fontWeight: 800 }}>대화 선택지 · {person.conversationChoices?.length ?? 0}</Typography>
@@ -581,7 +682,7 @@ export default function PsychicAdminEditor() {
                               <AccordionDetails sx={{ display: "grid", gap: 1 }}>
                                 <TextField size="small" label="선택지 ID" value={choice.id} onChange={(event) => editPhase((next) => { next.interrogations[activePersonIndex].conversationChoices![index].id = event.target.value; })} />
                                 <TextField size="small" label="플레이어 질문" value={choice.question} onChange={(event) => editPhase((next) => { next.interrogations[activePersonIndex].conversationChoices![index].question = event.target.value; })} />
-                                <ScriptEditor label="상대 답변" value={choice.answer} defaultSpeaker={person.suspectName} onChange={(lines) => editPhase((next) => { next.interrogations[activePersonIndex].conversationChoices![index].answer = lines; })} />
+                                <ScriptEditor label="상대 답변" value={choice.answer} defaultSpeaker={person.suspectName} additionalSpeakers={content.people} onChange={(lines) => editPhase((next) => { next.interrogations[activePersonIndex].conversationChoices![index].answer = lines; })} />
                                 <Button color="error" size="small" sx={{ justifySelf: "end" }} onClick={() => editPhase((next) => { next.interrogations[activePersonIndex].conversationChoices!.splice(index, 1); })}>선택지 삭제</Button>
                               </AccordionDetails>
                             </Accordion>
@@ -605,6 +706,7 @@ export default function PsychicAdminEditor() {
                                 question={question}
                                 phases={content.phases}
                                 options={clueOptions}
+                                speakers={content.people}
                                 expanded={expandedQuestionId === question.id}
                                 onExpandedChange={(expanded) => setExpandedQuestionId(expanded ? question.id : null)}
                                 onChange={(changed) => editSharedQuestion(question.id, (item) => Object.assign(item, changed))}

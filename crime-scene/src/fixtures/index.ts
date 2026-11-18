@@ -400,7 +400,7 @@ export const createTextScenario = (
 
 export const createInterrogationScenario = (
   id: ScenarioId,
-  content: Pick<InterrogationScenarioType, "prologue" | "phases" | "fallbackAnswers">
+  content: Pick<InterrogationScenarioType, "prologue" | "phases" | "fallbackAnswers" | "people">
 ): InterrogationScenarioType => {
   const scenario = getScenarioSummary(id);
 
@@ -411,7 +411,7 @@ export const createInterrogationScenario = (
   validateInterrogationPhases(
     id,
     content.phases,
-    [...scenario.suspects, ...scenario.victims].map((person) => person.name)
+    [...scenario.suspects, ...scenario.victims, ...(content.people ?? [])].map((person) => person.name)
   );
 
   return { ...scenario, gameType: "INTERROGATION", ...content };

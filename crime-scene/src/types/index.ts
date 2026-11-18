@@ -135,6 +135,18 @@ export interface InterrogationMapLocation {
   y: number;
 }
 
+export interface InterrogationPersonProfile {
+  name: string;
+  image?: string;
+  description?: string;
+}
+
+export interface InterrogationMapPerson {
+  name: string;
+  x: number;
+  y: number;
+}
+
 export interface InterrogationDialogueLine {
   text: string;
   speaker?: string;
@@ -174,6 +186,7 @@ export interface InterrogationPhase {
   finalInterrogation?: boolean;
   mapImage?: string;
   locations: InterrogationMapLocation[];
+  people?: InterrogationMapPerson[];
   sources: InterrogationSource[];
   combinations: InterrogationCombination[];
   fallbackAnswers?: InterrogationScript[];
@@ -192,6 +205,7 @@ export interface InterrogationScenarioType extends ScenarioSummary {
   gameType: "INTERROGATION";
   prologue: (string | InterrogationDialogueLine)[];
   phases: InterrogationPhase[];
+  people?: InterrogationPersonProfile[];
   fallbackAnswers?: InterrogationScript[];
 }
 

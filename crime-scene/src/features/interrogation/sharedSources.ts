@@ -30,6 +30,34 @@ export function ensureSharedSourceNumbers(shared: SharedSource[]): SharedSource[
   });
 }
 
+const clampPosition = (value: number, minimum: number, maximum: number) => Math.max(minimum, Math.min(maximum, value));
+const positionsOverlap = (left: { x: number; y: number }, right: { x: number; y: number }) =>
+  Math.abs(left.x - right.x) < 20 && Math.abs(left.y - right.y) < 16;
+
+export function spreadSharedSourcePositions(shared: SharedSource[], preferredId?: string): SharedSource[] {
+  const placed: { x: number; y: number }[] = [];
+  const positions = new Map<string, { x: number; y: number }>();
+  const ordered = [...shared].sort((left, right) =>
+    left.id === preferredId ? -1 : right.id === preferredId ? 1 : (left.number ?? 0) - (right.number ?? 0));
+  for (const source of ordered) {
+    const target = { x: clampPosition(source.base.x ?? 50, 12, 88), y: clampPosition(source.base.y ?? 50, 10, 90) };
+    let position = target;
+    if (placed.some((item) => positionsOverlap(item, target))) {
+      const candidates = [target];
+      for (let y = 10; y <= 90; y += 2.5) {
+        for (let x = 12; x <= 88; x += 2.5) candidates.push({ x, y });
+      }
+      candidates.sort((left, right) =>
+        ((left.x - target.x) * 1.78) ** 2 + (left.y - target.y) ** 2 -
+        (((right.x - target.x) * 1.78) ** 2 + (right.y - target.y) ** 2));
+      position = candidates.find((candidate) => placed.every((item) => !positionsOverlap(item, candidate))) ?? target;
+    }
+    placed.push(position);
+    positions.set(source.id, position);
+  }
+  return shared.map((source) => ({ ...source, base: { ...source.base, ...positions.get(source.id) } }));
+}
+
 const sourceState = (source: InterrogationSource): SharedSourceState => ({
   x: source.x ?? 50,
   y: source.y ?? 50,
@@ -38,6 +66,7 @@ const sourceState = (source: InterrogationSource): SharedSourceState => ({
   password: source.password,
   evidence: structuredClone(source.evidence),
 });
+const sourceContent = ({ x: _x, y: _y, ...content }: SharedSourceState) => content;
 
 export function sharedSourceAtPhase(source: SharedSource, phases: InterrogationPhase[], phaseId: string): SharedSourceState {
   let state = source.base;
@@ -74,7 +103,7 @@ export function deriveSharedSources(phases: InterrogationPhase[]): SharedSource[
         item = { id, base: state, visiblePhaseIds: [], changes: {}, sourceIds: {}, order: {} };
         shared.push(item);
         byId.set(id, item);
-      } else if (JSON.stringify(sharedSourceAtPhase(item, phases, phase.id)) !== JSON.stringify(state)) {
+      } else if (JSON.stringify(sourceContent(sharedSourceAtPhase(item, phases, phase.id))) !== JSON.stringify(sourceContent(state))) {
         item.changes[phase.id] = state;
       }
       item.visiblePhaseIds.push(phase.id);
@@ -94,6 +123,8 @@ export function materializeSharedSources(phases: InterrogationPhase[], shared: S
         const state = structuredClone(sharedSourceAtPhase(source, phases, phase.id));
         return {
           ...state,
+          x: source.base.x,
+          y: source.base.y,
           evidence: { ...state.evidence, id: source.id },
           id: source.sourceIds[phase.id] ?? `${phase.id}-source-${source.id}`,
           versionPhaseId: sharedSourceVersionPhase(source, phases, phase.id),

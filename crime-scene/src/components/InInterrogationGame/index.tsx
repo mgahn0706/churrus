@@ -26,6 +26,7 @@ import {
   readInterrogationProgress,
   type InterrogationProgress,
 } from "@/features/interrogation/engine";
+import { phasePeople } from "@/features/interrogation/phasePeople";
 import usePreventUnload from "@/hooks/usePreventUnload";
 import type {
   InterrogationConversationChoice,
@@ -166,19 +167,25 @@ export default function InInterrogationGame({
   );
   const focusedMapEvidence = evidence.find((item) => item.instanceId === focusedMapEvidenceId);
   const lockedSource = phase?.sources.find((item) => item.id === lockedSourceId);
-  const people = useMemo(
-    () => [...scenario.suspects, ...scenario.victims].filter((person) =>
-      phase?.interrogations.some((item) => item.suspectName === person.name),
-    ),
-    [scenario.suspects, scenario.victims, phase],
-  );
+  const people = useMemo(() => {
+    if (!phase) return [];
+    const profiles = [...scenario.suspects, ...scenario.victims, ...(scenario.people ?? [])];
+    return phasePeople(phase).map((position) => {
+      const profile = profiles.find((item) => item.name === position.name);
+      return {
+        ...position,
+        image: profile?.image,
+        statement: profile && "statement" in profile && typeof profile.statement === "string" ? profile.statement : undefined,
+      };
+    });
+  }, [scenario.suspects, scenario.victims, scenario.people, phase]);
   const canConnect = Boolean(phase?.combinations.length) && evidence.length >= 2;
   const energySpent = phase ? progress.energySpentByPhase[phase.id] ?? 0 : 0;
   const energyLimit = phase?.energyLimit ?? 4;
   const energyRemaining = Math.max(0, energyLimit - energySpent);
   const activeSuspectName =
     selectedSuspectName || phase?.interrogations[0]?.suspectName || "";
-  const activeSuspect = [...scenario.suspects, ...scenario.victims].find(
+  const activeSuspect = people.find(
     (item) => item.name === activeSuspectName,
   );
   const phaseIntroPending = Boolean(

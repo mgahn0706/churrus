@@ -205,6 +205,22 @@ export function validateInterrogationPhases(
     const phaseSuspectNames = new Set<string>();
     const phaseEvidenceIds = new Set<string>();
 
+    if (phase.people) {
+      const visibleNames = new Set<string>();
+      for (const person of phase.people) {
+        if (!person.name || !suspectNames.includes(person.name) || visibleNames.has(person.name)) {
+          throw new Error(`Invalid phase person in ${scenarioId}: ${person.name}`);
+        }
+        if (!Number.isFinite(person.x) || !Number.isFinite(person.y) || person.x < 0 || person.x > 100 || person.y < 0 || person.y > 100) {
+          throw new Error(`Invalid person position in ${scenarioId}: ${person.name}`);
+        }
+        visibleNames.add(person.name);
+        if (!phase.interrogations.some((item) => item.suspectName === person.name)) {
+          throw new Error(`Missing person dialogue in ${scenarioId}: ${person.name}`);
+        }
+      }
+    }
+
     if (phase.energyLimit !== undefined && (!Number.isInteger(phase.energyLimit) || phase.energyLimit < 1)) {
       throw new Error(`Invalid energy limit in ${scenarioId}: ${phase.id}`);
     }
@@ -268,6 +284,7 @@ export function validateInterrogationPhases(
         );
       }
       phaseSuspectNames.add(interrogation.suspectName);
+      if (phase.people && !phase.people.some((person) => person.name === interrogation.suspectName)) continue;
       const questionPairs = new Set<string>();
       for (const question of interrogation.questions) {
         addUnique(questionIds, question.id, "question");

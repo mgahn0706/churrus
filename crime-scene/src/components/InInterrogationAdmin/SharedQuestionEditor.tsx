@@ -10,10 +10,11 @@ import ScriptEditor from "./ScriptEditor";
 
 type ClueOption = { id: string; label: string; description: string };
 
-export default function SharedQuestionEditor({ question, phases, options, expanded, onExpandedChange, onChange, onDelete, createEvidence }: {
+export default function SharedQuestionEditor({ question, phases, options, speakers, expanded, onExpandedChange, onChange, onDelete, createEvidence }: {
   question: SharedQuestion;
   phases: InterrogationPhase[];
   options: ClueOption[];
+  speakers?: { name: string; image?: string }[];
   expanded: boolean;
   onExpandedChange: (expanded: boolean) => void;
   onChange: (question: SharedQuestion) => void;
@@ -35,7 +36,7 @@ export default function SharedQuestionEditor({ question, phases, options, expand
   const stateFields = (state: SharedQuestionState, phaseId: string | null) => (
     <Box sx={{ display: "grid", gap: 1.5 }}>
       <TextField size="small" label="플레이어 질문" value={state.prompt} onChange={(event) => editState(phaseId, (next) => { next.prompt = event.target.value; })} multiline minRows={2} />
-      <ScriptEditor label="신문 답변" value={state.answer} defaultSpeaker={question.suspectName} onChange={(lines) => editState(phaseId, (next) => { next.answer = lines; })} />
+      <ScriptEditor label="신문 답변" value={state.answer} defaultSpeaker={question.suspectName} additionalSpeakers={speakers} onChange={(lines) => editState(phaseId, (next) => { next.answer = lines; })} />
       <FormControlLabel control={<Checkbox checked={Boolean(state.revealedEvidence)} onChange={(event) => editState(phaseId, (next) => { next.revealedEvidence = event.target.checked ? createEvidence() : undefined; })} />} label="답변 후 새 단서 획득" />
       {state.revealedEvidence && <EvidenceEditor value={state.revealedEvidence} onChange={(value) => editState(phaseId, (next) => { next.revealedEvidence = value; })} />}
     </Box>
@@ -80,7 +81,7 @@ export default function SharedQuestionEditor({ question, phases, options, expand
         {availablePhases.filter((phase) => question.changes[phase.id] && question.visiblePhaseIds.includes(phase.id)).map((phase) => (
           <Box key={phase.id} sx={{ display: "grid", gap: 1.5, p: 1.5, border: "1px solid rgba(231,201,148,.2)" }}>
             <Typography sx={{ color: "#d9b77d", fontSize: 13, fontWeight: 800 }}>{phase.timeLabel || phase.title}부터 바뀐 답변</Typography>
-            <ScriptEditor label="신문 답변" value={question.changes[phase.id].answer} defaultSpeaker={question.suspectName} onChange={(lines) => editState(phase.id, (next) => { next.answer = lines; })} />
+            <ScriptEditor label="신문 답변" value={question.changes[phase.id].answer} defaultSpeaker={question.suspectName} additionalSpeakers={speakers} onChange={(lines) => editState(phase.id, (next) => { next.answer = lines; })} />
           </Box>
         ))}
         <Button color="error" size="small" sx={{ justifySelf: "end" }} onClick={onDelete}>신문 삭제</Button>

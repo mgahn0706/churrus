@@ -1,14 +1,8 @@
 import { Box, Typography } from "@mui/material";
 import { LockOutlined } from "@mui/icons-material";
 import { sourceEvidenceInstanceId } from "@/features/interrogation/engine";
+import { defaultPersonPosition } from "@/features/interrogation/phasePeople";
 import type { InterrogationMapLocation, InterrogationSource } from "@/types";
-
-const psychicPersonPositions: Record<string, { x: number; y: number }> = {
-  "실험체 A": { x: 9, y: 77 },
-  "실험체 B": { x: 23, y: 77 },
-  "실험체 C": { x: 37, y: 77 },
-  "김짜장": { x: 63, y: 29 },
-};
 
 export default function ResearchMap({
   image,
@@ -23,7 +17,7 @@ export default function ResearchMap({
   image?: string;
   locations: InterrogationMapLocation[];
   sources: InterrogationSource[];
-  people: { name: string; image?: string }[];
+  people: { name: string; image?: string; x?: number; y?: number }[];
   collectedEvidenceIds: string[];
   phaseId: string;
   onSelect: (source: InterrogationSource) => void;
@@ -142,6 +136,7 @@ export default function ResearchMap({
             />
             <Typography
               component="span"
+              title={source.title}
               sx={{
                 px: .8,
                 py: .3,
@@ -149,6 +144,9 @@ export default function ResearchMap({
                 fontWeight: 700,
                 fontSize: { xs: 10, md: 12 },
                 whiteSpace: "nowrap",
+                maxWidth: { xs: 84, md: 138 },
+                overflow: "hidden",
+                textOverflow: "ellipsis",
               }}
             >
               {!collected && source.password && <LockOutlined sx={{ fontSize: 12, verticalAlign: "-2px", mr: .4 }} />}
@@ -158,12 +156,8 @@ export default function ResearchMap({
           );
         })}
         {people.map((person, index) => {
-          const position = psychicPersonPositions[person.name] ?? [
-            { x: 34, y: 36 },
-            { x: 52, y: 62 },
-            { x: 68, y: 36 },
-            { x: 43, y: 22 },
-          ][index] ?? { x: 50, y: 50 };
+          const fallback = defaultPersonPosition(person.name, index);
+          const position = { x: person.x ?? fallback.x, y: person.y ?? fallback.y };
           return (
             <Box
               component="button"
@@ -194,10 +188,9 @@ export default function ResearchMap({
               }}
             >
               <Box
-                component="img"
+                component={person.image ? "img" : "span"}
                 className="person-portrait"
-                src={person.image}
-                alt=""
+                {...(person.image ? { src: person.image, alt: "" } : {})}
                 sx={{
                   width: { xs: 42, md: 62 },
                   height: { xs: 42, md: 62 },
@@ -206,10 +199,12 @@ export default function ResearchMap({
                   border: "2px solid rgba(224,240,232,.78)",
                   borderRadius: "50%",
                   bgcolor: "#1a2421",
+                  display: "grid",
+                  placeItems: "center",
                   boxShadow: "0 2px 10px rgba(0,0,0,.6)",
                   transition: "transform .18s ease, border-color .18s ease",
                 }}
-              />
+              >{person.image ? undefined : person.name.slice(0, 1)}</Box>
               <Typography component="span" sx={{ px: .8, py: .3, bgcolor: "rgba(3,9,8,.88)", fontWeight: 700, fontSize: { xs: 10, md: 12 }, whiteSpace: "nowrap" }}>
                 {person.name}
               </Typography>
