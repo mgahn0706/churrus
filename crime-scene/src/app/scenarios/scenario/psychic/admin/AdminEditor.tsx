@@ -9,6 +9,7 @@ import {
 import { useEffect, useMemo, useRef, useState, type PointerEvent as ReactPointerEvent, type ReactNode } from "react";
 import EvidenceEditor from "@/components/InInterrogationAdmin/EvidenceEditor";
 import EvidenceCombinationPicker from "@/components/InInterrogationAdmin/EvidenceCombinationPicker";
+import SharedSourceEditor from "@/components/InInterrogationAdmin/SharedSourceEditor";
 import ScriptEditor from "@/components/InInterrogationAdmin/ScriptEditor";
 import { createScenarioTheme } from "@/components/createScenarioTheme";
 import {
@@ -17,6 +18,7 @@ import {
 } from "@/features/interrogation/adminContent";
 import { psychicInterrogationContent } from "@/fixtures/psychic/interrogation";
 import { psychicSuspects, psychicVictim } from "@/fixtures/psychic/suspects";
+import { deriveSharedSources, materializeSharedSources, sharedSourceAtPhase, type SharedSource } from "@/features/interrogation/sharedSources";
 import type { InterrogationEvidence, InterrogationPhase, InterrogationQuestion } from "@/types";
 
 const theme = createScenarioTheme("#bd874e", "dark", "Galmuri11, sans-serif");
@@ -25,7 +27,12 @@ const previousDraftKey = "psychic-interrogation-admin-v1";
 const suspectNames = [...psychicSuspects, psychicVictim].map((person) => person.name);
 const legacyMapImage = "/image/scenario/psychic/map/lab-map.png";
 const currentMapImage = "/image/scenario/psychic/map/lab-map.svg";
-const currentMapLocations = psychicInterrogationContent.phases[0].locations;
+const currentMapLocations = [
+  { id: "entrance", title: "연구소 입구", x: 12, y: 43 },
+  { id: "main-hall", title: "메인홀", x: 77, y: 69 },
+  { id: "laboratory", title: "실험실", x: 37, y: 23 },
+  { id: "director-office", title: "소장실", x: 63, y: 22 },
+];
 const updateLegacyMap = (draft: EditableInterrogationContent) => {
   const next = structuredClone(draft);
   for (const phase of next.phases) {
@@ -47,6 +54,27 @@ const updateLegacyMap = (draft: EditableInterrogationContent) => {
       locationId: source.id === "p4-note" ? "director-office" : source.locationId === "observation" ? "laboratory" : source.locationId,
     }));
   }
+  return next;
+};
+const normalizeMapCoordinates = (draft: EditableInterrogationContent) => {
+  const next = updateLegacyMap(draft);
+  for (const phase of next.phases) {
+    phase.sources = phase.sources.map((source) => {
+      const location = phase.locations.find((item) => item.id === source.locationId);
+      const siblings = phase.sources.filter((item) => item.locationId === source.locationId);
+      const spread = siblings.indexOf(source) - (siblings.length - 1) / 2;
+      const positioned = {
+        ...source,
+        x: source.x ?? (location?.x ?? 50) + spread * 8,
+        y: source.y ?? (location?.y ?? 50) + spread * 12,
+      };
+      delete positioned.locationId;
+      return positioned;
+    });
+    phase.locations = [];
+  }
+  next.sharedSources ??= deriveSharedSources(next.phases);
+  next.phases = materializeSharedSources(next.phases, next.sharedSources);
   return next;
 };
 const newId = (prefix: string) =>
@@ -85,19 +113,11 @@ function MapPreview({ phase, onMoveSource }: { phase: InterrogationPhase; onMove
   if (!phase.mapImage) return null;
   return (
     <Box sx={{ display: "grid", gap: 1 }}>
-      <Typography sx={{ color: "#b8ac98", fontSize: 12 }}>주황색 단서를 끌어 지도 위 원하는 곳에 놓으세요. 회색 점은 장소 기준 위치입니다.</Typography>
+      <Typography sx={{ color: "#b8ac98", fontSize: 12 }}>주황색 단서를 끌어 지도 위 원하는 곳에 놓으세요.</Typography>
       <Box ref={mapRef} sx={{ position: "relative", width: "100%", maxWidth: 720, aspectRatio: "16 / 9", backgroundImage: `url(${phase.mapImage})`, backgroundSize: "100% 100%", border: "1px solid rgba(231,201,148,.3)", bgcolor: "#111b18", overflow: "hidden" }}>
-        {phase.locations.map((location) => (
-          <Tooltip key={location.id} title={location.title}>
-            <Box sx={{ position: "absolute", left: `${location.x}%`, top: `${location.y}%`, transform: "translate(-50%, -50%)", width: 9, height: 9, bgcolor: "#d3d9d0", borderRadius: "50%", boxShadow: "0 0 0 3px rgba(0,0,0,.65)", pointerEvents: "none" }} />
-          </Tooltip>
-        ))}
         {phase.sources.map((source, index) => {
-          const location = phase.locations.find((item) => item.id === source.locationId);
-          const siblings = phase.sources.filter((item) => item.locationId === source.locationId);
-          const spread = siblings.indexOf(source) - (siblings.length - 1) / 2;
-          const x = dragPosition?.index === index ? dragPosition.x : source.x ?? (location?.x ?? 50) + spread * 8;
-          const y = dragPosition?.index === index ? dragPosition.y : source.y ?? (location?.y ?? 50) + spread * 12;
+          const x = dragPosition?.index === index ? dragPosition.x : source.x ?? 50;
+          const y = dragPosition?.index === index ? dragPosition.y : source.y ?? 50;
           return (
             <Tooltip key={source.id} title={source.title || `단서 ${index + 1}`}>
               <Box
@@ -156,7 +176,7 @@ function downloadText(filename: string, text: string, type: string) {
 }
 
 export default function PsychicAdminEditor() {
-  const [content, setContent] = useState<EditableInterrogationContent>(() => structuredClone(psychicInterrogationContent));
+  const [content, setContent] = useState<EditableInterrogationContent>(() => normalizeMapCoordinates(structuredClone(psychicInterrogationContent)));
   const [loaded, setLoaded] = useState(false);
   const [view, setView] = useState<"phase" | "prologue" | "fallback">("phase");
   const [phaseArea, setPhaseArea] = useState<"interrogation" | "dialogue" | "evidence" | "settings">("interrogation");
@@ -173,7 +193,7 @@ export default function PsychicAdminEditor() {
       setPreviousDraftAvailable(Boolean(localStorage.getItem(previousDraftKey)));
       if (stored) {
         const parsed: unknown = JSON.parse(stored);
-        if (isEditableContent(parsed)) setContent(updateLegacyMap(parsed));
+        if (isEditableContent(parsed)) setContent(normalizeMapCoordinates(parsed));
       }
     } catch {
       setNotice("저장된 초안을 읽지 못했습니다. 기본 원고를 표시합니다.");
@@ -197,6 +217,7 @@ export default function PsychicAdminEditor() {
     setContent((previous) => {
       const next = structuredClone(previous);
       edit(next);
+      if (next.sharedSources) next.phases = materializeSharedSources(next.phases, next.sharedSources);
       return next;
     });
   };
@@ -204,6 +225,11 @@ export default function PsychicAdminEditor() {
     update((next) => edit(next.phases[phaseIndex]));
   const editQuestion = (questionIndex: number, edit: (question: InterrogationQuestion) => void) =>
     editPhase((next) => edit(next.interrogations[activePersonIndex].questions[questionIndex]));
+  const editSharedSource = (id: string, edit: (source: SharedSource, phases: InterrogationPhase[]) => void) =>
+    update((next) => {
+      const source = next.sharedSources?.find((item) => item.id === id);
+      if (source) edit(source, next.phases);
+    });
 
   const exportCode = () => {
     if (validationError) {
@@ -233,7 +259,7 @@ export default function PsychicAdminEditor() {
     try {
       const parsed: unknown = JSON.parse(await file.text());
       if (!isEditableContent(parsed)) throw new Error("올바른 초안 파일이 아닙니다.");
-      setContent(updateLegacyMap(parsed));
+      setContent(normalizeMapCoordinates(parsed));
       setPhaseIndex(0);
       setPersonName("");
       setView("phase");
@@ -246,17 +272,19 @@ export default function PsychicAdminEditor() {
     const finalIndex = content.phases.findIndex((item) => item.finalInterrogation);
     const insertAt = finalIndex < 0 ? content.phases.length : finalIndex;
     update((next) => {
+      const id = newId("phase");
       next.phases.splice(insertAt, 0, {
-        id: newId("phase"), title: "새 조사", timeLabel: "", energyLimit: 3,
+        id, title: "새 조사", timeLabel: "", energyLimit: 3,
         intro: [{ speaker: "나", text: "" }], mapImage: next.phases[0]?.mapImage,
         fallbackAnswers: [],
-        locations: structuredClone(next.phases[0]?.locations ?? []), sources: [],
+        locations: [], sources: [],
         combinations: [],
         interrogations: suspectNames.map((suspectName) => ({
           suspectName, conversation: [], conversationChoices: [], questions: [],
         })),
         requiredCombinationIds: [], requiredQuestionIds: [],
       });
+      for (const source of next.sharedSources ?? []) source.visiblePhaseIds.push(id);
     });
     setPhaseIndex(insertAt);
     setPersonName("");
@@ -264,13 +292,21 @@ export default function PsychicAdminEditor() {
   };
   const deletePhase = () => {
     if (!phase || phase.finalInterrogation || !window.confirm(`${phase.title} 페이즈를 삭제할까요?`)) return;
-    update((next) => { next.phases.splice(phaseIndex, 1); });
+    update((next) => {
+      const [removed] = next.phases.splice(phaseIndex, 1);
+      for (const source of next.sharedSources ?? []) {
+        source.visiblePhaseIds = source.visiblePhaseIds.filter((id) => id !== removed.id);
+        delete source.changes[removed.id];
+        delete source.sourceIds[removed.id];
+        delete source.order[removed.id];
+      }
+    });
     setPhaseIndex(Math.max(0, phaseIndex - 1));
     setPersonName("");
   };
   const restoreOriginal = () => {
     if (!window.confirm("브라우저 초안을 지우고 현재 게임 원고로 되돌릴까요?")) return;
-    setContent(structuredClone(psychicInterrogationContent));
+    setContent(normalizeMapCoordinates(structuredClone(psychicInterrogationContent)));
     setPhaseIndex(0);
     setPersonName("");
     setView("phase");
@@ -282,7 +318,7 @@ export default function PsychicAdminEditor() {
       const stored = localStorage.getItem(previousDraftKey);
       const parsed: unknown = stored ? JSON.parse(stored) : null;
       if (!isEditableContent(parsed)) throw new Error("이전 초안을 읽을 수 없습니다.");
-      setContent(updateLegacyMap(parsed));
+      setContent(normalizeMapCoordinates(parsed));
       setPhaseIndex(0);
       setPersonName("");
       setView("phase");
@@ -369,7 +405,18 @@ export default function PsychicAdminEditor() {
                       <TextField size="small" type="number" label="에너지" value={phase.energyLimit ?? 4} onChange={(event) => editPhase((next) => { next.energyLimit = Number(event.target.value); })} />
                       <TextField size="small" label="지도 이미지 경로" value={phase.mapImage ?? ""} onChange={(event) => editPhase((next) => { next.mapImage = event.target.value; })} sx={{ gridColumn: "1 / -1" }} />
                     </Box>
-                    <MapPreview phase={phase} onMoveSource={(index, x, y) => editPhase((next) => { next.sources[index].x = x; next.sources[index].y = y; })} />
+                    <MapPreview phase={phase} onMoveSource={(index, x, y) => {
+                      const sourceId = phase.sources[index]?.evidence.id;
+                      if (!sourceId) return;
+                      editSharedSource(sourceId, (source, phases) => {
+                        const firstVisible = phases.find((item) => source.visiblePhaseIds.includes(item.id))?.id;
+                        const state = phase.id === firstVisible
+                          ? source.base
+                          : (source.changes[phase.id] ??= structuredClone(sharedSourceAtPhase(source, phases, phase.id)));
+                        state.x = x;
+                        state.y = y;
+                      });
+                    }} />
                   </Section>
                   }
 
@@ -387,41 +434,27 @@ export default function PsychicAdminEditor() {
                   </Section>
                   }
 
-                  {phaseArea === "settings" && <Section title={`지도 장소 · ${phase.locations.length}`} action={!phase.finalInterrogation && <Button size="small" startIcon={<AddRounded />} onClick={() => editPhase((next) => { next.locations.push({ id: newId("room"), title: "새 장소", x: 50, y: 50 }); })}>장소 추가</Button>}>
-                    <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", lg: "1fr 1fr" }, gap: 1 }}>
-                      {phase.locations.map((location, index) => (
-                        <Box key={index} sx={{ display: "grid", gridTemplateColumns: "1fr 72px 72px", gap: 1, p: 1, border: "1px solid rgba(231,201,148,.18)" }}>
-                          <TextField size="small" label={`장소 · ${location.id}`} value={location.title} onChange={(event) => editPhase((next) => { next.locations[index].title = event.target.value; })} />
-                          <TextField size="small" type="number" label="X %" value={location.x} onChange={(event) => editPhase((next) => { next.locations[index].x = Number(event.target.value); })} />
-                          <TextField size="small" type="number" label="Y %" value={location.y} onChange={(event) => editPhase((next) => { next.locations[index].y = Number(event.target.value); })} />
-                          {!phase.sources.some((source) => source.locationId === location.id) && <Button color="error" size="small" sx={{ gridColumn: "1 / -1", justifySelf: "end" }} onClick={() => editPhase((next) => { next.locations.splice(index, 1); })}>장소 삭제</Button>}
-                        </Box>
-                      ))}
-                    </Box>
-                  </Section>
-                  }
-
-                  {phaseArea === "evidence" && <Section title={`조사 단서 · ${phase.sources.length}`} action={!phase.finalInterrogation && <Button size="small" startIcon={<AddRounded />} onClick={() => editPhase((next) => { next.sources.push({ id: newId("source"), locationId: next.locations[0]?.id ?? "", title: "", description: "", evidence: emptyEvidence() }); })}>단서 추가</Button>}>
-                    {phase.sources.map((source, index) => (
-                      <Accordion key={index} disableGutters sx={{ bgcolor: "#121d19", color: "#f8edda" }}>
-                        <AccordionSummary expandIcon={<ExpandMoreRounded sx={{ color: "#d9b77d" }} />}>
-                          <Typography sx={{ fontSize: 13 }}>{source.title || "새 조사 지점"} <Box component="span" sx={{ color: "#a99b82" }}>→ {source.evidence.title || "새 단서"}</Box></Typography>
-                        </AccordionSummary>
-                        <AccordionDetails sx={{ display: "grid", gap: 2 }}>
-                          <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", sm: "150px 1fr 160px" }, gap: 1 }}>
-                            <TextField size="small" label="조사 지점 ID" value={source.id} onChange={(event) => editPhase((next) => { next.sources[index].id = event.target.value; })} />
-                            <TextField size="small" label="지도에 보이는 이름" value={source.title} onChange={(event) => editPhase((next) => { next.sources[index].title = event.target.value; })} />
-                            <TextField size="small" select label="장소" value={source.locationId} onChange={(event) => editPhase((next) => { next.sources[index].locationId = event.target.value; })}>
-                              {phase.locations.map((location) => <MenuItem key={location.id} value={location.id}>{location.title}</MenuItem>)}
-                            </TextField>
-                          </Box>
-                          <Typography sx={{ color: "#b8ac98", fontSize: 12 }}>단서 위치는 설정 탭 지도에서 {index + 1}번 마커를 드래그해 조정하세요.</Typography>
-                          <EvidenceEditor value={source.evidence} onChange={(value) => editPhase((next) => { next.sources[index].evidence = value; })} />
-                          <Button color="error" size="small" sx={{ justifySelf: "end" }} onClick={() => editPhase((next) => { next.sources.splice(index, 1); })}>단서 삭제</Button>
-                        </AccordionDetails>
-                      </Accordion>
+                  {phaseArea === "evidence" && <Section title={`공유 단서 · ${content.sharedSources?.length ?? 0}`} action={<Button size="small" startIcon={<AddRounded />} onClick={() => update((next) => {
+                    const evidence = emptyEvidence();
+                    const count = next.sharedSources?.length ?? 0;
+                    next.sharedSources ??= [];
+                    next.sharedSources.push({
+                      id: evidence.id,
+                      base: { x: 45 + (count % 4) * 5, y: 45 + (Math.floor(count / 4) % 4) * 5, title: "", description: "", evidence },
+                      visiblePhaseIds: next.phases.filter((item) => !item.finalInterrogation).map((item) => item.id),
+                      changes: {}, sourceIds: {}, order: {},
+                    });
+                  })}>단서 추가</Button>}>
+                    <Typography sx={{ color: "#b8ac98", fontSize: 12 }}>단서마다 표시할 페이즈와 내용이 바뀌기 시작하는 페이즈를 선택하세요. 위치는 각 페이즈의 설정 탭 지도에서 옮길 수 있습니다.</Typography>
+                    {(content.sharedSources ?? []).map((source) => (
+                      <SharedSourceEditor
+                        key={source.id}
+                        source={source}
+                        phases={content.phases}
+                        onChange={(changed) => editSharedSource(source.id, (item) => Object.assign(item, changed))}
+                        onDelete={() => update((next) => { next.sharedSources = next.sharedSources?.filter((item) => item.id !== source.id); })}
+                      />
                     ))}
-                    {phase.sources.length === 0 && <Typography sx={{ color: "#9b927f", fontSize: 12 }}>이 페이즈의 조사 단서가 없습니다.</Typography>}
                   </Section>
                   }
 

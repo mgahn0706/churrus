@@ -10,6 +10,7 @@ const {
   readInterrogationProgress,
   validateInterrogationPhases,
 } = require("./engine.ts");
+const { deriveSharedSources, materializeSharedSources } = require("./sharedSources.ts");
 
 const phase = {
   id: "phase-1",
@@ -172,6 +173,56 @@ test("잘못된 콘텐츠 참조와 손상된 저장 데이터는 안전하게 �
   assert.equal(
     readInterrogationProgress('{"started":false,"storyIndex":2}').storyIndex,
     2,
+  );
+});
+
+test("단서는 장소 없이 지도 좌표만으로 배치할 수 있다", () => {
+  const sources = phase.sources.map((source, index) => ({
+    ...source,
+    locationId: undefined,
+    x: 40 + index * 10,
+    y: 60,
+  }));
+  const coordinatePhase = { ...phase, locations: [], sources };
+  assert.doesNotThrow(() => validateInterrogationPhases("psychic", [coordinatePhase], ["실험체 A"]));
+  assert.throws(() => validateInterrogationPhases("psychic", [
+    { ...coordinatePhase, sources: [{ ...sources[0], y: undefined }, sources[1]] },
+  ], ["실험체 A"]));
+});
+
+test("공유 단서는 표시 페이즈와 변경 페이즈에 따라 펼쳐진다", () => {
+  const baseSource = { ...phase.sources[0], x: 40, y: 60 };
+  const phases = [
+    { id: "morning", sources: [baseSource], combinations: [], interrogations: [] },
+    { id: "afternoon", sources: [{ ...baseSource, id: "afternoon-source" }], combinations: [], interrogations: [] },
+    { id: "evening", sources: [{ ...baseSource, id: "evening-source", evidence: { ...baseSource.evidence, title: "바뀐 A" } }], combinations: [], interrogations: [] },
+  ];
+  const [shared] = deriveSharedSources(phases);
+  assert.deepEqual(shared.visiblePhaseIds, ["morning", "afternoon", "evening"]);
+  assert.deepEqual(Object.keys(shared.changes), ["evening"]);
+
+  shared.base.evidence.title = "기본 A";
+  shared.visiblePhaseIds = ["morning", "evening"];
+  const expanded = materializeSharedSources(phases, [shared]);
+  assert.equal(expanded[0].sources[0].evidence.title, "기본 A");
+  assert.deepEqual(expanded[1].sources, []);
+  assert.equal(expanded[2].sources[0].evidence.title, "바뀐 A");
+  assert.equal(expanded[2].sources[0].id, "evening-source");
+  assert.equal(expanded[2].sources[0].versionPhaseId, "evening");
+
+  shared.visiblePhaseIds = ["morning", "afternoon", "evening"];
+  const withQuestion = phases.map((item) => ({
+    ...item,
+    interrogations: item.id === "afternoon"
+      ? [{ suspectName: "실험체 A", questions: [{ id: "afternoon-question", evidenceId: "afternoon::evidence-a", prompt: "질문", answer: "답변" }] }]
+      : [],
+  }));
+  const sharedVersion = materializeSharedSources(withQuestion, [shared]);
+  assert.equal(sharedVersion[1].sources[0].versionPhaseId, "morning");
+  assert.equal(sharedVersion[1].interrogations[0].questions[0].evidenceId, "morning::evidence-a");
+  assert.deepEqual(
+    getCollectedEvidence(sharedVersion, ["morning::evidence-a"]).map((item) => item.title),
+    ["기본 A"],
   );
 });
 

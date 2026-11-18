@@ -5,11 +5,12 @@ import type {
   InterrogationScript,
 } from "@/types";
 import { validateInterrogationPhases } from "./engine";
+import type { SharedSource } from "./sharedSources";
 
 export type EditableInterrogationContent = Pick<
   InterrogationScenarioType,
   "prologue" | "phases" | "fallbackAnswers"
->;
+> & { sharedSources?: SharedSource[] };
 
 export function scriptLines(
   script: InterrogationScript | InterrogationScenarioType["prologue"] | undefined,
@@ -35,7 +36,7 @@ export function evidenceOptions(
 
   content.phases.slice(0, throughPhaseIndex + 1).forEach((phase) => {
     const timeLabel = phase.timeLabel || phase.title;
-    phase.sources.forEach((source) => add(phase.id, timeLabel, source.evidence));
+    phase.sources.forEach((source) => add(source.versionPhaseId ?? phase.id, timeLabel, source.evidence));
     phase.combinations.forEach((combination) => add(phase.id, timeLabel, combination.result));
     phase.interrogations.forEach((interrogation) => interrogation.questions.forEach((question) => {
       if (question.revealedEvidence) add(phase.id, timeLabel, question.revealedEvidence);
@@ -128,10 +129,19 @@ export function isEditableContent(value: unknown): value is EditableInterrogatio
     typeof item.id === "string" && typeof item.title === "string" &&
     typeof item.x === "number" && typeof item.y === "number";
   const source = (item: unknown) => record(item) &&
-    typeof item.id === "string" && typeof item.locationId === "string" &&
+    typeof item.id === "string" && (item.locationId === undefined || typeof item.locationId === "string") &&
+    (item.versionPhaseId === undefined || typeof item.versionPhaseId === "string") &&
     typeof item.title === "string" && typeof item.description === "string" &&
     (item.x === undefined || typeof item.x === "number") &&
     (item.y === undefined || typeof item.y === "number") && evidence(item.evidence);
+  const sourceState = (item: unknown) => record(item) &&
+    typeof item.x === "number" && typeof item.y === "number" &&
+    typeof item.title === "string" && typeof item.description === "string" && evidence(item.evidence);
+  const sharedSource = (item: unknown) => record(item) && typeof item.id === "string" &&
+    strings(item.visiblePhaseIds) && sourceState(item.base) &&
+    record(item.changes) && Object.values(item.changes).every(sourceState) &&
+    record(item.sourceIds) && Object.values(item.sourceIds).every((id) => typeof id === "string") &&
+    record(item.order) && Object.values(item.order).every((index) => typeof index === "number");
   const combination = (item: unknown) => record(item) &&
     typeof item.id === "string" && strings(item.evidenceIds) && item.evidenceIds.length === 2 &&
     typeof item.explanation === "string" && evidence(item.result);
@@ -150,15 +160,17 @@ export function isEditableContent(value: unknown): value is EditableInterrogatio
 
   return record(value) && Array.isArray(value.prologue) && value.prologue.every(line) &&
     Array.isArray(value.phases) && value.phases.length > 0 && value.phases.every(phase) &&
-    (value.fallbackAnswers === undefined || (Array.isArray(value.fallbackAnswers) && value.fallbackAnswers.every(script)));
+    (value.fallbackAnswers === undefined || (Array.isArray(value.fallbackAnswers) && value.fallbackAnswers.every(script))) &&
+    (value.sharedSources === undefined || (Array.isArray(value.sharedSources) && value.sharedSources.every(sharedSource)));
 }
 
 export function toInterrogationTypeScript(content: EditableInterrogationContent) {
+  const gameContent = { prologue: content.prologue, phases: content.phases, fallbackAnswers: content.fallbackAnswers };
   return [
     'import type { InterrogationScenarioType } from "@/types";',
     "",
     'export const psychicInterrogationContent: Pick<InterrogationScenarioType, "prologue" | "phases" | "fallbackAnswers"> =',
-    `  ${JSON.stringify(content, null, 2)};`,
+    `  ${JSON.stringify(gameContent, null, 2)};`,
     "",
   ].join("\n");
 }

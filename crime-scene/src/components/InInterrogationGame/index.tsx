@@ -18,6 +18,7 @@ import {
   findCombination,
   findInterrogationQuestion,
   evidenceInstanceId,
+  sourceEvidenceInstanceId,
   getCollectedEvidence,
   initialInterrogationProgress,
   interrogationStorageKey,
@@ -256,7 +257,7 @@ export default function InInterrogationGame({
 
   const inspectSource = (source: InterrogationSource) => {
     if (!phase) return;
-    const instanceId = evidenceInstanceId(phase.id, source.evidence.id);
+    const instanceId = sourceEvidenceInstanceId(phase.id, source);
     const isNew = !progress.collectedEvidenceIds.includes(instanceId);
     if (isNew && energySpent + 1 >= energyLimit) setEnergyWarning(true);
     const nextProgress = {
@@ -820,7 +821,7 @@ export default function InInterrogationGame({
               <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: focusedMapEvidence.image ? "minmax(0, 1.2fr) minmax(260px, .8fr)" : "1fr" }, gap: 2, alignItems: "start" }}>
                 {focusedMapEvidence.image && <Box component="img" src={focusedMapEvidence.image} alt={focusedMapEvidence.title} sx={{ width: "100%", maxHeight: "60dvh", objectFit: "contain", bgcolor: "#070c0b" }} />}
                 <Box>
-                  <Typography sx={{ color: "#b99c75", fontSize: 12, mb: 1 }}>{scenario.phases.find((item) => focusedMapEvidence.instanceId.startsWith(`${item.id}::`))?.timeLabel}</Typography>
+                  <Typography sx={{ color: "#b99c75", fontSize: 12, mb: 1 }}>{phase.timeLabel}</Typography>
                   <Typography sx={{ fontSize: { xs: 20, md: 24 }, fontWeight: 800, mb: 2 }}>{focusedMapEvidence.title}</Typography>
                   <Typography sx={{ fontSize: { xs: 15, md: 17 }, lineHeight: 1.7, whiteSpace: "pre-wrap", wordBreak: "keep-all" }}>{focusedMapEvidence.description}</Typography>
                 </Box>

@@ -27,6 +27,9 @@ export const initialInterrogationProgress: InterrogationProgress = {
 export const evidenceInstanceId = (phaseId: string, evidenceId: string) =>
   `${phaseId}::${evidenceId}`;
 
+export const sourceEvidenceInstanceId = (phaseId: string, source: { versionPhaseId?: string; evidence: { id: string } }) =>
+  evidenceInstanceId(source.versionPhaseId ?? phaseId, source.evidence.id);
+
 export const interrogationStorageKey = (scenarioId: string) =>
   `interrogation-${scenarioId}-v3`;
 
@@ -136,10 +139,14 @@ export function getCollectedEvidence(
 ): (InterrogationEvidence & { instanceId: string })[] {
   const collected = new Set(collectedEvidenceIds);
   const evidence: (InterrogationEvidence & { instanceId: string })[] = [];
+  const seen = new Set<string>();
 
   for (const phase of phases) {
-    for (const source of phase.sources)
-      evidence.push({ ...source.evidence, instanceId: evidenceInstanceId(phase.id, source.evidence.id) });
+    for (const source of phase.sources) {
+      const instanceId = sourceEvidenceInstanceId(phase.id, source);
+      if (!seen.has(instanceId)) evidence.push({ ...source.evidence, instanceId });
+      seen.add(instanceId);
+    }
     for (const combination of phase.combinations)
       evidence.push({ ...combination.result, instanceId: evidenceInstanceId(phase.id, combination.result.id) });
     for (const interrogation of phase.interrogations) {
@@ -210,9 +217,9 @@ export function validateInterrogationPhases(
 
     for (const source of phase.sources) {
       addUnique(sourceIds, source.id, "source");
-      if (!locationIds.has(source.locationId)) {
+      if ((source.x === undefined || source.y === undefined) && !locationIds.has(source.locationId ?? "")) {
         throw new Error(
-          `Unknown source location in ${scenarioId}: ${source.locationId}`,
+          `Source needs a map position or valid location in ${scenarioId}: ${source.id}`,
         );
       }
       if (
@@ -222,7 +229,7 @@ export function validateInterrogationPhases(
         throw new Error(`Invalid source position in ${scenarioId}: ${source.id}`);
       }
       addUnique(phaseEvidenceIds, source.evidence.id, "evidence");
-      evidenceIds.add(evidenceInstanceId(phase.id, source.evidence.id));
+      evidenceIds.add(sourceEvidenceInstanceId(phase.id, source));
     }
 
     for (const combination of phase.combinations) {

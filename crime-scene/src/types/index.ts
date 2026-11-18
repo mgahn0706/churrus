@@ -118,7 +118,8 @@ export interface InterrogationEvidence {
 
 export interface InterrogationSource {
   id: string;
-  locationId: string;
+  locationId?: string;
+  versionPhaseId?: string;
   x?: number;
   y?: number;
   title: string;

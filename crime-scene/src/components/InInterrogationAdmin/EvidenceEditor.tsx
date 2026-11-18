@@ -7,16 +7,18 @@ export default function EvidenceEditor({
   value,
   onChange,
   image = true,
+  showId = true,
 }: {
   value: InterrogationEvidence;
   onChange: (value: InterrogationEvidence) => void;
   image?: boolean;
+  showId?: boolean;
 }) {
   const edit = (patch: Partial<InterrogationEvidence>) => onChange({ ...value, ...patch });
 
   return (
-    <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", sm: "160px 1fr" }, gap: 1 }}>
-      <TextField size="small" label="단서 ID" value={value.id} onChange={(event) => edit({ id: event.target.value })} />
+    <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", sm: showId ? "160px 1fr" : "1fr" }, gap: 1 }}>
+      {showId && <TextField size="small" label="단서 ID" value={value.id} onChange={(event) => edit({ id: event.target.value })} />}
       <TextField size="small" label="단서 이름" value={value.title} onChange={(event) => edit({ title: event.target.value })} />
       <TextField size="small" label="단서 내용" value={value.description} onChange={(event) => edit({ description: event.target.value })} multiline minRows={2} sx={{ gridColumn: "1 / -1" }} />
       {image && (

@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import { evidenceInstanceId } from "@/features/interrogation/engine";
+import { sourceEvidenceInstanceId } from "@/features/interrogation/engine";
 import type { InterrogationMapLocation, InterrogationSource } from "@/types";
 
 const psychicPersonPositions: Record<string, { x: number; y: number }> = {
@@ -79,7 +79,7 @@ export default function ResearchMap({
           const spread = siblings.indexOf(source) - (siblings.length - 1) / 2;
           const x = source.x ?? (location?.x ?? 50) + spread * 8;
           const y = source.y ?? (location?.y ?? 50) + spread * 12;
-          const collected = collectedEvidenceIds.includes(evidenceInstanceId(phaseId, source.evidence.id));
+          const collected = collectedEvidenceIds.includes(sourceEvidenceInstanceId(phaseId, source));
           return (
             <Box
             component="button"
