@@ -9,7 +9,7 @@ const locations = [
   { id: "laboratory", title: "실험실", x: 37, y: 23 },
   { id: "director-office", title: "소장실", x: 63, y: 22 },
 ];
-const mapImage = "/image/scenario/psychic/map/lab-map.png";
+const mapImage = "/image/scenario/psychic/map/lab-map.svg";
 type QuestionDraft = Omit<InterrogationQuestion, "id" | "prompt"> & {
   suspectName: string;
   prompt?: string;

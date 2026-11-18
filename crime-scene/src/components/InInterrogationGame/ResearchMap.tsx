@@ -3,10 +3,10 @@ import { evidenceInstanceId } from "@/features/interrogation/engine";
 import type { InterrogationMapLocation, InterrogationSource } from "@/types";
 
 const psychicPersonPositions: Record<string, { x: number; y: number }> = {
-  "실험체 A": { x: 9, y: 70 },
-  "실험체 B": { x: 23, y: 70 },
-  "실험체 C": { x: 37, y: 70 },
-  "김짜장": { x: 63, y: 26 },
+  "실험체 A": { x: 9, y: 77 },
+  "실험체 B": { x: 23, y: 77 },
+  "실험체 C": { x: 37, y: 77 },
+  "김짜장": { x: 63, y: 29 },
 };
 
 export default function ResearchMap({

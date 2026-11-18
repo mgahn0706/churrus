@@ -22,13 +22,16 @@ const theme = createScenarioTheme("#bd874e", "dark", "Galmuri11, sans-serif");
 const draftKey = "psychic-interrogation-admin-v2";
 const previousDraftKey = "psychic-interrogation-admin-v1";
 const suspectNames = [...psychicSuspects, psychicVictim].map((person) => person.name);
-const legacyMapImage = "/image/scenario/psychic/map/lab-map.svg";
+const legacyMapImage = "/image/scenario/psychic/map/lab-map.png";
+const currentMapImage = "/image/scenario/psychic/map/lab-map.svg";
 const currentMapLocations = psychicInterrogationContent.phases[0].locations;
 const updateLegacyMap = (draft: EditableInterrogationContent) => {
   const next = structuredClone(draft);
   for (const phase of next.phases) {
-    if (phase.mapImage !== legacyMapImage) continue;
-    phase.mapImage = psychicInterrogationContent.phases[0].mapImage;
+    const hasLegacyLocations = phase.locations.some((location) =>
+      location.id === "observation" || (location.id === "entrance" && location.x === 18 && location.y === 69));
+    if (phase.mapImage !== legacyMapImage && !(phase.mapImage === currentMapImage && hasLegacyLocations)) continue;
+    phase.mapImage = currentMapImage;
     phase.locations = phase.locations.map((location) => {
       const id = location.id === "observation" ? "laboratory" : location.id;
       const current = currentMapLocations.find((item) => item.id === id);
