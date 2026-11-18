@@ -31,8 +31,11 @@ export function ensureSharedSourceNumbers(shared: SharedSource[]): SharedSource[
 }
 
 const clampPosition = (value: number, minimum: number, maximum: number) => Math.max(minimum, Math.min(maximum, value));
-const positionsOverlap = (left: { x: number; y: number }, right: { x: number; y: number }) =>
-  Math.abs(left.x - right.x) < 14 && Math.abs(left.y - right.y) < 10;
+const positionsOverlap = (left: { x: number; y: number }, right: { x: number; y: number }) => {
+  const horizontal = (left.x - right.x) / 5;
+  const vertical = (left.y - right.y) / 8;
+  return horizontal * horizontal + vertical * vertical < 1;
+};
 const visibleTogether = (left: string[], right: string[]) => left.some((id) => right.includes(id));
 
 export function spreadSharedSourcePositions(shared: SharedSource[], preferredId?: string): SharedSource[] {
@@ -41,14 +44,14 @@ export function spreadSharedSourcePositions(shared: SharedSource[], preferredId?
   const ordered = [...shared].sort((left, right) =>
     left.id === preferredId ? -1 : right.id === preferredId ? 1 : (left.number ?? 0) - (right.number ?? 0));
   for (const source of ordered) {
-    const target = { x: clampPosition(source.base.x ?? 50, 12, 88), y: clampPosition(source.base.y ?? 50, 10, 90) };
+    const target = { x: clampPosition(source.base.x ?? 50, 4, 96), y: clampPosition(source.base.y ?? 50, 5, 95) };
     const conflicts = (position: { x: number; y: number }) => placed.some((item) =>
       visibleTogether(source.visiblePhaseIds, item.visiblePhaseIds) && positionsOverlap(item, position));
     let position = target;
     if (conflicts(target)) {
       const candidates = [target];
-      for (let y = 10; y <= 90; y += 2.5) {
-        for (let x = 12; x <= 88; x += 2.5) candidates.push({ x, y });
+      for (let y = 5; y <= 95; y += 2.5) {
+        for (let x = 4; x <= 96; x += 2.5) candidates.push({ x, y });
       }
       candidates.sort((left, right) =>
         ((left.x - target.x) * 1.78) ** 2 + (left.y - target.y) ** 2 -

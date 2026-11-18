@@ -280,7 +280,7 @@ test("겹친 단서는 자동으로 벌어지고 옮긴 단서의 자리는 우�
       for (let right = left + 1; right < sources.length; right += 1) {
         const dx = Math.abs(sources[left].base.x - sources[right].base.x);
         const dy = Math.abs(sources[left].base.y - sources[right].base.y);
-        assert.ok(dx >= 14 || dy >= 10, `${sources[left].id}와 ${sources[right].id}가 겹침`);
+        assert.ok((dx / 5) ** 2 + (dy / 8) ** 2 >= 1, `${sources[left].id}와 ${sources[right].id}가 겹침`);
       }
     }
   };
@@ -307,6 +307,10 @@ test("같은 페이즈에 나오지 않는 단서는 같은 위치를 사용할 
   assert.deepEqual(separated.map((source) => [source.base.x, source.base.y]), [[50, 50], [50, 50]]);
   const together = spreadSharedSourcePositions([makeSource("morning", "phase-1"), makeSource("evening", "phase-1")]);
   assert.notDeepEqual([together[0].base.x, together[0].base.y], [together[1].base.x, together[1].base.y]);
+  const nearby = [makeSource("morning", "phase-1"), { ...makeSource("evening", "phase-1"), base: { ...makeSource("evening", "phase-1").base, x: 56 } }];
+  assert.deepEqual(spreadSharedSourcePositions(nearby).map((source) => [source.base.x, source.base.y]), [[50, 50], [56, 50]]);
+  const edge = { ...makeSource("edge", "phase-1"), base: { ...makeSource("edge", "phase-1").base, x: 4, y: 5 } };
+  assert.deepEqual([spreadSharedSourcePositions([edge])[0].base.x, spreadSharedSourcePositions([edge])[0].base.y], [4, 5]);
 });
 
 test("단서 비밀번호는 변경 페이즈에 따라 적용되고 빈 비밀번호는 거부된다", () => {
