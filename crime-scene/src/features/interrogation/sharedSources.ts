@@ -32,17 +32,20 @@ export function ensureSharedSourceNumbers(shared: SharedSource[]): SharedSource[
 
 const clampPosition = (value: number, minimum: number, maximum: number) => Math.max(minimum, Math.min(maximum, value));
 const positionsOverlap = (left: { x: number; y: number }, right: { x: number; y: number }) =>
-  Math.abs(left.x - right.x) < 20 && Math.abs(left.y - right.y) < 16;
+  Math.abs(left.x - right.x) < 14 && Math.abs(left.y - right.y) < 10;
+const visibleTogether = (left: string[], right: string[]) => left.some((id) => right.includes(id));
 
 export function spreadSharedSourcePositions(shared: SharedSource[], preferredId?: string): SharedSource[] {
-  const placed: { x: number; y: number }[] = [];
+  const placed: { x: number; y: number; visiblePhaseIds: string[] }[] = [];
   const positions = new Map<string, { x: number; y: number }>();
   const ordered = [...shared].sort((left, right) =>
     left.id === preferredId ? -1 : right.id === preferredId ? 1 : (left.number ?? 0) - (right.number ?? 0));
   for (const source of ordered) {
     const target = { x: clampPosition(source.base.x ?? 50, 12, 88), y: clampPosition(source.base.y ?? 50, 10, 90) };
+    const conflicts = (position: { x: number; y: number }) => placed.some((item) =>
+      visibleTogether(source.visiblePhaseIds, item.visiblePhaseIds) && positionsOverlap(item, position));
     let position = target;
-    if (placed.some((item) => positionsOverlap(item, target))) {
+    if (conflicts(target)) {
       const candidates = [target];
       for (let y = 10; y <= 90; y += 2.5) {
         for (let x = 12; x <= 88; x += 2.5) candidates.push({ x, y });
@@ -50,9 +53,9 @@ export function spreadSharedSourcePositions(shared: SharedSource[], preferredId?
       candidates.sort((left, right) =>
         ((left.x - target.x) * 1.78) ** 2 + (left.y - target.y) ** 2 -
         (((right.x - target.x) * 1.78) ** 2 + (right.y - target.y) ** 2));
-      position = candidates.find((candidate) => placed.every((item) => !positionsOverlap(item, candidate))) ?? target;
+      position = candidates.find((candidate) => !conflicts(candidate)) ?? target;
     }
-    placed.push(position);
+    placed.push({ ...position, visiblePhaseIds: source.visiblePhaseIds });
     positions.set(source.id, position);
   }
   return shared.map((source) => ({ ...source, base: { ...source.base, ...positions.get(source.id) } }));

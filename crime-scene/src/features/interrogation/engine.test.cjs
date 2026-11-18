@@ -84,10 +84,13 @@ test("신문은 선택한 단서 전체의 정확한 조합으로 한 질문을 
         answer: ["조합 답변 1", "조합 답변 2"],
         revealedEvidence: { id: "pair-reveal", title: "새 조합 단서", description: "" },
       },
+      { id: "triple", evidenceIds: ["phase-1::evidence-a", "phase-1::evidence-b", "phase-1::inference-a"], prompt: "", answer: "세 단서 답변" },
     ],
   };
   assert.equal(findInterrogationQuestion(interrogation, ["phase-1::evidence-b", "phase-1::evidence-a"])?.id, "pair");
   assert.equal(findInterrogationQuestion(interrogation, ["phase-1::evidence-a"])?.id, "single");
+  assert.equal(findInterrogationQuestion(interrogation, ["phase-1::inference-a", "phase-1::evidence-b", "phase-1::evidence-a"])?.id, "triple");
+  assert.equal(findInterrogationQuestion(interrogation, ["phase-1::inference-a", "phase-1::evidence-b", "phase-1::evidence-a", "phase-1::pair-reveal"]), undefined);
   assert.equal(findInterrogationQuestion(interrogation, ["phase-1::evidence-a", "phase-1::inference-a"]), undefined);
   assert.equal(findInterrogationQuestion(interrogation, ["phase-1::evidence-a", "phase-1::evidence-a"]), undefined);
   const combinedPhase = { ...phase, interrogations: [interrogation], requiredQuestionIds: [] };
@@ -107,6 +110,14 @@ test("신문은 선택한 단서 전체의 정확한 조합으로 한 질문을 
         answer: "",
       }],
     }],
+  }], ["실험체 A"]));
+  assert.throws(() => validateInterrogationPhases("psychic", [{
+    ...combinedPhase,
+    interrogations: [{ ...interrogation, questions: [...interrogation.questions, {
+      id: "four-clues",
+      evidenceIds: ["phase-1::evidence-a", "phase-1::evidence-b", "phase-1::inference-a", "phase-1::pair-reveal"],
+      prompt: "", answer: "네 단서 답변",
+    }] }],
   }], ["실험체 A"]));
 });
 
@@ -269,7 +280,7 @@ test("겹친 단서는 자동으로 벌어지고 옮긴 단서의 자리는 우�
       for (let right = left + 1; right < sources.length; right += 1) {
         const dx = Math.abs(sources[left].base.x - sources[right].base.x);
         const dy = Math.abs(sources[left].base.y - sources[right].base.y);
-        assert.ok(dx >= 20 || dy >= 16, `${sources[left].id}와 ${sources[right].id}가 겹침`);
+        assert.ok(dx >= 14 || dy >= 10, `${sources[left].id}와 ${sources[right].id}가 겹침`);
       }
     }
   };
@@ -285,6 +296,17 @@ test("겹친 단서는 자동으로 벌어지고 옮긴 단서의 자리는 우�
   const phases = [{ id: "morning", sources: [], combinations: [], interrogations: [] }, { id: "evening", sources: [], combinations: [], interrogations: [] }];
   const expanded = materializeSharedSources(phases, moved);
   assert.deepEqual(expanded[0].sources.map((source) => [source.x, source.y]), expanded[1].sources.map((source) => [source.x, source.y]));
+});
+
+test("같은 페이즈에 나오지 않는 단서는 같은 위치를 사용할 수 있다", () => {
+  const makeSource = (id, phaseId) => ({
+    id, number: id === "morning" ? 1 : 2, visiblePhaseIds: [phaseId], changes: {}, sourceIds: {}, order: {},
+    base: { x: 50, y: 50, title: id, description: "", evidence: { id, title: id, description: "" } },
+  });
+  const separated = spreadSharedSourcePositions([makeSource("morning", "phase-1"), makeSource("evening", "phase-2")]);
+  assert.deepEqual(separated.map((source) => [source.base.x, source.base.y]), [[50, 50], [50, 50]]);
+  const together = spreadSharedSourcePositions([makeSource("morning", "phase-1"), makeSource("evening", "phase-1")]);
+  assert.notDeepEqual([together[0].base.x, together[0].base.y], [together[1].base.x, together[1].base.y]);
 });
 
 test("단서 비밀번호는 변경 페이즈에 따라 적용되고 빈 비밀번호는 거부된다", () => {

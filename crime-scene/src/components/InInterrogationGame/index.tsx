@@ -18,6 +18,7 @@ import { createScenarioTheme } from "@/components/createScenarioTheme";
 import {
   findCombination,
   findInterrogationQuestion,
+  MAX_INTERROGATION_CLUES,
   evidenceInstanceId,
   sourceEvidenceInstanceId,
   getCollectedEvidence,
@@ -340,7 +341,7 @@ export default function InInterrogationGame({
   };
 
   const askSelectedEvidence = (name: string) => {
-    if (!phase || questionEvidenceIds.length === 0) return;
+    if (!phase || questionEvidenceIds.length === 0 || questionEvidenceIds.length > MAX_INTERROGATION_CLUES) return;
     const interrogation = phase.interrogations.find((item) => item.suspectName === name);
     if (!interrogation) return;
     primeDialogueAudio();
@@ -383,7 +384,7 @@ export default function InInterrogationGame({
 
   const toggleQuestionEvidence = useCallback((id: string) => {
     setQuestionEvidenceIds((previous) =>
-      previous.includes(id) ? previous.filter((item) => item !== id) : [...previous, id],
+      previous.includes(id) ? previous.filter((item) => item !== id) : previous.length < MAX_INTERROGATION_CLUES ? [...previous, id] : previous,
     );
   }, []);
 
@@ -695,7 +696,7 @@ export default function InInterrogationGame({
               </Box>
               <Box sx={{ display: "grid", gridTemplateColumns: { xs: "minmax(0, .95fr) minmax(0, 1.05fr)", md: "minmax(0, 1fr) minmax(0, 1.15fr)" }, gap: { xs: .75, md: 1.5 }, minHeight: 0 }}>
                 <Box sx={{ minWidth: 0, minHeight: 0, display: "flex", flexDirection: "column", border: "1px solid rgba(231,201,148,.24)", bgcolor: "rgba(6,12,12,.78)" }}>
-                  <Typography sx={{ flexShrink: 0, px: 1.25, py: 1, fontSize: { xs: 11, md: 13 }, color: "#d9b77d", borderBottom: "1px solid rgba(231,201,148,.18)" }}>단서 {evidence.length} · 선택 {questionEvidenceIds.length}</Typography>
+                  <Typography sx={{ flexShrink: 0, px: 1.25, py: 1, fontSize: { xs: 11, md: 13 }, color: "#d9b77d", borderBottom: "1px solid rgba(231,201,148,.18)" }}>단서 {evidence.length} · 선택 {questionEvidenceIds.length}/{MAX_INTERROGATION_CLUES}</Typography>
                   <Box
                     role="region"
                     aria-label="신문할 단서 목록"

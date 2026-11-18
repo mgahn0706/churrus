@@ -2,6 +2,7 @@
 
 import { Box, Button, Typography } from "@mui/material";
 import { memo, useMemo } from "react";
+import { MAX_INTERROGATION_CLUES } from "@/features/interrogation/engine";
 import type { InterrogationEvidence } from "@/types";
 
 type CollectedEvidence = InterrogationEvidence & { instanceId: string };
@@ -9,16 +10,19 @@ type CollectedEvidence = InterrogationEvidence & { instanceId: string };
 const EvidenceSelectionCard = memo(function EvidenceSelectionCard({
   item,
   selected,
+  disabled,
   onToggle,
 }: {
   item: CollectedEvidence;
   selected: boolean;
+  disabled: boolean;
   onToggle: (id: string) => void;
 }) {
   return (
     <Button
       aria-pressed={selected}
       aria-label={`${item.title} ${selected ? "선택 해제" : "선택"}`}
+      disabled={disabled}
       onClick={() => onToggle(item.instanceId)}
       sx={{
         color: "#f3dfbb",
@@ -62,7 +66,7 @@ export default memo(function EvidenceSelectionGrid({
   return (
     <Box sx={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 220px), 1fr))", gridAutoRows: "max-content", gap: .75, alignContent: "start" }}>
       {newestFirst.map((item) => (
-        <EvidenceSelectionCard key={item.instanceId} item={item} selected={selected.has(item.instanceId)} onToggle={onToggle} />
+        <EvidenceSelectionCard key={item.instanceId} item={item} selected={selected.has(item.instanceId)} disabled={!selected.has(item.instanceId) && selectedIds.length >= MAX_INTERROGATION_CLUES} onToggle={onToggle} />
       ))}
       {evidence.length === 0 && <Typography sx={{ p: 1, fontSize: 12, color: "#b99c75" }}>단서 없음</Typography>}
     </Box>

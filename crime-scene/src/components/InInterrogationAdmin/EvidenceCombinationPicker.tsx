@@ -2,6 +2,7 @@
 
 import { Box, Checkbox, Chip, FormControlLabel, TextField, Typography } from "@mui/material";
 import { useState } from "react";
+import { MAX_INTERROGATION_CLUES } from "@/features/interrogation/engine";
 
 type EvidenceOption = { id: string; label: string; description: string };
 
@@ -18,14 +19,17 @@ export default function EvidenceCombinationPicker({
   const optionLabels = new Map(options.map((option) => [option.id, option.label]));
   const filteredOptions = options.filter((option) =>
     `${option.label} ${option.description}`.toLocaleLowerCase().includes(search.trim().toLocaleLowerCase()));
-  const toggle = (id: string) => onChange(selectedIds.includes(id)
-    ? selectedIds.filter((selectedId) => selectedId !== id)
-    : [...selectedIds, id]);
+  const toggle = (id: string) => {
+    if (!selectedIds.includes(id) && selectedIds.length >= MAX_INTERROGATION_CLUES) return;
+    onChange(selectedIds.includes(id)
+      ? selectedIds.filter((selectedId) => selectedId !== id)
+      : [...selectedIds, id]);
+  };
 
   return (
     <Box sx={{ display: "grid", gap: 1 }}>
-      <Typography sx={{ color: "#d9b77d", fontSize: 13, fontWeight: 800 }}>제시할 단서 조합</Typography>
-      <Typography sx={{ color: "#b8ac98", fontSize: 12 }}>함께 제시할 단서를 선택하세요. 이름 앞의 시간은 단서를 얻는 페이즈입니다.</Typography>
+      <Typography sx={{ color: "#d9b77d", fontSize: 13, fontWeight: 800 }}>제시할 단서 조합 · {selectedIds.length}/{MAX_INTERROGATION_CLUES}</Typography>
+      <Typography sx={{ color: "#b8ac98", fontSize: 12 }}>단서를 최대 {MAX_INTERROGATION_CLUES}개까지 선택하세요. 이름 앞의 번호와 시간은 공유 단서 번호와 획득 페이즈입니다.</Typography>
       {selectedIds.length > 0 && (
         <Box sx={{ display: "flex", flexWrap: "wrap", gap: .75 }}>
           {selectedIds.map((id) => (
@@ -38,7 +42,7 @@ export default function EvidenceCombinationPicker({
         {filteredOptions.map((option) => (
           <FormControlLabel
             key={option.id}
-            control={<Checkbox checked={selectedIds.includes(option.id)} onChange={() => toggle(option.id)} size="small" />}
+            control={<Checkbox checked={selectedIds.includes(option.id)} disabled={!selectedIds.includes(option.id) && selectedIds.length >= MAX_INTERROGATION_CLUES} onChange={() => toggle(option.id)} size="small" />}
             label={
               <Box sx={{ py: .5, minWidth: 0 }}>
                 <Typography sx={{ fontSize: 12, fontWeight: 700 }}>{option.label}</Typography>

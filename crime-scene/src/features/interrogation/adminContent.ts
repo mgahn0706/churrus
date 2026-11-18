@@ -4,7 +4,7 @@ import type {
   InterrogationScenarioType,
   InterrogationScript,
 } from "@/types";
-import { validateInterrogationPhases } from "./engine";
+import { MAX_INTERROGATION_CLUES, validateInterrogationPhases } from "./engine";
 import type { SharedSource } from "./sharedSources";
 import type { SharedQuestion } from "./sharedQuestions";
 
@@ -86,6 +86,9 @@ export function validateAdminContent(
         }
         if (!question.evidenceId && !question.evidenceIds?.length) {
           return `${phase.title} · ${interrogation.suspectName}: 신문 단서를 선택하세요.`;
+        }
+        if ((question.evidenceIds?.length ?? (question.evidenceId ? 1 : 0)) > MAX_INTERROGATION_CLUES) {
+          return `${phase.title} · ${interrogation.suspectName}: 신문 단서는 최대 ${MAX_INTERROGATION_CLUES}개까지 선택하세요.`;
         }
         if (!question.prompt.trim() || scriptLines(question.answer).every((line) => !line.text.trim())) {
           return `${phase.title} · ${interrogation.suspectName}: 신문 질문과 답변을 입력하세요.`;

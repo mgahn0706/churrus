@@ -95,6 +95,7 @@ export function findCombination(
 
 const questionEvidenceIds = (question: InterrogationQuestion) =>
   question.evidenceIds ?? (question.evidenceId ? [question.evidenceId] : []);
+export const MAX_INTERROGATION_CLUES = 3;
 
 export function findInterrogationQuestion(
   interrogation: InterrogationPhase["interrogations"][number],
@@ -102,6 +103,7 @@ export function findInterrogationQuestion(
 ) {
   if (
     selectedEvidenceIds.length === 0 ||
+    selectedEvidenceIds.length > MAX_INTERROGATION_CLUES ||
     new Set(selectedEvidenceIds).size !== selectedEvidenceIds.length
   ) return undefined;
   const selectedKey = [...selectedEvidenceIds].sort().join("\u0000");
@@ -293,6 +295,9 @@ export function validateInterrogationPhases(
           throw new Error(`Ambiguous question evidence in ${scenarioId}: ${question.id}`);
         }
         const inputs = questionEvidenceIds(question);
+        if (inputs.length > MAX_INTERROGATION_CLUES) {
+          throw new Error(`Too many question clues in ${scenarioId}: ${question.id}`);
+        }
         if (question.evidenceIds && inputs.length === 0) {
           throw new Error(`Question needs evidence in ${scenarioId}: ${question.id}`);
         }
