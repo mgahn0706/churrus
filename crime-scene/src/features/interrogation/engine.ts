@@ -100,6 +100,7 @@ export const MAX_INTERROGATION_CLUES = 3;
 export function findInterrogationQuestion(
   interrogation: InterrogationPhase["interrogations"][number],
   selectedEvidenceIds: string[],
+  allowEarlierVersions = false,
 ) {
   if (
     selectedEvidenceIds.length === 0 ||
@@ -107,10 +108,20 @@ export function findInterrogationQuestion(
     new Set(selectedEvidenceIds).size !== selectedEvidenceIds.length
   ) return undefined;
   const selectedKey = [...selectedEvidenceIds].sort().join("\u0000");
-  return interrogation.questions.find((question) => {
+  const exact = interrogation.questions.find((question) => {
     const required = questionEvidenceIds(question);
     return required.length === selectedEvidenceIds.length &&
       [...required].sort().join("\u0000") === selectedKey;
+  });
+  if (exact || !allowEarlierVersions) return exact;
+  const logicalId = (id: string) => id.includes("::") ? id.slice(id.indexOf("::") + 2) : id;
+  const logicalIds = selectedEvidenceIds.map(logicalId);
+  if (new Set(logicalIds).size !== logicalIds.length) return undefined;
+  const logicalKey = [...logicalIds].sort().join("\u0000");
+  return interrogation.questions.find((question) => {
+    const required = questionEvidenceIds(question);
+    return required.length === selectedEvidenceIds.length &&
+      required.map(logicalId).sort().join("\u0000") === logicalKey;
   });
 }
 

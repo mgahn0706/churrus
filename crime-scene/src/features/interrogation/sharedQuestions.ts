@@ -23,6 +23,9 @@ const questionState = (question: InterrogationQuestion): SharedQuestionState => 
 
 export function syncSharedQuestionPhases(phases: InterrogationPhase[], sources: { id: string; visiblePhaseIds: string[] }[], questions: SharedQuestion[]): SharedQuestion[] {
   const sourceById = new Map(sources.map((source) => [source.id, source]));
+  const finalIndex = phases.findIndex((phase) => phase.finalInterrogation);
+  if (finalIndex < 0) return questions;
+  const finalPhase = phases[finalIndex];
   const acquiredAt = new Map<string, number>();
   phases.forEach((phase, index) => {
     for (const combination of phase.combinations) if (!acquiredAt.has(combination.result.id)) acquiredAt.set(combination.result.id, index);
@@ -32,28 +35,26 @@ export function syncSharedQuestionPhases(phases: InterrogationPhase[], sources: 
       }
     }
   });
-  return questions.map((question) => ({
-    ...question,
-    base: { answer: question.base.answer, revealedEvidence: question.base.revealedEvidence },
-    changes: Object.fromEntries(Object.entries(question.changes).map(([phaseId, state]) => [phaseId, { answer: state.answer, revealedEvidence: state.revealedEvidence }])),
-    visiblePhaseIds: phases.filter((phase, index) => {
-      if (!question.clueIds.length || !phase.interrogations.some((item) => item.suspectName === question.suspectName)) return false;
-      if (phase.people && !phase.people.some((item) => item.name === question.suspectName)) return false;
-      return question.clueIds.every((id) => {
+  for (const question of questions) {
+    const revealedId = sharedQuestionAtPhase(question, phases, finalPhase.id).revealedEvidence?.id;
+    if (revealedId && !acquiredAt.has(revealedId)) acquiredAt.set(revealedId, finalIndex);
+  }
+  return questions.map((question) => {
+    const state = structuredClone(sharedQuestionAtPhase(question, phases, finalPhase.id));
+    const canAsk = question.clueIds.length > 0 &&
+      finalPhase.interrogations.some((item) => item.suspectName === question.suspectName) &&
+      (!finalPhase.people || finalPhase.people.some((item) => item.name === question.suspectName)) &&
+      question.clueIds.every((id) => {
         const source = sourceById.get(id);
-        if (source) {
-          return phase.finalInterrogation
-            ? source.visiblePhaseIds.some((phaseId) => {
-              const sourceIndex = phases.findIndex((item) => item.id === phaseId);
-              return sourceIndex >= 0 && sourceIndex < index;
-            })
-            : source.visiblePhaseIds.includes(phase.id);
-        }
+        if (source) return source.visiblePhaseIds.some((phaseId) => {
+          const sourceIndex = phases.findIndex((item) => item.id === phaseId);
+          return sourceIndex >= 0 && sourceIndex < finalIndex;
+        });
         const acquired = acquiredAt.get(id);
-        return acquired !== undefined && acquired <= index;
+        return acquired !== undefined && acquired <= finalIndex;
       });
-    }).map((phase) => phase.id),
-  }));
+    return { ...question, base: state, changes: {}, visiblePhaseIds: canAsk ? [finalPhase.id] : [] };
+  });
 }
 
 export function sharedQuestionAtPhase(question: SharedQuestion, phases: InterrogationPhase[], phaseId: string): SharedQuestionState {
@@ -98,6 +99,10 @@ export function materializeSharedQuestions(phases: InterrogationPhase[], shared:
   return phases.map((phase) => {
     for (const source of phase.sources) knownEvidence.set(source.evidence.id, `${source.versionPhaseId ?? phase.id}::${source.evidence.id}`);
     for (const combination of phase.combinations) knownEvidence.set(combination.result.id, `${phase.id}::${combination.result.id}`);
+    if (phase.finalInterrogation) for (const question of shared) {
+      const revealedId = sharedQuestionAtPhase(question, phases, phase.id).revealedEvidence?.id;
+      if (revealedId) knownEvidence.set(revealedId, `${phase.id}::${revealedId}`);
+    }
     const existingRefs = new Set<string>(knownEvidence.values());
     for (const interrogation of phase.interrogations) {
       for (const question of interrogation.questions) {
@@ -122,7 +127,7 @@ export function materializeSharedQuestions(phases: InterrogationPhase[], shared:
             answer: Array.isArray(state.answer)
               ? state.answer.map((line) => typeof line === "string" ? line : { text: line.text, speaker: question.suspectName })
               : state.answer,
-            revealedEvidence: phase.finalInterrogation ? undefined : state.revealedEvidence,
+            revealedEvidence: state.revealedEvidence,
             order: question.order[phase.id] ?? 10000 + index,
           };
         })
@@ -134,6 +139,8 @@ export function materializeSharedQuestions(phases: InterrogationPhase[], shared:
         if (question.revealedEvidence) knownEvidence.set(question.revealedEvidence.id, `${phase.id}::${question.revealedEvidence.id}`);
       }
     }
-    return { ...phase, interrogations };
+    const questionIds = new Set(interrogations.flatMap((interrogation) => interrogation.questions.map((question) => question.id)));
+    return { ...phase, interrogations, requiredQuestionIds: phase.finalInterrogation
+      ? phase.requiredQuestionIds.filter((id) => questionIds.has(id)) : [] };
   });
 }

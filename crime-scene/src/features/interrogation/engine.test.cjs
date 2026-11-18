@@ -121,6 +121,16 @@ test("신문은 선택한 단서 전체의 정확한 조합으로 한 질문을 
   }], ["실험체 A"]));
 });
 
+test("마지막 신문에서는 이전 페이즈에 모은 같은 단서의 버전도 사용할 수 있다", () => {
+  const interrogation = {
+    suspectName: "실험체 A",
+    questions: [{ id: "final-question", evidenceIds: ["evening::clue-a", "morning::clue-b"], answer: "답변" }],
+  };
+  assert.equal(findInterrogationQuestion(interrogation, ["morning::clue-a", "morning::clue-b"], true)?.id, "final-question");
+  assert.equal(findInterrogationQuestion(interrogation, ["morning::clue-a", "morning::clue-b"]), undefined);
+  assert.equal(findInterrogationQuestion(interrogation, ["morning::clue-a", "evening::clue-a"], true), undefined);
+});
+
 test("조합과 심문을 모두 해결해야 다음 페이즈가 열린다", () => {
   assert.equal(isPhaseReady(phase, initialInterrogationProgress), false);
   const withCombination = {
@@ -349,7 +359,7 @@ test("공유 신문은 단서 조합을 유지하고 변경 페이즈의 답변�
   ]);
 });
 
-test("신문 표시 페이즈는 선택한 단서의 표시 페이즈를 따라간다", () => {
+test("신문은 이전 페이즈에서 얻을 수 있는 단서로 마지막 페이즈에만 나타난다", () => {
   const phases = ["morning", "afternoon", "evening", "final"].map((id) => ({
     id, finalInterrogation: id === "final", sources: [], combinations: [],
     interrogations: [{ suspectName: "실험체 A", questions: [] }],
@@ -363,10 +373,10 @@ test("신문 표시 페이즈는 선택한 단서의 표시 페이즈를 따라�
     base: { answer: "답변" }, changes: {}, questionIds: {}, evidenceRefs: {}, order: {},
   };
   const [synced] = syncSharedQuestionPhases(phases, sources, [question]);
-  assert.deepEqual(synced.visiblePhaseIds, ["afternoon", "final"]);
+  assert.deepEqual(synced.visiblePhaseIds, ["final"]);
 });
 
-test("기존 신문의 답변과 단서 참조는 유지하고 질문 문구는 제거한다", () => {
+test("기존 신문은 마지막 페이즈로 모이고 이전 단서 참조와 최종 답변을 유지한다", () => {
   const { psychicInterrogationContent } = require("../../fixtures/psychic/interrogation.ts");
   const sources = deriveSharedSources(psychicInterrogationContent.phases);
   const original = materializeSharedSources(
@@ -376,22 +386,23 @@ test("기존 신문의 답변과 단서 참조는 유지하고 질문 문구는 
   const shared = syncSharedQuestionPhases(original, sources, deriveSharedQuestions(original));
   const expanded = materializeSharedQuestions(original, shared);
   const lines = (script) => (Array.isArray(script) ? script : [script]).map((line) => typeof line === "string" ? line : line.text);
-  for (let phaseIndex = 0; phaseIndex < original.length; phaseIndex += 1) {
-    for (const person of original[phaseIndex].interrogations) {
-      const generated = expanded[phaseIndex].interrogations.find((item) => item.suspectName === person.suspectName);
-      for (const question of person.questions) {
-        const match = generated.questions.find((item) => item.id === question.id);
-        assert.ok(match, `${original[phaseIndex].id}의 ${question.id}가 사라짐`);
-        assert.deepEqual(match.evidenceIds, question.evidenceIds ?? (question.evidenceId ? [question.evidenceId] : []));
-        assert.deepEqual(lines(match.answer), lines(question.answer));
-        assert.equal(match.revealedEvidence?.id, question.revealedEvidence?.id);
-        assert.equal(match.prompt, undefined);
-        for (const line of Array.isArray(match.answer) ? match.answer : [match.answer]) {
-          if (typeof line !== "string") assert.equal(line.speaker, person.suspectName);
-        }
-      }
+  const final = expanded.find((item) => item.finalInterrogation);
+  assert.ok(final);
+  for (const earlier of expanded.filter((item) => !item.finalInterrogation)) {
+    assert.ok(earlier.interrogations.every((item) => item.questions.length === 0));
+  }
+  for (const question of shared.filter((item) => item.visiblePhaseIds.includes(final.id))) {
+    const person = final.interrogations.find((item) => item.suspectName === question.suspectName);
+    const match = person.questions.find((item) => item.id === (question.questionIds[final.id] ?? `${final.id}-question-${question.id}`));
+    assert.ok(match, `${question.id}가 마지막 페이즈에 없음`);
+    assert.deepEqual(match.evidenceIds.map((id) => id.slice(id.indexOf("::") + 2)), question.clueIds);
+    assert.deepEqual(lines(match.answer), lines(question.base.answer));
+    assert.equal(match.prompt, undefined);
+    for (const line of Array.isArray(match.answer) ? match.answer : [match.answer]) {
+      if (typeof line !== "string") assert.equal(line.speaker, question.suspectName);
     }
   }
+  assert.doesNotThrow(() => validateInterrogationPhases("psychic", expanded, ["실험체 A", "실험체 B", "실험체 C", "김짜장", "난초"]));
 });
 
 test("같은 ID로 바뀐 단서는 페이즈마다 별도로 수집된다", () => {

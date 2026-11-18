@@ -349,7 +349,7 @@ export default function InInterrogationGame({
     if (!interrogation) return;
     primeDialogueAudio();
     const person = people.find((item) => item.name === name);
-    const question = findInterrogationQuestion(interrogation, questionEvidenceIds);
+    const question = findInterrogationQuestion(interrogation, questionEvidenceIds, Boolean(phase.finalInterrogation));
     spendEnergy();
     if (question) {
       setProgress((previous) => ({
@@ -401,6 +401,7 @@ export default function InInterrogationGame({
   };
 
   const changeView = (nextView: GameView) => {
+    if (nextView === "interrogation" && !phase?.finalInterrogation) return;
     setView(nextView);
   };
 
@@ -766,13 +767,13 @@ export default function InInterrogationGame({
               연결
             </Button>
           )}
-          <Button
+          {phase.finalInterrogation && <Button
             aria-pressed={view === "interrogation"}
             onClick={() => changeView("interrogation")}
             sx={{ minWidth: { xs: 84, md: 110 }, px: { xs: 1.5, md: 2.5 }, py: 1.1, fontWeight: 800, color: "#fff4df", bgcolor: view === "interrogation" ? "#a36a35" : "rgba(163,106,53,.55)", "&:hover": { bgcolor: "#bd874e" } }}
           >
             신문
-          </Button>
+          </Button>}
           <Button
             aria-pressed={view === "evidence"}
             onClick={() => changeView("evidence")}

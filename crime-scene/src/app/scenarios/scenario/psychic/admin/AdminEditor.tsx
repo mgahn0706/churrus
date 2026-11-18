@@ -240,7 +240,7 @@ export default function PsychicAdminEditor() {
   const [content, setContent] = useState<EditableInterrogationContent>(() => normalizeMapCoordinates(structuredClone(psychicInterrogationContent)));
   const [loaded, setLoaded] = useState(false);
   const [view, setView] = useState<"phase" | "prologue" | "fallback">("phase");
-  const [phaseArea, setPhaseArea] = useState<"interrogation" | "dialogue" | "evidence" | "settings">("interrogation");
+  const [phaseArea, setPhaseArea] = useState<"interrogation" | "dialogue" | "evidence" | "settings">("dialogue");
   const [phaseIndex, setPhaseIndex] = useState(0);
   const [personName, setPersonName] = useState("");
   const [newPersonName, setNewPersonName] = useState("");
@@ -482,6 +482,7 @@ export default function PsychicAdminEditor() {
       setPhaseIndex(0);
       setPersonName("");
       setView("phase");
+      setPhaseArea("dialogue");
       setNotice("초안을 불러왔습니다.");
     } catch (error) {
       setNotice(error instanceof Error ? error.message : "초안을 불러오지 못했습니다.");
@@ -508,6 +509,7 @@ export default function PsychicAdminEditor() {
     setPhaseIndex(insertAt);
     setPersonName("");
     setView("phase");
+    setPhaseArea("dialogue");
   };
   const deletePhase = () => {
     if (!phase || phase.finalInterrogation || !window.confirm(`${phase.title} 페이즈를 삭제할까요?`)) return;
@@ -529,6 +531,7 @@ export default function PsychicAdminEditor() {
     }, "all");
     setPhaseIndex(Math.max(0, phaseIndex - 1));
     setPersonName("");
+    setPhaseArea("dialogue");
   };
   const restoreOriginal = () => {
     if (!window.confirm("브라우저 초안을 지우고 현재 게임 원고로 되돌릴까요?")) return;
@@ -536,6 +539,7 @@ export default function PsychicAdminEditor() {
     setPhaseIndex(0);
     setPersonName("");
     setView("phase");
+    setPhaseArea("dialogue");
     setNotice("현재 게임 원고를 다시 불러왔습니다.");
   };
   const loadPreviousDraft = () => {
@@ -548,6 +552,7 @@ export default function PsychicAdminEditor() {
       setPhaseIndex(0);
       setPersonName("");
       setView("phase");
+      setPhaseArea("dialogue");
       setNotice("이전 초안을 불러왔습니다. 페이즈별 대사는 각각 수정할 수 있습니다.");
     } catch (error) {
       setNotice(error instanceof Error ? error.message : "이전 초안을 읽을 수 없습니다.");
@@ -580,7 +585,7 @@ export default function PsychicAdminEditor() {
             <Box component="nav" aria-label="원고 섹션" sx={{ display: "flex", flexDirection: { xs: "row", md: "column" }, gap: .5, overflowX: "auto", p: 1, border: "1px solid rgba(231,201,148,.22)", bgcolor: "rgba(11,19,17,.82)", borderRadius: 1, position: { md: "sticky" }, top: { md: 16 } }}>
               <Button onClick={() => setView("prologue")} variant={view === "prologue" ? "contained" : "text"} sx={{ justifyContent: "flex-start", whiteSpace: "nowrap" }}>프롤로그</Button>
               {content.phases.map((item, index) => (
-                <Button key={item.id} onClick={() => { setPhaseIndex(index); setPersonName(""); setQuestionSearch(""); setView("phase"); }} variant={view === "phase" && phaseIndex === index ? "contained" : "text"} sx={{ justifyContent: "flex-start", whiteSpace: "nowrap", textAlign: "left" }}>
+                <Button key={item.id} onClick={() => { setPhaseIndex(index); setPersonName(""); setQuestionSearch(""); setPhaseArea(item.finalInterrogation ? "interrogation" : "dialogue"); setView("phase"); }} variant={view === "phase" && phaseIndex === index ? "contained" : "text"} sx={{ justifyContent: "flex-start", whiteSpace: "nowrap", textAlign: "left" }}>
                   {item.timeLabel || item.title}
                 </Button>
               ))}
@@ -619,7 +624,7 @@ export default function PsychicAdminEditor() {
                       ["dialogue", "대화"],
                       ["evidence", "단서"],
                       ["settings", "설정"],
-                    ] as const).map(([area, label]) => (
+                    ] as const).filter(([area]) => area !== "interrogation" || phase.finalInterrogation).map(([area, label]) => (
                       <Button key={area} aria-pressed={phaseArea === area} variant={phaseArea === area ? "contained" : "text"} size="small" onClick={() => setPhaseArea(area)} sx={{ minWidth: 72 }}>{label}</Button>
                     ))}
                   </Box>
@@ -774,7 +779,7 @@ export default function PsychicAdminEditor() {
                             <Typography sx={{ color: "#d9b77d", fontSize: 13, fontWeight: 800 }}>조합 신문 · {(content.sharedQuestions ?? []).filter((question) => question.suspectName === person.suspectName && (question.clueIds.length !== 1 || question.id === expandedQuestionId)).length}</Typography>
                             <Button size="small" startIcon={<AddRounded />} onClick={addSharedQuestion}>신문 추가</Button>
                           </Box>
-                          <Typography sx={{ color: "#b8ac98", fontSize: 12 }}>단서 2~3개를 조합하면, 해당 단서가 표시되는 페이즈에 자동으로 신문이 나타납니다.</Typography>
+                          <Typography sx={{ color: "#b8ac98", fontSize: 12 }}>단서 2~3개를 조합하면 마지막 페이즈의 신문에 나타납니다. 이전 조사에서 얻은 단서를 사용할 수 있습니다.</Typography>
                           <TextField size="small" label="신문 검색" placeholder="단서 이름" value={questionSearch} onChange={(event) => setQuestionSearch(event.target.value)} />
                           {(content.sharedQuestions ?? []).filter((question) => question.suspectName === person.suspectName && (question.clueIds.length !== 1 || question.id === expandedQuestionId)).map((question) => {
                             const searchText = question.clueIds.map((id) => clueOptions.find((option) => option.id === id)?.label ?? id).join(" ").toLocaleLowerCase();

@@ -21,7 +21,7 @@ const EvidenceSelectionCard = memo(function EvidenceSelectionCard({
   return (
     <Button
       aria-pressed={selected}
-      aria-label={`${item.title} ${selected ? "선택 해제" : "선택"}`}
+      aria-label={`${item.title}${item.description ? `, ${item.description}` : ""} ${selected ? "선택 해제" : "선택"}`}
       disabled={disabled}
       onClick={() => onToggle(item.instanceId)}
       sx={{
@@ -46,6 +46,7 @@ const EvidenceSelectionCard = memo(function EvidenceSelectionCard({
     >
       {item.image && <Box component="img" src={item.image} alt="" loading="lazy" decoding="async" sx={{ width: "100%", height: 56, objectFit: "cover", bgcolor: "#070c0b" }} />}
       <Typography component="span" sx={{ width: "100%", pr: 1.5, fontSize: { xs: 11, md: 12 }, lineHeight: 1.45, textAlign: "left", whiteSpace: "normal", wordBreak: "keep-all", overflowWrap: "anywhere" }}>{item.title}</Typography>
+      {item.description && <Typography component="span" sx={{ width: "100%", color: "#c9c5b8", fontSize: { xs: 10, md: 11 }, lineHeight: 1.5, textAlign: "left", whiteSpace: "pre-wrap", wordBreak: "keep-all", overflowWrap: "anywhere" }}>{item.description}</Typography>}
       <Typography component="span" sx={{ position: "absolute", top: 7, right: 9, color: "#f1d19a", fontSize: 12 }}>{selected ? "✓" : "+"}</Typography>
     </Button>
   );
