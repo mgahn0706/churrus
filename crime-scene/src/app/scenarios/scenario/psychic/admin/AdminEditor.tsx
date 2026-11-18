@@ -19,7 +19,7 @@ import {
 import { psychicInterrogationContent } from "@/fixtures/psychic/interrogation";
 import { psychicSuspects, psychicVictim } from "@/fixtures/psychic/suspects";
 import { deriveSharedSources, ensureSharedSourceNumbers, materializeSharedSources, spreadSharedSourcePositions, type SharedSource } from "@/features/interrogation/sharedSources";
-import { deriveSharedQuestions, materializeSharedQuestions, type SharedQuestion } from "@/features/interrogation/sharedQuestions";
+import { deriveSharedQuestions, materializeSharedQuestions, syncSharedQuestionPhases, type SharedQuestion } from "@/features/interrogation/sharedQuestions";
 import { defaultPersonPosition, phasePeople } from "@/features/interrogation/phasePeople";
 import type { InterrogationEvidence, InterrogationMapPerson, InterrogationPhase, InterrogationQuestion, InterrogationScript } from "@/types";
 
@@ -90,6 +90,7 @@ const normalizeMapCoordinates = (draft: EditableInterrogationContent) => {
   next.people ??= [];
   next.phases = materializeSharedSources(next.phases, next.sharedSources);
   next.sharedQuestions ??= deriveSharedQuestions(next.phases);
+  next.sharedQuestions = syncSharedQuestionPhases(next.phases, next.sharedSources, next.sharedQuestions);
   next.phases = materializeSharedQuestions(next.phases, next.sharedQuestions);
   return next;
 };
@@ -308,7 +309,10 @@ export default function PsychicAdminEditor() {
         next.sharedSources = spreadSharedSourcePositions(next.sharedSources, preferredSourceId);
         next.phases = materializeSharedSources(next.phases, next.sharedSources);
       }
-      if (rebuild !== "none" && next.sharedQuestions) next.phases = materializeSharedQuestions(next.phases, next.sharedQuestions);
+      if (rebuild !== "none" && next.sharedQuestions) {
+        next.sharedQuestions = syncSharedQuestionPhases(next.phases, next.sharedSources ?? [], next.sharedQuestions);
+        next.phases = materializeSharedQuestions(next.phases, next.sharedQuestions);
+      }
       return next;
     });
   };
@@ -348,8 +352,8 @@ export default function PsychicAdminEditor() {
       next.sharedQuestions ??= [];
       next.sharedQuestions.unshift({
         id, suspectName: person.suspectName, clueIds: [],
-        visiblePhaseIds: next.phases.slice(phaseIndex).filter((item) => item.interrogations.some((entry) => entry.suspectName === person.suspectName)).map((item) => item.id),
-        base: { prompt: "", answer: [""] }, changes: {}, questionIds: {}, evidenceRefs: {}, order: {},
+        visiblePhaseIds: [],
+        base: { answer: [""] }, changes: {}, questionIds: {}, evidenceRefs: {}, order: {},
       });
     }, "questions");
   };
@@ -444,12 +448,6 @@ export default function PsychicAdminEditor() {
         requiredCombinationIds: [], requiredQuestionIds: [],
       });
       for (const source of next.sharedSources ?? []) source.visiblePhaseIds.push(id);
-      for (const question of next.sharedQuestions ?? []) {
-        const firstIndex = next.phases.findIndex((item) => question.visiblePhaseIds.includes(item.id));
-        if (firstIndex >= 0 && firstIndex < insertAt && next.phases[insertAt].interrogations.some((entry) => entry.suspectName === question.suspectName)) {
-          question.visiblePhaseIds.push(id);
-        }
-      }
     }, "all");
     setPhaseIndex(insertAt);
     setPersonName("");
@@ -546,7 +544,7 @@ export default function PsychicAdminEditor() {
                     <Accordion key={index} disableGutters slotProps={{ transition: { unmountOnExit: true } }} sx={{ bgcolor: "#121d19", color: "#f8edda" }}>
                       <AccordionSummary expandIcon={<ExpandMoreRounded sx={{ color: "#d9b77d" }} />}>응답 {index + 1}</AccordionSummary>
                       <AccordionDetails sx={{ display: "grid", gap: 1 }}>
-                        <ScriptEditor label="대사" value={answer} additionalSpeakers={content.people} onChange={(lines) => update((next) => { next.fallbackAnswers![index] = lines; })} />
+                        <ScriptEditor label="대사" value={answer} hideSpeaker onChange={(lines) => update((next) => { next.fallbackAnswers![index] = lines; })} />
                         <Button color="error" size="small" onClick={() => update((next) => { next.fallbackAnswers!.splice(index, 1); })}>응답 삭제</Button>
                       </AccordionDetails>
                     </Accordion>
@@ -598,7 +596,7 @@ export default function PsychicAdminEditor() {
                       <Accordion key={index} disableGutters slotProps={{ transition: { unmountOnExit: true } }} sx={{ bgcolor: "#121d19", color: "#f8edda" }}>
                         <AccordionSummary expandIcon={<ExpandMoreRounded sx={{ color: "#d9b77d" }} />}>응답 {index + 1}</AccordionSummary>
                         <AccordionDetails sx={{ display: "grid", gap: 1 }}>
-                          <ScriptEditor label="신문 답변" value={answer} additionalSpeakers={content.people} onChange={(lines) => editPhase((next) => { next.fallbackAnswers![index] = lines; })} />
+                          <ScriptEditor label="신문 답변" value={answer} hideSpeaker onChange={(lines) => editPhase((next) => { next.fallbackAnswers![index] = lines; })} />
                           <Button color="error" size="small" sx={{ justifySelf: "end" }} onClick={() => editPhase((next) => { next.fallbackAnswers!.splice(index, 1); })}>응답 삭제</Button>
                         </AccordionDetails>
                       </Accordion>
@@ -695,10 +693,10 @@ export default function PsychicAdminEditor() {
                             <Typography sx={{ color: "#d9b77d", fontSize: 13, fontWeight: 800 }}>공유 신문 · {(content.sharedQuestions ?? []).filter((question) => question.suspectName === person.suspectName).length}</Typography>
                             <Button size="small" startIcon={<AddRounded />} onClick={addSharedQuestion}>신문 추가</Button>
                           </Box>
-                          <Typography sx={{ color: "#b8ac98", fontSize: 12 }}>질문과 단서 조합은 공유하고, 필요한 페이즈의 답변만 바꿉니다.</Typography>
-                          <TextField size="small" label="신문 검색" placeholder="질문 · 단서" value={questionSearch} onChange={(event) => setQuestionSearch(event.target.value)} />
+                          <Typography sx={{ color: "#b8ac98", fontSize: 12 }}>단서 조합과 답변을 설정하면, 해당 단서가 표시되는 페이즈에 자동으로 신문이 나타납니다.</Typography>
+                          <TextField size="small" label="신문 검색" placeholder="단서 이름" value={questionSearch} onChange={(event) => setQuestionSearch(event.target.value)} />
                           {(content.sharedQuestions ?? []).filter((question) => question.suspectName === person.suspectName).map((question) => {
-                            const searchText = [question.base.prompt, ...question.clueIds.map((id) => clueOptions.find((option) => option.id === id)?.label ?? id)].join(" ").toLocaleLowerCase();
+                            const searchText = question.clueIds.map((id) => clueOptions.find((option) => option.id === id)?.label ?? id).join(" ").toLocaleLowerCase();
                             if (questionSearch.trim() && !searchText.includes(questionSearch.trim().toLocaleLowerCase())) return null;
                             return (
                               <SharedQuestionEditor
@@ -706,7 +704,6 @@ export default function PsychicAdminEditor() {
                                 question={question}
                                 phases={content.phases}
                                 options={clueOptions}
-                                speakers={content.people}
                                 expanded={expandedQuestionId === question.id}
                                 onExpandedChange={(expanded) => setExpandedQuestionId(expanded ? question.id : null)}
                                 onChange={(changed) => editSharedQuestion(question.id, (item) => Object.assign(item, changed))}

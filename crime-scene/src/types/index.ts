@@ -172,7 +172,7 @@ export interface InterrogationQuestion {
   id: string;
   evidenceId?: string;
   evidenceIds?: string[];
-  prompt: string;
+  prompt?: string;
   answer: InterrogationScript;
   revealedEvidence?: InterrogationEvidence;
 }

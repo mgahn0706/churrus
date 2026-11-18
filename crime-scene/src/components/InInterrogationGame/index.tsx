@@ -357,27 +357,16 @@ export default function InInterrogationGame({
     }
     setSelectedSuspectName(name);
     setView("interrogation");
-    const selectedTitles = questionEvidenceIds
-      .map((id) => evidence.find((item) => item.instanceId === id)?.title)
-      .filter(Boolean);
     const fallbackAnswers = phase.fallbackAnswers?.length
       ? phase.fallbackAnswers
       : scenario.fallbackAnswers ?? [];
     const answer = question?.answer ?? fallbackAnswers[Math.floor(Math.random() * fallbackAnswers.length)]
       ?? "그 단서에 대해서는 할 말이 없습니다.";
-    queueDialogue([
-      {
-        speaker: "나",
-        text: question?.prompt ?? (selectedTitles.length === 1
-          ? `${selectedTitles[0]}에 대해서는?`
-          : "이 단서들을 함께 보면요?"),
-      },
-      ...asDialogueSequence(
-        answer,
-        name,
-        person?.image,
-      ),
-    ], question?.revealedEvidence
+    queueDialogue(asDialogueSequence(
+      answer,
+      name,
+      person?.image,
+    ).map((line) => ({ ...line, speaker: name, portrait: person?.image })), question?.revealedEvidence
       ? evidenceInstanceId(phase.id, question.revealedEvidence.id)
       : undefined);
   };

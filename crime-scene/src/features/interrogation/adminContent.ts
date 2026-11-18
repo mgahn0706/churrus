@@ -55,6 +55,11 @@ export function validateAdminContent(
   if (scriptLines(content.prologue).every((line) => !line.text.trim())) return "프롤로그 대사를 한 줄 이상 입력하세요.";
   if (content.phases.length === 0) return "페이즈를 한 개 이상 입력하세요.";
   if (!content.phases.some((phase) => phase.finalInterrogation)) return "최종 추리 페이즈가 필요합니다.";
+  for (const question of content.sharedQuestions ?? []) {
+    if (!question.clueIds.length) return `${question.suspectName}: 신문 단서를 선택하세요.`;
+    if (question.clueIds.length > MAX_INTERROGATION_CLUES) return `${question.suspectName}: 신문 단서는 최대 ${MAX_INTERROGATION_CLUES}개까지 선택하세요.`;
+    if (scriptLines(question.base.answer).every((line) => !line.text.trim())) return `${question.suspectName}: 신문 답변을 입력하세요.`;
+  }
   const allNames = [...suspectNames, ...(content.people ?? []).map((person) => person.name)];
   if (new Set(allNames).size !== allNames.length || (content.people ?? []).some((person) => !person.name.trim())) {
     return "인물 이름이 비었거나 중복되었습니다.";
@@ -90,8 +95,8 @@ export function validateAdminContent(
         if ((question.evidenceIds?.length ?? (question.evidenceId ? 1 : 0)) > MAX_INTERROGATION_CLUES) {
           return `${phase.title} · ${interrogation.suspectName}: 신문 단서는 최대 ${MAX_INTERROGATION_CLUES}개까지 선택하세요.`;
         }
-        if (!question.prompt.trim() || scriptLines(question.answer).every((line) => !line.text.trim())) {
-          return `${phase.title} · ${interrogation.suspectName}: 신문 질문과 답변을 입력하세요.`;
+        if (scriptLines(question.answer).every((line) => !line.text.trim())) {
+          return `${phase.title} · ${interrogation.suspectName}: 신문 답변을 입력하세요.`;
         }
       }
     }
@@ -122,7 +127,7 @@ export function isEditableContent(value: unknown): value is EditableInterrogatio
   const choice = (item: unknown) => record(item) &&
     typeof item.id === "string" && typeof item.question === "string" && script(item.answer);
   const question = (item: unknown) => record(item) &&
-    typeof item.id === "string" && typeof item.prompt === "string" && script(item.answer) &&
+    typeof item.id === "string" && (item.prompt === undefined || typeof item.prompt === "string") && script(item.answer) &&
     (item.evidenceId === undefined || typeof item.evidenceId === "string") &&
     (item.evidenceIds === undefined || strings(item.evidenceIds)) &&
     (item.revealedEvidence === undefined || evidence(item.revealedEvidence)) &&
@@ -160,7 +165,7 @@ export function isEditableContent(value: unknown): value is EditableInterrogatio
     record(item.sourceIds) && Object.values(item.sourceIds).every((id) => typeof id === "string") &&
     record(item.order) && Object.values(item.order).every((index) => typeof index === "number");
   const questionState = (item: unknown) => record(item) &&
-    typeof item.prompt === "string" && script(item.answer) &&
+    script(item.answer) &&
     (item.revealedEvidence === undefined || evidence(item.revealedEvidence));
   const sharedQuestion = (item: unknown) => record(item) &&
     typeof item.id === "string" && typeof item.suspectName === "string" &&

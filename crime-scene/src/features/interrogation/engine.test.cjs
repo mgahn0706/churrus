@@ -11,7 +11,7 @@ const {
   validateInterrogationPhases,
 } = require("./engine.ts");
 const { deriveSharedSources, ensureSharedSourceNumbers, materializeSharedSources, spreadSharedSourcePositions } = require("./sharedSources.ts");
-const { deriveSharedQuestions, materializeSharedQuestions } = require("./sharedQuestions.ts");
+const { deriveSharedQuestions, materializeSharedQuestions, syncSharedQuestionPhases } = require("./sharedQuestions.ts");
 const { phasePeople } = require("./phasePeople.ts");
 
 const phase = {
@@ -349,22 +349,49 @@ test("공유 신문은 단서 조합을 유지하고 변경 페이즈의 답변�
   ]);
 });
 
-test("기존 초능력자 신문을 공유 문항으로 옮겨도 각 페이즈의 내용이 유지된다", () => {
+test("신문 표시 페이즈는 선택한 단서의 표시 페이즈를 따라간다", () => {
+  const phases = ["morning", "afternoon", "evening", "final"].map((id) => ({
+    id, finalInterrogation: id === "final", sources: [], combinations: [],
+    interrogations: [{ suspectName: "실험체 A", questions: [] }],
+  }));
+  const sources = [
+    { id: "a", visiblePhaseIds: ["morning", "afternoon"] },
+    { id: "b", visiblePhaseIds: ["afternoon", "evening"] },
+  ];
+  const question = {
+    id: "shared", suspectName: "실험체 A", clueIds: ["a", "b"], visiblePhaseIds: ["morning"],
+    base: { answer: "답변" }, changes: {}, questionIds: {}, evidenceRefs: {}, order: {},
+  };
+  const [synced] = syncSharedQuestionPhases(phases, sources, [question]);
+  assert.deepEqual(synced.visiblePhaseIds, ["afternoon", "final"]);
+});
+
+test("기존 신문의 답변과 단서 참조는 유지하고 질문 문구는 제거한다", () => {
   const { psychicInterrogationContent } = require("../../fixtures/psychic/interrogation.ts");
+  const sources = deriveSharedSources(psychicInterrogationContent.phases);
   const original = materializeSharedSources(
     psychicInterrogationContent.phases,
-    deriveSharedSources(psychicInterrogationContent.phases),
+    sources,
   );
-  const shared = deriveSharedQuestions(original);
+  const shared = syncSharedQuestionPhases(original, sources, deriveSharedQuestions(original));
   const expanded = materializeSharedQuestions(original, shared);
-  const snapshot = (phases) => phases.map((item) => item.interrogations.map((person) => person.questions.map((question) => ({
-    id: question.id,
-    evidenceIds: question.evidenceIds ?? (question.evidenceId ? [question.evidenceId] : []),
-    prompt: question.prompt,
-    answer: question.answer,
-    revealedEvidence: question.revealedEvidence,
-  }))));
-  assert.deepEqual(snapshot(expanded), snapshot(original));
+  const lines = (script) => (Array.isArray(script) ? script : [script]).map((line) => typeof line === "string" ? line : line.text);
+  for (let phaseIndex = 0; phaseIndex < original.length; phaseIndex += 1) {
+    for (const person of original[phaseIndex].interrogations) {
+      const generated = expanded[phaseIndex].interrogations.find((item) => item.suspectName === person.suspectName);
+      for (const question of person.questions) {
+        const match = generated.questions.find((item) => item.id === question.id);
+        assert.ok(match, `${original[phaseIndex].id}의 ${question.id}가 사라짐`);
+        assert.deepEqual(match.evidenceIds, question.evidenceIds ?? (question.evidenceId ? [question.evidenceId] : []));
+        assert.deepEqual(lines(match.answer), lines(question.answer));
+        assert.equal(match.revealedEvidence?.id, question.revealedEvidence?.id);
+        assert.equal(match.prompt, undefined);
+        for (const line of Array.isArray(match.answer) ? match.answer : [match.answer]) {
+          if (typeof line !== "string") assert.equal(line.speaker, person.suspectName);
+        }
+      }
+    }
+  }
 });
 
 test("같은 ID로 바뀐 단서는 페이즈마다 별도로 수집된다", () => {
