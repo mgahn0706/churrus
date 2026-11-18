@@ -6,11 +6,12 @@ import type {
 } from "@/types";
 import { validateInterrogationPhases } from "./engine";
 import type { SharedSource } from "./sharedSources";
+import type { SharedQuestion } from "./sharedQuestions";
 
 export type EditableInterrogationContent = Pick<
   InterrogationScenarioType,
   "prologue" | "phases" | "fallbackAnswers"
-> & { sharedSources?: SharedSource[] };
+> & { sharedSources?: SharedSource[]; sharedQuestions?: SharedQuestion[] };
 
 export function scriptLines(
   script: InterrogationScript | InterrogationScenarioType["prologue"] | undefined,
@@ -141,6 +142,16 @@ export function isEditableContent(value: unknown): value is EditableInterrogatio
     record(item.changes) && Object.values(item.changes).every(sourceState) &&
     record(item.sourceIds) && Object.values(item.sourceIds).every((id) => typeof id === "string") &&
     record(item.order) && Object.values(item.order).every((index) => typeof index === "number");
+  const questionState = (item: unknown) => record(item) &&
+    typeof item.prompt === "string" && script(item.answer) &&
+    (item.revealedEvidence === undefined || evidence(item.revealedEvidence));
+  const sharedQuestion = (item: unknown) => record(item) &&
+    typeof item.id === "string" && typeof item.suspectName === "string" &&
+    strings(item.clueIds) && strings(item.visiblePhaseIds) && questionState(item.base) &&
+    record(item.changes) && Object.values(item.changes).every(questionState) &&
+    record(item.questionIds) && Object.values(item.questionIds).every((id) => typeof id === "string") &&
+    record(item.evidenceRefs) && Object.values(item.evidenceRefs).every(strings) &&
+    record(item.order) && Object.values(item.order).every((index) => typeof index === "number");
   const combination = (item: unknown) => record(item) &&
     typeof item.id === "string" && strings(item.evidenceIds) && item.evidenceIds.length === 2 &&
     typeof item.explanation === "string" && evidence(item.result);
@@ -160,7 +171,8 @@ export function isEditableContent(value: unknown): value is EditableInterrogatio
   return record(value) && Array.isArray(value.prologue) && value.prologue.every(line) &&
     Array.isArray(value.phases) && value.phases.length > 0 && value.phases.every(phase) &&
     (value.fallbackAnswers === undefined || (Array.isArray(value.fallbackAnswers) && value.fallbackAnswers.every(script))) &&
-    (value.sharedSources === undefined || (Array.isArray(value.sharedSources) && value.sharedSources.every(sharedSource)));
+    (value.sharedSources === undefined || (Array.isArray(value.sharedSources) && value.sharedSources.every(sharedSource))) &&
+    (value.sharedQuestions === undefined || (Array.isArray(value.sharedQuestions) && value.sharedQuestions.every(sharedQuestion)));
 }
 
 export function toInterrogationTypeScript(content: EditableInterrogationContent) {

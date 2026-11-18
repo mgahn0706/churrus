@@ -11,6 +11,7 @@ const {
   validateInterrogationPhases,
 } = require("./engine.ts");
 const { deriveSharedSources, materializeSharedSources } = require("./sharedSources.ts");
+const { deriveSharedQuestions, materializeSharedQuestions } = require("./sharedQuestions.ts");
 
 const phase = {
   id: "phase-1",
@@ -224,6 +225,45 @@ test("공유 단서는 표시 페이즈와 변경 페이즈에 따라 펼쳐진�
     getCollectedEvidence(sharedVersion, ["morning::evidence-a"]).map((item) => item.title),
     ["기본 A"],
   );
+});
+
+test("공유 신문은 단서 조합을 유지하고 변경 페이즈의 답변만 바꾼다", () => {
+  const question = { id: "morning-question", evidenceId: "morning::evidence-a", prompt: "무엇을 봤나요?", answer: "아침 답변" };
+  const phases = [
+    { id: "morning", sources: [{ ...phase.sources[0], versionPhaseId: "morning" }], combinations: [], interrogations: [{ suspectName: "실험체 A", questions: [question] }] },
+    { id: "afternoon", sources: [{ ...phase.sources[0], id: "afternoon-source", versionPhaseId: "morning" }], combinations: [], interrogations: [{ suspectName: "실험체 A", questions: [{ ...question, id: "afternoon-question", answer: "오후 답변" }] }] },
+    { id: "evening", sources: [], combinations: [], interrogations: [{ suspectName: "실험체 A", questions: [] }] },
+  ];
+  const [shared] = deriveSharedQuestions(phases);
+  assert.deepEqual(shared.visiblePhaseIds, ["morning", "afternoon"]);
+  assert.deepEqual(Object.keys(shared.changes), ["afternoon"]);
+  shared.base.answer = "수정한 기본 답변";
+  shared.visiblePhaseIds.push("evening");
+  const expanded = materializeSharedQuestions(phases, [shared]);
+  assert.equal(expanded[0].interrogations[0].questions[0].answer, "수정한 기본 답변");
+  assert.equal(expanded[1].interrogations[0].questions[0].answer, "오후 답변");
+  assert.equal(expanded[2].interrogations[0].questions[0].answer, "오후 답변");
+  assert.deepEqual(expanded.map((item) => item.interrogations[0].questions[0].evidenceIds), [
+    ["morning::evidence-a"], ["morning::evidence-a"], ["morning::evidence-a"],
+  ]);
+});
+
+test("기존 초능력자 신문을 공유 문항으로 옮겨도 각 페이즈의 내용이 유지된다", () => {
+  const { psychicInterrogationContent } = require("../../fixtures/psychic/interrogation.ts");
+  const original = materializeSharedSources(
+    psychicInterrogationContent.phases,
+    deriveSharedSources(psychicInterrogationContent.phases),
+  );
+  const shared = deriveSharedQuestions(original);
+  const expanded = materializeSharedQuestions(original, shared);
+  const snapshot = (phases) => phases.map((item) => item.interrogations.map((person) => person.questions.map((question) => ({
+    id: question.id,
+    evidenceIds: question.evidenceIds ?? (question.evidenceId ? [question.evidenceId] : []),
+    prompt: question.prompt,
+    answer: question.answer,
+    revealedEvidence: question.revealedEvidence,
+  }))));
+  assert.deepEqual(snapshot(expanded), snapshot(original));
 });
 
 test("같은 ID로 바뀐 단서는 페이즈마다 별도로 수집된다", () => {
