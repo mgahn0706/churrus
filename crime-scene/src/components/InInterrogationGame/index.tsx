@@ -180,12 +180,14 @@ export default function InInterrogationGame({
       };
     });
   }, [scenario.suspects, scenario.victims, scenario.people, phase]);
+  const interrogationPeople = people.filter((person) =>
+    scenario.people?.find((profile) => profile.name === person.name)?.canInterrogate !== false);
   const canConnect = Boolean(phase?.combinations.length) && evidence.length >= 2;
   const energySpent = phase ? progress.energySpentByPhase[phase.id] ?? 0 : 0;
   const energyLimit = phase?.energyLimit ?? 4;
   const energyRemaining = Math.max(0, energyLimit - energySpent);
-  const activeSuspectName =
-    selectedSuspectName || phase?.interrogations[0]?.suspectName || "";
+  const activeSuspectName = interrogationPeople.some((person) => person.name === selectedSuspectName)
+    ? selectedSuspectName : interrogationPeople[0]?.name ?? "";
   const activeSuspect = people.find(
     (item) => item.name === activeSuspectName,
   );
@@ -342,6 +344,7 @@ export default function InInterrogationGame({
 
   const askSelectedEvidence = (name: string) => {
     if (!phase || questionEvidenceIds.length === 0 || questionEvidenceIds.length > MAX_INTERROGATION_CLUES) return;
+    if (scenario.people?.some((person) => person.name === name && person.canInterrogate === false)) return;
     const interrogation = phase.interrogations.find((item) => item.suspectName === name);
     if (!interrogation) return;
     primeDialogueAudio();
@@ -659,8 +662,8 @@ export default function InInterrogationGame({
                 overflow: "hidden",
               }}
             >
-              <Box sx={{ display: "grid", gridTemplateColumns: `repeat(${people.length}, minmax(0, 1fr))`, gap: .75 }}>
-                {people.map((person) => (
+              <Box sx={{ display: "grid", gridTemplateColumns: `repeat(${interrogationPeople.length}, minmax(0, 1fr))`, gap: .75 }}>
+                {interrogationPeople.map((person) => (
                   <Button
                     key={person.name}
                     aria-pressed={activeSuspectName === person.name}

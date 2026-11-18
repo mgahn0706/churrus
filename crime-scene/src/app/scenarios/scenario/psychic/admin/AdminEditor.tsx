@@ -27,6 +27,7 @@ const theme = createScenarioTheme("#bd874e", "dark", "Galmuri11, sans-serif");
 const draftKey = "psychic-interrogation-admin-v2";
 const previousDraftKey = "psychic-interrogation-admin-v1";
 const suspectNames = [...psychicSuspects, psychicVictim].map((person) => person.name);
+const excludedInterrogationNames = new Set(psychicInterrogationContent.people?.filter((person) => person.canInterrogate === false).map((person) => person.name) ?? []);
 const legacyMapImage = "/image/scenario/psychic/map/lab-map.png";
 const currentMapImage = "/image/scenario/psychic/map/lab-map.svg";
 const currentMapLocations = [
@@ -88,8 +89,13 @@ const normalizeMapCoordinates = (draft: EditableInterrogationContent) => {
   }
   next.sharedSources = spreadSharedSourcePositions(ensureSharedSourceNumbers(next.sharedSources ?? deriveSharedSources(next.phases)));
   next.people ??= [];
+  for (const profile of psychicInterrogationContent.people ?? []) {
+    if (profile.canInterrogate === false && !next.people.some((person) => person.name === profile.name)) next.people.push(structuredClone(profile));
+  }
+  for (const person of next.people) if (excludedInterrogationNames.has(person.name)) person.canInterrogate = false;
   next.phases = materializeSharedSources(next.phases, next.sharedSources);
   next.sharedQuestions ??= deriveSharedQuestions(next.phases);
+  next.sharedQuestions = next.sharedQuestions.filter((question) => !excludedInterrogationNames.has(question.suspectName));
   next.sharedQuestions = syncSharedQuestionPhases(next.phases, next.sharedSources, next.sharedQuestions);
   next.phases = materializeSharedQuestions(next.phases, next.sharedQuestions);
   return next;
@@ -288,7 +294,10 @@ export default function PsychicAdminEditor() {
   const visiblePeople = phase ? phasePeople(phase) : [];
   const visibleNames = new Set(visiblePeople.map((item) => item.name));
   const visibleInterrogations = phase?.interrogations.filter((item) => visibleNames.has(item.suspectName)) ?? [];
-  const person = visibleInterrogations.find((item) => item.suspectName === personName) ?? visibleInterrogations[0];
+  const editableInterrogations = phaseArea === "interrogation"
+    ? visibleInterrogations.filter((item) => content.people?.find((profile) => profile.name === item.suspectName)?.canInterrogate !== false)
+    : visibleInterrogations;
+  const person = editableInterrogations.find((item) => item.suspectName === personName) ?? editableInterrogations[0];
   const activePersonIndex = phase?.interrogations.findIndex((item) => item.suspectName === person?.suspectName) ?? -1;
   const personCatalog = [...psychicSuspects, psychicVictim, ...(content.people ?? [])];
   const options = useMemo(() => evidenceOptions(content, phaseIndex), [content, phaseIndex]);
@@ -302,7 +311,8 @@ export default function PsychicAdminEditor() {
   }, [content]);
   const quickPeople = useMemo(() => {
     if (!quickClueId) return [];
-    const candidates = [...new Set(content.phases.flatMap((item) => item.interrogations.map((entry) => entry.suspectName)))];
+    const candidates = [...new Set(content.phases.flatMap((item) => item.interrogations.map((entry) => entry.suspectName)))].filter((name) =>
+      content.people?.find((person) => person.name === name)?.canInterrogate !== false);
     const previews: SharedQuestion[] = candidates.map((suspectName) => ({
       id: `preview-${suspectName}`, suspectName, clueIds: [quickClueId], visiblePhaseIds: [],
       base: { answer: [""] }, changes: {}, questionIds: {}, evidenceRefs: {}, order: {},
@@ -310,7 +320,7 @@ export default function PsychicAdminEditor() {
     return syncSharedQuestionPhases(content.phases, content.sharedSources ?? [], previews)
       .filter((item) => item.visiblePhaseIds.length > 0)
       .map((item) => item.suspectName);
-  }, [content.phases, content.sharedSources, quickClueId]);
+  }, [content.phases, content.sharedSources, content.people, quickClueId]);
   const sourceNumbers = useMemo(() => new Map((content.sharedSources ?? []).map((source) => [source.id, source.number ?? 0])), [content.sharedSources]);
 
   const update = (edit: (next: EditableInterrogationContent) => void, rebuild: "none" | "questions" | "all" = "none", preferredSourceId?: string) => {
@@ -374,7 +384,8 @@ export default function PsychicAdminEditor() {
     if (!clueId) return;
     update((next) => {
       next.sharedQuestions ??= [];
-      const names = [...new Set(next.phases.flatMap((item) => item.interrogations.map((entry) => entry.suspectName)))];
+      const names = [...new Set(next.phases.flatMap((item) => item.interrogations.map((entry) => entry.suspectName)))].filter((name) =>
+        next.people?.find((person) => person.name === name)?.canInterrogate !== false);
       const previews: SharedQuestion[] = names.map((suspectName) => ({
         id: newId("question"), suspectName, clueIds: [clueId], visiblePhaseIds: [],
         base: { answer: ["그 단서에 대해서는 할 말이 없습니다."] }, changes: {}, questionIds: {}, evidenceRefs: {}, order: {},
@@ -733,7 +744,7 @@ export default function PsychicAdminEditor() {
                     </Box>}
                     {phaseArea === "interrogation" && <Typography sx={{ color: "#d9b77d", fontSize: 13, fontWeight: 800 }}>단서 2~3개 · 조합 신문</Typography>}
                     <Stack direction="row" spacing={.75} sx={{ flexWrap: "wrap", gap: .75, "& > *": { marginLeft: "0 !important" } }}>
-                      {visibleInterrogations.map((item) => <Button key={item.suspectName} variant={person?.suspectName === item.suspectName ? "contained" : "outlined"} size="small" onClick={() => { setPersonName(item.suspectName); setQuestionSearch(""); }} sx={{ whiteSpace: "nowrap" }}>{item.suspectName}{phaseArea === "interrogation" ? ` · ${(content.sharedQuestions ?? []).filter((question) => question.suspectName === item.suspectName && (question.clueIds.length !== 1 || question.id === expandedQuestionId)).length}` : ""}</Button>)}
+                      {editableInterrogations.map((item) => <Button key={item.suspectName} variant={person?.suspectName === item.suspectName ? "contained" : "outlined"} size="small" onClick={() => { setPersonName(item.suspectName); setQuestionSearch(""); }} sx={{ whiteSpace: "nowrap" }}>{item.suspectName}{phaseArea === "interrogation" ? ` · ${(content.sharedQuestions ?? []).filter((question) => question.suspectName === item.suspectName && (question.clueIds.length !== 1 || question.id === expandedQuestionId)).length}` : ""}</Button>)}
                     </Stack>
                     {person && (
                       <>

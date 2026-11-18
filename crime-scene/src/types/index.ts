@@ -139,6 +139,7 @@ export interface InterrogationPersonProfile {
   name: string;
   image?: string;
   description?: string;
+  canInterrogate?: boolean;
 }
 
 export interface InterrogationMapPerson {

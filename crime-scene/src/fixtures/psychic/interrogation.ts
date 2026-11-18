@@ -1934,6 +1934,7 @@ export const psychicInterrogationContent: Pick<
     {
       name: "난초",
       description: "",
+      canInterrogate: false,
     },
   ],
 };

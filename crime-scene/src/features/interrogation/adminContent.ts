@@ -144,7 +144,8 @@ export function isEditableContent(value: unknown): value is EditableInterrogatio
     typeof item.x === "number" && typeof item.y === "number";
   const personProfile = (item: unknown) => record(item) && typeof item.name === "string" &&
     (item.image === undefined || typeof item.image === "string") &&
-    (item.description === undefined || typeof item.description === "string");
+    (item.description === undefined || typeof item.description === "string") &&
+    (item.canInterrogate === undefined || typeof item.canInterrogate === "boolean");
   const mapPerson = (item: unknown) => record(item) && typeof item.name === "string" &&
     typeof item.x === "number" && typeof item.y === "number";
   const source = (item: unknown) => record(item) &&
