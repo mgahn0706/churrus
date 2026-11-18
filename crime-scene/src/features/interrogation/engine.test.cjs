@@ -10,7 +10,7 @@ const {
   readInterrogationProgress,
   validateInterrogationPhases,
 } = require("./engine.ts");
-const { deriveSharedSources, materializeSharedSources } = require("./sharedSources.ts");
+const { deriveSharedSources, ensureSharedSourceNumbers, materializeSharedSources } = require("./sharedSources.ts");
 const { deriveSharedQuestions, materializeSharedQuestions } = require("./sharedQuestions.ts");
 
 const phase = {
@@ -225,6 +225,16 @@ test("공유 단서는 표시 페이즈와 변경 페이즈에 따라 펼쳐진�
     getCollectedEvidence(sharedVersion, ["morning::evidence-a"]).map((item) => item.title),
     ["기본 A"],
   );
+});
+
+test("공유 단서 번호는 순서와 페이즈가 달라도 유지된다", () => {
+  const old = ensureSharedSourceNumbers([
+    { id: "a" }, { id: "b", number: 7 }, { id: "c" },
+  ]);
+  assert.deepEqual(old.map((source) => source.number), [1, 7, 2]);
+  const inserted = [{ id: "new", number: Math.max(...old.map((source) => source.number)) + 1 }, ...old];
+  assert.deepEqual(ensureSharedSourceNumbers(inserted).map((source) => source.number), [8, 1, 7, 2]);
+  assert.deepEqual(ensureSharedSourceNumbers([old[2], old[0]]).map((source) => source.number), [2, 1]);
 });
 
 test("단서 비밀번호는 변경 페이즈에 따라 적용되고 빈 비밀번호는 거부된다", () => {

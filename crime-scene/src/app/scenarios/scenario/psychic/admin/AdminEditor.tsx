@@ -18,7 +18,7 @@ import {
 } from "@/features/interrogation/adminContent";
 import { psychicInterrogationContent } from "@/fixtures/psychic/interrogation";
 import { psychicSuspects, psychicVictim } from "@/fixtures/psychic/suspects";
-import { deriveSharedSources, materializeSharedSources, sharedSourceAtPhase, type SharedSource } from "@/features/interrogation/sharedSources";
+import { deriveSharedSources, ensureSharedSourceNumbers, materializeSharedSources, sharedSourceAtPhase, type SharedSource } from "@/features/interrogation/sharedSources";
 import { deriveSharedQuestions, materializeSharedQuestions, type SharedQuestion } from "@/features/interrogation/sharedQuestions";
 import type { InterrogationEvidence, InterrogationPhase, InterrogationQuestion, InterrogationScript } from "@/types";
 
@@ -84,7 +84,7 @@ const normalizeMapCoordinates = (draft: EditableInterrogationContent) => {
     });
     phase.locations = [];
   }
-  next.sharedSources ??= deriveSharedSources(next.phases);
+  next.sharedSources = ensureSharedSourceNumbers(next.sharedSources ?? deriveSharedSources(next.phases));
   next.phases = materializeSharedSources(next.phases, next.sharedSources);
   next.sharedQuestions ??= deriveSharedQuestions(next.phases);
   next.phases = materializeSharedQuestions(next.phases, next.sharedQuestions);
@@ -108,7 +108,7 @@ function Section({ title, action, children, order }: { title: string; action?: R
   );
 }
 
-function MapPreview({ phase, onMoveSource }: { phase: InterrogationPhase; onMoveSource: (index: number, x: number, y: number) => void }) {
+function MapPreview({ phase, sourceNumbers, onMoveSource }: { phase: InterrogationPhase; sourceNumbers: Map<string, number>; onMoveSource: (index: number, x: number, y: number) => void }) {
   const mapRef = useRef<HTMLDivElement | null>(null);
   const dragRef = useRef<{ index: number; pointerId: number; offsetX: number; offsetY: number } | null>(null);
   const [dragPosition, setDragPosition] = useState<{ index: number; x: number; y: number } | null>(null);
@@ -129,14 +129,15 @@ function MapPreview({ phase, onMoveSource }: { phase: InterrogationPhase; onMove
       <Typography sx={{ color: "#b8ac98", fontSize: 12 }}>주황색 단서를 끌어 지도 위 원하는 곳에 놓으세요.</Typography>
       <Box ref={mapRef} sx={{ position: "relative", width: "100%", maxWidth: 720, aspectRatio: "16 / 9", backgroundImage: `url(${phase.mapImage})`, backgroundSize: "100% 100%", border: "1px solid rgba(231,201,148,.3)", bgcolor: "#111b18", overflow: "hidden" }}>
         {phase.sources.map((source, index) => {
+          const number = sourceNumbers.get(source.evidence.id);
           const x = dragPosition?.index === index ? dragPosition.x : source.x ?? 50;
           const y = dragPosition?.index === index ? dragPosition.y : source.y ?? 50;
           return (
-            <Tooltip key={source.id} title={source.title || `단서 ${index + 1}`}>
+            <Tooltip key={source.id} title={`#${number ?? "?"} · ${source.title || "새 단서"}`}>
               <Box
                 component="button"
                 type="button"
-                aria-label={`${source.title || `단서 ${index + 1}`} 위치 이동`}
+                aria-label={`단서 ${number ?? "?"} ${source.title || "새 단서"} 위치 이동`}
                 onPointerDown={(event) => {
                   if (!event.isPrimary || event.button !== 0) return;
                   const bounds = mapRef.current?.getBoundingClientRect();
@@ -164,14 +165,14 @@ function MapPreview({ phase, onMoveSource }: { phase: InterrogationPhase; onMove
                 }}
                 sx={{ position: "absolute", left: `${x}%`, top: `${y}%`, transform: "translate(-50%, -50%)", width: 28, height: 28, p: 0, border: "2px solid #fff1cf", borderRadius: "50%", bgcolor: "#a76426", color: "#fff", fontSize: 12, fontWeight: 800, boxShadow: "0 0 0 3px rgba(0,0,0,.7)", cursor: dragPosition?.index === index ? "grabbing" : "grab", touchAction: "none", zIndex: dragPosition?.index === index ? 2 : 1, "&:focus-visible": { outline: "2px solid #fff1cf", outlineOffset: 3 } }}
               >
-                {index + 1}
+                {number ?? "?"}
               </Box>
             </Tooltip>
           );
         })}
       </Box>
       <Box sx={{ display: "flex", flexWrap: "wrap", gap: .75, maxWidth: 720 }}>
-        {phase.sources.map((source, index) => <Chip key={source.id} size="small" label={`${index + 1}. ${source.title || "새 단서"}`} />)}
+        {phase.sources.map((source) => <Chip key={source.id} size="small" label={`#${sourceNumbers.get(source.evidence.id) ?? "?"} · ${source.title || "새 단서"}`} />)}
       </Box>
     </Box>
   );
@@ -201,6 +202,11 @@ export default function PsychicAdminEditor() {
   const [notice, setNotice] = useState("");
   const [previousDraftAvailable, setPreviousDraftAvailable] = useState(false);
   const importRef = useRef<HTMLInputElement | null>(null);
+  const contentRef = useRef(content);
+
+  useEffect(() => {
+    contentRef.current = content;
+  }, [content]);
 
   useEffect(() => {
     try {
@@ -217,10 +223,23 @@ export default function PsychicAdminEditor() {
   }, []);
 
   useEffect(() => {
-    if (loaded) localStorage.setItem(draftKey, JSON.stringify(content));
+    if (!loaded) return;
+    const timer = window.setTimeout(() => localStorage.setItem(draftKey, JSON.stringify(content)), 300);
+    return () => window.clearTimeout(timer);
   }, [content, loaded]);
 
-  const validationError = useMemo(() => validateAdminContent(content, suspectNames), [content]);
+  useEffect(() => {
+    if (!loaded) return;
+    const save = () => localStorage.setItem(draftKey, JSON.stringify(contentRef.current));
+    window.addEventListener("pagehide", save);
+    return () => window.removeEventListener("pagehide", save);
+  }, [loaded]);
+
+  const [validationError, setValidationError] = useState<string | null>(() => validateAdminContent(content, suspectNames));
+  useEffect(() => {
+    const timer = window.setTimeout(() => setValidationError(validateAdminContent(content, suspectNames)), 300);
+    return () => window.clearTimeout(timer);
+  }, [content]);
   const phase = content.phases[phaseIndex];
   const personIndex = phase?.interrogations.findIndex((item) => item.suspectName === personName) ?? -1;
   const activePersonIndex = personIndex >= 0 ? personIndex : 0;
@@ -234,28 +253,29 @@ export default function PsychicAdminEditor() {
     }
     return [...byId.values()];
   }, [content]);
+  const sourceNumbers = useMemo(() => new Map((content.sharedSources ?? []).map((source) => [source.id, source.number ?? 0])), [content.sharedSources]);
 
-  const update = (edit: (next: EditableInterrogationContent) => void) => {
+  const update = (edit: (next: EditableInterrogationContent) => void, rebuild: "none" | "questions" | "all" = "none") => {
     setContent((previous) => {
       const next = structuredClone(previous);
       edit(next);
-      if (next.sharedSources) next.phases = materializeSharedSources(next.phases, next.sharedSources);
-      if (next.sharedQuestions) next.phases = materializeSharedQuestions(next.phases, next.sharedQuestions);
+      if (rebuild === "all" && next.sharedSources) next.phases = materializeSharedSources(next.phases, next.sharedSources);
+      if (rebuild !== "none" && next.sharedQuestions) next.phases = materializeSharedQuestions(next.phases, next.sharedQuestions);
       return next;
     });
   };
-  const editPhase = (edit: (next: EditableInterrogationContent["phases"][number]) => void) =>
-    update((next) => edit(next.phases[phaseIndex]));
+  const editPhase = (edit: (next: EditableInterrogationContent["phases"][number]) => void, rebuild: "none" | "questions" = "none") =>
+    update((next) => edit(next.phases[phaseIndex]), rebuild);
   const editSharedQuestion = (id: string, edit: (question: SharedQuestion) => void) =>
     update((next) => {
       const question = next.sharedQuestions?.find((item) => item.id === id);
       if (question) edit(question);
-    });
+    }, "questions");
   const editSharedSource = (id: string, edit: (source: SharedSource, phases: InterrogationPhase[]) => void) =>
     update((next) => {
       const source = next.sharedSources?.find((item) => item.id === id);
       if (source) edit(source, next.phases);
-    });
+    }, "all");
   const addSharedSource = () => {
     const evidence = emptyEvidence();
     setExpandedSourceId(evidence.id);
@@ -264,11 +284,12 @@ export default function PsychicAdminEditor() {
       next.sharedSources ??= [];
       next.sharedSources.unshift({
         id: evidence.id,
+        number: Math.max(0, ...next.sharedSources.map((source) => source.number ?? 0)) + 1,
         base: { x: 45 + (count % 4) * 5, y: 45 + (Math.floor(count / 4) % 4) * 5, title: "", description: "", evidence },
         visiblePhaseIds: next.phases.filter((item) => !item.finalInterrogation).map((item) => item.id),
         changes: {}, sourceIds: {}, order: {},
       });
-    });
+    }, "all");
   };
   const addSharedQuestion = () => {
     if (!person) return;
@@ -282,12 +303,13 @@ export default function PsychicAdminEditor() {
         visiblePhaseIds: next.phases.slice(phaseIndex).filter((item) => item.interrogations.some((entry) => entry.suspectName === person.suspectName)).map((item) => item.id),
         base: { prompt: "", answer: [""] }, changes: {}, questionIds: {}, evidenceRefs: {}, order: {},
       });
-    });
+    }, "questions");
   };
 
   const exportCode = () => {
-    if (validationError) {
-      setNotice(validationError);
+    const error = validateAdminContent(content, suspectNames);
+    if (error) {
+      setNotice(error);
       return null;
     }
     return toInterrogationTypeScript(content);
@@ -345,7 +367,7 @@ export default function PsychicAdminEditor() {
           question.visiblePhaseIds.push(id);
         }
       }
-    });
+    }, "all");
     setPhaseIndex(insertAt);
     setPersonName("");
     setView("phase");
@@ -367,7 +389,7 @@ export default function PsychicAdminEditor() {
         delete question.evidenceRefs[removed.id];
         delete question.order[removed.id];
       }
-    });
+    }, "all");
     setPhaseIndex(Math.max(0, phaseIndex - 1));
     setPersonName("");
   };
@@ -438,7 +460,7 @@ export default function PsychicAdminEditor() {
               {view === "fallback" && (
                 <Section title="페이즈 응답이 없을 때의 공통 응답" action={<Button size="small" startIcon={<AddRounded />} onClick={() => update((next) => { next.fallbackAnswers = [...(next.fallbackAnswers ?? []), [""]]; })}>응답 추가</Button>}>
                   {(content.fallbackAnswers ?? []).map((answer, index) => (
-                    <Accordion key={index} disableGutters sx={{ bgcolor: "#121d19", color: "#f8edda" }}>
+                    <Accordion key={index} disableGutters slotProps={{ transition: { unmountOnExit: true } }} sx={{ bgcolor: "#121d19", color: "#f8edda" }}>
                       <AccordionSummary expandIcon={<ExpandMoreRounded sx={{ color: "#d9b77d" }} />}>응답 {index + 1}</AccordionSummary>
                       <AccordionDetails sx={{ display: "grid", gap: 1 }}>
                         <ScriptEditor label="대사" value={answer} onChange={(lines) => update((next) => { next.fallbackAnswers![index] = lines; })} />
@@ -472,7 +494,7 @@ export default function PsychicAdminEditor() {
                       <TextField size="small" type="number" label="에너지" value={phase.energyLimit ?? 4} onChange={(event) => editPhase((next) => { next.energyLimit = Number(event.target.value); })} />
                       <TextField size="small" label="지도 이미지 경로" value={phase.mapImage ?? ""} onChange={(event) => editPhase((next) => { next.mapImage = event.target.value; })} sx={{ gridColumn: "1 / -1" }} />
                     </Box>
-                    <MapPreview phase={phase} onMoveSource={(index, x, y) => {
+                    <MapPreview phase={phase} sourceNumbers={sourceNumbers} onMoveSource={(index, x, y) => {
                       const sourceId = phase.sources[index]?.evidence.id;
                       if (!sourceId) return;
                       editSharedSource(sourceId, (source, phases) => {
@@ -489,7 +511,7 @@ export default function PsychicAdminEditor() {
 
                   {phaseArea === "interrogation" && <Section title={`기본 응답 · ${phase.fallbackAnswers?.length ?? 0}`} order={2} action={<Button size="small" startIcon={<AddRounded />} onClick={() => editPhase((next) => { next.fallbackAnswers ??= []; next.fallbackAnswers.push([""]); })}>응답 추가</Button>}>
                     {(phase.fallbackAnswers ?? []).map((answer, index) => (
-                      <Accordion key={index} disableGutters sx={{ bgcolor: "#121d19", color: "#f8edda" }}>
+                      <Accordion key={index} disableGutters slotProps={{ transition: { unmountOnExit: true } }} sx={{ bgcolor: "#121d19", color: "#f8edda" }}>
                         <AccordionSummary expandIcon={<ExpandMoreRounded sx={{ color: "#d9b77d" }} />}>응답 {index + 1}</AccordionSummary>
                         <AccordionDetails sx={{ display: "grid", gap: 1 }}>
                           <ScriptEditor label="신문 답변" value={answer} onChange={(lines) => editPhase((next) => { next.fallbackAnswers![index] = lines; })} />
@@ -511,7 +533,7 @@ export default function PsychicAdminEditor() {
                         expanded={expandedSourceId === source.id}
                         onExpandedChange={(expanded) => setExpandedSourceId(expanded ? source.id : null)}
                         onChange={(changed) => editSharedSource(source.id, (item) => Object.assign(item, changed))}
-                        onDelete={() => update((next) => { next.sharedSources = next.sharedSources?.filter((item) => item.id !== source.id); })}
+                        onDelete={() => update((next) => { next.sharedSources = next.sharedSources?.filter((item) => item.id !== source.id); }, "all")}
                       />
                     ))}
                   </Section>
@@ -519,18 +541,18 @@ export default function PsychicAdminEditor() {
 
                   {phaseArea === "evidence" && phase.combinations.length > 0 && <Section title={`기존 단서 합성 · ${phase.combinations.length}`}>
                     {phase.combinations.map((combination, index) => (
-                      <Accordion key={index} disableGutters sx={{ bgcolor: "#121d19", color: "#f8edda" }}>
+                      <Accordion key={index} disableGutters slotProps={{ transition: { unmountOnExit: true } }} sx={{ bgcolor: "#121d19", color: "#f8edda" }}>
                         <AccordionSummary expandIcon={<ExpandMoreRounded sx={{ color: "#d9b77d" }} />}>{combination.result.title || `연결 ${index + 1}`}</AccordionSummary>
                         <AccordionDetails sx={{ display: "grid", gap: 1 }}>
-                          <TextField size="small" label="연결 ID" value={combination.id} onChange={(event) => editPhase((next) => { next.combinations[index].id = event.target.value; })} />
+                          <TextField size="small" label="연결 ID" value={combination.id} onChange={(event) => editPhase((next) => { next.combinations[index].id = event.target.value; }, "questions")} />
                           <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" }, gap: 1 }}>
-                            {[0, 1].map((inputIndex) => <TextField key={inputIndex} select size="small" label={`연결할 단서 ${inputIndex + 1}`} value={combination.evidenceIds[inputIndex]} onChange={(event) => editPhase((next) => { next.combinations[index].evidenceIds[inputIndex] = event.target.value; })}>
+                            {[0, 1].map((inputIndex) => <TextField key={inputIndex} select size="small" label={`연결할 단서 ${inputIndex + 1}`} value={combination.evidenceIds[inputIndex]} onChange={(event) => editPhase((next) => { next.combinations[index].evidenceIds[inputIndex] = event.target.value; }, "questions")}>
                               {options.map((option) => <MenuItem key={option.id} value={option.id}>{option.label}</MenuItem>)}
                             </TextField>)}
                           </Box>
-                          <TextField size="small" label="연결 설명" value={combination.explanation} onChange={(event) => editPhase((next) => { next.combinations[index].explanation = event.target.value; })} multiline minRows={2} />
-                          <EvidenceEditor value={combination.result} onChange={(value) => editPhase((next) => { next.combinations[index].result = value; })} />
-                          <Button color="error" size="small" sx={{ justifySelf: "end" }} onClick={() => editPhase((next) => { next.combinations.splice(index, 1); })}>연결 삭제</Button>
+                          <TextField size="small" label="연결 설명" value={combination.explanation} onChange={(event) => editPhase((next) => { next.combinations[index].explanation = event.target.value; }, "questions")} multiline minRows={2} />
+                          <EvidenceEditor value={combination.result} onChange={(value) => editPhase((next) => { next.combinations[index].result = value; }, "questions")} />
+                          <Button color="error" size="small" sx={{ justifySelf: "end" }} onClick={() => editPhase((next) => { next.combinations.splice(index, 1); }, "questions")}>연결 삭제</Button>
                         </AccordionDetails>
                       </Accordion>
                     ))}
@@ -554,7 +576,7 @@ export default function PsychicAdminEditor() {
                             <Button size="small" startIcon={<AddRounded />} onClick={() => editPhase((next) => { next.interrogations[activePersonIndex].conversationChoices ??= []; next.interrogations[activePersonIndex].conversationChoices!.push({ id: newId("choice"), question: "", answer: [""] }); })}>선택지 추가</Button>
                           </Box>
                           {(person.conversationChoices ?? []).map((choice, index) => (
-                            <Accordion key={index} disableGutters sx={{ bgcolor: "#121d19", color: "#f8edda" }}>
+                            <Accordion key={index} disableGutters slotProps={{ transition: { unmountOnExit: true } }} sx={{ bgcolor: "#121d19", color: "#f8edda" }}>
                               <AccordionSummary expandIcon={<ExpandMoreRounded sx={{ color: "#d9b77d" }} />}>{choice.question || `선택지 ${index + 1}`}</AccordionSummary>
                               <AccordionDetails sx={{ display: "grid", gap: 1 }}>
                                 <TextField size="small" label="선택지 ID" value={choice.id} onChange={(event) => editPhase((next) => { next.interrogations[activePersonIndex].conversationChoices![index].id = event.target.value; })} />
@@ -586,7 +608,7 @@ export default function PsychicAdminEditor() {
                                 expanded={expandedQuestionId === question.id}
                                 onExpandedChange={(expanded) => setExpandedQuestionId(expanded ? question.id : null)}
                                 onChange={(changed) => editSharedQuestion(question.id, (item) => Object.assign(item, changed))}
-                                onDelete={() => update((next) => { next.sharedQuestions = next.sharedQuestions?.filter((item) => item.id !== question.id); })}
+                                onDelete={() => update((next) => { next.sharedQuestions = next.sharedQuestions?.filter((item) => item.id !== question.id); }, "questions")}
                                 createEvidence={emptyEvidence}
                               />
                             );

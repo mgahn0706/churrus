@@ -42,7 +42,7 @@ export default function SharedQuestionEditor({ question, phases, options, expand
   );
 
   return (
-    <Accordion disableGutters expanded={expanded} onChange={(_, isExpanded) => onExpandedChange(isExpanded)} sx={{ bgcolor: "#121d19", color: "#f8edda" }}>
+    <Accordion disableGutters expanded={expanded} onChange={(_, isExpanded) => onExpandedChange(isExpanded)} slotProps={{ transition: { unmountOnExit: true } }} sx={{ bgcolor: "#121d19", color: "#f8edda" }}>
       <AccordionSummary expandIcon={<ExpandMoreRounded sx={{ color: "#d9b77d" }} />}>
         <Typography sx={{ fontSize: 13 }}>{question.clueIds.map((id) => labels.get(id) ?? id).join(" + ") || "단서 선택 필요"} → {question.base.prompt || "질문 없음"} · 표시 {question.visiblePhaseIds.length}개 페이즈</Typography>
       </AccordionSummary>

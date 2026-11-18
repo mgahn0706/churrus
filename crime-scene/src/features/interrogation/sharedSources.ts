@@ -4,11 +4,30 @@ export type SharedSourceState = Pick<InterrogationSource, "x" | "y" | "title" | 
 
 export interface SharedSource {
   id: string;
+  number?: number;
   visiblePhaseIds: string[];
   changes: Record<string, SharedSourceState>;
   base: SharedSourceState;
   sourceIds: Record<string, string>;
   order: Record<string, number>;
+}
+
+export function ensureSharedSourceNumbers(shared: SharedSource[]): SharedSource[] {
+  const used = new Set<number>();
+  const numbered = shared.map((source) => {
+    if (Number.isInteger(source.number) && source.number! > 0 && !used.has(source.number!)) {
+      used.add(source.number!);
+      return source;
+    }
+    return { ...source, number: undefined };
+  });
+  let next = 1;
+  return numbered.map((source) => {
+    if (source.number !== undefined) return source;
+    while (used.has(next)) next += 1;
+    used.add(next);
+    return { ...source, number: next++ };
+  });
 }
 
 const sourceState = (source: InterrogationSource): SharedSourceState => ({

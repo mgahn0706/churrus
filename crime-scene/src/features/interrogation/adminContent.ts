@@ -28,11 +28,13 @@ export function evidenceOptions(
 ) {
   const options: { id: string; label: string; description: string }[] = [];
   const seen = new Set<string>();
+  const sourceNumbers = new Map((content.sharedSources ?? []).map((source) => [source.id, source.number]));
   const add = (phaseId: string, timeLabel: string, evidence: InterrogationEvidence) => {
     const id = `${phaseId}::${evidence.id}`;
     if (!evidence.id || seen.has(id)) return;
     seen.add(id);
-    options.push({ id, label: `${timeLabel} · ${evidence.title || "이름 없는 단서"}`, description: evidence.description });
+    const number = sourceNumbers.get(evidence.id);
+    options.push({ id, label: `${number ? `#${number} · ` : ""}${timeLabel} · ${evidence.title || "이름 없는 단서"}`, description: evidence.description });
   };
 
   content.phases.slice(0, throughPhaseIndex + 1).forEach((phase) => {
@@ -140,6 +142,7 @@ export function isEditableContent(value: unknown): value is EditableInterrogatio
     typeof item.title === "string" && typeof item.description === "string" &&
     (item.password === undefined || typeof item.password === "string") && evidence(item.evidence);
   const sharedSource = (item: unknown) => record(item) && typeof item.id === "string" &&
+    (item.number === undefined || (Number.isInteger(item.number) && (item.number as number) > 0)) &&
     strings(item.visiblePhaseIds) && sourceState(item.base) &&
     record(item.changes) && Object.values(item.changes).every(sourceState) &&
     record(item.sourceIds) && Object.values(item.sourceIds).every((id) => typeof id === "string") &&

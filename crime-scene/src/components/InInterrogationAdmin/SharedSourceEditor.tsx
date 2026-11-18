@@ -36,9 +36,9 @@ export default function SharedSourceEditor({ source, phases, expanded, onExpande
   );
 
   return (
-    <Accordion disableGutters expanded={expanded} onChange={(_, isExpanded) => onExpandedChange(isExpanded)} sx={{ bgcolor: "#121d19", color: "#f8edda" }}>
+    <Accordion disableGutters expanded={expanded} onChange={(_, isExpanded) => onExpandedChange(isExpanded)} slotProps={{ transition: { unmountOnExit: true } }} sx={{ bgcolor: "#121d19", color: "#f8edda" }}>
       <AccordionSummary expandIcon={<ExpandMoreRounded sx={{ color: "#d9b77d" }} />}>
-        <Typography sx={{ fontSize: 13 }}>{source.base.evidence.title || source.base.title || "새 단서"} · 표시 {source.visiblePhaseIds.length}개 페이즈 · 변경 {Object.keys(source.changes).length}회</Typography>
+        <Typography sx={{ fontSize: 13 }}>#{source.number ?? "?"} · {source.base.evidence.title || source.base.title || "새 단서"} · 표시 {source.visiblePhaseIds.length}개 페이즈 · 변경 {Object.keys(source.changes).length}회</Typography>
       </AccordionSummary>
       <AccordionDetails sx={{ display: "grid", gap: 2 }}>
         <Box sx={{ display: "grid", gap: .5 }}>
