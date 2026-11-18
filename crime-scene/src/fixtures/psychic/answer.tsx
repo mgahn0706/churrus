@@ -13,7 +13,7 @@ export const psychicAnswerConfig: ScenarioAnswerConfig = {
     targetText: "김짜장을 살해한 범인이",
   }),
   confess:
-    "김짜장 소장님이 실험 원본을 가져오라고 하셨습니다. 공개 결과표에서 실패한 기록을 뺀 걸 알아채셨더군요. 자정 전 관찰실에서 이야기를 나누다가 돌이킬 수 없는 일이 벌어졌습니다. 겁이 나서 연구소를 떠났고, 다시 돌아오지 않았다고 거짓말했습니다.",
+    "김짜장 소장님이 실험 원본을 가져오라고 하셨습니다. 공개 결과표에서 실패한 기록을 뺀 걸 알아채셨더군요. 자정 전 실험실에서 이야기를 나누다가 돌이킬 수 없는 일이 벌어졌습니다. 겁이 나서 연구소를 떠났고, 다시 돌아오지 않았다고 거짓말했습니다.",
   additional: psychicAdditionalQuestions.map((item, index) => ({
     question: `${index + 1}. ${item.question}`,
     answer: item.answer,

@@ -2,6 +2,13 @@ import { Box, Typography } from "@mui/material";
 import { evidenceInstanceId } from "@/features/interrogation/engine";
 import type { InterrogationMapLocation, InterrogationSource } from "@/types";
 
+const psychicPersonPositions: Record<string, { x: number; y: number }> = {
+  "실험체 A": { x: 9, y: 70 },
+  "실험체 B": { x: 23, y: 70 },
+  "실험체 C": { x: 37, y: 70 },
+  "김짜장": { x: 63, y: 26 },
+};
+
 export default function ResearchMap({
   image,
   locations,
@@ -149,7 +156,7 @@ export default function ResearchMap({
           );
         })}
         {people.map((person, index) => {
-          const position = [
+          const position = psychicPersonPositions[person.name] ?? [
             { x: 34, y: 36 },
             { x: 52, y: 62 },
             { x: 68, y: 36 },

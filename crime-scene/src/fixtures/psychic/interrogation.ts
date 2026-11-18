@@ -4,11 +4,12 @@ import { psychicSuspects, psychicVictim } from "./suspects";
 
 // Placeholder story content. Repeated clue IDs become distinct versions by phase.
 const locations = [
-  { id: "entrance", title: "연구소 입구", x: 18, y: 69 },
-  { id: "main-hall", title: "메인홀", x: 51, y: 42 },
-  { id: "observation", title: "관찰실", x: 80, y: 67 },
+  { id: "entrance", title: "연구소 입구", x: 12, y: 43 },
+  { id: "main-hall", title: "메인홀", x: 77, y: 69 },
+  { id: "laboratory", title: "실험실", x: 37, y: 23 },
+  { id: "director-office", title: "소장실", x: 63, y: 22 },
 ];
-const mapImage = "/image/scenario/psychic/map/lab-map.svg";
+const mapImage = "/image/scenario/psychic/map/lab-map.png";
 type QuestionDraft = Omit<InterrogationQuestion, "id" | "prompt"> & {
   suspectName: string;
   prompt?: string;
@@ -71,7 +72,7 @@ const phaseDialogues: Record<string, Record<string, PhasePersonDialogue>> = {
       conversation: [{ speaker: "나", text: "공개 결과표를 만들고 있나요?" }, "네. 오전 기록을 추려서 제출해야 합니다."],
       conversationChoices: [
         { id: "p2-public", question: "성공한 예측만 공개하나요?", answer: ["공개용 표에는 확인된 결과를 먼저 넣었어요.", "원본에는 다른 기록도 남아 있습니다."] },
-        { id: "p2-original", question: "원본은 어디에 있어요?", answer: ["관찰실에서 정리하고 있어요.", "아직 소장님께 보여 드리지 않았습니다."] },
+        { id: "p2-original", question: "원본은 어디에 있어요?", answer: ["실험실에서 정리하고 있어요.", "아직 소장님께 보여 드리지 않았습니다."] },
       ],
     },
     "김짜장": {
@@ -123,7 +124,7 @@ const phaseDialogues: Record<string, Record<string, PhasePersonDialogue>> = {
     "실험체 B": {
       conversation: [{ speaker: "나", text: "무슨 일이 있었는지 봤어요?" }, "아니요. 저도 소식을 듣고 왔어요."],
       conversationChoices: [
-        { id: "p4-after", question: "시연 뒤에는 어디에 있었어요?", answer: ["메인홀에서 장비를 정리했어요.", "관찰실 쪽에는 가지 않았습니다."] },
+        { id: "p4-after", question: "시연 뒤에는 어디에 있었어요?", answer: ["메인홀에서 장비를 정리했어요.", "실험실 쪽에는 가지 않았습니다."] },
         { id: "p4-director", question: "소장님과 마지막으로 이야기한 건 언제예요?", answer: ["시연 전에 잠깐 봤어요.", "그 뒤에는 따로 만나지 않았습니다."] },
       ],
     },
@@ -131,7 +132,7 @@ const phaseDialogues: Record<string, Record<string, PhasePersonDialogue>> = {
       conversation: [{ speaker: "나", text: "연구소에 다시 왔었나요?" }, "잠깐 들른 건 맞아요. 원본 자료가 필요했습니다."],
       conversationChoices: [
         { id: "p4-return", question: "왜 다시 들어왔어요?", answer: ["원본을 가져가려고 했어요.", "소장님이 기다리고 계신 줄은 몰랐습니다."] },
-        { id: "p4-room", question: "관찰실에는 들어갔어요?", answer: ["서랍을 확인하러 갔어요.", "그때는 이런 일이 생긴 줄 몰랐어요."] },
+        { id: "p4-room", question: "실험실에는 들어갔어요?", answer: ["서랍을 확인하러 갔어요.", "그때는 이런 일이 생긴 줄 몰랐어요."] },
       ],
     },
   },
@@ -139,7 +140,7 @@ const phaseDialogues: Record<string, Record<string, PhasePersonDialogue>> = {
     "실험체 A": {
       conversation: [{ speaker: "나", text: "마지막으로 확인할 게 있어요." }, "네. 제가 아는 건 모두 말하겠습니다."],
       conversationChoices: [
-        { id: "final-camera", question: "인터뷰 시간 내내 메인홀에 있었나요?", answer: ["영상에 진행자와 제가 계속 나옵니다.", "그 시간에는 관찰실에 갈 수 없었어요."] },
+        { id: "final-camera", question: "인터뷰 시간 내내 메인홀에 있었나요?", answer: ["영상에 진행자와 제가 계속 나옵니다.", "그 시간에는 실험실에 갈 수 없었어요."] },
         { id: "final-contract", question: "계약 갈등이 살인의 이유였나요?", answer: ["소장님에게 화가 난 건 사실이에요.", "하지만 해치지는 않았습니다."] },
       ],
     },
@@ -154,7 +155,7 @@ const phaseDialogues: Record<string, Record<string, PhasePersonDialogue>> = {
       conversation: [{ speaker: "나", text: "출입 기록이 남아 있어요." }, "다시 온 건 인정해요. 하지만 그게 전부예요."],
       conversationChoices: [
         { id: "final-original", question: "왜 실험 원본을 숨겼나요?", answer: ["실패한 예측을 공개하고 싶지 않았어요.", "원본은 지우지 않았습니다."] },
-        { id: "final-room", question: "관찰실에서 소장을 만났나요?", answer: ["원본을 찾으러 들어갔어요.", "소장님과 무슨 일이 있었는지는 더 말하고 싶지 않아요."] },
+        { id: "final-room", question: "실험실에서 소장을 만났나요?", answer: ["원본을 찾으러 들어갔어요.", "소장님과 무슨 일이 있었는지는 더 말하고 싶지 않아요."] },
       ],
     },
   },
@@ -193,7 +194,7 @@ const phases: InterrogationPhase[] = [
       { id: "p1-pill", locationId: "entrance", title: "알약 지급대", description: "아침 복용 기록이 놓여 있다.", evidence: { id: "pill-log", title: "오전 복용 기록", description: "오전 8시, A·B·C와 내가 알약을 받았다. 소장도 같은 종류를 챙겼다." } },
       { id: "p1-badge", locationId: "entrance", title: "A의 출입증", description: "출입증 뒷면에 본명이 적혀 있다.", evidence: { id: "badge-a", title: "실험체 A의 출입증", description: `실험체 A의 본명은 ${psychicIdentityAnswers[0].realName}이다.` } },
       { id: "p1-schedule", locationId: "main-hall", title: "오늘의 일정표", description: "메인홀 벽에 일정표가 붙어 있다.", evidence: { id: "schedule", title: "오전 일정표", description: "오전에는 능력 검사를, 오후에는 공개 시연 준비를 한다." } },
-      { id: "p1-vitals", locationId: "observation", title: "관찰 장비", description: "누군가의 상태를 기록하는 장비다.", evidence: { id: "vitals", title: "기초 관찰 기록", description: "알약 복용 직후의 생체 수치가 정상 범위로 표시되어 있다." } },
+      { id: "p1-vitals", locationId: "laboratory", title: "관찰 장비", description: "누군가의 상태를 기록하는 장비다.", evidence: { id: "vitals", title: "기초 관찰 기록", description: "알약 복용 직후의 생체 수치가 정상 범위로 표시되어 있다." } },
     ],
     combinations: [],
     interrogations: interrogations("phase-1", [
@@ -224,7 +225,7 @@ const phases: InterrogationPhase[] = [
     sources: [
       { id: "p2-pill", locationId: "entrance", title: "갱신된 복용 기록", description: "지급대의 기록이 바뀌어 있다.", evidence: { id: "pill-log", title: "오후 복용 기록", description: "오후 1시 점검란에는 소장만 추가 복용한 것으로 적혀 있다. 오전 기록과 내용이 다르다." } },
       { id: "p2-ledger", locationId: "main-hall", title: "보상 지급대장", description: "실험체 B의 지급 내역이 있다.", evidence: { id: "ledger-b", title: "실험체 B의 지급대장", description: `실험체 B의 본명은 ${psychicIdentityAnswers[1].realName}이다. 보상란은 아직 비어 있다.` } },
-      { id: "p2-forecast", locationId: "observation", title: "예지 실험 기록", description: "관찰실에 예지 실험 결과가 펼쳐져 있다.", evidence: { id: "forecast", title: "예지 실험 결과", description: "공개용 결과에는 성공 사례만 표시되어 있다. 원본과 대조가 필요하다." } },
+      { id: "p2-forecast", locationId: "laboratory", title: "예지 실험 기록", description: "실험실에 예지 실험 결과가 펼쳐져 있다.", evidence: { id: "forecast", title: "예지 실험 결과", description: "공개용 결과에는 성공 사례만 표시되어 있다. 원본과 대조가 필요하다." } },
       { id: "p2-message", locationId: "main-hall", title: "연구소 공지", description: "시연회 준비 공지가 도착했다.", evidence: { id: "notice", title: "오후 공지", description: "저녁 공개 시연 전까지 모든 실험 자료를 제출하라는 소장의 지시다." } },
     ],
     combinations: [],
@@ -246,7 +247,7 @@ const phases: InterrogationPhase[] = [
     sources: [
       { id: "p3-schedule", locationId: "main-hall", title: "시연회 일정표", description: "오전 일정표 대신 새 일정표가 붙었다.", evidence: { id: "schedule", title: "저녁 일정표", description: "오후 7시부터 A의 인터뷰와 B의 시연이 이어진다. 오전 일정표와 내용이 다르다." } },
       { id: "p3-footage", locationId: "main-hall", title: "시연 카메라", description: "메인홀 카메라가 녹화 중이다.", evidence: { id: "footage", title: "시연 영상", description: "A와 B가 공개 행사에 참여하는 장면이 이어진다." } },
-      { id: "p3-original", locationId: "observation", title: "실험 원본", description: "관찰실 서랍 안쪽에 원본이 있다.", evidence: { id: "forecast-original", title: "예지 실험 원본", description: `공개 결과에서 빠진 실패 사례가 여러 건 있다. 기록 작성자 ${psychicIdentityAnswers[2].realName}는 실험체 C다.` } },
+      { id: "p3-original", locationId: "laboratory", title: "실험 원본", description: "실험실 서랍 안쪽에 원본이 있다.", evidence: { id: "forecast-original", title: "예지 실험 원본", description: `공개 결과에서 빠진 실패 사례가 여러 건 있다. 기록 작성자 ${psychicIdentityAnswers[2].realName}는 실험체 C다.` } },
     ],
     combinations: [],
     interrogations: interrogations("phase-3", [
@@ -258,17 +259,17 @@ const phases: InterrogationPhase[] = [
   },
   {
     id: "phase-4", title: "자정의 현장", timeLabel: "4/15 00:00", energyLimit: 3,
-    intro: "자정. 관찰실 문을 열자 김짜장 소장이 쓰러져 있다. 숨을 쉬지 않는다. 이제 이곳은 사건 현장이다.",
+    intro: "자정. 실험실 문을 열자 김짜장 소장이 쓰러져 있다. 숨을 쉬지 않는다. 이제 이곳은 사건 현장이다.",
     fallbackAnswers: [
       ["소장님이 돌아가셨다는 말에 아직 정신이 없어요.", "그 단서로는 제가 아는 게 없습니다."],
       ["현장에 무슨 일이 있었는지 저도 확인 중이에요.", "확실한 기록을 보여 주세요."],
     ],
     mapImage, locations,
     sources: [
-      { id: "p4-body", locationId: "observation", title: "소장의 사체", description: "소장이 관찰실 바닥에 쓰러져 있다.", evidence: { id: "body", title: "소장의 사체", description: "자정 무렵 관찰실에서 발견했다. 정확한 사인은 아직 확인되지 않았다." } },
+      { id: "p4-body", locationId: "laboratory", title: "소장의 사체", description: "소장이 실험실 바닥에 쓰러져 있다.", evidence: { id: "body", title: "소장의 사체", description: "자정 무렵 실험실에서 발견했다. 정확한 사인은 아직 확인되지 않았다." } },
       { id: "p4-door", locationId: "entrance", title: "출입 기록", description: "출입 단말기에 마지막 사용 내역이 남아 있다.", evidence: { id: "door-log", title: "심야 출입 기록", description: "C의 카드가 행사 뒤 연구소 출입에 사용되었다. 정확한 행적은 더 확인해야 한다." } },
-      { id: "p4-pill", locationId: "observation", title: "소장의 약통", description: "책상 위 약통이 비어 있다.", evidence: { id: "pill-log", title: "소장의 마지막 복용 기록", description: "오후 기록과 달리 자정 무렵의 복용 칸은 비어 있다. 약통에는 알약이 남지 않았다." } },
-      { id: "p4-note", locationId: "main-hall", title: "소장의 메모", description: "서둘러 쓴 메모가 발견된다.", evidence: { id: "director-note", title: "원본 확인 메모", description: "소장은 C에게 예지 실험 원본을 가져오라고 남겼다." } },
+      { id: "p4-pill", locationId: "laboratory", title: "소장의 약통", description: "책상 위 약통이 비어 있다.", evidence: { id: "pill-log", title: "소장의 마지막 복용 기록", description: "오후 기록과 달리 자정 무렵의 복용 칸은 비어 있다. 약통에는 알약이 남지 않았다." } },
+      { id: "p4-note", locationId: "director-office", title: "소장의 메모", description: "소장실에서 서둘러 쓴 메모가 발견된다.", evidence: { id: "director-note", title: "원본 확인 메모", description: "소장은 C에게 예지 실험 원본을 가져오라고 남겼다." } },
     ],
     combinations: [],
     interrogations: interrogations("phase-4", [

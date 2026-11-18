@@ -27,7 +27,7 @@
   intro: ["첫 번째 독백", "다음 독백"],
   timeLabel: "4월 14일 오전 8시",
   energyLimit: 3,
-  mapImage: "/image/scenario/psychic/map/lab-map.svg",
+  mapImage: "/image/scenario/psychic/map/lab-map.png",
   locations: [
     { id: "room-a", title: "조사할 장소", x: 50, y: 50 },
   ],

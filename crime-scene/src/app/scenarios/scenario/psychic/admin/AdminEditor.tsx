@@ -22,6 +22,29 @@ const theme = createScenarioTheme("#bd874e", "dark", "Galmuri11, sans-serif");
 const draftKey = "psychic-interrogation-admin-v2";
 const previousDraftKey = "psychic-interrogation-admin-v1";
 const suspectNames = [...psychicSuspects, psychicVictim].map((person) => person.name);
+const legacyMapImage = "/image/scenario/psychic/map/lab-map.svg";
+const currentMapLocations = psychicInterrogationContent.phases[0].locations;
+const updateLegacyMap = (draft: EditableInterrogationContent) => {
+  const next = structuredClone(draft);
+  for (const phase of next.phases) {
+    if (phase.mapImage !== legacyMapImage) continue;
+    phase.mapImage = psychicInterrogationContent.phases[0].mapImage;
+    phase.locations = phase.locations.map((location) => {
+      const id = location.id === "observation" ? "laboratory" : location.id;
+      const current = currentMapLocations.find((item) => item.id === id);
+      return current ? { ...location, id, x: current.x, y: current.y, title: current.title } : location;
+    });
+    if (phase.id === "phase-4" && !phase.locations.some((location) => location.id === "director-office")) {
+      const office = currentMapLocations.find((location) => location.id === "director-office");
+      if (office) phase.locations.push(structuredClone(office));
+    }
+    phase.sources = phase.sources.map((source) => ({
+      ...source,
+      locationId: source.id === "p4-note" ? "director-office" : source.locationId === "observation" ? "laboratory" : source.locationId,
+    }));
+  }
+  return next;
+};
 const newId = (prefix: string) =>
   `${prefix}-${typeof crypto !== "undefined" && "randomUUID" in crypto
     ? crypto.randomUUID().slice(0, 8)
@@ -94,7 +117,7 @@ export default function PsychicAdminEditor() {
       setPreviousDraftAvailable(Boolean(localStorage.getItem(previousDraftKey)));
       if (stored) {
         const parsed: unknown = JSON.parse(stored);
-        if (isEditableContent(parsed)) setContent(parsed);
+        if (isEditableContent(parsed)) setContent(updateLegacyMap(parsed));
       }
     } catch {
       setNotice("저장된 초안을 읽지 못했습니다. 기본 원고를 표시합니다.");
@@ -154,7 +177,7 @@ export default function PsychicAdminEditor() {
     try {
       const parsed: unknown = JSON.parse(await file.text());
       if (!isEditableContent(parsed)) throw new Error("올바른 초안 파일이 아닙니다.");
-      setContent(parsed);
+      setContent(updateLegacyMap(parsed));
       setPhaseIndex(0);
       setPersonName("");
       setView("phase");
@@ -203,7 +226,7 @@ export default function PsychicAdminEditor() {
       const stored = localStorage.getItem(previousDraftKey);
       const parsed: unknown = stored ? JSON.parse(stored) : null;
       if (!isEditableContent(parsed)) throw new Error("이전 초안을 읽을 수 없습니다.");
-      setContent(parsed);
+      setContent(updateLegacyMap(parsed));
       setPhaseIndex(0);
       setPersonName("");
       setView("phase");
