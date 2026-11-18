@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import { useEffect, useMemo, useRef, useState, type PointerEvent as ReactPointerEvent, type ReactNode } from "react";
 import EvidenceEditor from "@/components/InInterrogationAdmin/EvidenceEditor";
+import EvidenceCombinationPicker from "@/components/InInterrogationAdmin/EvidenceCombinationPicker";
 import SharedSourceEditor from "@/components/InInterrogationAdmin/SharedSourceEditor";
 import SharedQuestionEditor from "@/components/InInterrogationAdmin/SharedQuestionEditor";
 import ScriptEditor from "@/components/InInterrogationAdmin/ScriptEditor";
@@ -246,7 +247,7 @@ export default function PsychicAdminEditor() {
   const [newPersonName, setNewPersonName] = useState("");
   const [newPersonImage, setNewPersonImage] = useState("");
   const [questionSearch, setQuestionSearch] = useState("");
-  const [quickClueId, setQuickClueId] = useState("");
+  const [quickClueIds, setQuickClueIds] = useState<string[]>([]);
   const [expandedSourceId, setExpandedSourceId] = useState<string | null>(null);
   const [expandedQuestionId, setExpandedQuestionId] = useState<string | null>(null);
   const [notice, setNotice] = useState("");
@@ -310,17 +311,20 @@ export default function PsychicAdminEditor() {
     return [...byId.values()];
   }, [content]);
   const quickPeople = useMemo(() => {
-    if (!quickClueId) return [];
+    if (quickClueIds.length === 0) return [];
     const candidates = [...new Set(content.phases.flatMap((item) => item.interrogations.map((entry) => entry.suspectName)))].filter((name) =>
       content.people?.find((person) => person.name === name)?.canInterrogate !== false);
     const previews: SharedQuestion[] = candidates.map((suspectName) => ({
-      id: `preview-${suspectName}`, suspectName, clueIds: [quickClueId], visiblePhaseIds: [],
+      id: `preview-${suspectName}`, suspectName, clueIds: quickClueIds, visiblePhaseIds: [],
       base: { answer: [""] }, changes: {}, questionIds: {}, evidenceRefs: {}, order: {},
     }));
     return syncSharedQuestionPhases(content.phases, content.sharedSources ?? [], previews)
       .filter((item) => item.visiblePhaseIds.length > 0)
       .map((item) => item.suspectName);
-  }, [content.phases, content.sharedSources, content.people, quickClueId]);
+  }, [content.phases, content.sharedSources, content.people, quickClueIds]);
+  const matchesQuickClues = (question: SharedQuestion, name: string) =>
+    question.suspectName === name && question.clueIds.length === quickClueIds.length &&
+    question.clueIds.every((id) => quickClueIds.includes(id));
   const sourceNumbers = useMemo(() => new Map((content.sharedSources ?? []).map((source) => [source.id, source.number ?? 0])), [content.sharedSources]);
 
   const update = (edit: (next: EditableInterrogationContent) => void, rebuild: "none" | "questions" | "all" = "none", preferredSourceId?: string) => {
@@ -379,33 +383,13 @@ export default function PsychicAdminEditor() {
       });
     }, "questions");
   };
-  const selectQuickClue = (clueId: string) => {
-    setQuickClueId(clueId);
-    if (!clueId) return;
+  const editQuickAnswer = (clueIds: string[], name: string, value: string) => {
     update((next) => {
       next.sharedQuestions ??= [];
-      const names = [...new Set(next.phases.flatMap((item) => item.interrogations.map((entry) => entry.suspectName)))].filter((name) =>
-        next.people?.find((person) => person.name === name)?.canInterrogate !== false);
-      const previews: SharedQuestion[] = names.map((suspectName) => ({
-        id: newId("question"), suspectName, clueIds: [clueId], visiblePhaseIds: [],
-        base: { answer: ["그 단서에 대해서는 할 말이 없습니다."] }, changes: {}, questionIds: {}, evidenceRefs: {}, order: {},
-      }));
-      const eligible = syncSharedQuestionPhases(next.phases, next.sharedSources ?? [], previews)
-        .filter((item) => item.visiblePhaseIds.length > 0);
-      for (const item of eligible) {
-        if (!next.sharedQuestions.some((question) => question.suspectName === item.suspectName && question.clueIds.length === 1 && question.clueIds[0] === clueId)) {
-          next.sharedQuestions.unshift(item);
-        }
-      }
-    }, "questions");
-  };
-  const editQuickAnswer = (clueId: string, name: string, value: string) => {
-    update((next) => {
-      next.sharedQuestions ??= [];
-      let question = next.sharedQuestions.find((item) => item.suspectName === name && item.clueIds.length === 1 && item.clueIds[0] === clueId);
+      let question = next.sharedQuestions.find((item) => item.suspectName === name && item.clueIds.length === clueIds.length && item.clueIds.every((id) => clueIds.includes(id)));
       if (!question) {
         question = {
-          id: newId("question"), suspectName: name, clueIds: [clueId], visiblePhaseIds: [],
+          id: newId("question"), suspectName: name, clueIds: [...clueIds], visiblePhaseIds: [],
           base: { answer: [""] }, changes: {}, questionIds: {}, evidenceRefs: {}, order: {},
         };
         next.sharedQuestions.unshift(question);
@@ -724,17 +708,15 @@ export default function PsychicAdminEditor() {
 
                   {(phaseArea === "dialogue" || phaseArea === "interrogation") && <Section title={phaseArea === "dialogue" ? "인물 대화" : "단서 신문"} order={1}>
                     {phaseArea === "interrogation" && <Box sx={{ display: "grid", gap: 1.5, pb: 2, borderBottom: "1px solid rgba(231,201,148,.22)" }}>
-                      <Typography sx={{ color: "#d9b77d", fontSize: 13, fontWeight: 800 }}>단서 1개 · 빠른 답변 입력</Typography>
-                      <TextField select size="small" label="단서 선택" value={quickClueId} onChange={(event) => selectQuickClue(event.target.value)}>
-                        <MenuItem value="">단서를 선택하세요</MenuItem>
-                        {clueOptions.map((option) => <MenuItem key={option.id} value={option.id}>{option.label}</MenuItem>)}
-                      </TextField>
-                      {quickClueId && quickPeople.map((name) => {
-                        const question = content.sharedQuestions?.find((item) => item.suspectName === name && item.clueIds.length === 1 && item.clueIds[0] === quickClueId);
+                      <Typography sx={{ color: "#d9b77d", fontSize: 13, fontWeight: 800 }}>단서 선택 · 답변 바로 입력</Typography>
+                      <EvidenceCombinationPicker options={clueOptions} selectedIds={quickClueIds} onChange={setQuickClueIds} />
+                      {quickClueIds.length > 0 && quickPeople.length === 0 && <Typography sx={{ color: "#b8ac98", fontSize: 12 }}>선택한 단서 조합으로 신문할 수 있는 인물이 없습니다.</Typography>}
+                      {quickClueIds.length > 0 && quickPeople.map((name) => {
+                        const question = content.sharedQuestions?.find((item) => matchesQuickClues(item, name));
                         return <Box key={name} sx={{ display: "grid", gap: 1, p: 1.5, bgcolor: "#121d19", border: "1px solid rgba(231,201,148,.18)" }}>
                           <Typography sx={{ color: "#f3dfbb", fontSize: 13, fontWeight: 800 }}>{name}</Typography>
-                          <TextField size="small" label={`${name} 답변`} value={question ? scriptLines(question.base.answer).map((line) => line.text).join("\n") : ""} onChange={(event) => editQuickAnswer(quickClueId, name, event.target.value)} multiline minRows={2} />
-                          {question && <SharedQuestionEditor
+                          <TextField size="small" label={`${name} 답변`} value={question ? scriptLines(question.base.answer).map((line) => line.text).join("\n") : ""} onChange={(event) => editQuickAnswer(quickClueIds, name, event.target.value)} multiline minRows={2} />
+                          {question && quickClueIds.length === 1 && <SharedQuestionEditor
                             question={question}
                             phases={content.phases}
                             options={clueOptions}
@@ -791,10 +773,7 @@ export default function PsychicAdminEditor() {
                                 phases={content.phases}
                                 options={clueOptions}
                                 expanded={expandedQuestionId === question.id}
-                                onExpandedChange={(expanded) => {
-                                  setExpandedQuestionId(expanded ? question.id : null);
-                                  if (!expanded && question.clueIds.length === 1) setQuickClueId(question.clueIds[0]);
-                                }}
+                                onExpandedChange={(expanded) => setExpandedQuestionId(expanded ? question.id : null)}
                                 onChange={(changed) => editSharedQuestion(question.id, (item) => Object.assign(item, changed))}
                                 onDelete={() => update((next) => { next.sharedQuestions = next.sharedQuestions?.filter((item) => item.id !== question.id); }, "questions")}
                                 createEvidence={emptyEvidence}
