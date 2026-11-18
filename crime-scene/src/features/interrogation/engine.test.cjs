@@ -48,15 +48,11 @@ const phase = {
         {
           id: "question-a",
           prompt: "어디에 있었나요?",
-          answer: "다른 곳에 있었습니다.",
-          challenge: {
-            evidenceId: "phase-1::inference-a",
-            response: "사실은 여기 있었습니다.",
-            revealedEvidence: {
-              id: "reveal-a",
-              title: "새 단서",
-              description: "",
-            },
+          answer: ["다른 곳에 있었습니다.", "사실은 여기 있었습니다."],
+          revealedEvidence: {
+            id: "reveal-a",
+            title: "새 단서",
+            description: "",
           },
         },
       ],
@@ -173,6 +169,10 @@ test("잘못된 콘텐츠 참조와 손상된 저장 데이터는 안전하게 �
   assert.equal(
     readInterrogationProgress('{"started":false,"storyIndex":2}').storyIndex,
     2,
+  );
+  assert.deepEqual(
+    readInterrogationProgress('{"askedQuestionIds":["question-a"],"resolvedQuestionIds":[]}').resolvedQuestionIds,
+    ["question-a"],
   );
 });
 

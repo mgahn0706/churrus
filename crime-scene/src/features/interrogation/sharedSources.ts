@@ -102,7 +102,6 @@ export function materializeSharedSources(phases: InterrogationPhase[], shared: S
         ...question,
         evidenceId: question.evidenceId ? versionOf(question.evidenceId) : undefined,
         evidenceIds: question.evidenceIds?.map(versionOf),
-        challenge: question.challenge ? { ...question.challenge, evidenceId: versionOf(question.challenge.evidenceId) } : undefined,
       })),
     })),
   }));

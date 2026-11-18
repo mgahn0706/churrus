@@ -60,7 +60,7 @@ export function readInterrogationProgress(
       collectedEvidenceIds: ids("collectedEvidenceIds"),
       solvedCombinationIds: ids("solvedCombinationIds"),
       askedQuestionIds: ids("askedQuestionIds"),
-      resolvedQuestionIds: ids("resolvedQuestionIds"),
+      resolvedQuestionIds: [...new Set([...ids("resolvedQuestionIds"), ...ids("askedQuestionIds")])],
       completedPhaseIds: ids("completedPhaseIds"),
       energySpentByPhase:
         value.energySpentByPhase && typeof value.energySpentByPhase === "object"
@@ -153,9 +153,6 @@ export function getCollectedEvidence(
       for (const question of interrogation.questions) {
         if (question.revealedEvidence) {
           evidence.push({ ...question.revealedEvidence, instanceId: evidenceInstanceId(phase.id, question.revealedEvidence.id) });
-        }
-        if (question.challenge?.revealedEvidence) {
-          evidence.push({ ...question.challenge.revealedEvidence, instanceId: evidenceInstanceId(phase.id, question.challenge.revealedEvidence.id) });
         }
       }
     }
@@ -297,27 +294,6 @@ export function validateInterrogationPhases(
         if (question.revealedEvidence) {
           addUnique(phaseEvidenceIds, question.revealedEvidence.id, "evidence");
           evidenceIds.add(evidenceInstanceId(phase.id, question.revealedEvidence.id));
-        }
-        if (question.challenge?.revealedEvidence) {
-          addUnique(
-            phaseEvidenceIds,
-            question.challenge.revealedEvidence.id,
-            "evidence",
-          );
-          evidenceIds.add(evidenceInstanceId(phase.id, question.challenge.revealedEvidence.id));
-        }
-      }
-    }
-
-    for (const interrogation of phase.interrogations) {
-      for (const question of interrogation.questions) {
-        if (
-          question.challenge &&
-          !evidenceIds.has(question.challenge.evidenceId)
-        ) {
-          throw new Error(
-            `Unknown challenge evidence in ${scenarioId}: ${question.challenge.evidenceId}`,
-          );
         }
       }
     }

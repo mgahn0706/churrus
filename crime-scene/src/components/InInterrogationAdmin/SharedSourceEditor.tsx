@@ -6,9 +6,11 @@ import type { InterrogationPhase } from "@/types";
 import { sharedSourceAtPhase, type SharedSource, type SharedSourceState } from "@/features/interrogation/sharedSources";
 import EvidenceEditor from "./EvidenceEditor";
 
-export default function SharedSourceEditor({ source, phases, onChange, onDelete }: {
+export default function SharedSourceEditor({ source, phases, expanded, onExpandedChange, onChange, onDelete }: {
   source: SharedSource;
   phases: InterrogationPhase[];
+  expanded: boolean;
+  onExpandedChange: (expanded: boolean) => void;
   onChange: (source: SharedSource) => void;
   onDelete: () => void;
 }) {
@@ -25,7 +27,7 @@ export default function SharedSourceEditor({ source, phases, onChange, onDelete 
   });
 
   return (
-    <Accordion disableGutters sx={{ bgcolor: "#121d19", color: "#f8edda" }}>
+    <Accordion disableGutters expanded={expanded} onChange={(_, isExpanded) => onExpandedChange(isExpanded)} sx={{ bgcolor: "#121d19", color: "#f8edda" }}>
       <AccordionSummary expandIcon={<ExpandMoreRounded sx={{ color: "#d9b77d" }} />}>
         <Typography sx={{ fontSize: 13 }}>{source.base.evidence.title || source.base.title || "새 단서"} · 표시 {source.visiblePhaseIds.length}개 페이즈 · 변경 {Object.keys(source.changes).length}회</Typography>
       </AccordionSummary>

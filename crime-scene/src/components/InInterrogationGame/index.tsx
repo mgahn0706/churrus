@@ -101,7 +101,6 @@ export default function InInterrogationGame({
   const [view, setView] = useState<GameView>("map");
   const [selectedEvidenceIds, setSelectedEvidenceIds] = useState<string[]>([]);
   const [selectedSuspectName, setSelectedSuspectName] = useState("");
-  const [selectedQuestionId, setSelectedQuestionId] = useState("");
   const [questionEvidenceIds, setQuestionEvidenceIds] = useState<string[]>([]);
   const [focusedMapEvidenceId, setFocusedMapEvidenceId] = useState("");
   const [dialogue, setDialogue] = useState<DialogueSequence | null>(null);
@@ -144,7 +143,6 @@ export default function InInterrogationGame({
     setQuestionEvidenceIds([]);
     setSelectedSuspectName("");
     setSelectedEvidenceIds([]);
-    setSelectedQuestionId("");
     setFocusedMapEvidenceId("");
     setDialogue(null);
     setPhaseIntroIndex(0);
@@ -174,12 +172,6 @@ export default function InInterrogationGame({
     selectedSuspectName || phase?.interrogations[0]?.suspectName || "";
   const activeSuspect = [...scenario.suspects, ...scenario.victims].find(
     (item) => item.name === activeSuspectName,
-  );
-  const activeInterrogation = phase?.interrogations.find(
-    (item) => item.suspectName === activeSuspectName,
-  );
-  const activeQuestion = activeInterrogation?.questions.find(
-    (item) => item.id === selectedQuestionId,
   );
   const phaseIntroPending = Boolean(
     phase?.intro && !progress.seenPhaseIds.includes(phase.id),
@@ -318,13 +310,10 @@ export default function InInterrogationGame({
       setProgress((previous) => ({
         ...previous,
         askedQuestionIds: addId(previous.askedQuestionIds, question.id),
-        resolvedQuestionIds: question.challenge
-          ? previous.resolvedQuestionIds
-          : addId(previous.resolvedQuestionIds, question.id),
+        resolvedQuestionIds: addId(previous.resolvedQuestionIds, question.id),
       }));
     }
     setSelectedSuspectName(name);
-    setSelectedQuestionId(question?.challenge ? question.id : "");
     setView("interrogation");
     const selectedTitles = questionEvidenceIds
       .map((id) => evidence.find((item) => item.instanceId === id)?.title)
@@ -363,7 +352,6 @@ export default function InInterrogationGame({
     primeDialogueAudio();
     const person = people.find((item) => item.name === name);
     setSelectedSuspectName(name);
-    setSelectedQuestionId("");
     if (!stayOnMap) setView("interrogation");
     setDialogue({
       lines: asDialogueSequence(interrogation.conversation ?? [
@@ -378,41 +366,8 @@ export default function InInterrogationGame({
     });
   };
 
-  const presentEvidence = (instanceId: string) => {
-    if (!activeQuestion?.challenge) return;
-    primeDialogueAudio();
-    if (instanceId !== activeQuestion.challenge.evidenceId) {
-      queueDialogue([
-        {
-          speaker: activeSuspectName,
-          portrait: activeSuspect?.image,
-          text: "그 단서로는 제 말을 뒤집을 수 없을 텐데요?",
-        },
-      ]);
-      return;
-    }
-    setProgress((previous) => ({
-      ...previous,
-      resolvedQuestionIds: addId(
-        previous.resolvedQuestionIds,
-        activeQuestion.id,
-      ),
-    }));
-    queueDialogue(
-      asDialogueSequence(
-        activeQuestion.challenge.response,
-        activeSuspectName,
-        activeSuspect?.image,
-      ),
-      activeQuestion.challenge.revealedEvidence
-        ? evidenceInstanceId(phase!.id, activeQuestion.challenge.revealedEvidence.id)
-        : undefined,
-    );
-  };
-
   const changeView = (nextView: GameView) => {
     setView(nextView);
-    setSelectedQuestionId("");
   };
 
   if (!loaded) {
@@ -680,7 +635,6 @@ export default function InInterrogationGame({
                     aria-pressed={activeSuspectName === person.name}
                     onClick={() => {
                       setSelectedSuspectName(person.name);
-                      setSelectedQuestionId("");
                     }}
                     sx={{
                       ...menuButtonSx,
@@ -729,15 +683,6 @@ export default function InInterrogationGame({
                     {activeSuspect?.image && <Box component="img" src={activeSuspect.image} alt={activeSuspectName} sx={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 28%" }} />}
                     <Typography sx={{ position: "absolute", left: 10, right: 10, bottom: 8, fontSize: { xs: 14, md: 22 }, fontWeight: 800, textShadow: "0 2px 12px #000" }}>{activeSuspectName}</Typography>
                   </Box>
-                  {activeQuestion?.challenge && progress.askedQuestionIds.includes(activeQuestion.id) && (
-                    <Box sx={{ display: "flex", gap: .5, p: .75, flexWrap: "wrap", maxHeight: 94, overflowY: "auto" }}>
-                      {questionEvidenceIds.map((id) => (
-                        <Button key={id} sx={{ ...menuButtonSx, fontSize: 11, px: 1 }} onClick={() => presentEvidence(id)}>
-                          {evidence.find((item) => item.instanceId === id)?.title} 제시
-                        </Button>
-                      ))}
-                    </Box>
-                  )}
                   <Button
                     sx={{ ...menuButtonSx, m: { xs: .75, md: 1 }, minHeight: { xs: 44, md: 52 }, bgcolor: "#815329" }}
                     disabled={questionEvidenceIds.length === 0}

@@ -162,11 +162,6 @@ export interface InterrogationQuestion {
   prompt: string;
   answer: InterrogationScript;
   revealedEvidence?: InterrogationEvidence;
-  challenge?: {
-    evidenceId: string;
-    response: InterrogationScript;
-    revealedEvidence?: InterrogationEvidence;
-  };
 }
 
 export interface InterrogationPhase {

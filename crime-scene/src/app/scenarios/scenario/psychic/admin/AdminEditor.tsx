@@ -19,7 +19,7 @@ import {
 import { psychicInterrogationContent } from "@/fixtures/psychic/interrogation";
 import { psychicSuspects, psychicVictim } from "@/fixtures/psychic/suspects";
 import { deriveSharedSources, materializeSharedSources, sharedSourceAtPhase, type SharedSource } from "@/features/interrogation/sharedSources";
-import type { InterrogationEvidence, InterrogationPhase, InterrogationQuestion } from "@/types";
+import type { InterrogationEvidence, InterrogationPhase, InterrogationQuestion, InterrogationScript } from "@/types";
 
 const theme = createScenarioTheme("#bd874e", "dark", "Galmuri11, sans-serif");
 const draftKey = "psychic-interrogation-admin-v2";
@@ -59,6 +59,16 @@ const updateLegacyMap = (draft: EditableInterrogationContent) => {
 const normalizeMapCoordinates = (draft: EditableInterrogationContent) => {
   const next = updateLegacyMap(draft);
   for (const phase of next.phases) {
+    for (const interrogation of phase.interrogations) {
+      for (const question of interrogation.questions) {
+        const legacy = question as InterrogationQuestion & { challenge?: { response: InterrogationScript; revealedEvidence?: InterrogationEvidence } };
+        if (!legacy.challenge) continue;
+        const lines = (script: InterrogationScript) => Array.isArray(script) ? script : [script];
+        question.answer = [...lines(question.answer), ...lines(legacy.challenge.response)];
+        question.revealedEvidence ??= legacy.challenge.revealedEvidence;
+        delete legacy.challenge;
+      }
+    }
     phase.sources = phase.sources.map((source) => {
       const location = phase.locations.find((item) => item.id === source.locationId);
       const siblings = phase.sources.filter((item) => item.locationId === source.locationId);
@@ -183,6 +193,7 @@ export default function PsychicAdminEditor() {
   const [phaseIndex, setPhaseIndex] = useState(0);
   const [personName, setPersonName] = useState("");
   const [questionSearch, setQuestionSearch] = useState("");
+  const [expandedSourceId, setExpandedSourceId] = useState<string | null>(null);
   const [notice, setNotice] = useState("");
   const [previousDraftAvailable, setPreviousDraftAvailable] = useState(false);
   const importRef = useRef<HTMLInputElement | null>(null);
@@ -230,6 +241,20 @@ export default function PsychicAdminEditor() {
       const source = next.sharedSources?.find((item) => item.id === id);
       if (source) edit(source, next.phases);
     });
+  const addSharedSource = () => {
+    const evidence = emptyEvidence();
+    setExpandedSourceId(evidence.id);
+    update((next) => {
+      const count = next.sharedSources?.length ?? 0;
+      next.sharedSources ??= [];
+      next.sharedSources.unshift({
+        id: evidence.id,
+        base: { x: 45 + (count % 4) * 5, y: 45 + (Math.floor(count / 4) % 4) * 5, title: "", description: "", evidence },
+        visiblePhaseIds: next.phases.filter((item) => !item.finalInterrogation).map((item) => item.id),
+        changes: {}, sourceIds: {}, order: {},
+      });
+    });
+  };
 
   const exportCode = () => {
     if (validationError) {
@@ -434,23 +459,15 @@ export default function PsychicAdminEditor() {
                   </Section>
                   }
 
-                  {phaseArea === "evidence" && <Section title={`공유 단서 · ${content.sharedSources?.length ?? 0}`} action={<Button size="small" startIcon={<AddRounded />} onClick={() => update((next) => {
-                    const evidence = emptyEvidence();
-                    const count = next.sharedSources?.length ?? 0;
-                    next.sharedSources ??= [];
-                    next.sharedSources.push({
-                      id: evidence.id,
-                      base: { x: 45 + (count % 4) * 5, y: 45 + (Math.floor(count / 4) % 4) * 5, title: "", description: "", evidence },
-                      visiblePhaseIds: next.phases.filter((item) => !item.finalInterrogation).map((item) => item.id),
-                      changes: {}, sourceIds: {}, order: {},
-                    });
-                  })}>단서 추가</Button>}>
+                  {phaseArea === "evidence" && <Section title={`공유 단서 · ${content.sharedSources?.length ?? 0}`} action={<Button size="small" startIcon={<AddRounded />} onClick={addSharedSource}>단서 추가</Button>}>
                     <Typography sx={{ color: "#b8ac98", fontSize: 12 }}>단서마다 표시할 페이즈와 내용이 바뀌기 시작하는 페이즈를 선택하세요. 위치는 각 페이즈의 설정 탭 지도에서 옮길 수 있습니다.</Typography>
                     {(content.sharedSources ?? []).map((source) => (
                       <SharedSourceEditor
                         key={source.id}
                         source={source}
                         phases={content.phases}
+                        expanded={expandedSourceId === source.id}
+                        onExpandedChange={(expanded) => setExpandedSourceId(expanded ? source.id : null)}
                         onChange={(changed) => editSharedSource(source.id, (item) => Object.assign(item, changed))}
                         onDelete={() => update((next) => { next.sharedSources = next.sharedSources?.filter((item) => item.id !== source.id); })}
                       />
@@ -529,17 +546,6 @@ export default function PsychicAdminEditor() {
                                   <ScriptEditor label="신문 답변" value={question.answer} onChange={(lines) => editQuestion(index, (next) => { next.answer = lines; })} />
                                   <FormControlLabel control={<Checkbox checked={Boolean(question.revealedEvidence)} onChange={(event) => editQuestion(index, (next) => { next.revealedEvidence = event.target.checked ? emptyEvidence() : undefined; })} />} label="답변 후 새 단서 획득" />
                                   {question.revealedEvidence && <EvidenceEditor value={question.revealedEvidence} onChange={(value) => editQuestion(index, (next) => { next.revealedEvidence = value; })} />}
-                                  <FormControlLabel control={<Checkbox checked={Boolean(question.challenge)} onChange={(event) => editQuestion(index, (next) => { next.challenge = event.target.checked ? { evidenceId: "", response: [""] } : undefined; })} />} label="반박 단서 사용" />
-                                  {question.challenge && (
-                                    <Box sx={{ display: "grid", gap: 1, p: 1.5, border: "1px solid rgba(231,201,148,.2)" }}>
-                                      <TextField select size="small" label="반박에 필요한 단서" value={question.challenge.evidenceId} onChange={(event) => editQuestion(index, (next) => { next.challenge!.evidenceId = event.target.value; })}>
-                                        {options.map((option) => <MenuItem key={option.id} value={option.id}>{option.label}</MenuItem>)}
-                                      </TextField>
-                                      <ScriptEditor label="반박 후 대사" value={question.challenge.response} onChange={(lines) => editQuestion(index, (next) => { next.challenge!.response = lines; })} />
-                                      <FormControlLabel control={<Checkbox checked={Boolean(question.challenge.revealedEvidence)} onChange={(event) => editQuestion(index, (next) => { next.challenge!.revealedEvidence = event.target.checked ? emptyEvidence() : undefined; })} />} label="반박 후 새 단서 획득" />
-                                      {question.challenge.revealedEvidence && <EvidenceEditor value={question.challenge.revealedEvidence} onChange={(value) => editQuestion(index, (next) => { next.challenge!.revealedEvidence = value; })} />}
-                                    </Box>
-                                  )}
                                   <Button color="error" size="small" sx={{ justifySelf: "end" }} onClick={() => editPhase((next) => { next.interrogations[activePersonIndex].questions.splice(index, 1); })}>신문 삭제</Button>
                                 </AccordionDetails>
                               </Accordion>

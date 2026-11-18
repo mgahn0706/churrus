@@ -40,7 +40,6 @@ export function evidenceOptions(
     phase.combinations.forEach((combination) => add(phase.id, timeLabel, combination.result));
     phase.interrogations.forEach((interrogation) => interrogation.questions.forEach((question) => {
       if (question.revealedEvidence) add(phase.id, timeLabel, question.revealedEvidence);
-      if (question.challenge?.revealedEvidence) add(phase.id, timeLabel, question.challenge.revealedEvidence);
     }));
   });
   return options;
@@ -75,7 +74,7 @@ export function validateAdminContent(
         }
       }
       for (const question of interrogation.questions) {
-        if (phase.finalInterrogation && (question.revealedEvidence || question.challenge?.revealedEvidence)) {
+        if (phase.finalInterrogation && question.revealedEvidence) {
           return `${phase.title}: 최종 추리에서는 새 단서를 획득할 수 없습니다.`;
         }
         if (!question.evidenceId && !question.evidenceIds?.length) {
