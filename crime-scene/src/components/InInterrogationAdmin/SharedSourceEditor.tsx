@@ -25,6 +25,15 @@ export default function SharedSourceEditor({ source, phases, expanded, onExpande
     const state = phaseId ? next.changes[phaseId] : next.base;
     if (state) edit(state);
   });
+  const passwordFields = (state: SharedSourceState, phaseId: string | null) => (
+    <Box sx={{ display: "grid", gap: 1 }}>
+      <FormControlLabel
+        control={<Checkbox checked={state.password !== undefined} onChange={(event) => editState(phaseId, (next) => { next.password = event.target.checked ? "" : undefined; })} />}
+        label="비밀번호로 잠그기"
+      />
+      {state.password !== undefined && <TextField size="small" label="잠금 비밀번호" value={state.password} onChange={(event) => editState(phaseId, (next) => { next.password = event.target.value; })} helperText="틀린 비밀번호를 제출할 때마다 에너지 1을 사용합니다." />}
+    </Box>
+  );
 
   return (
     <Accordion disableGutters expanded={expanded} onChange={(_, isExpanded) => onExpandedChange(isExpanded)} sx={{ bgcolor: "#121d19", color: "#f8edda" }}>
@@ -49,6 +58,7 @@ export default function SharedSourceEditor({ source, phases, expanded, onExpande
         <Box sx={{ display: "grid", gap: 1.5, p: 1.5, border: "1px solid rgba(231,201,148,.2)" }}>
           <Typography sx={{ color: "#d9b77d", fontSize: 13, fontWeight: 800 }}>기본 내용</Typography>
           <TextField size="small" label="지도에 보이는 이름" value={source.base.title} onChange={(event) => editState(null, (state) => { state.title = event.target.value; })} />
+          {passwordFields(source.base, null)}
           <EvidenceEditor showId={false} value={source.base.evidence} onChange={(value) => editState(null, (state) => { state.evidence = { ...value, id: source.id }; })} />
         </Box>
 
@@ -69,6 +79,7 @@ export default function SharedSourceEditor({ source, phases, expanded, onExpande
           <Box key={phase.id} sx={{ display: "grid", gap: 1.5, p: 1.5, border: "1px solid rgba(231,201,148,.2)" }}>
             <Typography sx={{ color: "#d9b77d", fontSize: 13, fontWeight: 800 }}>{phase.timeLabel || phase.title}부터 바뀐 내용</Typography>
             <TextField size="small" label="지도에 보이는 이름" value={source.changes[phase.id].title} onChange={(event) => editState(phase.id, (state) => { state.title = event.target.value; })} />
+            {passwordFields(source.changes[phase.id], phase.id)}
             <EvidenceEditor showId={false} value={source.changes[phase.id].evidence} onChange={(value) => editState(phase.id, (state) => { state.evidence = { ...value, id: source.id }; })} />
           </Box>
         ))}

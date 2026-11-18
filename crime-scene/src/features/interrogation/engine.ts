@@ -214,6 +214,9 @@ export function validateInterrogationPhases(
 
     for (const source of phase.sources) {
       addUnique(sourceIds, source.id, "source");
+      if (source.password !== undefined && !source.password.trim()) {
+        throw new Error(`Empty source password in ${scenarioId}: ${source.id}`);
+      }
       if ((source.x === undefined || source.y === undefined) && !locationIds.has(source.locationId ?? "")) {
         throw new Error(
           `Source needs a map position or valid location in ${scenarioId}: ${source.id}`,

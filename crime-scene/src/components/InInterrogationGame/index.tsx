@@ -8,6 +8,7 @@ import {
   DialogContent,
   DialogTitle,
   Snackbar,
+  TextField,
   ThemeProvider,
   Typography,
 } from "@mui/material";
@@ -103,6 +104,9 @@ export default function InInterrogationGame({
   const [selectedSuspectName, setSelectedSuspectName] = useState("");
   const [questionEvidenceIds, setQuestionEvidenceIds] = useState<string[]>([]);
   const [focusedMapEvidenceId, setFocusedMapEvidenceId] = useState("");
+  const [lockedSourceId, setLockedSourceId] = useState("");
+  const [passwordInput, setPasswordInput] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   const [dialogue, setDialogue] = useState<DialogueSequence | null>(null);
   const [phaseIntroIndex, setPhaseIntroIndex] = useState(0);
   const [energyWarning, setEnergyWarning] = useState(false);
@@ -144,6 +148,9 @@ export default function InInterrogationGame({
     setSelectedSuspectName("");
     setSelectedEvidenceIds([]);
     setFocusedMapEvidenceId("");
+    setLockedSourceId("");
+    setPasswordInput("");
+    setPasswordError("");
     setDialogue(null);
     setPhaseIntroIndex(0);
     setEnergyWarning(false);
@@ -158,6 +165,7 @@ export default function InInterrogationGame({
     [scenario.phases, progress.collectedEvidenceIds],
   );
   const focusedMapEvidence = evidence.find((item) => item.instanceId === focusedMapEvidenceId);
+  const lockedSource = phase?.sources.find((item) => item.id === lockedSourceId);
   const people = useMemo(
     () => [...scenario.suspects, ...scenario.victims].filter((person) =>
       phase?.interrogations.some((item) => item.suspectName === person.name),
@@ -265,6 +273,32 @@ export default function InInterrogationGame({
     if (isNew) showEvidenceToast(source.evidence.title);
   };
 
+  const selectSource = (source: InterrogationSource) => {
+    if (!phase) return;
+    const collected = progress.collectedEvidenceIds.includes(sourceEvidenceInstanceId(phase.id, source));
+    if (!collected && source.password) {
+      setLockedSourceId(source.id);
+      setPasswordInput("");
+      setPasswordError("");
+      return;
+    }
+    inspectSource(source);
+  };
+
+  const trySourcePassword = () => {
+    if (!lockedSource || !passwordInput.trim()) return;
+    if (passwordInput.trim() === lockedSource.password?.trim()) {
+      setLockedSourceId("");
+      setPasswordInput("");
+      setPasswordError("");
+      inspectSource(lockedSource);
+      return;
+    }
+    spendEnergy();
+    setPasswordError("비밀번호가 틀렸습니다. 에너지 1을 사용했습니다.");
+    setPasswordInput("");
+  };
+
   const combineEvidence = () => {
     if (!phase || selectedEvidenceIds.length !== 2) return;
     const combination = findCombination(
@@ -274,7 +308,7 @@ export default function InInterrogationGame({
     );
     if (!combination) {
       queueDialogue([
-        { speaker: "추리", text: "두 단서 사이에서 연결점을 찾지 못했다." },
+        { speaker: "나", text: "두 단서 사이에서 연결점을 찾지 못했다." },
       ]);
       return;
     }
@@ -288,10 +322,10 @@ export default function InInterrogationGame({
     setSelectedEvidenceIds([]);
     queueDialogue(
       [
-        { speaker: "추리", text: combination.explanation },
+        { speaker: "나", text: combination.explanation },
         {
-          speaker: combination.result.title,
-          text: combination.result.description,
+          speaker: "나",
+          text: `${combination.result.title}: ${combination.result.description}`,
         },
       ],
       evidenceInstanceId(phase.id, combination.result.id),
@@ -526,7 +560,7 @@ export default function InInterrogationGame({
               people={people}
               collectedEvidenceIds={progress.collectedEvidenceIds}
               phaseId={phase.id}
-              onSelect={inspectSource}
+              onSelect={selectSource}
               onSelectPerson={(name) => talkToPerson(name, true)}
             />
           )}
@@ -747,6 +781,27 @@ export default function InInterrogationGame({
             단서함
           </Button>
         </Box>
+
+        <Dialog
+          open={Boolean(lockedSource)}
+          onClose={() => setLockedSourceId("")}
+          fullWidth
+          maxWidth="xs"
+          aria-label="잠긴 단서 열기"
+          slotProps={{ paper: { sx: { bgcolor: "#101816", color: "#f8edda", border: "1px solid rgba(231,201,148,.4)", borderRadius: 1 } } }}
+        >
+          <DialogTitle>{lockedSource?.title} · 잠긴 단서</DialogTitle>
+          <DialogContent sx={{ display: "grid", gap: 2, pt: "12px !important" }}>
+            {lockedSource?.description && <Typography sx={{ whiteSpace: "pre-wrap" }}>{lockedSource.description}</Typography>}
+            <Box component="form" onSubmit={(event) => { event.preventDefault(); trySourcePassword(); }} sx={{ display: "grid", gap: 1.5 }}>
+              <TextField autoFocus size="small" label="비밀번호" value={passwordInput} onChange={(event) => { setPasswordInput(event.target.value); setPasswordError(""); }} error={Boolean(passwordError)} helperText={passwordError || "틀리면 에너지 1을 사용합니다."} />
+              <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 1 }}>
+                <Button onClick={() => setLockedSourceId("")}>취소</Button>
+                <Button type="submit" variant="contained" disabled={!passwordInput.trim()}>열기</Button>
+              </Box>
+            </Box>
+          </DialogContent>
+        </Dialog>
 
         <Dialog
           className="interrogation-evidence-dialog"

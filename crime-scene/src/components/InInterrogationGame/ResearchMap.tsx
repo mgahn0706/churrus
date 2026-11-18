@@ -1,4 +1,5 @@
 import { Box, Typography } from "@mui/material";
+import { LockOutlined } from "@mui/icons-material";
 import { sourceEvidenceInstanceId } from "@/features/interrogation/engine";
 import type { InterrogationMapLocation, InterrogationSource } from "@/types";
 
@@ -86,7 +87,7 @@ export default function ResearchMap({
             type="button"
             key={source.id}
             onClick={() => onSelect(source)}
-            aria-label={`${source.title}, ${collected ? "다시 보기" : "조사"}`}
+            aria-label={`${source.title}, ${collected ? "다시 보기" : source.password ? "비밀번호 필요" : "조사"}`}
             sx={{
               position: "absolute",
               left: `${x}%`,
@@ -150,6 +151,7 @@ export default function ResearchMap({
                 whiteSpace: "nowrap",
               }}
             >
+              {!collected && source.password && <LockOutlined sx={{ fontSize: 12, verticalAlign: "-2px", mr: .4 }} />}
               {source.title}
             </Typography>
             </Box>

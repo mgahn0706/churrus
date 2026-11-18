@@ -547,7 +547,7 @@ export default function PsychicAdminEditor() {
                     {person && (
                       <>
                         {phaseArea === "dialogue" && <>
-                        <ScriptEditor label={`${person.suspectName} 기본 대화`} value={person.conversation} onChange={(lines) => editPhase((next) => { next.interrogations[activePersonIndex].conversation = lines; })} />
+                        <ScriptEditor label={`${person.suspectName} 기본 대화`} value={person.conversation} defaultSpeaker={person.suspectName} onChange={(lines) => editPhase((next) => { next.interrogations[activePersonIndex].conversation = lines; })} />
                         <Box sx={{ display: "grid", gap: 1 }}>
                           <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                             <Typography sx={{ color: "#d9b77d", fontSize: 13, fontWeight: 800 }}>대화 선택지 · {person.conversationChoices?.length ?? 0}</Typography>
@@ -559,7 +559,7 @@ export default function PsychicAdminEditor() {
                               <AccordionDetails sx={{ display: "grid", gap: 1 }}>
                                 <TextField size="small" label="선택지 ID" value={choice.id} onChange={(event) => editPhase((next) => { next.interrogations[activePersonIndex].conversationChoices![index].id = event.target.value; })} />
                                 <TextField size="small" label="플레이어 질문" value={choice.question} onChange={(event) => editPhase((next) => { next.interrogations[activePersonIndex].conversationChoices![index].question = event.target.value; })} />
-                                <ScriptEditor label="상대 답변" value={choice.answer} onChange={(lines) => editPhase((next) => { next.interrogations[activePersonIndex].conversationChoices![index].answer = lines; })} />
+                                <ScriptEditor label="상대 답변" value={choice.answer} defaultSpeaker={person.suspectName} onChange={(lines) => editPhase((next) => { next.interrogations[activePersonIndex].conversationChoices![index].answer = lines; })} />
                                 <Button color="error" size="small" sx={{ justifySelf: "end" }} onClick={() => editPhase((next) => { next.interrogations[activePersonIndex].conversationChoices!.splice(index, 1); })}>선택지 삭제</Button>
                               </AccordionDetails>
                             </Accordion>

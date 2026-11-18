@@ -227,6 +227,21 @@ test("공유 단서는 표시 페이즈와 변경 페이즈에 따라 펼쳐진�
   );
 });
 
+test("단서 비밀번호는 변경 페이즈에 따라 적용되고 빈 비밀번호는 거부된다", () => {
+  const baseSource = { ...phase.sources[0], x: 40, y: 60, password: "0420" };
+  const phases = [
+    { ...phase, id: "morning", sources: [baseSource], combinations: [], interrogations: [], requiredCombinationIds: [], requiredQuestionIds: [] },
+    { ...phase, id: "evening", sources: [{ ...baseSource, id: "evening-source", password: "925" }], combinations: [], interrogations: [], requiredCombinationIds: [], requiredQuestionIds: [] },
+  ];
+  const [shared] = deriveSharedSources(phases);
+  assert.equal(shared.base.password, "0420");
+  assert.equal(shared.changes.evening.password, "925");
+  const expanded = materializeSharedSources(phases, [shared]);
+  assert.deepEqual(expanded.map((item) => item.sources[0].password), ["0420", "925"]);
+  assert.doesNotThrow(() => validateInterrogationPhases("psychic", expanded, ["실험체 A"]));
+  assert.throws(() => validateInterrogationPhases("psychic", [{ ...expanded[0], sources: [{ ...expanded[0].sources[0], password: " " }] }], ["실험체 A"]));
+});
+
 test("공유 신문은 단서 조합을 유지하고 변경 페이즈의 답변만 바꾼다", () => {
   const question = { id: "morning-question", evidenceId: "morning::evidence-a", prompt: "무엇을 봤나요?", answer: "아침 답변" };
   const phases = [

@@ -8,20 +8,21 @@ import { scriptLines } from "@/features/interrogation/adminContent";
 import { psychicSuspects, psychicVictim } from "@/fixtures/psychic/suspects";
 
 const speakerOptions = [
-  { name: "나" },
-  { name: "추리" },
-  ...psychicSuspects,
-  psychicVictim,
+  { name: "나", label: "나" },
+  ...psychicSuspects.map((person, index) => ({ ...person, label: ["A", "B", "C"][index] })),
+  { ...psychicVictim, label: "소장" },
 ];
 
 export default function ScriptEditor({
   label,
   value,
   onChange,
+  defaultSpeaker = "나",
 }: {
   label: string;
   value: InterrogationScript | InterrogationDialogueLine[] | undefined;
   onChange: (lines: InterrogationDialogueLine[]) => void;
+  defaultSpeaker?: string;
 }) {
   const speakerLabelId = useId();
   const lines = scriptLines(value);
@@ -37,7 +38,7 @@ export default function ScriptEditor({
     <Box sx={{ display: "grid", gap: 1 }}>
       <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 1 }}>
         <Typography sx={{ color: "#d9b77d", fontSize: 13, fontWeight: 800 }}>{label}</Typography>
-        <Button size="small" startIcon={<AddRounded />} onClick={() => onChange([...lines, { text: "" }])}>대사 추가</Button>
+        <Button size="small" startIcon={<AddRounded />} onClick={() => onChange([...lines, { speaker: defaultSpeaker, text: "" }])}>대사 추가</Button>
       </Box>
       {lines.map((line, index) => (
         <Box key={index} sx={{ display: "grid", gridTemplateColumns: { xs: "1fr auto", sm: "130px 1fr auto" }, gap: 1, p: 1, bgcolor: "rgba(255,255,255,.035)", border: "1px solid rgba(231,201,148,.18)", borderRadius: 1 }}>
@@ -46,21 +47,17 @@ export default function ScriptEditor({
             <Select
               labelId={`${speakerLabelId}-${index}`}
               label="화자"
-              value={line.speaker ?? ""}
+              value={speakerOptions.some((option) => option.name === line.speaker) ? line.speaker : defaultSpeaker}
               onChange={(event) => {
                 const speaker = event.target.value;
                 const selected = speakerOptions.find((option) => option.name === speaker);
-                edit(index, { speaker: speaker || undefined, portrait: selected && "image" in selected ? selected.image : undefined });
+                edit(index, { speaker, portrait: selected && "image" in selected ? selected.image : undefined });
               }}
             >
-              <MenuItem value="">기본 화자</MenuItem>
-              {line.speaker && !speakerOptions.some((option) => option.name === line.speaker) && (
-                <MenuItem value={line.speaker}>{line.speaker}</MenuItem>
-              )}
               {speakerOptions.map((option) => (
                 <MenuItem key={option.name} value={option.name} sx={{ display: "flex", gap: 1 }}>
                   {"image" in option && <Avatar src={option.image} alt="" sx={{ width: 24, height: 24 }} />}
-                  {option.name}
+                  {option.label}
                 </MenuItem>
               ))}
             </Select>
