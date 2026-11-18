@@ -40,7 +40,7 @@
       x: 48,
       y: 52,
       title: "조사할 장소나 기록",
-      description: "조사하기 전 화면에 보일 설명",
+      description: "",
       evidence: {
         id: "p1-evidence-a",
         title: "획득할 단서",

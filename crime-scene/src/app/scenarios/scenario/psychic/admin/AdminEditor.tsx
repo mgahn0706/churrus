@@ -416,7 +416,6 @@ export default function PsychicAdminEditor() {
                             </TextField>
                           </Box>
                           <Typography sx={{ color: "#b8ac98", fontSize: 12 }}>단서 위치는 설정 탭 지도에서 {index + 1}번 마커를 드래그해 조정하세요.</Typography>
-                          <TextField size="small" label="조사 전 설명" value={source.description} onChange={(event) => editPhase((next) => { next.sources[index].description = event.target.value; })} multiline minRows={2} />
                           <EvidenceEditor value={source.evidence} onChange={(value) => editPhase((next) => { next.sources[index].evidence = value; })} />
                           <Button color="error" size="small" sx={{ justifySelf: "end" }} onClick={() => editPhase((next) => { next.sources.splice(index, 1); })}>단서 삭제</Button>
                         </AccordionDetails>
