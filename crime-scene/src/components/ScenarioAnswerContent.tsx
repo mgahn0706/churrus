@@ -49,6 +49,7 @@ export function ScenarioAdditionalAnswerList({
         return (
           <ListItem key={index} sx={{ my: 3 }}>
             <ListItemText
+              disableTypography
               primary={
                 <Typography
                   variant="h6"
@@ -69,7 +70,7 @@ export function ScenarioAdditionalAnswerList({
                       내 답변:{" "}
                       {submittedAnswer.additionalQuestionAnswers[
                         submittedAnswerIndex
-                      ] ?? "입력되지 않음"}
+                      ] || "입력되지 않음"}
                     </Typography>
                   )}
                 </>

@@ -12,6 +12,7 @@ export default function DialogueBox({
   endLabel = "닫기",
   choices,
   onChoose,
+  choiceCostLabel,
   onCloseChoices,
 }: {
   line: InterrogationDialogueLine;
@@ -20,6 +21,7 @@ export default function DialogueBox({
   endLabel?: string;
   choices?: InterrogationConversationChoice[];
   onChoose?: (choice: InterrogationConversationChoice) => void;
+  choiceCostLabel?: string;
   onCloseChoices?: () => void;
 }) {
   const glyphs = useMemo(() => Array.from(line.text), [line.text]);
@@ -112,9 +114,10 @@ export default function DialogueBox({
                 type="button"
                 key={choice.id}
                 onClick={() => onChoose?.(choice)}
-                sx={{ width: "100%", px: 1.5, py: 1.25, border: "1px solid rgba(237,211,164,.3)", borderRadius: .5, bgcolor: "rgba(255,255,255,.04)", color: "#fff9ec", textAlign: "left", font: "inherit", fontSize: { xs: 13, md: 15 }, cursor: "pointer", "&:hover, &:focus-visible": { bgcolor: "rgba(163,106,53,.3)", borderColor: "#d9b77d" } }}
+                sx={{ width: "100%", px: 1.5, py: 1.25, border: "1px solid rgba(237,211,164,.3)", borderRadius: .5, bgcolor: "rgba(255,255,255,.04)", color: "#fff9ec", textAlign: "left", font: "inherit", fontSize: { xs: 13, md: 15 }, cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 1, "&:hover, &:focus-visible": { bgcolor: "rgba(163,106,53,.3)", borderColor: "#d9b77d" } }}
               >
-                {choice.question}
+                <span>{choice.question}</span>
+                {choiceCostLabel && <span style={{ color: "#d9b77d", whiteSpace: "nowrap" }}>{choiceCostLabel}</span>}
               </Box>
             ))}
             <Box component="button" type="button" onClick={onCloseChoices} sx={{ alignSelf: "end", px: 1.5, py: 1, border: 0, bgcolor: "transparent", color: "#d9b77d", font: "inherit", cursor: "pointer" }}>대화 끝내기</Box>

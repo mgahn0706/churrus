@@ -179,6 +179,7 @@ export interface InterrogationPhase {
   locations: InterrogationMapLocation[];
   sources: InterrogationSource[];
   combinations: InterrogationCombination[];
+  fallbackAnswers?: InterrogationScript[];
   interrogations: {
     suspectName: string;
     conversation?: InterrogationScript;

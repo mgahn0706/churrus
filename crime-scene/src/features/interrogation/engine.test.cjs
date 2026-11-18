@@ -192,3 +192,19 @@ test("같은 ID로 바뀐 단서는 페이즈마다 별도로 수집된다", () 
   );
   assert.doesNotThrow(() => validateInterrogationPhases("psychic", [phase, laterPhase], ["실험체 A"]));
 });
+
+test("초능력자 인물 대화와 기본 신문 응답은 페이즈별로 다르다", () => {
+  const { psychicInterrogationContent } = require("../../fixtures/psychic/interrogation.ts");
+  const phases = psychicInterrogationContent.phases;
+  for (let index = 1; index < phases.length; index += 1) {
+    const previous = phases[index - 1];
+    const current = phases[index];
+    assert.notDeepEqual(current.fallbackAnswers, previous.fallbackAnswers);
+    for (const interrogation of current.interrogations) {
+      const earlier = previous.interrogations.find((item) => item.suspectName === interrogation.suspectName);
+      if (!earlier) continue;
+      assert.notDeepEqual(interrogation.conversation, earlier.conversation);
+      assert.notDeepEqual(interrogation.conversationChoices, earlier.conversationChoices);
+    }
+  }
+});

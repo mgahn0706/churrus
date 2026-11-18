@@ -1,5 +1,6 @@
 import { createScenarioReveal } from "@/components/createScenarioReveal";
 import type { ScenarioAnswerConfig } from "@/types/answerPage";
+import { psychicAdditionalQuestions } from "./additionalQuestions";
 
 export const psychicAnswerConfig: ScenarioAnswerConfig = {
   scenarioKey: "psychic",
@@ -13,6 +14,10 @@ export const psychicAnswerConfig: ScenarioAnswerConfig = {
   }),
   confess:
     "김짜장 소장님이 실험 원본을 가져오라고 하셨습니다. 공개 결과표에서 실패한 기록을 뺀 걸 알아채셨더군요. 자정 전 관찰실에서 이야기를 나누다가 돌이킬 수 없는 일이 벌어졌습니다. 겁이 나서 연구소를 떠났고, 다시 돌아오지 않았다고 거짓말했습니다.",
+  additional: psychicAdditionalQuestions.map((item, index) => ({
+    question: `${index + 1}. ${item.question}`,
+    answer: item.answer,
+  })),
   solution:
     "4월 14일 오전부터 연구소의 기록을 따라가면 예지 실험의 공개 결과와 원본이 다르다는 점이 드러납니다. 저녁에 소장은 실험체 C에게 원본을 확인하겠다고 말했습니다. 자정 무렵 소장이 사체로 발견되고, C는 돌아오지 않았다는 말과 달리 행사 뒤 연구소에 다시 들어온 기록이 남아 있습니다. 이는 C의 동기와 기회를 가리킵니다. 이 결론과 대사는 추후 정식 원고로 교체할 임시 콘텐츠입니다.",
   culpritsHref: "/scenarios/scenario/psychic",

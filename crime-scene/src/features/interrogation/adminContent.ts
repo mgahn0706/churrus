@@ -1,0 +1,164 @@
+import type {
+  InterrogationDialogueLine,
+  InterrogationEvidence,
+  InterrogationScenarioType,
+  InterrogationScript,
+} from "@/types";
+import { validateInterrogationPhases } from "./engine";
+
+export type EditableInterrogationContent = Pick<
+  InterrogationScenarioType,
+  "prologue" | "phases" | "fallbackAnswers"
+>;
+
+export function scriptLines(
+  script: InterrogationScript | InterrogationScenarioType["prologue"] | undefined,
+): InterrogationDialogueLine[] {
+  if (script === undefined) return [];
+  return (Array.isArray(script) ? script : [script]).map((line) =>
+    typeof line === "string" ? { text: line } : line,
+  );
+}
+
+export function evidenceOptions(
+  content: EditableInterrogationContent,
+  throughPhaseIndex = content.phases.length - 1,
+) {
+  const options: { id: string; label: string }[] = [];
+  const seen = new Set<string>();
+  const add = (phaseId: string, timeLabel: string, evidence: InterrogationEvidence) => {
+    const id = `${phaseId}::${evidence.id}`;
+    if (!evidence.id || seen.has(id)) return;
+    seen.add(id);
+    options.push({ id, label: `${timeLabel} · ${evidence.title}` });
+  };
+
+  content.phases.slice(0, throughPhaseIndex + 1).forEach((phase) => {
+    const timeLabel = phase.timeLabel || phase.title;
+    phase.sources.forEach((source) => add(phase.id, timeLabel, source.evidence));
+    phase.combinations.forEach((combination) => add(phase.id, timeLabel, combination.result));
+    phase.interrogations.forEach((interrogation) => interrogation.questions.forEach((question) => {
+      if (question.revealedEvidence) add(phase.id, timeLabel, question.revealedEvidence);
+      if (question.challenge?.revealedEvidence) add(phase.id, timeLabel, question.challenge.revealedEvidence);
+    }));
+  });
+  return options;
+}
+
+export function validateAdminContent(
+  content: EditableInterrogationContent,
+  suspectNames: string[],
+): string | null {
+  if (scriptLines(content.prologue).every((line) => !line.text.trim())) return "프롤로그 대사를 한 줄 이상 입력하세요.";
+  if (content.phases.length === 0) return "페이즈를 한 개 이상 입력하세요.";
+  if (!content.phases.some((phase) => phase.finalInterrogation)) return "최종 추리 페이즈가 필요합니다.";
+  for (const phase of content.phases) {
+    if (phase.fallbackAnswers && phase.fallbackAnswers.some((answer) => scriptLines(answer).every((line) => !line.text.trim()))) {
+      return `${phase.title}: 기본 응답 대사를 입력하세요.`;
+    }
+    if (phase.finalInterrogation && phase.combinations.length) {
+      return `${phase.title}: 최종 추리에서는 단서 연결을 추가할 수 없습니다.`;
+    }
+    if (scriptLines(phase.intro).every((line) => !line.text.trim())) {
+      return `${phase.title}: 페이즈 시작 대사를 입력하세요.`;
+    }
+    for (const interrogation of phase.interrogations) {
+      const choiceIds = new Set<string>();
+      for (const choice of interrogation.conversationChoices ?? []) {
+        if (!choice.id || choiceIds.has(choice.id)) {
+          return `${phase.title} · ${interrogation.suspectName}: 선택지 ID가 비었거나 중복되었습니다.`;
+        }
+        choiceIds.add(choice.id);
+        if (!choice.question.trim() || scriptLines(choice.answer).every((line) => !line.text.trim())) {
+          return `${phase.title} · ${interrogation.suspectName}: 대화 선택지와 답변을 입력하세요.`;
+        }
+      }
+      for (const question of interrogation.questions) {
+        if (phase.finalInterrogation && (question.revealedEvidence || question.challenge?.revealedEvidence)) {
+          return `${phase.title}: 최종 추리에서는 새 단서를 획득할 수 없습니다.`;
+        }
+        if (!question.evidenceId && !question.evidenceIds?.length) {
+          return `${phase.title} · ${interrogation.suspectName}: 신문 단서를 선택하세요.`;
+        }
+        if (!question.prompt.trim() || scriptLines(question.answer).every((line) => !line.text.trim())) {
+          return `${phase.title} · ${interrogation.suspectName}: 신문 질문과 답변을 입력하세요.`;
+        }
+      }
+    }
+  }
+  try {
+    validateInterrogationPhases("psychic", content.phases, suspectNames);
+    return null;
+  } catch (error) {
+    return error instanceof Error ? error.message : "콘텐츠를 확인해 주세요.";
+  }
+}
+
+export function isEditableContent(value: unknown): value is EditableInterrogationContent {
+  const record = (item: unknown): item is Record<string, unknown> =>
+    Boolean(item && typeof item === "object" && !Array.isArray(item));
+  const strings = (item: unknown): item is string[] =>
+    Array.isArray(item) && item.every((entry) => typeof entry === "string");
+  const line = (item: unknown) => typeof item === "string" ||
+    (record(item) && typeof item.text === "string" &&
+      (item.speaker === undefined || typeof item.speaker === "string") &&
+      (item.portrait === undefined || typeof item.portrait === "string"));
+  const script = (item: unknown) => typeof item === "string" ||
+    (Array.isArray(item) && item.every(line));
+  const evidence = (item: unknown) => record(item) &&
+    typeof item.id === "string" && typeof item.title === "string" &&
+    typeof item.description === "string" &&
+    (item.image === undefined || typeof item.image === "string");
+  const choice = (item: unknown) => record(item) &&
+    typeof item.id === "string" && typeof item.question === "string" && script(item.answer);
+  const question = (item: unknown) => record(item) &&
+    typeof item.id === "string" && typeof item.prompt === "string" && script(item.answer) &&
+    (item.evidenceId === undefined || typeof item.evidenceId === "string") &&
+    (item.evidenceIds === undefined || strings(item.evidenceIds)) &&
+    (item.revealedEvidence === undefined || evidence(item.revealedEvidence)) &&
+    (item.challenge === undefined || (record(item.challenge) &&
+      typeof item.challenge.evidenceId === "string" && script(item.challenge.response) &&
+      (item.challenge.revealedEvidence === undefined || evidence(item.challenge.revealedEvidence))));
+  const interrogation = (item: unknown) => record(item) &&
+    typeof item.suspectName === "string" &&
+    (item.conversation === undefined || script(item.conversation)) &&
+    (item.conversationChoices === undefined || (Array.isArray(item.conversationChoices) && item.conversationChoices.every(choice))) &&
+    Array.isArray(item.questions) && item.questions.every(question);
+  const location = (item: unknown) => record(item) &&
+    typeof item.id === "string" && typeof item.title === "string" &&
+    typeof item.x === "number" && typeof item.y === "number";
+  const source = (item: unknown) => record(item) &&
+    typeof item.id === "string" && typeof item.locationId === "string" &&
+    typeof item.title === "string" && typeof item.description === "string" &&
+    (item.x === undefined || typeof item.x === "number") &&
+    (item.y === undefined || typeof item.y === "number") && evidence(item.evidence);
+  const combination = (item: unknown) => record(item) &&
+    typeof item.id === "string" && strings(item.evidenceIds) && item.evidenceIds.length === 2 &&
+    typeof item.explanation === "string" && evidence(item.result);
+  const phase = (item: unknown) => record(item) &&
+    typeof item.id === "string" && typeof item.title === "string" && script(item.intro) &&
+    (item.timeLabel === undefined || typeof item.timeLabel === "string") &&
+    (item.energyLimit === undefined || typeof item.energyLimit === "number") &&
+    (item.mapImage === undefined || typeof item.mapImage === "string") &&
+    (item.finalInterrogation === undefined || typeof item.finalInterrogation === "boolean") &&
+    (item.fallbackAnswers === undefined || (Array.isArray(item.fallbackAnswers) && item.fallbackAnswers.every(script))) &&
+    Array.isArray(item.locations) && item.locations.every(location) &&
+    Array.isArray(item.sources) && item.sources.every(source) &&
+    Array.isArray(item.combinations) && item.combinations.every(combination) &&
+    Array.isArray(item.interrogations) && item.interrogations.every(interrogation) &&
+    strings(item.requiredCombinationIds) && strings(item.requiredQuestionIds);
+
+  return record(value) && Array.isArray(value.prologue) && value.prologue.every(line) &&
+    Array.isArray(value.phases) && value.phases.length > 0 && value.phases.every(phase) &&
+    (value.fallbackAnswers === undefined || (Array.isArray(value.fallbackAnswers) && value.fallbackAnswers.every(script)));
+}
+
+export function toInterrogationTypeScript(content: EditableInterrogationContent) {
+  return [
+    'import type { InterrogationScenarioType } from "@/types";',
+    "",
+    'export const psychicInterrogationContent: Pick<InterrogationScenarioType, "prologue" | "phases" | "fallbackAnswers"> =',
+    `  ${JSON.stringify(content, null, 2)};`,
+    "",
+  ].join("\n");
+}

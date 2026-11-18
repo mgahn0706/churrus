@@ -21,7 +21,6 @@ import {
   getCollectedEvidence,
   initialInterrogationProgress,
   interrogationStorageKey,
-  isPhaseReady,
   readInterrogationProgress,
   type InterrogationProgress,
 } from "@/features/interrogation/engine";
@@ -170,11 +169,6 @@ export default function InInterrogationGame({
   const energySpent = phase ? progress.energySpentByPhase[phase.id] ?? 0 : 0;
   const energyLimit = phase?.energyLimit ?? 4;
   const energyRemaining = Math.max(0, energyLimit - energySpent);
-  const canAdvance = Boolean(
-    phase?.finalInterrogation ||
-    energySpent >= energyLimit ||
-    (phase && isPhaseReady(phase, progress)),
-  );
   const activeSuspectName =
     selectedSuspectName || phase?.interrogations[0]?.suspectName || "";
   const activeSuspect = [...scenario.suspects, ...scenario.victims].find(
@@ -247,6 +241,7 @@ export default function InInterrogationGame({
 
   const chooseConversationQuestion = (choice: InterrogationConversationChoice) => {
     if (!dialogue?.choiceSpeaker) return;
+    spendEnergy();
     setDialogue({
       ...dialogue,
       lines: [
@@ -333,6 +328,11 @@ export default function InInterrogationGame({
     const selectedTitles = questionEvidenceIds
       .map((id) => evidence.find((item) => item.instanceId === id)?.title)
       .filter(Boolean);
+    const fallbackAnswers = phase.fallbackAnswers?.length
+      ? phase.fallbackAnswers
+      : scenario.fallbackAnswers ?? [];
+    const answer = question?.answer ?? fallbackAnswers[Math.floor(Math.random() * fallbackAnswers.length)]
+      ?? "그 단서에 대해서는 할 말이 없습니다.";
     queueDialogue([
       {
         speaker: "나",
@@ -341,7 +341,7 @@ export default function InInterrogationGame({
           : "이 단서들을 함께 보면요?"),
       },
       ...asDialogueSequence(
-        question?.answer ?? scenario.fallbackAnswers?.[Math.floor(Math.random() * scenario.fallbackAnswers.length)] ?? "그 단서에 대해서는 할 말이 없습니다.",
+        answer,
         name,
         person?.image,
       ),
@@ -361,7 +361,6 @@ export default function InInterrogationGame({
     if (!interrogation) return;
     primeDialogueAudio();
     const person = people.find((item) => item.name === name);
-    spendEnergy();
     setSelectedSuspectName(name);
     setSelectedQuestionId("");
     if (!stayOnMap) setView("interrogation");
@@ -525,23 +524,21 @@ export default function InInterrogationGame({
             <Typography sx={{ fontSize: 12, whiteSpace: "nowrap" }}>{phase.timeLabel}</Typography>
             <Typography sx={{ color: "#d9b77d", fontSize: 12, whiteSpace: "nowrap" }}>⚡ {energyRemaining}/{energyLimit}</Typography>
           </Box>
-          {canAdvance && (
-            <Button
-              sx={{ ...menuButtonSx, pointerEvents: "auto", bgcolor: "rgba(4,8,8,.86)", borderColor: "#d9b77d", fontSize: 12 }}
-              onClick={() => {
-                if (phase.finalInterrogation) {
-                  router.push(`/scenarios/scenario/${scenario.id}/submit`);
-                } else {
-                  setProgress((previous) => ({
-                    ...previous,
-                    completedPhaseIds: addId(previous.completedPhaseIds, phase.id),
-                  }));
-                }
-              }}
-            >
-              {phase.finalInterrogation ? "답변 제출 →" : "다음 시간 →"}
-            </Button>
-          )}
+          <Button
+            sx={{ ...menuButtonSx, pointerEvents: "auto", bgcolor: "rgba(4,8,8,.86)", borderColor: "#d9b77d", fontSize: 12 }}
+            onClick={() => {
+              if (phase.finalInterrogation) {
+                router.push(`/scenarios/scenario/${scenario.id}/submit`);
+              } else {
+                setProgress((previous) => ({
+                  ...previous,
+                  completedPhaseIds: addId(previous.completedPhaseIds, phase.id),
+                }));
+              }
+            }}
+          >
+            {phase.finalInterrogation ? "답변 제출 →" : "다음 시간 →"}
+          </Button>
         </Box>
 
         {energyWarning && (
@@ -890,6 +887,7 @@ export default function InInterrogationGame({
               endLabel={dialogue.choices?.some((choice) => !dialogue.askedChoiceIds?.includes(choice.id)) ? "질문 선택 →" : "닫기"}
               choices={dialogue.showChoices ? dialogue.choices?.filter((choice) => !dialogue.askedChoiceIds?.includes(choice.id)) : undefined}
               onChoose={chooseConversationQuestion}
+              choiceCostLabel="⚡1"
               onCloseChoices={() => setDialogue(null)}
               onAdvance={advanceDialogue}
             />
