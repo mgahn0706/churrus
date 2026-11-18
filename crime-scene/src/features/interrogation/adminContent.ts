@@ -24,13 +24,13 @@ export function evidenceOptions(
   content: EditableInterrogationContent,
   throughPhaseIndex = content.phases.length - 1,
 ) {
-  const options: { id: string; label: string }[] = [];
+  const options: { id: string; label: string; description: string }[] = [];
   const seen = new Set<string>();
   const add = (phaseId: string, timeLabel: string, evidence: InterrogationEvidence) => {
     const id = `${phaseId}::${evidence.id}`;
     if (!evidence.id || seen.has(id)) return;
     seen.add(id);
-    options.push({ id, label: `${timeLabel} · ${evidence.title}` });
+    options.push({ id, label: `${timeLabel} · ${evidence.title || "이름 없는 단서"}`, description: evidence.description });
   };
 
   content.phases.slice(0, throughPhaseIndex + 1).forEach((phase) => {

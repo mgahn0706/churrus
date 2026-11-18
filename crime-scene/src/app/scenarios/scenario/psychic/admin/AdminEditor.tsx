@@ -3,11 +3,12 @@
 import { AddRounded, ContentCopyRounded, DownloadRounded, ExpandMoreRounded, RestartAltRounded, UploadFileRounded } from "@mui/icons-material";
 import {
   Accordion, AccordionDetails, AccordionSummary, Alert, Box, Button, Checkbox,
-  Chip, FormControl, FormControlLabel, InputLabel, MenuItem, Select, Stack,
+  Chip, FormControlLabel, MenuItem, Stack,
   TextField, ThemeProvider, Tooltip, Typography,
 } from "@mui/material";
-import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type PointerEvent as ReactPointerEvent, type ReactNode } from "react";
 import EvidenceEditor from "@/components/InInterrogationAdmin/EvidenceEditor";
+import EvidenceCombinationPicker from "@/components/InInterrogationAdmin/EvidenceCombinationPicker";
 import ScriptEditor from "@/components/InInterrogationAdmin/ScriptEditor";
 import { createScenarioTheme } from "@/components/createScenarioTheme";
 import {
@@ -66,27 +67,79 @@ function Section({ title, action, children, order }: { title: string; action?: R
   );
 }
 
-function MapPreview({ phase }: { phase: InterrogationPhase }) {
+function MapPreview({ phase, onMoveSource }: { phase: InterrogationPhase; onMoveSource: (index: number, x: number, y: number) => void }) {
+  const mapRef = useRef<HTMLDivElement | null>(null);
+  const dragRef = useRef<{ index: number; pointerId: number; offsetX: number; offsetY: number } | null>(null);
+  const [dragPosition, setDragPosition] = useState<{ index: number; x: number; y: number } | null>(null);
+  const clamp = (value: number) => Math.max(0, Math.min(100, Math.round(value * 10) / 10));
+  const positionFromPointer = (event: ReactPointerEvent<HTMLElement>) => {
+    const bounds = mapRef.current?.getBoundingClientRect();
+    const drag = dragRef.current;
+    if (!bounds || !drag) return null;
+    return {
+      index: drag.index,
+      x: clamp((event.clientX - bounds.left - drag.offsetX) / bounds.width * 100),
+      y: clamp((event.clientY - bounds.top - drag.offsetY) / bounds.height * 100),
+    };
+  };
   if (!phase.mapImage) return null;
   return (
-    <Box sx={{ position: "relative", width: "100%", maxWidth: 720, aspectRatio: "16 / 9", backgroundImage: `url(${phase.mapImage})`, backgroundSize: "100% 100%", border: "1px solid rgba(231,201,148,.3)", bgcolor: "#111b18", overflow: "hidden" }}>
-      {phase.locations.map((location) => (
-        <Tooltip key={location.id} title={location.title}>
-          <Box sx={{ position: "absolute", left: `${location.x}%`, top: `${location.y}%`, transform: "translate(-50%, -50%)", width: 9, height: 9, bgcolor: "#d3d9d0", borderRadius: "50%", boxShadow: "0 0 0 3px rgba(0,0,0,.65)" }} />
-        </Tooltip>
-      ))}
-      {phase.sources.map((source, index) => {
-        const location = phase.locations.find((item) => item.id === source.locationId);
-        const siblings = phase.sources.filter((item) => item.locationId === source.locationId);
-        const spread = siblings.indexOf(source) - (siblings.length - 1) / 2;
-        const x = source.x ?? (location?.x ?? 50) + spread * 8;
-        const y = source.y ?? (location?.y ?? 50) + spread * 12;
-        return (
-          <Tooltip key={index} title={source.title || source.id}>
-            <Box sx={{ position: "absolute", left: `${x}%`, top: `${y}%`, transform: "translate(-50%, -50%)", width: 12, height: 12, bgcolor: "#e5a85f", border: "2px solid #fff1cf", borderRadius: "50%", boxShadow: "0 0 0 3px rgba(0,0,0,.7)" }} />
+    <Box sx={{ display: "grid", gap: 1 }}>
+      <Typography sx={{ color: "#b8ac98", fontSize: 12 }}>주황색 단서를 끌어 지도 위 원하는 곳에 놓으세요. 회색 점은 장소 기준 위치입니다.</Typography>
+      <Box ref={mapRef} sx={{ position: "relative", width: "100%", maxWidth: 720, aspectRatio: "16 / 9", backgroundImage: `url(${phase.mapImage})`, backgroundSize: "100% 100%", border: "1px solid rgba(231,201,148,.3)", bgcolor: "#111b18", overflow: "hidden" }}>
+        {phase.locations.map((location) => (
+          <Tooltip key={location.id} title={location.title}>
+            <Box sx={{ position: "absolute", left: `${location.x}%`, top: `${location.y}%`, transform: "translate(-50%, -50%)", width: 9, height: 9, bgcolor: "#d3d9d0", borderRadius: "50%", boxShadow: "0 0 0 3px rgba(0,0,0,.65)", pointerEvents: "none" }} />
           </Tooltip>
-        );
-      })}
+        ))}
+        {phase.sources.map((source, index) => {
+          const location = phase.locations.find((item) => item.id === source.locationId);
+          const siblings = phase.sources.filter((item) => item.locationId === source.locationId);
+          const spread = siblings.indexOf(source) - (siblings.length - 1) / 2;
+          const x = dragPosition?.index === index ? dragPosition.x : source.x ?? (location?.x ?? 50) + spread * 8;
+          const y = dragPosition?.index === index ? dragPosition.y : source.y ?? (location?.y ?? 50) + spread * 12;
+          return (
+            <Tooltip key={source.id} title={source.title || `단서 ${index + 1}`}>
+              <Box
+                component="button"
+                type="button"
+                aria-label={`${source.title || `단서 ${index + 1}`} 위치 이동`}
+                onPointerDown={(event) => {
+                  if (!event.isPrimary || event.button !== 0) return;
+                  const bounds = mapRef.current?.getBoundingClientRect();
+                  if (!bounds) return;
+                  dragRef.current = { index, pointerId: event.pointerId, offsetX: event.clientX - bounds.left - x / 100 * bounds.width, offsetY: event.clientY - bounds.top - y / 100 * bounds.height };
+                  event.currentTarget.setPointerCapture(event.pointerId);
+                }}
+                onPointerMove={(event) => {
+                  if (dragRef.current?.pointerId !== event.pointerId) return;
+                  setDragPosition(positionFromPointer(event));
+                }}
+                onPointerUp={(event) => {
+                  if (dragRef.current?.pointerId !== event.pointerId) return;
+                  const position = positionFromPointer(event);
+                  dragRef.current = null;
+                  setDragPosition(null);
+                  if (position) onMoveSource(position.index, position.x, position.y);
+                }}
+                onPointerCancel={() => { dragRef.current = null; setDragPosition(null); }}
+                onKeyDown={(event) => {
+                  const offset = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }[event.key];
+                  if (!offset) return;
+                  event.preventDefault();
+                  onMoveSource(index, clamp(x + offset[0]), clamp(y + offset[1]));
+                }}
+                sx={{ position: "absolute", left: `${x}%`, top: `${y}%`, transform: "translate(-50%, -50%)", width: 28, height: 28, p: 0, border: "2px solid #fff1cf", borderRadius: "50%", bgcolor: "#a76426", color: "#fff", fontSize: 12, fontWeight: 800, boxShadow: "0 0 0 3px rgba(0,0,0,.7)", cursor: dragPosition?.index === index ? "grabbing" : "grab", touchAction: "none", zIndex: dragPosition?.index === index ? 2 : 1, "&:focus-visible": { outline: "2px solid #fff1cf", outlineOffset: 3 } }}
+              >
+                {index + 1}
+              </Box>
+            </Tooltip>
+          );
+        })}
+      </Box>
+      <Box sx={{ display: "flex", flexWrap: "wrap", gap: .75, maxWidth: 720 }}>
+        {phase.sources.map((source, index) => <Chip key={source.id} size="small" label={`${index + 1}. ${source.title || "새 단서"}`} />)}
+      </Box>
     </Box>
   );
 }
@@ -316,7 +369,7 @@ export default function PsychicAdminEditor() {
                       <TextField size="small" type="number" label="에너지" value={phase.energyLimit ?? 4} onChange={(event) => editPhase((next) => { next.energyLimit = Number(event.target.value); })} />
                       <TextField size="small" label="지도 이미지 경로" value={phase.mapImage ?? ""} onChange={(event) => editPhase((next) => { next.mapImage = event.target.value; })} sx={{ gridColumn: "1 / -1" }} />
                     </Box>
-                    <MapPreview phase={phase} />
+                    <MapPreview phase={phase} onMoveSource={(index, x, y) => editPhase((next) => { next.sources[index].x = x; next.sources[index].y = y; })} />
                   </Section>
                   }
 
@@ -355,15 +408,14 @@ export default function PsychicAdminEditor() {
                           <Typography sx={{ fontSize: 13 }}>{source.title || "새 조사 지점"} <Box component="span" sx={{ color: "#a99b82" }}>→ {source.evidence.title || "새 단서"}</Box></Typography>
                         </AccordionSummary>
                         <AccordionDetails sx={{ display: "grid", gap: 2 }}>
-                          <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", sm: "150px 1fr 160px 80px 80px" }, gap: 1 }}>
+                          <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", sm: "150px 1fr 160px" }, gap: 1 }}>
                             <TextField size="small" label="조사 지점 ID" value={source.id} onChange={(event) => editPhase((next) => { next.sources[index].id = event.target.value; })} />
                             <TextField size="small" label="지도에 보이는 이름" value={source.title} onChange={(event) => editPhase((next) => { next.sources[index].title = event.target.value; })} />
                             <TextField size="small" select label="장소" value={source.locationId} onChange={(event) => editPhase((next) => { next.sources[index].locationId = event.target.value; })}>
                               {phase.locations.map((location) => <MenuItem key={location.id} value={location.id}>{location.title}</MenuItem>)}
                             </TextField>
-                            <TextField size="small" type="number" label="X %" value={source.x ?? ""} onChange={(event) => editPhase((next) => { next.sources[index].x = event.target.value === "" ? undefined : Number(event.target.value); })} />
-                            <TextField size="small" type="number" label="Y %" value={source.y ?? ""} onChange={(event) => editPhase((next) => { next.sources[index].y = event.target.value === "" ? undefined : Number(event.target.value); })} />
                           </Box>
+                          <Typography sx={{ color: "#b8ac98", fontSize: 12 }}>단서 위치는 설정 탭 지도에서 {index + 1}번 마커를 드래그해 조정하세요.</Typography>
                           <TextField size="small" label="조사 전 설명" value={source.description} onChange={(event) => editPhase((next) => { next.sources[index].description = event.target.value; })} multiline minRows={2} />
                           <EvidenceEditor value={source.evidence} onChange={(value) => editPhase((next) => { next.sources[index].evidence = value; })} />
                           <Button color="error" size="small" sx={{ justifySelf: "end" }} onClick={() => editPhase((next) => { next.sources.splice(index, 1); })}>단서 삭제</Button>
@@ -440,16 +492,7 @@ export default function PsychicAdminEditor() {
                                   <Typography sx={{ fontSize: 13 }}>{selectedIds.map((id) => optionLabels.get(id) ?? id).join(" + ") || "단서 선택 필요"} → {question.prompt || "질문 없음"}</Typography>
                                 </AccordionSummary>
                                 <AccordionDetails sx={{ display: "grid", gap: 2 }}>
-                                  <TextField size="small" label="신문 ID" value={question.id} onChange={(event) => editQuestion(index, (next) => { next.id = event.target.value; })} />
-                                  <FormControl size="small" fullWidth>
-                                    <InputLabel>제시할 단서 조합</InputLabel>
-                                    <Select multiple label="제시할 단서 조합" value={selectedIds} renderValue={(ids) => ids.map((id) => optionLabels.get(id) ?? id).join(" + ")} onChange={(event) => {
-                                      const ids = typeof event.target.value === "string" ? event.target.value.split(",") : event.target.value;
-                                      editQuestion(index, (next) => { delete next.evidenceId; next.evidenceIds = ids; });
-                                    }}>
-                                      {options.map((option) => <MenuItem key={option.id} value={option.id}><Checkbox checked={selectedIds.includes(option.id)} size="small" /><Typography sx={{ fontSize: 12 }}>{option.label}</Typography></MenuItem>)}
-                                    </Select>
-                                  </FormControl>
+                                  <EvidenceCombinationPicker options={options} selectedIds={selectedIds} onChange={(ids) => editQuestion(index, (next) => { delete next.evidenceId; next.evidenceIds = ids; })} />
                                   <TextField size="small" label="플레이어 질문" value={question.prompt} onChange={(event) => editQuestion(index, (next) => { next.prompt = event.target.value; })} multiline minRows={2} />
                                   <ScriptEditor label="신문 답변" value={question.answer} onChange={(lines) => editQuestion(index, (next) => { next.answer = lines; })} />
                                   <FormControlLabel control={<Checkbox checked={Boolean(question.revealedEvidence)} onChange={(event) => editQuestion(index, (next) => { next.revealedEvidence = event.target.checked ? emptyEvidence() : undefined; })} />} label="답변 후 새 단서 획득" />
