@@ -9,17 +9,17 @@ import {
 import { useEffect, useMemo, useRef, useState, type PointerEvent as ReactPointerEvent, type ReactNode } from "react";
 import EvidenceEditor from "@/components/InInterrogationAdmin/EvidenceEditor";
 import SharedSourceEditor from "@/components/InInterrogationAdmin/SharedSourceEditor";
-import SharedQuestionEditor from "@/components/InInterrogationAdmin/SharedQuestionEditor";
+import EvidenceCombinationPicker from "@/components/InInterrogationAdmin/EvidenceCombinationPicker";
 import ScriptEditor from "@/components/InInterrogationAdmin/ScriptEditor";
 import { createScenarioTheme } from "@/components/createScenarioTheme";
 import {
-  evidenceOptions, isEditableContent, toInterrogationTypeScript,
+  evidenceOptions, isEditableContent, scriptLines, toInterrogationTypeScript,
   validateAdminContent, type EditableInterrogationContent,
 } from "@/features/interrogation/adminContent";
 import { psychicInterrogationContent } from "@/fixtures/psychic/interrogation";
 import { psychicSuspects, psychicVictim } from "@/fixtures/psychic/suspects";
 import { deriveSharedSources, ensureSharedSourceNumbers, materializeSharedSources, spreadSharedSourcePositions, type SharedSource } from "@/features/interrogation/sharedSources";
-import { deriveSharedQuestions, materializeSharedQuestions, syncSharedQuestionPhases, type SharedQuestion } from "@/features/interrogation/sharedQuestions";
+import { deriveSharedQuestions, materializeSharedQuestions, syncSharedQuestionPhases } from "@/features/interrogation/sharedQuestions";
 import { defaultPersonPosition, phasePeople } from "@/features/interrogation/phasePeople";
 import type { InterrogationEvidence, InterrogationMapPerson, InterrogationPhase, InterrogationQuestion, InterrogationScript } from "@/types";
 
@@ -246,8 +246,8 @@ export default function PsychicAdminEditor() {
   const [newPersonName, setNewPersonName] = useState("");
   const [newPersonImage, setNewPersonImage] = useState("");
   const [questionSearch, setQuestionSearch] = useState("");
+  const [selectedClueIds, setSelectedClueIds] = useState<string[]>([]);
   const [expandedSourceId, setExpandedSourceId] = useState<string | null>(null);
-  const [expandedQuestionId, setExpandedQuestionId] = useState<string | null>(null);
   const [notice, setNotice] = useState("");
   const [previousDraftAvailable, setPreviousDraftAvailable] = useState(false);
   const importRef = useRef<HTMLInputElement | null>(null);
@@ -308,6 +308,20 @@ export default function PsychicAdminEditor() {
     }
     return [...byId.values()];
   }, [content]);
+  const questionGroups = useMemo(() => {
+    const groups = new Map<string, { clueIds: string[]; count: number }>();
+    for (const question of content.sharedQuestions ?? []) {
+      if (!question.clueIds.length) continue;
+      const key = [...question.clueIds].sort().join("\u0000");
+      const group = groups.get(key);
+      if (group) group.count += 1;
+      else groups.set(key, { clueIds: question.clueIds, count: 1 });
+    }
+    return [...groups.values()];
+  }, [content.sharedQuestions]);
+  const selectedQuestion = (name: string) => (content.sharedQuestions ?? []).find((question) =>
+    question.suspectName === name && question.clueIds.length === selectedClueIds.length &&
+    question.clueIds.every((id) => selectedClueIds.includes(id)));
   const sourceNumbers = useMemo(() => new Map((content.sharedSources ?? []).map((source) => [source.id, source.number ?? 0])), [content.sharedSources]);
 
   const update = (edit: (next: EditableInterrogationContent) => void, rebuild: "none" | "questions" | "all" = "none", preferredSourceId?: string) => {
@@ -327,11 +341,6 @@ export default function PsychicAdminEditor() {
   };
   const editPhase = (edit: (next: EditableInterrogationContent["phases"][number]) => void, rebuild: "none" | "questions" = "none") =>
     update((next) => edit(next.phases[phaseIndex]), rebuild);
-  const editSharedQuestion = (id: string, edit: (question: SharedQuestion) => void) =>
-    update((next) => {
-      const question = next.sharedQuestions?.find((item) => item.id === id);
-      if (question) edit(question);
-    }, "questions");
   const editSharedSource = (id: string, edit: (source: SharedSource, phases: InterrogationPhase[]) => void, moved = false) =>
     update((next) => {
       const source = next.sharedSources?.find((item) => item.id === id);
@@ -352,18 +361,16 @@ export default function PsychicAdminEditor() {
       });
     }, "all");
   };
-  const addSharedQuestion = () => {
-    if (!person) return;
-    const id = newId("question");
-    setExpandedQuestionId(id);
-    setQuestionSearch("");
+  const editSelectedAnswer = (name: string, value: string) => {
+    if (!selectedClueIds.length) return;
     update((next) => {
       next.sharedQuestions ??= [];
-      next.sharedQuestions.unshift({
-        id, suspectName: person.suspectName, clueIds: [],
-        visiblePhaseIds: [],
-        base: { answer: [""] }, changes: {}, questionIds: {}, evidenceRefs: {}, order: {},
-      });
+      let question = next.sharedQuestions.find((item) => item.suspectName === name && item.clueIds.length === selectedClueIds.length && item.clueIds.every((id) => selectedClueIds.includes(id)));
+      if (!question) {
+        question = { id: newId("question"), suspectName: name, clueIds: [...selectedClueIds], visiblePhaseIds: [], base: { answer: [""] }, changes: {}, questionIds: {}, evidenceRefs: {}, order: {} };
+        next.sharedQuestions.unshift(question);
+      }
+      question.base.answer = value.split("\n").map((text) => ({ speaker: name, text }));
     }, "questions");
   };
   const togglePhasePerson = (name: string, visible: boolean) => {
@@ -676,12 +683,36 @@ export default function PsychicAdminEditor() {
                   </Section>}
 
                   {(phaseArea === "dialogue" || phaseArea === "interrogation") && <Section title={phaseArea === "dialogue" ? "인물 대화" : "단서 신문"} order={1}>
-                    <Stack direction="row" spacing={.75} sx={{ flexWrap: "wrap", gap: .75, "& > *": { marginLeft: "0 !important" } }}>
-                      {editableInterrogations.map((item) => <Button key={item.suspectName} variant={person?.suspectName === item.suspectName ? "contained" : "outlined"} size="small" onClick={() => { setPersonName(item.suspectName); setQuestionSearch(""); setExpandedQuestionId(null); }} sx={{ whiteSpace: "nowrap" }}>{item.suspectName}{phaseArea === "interrogation" ? ` · ${(content.sharedQuestions ?? []).filter((question) => question.suspectName === item.suspectName).length}` : ""}</Button>)}
-                    </Stack>
-                    {person && (
+                    {phaseArea === "interrogation" && <Box sx={{ display: "grid", gap: 2 }}>
+                      <EvidenceCombinationPicker options={clueOptions} selectedIds={selectedClueIds} onChange={setSelectedClueIds} />
+                      {selectedClueIds.length > 0 && <Box sx={{ display: "grid", gridTemplateColumns: { xs: "minmax(0, 1fr)", md: "repeat(3, minmax(0, 1fr))" }, gap: 1 }}>
+                        {editableInterrogations.map((item) => {
+                          const question = selectedQuestion(item.suspectName);
+                          return <Box key={item.suspectName} sx={{ display: "grid", gap: 1, alignContent: "start", minWidth: 0, p: 1.5, bgcolor: "#121d19", border: "1px solid rgba(231,201,148,.22)", borderRadius: 1 }}>
+                            <Typography sx={{ color: "#f3dfbb", fontSize: 14, fontWeight: 800 }}>{item.suspectName}</Typography>
+                            <TextField size="small" label="신문 답변" value={question ? scriptLines(question.base.answer).map((line) => line.text).join("\n") : ""} onChange={(event) => editSelectedAnswer(item.suspectName, event.target.value)} placeholder={`${item.suspectName}의 답변 입력`} multiline minRows={4} fullWidth />
+                            {question && <Button color="error" size="small" sx={{ justifySelf: "end" }} onClick={() => update((next) => { next.sharedQuestions = next.sharedQuestions?.filter((entry) => entry.id !== question.id); }, "questions")}>답변 삭제</Button>}
+                          </Box>;
+                        })}
+                      </Box>}
+                      {selectedClueIds.length === 0 && <Typography sx={{ color: "#b8ac98", fontSize: 12 }}>단서를 선택하면 A·B·C 답변 입력창이 나타납니다.</Typography>}
+                      <Box sx={{ display: "grid", gap: 1, pt: 1, borderTop: "1px solid rgba(231,201,148,.22)" }}>
+                        <Typography sx={{ color: "#d9b77d", fontSize: 13, fontWeight: 800 }}>작성한 단서 조합 · {questionGroups.length}</Typography>
+                        <TextField size="small" label="작성한 조합 찾기" placeholder="단서 이름" value={questionSearch} onChange={(event) => setQuestionSearch(event.target.value)} sx={{ maxWidth: 420 }} />
+                        <Box sx={{ display: "grid", gridTemplateColumns: { xs: "minmax(0, 1fr)", sm: "repeat(2, minmax(0, 1fr))", lg: "repeat(3, minmax(0, 1fr))" }, gap: .75 }}>
+                          {questionGroups.filter((group) => group.clueIds.map((id) => clueOptions.find((option) => option.id === id)?.label ?? id).join(" ").toLocaleLowerCase().includes(questionSearch.trim().toLocaleLowerCase())).map((group) => (
+                            <Button key={[...group.clueIds].sort().join("\u0000")} variant={group.clueIds.length === selectedClueIds.length && group.clueIds.every((id) => selectedClueIds.includes(id)) ? "contained" : "outlined"} size="small" onClick={() => { setSelectedClueIds(group.clueIds); setQuestionSearch(""); }} sx={{ justifyContent: "flex-start", textAlign: "left", minWidth: 0, overflowWrap: "anywhere" }}>
+                              {group.clueIds.map((id) => clueOptions.find((option) => option.id === id)?.label ?? id).join(" + ")} · {group.count}명
+                            </Button>
+                          ))}
+                        </Box>
+                      </Box>
+                    </Box>}
+                    {phaseArea === "dialogue" && <Stack direction="row" spacing={.75} sx={{ flexWrap: "wrap", gap: .75, "& > *": { marginLeft: "0 !important" } }}>
+                      {editableInterrogations.map((item) => <Button key={item.suspectName} variant={person?.suspectName === item.suspectName ? "contained" : "outlined"} size="small" onClick={() => setPersonName(item.suspectName)} sx={{ whiteSpace: "nowrap" }}>{item.suspectName}</Button>)}
+                    </Stack>}
+                    {phaseArea === "dialogue" && person && (
                       <>
-                        {phaseArea === "dialogue" && <>
                         <ScriptEditor label={`${person.suspectName} 기본 대화`} value={person.conversation} defaultSpeaker={person.suspectName} additionalSpeakers={content.people} onChange={(lines) => editPhase((next) => { next.interrogations[activePersonIndex].conversation = lines; })} />
                         <Box sx={{ display: "grid", gap: 1 }}>
                           <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
@@ -700,37 +731,6 @@ export default function PsychicAdminEditor() {
                             </Accordion>
                           ))}
                         </Box>
-                        </>}
-                        {phaseArea === "interrogation" && (
-                        <Box sx={{ display: "grid", gap: 1 }}>
-                          <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                            <Typography sx={{ color: "#d9b77d", fontSize: 13, fontWeight: 800 }}>신문 답변 · {(content.sharedQuestions ?? []).filter((question) => question.suspectName === person.suspectName).length}</Typography>
-                            <Button size="small" startIcon={<AddRounded />} onClick={addSharedQuestion}>신문 추가</Button>
-                          </Box>
-                          <Typography sx={{ color: "#b8ac98", fontSize: 12 }}>신문을 추가한 뒤 단서 1~3개와 답변을 입력하세요. 이전 조사에서 얻은 단서도 사용할 수 있습니다.</Typography>
-                          <TextField size="small" label="신문 검색" placeholder="단서 이름" value={questionSearch} onChange={(event) => setQuestionSearch(event.target.value)} sx={{ maxWidth: 420 }} />
-                          <Box sx={{ display: "grid", gridTemplateColumns: { xs: "minmax(0, 1fr)", lg: "repeat(2, minmax(0, 1fr))" }, gap: 1, alignItems: "start" }}>
-                          {(content.sharedQuestions ?? []).filter((question) => question.suspectName === person.suspectName).map((question) => {
-                            const searchText = question.clueIds.map((id) => clueOptions.find((option) => option.id === id)?.label ?? id).join(" ").toLocaleLowerCase();
-                            if (questionSearch.trim() && question.id !== expandedQuestionId && !searchText.includes(questionSearch.trim().toLocaleLowerCase())) return null;
-                            return (
-                              <Box key={question.id} sx={{ minWidth: 0, gridColumn: expandedQuestionId === question.id ? "1 / -1" : "auto" }}><SharedQuestionEditor
-                                key={question.id}
-                                question={question}
-                                phases={content.phases}
-                                options={clueOptions}
-                                expanded={expandedQuestionId === question.id}
-                                onExpandedChange={(expanded) => setExpandedQuestionId(expanded ? question.id : null)}
-                                onChange={(changed) => editSharedQuestion(question.id, (item) => Object.assign(item, changed))}
-                                onDelete={() => update((next) => { next.sharedQuestions = next.sharedQuestions?.filter((item) => item.id !== question.id); }, "questions")}
-                                createEvidence={emptyEvidence}
-                              /></Box>
-                            );
-                          })}
-                          </Box>
-                          {!(content.sharedQuestions ?? []).some((question) => question.suspectName === person.suspectName) && <Typography sx={{ color: "#b8ac98", fontSize: 12 }}>등록된 신문이 없습니다. 신문 추가를 누르세요.</Typography>}
-                        </Box>
-                        )}
                       </>
                     )}
                   </Section>
