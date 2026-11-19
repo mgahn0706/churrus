@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Checkbox, Chip, FormControlLabel, TextField, Typography } from "@mui/material";
+import { Box, Checkbox, Chip, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { MAX_INTERROGATION_CLUES } from "@/features/interrogation/engine";
 
@@ -28,8 +28,8 @@ export default function EvidenceCombinationPicker({
 
   return (
     <Box sx={{ display: "grid", gap: 1 }}>
-      <Typography sx={{ color: "#d9b77d", fontSize: 13, fontWeight: 800 }}>제시할 단서 조합 · {selectedIds.length}/{MAX_INTERROGATION_CLUES}</Typography>
-      <Typography sx={{ color: "#b8ac98", fontSize: 12 }}>단서를 최대 {MAX_INTERROGATION_CLUES}개까지 선택하세요. 이름 앞의 번호와 시간은 공유 단서 번호와 획득 페이즈입니다.</Typography>
+      <Typography sx={{ color: "#d9b77d", fontSize: 13, fontWeight: 800 }}>제시할 단서 · {selectedIds.length}/{MAX_INTERROGATION_CLUES}</Typography>
+      <Typography sx={{ color: "#b8ac98", fontSize: 12 }}>단서 1~{MAX_INTERROGATION_CLUES}개를 선택하세요. 번호와 시간은 단서 번호와 획득 페이즈입니다.</Typography>
       {selectedIds.length > 0 && (
         <Box sx={{ display: "flex", flexWrap: "wrap", gap: .75 }}>
           {selectedIds.map((id) => (
@@ -38,19 +38,19 @@ export default function EvidenceCombinationPicker({
         </Box>
       )}
       <TextField size="small" label="단서 찾기" placeholder="단서 이름이나 내용" value={search} onChange={(event) => setSearch(event.target.value)} />
-      <Box sx={{ maxHeight: 260, overflowY: "auto", border: "1px solid rgba(231,201,148,.22)", borderRadius: 1 }}>
+      <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", sm: "repeat(2, minmax(0, 1fr))", lg: "repeat(3, minmax(0, 1fr))" }, gap: .75, maxHeight: 300, overflowY: "auto", p: .75, border: "1px solid rgba(231,201,148,.22)", borderRadius: 1, alignContent: "start" }}>
         {filteredOptions.map((option) => (
-          <FormControlLabel
+          <Box
+            component="label"
             key={option.id}
-            control={<Checkbox checked={selectedIds.includes(option.id)} disabled={!selectedIds.includes(option.id) && selectedIds.length >= MAX_INTERROGATION_CLUES} onChange={() => toggle(option.id)} size="small" />}
-            label={
-              <Box sx={{ py: .5, minWidth: 0 }}>
-                <Typography sx={{ fontSize: 12, fontWeight: 700 }}>{option.label}</Typography>
-                {option.description && <Typography sx={{ color: "#b8ac98", fontSize: 11, overflowWrap: "anywhere" }}>{option.description}</Typography>}
-              </Box>
-            }
-            sx={{ display: "flex", mx: 0, px: 1, borderBottom: "1px solid rgba(231,201,148,.12)", alignItems: "flex-start", "&:hover": { bgcolor: "rgba(231,201,148,.06)" } }}
-          />
+            sx={{ display: "flex", alignItems: "flex-start", minWidth: 0, p: .75, border: "1px solid", borderColor: selectedIds.includes(option.id) ? "#bd874e" : "rgba(231,201,148,.16)", borderRadius: 1, bgcolor: selectedIds.includes(option.id) ? "rgba(189,135,78,.15)" : "rgba(255,255,255,.025)", cursor: "pointer", "&:hover": { bgcolor: "rgba(231,201,148,.09)" } }}
+          >
+            <Checkbox checked={selectedIds.includes(option.id)} disabled={!selectedIds.includes(option.id) && selectedIds.length >= MAX_INTERROGATION_CLUES} onChange={() => toggle(option.id)} size="small" sx={{ p: .25, mr: .5 }} />
+            <Box sx={{ minWidth: 0 }}>
+              <Typography sx={{ fontSize: 12, fontWeight: 700 }}>{option.label}</Typography>
+              {option.description && <Typography sx={{ color: "#b8ac98", fontSize: 11, overflowWrap: "anywhere", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }} title={option.description}>{option.description}</Typography>}
+            </Box>
+          </Box>
         ))}
         {filteredOptions.length === 0 && (
           <Typography sx={{ color: "#b8ac98", fontSize: 12, p: 1.5 }}>

@@ -4,6 +4,7 @@ import { ExpandMoreRounded } from "@mui/icons-material";
 import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Checkbox, FormControlLabel, Typography } from "@mui/material";
 import type { InterrogationEvidence, InterrogationPhase } from "@/types";
 import { sharedQuestionAtPhase, type SharedQuestion, type SharedQuestionState } from "@/features/interrogation/sharedQuestions";
+import { scriptLines } from "@/features/interrogation/adminContent";
 import EvidenceCombinationPicker from "./EvidenceCombinationPicker";
 import EvidenceEditor from "./EvidenceEditor";
 import ScriptEditor from "./ScriptEditor";
@@ -23,6 +24,7 @@ export default function SharedQuestionEditor({ question, phases, options, expand
   const availablePhases = phases.filter((phase) => question.visiblePhaseIds.includes(phase.id));
   const firstVisible = availablePhases[0]?.id;
   const labels = new Map(options.map((option) => [option.id, option.label]));
+  const answerPreview = scriptLines(question.base.answer).map((line) => line.text).find((text) => text.trim());
   const update = (edit: (next: SharedQuestion) => void) => {
     const next = structuredClone(question);
     edit(next);
@@ -42,8 +44,11 @@ export default function SharedQuestionEditor({ question, phases, options, expand
 
   return (
     <Accordion disableGutters expanded={expanded} onChange={(_, isExpanded) => onExpandedChange(isExpanded)} slotProps={{ transition: { unmountOnExit: true } }} sx={{ bgcolor: "#121d19", color: "#f8edda" }}>
-      <AccordionSummary expandIcon={<ExpandMoreRounded sx={{ color: "#d9b77d" }} />}>
-        <Typography sx={{ fontSize: 13 }}>{question.clueIds.map((id) => labels.get(id) ?? id).join(" + ") || "단서 선택 필요"} · 표시 {question.visiblePhaseIds.length}개 페이즈</Typography>
+      <AccordionSummary expandIcon={<ExpandMoreRounded sx={{ color: "#d9b77d" }} />} sx={{ minWidth: 0, "& .MuiAccordionSummary-content": { minWidth: 0 } }}>
+        <Box sx={{ display: "grid", gap: .25, minWidth: 0 }}>
+          <Typography sx={{ fontSize: 13, fontWeight: 700, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: expanded ? "normal" : "nowrap" }}>{question.clueIds.map((id) => labels.get(id) ?? id).join(" + ") || "단서 선택 필요"}</Typography>
+          <Typography sx={{ color: "#b8ac98", fontSize: 11, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{answerPreview || "답변 입력 필요"}{question.clueIds.length > 0 && question.visiblePhaseIds.length === 0 ? " · 표시 가능한 페이즈 없음" : ""}</Typography>
+        </Box>
       </AccordionSummary>
       <AccordionDetails sx={{ display: "grid", gap: 2 }}>
         <EvidenceCombinationPicker options={options} selectedIds={question.clueIds} onChange={(ids) => update((next) => { next.clueIds = ids; next.evidenceRefs = {}; })} />
@@ -52,7 +57,7 @@ export default function SharedQuestionEditor({ question, phases, options, expand
           <Typography sx={{ color: "#d9b77d", fontSize: 13, fontWeight: 800 }}>기본 답변 · {question.suspectName}</Typography>
           {stateFields(question.base, null)}
         </Box>
-        <Box sx={{ display: "grid", gap: .5 }}>
+        {availablePhases.length > 1 && <Box sx={{ display: "grid", gap: .5 }}>
           <Typography sx={{ color: "#d9b77d", fontSize: 13, fontWeight: 800 }}>답변이 변경될 페이즈</Typography>
           <Typography sx={{ color: "#b8ac98", fontSize: 12 }}>선택한 페이즈부터 바뀐 대사가 적용됩니다.</Typography>
           <Box sx={{ display: "flex", flexWrap: "wrap", gap: .5 }}>
@@ -63,7 +68,7 @@ export default function SharedQuestionEditor({ question, phases, options, expand
               })} />} label={phase.timeLabel || phase.title} sx={{ mr: 1, "& .MuiFormControlLabel-label": { fontSize: 12 } }} />
             ))}
           </Box>
-        </Box>
+        </Box>}
         {availablePhases.filter((phase) => question.changes[phase.id]).map((phase) => (
           <Box key={phase.id} sx={{ display: "grid", gap: 1.5, p: 1.5, border: "1px solid rgba(231,201,148,.2)" }}>
             <Typography sx={{ color: "#d9b77d", fontSize: 13, fontWeight: 800 }}>{phase.timeLabel || phase.title}부터 바뀐 답변</Typography>

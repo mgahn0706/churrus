@@ -8,13 +8,12 @@ import {
 } from "@mui/material";
 import { useEffect, useMemo, useRef, useState, type PointerEvent as ReactPointerEvent, type ReactNode } from "react";
 import EvidenceEditor from "@/components/InInterrogationAdmin/EvidenceEditor";
-import EvidenceCombinationPicker from "@/components/InInterrogationAdmin/EvidenceCombinationPicker";
 import SharedSourceEditor from "@/components/InInterrogationAdmin/SharedSourceEditor";
 import SharedQuestionEditor from "@/components/InInterrogationAdmin/SharedQuestionEditor";
 import ScriptEditor from "@/components/InInterrogationAdmin/ScriptEditor";
 import { createScenarioTheme } from "@/components/createScenarioTheme";
 import {
-  evidenceOptions, isEditableContent, scriptLines, toInterrogationTypeScript,
+  evidenceOptions, isEditableContent, toInterrogationTypeScript,
   validateAdminContent, type EditableInterrogationContent,
 } from "@/features/interrogation/adminContent";
 import { psychicInterrogationContent } from "@/fixtures/psychic/interrogation";
@@ -247,7 +246,6 @@ export default function PsychicAdminEditor() {
   const [newPersonName, setNewPersonName] = useState("");
   const [newPersonImage, setNewPersonImage] = useState("");
   const [questionSearch, setQuestionSearch] = useState("");
-  const [quickClueIds, setQuickClueIds] = useState<string[]>([]);
   const [expandedSourceId, setExpandedSourceId] = useState<string | null>(null);
   const [expandedQuestionId, setExpandedQuestionId] = useState<string | null>(null);
   const [notice, setNotice] = useState("");
@@ -310,21 +308,6 @@ export default function PsychicAdminEditor() {
     }
     return [...byId.values()];
   }, [content]);
-  const quickPeople = useMemo(() => {
-    if (quickClueIds.length === 0) return [];
-    const candidates = [...new Set(content.phases.flatMap((item) => item.interrogations.map((entry) => entry.suspectName)))].filter((name) =>
-      content.people?.find((person) => person.name === name)?.canInterrogate !== false);
-    const previews: SharedQuestion[] = candidates.map((suspectName) => ({
-      id: `preview-${suspectName}`, suspectName, clueIds: quickClueIds, visiblePhaseIds: [],
-      base: { answer: [""] }, changes: {}, questionIds: {}, evidenceRefs: {}, order: {},
-    }));
-    return syncSharedQuestionPhases(content.phases, content.sharedSources ?? [], previews)
-      .filter((item) => item.visiblePhaseIds.length > 0)
-      .map((item) => item.suspectName);
-  }, [content.phases, content.sharedSources, content.people, quickClueIds]);
-  const matchesQuickClues = (question: SharedQuestion, name: string) =>
-    question.suspectName === name && question.clueIds.length === quickClueIds.length &&
-    question.clueIds.every((id) => quickClueIds.includes(id));
   const sourceNumbers = useMemo(() => new Map((content.sharedSources ?? []).map((source) => [source.id, source.number ?? 0])), [content.sharedSources]);
 
   const update = (edit: (next: EditableInterrogationContent) => void, rebuild: "none" | "questions" | "all" = "none", preferredSourceId?: string) => {
@@ -381,20 +364,6 @@ export default function PsychicAdminEditor() {
         visiblePhaseIds: [],
         base: { answer: [""] }, changes: {}, questionIds: {}, evidenceRefs: {}, order: {},
       });
-    }, "questions");
-  };
-  const editQuickAnswer = (clueIds: string[], name: string, value: string) => {
-    update((next) => {
-      next.sharedQuestions ??= [];
-      let question = next.sharedQuestions.find((item) => item.suspectName === name && item.clueIds.length === clueIds.length && item.clueIds.every((id) => clueIds.includes(id)));
-      if (!question) {
-        question = {
-          id: newId("question"), suspectName: name, clueIds: [...clueIds], visiblePhaseIds: [],
-          base: { answer: [""] }, changes: {}, questionIds: {}, evidenceRefs: {}, order: {},
-        };
-        next.sharedQuestions.unshift(question);
-      }
-      question.base.answer = value.split("\n").map((text) => ({ speaker: name, text }));
     }, "questions");
   };
   const togglePhasePerson = (name: string, visible: boolean) => {
@@ -707,31 +676,8 @@ export default function PsychicAdminEditor() {
                   </Section>}
 
                   {(phaseArea === "dialogue" || phaseArea === "interrogation") && <Section title={phaseArea === "dialogue" ? "인물 대화" : "단서 신문"} order={1}>
-                    {phaseArea === "interrogation" && <Box sx={{ display: "grid", gap: 1.5, pb: 2, borderBottom: "1px solid rgba(231,201,148,.22)" }}>
-                      <Typography sx={{ color: "#d9b77d", fontSize: 13, fontWeight: 800 }}>단서 선택 · 답변 바로 입력</Typography>
-                      <EvidenceCombinationPicker options={clueOptions} selectedIds={quickClueIds} onChange={setQuickClueIds} />
-                      {quickClueIds.length > 0 && quickPeople.length === 0 && <Typography sx={{ color: "#b8ac98", fontSize: 12 }}>선택한 단서 조합으로 신문할 수 있는 인물이 없습니다.</Typography>}
-                      {quickClueIds.length > 0 && quickPeople.map((name) => {
-                        const question = content.sharedQuestions?.find((item) => matchesQuickClues(item, name));
-                        return <Box key={name} sx={{ display: "grid", gap: 1, p: 1.5, bgcolor: "#121d19", border: "1px solid rgba(231,201,148,.18)" }}>
-                          <Typography sx={{ color: "#f3dfbb", fontSize: 13, fontWeight: 800 }}>{name}</Typography>
-                          <TextField size="small" label={`${name} 답변`} value={question ? scriptLines(question.base.answer).map((line) => line.text).join("\n") : ""} onChange={(event) => editQuickAnswer(quickClueIds, name, event.target.value)} multiline minRows={2} />
-                          {question && quickClueIds.length === 1 && <SharedQuestionEditor
-                            question={question}
-                            phases={content.phases}
-                            options={clueOptions}
-                            expanded={expandedQuestionId === question.id}
-                            onExpandedChange={(expanded) => setExpandedQuestionId(expanded ? question.id : null)}
-                            onChange={(changed) => editSharedQuestion(question.id, (item) => Object.assign(item, changed))}
-                            onDelete={() => update((next) => { next.sharedQuestions = next.sharedQuestions?.filter((item) => item.id !== question.id); }, "questions")}
-                            createEvidence={emptyEvidence}
-                          />}
-                        </Box>;
-                      })}
-                    </Box>}
-                    {phaseArea === "interrogation" && <Typography sx={{ color: "#d9b77d", fontSize: 13, fontWeight: 800 }}>단서 2~3개 · 조합 신문</Typography>}
                     <Stack direction="row" spacing={.75} sx={{ flexWrap: "wrap", gap: .75, "& > *": { marginLeft: "0 !important" } }}>
-                      {editableInterrogations.map((item) => <Button key={item.suspectName} variant={person?.suspectName === item.suspectName ? "contained" : "outlined"} size="small" onClick={() => { setPersonName(item.suspectName); setQuestionSearch(""); }} sx={{ whiteSpace: "nowrap" }}>{item.suspectName}{phaseArea === "interrogation" ? ` · ${(content.sharedQuestions ?? []).filter((question) => question.suspectName === item.suspectName && (question.clueIds.length !== 1 || question.id === expandedQuestionId)).length}` : ""}</Button>)}
+                      {editableInterrogations.map((item) => <Button key={item.suspectName} variant={person?.suspectName === item.suspectName ? "contained" : "outlined"} size="small" onClick={() => { setPersonName(item.suspectName); setQuestionSearch(""); setExpandedQuestionId(null); }} sx={{ whiteSpace: "nowrap" }}>{item.suspectName}{phaseArea === "interrogation" ? ` · ${(content.sharedQuestions ?? []).filter((question) => question.suspectName === item.suspectName).length}` : ""}</Button>)}
                     </Stack>
                     {person && (
                       <>
@@ -758,16 +704,17 @@ export default function PsychicAdminEditor() {
                         {phaseArea === "interrogation" && (
                         <Box sx={{ display: "grid", gap: 1 }}>
                           <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                            <Typography sx={{ color: "#d9b77d", fontSize: 13, fontWeight: 800 }}>조합 신문 · {(content.sharedQuestions ?? []).filter((question) => question.suspectName === person.suspectName && (question.clueIds.length !== 1 || question.id === expandedQuestionId)).length}</Typography>
+                            <Typography sx={{ color: "#d9b77d", fontSize: 13, fontWeight: 800 }}>신문 답변 · {(content.sharedQuestions ?? []).filter((question) => question.suspectName === person.suspectName).length}</Typography>
                             <Button size="small" startIcon={<AddRounded />} onClick={addSharedQuestion}>신문 추가</Button>
                           </Box>
-                          <Typography sx={{ color: "#b8ac98", fontSize: 12 }}>단서 2~3개를 조합하면 마지막 페이즈의 신문에 나타납니다. 이전 조사에서 얻은 단서를 사용할 수 있습니다.</Typography>
-                          <TextField size="small" label="신문 검색" placeholder="단서 이름" value={questionSearch} onChange={(event) => setQuestionSearch(event.target.value)} />
-                          {(content.sharedQuestions ?? []).filter((question) => question.suspectName === person.suspectName && (question.clueIds.length !== 1 || question.id === expandedQuestionId)).map((question) => {
+                          <Typography sx={{ color: "#b8ac98", fontSize: 12 }}>신문을 추가한 뒤 단서 1~3개와 답변을 입력하세요. 이전 조사에서 얻은 단서도 사용할 수 있습니다.</Typography>
+                          <TextField size="small" label="신문 검색" placeholder="단서 이름" value={questionSearch} onChange={(event) => setQuestionSearch(event.target.value)} sx={{ maxWidth: 420 }} />
+                          <Box sx={{ display: "grid", gridTemplateColumns: { xs: "minmax(0, 1fr)", lg: "repeat(2, minmax(0, 1fr))" }, gap: 1, alignItems: "start" }}>
+                          {(content.sharedQuestions ?? []).filter((question) => question.suspectName === person.suspectName).map((question) => {
                             const searchText = question.clueIds.map((id) => clueOptions.find((option) => option.id === id)?.label ?? id).join(" ").toLocaleLowerCase();
-                            if (questionSearch.trim() && !searchText.includes(questionSearch.trim().toLocaleLowerCase())) return null;
+                            if (questionSearch.trim() && question.id !== expandedQuestionId && !searchText.includes(questionSearch.trim().toLocaleLowerCase())) return null;
                             return (
-                              <SharedQuestionEditor
+                              <Box key={question.id} sx={{ minWidth: 0, gridColumn: expandedQuestionId === question.id ? "1 / -1" : "auto" }}><SharedQuestionEditor
                                 key={question.id}
                                 question={question}
                                 phases={content.phases}
@@ -777,9 +724,11 @@ export default function PsychicAdminEditor() {
                                 onChange={(changed) => editSharedQuestion(question.id, (item) => Object.assign(item, changed))}
                                 onDelete={() => update((next) => { next.sharedQuestions = next.sharedQuestions?.filter((item) => item.id !== question.id); }, "questions")}
                                 createEvidence={emptyEvidence}
-                              />
+                              /></Box>
                             );
                           })}
+                          </Box>
+                          {!(content.sharedQuestions ?? []).some((question) => question.suspectName === person.suspectName) && <Typography sx={{ color: "#b8ac98", fontSize: 12 }}>등록된 신문이 없습니다. 신문 추가를 누르세요.</Typography>}
                         </Box>
                         )}
                       </>
