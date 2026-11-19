@@ -1,9 +1,9 @@
 "use client";
 
-import { AddRounded, ContentCopyRounded, DownloadRounded, ExpandMoreRounded, RestartAltRounded, UploadFileRounded } from "@mui/icons-material";
+import { AddRounded, ContentCopyRounded, DeleteOutlineRounded, DownloadRounded, ExpandMoreRounded, RestartAltRounded, UploadFileRounded } from "@mui/icons-material";
 import {
   Accordion, AccordionDetails, AccordionSummary, Alert, Box, Button, Checkbox,
-  Chip, FormControlLabel, MenuItem, Stack,
+  Chip, FormControlLabel, IconButton, MenuItem, Stack,
   TextField, ThemeProvider, Tooltip, Typography,
 } from "@mui/material";
 import { useEffect, useMemo, useRef, useState, type PointerEvent as ReactPointerEvent, type ReactNode } from "react";
@@ -116,6 +116,61 @@ function Section({ title, action, children, order }: { title: string; action?: R
       {children}
     </Box>
   );
+}
+
+function AnswerLineEditor({ name, lines, disabled, saved, onChange, onDelete }: {
+  name: string;
+  lines: string[];
+  disabled: boolean;
+  saved: boolean;
+  onChange: (lines: string[]) => void;
+  onDelete: () => void;
+}) {
+  const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+  const shownLines = lines.length ? lines : [""];
+  const addAfter = (index: number) => {
+    onChange([...shownLines.slice(0, index + 1), "", ...shownLines.slice(index + 1)]);
+    window.requestAnimationFrame(() => inputRefs.current[index + 1]?.focus());
+  };
+  return <Box sx={{ display: "flex", flexDirection: "column", gap: 1, minWidth: 0, height: 290, p: 1.5, bgcolor: "#121d19", border: "1px solid rgba(231,201,148,.22)", borderRadius: 1 }}>
+    <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 1 }}>
+      <Typography sx={{ color: "#f3dfbb", fontSize: 14, fontWeight: 800 }}>{name}</Typography>
+      <Typography sx={{ color: "#b8ac98", fontSize: 11 }}>{disabled ? "단서 선택 대기" : saved ? "저장됨" : "답변 없음"}</Typography>
+    </Box>
+    <Box sx={{ flex: 1, minHeight: 0, overflowY: "auto", display: "grid", alignContent: "start", gap: .75, pr: .25 }}>
+      {shownLines.map((line, index) => <Box key={index} sx={{ display: "flex", alignItems: "center", gap: .5, minWidth: 0 }}>
+        <Typography aria-hidden="true" sx={{ color: "#b8ac98", fontSize: 11, width: 22, flexShrink: 0, textAlign: "right" }}>{index + 1}</Typography>
+        <TextField
+          inputRef={(element) => { inputRefs.current[index] = element; }}
+          size="small"
+          aria-label={`${name} 대사 ${index + 1}`}
+          placeholder={disabled ? "단서를 먼저 선택하세요" : "대사를 입력하세요"}
+          value={line}
+          disabled={disabled}
+          onChange={(event) => onChange(shownLines.map((text, lineIndex) => lineIndex === index ? event.target.value : text))}
+          onKeyDown={(event) => { if (event.key === "Enter" && !event.nativeEvent.isComposing) { event.preventDefault(); addAfter(index); } }}
+          onPaste={(event) => {
+            const pasted = event.clipboardData.getData("text");
+            if (!/[\r\n]/.test(pasted)) return;
+            event.preventDefault();
+            const input = event.target as HTMLInputElement;
+            const start = input.selectionStart ?? line.length;
+            const end = input.selectionEnd ?? start;
+            const parts = pasted.split(/\r\n|\n|\r/);
+            const inserted = [line.slice(0, start) + parts[0], ...parts.slice(1, -1), parts[parts.length - 1] + line.slice(end)];
+            onChange([...shownLines.slice(0, index), ...inserted, ...shownLines.slice(index + 1)]);
+            window.requestAnimationFrame(() => inputRefs.current[index + parts.length - 1]?.focus());
+          }}
+          sx={{ flex: 1, minWidth: 0 }}
+        />
+        <IconButton size="small" aria-label={`${name} 대사 ${index + 1} 삭제`} disabled={disabled || shownLines.length === 1} onClick={() => onChange(shownLines.filter((_, lineIndex) => lineIndex !== index))}><DeleteOutlineRounded fontSize="small" /></IconButton>
+      </Box>)}
+    </Box>
+    <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+      <Button size="small" startIcon={<AddRounded />} disabled={disabled} onClick={() => addAfter(shownLines.length - 1)}>대사 추가</Button>
+      <Button color="error" size="small" disabled={!saved} onClick={onDelete}>답변 삭제</Button>
+    </Box>
+  </Box>;
 }
 
 type MapDragTarget = { kind: "source"; index: number } | { kind: "person"; name: string };
@@ -361,7 +416,7 @@ export default function PsychicAdminEditor() {
       });
     }, "all");
   };
-  const editSelectedAnswer = (name: string, value: string) => {
+  const editSelectedAnswer = (name: string, lines: string[]) => {
     if (!selectedClueIds.length) return;
     update((next) => {
       next.sharedQuestions ??= [];
@@ -370,7 +425,7 @@ export default function PsychicAdminEditor() {
         question = { id: newId("question"), suspectName: name, clueIds: [...selectedClueIds], visiblePhaseIds: [], base: { answer: [""] }, changes: {}, questionIds: {}, evidenceRefs: {}, order: {} };
         next.sharedQuestions.unshift(question);
       }
-      question.base.answer = value.split("\n").map((text) => ({ speaker: name, text }));
+      question.base.answer = lines.map((text) => ({ speaker: name, text }));
     }, "questions");
   };
   const togglePhasePerson = (name: string, visible: boolean) => {
@@ -539,8 +594,10 @@ export default function PsychicAdminEditor() {
               <Button size="small" variant="contained" startIcon={<ContentCopyRounded />} onClick={() => void copyCode()}>코드 복사</Button>
             </Box>
           </Box>
-          {validationError && <Alert severity="warning" sx={{ py: 0 }}>{validationError}</Alert>}
-          {notice && <Alert severity="info" onClose={() => setNotice("")} sx={{ py: 0 }}>{notice}</Alert>}
+          <Box sx={{ height: 44, overflowY: "auto" }} aria-live="polite">
+            {notice ? <Alert severity="info" onClose={() => setNotice("")} sx={{ py: 0, minHeight: 44 }}>{notice}</Alert>
+              : validationError ? <Alert severity="warning" sx={{ py: 0, minHeight: 44 }}>{validationError}</Alert> : null}
+          </Box>
           <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "230px minmax(0, 1fr)" }, gap: 2, alignItems: "start" }}>
             <Box component="nav" aria-label="원고 섹션" sx={{ display: "flex", flexDirection: { xs: "row", md: "column" }, gap: .5, overflowX: "auto", p: 1, border: "1px solid rgba(231,201,148,.22)", bgcolor: "rgba(11,19,17,.82)", borderRadius: 1, position: { md: "sticky" }, top: { md: 16 } }}>
               <Button onClick={() => setView("prologue")} variant={view === "prologue" ? "contained" : "text"} sx={{ justifyContent: "flex-start", whiteSpace: "nowrap" }}>프롤로그</Button>
@@ -685,17 +742,12 @@ export default function PsychicAdminEditor() {
                   {(phaseArea === "dialogue" || phaseArea === "interrogation") && <Section title={phaseArea === "dialogue" ? "인물 대화" : "단서 신문"} order={1}>
                     {phaseArea === "interrogation" && <Box sx={{ display: "grid", gap: 2 }}>
                       <EvidenceCombinationPicker options={clueOptions} selectedIds={selectedClueIds} onChange={setSelectedClueIds} />
-                      {selectedClueIds.length > 0 && <Box sx={{ display: "grid", gridTemplateColumns: { xs: "minmax(0, 1fr)", md: "repeat(3, minmax(0, 1fr))" }, gap: 1 }}>
+                      <Box sx={{ display: "grid", gridTemplateColumns: { xs: "minmax(0, 1fr)", md: "repeat(3, minmax(0, 1fr))" }, gap: 1 }}>
                         {editableInterrogations.map((item) => {
                           const question = selectedQuestion(item.suspectName);
-                          return <Box key={item.suspectName} sx={{ display: "grid", gap: 1, alignContent: "start", minWidth: 0, p: 1.5, bgcolor: "#121d19", border: "1px solid rgba(231,201,148,.22)", borderRadius: 1 }}>
-                            <Typography sx={{ color: "#f3dfbb", fontSize: 14, fontWeight: 800 }}>{item.suspectName}</Typography>
-                            <TextField size="small" label="신문 답변" value={question ? scriptLines(question.base.answer).map((line) => line.text).join("\n") : ""} onChange={(event) => editSelectedAnswer(item.suspectName, event.target.value)} placeholder={`${item.suspectName}의 답변 입력`} multiline minRows={4} fullWidth />
-                            {question && <Button color="error" size="small" sx={{ justifySelf: "end" }} onClick={() => update((next) => { next.sharedQuestions = next.sharedQuestions?.filter((entry) => entry.id !== question.id); }, "questions")}>답변 삭제</Button>}
-                          </Box>;
+                          return <AnswerLineEditor key={item.suspectName} name={item.suspectName} lines={question ? scriptLines(question.base.answer).flatMap((line) => line.text.split(/\r\n|\n|\r/)) : [""]} disabled={selectedClueIds.length === 0} saved={Boolean(question)} onChange={(lines) => editSelectedAnswer(item.suspectName, lines)} onDelete={() => update((next) => { next.sharedQuestions = next.sharedQuestions?.filter((entry) => entry.id !== question?.id); }, "questions")} />;
                         })}
-                      </Box>}
-                      {selectedClueIds.length === 0 && <Typography sx={{ color: "#b8ac98", fontSize: 12 }}>단서를 선택하면 A·B·C 답변 입력창이 나타납니다.</Typography>}
+                      </Box>
                       <Box sx={{ display: "grid", gap: 1, pt: 1, borderTop: "1px solid rgba(231,201,148,.22)" }}>
                         <Typography sx={{ color: "#d9b77d", fontSize: 13, fontWeight: 800 }}>작성한 단서 조합 · {questionGroups.length}</Typography>
                         <TextField size="small" label="작성한 조합 찾기" placeholder="단서 이름" value={questionSearch} onChange={(event) => setQuestionSearch(event.target.value)} sx={{ maxWidth: 420 }} />
