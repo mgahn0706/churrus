@@ -291,28 +291,7 @@ export const psychicInterrogationContent: Pick<
               ],
             },
           ],
-          questions: [
-            {
-              id: "phase-1-question-question-3d53c74e",
-              evidenceIds: ["phase-1::schedule"],
-              prompt: "매일매일이 짜장면이네요?",
-              answer: [
-                {
-                  text: "그렇지. 하.... 질려서 죽어버리고 싶어.",
-                },
-              ],
-            },
-            {
-              id: "phase-1-question-question-47cea056",
-              evidenceIds: ["phase-1::badge-a"],
-              prompt: "이 혈액팩은 뭐죠?",
-              answer: [
-                {
-                  text: "우리 들어올 때 다 피 뽑아놨잖아. 혹시 모를 걸 대비해 뽑아놓은거지. 그 이상의 목적은 없어.",
-                },
-              ],
-            },
-          ],
+          questions: [],
         },
         {
           suspectName: "실험체 B",
@@ -755,28 +734,7 @@ export const psychicInterrogationContent: Pick<
               ],
             },
           ],
-          questions: [
-            {
-              id: "phase-2-question-question-3d53c74e",
-              evidenceIds: ["phase-1::schedule"],
-              prompt: "매일매일이 짜장면이네요?",
-              answer: [
-                {
-                  text: "그렇지. 하.... 질려서 죽어버리고 싶어.",
-                },
-              ],
-            },
-            {
-              id: "phase-2-question-question-47cea056",
-              evidenceIds: ["phase-1::badge-a"],
-              prompt: "이 혈액팩은 뭐죠?",
-              answer: [
-                {
-                  text: "우리 들어올 때 다 피 뽑아놨잖아. 혹시 모를 걸 대비해 뽑아놓은거지. 그 이상의 목적은 없어.",
-                },
-              ],
-            },
-          ],
+          questions: [],
         },
         {
           suspectName: "실험체 B",
@@ -1134,28 +1092,7 @@ export const psychicInterrogationContent: Pick<
               ],
             },
           ],
-          questions: [
-            {
-              id: "phase-3-question-question-3d53c74e",
-              evidenceIds: ["phase-1::schedule"],
-              prompt: "매일매일이 짜장면이네요?",
-              answer: [
-                {
-                  text: "그렇지. 하.... 질려서 죽어버리고 싶어.",
-                },
-              ],
-            },
-            {
-              id: "phase-3-question-question-47cea056",
-              evidenceIds: ["phase-1::badge-a"],
-              prompt: "이 혈액팩은 뭐죠?",
-              answer: [
-                {
-                  text: "우리 들어올 때 다 피 뽑아놨잖아. 혹시 모를 걸 대비해 뽑아놓은거지. 그 이상의 목적은 없어.",
-                },
-              ],
-            },
-          ],
+          questions: [],
         },
         {
           suspectName: "실험체 B",
@@ -1603,28 +1540,7 @@ export const psychicInterrogationContent: Pick<
               ],
             },
           ],
-          questions: [
-            {
-              id: "phase-4-question-question-3d53c74e",
-              evidenceIds: ["phase-1::schedule"],
-              prompt: "매일매일이 짜장면이네요?",
-              answer: [
-                {
-                  text: "그렇지. 하.... 질려서 죽어버리고 싶어.",
-                },
-              ],
-            },
-            {
-              id: "phase-4-question-question-47cea056",
-              evidenceIds: ["phase-4::badge-a"],
-              prompt: "이 혈액팩은 뭐죠?",
-              answer: [
-                {
-                  text: "우리 들어올 때 다 피 뽑아놨잖아. 혹시 모를 걸 대비해 뽑아놓은거지. 그 이상의 목적은 없어.",
-                },
-              ],
-            },
-          ],
+          questions: [],
         },
         {
           suspectName: "실험체 B",
@@ -1820,22 +1736,316 @@ export const psychicInterrogationContent: Pick<
           ],
           questions: [
             {
+              id: "final-interrogation-question-question-ae37b89b",
+              evidenceIds: ["phase-4::evidence-a0669973"],
+              answer: [
+                {
+                  text: "난 모르는 쪽지야.",
+                  speaker: "실험체 A",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-43d03255",
+              evidenceIds: ["phase-4::evidence-b89b8208"],
+              answer: [
+                {
+                  text: "오, 흥미로운 내용이야.",
+                  speaker: "실험체 A",
+                },
+                {
+                  text: "근데 왜 이게 B의 방에서?",
+                  speaker: "실험체 A",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-797b2b18",
+              evidenceIds: ["phase-4::evidence-b50d4568"],
+              answer: [
+                {
+                  text: "음, 초능력 해독제구나. 2개 이상 먹었을 때 해독할 수 있는 해독제네.",
+                  speaker: "실험체 A",
+                },
+                {
+                  text: "그러면 뭐 2개 이상 먹었어도 죽지 않을 수 있겠군.",
+                  speaker: "실험체 A",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-cfdd0b8e",
+              evidenceIds: ["phase-4::forecast-original"],
+              answer: [
+                {
+                  text: "뭐야, 이런걸 어떻게 구했어. ",
+                  speaker: "실험체 A",
+                },
+                {
+                  text: "이것만 가지고는 내 능력과 본명을 알려줄 순 업지.",
+                  speaker: "실험체 A",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-ef0ac8d1",
+              evidenceIds: ["phase-4::director-note"],
+              answer: [
+                {
+                  text: "응, 짜장면 그릇이야. 음식 소환 능력인데 그릇이 안나온다니 참 신기하지?",
+                  speaker: "실험체 A",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-6b6b6ab1",
+              evidenceIds: ["phase-4::pill-log"],
+              answer: [
+                {
+                  text: "그래, 내 대출 심사 기록이야.",
+                  speaker: "실험체 A",
+                },
+                {
+                  text: "돈이 없어서 여기 들어온거라고. 불만있어?",
+                  speaker: "실험체 A",
+                },
+                {
+                  text: "소장이 돈을 안주는 데 어떻게 해.",
+                  speaker: "실험체 A",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-0aed059f",
+              evidenceIds: ["phase-4::body"],
+              answer: [
+                {
+                  text: "하, 소장님이 이렇게 죽을 줄 몰랐어.",
+                  speaker: "실험체 A",
+                },
+                {
+                  text: "손목을 그으시다니. 뭔가 힘든일이 있으셨나.",
+                  speaker: "실험체 A",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-4f5da3d5",
+              evidenceIds: ["phase-3::notice"],
+              answer: [
+                {
+                  text: "응, 맞아. 내가 타서 준 차야.",
+                  speaker: "실험체 A",
+                },
+                {
+                  text: "뭐 여기에 독을 탔을 수는 있겠지.",
+                  speaker: "실험체 A",
+                },
+                {
+                  text: "근데 그건 짜장면 그릇도 마찬가지 아냐?",
+                  speaker: "실험체 A",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-cddc2394",
+              evidenceIds: ["phase-3::forecast"],
+              answer: [
+                {
+                  text: "뭐, 오늘 먹은 짜장면이잖아.",
+                  speaker: "실험체 A",
+                },
+                {
+                  text: "아마 여기에 뭘 탔을 수 있겠네.",
+                  speaker: "실험체 A",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-5a9cd1ea",
+              evidenceIds: ["phase-3::ledger-b"],
+              answer: [
+                {
+                  text: "그냥 소장의 연구복이잖아.",
+                  speaker: "실험체 A",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-b23813e7",
+              evidenceIds: ["phase-2::evidence-ecfd8386"],
+              answer: [
+                {
+                  text: "초능력 해독제구나. 실수로 초능력 알약을 먹어도 이걸 먹으면 해독되지.",
+                  speaker: "실험체 A",
+                },
+                {
+                  text: "넌 처음왔으니 모르겠구나.",
+                  speaker: "실험체 A",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-4acc940c",
+              evidenceIds: ["phase-4::evidence-6810b6b5"],
+              answer: [
+                {
+                  text: "초능력 알약이 있네. 줄어들었다는 건 누군가 가져갔을 수 있다는 거겠지.",
+                  speaker: "실험체 A",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-f863dda3",
+              evidenceIds: ["phase-4::evidence-0221b7bc", "phase-4::vent"],
+              answer: [
+                {
+                  text: "음, 먼지의 모양새와 환풍구의 먼지가 사라진게 마침 오늘이었다니.\n맞아, 환풍구를 탔어. 내 능력 덕분이지. 목적은 뭐, 소장실 침입 아니겠어?\n하지만 알아둬. 환풍구로는 나만 들어가서 움직일 수 있다는 것. 소장을 이동시켰거나 하는건 아니니까.",
+                  speaker: "실험체 A",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-ce3045a4",
+              evidenceIds: ["phase-4::door-log"],
+              answer: [
+                {
+                  text: "소장실 출입문? 난 쓴 적 없어.",
+                  speaker: "실험체 A",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-3963a8da",
+              evidenceIds: ["phase-1::footage"],
+              answer: [
+                {
+                  text: "음, 소장의 가족 사진이군.",
+                  speaker: "실험체 A",
+                },
+                {
+                  text: "아내와 딸이 있었나? 난 모르는 일인데..",
+                  speaker: "실험체 A",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-f286d4f6",
+              evidenceIds: ["phase-4::evidence-82a326d5"],
+              answer: [
+                {
+                  text: "음, 칼이 있군요. 피도 묻어있는 것 같고.",
+                  speaker: "실험체 A",
+                },
+                {
+                  text: "그냥 그정도인 것 같네. 나와는 관련 없어.",
+                  speaker: "실험체 A",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-e2e2bc59",
+              evidenceIds: ["phase-4::evidence-a20cd9ba"],
+              answer: [
+                {
+                  text: "음. 이렇게 끔찍하게 자살하신걸까. 피가 흥건하네.",
+                  speaker: "실험체 A",
+                },
+                {
+                  text: "어라 손목의 피 색깔은 좀 더 선홍빛인데.",
+                  speaker: "실험체 A",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-70d482a6",
+              evidenceIds: ["phase-4::evidence-0221b7bc"],
+              answer: [
+                {
+                  text: "제 옷입니다. 평소에 잘 다려놓죠. 먼지가 묻은건... 하하. 뭐 먼지 묻을 일이 어디있겠어요. 단서를 더 가져오세요.",
+                  speaker: "실험체 A",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-87fef741",
+              evidenceIds: ["phase-4::evidence-560e89ff"],
+              answer: [
+                {
+                  text: "이게 뭐야.. 사람이 죽었다고?",
+                  speaker: "실험체 A",
+                },
+                {
+                  text: "그래, 이 초능력 실험 꽤나 위험한거라니까!! 근데 소장은 위험수당도 안주고.",
+                  speaker: "실험체 A",
+                },
+                {
+                  text: "... 에휴.",
+                  speaker: "실험체 A",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-36dbe5e9",
+              evidenceIds: ["phase-4::evidence-bebfe84a"],
+              answer: [
+                {
+                  text: "캐비닛? 이거 평소에 닫아두는 캐비닛인데 뭐 문제 있었나? ",
+                  speaker: "실험체 A",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-51bcb7a7",
+              evidenceIds: ["phase-4::vent"],
+              answer: [
+                {
+                  text: "환풍구. 그래. 지금 내가 환풍구를 탔다고 의심하는건가? 하지만 더 자세한 증거를 가져와. ",
+                  speaker: "실험체 A",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-fbb53b75",
+              evidenceIds: ["phase-1::pill-vent"],
+              answer: [
+                {
+                  text: "이건 환풍구 지도라는거야. 뭐 더 얘기할게 있나.",
+                  speaker: "실험체 A",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-fd10ab91",
+              evidenceIds: ["phase-1::evidence-aec28b2a"],
+              answer: [
+                {
+                  text: "음, 내가 열심히 설거지를 했던 기록이군.",
+                  speaker: "실험체 A",
+                },
+                {
+                  text: "하지만 잘 봐봐, 오늘은 내가 설거지 당번이 아니었어. C가 당번이었다구. 혹시 내가 짜장면에 뭘 넣었을거라고 의심하는건가?",
+                  speaker: "실험체 A",
+                },
+              ],
+            },
+            {
               id: "final-interrogation-question-question-3d53c74e",
               evidenceIds: ["phase-1::schedule"],
-              prompt: "매일매일이 짜장면이네요?",
               answer: [
                 {
                   text: "그렇지. 하.... 질려서 죽어버리고 싶어.",
+                  speaker: "실험체 A",
                 },
               ],
             },
             {
               id: "final-interrogation-question-question-47cea056",
               evidenceIds: ["phase-4::badge-a"],
-              prompt: "이 혈액팩은 뭐죠?",
               answer: [
                 {
                   text: "우리 들어올 때 다 피 뽑아놨잖아. 혹시 모를 걸 대비해 뽑아놓은거지. 그 이상의 목적은 없어.",
+                  speaker: "실험체 A",
                 },
               ],
             },
@@ -1865,7 +2075,324 @@ export const psychicInterrogationContent: Pick<
               answer: ["불만은 있었죠.", "그래도 살해할 생각은 없었습니다."],
             },
           ],
-          questions: [],
+          questions: [
+            {
+              id: "final-interrogation-question-question-8b486f4c",
+              evidenceIds: ["phase-4::evidence-a0669973"],
+              answer: [
+                {
+                  text: ".....",
+                  speaker: "실험체 B",
+                },
+                {
+                  text: "내가 마스터키와 함께 액체 언니에게 넘겨준 쪽지야.",
+                  speaker: "실험체 B",
+                },
+                {
+                  text: "그저 언니를 위해 뭔가 해주고 싶었어.",
+                  speaker: "실험체 B",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-bc2aea19",
+              evidenceIds: ["phase-4::evidence-b89b8208"],
+              answer: [
+                {
+                  text: ".....",
+                  speaker: "실험체 B",
+                },
+                {
+                  text: "이건 그냥 문서일 뿐이에요. 제가 훔쳤다는 증거가 있나요?",
+                  speaker: "실험체 B",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-11e7c6a6",
+              evidenceIds: ["phase-4::evidence-b50d4568"],
+              answer: [
+                {
+                  text: "이게, 왜 내 방에서 나왔는지 모르겠어.",
+                  speaker: "실험체 B",
+                },
+                {
+                  text: "난 진짜 모르는 일이야. 애초에 누가 침대 위에 이런걸 올려놓고 자?",
+                  speaker: "실험체 B",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-54ac719a",
+              evidenceIds: ["phase-4::forecast-original"],
+              answer: [
+                {
+                  text: "뭐야, 이런걸 어떻게 구했대.",
+                  speaker: "실험체 B",
+                },
+                {
+                  text: "나한테도 좀 주면 안될까.",
+                  speaker: "실험체 B",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-df2a798e",
+              evidenceIds: ["phase-4::director-note"],
+              answer: [
+                {
+                  text: "음. 우리 짜장면 그릇이 모두 구별 안되긴 하지.",
+                  speaker: "실험체 B",
+                },
+                {
+                  text: "어차피 난 평생 가위바위보로 걸릴 일 없으니까.",
+                  speaker: "실험체 B",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-b357e82a",
+              evidenceIds: ["phase-4::pill-log"],
+              answer: [
+                {
+                  text: "음, 이런 개인정보가 가득담긴 걸 함부로 보면 안돼, D.",
+                  speaker: "실험체 B",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-f6bc7380",
+              evidenceIds: ["phase-4::body"],
+              answer: [
+                {
+                  text: "소장님이 죽으신 모양새가 어째 이상해.",
+                  speaker: "실험체 B",
+                },
+                {
+                  text: "소장님은 오른손잡이이신데 오른손을 긋나 보통?",
+                  speaker: "실험체 B",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-cc9ae3d8",
+              evidenceIds: ["phase-3::notice"],
+              answer: [
+                {
+                  text: "차네. 평소에 차 심부름도 시키시지.",
+                  speaker: "실험체 B",
+                },
+                {
+                  text: "아마 오늘은 A였던 것 같은데.",
+                  speaker: "실험체 B",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-0f284a6c",
+              evidenceIds: ["phase-3::forecast"],
+              answer: [
+                {
+                  text: "짜장면이네.",
+                  speaker: "실험체 B",
+                },
+                {
+                  text: "김액체가 전달하는걸 봤어.",
+                  speaker: "실험체 B",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-05c89e51",
+              evidenceIds: ["phase-3::ledger-b"],
+              answer: [
+                {
+                  text: "소장님의 연구복이네.",
+                  speaker: "실험체 B",
+                },
+                {
+                  text: "평소 마스터키를 넣고 다니시는데 왜 여기 걸어두고 가셨을까.",
+                  speaker: "실험체 B",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-d3095fa7",
+              evidenceIds: ["phase-2::evidence-ecfd8386"],
+              answer: [
+                {
+                  text: "초능력 해독제구나. 실수로 초능력 알약을 먹어도 이걸 먹으면 해독되지.",
+                  speaker: "실험체 B",
+                },
+                {
+                  text: "이건 소장실에 숨겨져있었던 것 같네.",
+                  speaker: "실험체 B",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-8873b0a2",
+              evidenceIds: ["phase-4::evidence-6810b6b5"],
+              answer: [
+                {
+                  text: "초능력 알약이 있군. 2번 이상 먹으면 사망하고, 지금 한 알이 비어있다는건.",
+                  speaker: "실험체 B",
+                },
+                {
+                  text: "그정도 눈치는 있을거라고 믿어, D.",
+                  speaker: "실험체 B",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-140baba3",
+              evidenceIds: ["phase-1::evidence-aec28b2a"],
+              answer: [
+                {
+                  text: "음, 설거지 당번표군.",
+                  speaker: "실험체 B",
+                },
+                {
+                  text: "내가 안 써있는건 단순히 가위바위보를 잘해서야. 불만 있으면 너가 이기면 돼.",
+                  speaker: "실험체 B",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-5fb90464",
+              evidenceIds: ["phase-4::door-log"],
+              answer: [
+                {
+                  text: "소장실 출입문은 지문으로 열리지.",
+                  speaker: "실험체 B",
+                },
+                {
+                  text: "마스터키가 없으면, 나는 열 수 없어.",
+                  speaker: "실험체 B",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-cd990c79",
+              evidenceIds: ["phase-1::footage"],
+              answer: [
+                {
+                  text: "음, '유기체'씨가 소장의 아내인가보군.",
+                  speaker: "실험체 B",
+                },
+                {
+                  text: "뭐, 김액체에게 듣긴 했지만, 아마 자살했던 것 같아.",
+                  speaker: "실험체 B",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-18297608",
+              evidenceIds: ["phase-4::evidence-82a326d5"],
+              answer: [
+                {
+                  text: "뭐, 부엌칼이잖아? 난 이거 건드린 적도 없어.",
+                  speaker: "실험체 B",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-9a7d5918",
+              evidenceIds: ["phase-4::evidence-a20cd9ba"],
+              answer: [
+                {
+                  text: "욕조야. 별 문제는 없어보이는데.",
+                  speaker: "실험체 B",
+                },
+                {
+                  text: "피가 고인건, 뭐. 자살한건가.",
+                  speaker: "실험체 B",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-4aa5ed80",
+              evidenceIds: ["phase-4::evidence-0221b7bc"],
+              answer: [
+                {
+                  text: "뭐야, 그냥 A 옷이잖아.",
+                  speaker: "실험체 B",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-642b219c",
+              evidenceIds: ["phase-4::evidence-560e89ff"],
+              answer: [
+                {
+                  text: "음, 이건 나와는 관련 없는 자료야.",
+                  speaker: "실험체 B",
+                },
+                {
+                  text: "물론 나도 봤던 자료긴 하지만... 어떻게 보게 되었는지는 너에게 알려주기 싫은걸.",
+                  speaker: "실험체 B",
+                },
+                {
+                  text: "더 자세하게 물어보렴.",
+                  speaker: "실험체 B",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-7f5e6fce",
+              evidenceIds: ["phase-4::evidence-bebfe84a"],
+              answer: [
+                {
+                  text: "캐비닛이군. 누구나 접근 가능하지. 근데 이거 잘 안열리던데 평소에. 누가 열어놨었나?",
+                  speaker: "실험체 B",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-9acf825d",
+              evidenceIds: ["phase-4::vent"],
+              answer: [
+                {
+                  text: "환풍구? 내가 어떻게 거길 기어서 가. 더 확실한 증거를 가져오든가, 다른 사람을 찾아봐.",
+                  speaker: "실험체 B",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-d1e4ef7f",
+              evidenceIds: ["phase-1::schedule"],
+              answer: [
+                {
+                  text: "짜장면만 나오는건 소장님이 짜장면 소환 능력자이시기 때문이죠.",
+                  speaker: "실험체 B",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-ab8dc260",
+              evidenceIds: ["phase-4::badge-a"],
+              answer: [
+                {
+                  text: "혈액팩이군. 아마 내 것도 있을텐데. 들어올 때 피를 뽑아놨다가 실험 때 조금씩 뽑아 쓸 목적이라고 해. 매번 채혈하긴 그렇잖아?",
+                  speaker: "실험체 B",
+                },
+                {
+                  text: "그나저나 다들 피가 검붉구나. 건강이 안좋은건가.",
+                  speaker: "실험체 B",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-ee03db34",
+              evidenceIds: ["phase-1::pill-vent"],
+              answer: [
+                {
+                  text: "이건 환풍구 지도군요. 어차피 전 들어가지도 못하는거.",
+                  speaker: "실험체 B",
+                },
+              ],
+            },
+          ],
         },
         {
           suspectName: "실험체 C",
@@ -1894,7 +2421,366 @@ export const psychicInterrogationContent: Pick<
               ],
             },
           ],
-          questions: [],
+          questions: [
+            {
+              id: "final-interrogation-question-question-294c7732",
+              evidenceIds: ["phase-4::evidence-a0669973"],
+              answer: [
+                {
+                  text: "이걸 갖고 있었던 건 맞아요.",
+                  speaker: "실험체 C",
+                },
+                {
+                  text: "B가 준거에요. 마스터키와 함께요.",
+                  speaker: "실험체 C",
+                },
+                {
+                  text: "저녁 먹고 소등 전이었나.",
+                  speaker: "실험체 C",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-88c379c1",
+              evidenceIds: ["phase-4::evidence-b89b8208"],
+              answer: [
+                {
+                  text: "어, 이거 막 봐도 되나요?",
+                  speaker: "실험체 C",
+                },
+                {
+                  text: "아마 안될텐데... 하하. 이게 누구 방에서 나왔다구요?",
+                  speaker: "실험체 C",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-7b404c89",
+              evidenceIds: ["phase-4::evidence-b50d4568"],
+              answer: [
+                {
+                  text: "해독제군요. 이런게 있는지 꿈에도 몰랐어요.",
+                  speaker: "실험체 C",
+                },
+                {
+                  text: "그러면 2개 이상 초능력 알약을 먹었어도 해독할 방법이 있었다는거고",
+                  speaker: "실험체 C",
+                },
+                {
+                  text: "그걸 왜 이 친구가 가지고 있는진 모르겠지만요.",
+                  speaker: "실험체 C",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-7d508201",
+              evidenceIds: ["phase-4::forecast-original"],
+              answer: [
+                {
+                  text: "어, 이걸 어떻게 구하신거죠.",
+                  speaker: "실험체 C",
+                },
+                {
+                  text: ".... 함부로 보면 안되는 거에요.",
+                  speaker: "실험체 C",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-72156340",
+              evidenceIds: ["phase-4::director-note"],
+              answer: [
+                {
+                  text: "네, 제가 오늘 챙겼던 그릇들이네요.",
+                  speaker: "실험체 C",
+                },
+                {
+                  text: "모두 같은 그릇이라 제가 독약을 넣는다한들 타깃을 정확히 죽일 수는 없어요.",
+                  speaker: "실험체 C",
+                },
+                {
+                  text: "그 고전소설 '십각관의 살인'을 읽어보시면... 아, 아니에요.",
+                  speaker: "실험체 C",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-4629ce44",
+              evidenceIds: ["phase-4::pill-log"],
+              answer: [
+                {
+                  text: "어, 이게 뭐죠. 저는 모르는 건데요.",
+                  speaker: "실험체 C",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-d5e31e60",
+              evidenceIds: ["phase-4::body"],
+              answer: [
+                {
+                  text: "이 광경은 낯설지 않네요.",
+                  speaker: "실험체 C",
+                },
+                {
+                  text: "결국 돌아가셨군요. 슬프네요.",
+                  speaker: "실험체 C",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-1ba78fd3",
+              evidenceIds: ["phase-3::notice"],
+              answer: [
+                {
+                  text: "차군요.",
+                  speaker: "실험체 C",
+                },
+                {
+                  text: "이것도 심부름 시키시는데 보통 A님이 타드리긴 해요. 오늘도 마찬가지였고요.",
+                  speaker: "실험체 C",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-20af6901",
+              evidenceIds: ["phase-3::forecast"],
+              answer: [
+                {
+                  text: "짜장면이군요. 제가 전달해드린.",
+                  speaker: "실험체 C",
+                },
+                {
+                  text: "여기에 독을 탔을거라고요? 설마요.",
+                  speaker: "실험체 C",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-40956740",
+              evidenceIds: ["phase-3::ledger-b"],
+              answer: [
+                {
+                  text: "연구복이네요.",
+                  speaker: "실험체 C",
+                },
+                {
+                  text: "....",
+                  speaker: "실험체 C",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-7ff70962",
+              evidenceIds: ["phase-2::evidence-ecfd8386"],
+              answer: [
+                {
+                  text: "초능력 해독제? 이런 것도 있었나요?",
+                  speaker: "실험체 C",
+                },
+                {
+                  text: "아하, 그럼 실수로 2번 먹어도 살 수 있는 방법이 있었군요...",
+                  speaker: "실험체 C",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-2c148403",
+              evidenceIds: ["phase-4::evidence-6810b6b5"],
+              answer: [
+                {
+                  text: "초능력 알약이군요.",
+                  speaker: "실험체 C",
+                },
+                {
+                  text: "절대 먹으시면 안돼요. 이미 한 번 드셨잖아요.",
+                  speaker: "실험체 C",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-3b296dd1",
+              evidenceIds: ["phase-4::evidence-560e89ff", "phase-1::footage"],
+              answer: [
+                {
+                  text: "아... 아...\n흑....\n맞아요. 제가 그 딸이에요. 소장님 딸이라구요.\n그래서 오늘 11시 넘어서 몰래 소장실에 들어가서 이걸 봤어요. 그런데...\n10년 전 자살한 우리 엄마가, 사실 사고사였대요. 이걸 어떻게 자식에게까지 숨겨요?\n제가 그 광경을 처음 목격했을 때가 아직도 생생해요.",
+                  speaker: "실험체 C",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-8c514786",
+              evidenceIds: ["phase-1::evidence-aec28b2a"],
+              answer: [
+                {
+                  text: "네, 설거지 당번표군요.",
+                  speaker: "실험체 C",
+                },
+                {
+                  text: "오늘 제가 설거지한 건 맞아요. 그릇을 닦고 그 그릇으로 소장님의 짜장면을 받아 건네준 건 사실이죠. 뭐, 그때 청산가리 같은 독극물을 넣었다라고 하면 말이 되긴 하는데요...",
+                  speaker: "실험체 C",
+                },
+                {
+                  text: "아직 증거가 부족하네요!",
+                  speaker: "실험체 C",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-4322c668",
+              evidenceIds: ["phase-4::door-log"],
+              answer: [
+                {
+                  text: "소장실 출입문이군요.",
+                  speaker: "실험체 C",
+                },
+                {
+                  text: "....제가 출입했다는 증거가 있나요?",
+                  speaker: "실험체 C",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-a07cc842",
+              evidenceIds: ["phase-1::footage"],
+              answer: [
+                {
+                  text: "......",
+                  speaker: "실험체 C",
+                },
+                {
+                  text: "이런 걸 왜 가지고 있는지 모르겠어요.",
+                  speaker: "실험체 C",
+                },
+                {
+                  text: "위선자.",
+                  speaker: "실험체 C",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-65445116",
+              evidenceIds: ["phase-4::evidence-82a326d5"],
+              answer: [
+                {
+                  text: "부엌칼이네요. 분명 오전에는 피가 안 묻어있었던 것 같은데.",
+                  speaker: "실험체 C",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-0d93ce11",
+              evidenceIds: ["phase-4::evidence-a20cd9ba"],
+              answer: [
+                {
+                  text: "10년 전 그때와 똑같아요.",
+                  speaker: "실험체 C",
+                },
+                {
+                  text: "그때도 욕조에, 빨간 핏물이 고여있었죠.",
+                  speaker: "실험체 C",
+                },
+                {
+                  text: "하...",
+                  speaker: "실험체 C",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-102453d8",
+              evidenceIds: ["phase-4::evidence-0221b7bc"],
+              answer: [
+                {
+                  text: "옷이네요.",
+                  speaker: "실험체 C",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-2ccbfc7d",
+              evidenceIds: ["phase-4::evidence-560e89ff"],
+              answer: [
+                {
+                  text: "아...",
+                  speaker: "실험체 C",
+                },
+                {
+                  text: "으음...",
+                  speaker: "실험체 C",
+                },
+                {
+                  text: "맞아요. 제가 본 자료에요. 오늘 밤에 보게 되었죠. 소등 이후에 침입한게 저에요.",
+                  speaker: "실험체 C",
+                },
+                {
+                  text: "하... 더이상 말하기 싫네요. 스트레스 받아요.",
+                  speaker: "실험체 C",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-c4b74b29",
+              evidenceIds: ["phase-4::evidence-bebfe84a"],
+              answer: [
+                {
+                  text: "캐비닛이네요. 더 할말은 없어요. 사람이 숨기 딱 좋은 크기네요.",
+                  speaker: "실험체 C",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-e5637d58",
+              evidenceIds: ["phase-4::vent"],
+              answer: [
+                {
+                  text: "환풍구요? 전 몸이 약해서 그런데 못들어가요. 제가 환풍구로 이동했다는 증거라도 있나요?",
+                  speaker: "실험체 C",
+                },
+                {
+                  text: "공간도 작아서 움직이지도 못하겠구만.",
+                  speaker: "실험체 C",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-ed83e5fd",
+              evidenceIds: ["phase-1::schedule"],
+              answer: [
+                {
+                  text: "그 단서에 대해서는 할 말이 없습니다. 그냥 짜장면이 많이 나온다는 거죠.",
+                  speaker: "실험체 C",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-4289fff5",
+              evidenceIds: ["phase-4::badge-a"],
+              answer: [
+                {
+                  text: "아, 이거요. 혈액팩이에요.",
+                  speaker: "실험체 C",
+                },
+                {
+                  text: "소장님께서 들어올때 다들 한 팩씩 뽑아놨어요. 실험할 때마다 뽑기 귀찮다면서요. ",
+                  speaker: "실험체 C",
+                },
+                {
+                  text: "전 거의 5년 전에 뽑아서 기억이 안나네요. 2082년의 기술력으로는 5년된 혈액은 상하지 않죠.",
+                  speaker: "실험체 C",
+                },
+              ],
+            },
+            {
+              id: "final-interrogation-question-question-4de162cc",
+              evidenceIds: ["phase-1::pill-vent"],
+              answer: [
+                {
+                  text: "이게 뭐죠? 아, 환풍구 지도네요. .... 어쩌라는거지..",
+                  speaker: "실험체 C",
+                },
+              ],
+            },
+          ],
         },
       ],
       requiredCombinationIds: [],
