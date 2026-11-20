@@ -155,13 +155,13 @@ export function isEditableContent(value: unknown): value is EditableInterrogatio
   const source = (item: unknown) => record(item) &&
     typeof item.id === "string" && (item.locationId === undefined || typeof item.locationId === "string") &&
     (item.versionPhaseId === undefined || typeof item.versionPhaseId === "string") &&
-    typeof item.title === "string" && typeof item.description === "string" &&
+    typeof item.title === "string" &&
     (item.password === undefined || typeof item.password === "string") &&
     (item.x === undefined || typeof item.x === "number") &&
     (item.y === undefined || typeof item.y === "number") && evidence(item.evidence);
   const sourceState = (item: unknown) => record(item) &&
     typeof item.x === "number" && typeof item.y === "number" &&
-    typeof item.title === "string" && typeof item.description === "string" &&
+    typeof item.title === "string" &&
     (item.password === undefined || typeof item.password === "string") && evidence(item.evidence);
   const sharedSource = (item: unknown) => record(item) && typeof item.id === "string" &&
     (item.number === undefined || (Number.isInteger(item.number) && (item.number as number) > 0)) &&

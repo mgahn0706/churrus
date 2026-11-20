@@ -793,7 +793,6 @@ export default function InInterrogationGame({
         >
           <DialogTitle>{lockedSource?.title} · 잠긴 단서</DialogTitle>
           <DialogContent sx={{ display: "grid", gap: 2, pt: "12px !important" }}>
-            {lockedSource?.description && <Typography sx={{ whiteSpace: "pre-wrap" }}>{lockedSource.description}</Typography>}
             <Box component="form" onSubmit={(event) => { event.preventDefault(); trySourcePassword(); }} sx={{ display: "grid", gap: 1.5 }}>
               <TextField autoFocus size="small" label="비밀번호" value={passwordInput} onChange={(event) => { setPasswordInput(event.target.value); setPasswordError(""); }} error={Boolean(passwordError)} helperText={passwordError || "틀리면 에너지 1을 사용합니다."} />
               <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 1 }}>

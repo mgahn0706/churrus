@@ -137,6 +137,16 @@ test("마지막 신문에서는 이전 페이즈에 모은 같은 단서의 버�
   assert.equal(findInterrogationQuestion(duplicateVersionQuestion, ["morning::clue-a", "evening::clue-a"]), undefined);
 });
 
+test("초능력자 최종 신문은 세 단서 조합과 기존 C 조합의 새 답변을 찾는다", () => {
+  const { psychicInterrogationContent } = require("../../fixtures/psychic/interrogation.ts");
+  const final = psychicInterrogationContent.phases.find((item) => item.finalInterrogation);
+  const byName = (name) => final.interrogations.find((item) => item.suspectName === name);
+  const threeClues = ["phase-4::evidence-bebfe84a", "phase-4::evidence-a20cd9ba", "phase-4::evidence-560e89ff"];
+  assert.match(findInterrogationQuestion(byName("실험체 A"), threeClues, true).answer[0].text, /시체를 캐비닛에 숨겨놨다고/);
+  assert.match(findInterrogationQuestion(byName("실험체 C"), ["phase-4::door-log", "phase-4::evidence-560e89ff"], true).answer[0].text, /제가 들어갔어요/);
+  assert.match(findInterrogationQuestion(byName("실험체 C"), ["phase-4::badge-a", "phase-4::evidence-a20cd9ba", "phase-4::forecast-original"], true).answer[0].text, /제 능력을 알아내셨네요/);
+});
+
 test("기본 신문 답변은 인물, 페이즈, 시나리오 순서로 사용한다", () => {
   const configured = {
     ...phase,

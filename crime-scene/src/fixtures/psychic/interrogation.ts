@@ -1,4 +1,5 @@
 import type { InterrogationScenarioType } from "@/types";
+import { psychicFinalQuestions } from "./finalQuestions";
 
 export const psychicInterrogationContent: Pick<
   InterrogationScenarioType,
@@ -63,7 +64,6 @@ export const psychicInterrogationContent: Pick<
           x: 57.3,
           y: 78.1,
           title: "환풍구 지도",
-          description: "환풍구가 연결된 지도이다.",
           evidence: {
             id: "pill-vent",
             title: "환풍구 지도",
@@ -77,7 +77,6 @@ export const psychicInterrogationContent: Pick<
           x: 19.9,
           y: 10,
           title: "혈액팩",
-          description: "",
           evidence: {
             id: "badge-a",
             title: "혈액팩",
@@ -91,7 +90,6 @@ export const psychicInterrogationContent: Pick<
           x: 94.7,
           y: 28.3,
           title: "오늘의 식단표",
-          description: "메인홀 벽에 일정표가 붙어 있다.",
           evidence: {
             id: "schedule",
             title: "오늘의 식단표",
@@ -105,7 +103,6 @@ export const psychicInterrogationContent: Pick<
           x: 56.4,
           y: 7.3,
           title: "환풍구",
-          description: "누군가의 상태를 기록하는 장비다.",
           evidence: {
             id: "vent",
             title: "환풍구",
@@ -116,10 +113,22 @@ export const psychicInterrogationContent: Pick<
           versionPhaseId: "phase-1",
         },
         {
+          x: 7.6,
+          y: 65.7,
+          title: "오래된 종이 문서",
+          evidence: {
+            id: "evidence-8c81c2b6",
+            title: "과거 초능력 실험 기록",
+            description:
+              "김고체라는 이름으로 작성된 오래된 실험 기록이다. 식빵을 먹은 뒤 짜장면을 소환하려 했으나 식빵이 나왔고, 커피를 마신 후에도 결과는 같았다. 이후 볶음밥을 먹자 볶음밥이 소환되었으며, 물을 마신 뒤에도 볶음밥이 나왔다. 기록 하단에는 '원하는 음식을 자유롭게 소환할 수 없음'이라고 적혀 있다. 실험 보조자로 유기체라는 이름이 남아 있다.",
+          },
+          id: "phase-1-source-evidence-8c81c2b6",
+          versionPhaseId: "phase-1",
+        },
+        {
           x: 19.5,
           y: 31.3,
           title: "캐비닛",
-          description: "",
           evidence: {
             id: "evidence-bebfe84a",
             title: "캐비닛",
@@ -133,7 +142,6 @@ export const psychicInterrogationContent: Pick<
           x: 67.7,
           y: 8,
           title: "서랍",
-          description: "",
           evidence: {
             id: "evidence-560e89ff",
             title: "10년 전 사건 자료",
@@ -148,7 +156,6 @@ export const psychicInterrogationContent: Pick<
           x: 12.3,
           y: 55.4,
           title: "옷",
-          description: "",
           evidence: {
             id: "evidence-0221b7bc",
             title: "실험체 A의 옷과 잠옷",
@@ -161,7 +168,6 @@ export const psychicInterrogationContent: Pick<
           x: 72.6,
           y: 19.8,
           title: "욕조",
-          description: "",
           evidence: {
             id: "evidence-a20cd9ba",
             title: "욕조",
@@ -174,7 +180,6 @@ export const psychicInterrogationContent: Pick<
           x: 81.2,
           y: 9,
           title: "칼",
-          description: "",
           evidence: {
             id: "evidence-82a326d5",
             title: "부엌칼",
@@ -187,7 +192,6 @@ export const psychicInterrogationContent: Pick<
           x: 67.1,
           y: 17.6,
           title: "사진",
-          description: "메인홀 카메라가 녹화 중이다.",
           evidence: {
             id: "footage",
             title: "가족 사진",
@@ -201,7 +205,6 @@ export const psychicInterrogationContent: Pick<
           x: 64.3,
           y: 41.6,
           title: "소장실 출입문",
-          description: "출입 단말기에 마지막 사용 내역이 남아 있다.",
           evidence: {
             id: "door-log",
             title: "소장실 출입문",
@@ -214,7 +217,6 @@ export const psychicInterrogationContent: Pick<
           x: 77.4,
           y: 34.6,
           title: "설거지 당번표",
-          description: "",
           evidence: {
             id: "evidence-aec28b2a",
             title: "설거지 당번표",
@@ -228,7 +230,6 @@ export const psychicInterrogationContent: Pick<
           x: 57.3,
           y: 21.7,
           title: "초능력 알약",
-          description: "",
           evidence: {
             id: "evidence-6810b6b5",
             title: "초능력 알약",
@@ -242,7 +243,6 @@ export const psychicInterrogationContent: Pick<
           x: 56.9,
           y: 32.5,
           title: "해독제",
-          description: "",
           evidence: {
             id: "evidence-ecfd8386",
             title: "초능력 해독제",
@@ -501,7 +501,7 @@ export const psychicInterrogationContent: Pick<
           "그 기록과 제 이야기를 연결하기는 어렵습니다.",
         ],
         [
-          "시연 준비 때문에 자세히 확인하지 못했어요.",
+          "점심 이후로는 그 단서를 자세히 확인하지 못했어요.",
           "다른 자료가 있으면 보여 주세요.",
         ],
       ],
@@ -509,10 +509,22 @@ export const psychicInterrogationContent: Pick<
       locations: [],
       sources: [
         {
+          x: 7.6,
+          y: 65.7,
+          title: "오래된 종이 문서",
+          evidence: {
+            id: "evidence-8c81c2b6",
+            title: "과거 초능력 실험 기록",
+            description:
+              "김고체라는 이름으로 작성된 오래된 실험 기록이다. 식빵을 먹은 뒤 짜장면을 소환하려 했으나 식빵이 나왔고, 커피를 마신 후에도 결과는 같았다. 이후 볶음밥을 먹자 볶음밥이 소환되었으며, 물을 마신 뒤에도 볶음밥이 나왔다. 기록 하단에는 '원하는 음식을 자유롭게 소환할 수 없음'이라고 적혀 있다. 실험 보조자로 유기체라는 이름이 남아 있다.",
+          },
+          id: "phase-2-source-evidence-8c81c2b6",
+          versionPhaseId: "phase-1",
+        },
+        {
           x: 19.5,
           y: 31.3,
           title: "캐비닛",
-          description: "",
           evidence: {
             id: "evidence-bebfe84a",
             title: "캐비닛",
@@ -526,7 +538,6 @@ export const psychicInterrogationContent: Pick<
           x: 67.7,
           y: 8,
           title: "서랍",
-          description: "",
           evidence: {
             id: "evidence-560e89ff",
             title: "10년 전 사건 자료",
@@ -541,7 +552,6 @@ export const psychicInterrogationContent: Pick<
           x: 12.3,
           y: 55.4,
           title: "옷",
-          description: "",
           evidence: {
             id: "evidence-0221b7bc",
             title: "실험체 A의 옷과 잠옷",
@@ -554,7 +564,6 @@ export const psychicInterrogationContent: Pick<
           x: 72.6,
           y: 19.8,
           title: "욕조",
-          description: "",
           evidence: {
             id: "evidence-a20cd9ba",
             title: "욕조",
@@ -567,7 +576,6 @@ export const psychicInterrogationContent: Pick<
           x: 81.2,
           y: 9,
           title: "칼",
-          description: "",
           evidence: {
             id: "evidence-82a326d5",
             title: "부엌칼",
@@ -580,7 +588,6 @@ export const psychicInterrogationContent: Pick<
           x: 57.3,
           y: 78.1,
           title: "환풍구 지도",
-          description: "환풍구가 연결된 지도이다.",
           evidence: {
             id: "pill-vent",
             title: "환풍구 지도",
@@ -594,7 +601,6 @@ export const psychicInterrogationContent: Pick<
           x: 19.9,
           y: 10,
           title: "혈액팩",
-          description: "",
           evidence: {
             id: "badge-a",
             title: "혈액팩",
@@ -608,7 +614,6 @@ export const psychicInterrogationContent: Pick<
           x: 94.7,
           y: 28.3,
           title: "오늘의 식단표",
-          description: "메인홀 벽에 일정표가 붙어 있다.",
           evidence: {
             id: "schedule",
             title: "오늘의 식단표",
@@ -622,7 +627,6 @@ export const psychicInterrogationContent: Pick<
           x: 56.4,
           y: 7.3,
           title: "환풍구",
-          description: "누군가의 상태를 기록하는 장비다.",
           evidence: {
             id: "vent",
             title: "환풍구",
@@ -636,7 +640,6 @@ export const psychicInterrogationContent: Pick<
           x: 67.1,
           y: 17.6,
           title: "사진",
-          description: "메인홀 카메라가 녹화 중이다.",
           evidence: {
             id: "footage",
             title: "가족 사진",
@@ -650,7 +653,6 @@ export const psychicInterrogationContent: Pick<
           x: 64.3,
           y: 41.6,
           title: "소장실 출입문",
-          description: "출입 단말기에 마지막 사용 내역이 남아 있다.",
           evidence: {
             id: "door-log",
             title: "소장실 출입문",
@@ -663,7 +665,6 @@ export const psychicInterrogationContent: Pick<
           x: 77.4,
           y: 34.6,
           title: "설거지 당번표",
-          description: "",
           evidence: {
             id: "evidence-aec28b2a",
             title: "설거지 당번표",
@@ -677,7 +678,6 @@ export const psychicInterrogationContent: Pick<
           x: 57.3,
           y: 21.7,
           title: "초능력 알약",
-          description: "",
           evidence: {
             id: "evidence-6810b6b5",
             title: "초능력 알약",
@@ -691,7 +691,6 @@ export const psychicInterrogationContent: Pick<
           x: 56.9,
           y: 32.5,
           title: "해독제",
-          description: "",
           evidence: {
             id: "evidence-ecfd8386",
             title: "초능력 해독제",
@@ -903,12 +902,12 @@ export const psychicInterrogationContent: Pick<
       ],
       fallbackAnswers: [
         [
-          "지금은 공개 시연 중입니다.",
-          "그 단서에 대해서는 행사가 끝난 뒤 이야기하죠.",
+          "지금은 저녁 일정 중이라 자세히 확인하기 어렵습니다.",
+          "그 단서는 조금 뒤에 이야기하죠.",
         ],
         [
-          "카메라와 관객 앞에서 계속 움직이고 있어요.",
-          "그 기록은 아직 보지 못했습니다.",
+          "그 기록은 아직 직접 보지 못했어요.",
+          "확인하고 나서 이야기하겠습니다.",
         ],
       ],
       mapImage: "/image/scenario/psychic/map/lab-map.svg",
@@ -918,7 +917,6 @@ export const psychicInterrogationContent: Pick<
           x: 94.7,
           y: 28.3,
           title: "오늘의 식단표",
-          description: "메인홀 벽에 일정표가 붙어 있다.",
           evidence: {
             id: "schedule",
             title: "오늘의 식단표",
@@ -929,10 +927,22 @@ export const psychicInterrogationContent: Pick<
           versionPhaseId: "phase-1",
         },
         {
+          x: 7.6,
+          y: 65.7,
+          title: "오래된 종이 문서",
+          evidence: {
+            id: "evidence-8c81c2b6",
+            title: "과거 초능력 실험 기록",
+            description:
+              "김고체라는 이름으로 작성된 오래된 실험 기록이다. 식빵을 먹은 뒤 짜장면을 소환하려 했으나 식빵이 나왔고, 커피를 마신 후에도 결과는 같았다. 이후 볶음밥을 먹자 볶음밥이 소환되었으며, 물을 마신 뒤에도 볶음밥이 나왔다. 기록 하단에는 '원하는 음식을 자유롭게 소환할 수 없음'이라고 적혀 있다. 실험 보조자로 유기체라는 이름이 남아 있다.",
+          },
+          id: "phase-3-source-evidence-8c81c2b6",
+          versionPhaseId: "phase-1",
+        },
+        {
           x: 19.5,
           y: 31.3,
           title: "캐비닛",
-          description: "",
           evidence: {
             id: "evidence-bebfe84a",
             title: "캐비닛",
@@ -946,7 +956,6 @@ export const psychicInterrogationContent: Pick<
           x: 12.3,
           y: 55.4,
           title: "옷",
-          description: "",
           evidence: {
             id: "evidence-0221b7bc",
             title: "실험체 A의 옷과 잠옷",
@@ -959,7 +968,6 @@ export const psychicInterrogationContent: Pick<
           x: 81.2,
           y: 9,
           title: "칼",
-          description: "",
           evidence: {
             id: "evidence-82a326d5",
             title: "부엌칼",
@@ -972,7 +980,6 @@ export const psychicInterrogationContent: Pick<
           x: 57.3,
           y: 78.1,
           title: "환풍구 지도",
-          description: "환풍구가 연결된 지도이다.",
           evidence: {
             id: "pill-vent",
             title: "환풍구 지도",
@@ -986,7 +993,6 @@ export const psychicInterrogationContent: Pick<
           x: 19.9,
           y: 10,
           title: "혈액팩",
-          description: "",
           evidence: {
             id: "badge-a",
             title: "혈액팩",
@@ -1000,7 +1006,6 @@ export const psychicInterrogationContent: Pick<
           x: 37,
           y: 35.4,
           title: "옷",
-          description: "실험체 B의 지급 내역이 있다.",
           evidence: {
             id: "ledger-b",
             title: "소장의 연구복",
@@ -1014,7 +1019,6 @@ export const psychicInterrogationContent: Pick<
           x: 35.7,
           y: 25,
           title: "짜장면",
-          description: "관찰실에 예지 실험 결과가 펼쳐져 있다.",
           evidence: {
             id: "forecast",
             title: "짜장면",
@@ -1027,7 +1031,6 @@ export const psychicInterrogationContent: Pick<
           x: 41.5,
           y: 25,
           title: "차",
-          description: "시연회 준비 공지가 도착했다.",
           evidence: {
             id: "notice",
             title: "차",
@@ -1040,7 +1043,6 @@ export const psychicInterrogationContent: Pick<
           x: 64.3,
           y: 41.6,
           title: "소장실 출입문",
-          description: "출입 단말기에 마지막 사용 내역이 남아 있다.",
           evidence: {
             id: "door-log",
             title: "소장실 출입문",
@@ -1053,7 +1055,6 @@ export const psychicInterrogationContent: Pick<
           x: 77.4,
           y: 34.6,
           title: "설거지 당번표",
-          description: "",
           evidence: {
             id: "evidence-aec28b2a",
             title: "설거지 당번표",
@@ -1107,25 +1108,25 @@ export const psychicInterrogationContent: Pick<
           conversation: [
             {
               speaker: "나",
-              text: "시연 준비는 끝났어요?",
+              text: "저녁은 같이 안 먹어요?",
             },
-            "네. 곧 무대에서 물체를 움직일 겁니다.",
+            "배가 좀 아파서요. 먼저 드세요.",
           ],
           conversationChoices: [
             {
               id: "p3-stage",
-              question: "시연 중에는 어디에 있나요?",
+              question: "지금 어디에 가시려고요?",
               answer: [
-                "메인홀 무대에 계속 있을 거예요.",
-                "카메라와 관객 앞에서 진행합니다.",
+                "화장실에 잠깐 다녀오려고요.",
+                "저녁은 건너뛰어야겠어요.",
               ],
             },
             {
               id: "p3-fatigue",
-              question: "오래 시연해도 괜찮아요?",
+              question: "많이 아픈가요?",
               answer: [
-                "길어지면 힘들겠지만 준비는 됐어요.",
-                "끝나면 잠시 쉬어야겠죠.",
+                "조금 배가 아픈 정도예요.",
+                "괜찮아지면 돌아올게요.",
               ],
             },
           ],
@@ -1232,7 +1233,6 @@ export const psychicInterrogationContent: Pick<
           x: 73.2,
           y: 10,
           title: "소장의 사체",
-          description: "소장이 관찰실 바닥에 쓰러져 있다.",
           evidence: {
             id: "body",
             title: "소장의 사체",
@@ -1246,7 +1246,6 @@ export const psychicInterrogationContent: Pick<
           x: 64.3,
           y: 41.6,
           title: "소장실 출입문",
-          description: "출입 단말기에 마지막 사용 내역이 남아 있다.",
           evidence: {
             id: "door-log",
             title: "소장실 출입문",
@@ -1257,10 +1256,9 @@ export const psychicInterrogationContent: Pick<
           versionPhaseId: "phase-4",
         },
         {
-          x: 12,
+          x: 14,
           y: 67.5,
           title: "종이",
-          description: "지급대의 기록이 바뀌어 있다.",
           evidence: {
             id: "pill-log",
             title: "대출심사기록",
@@ -1274,7 +1272,6 @@ export const psychicInterrogationContent: Pick<
           x: 90.6,
           y: 8.7,
           title: "짜장면 그릇",
-          description: "서둘러 쓴 메모가 발견된다.",
           evidence: {
             id: "director-note",
             title: "짜장면 그릇",
@@ -1285,10 +1282,22 @@ export const psychicInterrogationContent: Pick<
           versionPhaseId: "phase-4",
         },
         {
+          x: 7.6,
+          y: 65.7,
+          title: "오래된 종이 문서",
+          evidence: {
+            id: "evidence-8c81c2b6",
+            title: "과거 초능력 실험 기록",
+            description:
+              "김고체라는 이름으로 작성된 오래된 실험 기록이다. 식빵을 먹은 뒤 짜장면을 소환하려 했으나 식빵이 나왔고, 커피를 마신 후에도 결과는 같았다. 이후 볶음밥을 먹자 볶음밥이 소환되었으며, 물을 마신 뒤에도 볶음밥이 나왔다. 기록 하단에는 '원하는 음식을 자유롭게 소환할 수 없음'이라고 적혀 있다. 실험 보조자로 유기체라는 이름이 남아 있다.",
+          },
+          id: "phase-4-source-evidence-8c81c2b6",
+          versionPhaseId: "phase-1",
+        },
+        {
           x: 25.7,
           y: 52.4,
           title: "노트북",
-          description: "",
           evidence: {
             id: "evidence-0b93f6fb",
             title: "노트북",
@@ -1302,7 +1311,6 @@ export const psychicInterrogationContent: Pick<
           x: 31.8,
           y: 68.7,
           title: "마스터키",
-          description: "",
           evidence: {
             id: "evidence-9e01afc2",
             title: "마스터키",
@@ -1315,7 +1323,6 @@ export const psychicInterrogationContent: Pick<
           x: 19.5,
           y: 31.3,
           title: "캐비닛",
-          description: "",
           evidence: {
             id: "evidence-bebfe84a",
             title: "캐비닛",
@@ -1329,7 +1336,6 @@ export const psychicInterrogationContent: Pick<
           x: 67.7,
           y: 8,
           title: "서랍",
-          description: "",
           evidence: {
             id: "evidence-560e89ff",
             title: "10년 전 사건 자료",
@@ -1344,7 +1350,6 @@ export const psychicInterrogationContent: Pick<
           x: 12.3,
           y: 55.4,
           title: "옷",
-          description: "",
           evidence: {
             id: "evidence-0221b7bc",
             title: "실험체 A의 옷",
@@ -1357,7 +1362,6 @@ export const psychicInterrogationContent: Pick<
           x: 72.6,
           y: 19.8,
           title: "욕조",
-          description: "",
           evidence: {
             id: "evidence-a20cd9ba",
             title: "욕조",
@@ -1371,7 +1375,6 @@ export const psychicInterrogationContent: Pick<
           x: 81.2,
           y: 9,
           title: "칼",
-          description: "",
           evidence: {
             id: "evidence-82a326d5",
             title: "부엌칼",
@@ -1385,7 +1388,6 @@ export const psychicInterrogationContent: Pick<
           x: 57.3,
           y: 78.1,
           title: "환풍구 지도",
-          description: "환풍구가 연결된 지도이다.",
           evidence: {
             id: "pill-vent",
             title: "환풍구 지도",
@@ -1399,7 +1401,6 @@ export const psychicInterrogationContent: Pick<
           x: 19.9,
           y: 10,
           title: "혈액팩",
-          description: "",
           evidence: {
             id: "badge-a",
             title: "혈액팩",
@@ -1413,7 +1414,6 @@ export const psychicInterrogationContent: Pick<
           x: 94.7,
           y: 28.3,
           title: "오늘의 식단표",
-          description: "메인홀 벽에 일정표가 붙어 있다.",
           evidence: {
             id: "schedule",
             title: "오늘의 식단표",
@@ -1427,7 +1427,6 @@ export const psychicInterrogationContent: Pick<
           x: 56.4,
           y: 7.3,
           title: "환풍구",
-          description: "누군가의 상태를 기록하는 장비다.",
           evidence: {
             id: "vent",
             title: "환풍구",
@@ -1441,7 +1440,6 @@ export const psychicInterrogationContent: Pick<
           x: 37,
           y: 35.4,
           title: "옷",
-          description: "실험체 B의 지급 내역이 있다.",
           evidence: {
             id: "ledger-b",
             title: "소장의 연구복",
@@ -1455,7 +1453,6 @@ export const psychicInterrogationContent: Pick<
           x: 67.1,
           y: 17.6,
           title: "사진",
-          description: "메인홀 카메라가 녹화 중이다.",
           evidence: {
             id: "footage",
             title: "가족 사진",
@@ -1469,12 +1466,11 @@ export const psychicInterrogationContent: Pick<
           x: 63,
           y: 26.5,
           title: "보고서",
-          description: "관찰실 서랍 안쪽에 원본이 있다.",
           evidence: {
             id: "forecast-original",
             title: "초능력 보고서",
             description:
-              "각 실험체의 본명과 능력이 적혀있다. 권정오 - 공중부양(5cm), 묵지바 - 가위바위보 이기기, 김액체 - 마지막으로 먹은 액체로 다른 액체 변경 가능",
+              "각 실험체의 본명과 능력이 적혀있다. 권정오 - 공중부양(5cm), 묵지바 - 가위바위보 무조건 이기기, 김액체 - 마지막으로 마신 액체로 주변 액체 변경 가능",
           },
           id: "phase-4-source-forecast-original",
           versionPhaseId: "phase-4",
@@ -1483,7 +1479,6 @@ export const psychicInterrogationContent: Pick<
           x: 25.1,
           y: 62.1,
           title: "문서",
-          description: "",
           evidence: {
             id: "evidence-b89b8208",
             title: "초능력 약물에 관한 문서",
@@ -1497,7 +1492,6 @@ export const psychicInterrogationContent: Pick<
           x: 38.9,
           y: 60,
           title: "쪽지",
-          description: "",
           evidence: {
             id: "evidence-a0669973",
             title: "비밀 쪽지",
@@ -1511,7 +1505,6 @@ export const psychicInterrogationContent: Pick<
           x: 77.4,
           y: 34.6,
           title: "설거지 당번표",
-          description: "",
           evidence: {
             id: "evidence-aec28b2a",
             title: "설거지 당번표",
@@ -1525,7 +1518,6 @@ export const psychicInterrogationContent: Pick<
           x: 57.3,
           y: 21.7,
           title: "초능력 알약",
-          description: "",
           evidence: {
             id: "evidence-6810b6b5",
             title: "초능력 알약",
@@ -1536,10 +1528,9 @@ export const psychicInterrogationContent: Pick<
           versionPhaseId: "phase-4",
         },
         {
-          x: 18.7,
-          y: 69.7,
+          x: 19,
+          y: 70,
           title: "침대 위",
-          description: "",
           evidence: {
             id: "evidence-b50d4568",
             title: "초능력 해독제",
@@ -1746,32 +1737,22 @@ export const psychicInterrogationContent: Pick<
       interrogations: [
         {
           suspectName: "실험체 A",
-          conversation: [
-            {
-              speaker: "나",
-              text: "마지막으로 확인할 게 있어요.",
-            },
-            "네. 제가 아는 건 모두 말하겠습니다.",
-          ],
-          conversationChoices: [
-            {
-              id: "final-camera",
-              question: "인터뷰 시간 내내 메인홀에 있었나요?",
-              answer: [
-                "영상에 진행자와 제가 계속 나옵니다.",
-                "그 시간에는 관찰실에 갈 수 없었어요.",
-              ],
-            },
-            {
-              id: "final-contract",
-              question: "계약 갈등이 살인의 이유였나요?",
-              answer: [
-                "소장님에게 화가 난 건 사실이에요.",
-                "하지만 해치지는 않았습니다.",
-              ],
-            },
-          ],
           questions: [
+            ...psychicFinalQuestions.A,
+            {
+              id: "final-interrogation-question-question-93455d73",
+              evidenceIds: ["phase-1::evidence-8c81c2b6"],
+              answer: [
+                {
+                  text: "그래, 내 방에서 나왔다는 건 내가 봤다는거지.",
+                  speaker: "실험체 A",
+                },
+                {
+                  text: "김고체라는 사람은 마지막으로 먹은 음식을 소환할 수 있는 모양이야.",
+                  speaker: "실험체 A",
+                },
+              ],
+            },
             {
               id: "final-interrogation-question-question-7328627f",
               evidenceIds: [
@@ -2350,29 +2331,22 @@ export const psychicInterrogationContent: Pick<
         },
         {
           suspectName: "실험체 B",
-          conversation: [
+          questions: [
+            ...psychicFinalQuestions.B,
             {
-              speaker: "나",
-              text: "마지막 진술을 부탁해요.",
-            },
-            "제 시연 영상부터 확인해 주세요.",
-          ],
-          conversationChoices: [
-            {
-              id: "final-stage",
-              question: "시연하는 동안 자리를 비웠나요?",
+              id: "final-interrogation-question-question-4995bf75",
+              evidenceIds: ["phase-1::evidence-8c81c2b6"],
               answer: [
-                "카메라 앞에서 계속 시연했습니다.",
-                "관객들도 저를 보고 있었어요.",
+                {
+                  text: "이건 처음 보는 자료야.",
+                  speaker: "실험체 B",
+                },
+                {
+                  text: "A에게 물어보지?",
+                  speaker: "실험체 B",
+                },
               ],
             },
-            {
-              id: "final-reward",
-              question: "보상 때문에 소장을 원망했나요?",
-              answer: ["불만은 있었죠.", "그래도 살해할 생각은 없었습니다."],
-            },
-          ],
-          questions: [
             {
               id: "final-interrogation-question-question-8c9e6ae1",
               evidenceIds: ["phase-4::door-log", "phase-4::forecast-original"],
@@ -2972,32 +2946,22 @@ export const psychicInterrogationContent: Pick<
         },
         {
           suspectName: "실험체 C",
-          conversation: [
-            {
-              speaker: "나",
-              text: "출입 기록이 남아 있어요.",
-            },
-            "다시 온 건 인정해요. 하지만 그게 전부예요.",
-          ],
-          conversationChoices: [
-            {
-              id: "final-original",
-              question: "왜 실험 원본을 숨겼나요?",
-              answer: [
-                "실패한 예측을 공개하고 싶지 않았어요.",
-                "원본은 지우지 않았습니다.",
-              ],
-            },
-            {
-              id: "final-room",
-              question: "관찰실에서 소장을 만났나요?",
-              answer: [
-                "원본을 찾으러 들어갔어요.",
-                "소장님과 무슨 일이 있었는지는 더 말하고 싶지 않아요.",
-              ],
-            },
-          ],
           questions: [
+            ...psychicFinalQuestions.C,
+            {
+              id: "final-interrogation-question-question-5c8e6841",
+              evidenceIds: ["phase-1::evidence-8c81c2b6"],
+              answer: [
+                {
+                  text: "A에게 물어보는 게 좋겠어요.",
+                  speaker: "실험체 C",
+                },
+                {
+                  text: "김고체...는 아마 저희 아버지 예전 이름일텐데.",
+                  speaker: "실험체 C",
+                },
+              ],
+            },
             {
               id: "final-interrogation-question-question-9c6012e2",
               evidenceIds: ["phase-4::door-log", "phase-4::forecast-original"],
@@ -3035,15 +2999,7 @@ export const psychicInterrogationContent: Pick<
               ],
               answer: [
                 {
-                  text: "아, 욕조의 피가 사실 내가 마신 혈액팩의 피다?",
-                  speaker: "실험체 C",
-                },
-                {
-                  text: "음, 맞아요. 어떻게 알아냈는지는 모르겠지만.",
-                  speaker: "실험체 C",
-                },
-                {
-                  text: "대단하네요, 신.입.탐.정.님?",
+                  text: "제 능력을 알아내셨네요. 제법인데요? 그런데 제가 피를 소환할 수 있다는게, 죽였다는 증거는 아니잖아요.",
                   speaker: "실험체 C",
                 },
               ],
@@ -3114,19 +3070,7 @@ export const psychicInterrogationContent: Pick<
               evidenceIds: ["phase-4::door-log", "phase-4::evidence-560e89ff"],
               answer: [
                 {
-                  text: "음, 사실대로 말해야겠군요....",
-                  speaker: "실험체 C",
-                },
-                {
-                  text: "네, 제가 마스터키를 열고 들어가서 이 자료를 봤어요.",
-                  speaker: "실험체 C",
-                },
-                {
-                  text: "그떄가 아마 소등 이후. 저도 처음보는 자료라서 멍하니 서있었던 기억이.",
-                  speaker: "실험체 C",
-                },
-                {
-                  text: "....이제 그만 말해주세요.",
+                  text: "네, 제가 들어갔어요. 어머니에 관한 자료가 있다는 이야기를 들어서요. 그때 처음 알았어요. 아버지가 무슨 짓을 했는지... 정말 아무것도 모르고 있었네요, 제가.",
                   speaker: "실험체 C",
                 },
               ],

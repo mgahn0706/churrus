@@ -64,6 +64,11 @@ const updateLegacyMap = (draft: EditableInterrogationContent) => {
 const normalizeMapCoordinates = (draft: EditableInterrogationContent) => {
   const next = updateLegacyMap(draft);
   for (const phase of next.phases) {
+    if (phase.finalInterrogation) for (const interrogation of phase.interrogations) {
+      delete interrogation.conversation;
+      delete interrogation.conversationChoices;
+    }
+    for (const source of phase.sources) delete (source as typeof source & { description?: string }).description;
     for (const interrogation of phase.interrogations) {
       for (const question of interrogation.questions) {
         const legacy = question as InterrogationQuestion & { challenge?: { response: InterrogationScript; revealedEvidence?: InterrogationEvidence } };
@@ -89,6 +94,10 @@ const normalizeMapCoordinates = (draft: EditableInterrogationContent) => {
     phase.locations = [];
   }
   next.sharedSources = spreadSharedSourcePositions(ensureSharedSourceNumbers(next.sharedSources ?? deriveSharedSources(next.phases)));
+  for (const source of next.sharedSources) {
+    delete (source.base as typeof source.base & { description?: string }).description;
+    for (const state of Object.values(source.changes)) delete (state as typeof state & { description?: string }).description;
+  }
   next.people ??= [];
   for (const profile of psychicInterrogationContent.people ?? []) {
     if (profile.canInterrogate === false && !next.people.some((person) => person.name === profile.name)) next.people.push(structuredClone(profile));
@@ -490,7 +499,7 @@ export default function PsychicAdminEditor() {
       next.sharedSources.unshift({
         id: evidence.id,
         number: Math.max(0, ...next.sharedSources.map((source) => source.number ?? 0)) + 1,
-        base: { x: 45 + (count % 4) * 5, y: 45 + (Math.floor(count / 4) % 4) * 5, title: "", description: "", evidence },
+        base: { x: 45 + (count % 4) * 5, y: 45 + (Math.floor(count / 4) % 4) * 5, title: "", evidence },
         visiblePhaseIds: next.phases.filter((item) => !item.finalInterrogation).map((item) => item.id),
         changes: {}, sourceIds: {}, order: {},
       });
@@ -719,7 +728,7 @@ export default function PsychicAdminEditor() {
                   <Box aria-label="페이즈 편집 항목" sx={{ display: "flex", flexWrap: "wrap", gap: .75, borderBottom: "1px solid rgba(231,201,148,.22)", pb: 1 }}>
                     {([
                       ["interrogation", "신문"],
-                      ["dialogue", "대화"],
+                      ["dialogue", phase.finalInterrogation ? "기본 응답" : "대화"],
                       ["evidence", "단서"],
                       ["settings", "설정"],
                     ] as const).filter(([area]) => area !== "interrogation" || phase.finalInterrogation).map(([area, label]) => (
@@ -819,7 +828,7 @@ export default function PsychicAdminEditor() {
                     <ScriptEditor label="페이즈 시작 대사" value={phase.intro} additionalSpeakers={content.people} onChange={(lines) => editPhase((next) => { next.intro = lines; })} />
                   </Section>}
 
-                  {(phaseArea === "dialogue" || phaseArea === "interrogation") && <Section title={phaseArea === "dialogue" ? "인물 대화" : "단서 신문"} target={phaseArea} order={1}>
+                  {(phaseArea === "dialogue" || phaseArea === "interrogation") && <Section title={phaseArea === "dialogue" ? (phase.finalInterrogation ? "인물별 기본 응답" : "인물 대화") : "단서 신문"} target={phaseArea} order={1}>
                     {phaseArea === "interrogation" && <Box sx={{ display: "grid", gap: 2 }}>
                       <EvidenceCombinationPicker options={clueOptions} selectedIds={selectedClueIds} onChange={setSelectedClueIds} />
                       <Box sx={{ display: "grid", gridTemplateColumns: { xs: "minmax(0, 1fr)", md: "repeat(3, minmax(0, 1fr))" }, gap: 1 }}>
@@ -845,7 +854,7 @@ export default function PsychicAdminEditor() {
                     </Stack>}
                     {phaseArea === "dialogue" && person && (
                       <>
-                        <ScriptEditor label={`${person.suspectName} 기본 대화`} value={person.conversation} defaultSpeaker={person.suspectName} additionalSpeakers={content.people} onChange={(lines) => editPhase((next) => { next.interrogations[activePersonIndex].conversation = lines; })} />
+                        {!phase.finalInterrogation && <ScriptEditor label={`${person.suspectName} 기본 대화`} value={person.conversation} defaultSpeaker={person.suspectName} additionalSpeakers={content.people} onChange={(lines) => editPhase((next) => { next.interrogations[activePersonIndex].conversation = lines; })} />}
                         <Box data-admin-target="person-fallback" sx={{ display: "grid", gap: 1.5, p: 1.5, border: "1px solid rgba(231,201,148,.22)" }}>
                           <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 1 }}>
                             <Typography sx={{ color: "#d9b77d", fontSize: 13, fontWeight: 800 }}>{person.suspectName} 기본 신문 답변</Typography>
@@ -860,7 +869,7 @@ export default function PsychicAdminEditor() {
                           ))}
                           {!person.fallbackAnswers?.length && <Typography sx={{ color: "#9b927f", fontSize: 12 }}>설정하지 않으면 페이즈 공통 기본 응답을 사용합니다.</Typography>}
                         </Box>
-                        <Box sx={{ display: "grid", gap: 1 }}>
+                        {!phase.finalInterrogation && <Box sx={{ display: "grid", gap: 1 }}>
                           <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                             <Typography sx={{ color: "#d9b77d", fontSize: 13, fontWeight: 800 }}>대화 선택지 · {person.conversationChoices?.length ?? 0}</Typography>
                             <Button size="small" startIcon={<AddRounded />} onClick={() => editPhase((next) => { next.interrogations[activePersonIndex].conversationChoices ??= []; next.interrogations[activePersonIndex].conversationChoices!.push({ id: newId("choice"), question: "", answer: [""] }); })}>선택지 추가</Button>
@@ -876,7 +885,7 @@ export default function PsychicAdminEditor() {
                               </AccordionDetails>
                             </Accordion>
                           ))}
-                        </Box>
+                        </Box>}
                       </>
                     )}
                   </Section>

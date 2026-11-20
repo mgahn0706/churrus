@@ -7,9 +7,9 @@ export const psychicSuspects: SuspectType[] = [
     age: 22,
     gender: "male",
     job: "실험체",
-    description: "상대의 생각을 읽는 능력을 시연한다. 최근 소장과 실험 참여 계약을 두고 다퉜다.",
-    statement: "저녁 시연회에서는 진행자와 인터뷰를 했어요. 영상에 남아 있을 겁니다.",
-    finalArgument: "계약 때문에 화가 난 건 맞지만, 소장님을 해치지는 않았습니다.",
+    description: "22세. 직설적인 말투에 경계심이 느껴지는 사람이다.",
+    statement: "뭐, 이렇게 될 걸 알고 있었어. 잔인하게 죽다니.",
+    finalArgument: "차를 준비한 건 맞지만, 내가 소장을 해쳤다는 증거는 없잖아.",
   },
   {
     name: "실험체 B",
@@ -17,9 +17,9 @@ export const psychicSuspects: SuspectType[] = [
     age: 24,
     gender: "female",
     job: "실험체",
-    description: "물체를 움직이는 능력을 시연한다. 실험 보상 문제로 소장에게 불만이 있었다.",
-    statement: "저녁에는 메인홀에서 시연을 했어요. 카메라가 계속 보고 있었습니다.",
-    finalArgument: "보상 문제로 다퉜지만, 시연 뒤에는 소장님을 만나지 않았어요.",
+    description: "2밝고 능청스러운 분위기의 사람이다.",
+    statement: "저녁에는 배가 아파서 식사를 거르고 자리를 비웠어.",
+    finalArgument: "저녁에 자리를 비운 건 맞지만, 소장을 죽이지는 않았어.",
   },
   {
     name: "실험체 C",
@@ -27,9 +27,10 @@ export const psychicSuspects: SuspectType[] = [
     age: 25,
     gender: "female",
     job: "실험체",
-    description: "미래를 예측하는 실험의 핵심 참가자다. 소장이 실험 원본을 요구한 뒤 불안해했다.",
-    statement: "저녁 행사 뒤 연구소를 나갔어요. 원본은 나중에 보여드리려 했습니다.",
-    finalArgument: "다시 들어온 건 맞지만, 제가 소장님을 해쳤다는 증거는 아니잖아요.",
+    description: "25세. 차분하지만 생각이 많아 보이는 실험체.",
+    statement: "저녁 식사 도중 소장님이 몸이 이상하다며 자리를 뜨셨어요.",
+    finalArgument:
+      "제가 시체를 옮긴 건 맞아요. 하지만 발견했을 때 이미 돌아가신 상태였어요.",
   },
 ];
 
@@ -39,6 +40,6 @@ export const psychicVictim: VictimType = {
   age: 50,
   gender: "male",
   job: "초능력 연구소장",
-  description: "초능력을 연구하는 소장. 저녁 시연회 뒤 예지 실험의 원본 기록을 확인하려 했다.",
-  statement: "오늘 검사 결과와 저녁 시연 자료를 정리하고 있습니다. 필요한 게 있으면 물어보세요.",
+  description: "50세. 차분하고 권위적인 분위기의 연구소장.",
+  statement: "오늘도 정해진 일정에 따라 검사와 실험을 진행합시다.",
 };

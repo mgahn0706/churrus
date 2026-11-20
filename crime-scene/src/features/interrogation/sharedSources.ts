@@ -1,6 +1,6 @@
 import type { InterrogationPhase, InterrogationSource } from "@/types";
 
-export type SharedSourceState = Pick<InterrogationSource, "x" | "y" | "title" | "description" | "password" | "evidence">;
+export type SharedSourceState = Pick<InterrogationSource, "x" | "y" | "title" | "password" | "evidence">;
 
 export interface SharedSource {
   id: string;
@@ -68,7 +68,6 @@ const sourceState = (source: InterrogationSource): SharedSourceState => ({
   x: source.x ?? 50,
   y: source.y ?? 50,
   title: source.title,
-  description: source.description,
   password: source.password,
   evidence: structuredClone(source.evidence),
 });
