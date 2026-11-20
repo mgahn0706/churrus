@@ -21,6 +21,7 @@ import { psychicSuspects, psychicVictim } from "@/fixtures/psychic/suspects";
 import { deriveSharedSources, ensureSharedSourceNumbers, materializeSharedSources, spreadSharedSourcePositions, type SharedSource } from "@/features/interrogation/sharedSources";
 import { deriveSharedQuestions, materializeSharedQuestions, syncSharedQuestionPhases } from "@/features/interrogation/sharedQuestions";
 import { defaultPersonPosition, phasePeople } from "@/features/interrogation/phasePeople";
+import { MAX_INTERROGATION_CLUES } from "@/features/interrogation/engine";
 import type { InterrogationEvidence, InterrogationMapPerson, InterrogationPhase, InterrogationQuestion, InterrogationScript } from "@/types";
 
 const theme = createScenarioTheme("#bd874e", "dark", "Galmuri11, sans-serif");
@@ -106,9 +107,9 @@ const newId = (prefix: string) =>
     : Math.random().toString(36).slice(2, 10)}`;
 const emptyEvidence = (): InterrogationEvidence => ({ id: newId("evidence"), title: "", description: "" });
 
-function Section({ title, action, children, order }: { title: string; action?: ReactNode; children: ReactNode; order?: number }) {
+function Section({ title, action, children, order, target }: { title: string; action?: ReactNode; children: ReactNode; order?: number; target?: string }) {
   return (
-    <Box sx={{ border: "1px solid rgba(231,201,148,.22)", bgcolor: "rgba(11,19,17,.82)", borderRadius: 1, p: { xs: 1.5, md: 2 }, display: "grid", gap: 2, order }}>
+    <Box data-admin-target={target} sx={{ border: "1px solid rgba(231,201,148,.22)", bgcolor: "rgba(11,19,17,.82)", borderRadius: 1, p: { xs: 1.5, md: 2 }, display: "grid", gap: 2, order }}>
       <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 1 }}>
         <Typography component="h2" sx={{ fontSize: 16, fontWeight: 800, color: "#f3dfbb" }}>{title}</Typography>
         {action}
@@ -132,7 +133,7 @@ function AnswerLineEditor({ name, lines, disabled, saved, onChange, onDelete }: 
     onChange([...shownLines.slice(0, index + 1), "", ...shownLines.slice(index + 1)]);
     window.requestAnimationFrame(() => inputRefs.current[index + 1]?.focus());
   };
-  return <Box sx={{ display: "flex", flexDirection: "column", gap: 1, minWidth: 0, height: 290, p: 1.5, bgcolor: "#121d19", border: "1px solid rgba(231,201,148,.22)", borderRadius: 1 }}>
+  return <Box data-admin-person={name} sx={{ display: "flex", flexDirection: "column", gap: 1, minWidth: 0, height: 290, p: 1.5, bgcolor: "#121d19", border: "1px solid rgba(231,201,148,.22)", borderRadius: 1 }}>
     <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 1 }}>
       <Typography sx={{ color: "#f3dfbb", fontSize: 14, fontWeight: 800 }}>{name}</Typography>
       <Typography sx={{ color: "#b8ac98", fontSize: 11 }}>{disabled ? "단서 선택 대기" : saved ? "저장됨" : "답변 없음"}</Typography>
@@ -291,6 +292,58 @@ function downloadText(filename: string, text: string, type: string) {
   window.setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
+type AdminErrorTarget = {
+  view: "phase" | "prologue";
+  phaseIndex?: number;
+  area?: "interrogation" | "dialogue" | "evidence" | "settings";
+  section?: string;
+  personName?: string;
+  clueIds?: string[];
+  sourceId?: string;
+};
+
+function locateAdminError(content: EditableInterrogationContent, error: string): AdminErrorTarget {
+  if (error.startsWith("프롤로그")) return { view: "prologue", section: "prologue" };
+  const finalIndex = content.phases.findIndex((phase) => phase.finalInterrogation);
+  const sharedQuestion = (content.sharedQuestions ?? []).find((question) => {
+    if (error.includes(`: ${question.id}`)) return true;
+    if (!error.startsWith(`${question.suspectName}:`)) return false;
+    if (error.includes("신문 단서를 선택")) return question.clueIds.length === 0;
+    if (error.includes("신문 단서는 최대")) return question.clueIds.length > MAX_INTERROGATION_CLUES;
+    if (error.includes("신문 답변")) return scriptLines(question.base.answer).every((line) => !line.text.trim());
+    return false;
+  });
+  if (sharedQuestion) return {
+    view: "phase", phaseIndex: Math.max(finalIndex, 0), area: "interrogation", section: "interrogation",
+    clueIds: sharedQuestion.clueIds, personName: sharedQuestion.suspectName,
+  };
+  const source = (content.sharedSources ?? []).find((item) =>
+    error.includes(`: ${item.id}`) || Object.values(item.sourceIds).some((id) => error.includes(`: ${id}`)));
+  if (source) return {
+    view: "phase", phaseIndex: Math.max(content.phases.findIndex((phase) => phase.sources.some((item) => item.evidence.id === source.id)), 0),
+    area: "evidence", section: "source", sourceId: source.id,
+  };
+  const phaseIndex = content.phases.findIndex((phase) => error.startsWith(`${phase.title}:`) ||
+    error.startsWith(`${phase.title} ·`) || error.includes(`: ${phase.id}`) ||
+    phase.combinations.some((item) => error.includes(`: ${item.id}`)) ||
+    phase.interrogations.some((item) => item.questions.some((question) => error.includes(`: ${question.id}`))));
+  if (phaseIndex >= 0) {
+    const phase = content.phases[phaseIndex];
+    const area = error.includes("시작 대사") || error.includes("선택지") || error.includes("인물") || error.includes("person")
+      ? "dialogue" : error.includes("에너지") || error.includes("energy") || error.includes("position")
+        ? "settings" : error.includes("question") || error.includes("신문")
+          ? "interrogation" : error.includes("단서 연결") || error.includes("combination") || error.includes("evidence") || error.includes("source")
+            ? "evidence" : "interrogation";
+    const section = area === "dialogue" ? (error.includes("시작 대사") ? "intro" : "dialogue")
+      : area === "evidence" ? (error.includes("combination") || error.includes("단서 연결") ? "combinations" : "evidence")
+        : area === "interrogation" && error.includes("기본 응답") ? "fallback" : area;
+    const personName = phase.interrogations.find((item) => error.includes(item.suspectName))?.suspectName;
+    return { view: "phase", phaseIndex, area, section, personName };
+  }
+  if (error.includes("인물 이름")) return { view: "phase", phaseIndex: 0, area: "dialogue", section: "people" };
+  return { view: "phase", phaseIndex: Math.max(finalIndex, 0), area: "interrogation", section: "interrogation" };
+}
+
 export default function PsychicAdminEditor() {
   const [content, setContent] = useState<EditableInterrogationContent>(() => normalizeMapCoordinates(structuredClone(psychicInterrogationContent)));
   const [loaded, setLoaded] = useState(false);
@@ -303,6 +356,7 @@ export default function PsychicAdminEditor() {
   const [questionSearch, setQuestionSearch] = useState("");
   const [selectedClueIds, setSelectedClueIds] = useState<string[]>([]);
   const [expandedSourceId, setExpandedSourceId] = useState<string | null>(null);
+  const [expandedFallbackIndex, setExpandedFallbackIndex] = useState<number | null>(null);
   const [notice, setNotice] = useState("");
   const [previousDraftAvailable, setPreviousDraftAvailable] = useState(false);
   const importRef = useRef<HTMLInputElement | null>(null);
@@ -378,6 +432,30 @@ export default function PsychicAdminEditor() {
     question.suspectName === name && question.clueIds.length === selectedClueIds.length &&
     question.clueIds.every((id) => selectedClueIds.includes(id)));
   const sourceNumbers = useMemo(() => new Map((content.sharedSources ?? []).map((source) => [source.id, source.number ?? 0])), [content.sharedSources]);
+
+  const goToValidationError = () => {
+    if (!validationError) return;
+    const target = locateAdminError(content, validationError);
+    setView(target.view);
+    if (target.phaseIndex !== undefined) setPhaseIndex(target.phaseIndex);
+    if (target.area) setPhaseArea(target.area);
+    if (target.personName) setPersonName(target.personName);
+    if (target.clueIds) setSelectedClueIds(target.clueIds);
+    if (target.sourceId) setExpandedSourceId(target.sourceId);
+    if (target.section === "fallback" && target.phaseIndex !== undefined) {
+      const answers = content.phases[target.phaseIndex].fallbackAnswers ?? [];
+      const index = answers.findIndex((answer) => scriptLines(answer).every((line) => !line.text.trim()));
+      setExpandedFallbackIndex(index >= 0 ? index : 0);
+    }
+    window.requestAnimationFrame(() => window.requestAnimationFrame(() => {
+      const section = document.querySelector(`[data-admin-target="${target.section ?? target.area ?? target.view}"]`);
+      const element = target.personName && target.area === "interrogation"
+        ? [...document.querySelectorAll("[data-admin-person]")].find((item) => item.getAttribute("data-admin-person") === target.personName) ?? section
+        : section;
+      element?.scrollIntoView({ behavior: "smooth", block: "start" });
+      (element?.querySelector("input:not([disabled]), textarea:not([disabled])") as HTMLElement | null)?.focus({ preventScroll: true });
+    }));
+  };
 
   const update = (edit: (next: EditableInterrogationContent) => void, rebuild: "none" | "questions" | "all" = "none", preferredSourceId?: string) => {
     setContent((previous) => {
@@ -467,7 +545,8 @@ export default function PsychicAdminEditor() {
   const exportCode = () => {
     const error = validateAdminContent(content, suspectNames);
     if (error) {
-      setNotice(error);
+      setValidationError(error);
+      setNotice("");
       return null;
     }
     return toInterrogationTypeScript(content);
@@ -594,9 +673,9 @@ export default function PsychicAdminEditor() {
               <Button size="small" variant="contained" startIcon={<ContentCopyRounded />} onClick={() => void copyCode()}>코드 복사</Button>
             </Box>
           </Box>
-          <Box sx={{ height: 44, overflowY: "auto" }} aria-live="polite">
-            {notice ? <Alert severity="info" onClose={() => setNotice("")} sx={{ py: 0, minHeight: 44 }}>{notice}</Alert>
-              : validationError ? <Alert severity="warning" sx={{ py: 0, minHeight: 44 }}>{validationError}</Alert> : null}
+          <Box sx={{ display: "grid", gap: .5 }} aria-live="polite">
+            {validationError && <Alert severity="warning" action={<Button color="inherit" size="small" onClick={goToValidationError}>수정하러 가기</Button>} sx={{ py: 0, minHeight: 44 }}>{validationError}</Alert>}
+            {notice && <Alert severity="info" onClose={() => setNotice("")} sx={{ py: 0, minHeight: 44 }}>{notice}</Alert>}
           </Box>
           <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "230px minmax(0, 1fr)" }, gap: 2, alignItems: "start" }}>
             <Box component="nav" aria-label="원고 섹션" sx={{ display: "flex", flexDirection: { xs: "row", md: "column" }, gap: .5, overflowX: "auto", p: 1, border: "1px solid rgba(231,201,148,.22)", bgcolor: "rgba(11,19,17,.82)", borderRadius: 1, position: { md: "sticky" }, top: { md: 16 } }}>
@@ -612,7 +691,7 @@ export default function PsychicAdminEditor() {
 
             <Box sx={{ display: "grid", gap: 2, minWidth: 0 }}>
               {view === "prologue" && (
-                <Section title="프롤로그">
+                <Section title="프롤로그" target="prologue">
                   <ScriptEditor label="시작 대사" value={content.prologue} additionalSpeakers={content.people} onChange={(lines) => update((next) => { next.prologue = lines; })} />
                 </Section>
               )}
@@ -646,7 +725,7 @@ export default function PsychicAdminEditor() {
                     ))}
                   </Box>
 
-                  {phaseArea === "settings" && <Section title="페이즈" action={!phase.finalInterrogation && <Button color="error" size="small" onClick={deletePhase}>페이즈 삭제</Button>}>
+                  {phaseArea === "settings" && <Section title="페이즈" target="settings" action={!phase.finalInterrogation && <Button color="error" size="small" onClick={deletePhase}>페이즈 삭제</Button>}>
                     <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr 120px" }, gap: 1 }}>
                       <TextField size="small" label="페이즈 이름" value={phase.title} onChange={(event) => editPhase((next) => { next.title = event.target.value; })} />
                       <TextField size="small" label="시간" value={phase.timeLabel ?? ""} onChange={(event) => editPhase((next) => { next.timeLabel = event.target.value; })} />
@@ -669,9 +748,9 @@ export default function PsychicAdminEditor() {
                   </Section>
                   }
 
-                  {phaseArea === "interrogation" && <Section title={`기본 응답 · ${phase.fallbackAnswers?.length ?? 0}`} order={2} action={<Button size="small" startIcon={<AddRounded />} onClick={() => editPhase((next) => { next.fallbackAnswers ??= []; next.fallbackAnswers.push([""]); })}>응답 추가</Button>}>
+                  {phaseArea === "interrogation" && <Section title={`기본 응답 · ${phase.fallbackAnswers?.length ?? 0}`} target="fallback" order={2} action={<Button size="small" startIcon={<AddRounded />} onClick={() => editPhase((next) => { next.fallbackAnswers ??= []; next.fallbackAnswers.push([""]); })}>응답 추가</Button>}>
                     {(phase.fallbackAnswers ?? []).map((answer, index) => (
-                      <Accordion key={index} disableGutters slotProps={{ transition: { unmountOnExit: true } }} sx={{ bgcolor: "#121d19", color: "#f8edda" }}>
+                      <Accordion key={index} disableGutters expanded={expandedFallbackIndex === index} onChange={(_, expanded) => setExpandedFallbackIndex(expanded ? index : null)} slotProps={{ transition: { unmountOnExit: true } }} sx={{ bgcolor: "#121d19", color: "#f8edda" }}>
                         <AccordionSummary expandIcon={<ExpandMoreRounded sx={{ color: "#d9b77d" }} />}>응답 {index + 1}</AccordionSummary>
                         <AccordionDetails sx={{ display: "grid", gap: 1 }}>
                           <ScriptEditor label="신문 답변" value={answer} hideSpeaker onChange={(lines) => editPhase((next) => { next.fallbackAnswers![index] = lines; })} />
@@ -683,23 +762,22 @@ export default function PsychicAdminEditor() {
                   </Section>
                   }
 
-                  {phaseArea === "evidence" && <Section title={`공유 단서 · ${content.sharedSources?.length ?? 0}`} action={<Button size="small" startIcon={<AddRounded />} onClick={addSharedSource}>단서 추가</Button>}>
+                  {phaseArea === "evidence" && <Section title={`공유 단서 · ${content.sharedSources?.length ?? 0}`} target="evidence" action={<Button size="small" startIcon={<AddRounded />} onClick={addSharedSource}>단서 추가</Button>}>
                     <Typography sx={{ color: "#b8ac98", fontSize: 12 }}>단서마다 표시할 페이즈와 내용이 바뀌기 시작하는 페이즈를 선택하세요. 위치는 각 페이즈의 설정 탭 지도에서 옮길 수 있습니다.</Typography>
                     {(content.sharedSources ?? []).map((source) => (
-                      <SharedSourceEditor
-                        key={source.id}
+                      <Box key={source.id} data-admin-target={expandedSourceId === source.id ? "source" : undefined}><SharedSourceEditor
                         source={source}
                         phases={content.phases}
                         expanded={expandedSourceId === source.id}
                         onExpandedChange={(expanded) => setExpandedSourceId(expanded ? source.id : null)}
                         onChange={(changed) => editSharedSource(source.id, (item) => Object.assign(item, changed))}
                         onDelete={() => update((next) => { next.sharedSources = next.sharedSources?.filter((item) => item.id !== source.id); }, "all")}
-                      />
+                      /></Box>
                     ))}
                   </Section>
                   }
 
-                  {phaseArea === "evidence" && phase.combinations.length > 0 && <Section title={`기존 단서 합성 · ${phase.combinations.length}`}>
+                  {phaseArea === "evidence" && phase.combinations.length > 0 && <Section title={`기존 단서 합성 · ${phase.combinations.length}`} target="combinations">
                     {phase.combinations.map((combination, index) => (
                       <Accordion key={index} disableGutters slotProps={{ transition: { unmountOnExit: true } }} sx={{ bgcolor: "#121d19", color: "#f8edda" }}>
                         <AccordionSummary expandIcon={<ExpandMoreRounded sx={{ color: "#d9b77d" }} />}>{combination.result.title || `연결 ${index + 1}`}</AccordionSummary>
@@ -718,7 +796,7 @@ export default function PsychicAdminEditor() {
                     ))}
                   </Section>}
 
-                  {phaseArea === "dialogue" && <Section title="등장 인물">
+                  {phaseArea === "dialogue" && <Section title="등장 인물" target="people">
                     <Typography sx={{ color: "#b8ac98", fontSize: 12 }}>이 페이즈에 보일 인물을 선택하세요. 위치는 설정 탭 지도에서 파란 표시를 끌어 옮깁니다.</Typography>
                     <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
                       {personCatalog.map((entry) => <FormControlLabel key={entry.name} control={<Checkbox size="small" checked={visibleNames.has(entry.name)} onChange={(event) => togglePhasePerson(entry.name, event.target.checked)} />} label={entry.name} sx={{ "& .MuiFormControlLabel-label": { fontSize: 13 } }} />)}
@@ -735,11 +813,11 @@ export default function PsychicAdminEditor() {
                     </Box>)}
                   </Section>}
 
-                  {phaseArea === "dialogue" && <Section title="시작 대사">
+                  {phaseArea === "dialogue" && <Section title="시작 대사" target="intro">
                     <ScriptEditor label="페이즈 시작 대사" value={phase.intro} additionalSpeakers={content.people} onChange={(lines) => editPhase((next) => { next.intro = lines; })} />
                   </Section>}
 
-                  {(phaseArea === "dialogue" || phaseArea === "interrogation") && <Section title={phaseArea === "dialogue" ? "인물 대화" : "단서 신문"} order={1}>
+                  {(phaseArea === "dialogue" || phaseArea === "interrogation") && <Section title={phaseArea === "dialogue" ? "인물 대화" : "단서 신문"} target={phaseArea} order={1}>
                     {phaseArea === "interrogation" && <Box sx={{ display: "grid", gap: 2 }}>
                       <EvidenceCombinationPicker options={clueOptions} selectedIds={selectedClueIds} onChange={setSelectedClueIds} />
                       <Box sx={{ display: "grid", gridTemplateColumns: { xs: "minmax(0, 1fr)", md: "repeat(3, minmax(0, 1fr))" }, gap: 1 }}>
