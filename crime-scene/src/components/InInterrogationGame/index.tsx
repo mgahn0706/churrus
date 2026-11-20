@@ -20,6 +20,7 @@ import {
   findInterrogationQuestion,
   MAX_INTERROGATION_CLUES,
   evidenceInstanceId,
+  evidenceLogicalId,
   sourceEvidenceInstanceId,
   getCollectedEvidence,
   initialInterrogationProgress,
@@ -343,7 +344,7 @@ export default function InInterrogationGame({
   };
 
   const askSelectedEvidence = (name: string) => {
-    if (!phase || questionEvidenceIds.length === 0 || questionEvidenceIds.length > MAX_INTERROGATION_CLUES) return;
+    if (!phase || questionEvidenceIds.length === 0 || questionEvidenceIds.length > MAX_INTERROGATION_CLUES || new Set(questionEvidenceIds.map(evidenceLogicalId)).size !== questionEvidenceIds.length) return;
     if (scenario.people?.some((person) => person.name === name && person.canInterrogate === false)) return;
     const interrogation = phase.interrogations.find((item) => item.suspectName === name);
     if (!interrogation) return;
@@ -376,7 +377,7 @@ export default function InInterrogationGame({
 
   const toggleQuestionEvidence = useCallback((id: string) => {
     setQuestionEvidenceIds((previous) =>
-      previous.includes(id) ? previous.filter((item) => item !== id) : previous.length < MAX_INTERROGATION_CLUES ? [...previous, id] : previous,
+      previous.includes(id) ? previous.filter((item) => item !== id) : previous.length < MAX_INTERROGATION_CLUES && !previous.some((item) => evidenceLogicalId(item) === evidenceLogicalId(id)) ? [...previous, id] : previous,
     );
   }, []);
 

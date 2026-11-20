@@ -27,6 +27,9 @@ export const initialInterrogationProgress: InterrogationProgress = {
 export const evidenceInstanceId = (phaseId: string, evidenceId: string) =>
   `${phaseId}::${evidenceId}`;
 
+export const evidenceLogicalId = (id: string) =>
+  id.includes("::") ? id.slice(id.indexOf("::") + 2) : id;
+
 export const sourceEvidenceInstanceId = (phaseId: string, source: { versionPhaseId?: string; evidence: { id: string } }) =>
   evidenceInstanceId(source.versionPhaseId ?? phaseId, source.evidence.id);
 
@@ -105,7 +108,7 @@ export function findInterrogationQuestion(
   if (
     selectedEvidenceIds.length === 0 ||
     selectedEvidenceIds.length > MAX_INTERROGATION_CLUES ||
-    new Set(selectedEvidenceIds).size !== selectedEvidenceIds.length
+    new Set(selectedEvidenceIds.map(evidenceLogicalId)).size !== selectedEvidenceIds.length
   ) return undefined;
   const selectedKey = [...selectedEvidenceIds].sort().join("\u0000");
   const exact = interrogation.questions.find((question) => {
@@ -114,14 +117,12 @@ export function findInterrogationQuestion(
       [...required].sort().join("\u0000") === selectedKey;
   });
   if (exact || !allowEarlierVersions) return exact;
-  const logicalId = (id: string) => id.includes("::") ? id.slice(id.indexOf("::") + 2) : id;
-  const logicalIds = selectedEvidenceIds.map(logicalId);
-  if (new Set(logicalIds).size !== logicalIds.length) return undefined;
+  const logicalIds = selectedEvidenceIds.map(evidenceLogicalId);
   const logicalKey = [...logicalIds].sort().join("\u0000");
   return interrogation.questions.find((question) => {
     const required = questionEvidenceIds(question);
     return required.length === selectedEvidenceIds.length &&
-      required.map(logicalId).sort().join("\u0000") === logicalKey;
+      required.map(evidenceLogicalId).sort().join("\u0000") === logicalKey;
   });
 }
 

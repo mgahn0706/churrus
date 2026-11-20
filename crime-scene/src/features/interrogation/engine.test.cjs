@@ -129,6 +129,11 @@ test("마지막 신문에서는 이전 페이즈에 모은 같은 단서의 버�
   assert.equal(findInterrogationQuestion(interrogation, ["morning::clue-a", "morning::clue-b"], true)?.id, "final-question");
   assert.equal(findInterrogationQuestion(interrogation, ["morning::clue-a", "morning::clue-b"]), undefined);
   assert.equal(findInterrogationQuestion(interrogation, ["morning::clue-a", "evening::clue-a"], true), undefined);
+  const duplicateVersionQuestion = {
+    ...interrogation,
+    questions: [{ id: "duplicate-versions", evidenceIds: ["morning::clue-a", "evening::clue-a"], answer: "답변" }],
+  };
+  assert.equal(findInterrogationQuestion(duplicateVersionQuestion, ["morning::clue-a", "evening::clue-a"]), undefined);
 });
 
 test("조합과 심문을 모두 해결해야 다음 페이즈가 열린다", () => {
