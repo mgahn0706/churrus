@@ -278,13 +278,14 @@ export const scenarioCatalog = defineScenarioCatalog([
     id: "psychic",
     title: "초능력자 살인사건",
     englishTitle: "Murder of the Psychic",
-    creators: [],
+    creators: ["강재호", "고민우", "오수진", "이우재", "이지연", "안민규"],
     gameType: "INTERROGATION",
     emoji: "🔮",
     histories: [],
     backgroundImage: "/image/scenario/psychic/psychic-main.png",
     isInDevelopment: false,
-    description: "초능력 알약을 먹은 아침부터 연구소를 조사하고, 자정의 사건을 추리한다.",
+    description:
+      "초능력 알약을 먹은 아침부터 연구소를 조사하고, 자정의 사건을 추리하라.",
     places: [],
     suspects: psychicSuspects,
     victims: [psychicVictim],
@@ -294,11 +295,19 @@ export const scenarioCatalog = defineScenarioCatalog([
     id: "circus",
     title: "인간 서커스 살인사건",
     englishTitle: "Murder at the Human Circus",
-    creators: [],
+    creators: [
+      "김혜린",
+      "권현수",
+      "김혁수",
+      "박해율",
+      "장현준",
+      "정해찬",
+      "임채민",
+    ],
     gameType: "CLUE",
     histories: [],
     backgroundImage: "/image/scenario/circus/circus-main.png",
-    isInDevelopment: true,
+    isInDevelopment: false,
     description: "인간 서커스의 단장 프레디가 숨진 채 발견되었다.",
     places: ["ring", "backstage"],
     suspects: circusSuspects,
@@ -400,7 +409,10 @@ export const createTextScenario = (
 
 export const createInterrogationScenario = (
   id: ScenarioId,
-  content: Pick<InterrogationScenarioType, "prologue" | "phases" | "fallbackAnswers" | "people">
+  content: Pick<
+    InterrogationScenarioType,
+    "prologue" | "phases" | "fallbackAnswers" | "people"
+  >
 ): InterrogationScenarioType => {
   const scenario = getScenarioSummary(id);
 
@@ -411,7 +423,9 @@ export const createInterrogationScenario = (
   validateInterrogationPhases(
     id,
     content.phases,
-    [...scenario.suspects, ...scenario.victims, ...(content.people ?? [])].map((person) => person.name)
+    [...scenario.suspects, ...scenario.victims, ...(content.people ?? [])].map(
+      (person) => person.name
+    )
   );
 
   return { ...scenario, gameType: "INTERROGATION", ...content };
