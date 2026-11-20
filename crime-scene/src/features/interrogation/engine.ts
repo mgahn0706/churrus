@@ -1,4 +1,4 @@
-import type { InterrogationEvidence, InterrogationPhase, InterrogationQuestion } from "@/types";
+import type { InterrogationEvidence, InterrogationPhase, InterrogationQuestion, InterrogationScript } from "@/types";
 
 export interface InterrogationProgress {
   started: boolean;
@@ -99,6 +99,15 @@ export function findCombination(
 const questionEvidenceIds = (question: InterrogationQuestion) =>
   question.evidenceIds ?? (question.evidenceId ? [question.evidenceId] : []);
 export const MAX_INTERROGATION_CLUES = 3;
+
+export function interrogationFallbackAnswers(
+  phase: InterrogationPhase,
+  suspectName: string,
+  scenarioAnswers: InterrogationScript[] = [],
+): InterrogationScript[] {
+  const personal = phase.interrogations.find((item) => item.suspectName === suspectName)?.fallbackAnswers;
+  return personal?.length ? personal : phase.fallbackAnswers?.length ? phase.fallbackAnswers : scenarioAnswers;
+}
 
 export function findInterrogationQuestion(
   interrogation: InterrogationPhase["interrogations"][number],

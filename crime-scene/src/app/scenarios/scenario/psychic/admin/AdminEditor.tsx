@@ -338,6 +338,8 @@ function locateAdminError(content: EditableInterrogationContent, error: string):
       : area === "evidence" ? (error.includes("combination") || error.includes("단서 연결") ? "combinations" : "evidence")
         : area === "interrogation" && error.includes("기본 응답") ? "fallback" : area;
     const personName = phase.interrogations.find((item) => error.includes(item.suspectName))?.suspectName;
+    if (personName && error.includes("기본 응답")) return { view: "phase", phaseIndex, area: "dialogue", section: "person-fallback", personName };
+    if (error.includes("기본 응답") && !phase.finalInterrogation) return { view: "phase", phaseIndex, area: "dialogue", section: "fallback" };
     return { view: "phase", phaseIndex, area, section, personName };
   }
   if (error.includes("인물 이름")) return { view: "phase", phaseIndex: 0, area: "dialogue", section: "people" };
@@ -450,7 +452,7 @@ export default function PsychicAdminEditor() {
     window.requestAnimationFrame(() => window.requestAnimationFrame(() => {
       const section = document.querySelector(`[data-admin-target="${target.section ?? target.area ?? target.view}"]`);
       const element = target.personName && target.area === "interrogation"
-        ? [...document.querySelectorAll("[data-admin-person]")].find((item) => item.getAttribute("data-admin-person") === target.personName) ?? section
+        ? [...(section?.querySelectorAll("[data-admin-person]") ?? [])].find((item) => item.getAttribute("data-admin-person") === target.personName) ?? section
         : section;
       element?.scrollIntoView({ behavior: "smooth", block: "start" });
       (element?.querySelector("input:not([disabled]), textarea:not([disabled])") as HTMLElement | null)?.focus({ preventScroll: true });
@@ -748,7 +750,7 @@ export default function PsychicAdminEditor() {
                   </Section>
                   }
 
-                  {phaseArea === "interrogation" && <Section title={`기본 응답 · ${phase.fallbackAnswers?.length ?? 0}`} target="fallback" order={2} action={<Button size="small" startIcon={<AddRounded />} onClick={() => editPhase((next) => { next.fallbackAnswers ??= []; next.fallbackAnswers.push([""]); })}>응답 추가</Button>}>
+                  {(phaseArea === "dialogue" || phaseArea === "interrogation") && <Section title={`페이즈 공통 기본 응답 · ${phase.fallbackAnswers?.length ?? 0}`} target="fallback" order={2} action={<Button size="small" startIcon={<AddRounded />} onClick={() => editPhase((next) => { next.fallbackAnswers ??= []; next.fallbackAnswers.push([""]); })}>응답 추가</Button>}>
                     {(phase.fallbackAnswers ?? []).map((answer, index) => (
                       <Accordion key={index} disableGutters expanded={expandedFallbackIndex === index} onChange={(_, expanded) => setExpandedFallbackIndex(expanded ? index : null)} slotProps={{ transition: { unmountOnExit: true } }} sx={{ bgcolor: "#121d19", color: "#f8edda" }}>
                         <AccordionSummary expandIcon={<ExpandMoreRounded sx={{ color: "#d9b77d" }} />}>응답 {index + 1}</AccordionSummary>
@@ -844,6 +846,20 @@ export default function PsychicAdminEditor() {
                     {phaseArea === "dialogue" && person && (
                       <>
                         <ScriptEditor label={`${person.suspectName} 기본 대화`} value={person.conversation} defaultSpeaker={person.suspectName} additionalSpeakers={content.people} onChange={(lines) => editPhase((next) => { next.interrogations[activePersonIndex].conversation = lines; })} />
+                        <Box data-admin-target="person-fallback" sx={{ display: "grid", gap: 1.5, p: 1.5, border: "1px solid rgba(231,201,148,.22)" }}>
+                          <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 1 }}>
+                            <Typography sx={{ color: "#d9b77d", fontSize: 13, fontWeight: 800 }}>{person.suspectName} 기본 신문 답변</Typography>
+                            <Button size="small" startIcon={<AddRounded />} onClick={() => editPhase((next) => { next.interrogations[activePersonIndex].fallbackAnswers ??= []; next.interrogations[activePersonIndex].fallbackAnswers!.push([""]); })}>답변 추가</Button>
+                          </Box>
+                          <Typography sx={{ color: "#b8ac98", fontSize: 12 }}>일치하는 단서 조합이 없을 때 사용합니다. 여러 개면 무작위로 고릅니다.</Typography>
+                          {(person.fallbackAnswers ?? []).map((answer, index) => (
+                            <Box key={index} sx={{ display: "grid", gap: .5 }}>
+                              <ScriptEditor label={`기본 답변 ${index + 1}`} value={answer} hideSpeaker onChange={(lines) => editPhase((next) => { next.interrogations[activePersonIndex].fallbackAnswers![index] = lines; })} />
+                              <Button color="error" size="small" sx={{ justifySelf: "end" }} onClick={() => editPhase((next) => { next.interrogations[activePersonIndex].fallbackAnswers!.splice(index, 1); })}>답변 삭제</Button>
+                            </Box>
+                          ))}
+                          {!person.fallbackAnswers?.length && <Typography sx={{ color: "#9b927f", fontSize: 12 }}>설정하지 않으면 페이즈 공통 기본 응답을 사용합니다.</Typography>}
+                        </Box>
                         <Box sx={{ display: "grid", gap: 1 }}>
                           <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                             <Typography sx={{ color: "#d9b77d", fontSize: 13, fontWeight: 800 }}>대화 선택지 · {person.conversationChoices?.length ?? 0}</Typography>

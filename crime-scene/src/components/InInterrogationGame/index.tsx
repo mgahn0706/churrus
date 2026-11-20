@@ -18,6 +18,7 @@ import { createScenarioTheme } from "@/components/createScenarioTheme";
 import {
   findCombination,
   findInterrogationQuestion,
+  interrogationFallbackAnswers,
   MAX_INTERROGATION_CLUES,
   evidenceInstanceId,
   evidenceLogicalId,
@@ -361,9 +362,7 @@ export default function InInterrogationGame({
     }
     setSelectedSuspectName(name);
     setView("interrogation");
-    const fallbackAnswers = phase.fallbackAnswers?.length
-      ? phase.fallbackAnswers
-      : scenario.fallbackAnswers ?? [];
+    const fallbackAnswers = interrogationFallbackAnswers(phase, name, scenario.fallbackAnswers);
     const answer = question?.answer ?? fallbackAnswers[Math.floor(Math.random() * fallbackAnswers.length)]
       ?? "그 단서에 대해서는 할 말이 없습니다.";
     queueDialogue(asDialogueSequence(

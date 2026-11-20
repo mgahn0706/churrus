@@ -75,6 +75,9 @@ export function validateAdminContent(
       return `${phase.title}: 페이즈 시작 대사를 입력하세요.`;
     }
     for (const interrogation of phase.interrogations) {
+      if (interrogation.fallbackAnswers?.some((answer) => scriptLines(answer).every((line) => !line.text.trim()))) {
+        return `${phase.title} · ${interrogation.suspectName}: 기본 응답 대사를 입력하세요.`;
+      }
       const choiceIds = new Set<string>();
       for (const choice of interrogation.conversationChoices ?? []) {
         if (!choice.id || choiceIds.has(choice.id)) {
@@ -137,6 +140,7 @@ export function isEditableContent(value: unknown): value is EditableInterrogatio
   const interrogation = (item: unknown) => record(item) &&
     typeof item.suspectName === "string" &&
     (item.conversation === undefined || script(item.conversation)) &&
+    (item.fallbackAnswers === undefined || (Array.isArray(item.fallbackAnswers) && item.fallbackAnswers.every(script))) &&
     (item.conversationChoices === undefined || (Array.isArray(item.conversationChoices) && item.conversationChoices.every(choice))) &&
     Array.isArray(item.questions) && item.questions.every(question);
   const location = (item: unknown) => record(item) &&

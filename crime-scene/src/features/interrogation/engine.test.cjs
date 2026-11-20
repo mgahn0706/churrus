@@ -3,6 +3,7 @@ const test = require("node:test");
 const {
   findCombination,
   findInterrogationQuestion,
+  interrogationFallbackAnswers,
   evidenceInstanceId,
   getCollectedEvidence,
   initialInterrogationProgress,
@@ -134,6 +135,20 @@ test("마지막 신문에서는 이전 페이즈에 모은 같은 단서의 버�
     questions: [{ id: "duplicate-versions", evidenceIds: ["morning::clue-a", "evening::clue-a"], answer: "답변" }],
   };
   assert.equal(findInterrogationQuestion(duplicateVersionQuestion, ["morning::clue-a", "evening::clue-a"]), undefined);
+});
+
+test("기본 신문 답변은 인물, 페이즈, 시나리오 순서로 사용한다", () => {
+  const configured = {
+    ...phase,
+    fallbackAnswers: ["페이즈 답변"],
+    interrogations: [
+      { suspectName: "실험체 A", fallbackAnswers: ["A 답변"], questions: [] },
+      { suspectName: "실험체 B", questions: [] },
+    ],
+  };
+  assert.deepEqual(interrogationFallbackAnswers(configured, "실험체 A", ["공통 답변"]), ["A 답변"]);
+  assert.deepEqual(interrogationFallbackAnswers(configured, "실험체 B", ["공통 답변"]), ["페이즈 답변"]);
+  assert.deepEqual(interrogationFallbackAnswers({ ...configured, fallbackAnswers: [] }, "실험체 B", ["공통 답변"]), ["공통 답변"]);
 });
 
 test("조합과 심문을 모두 해결해야 다음 페이즈가 열린다", () => {

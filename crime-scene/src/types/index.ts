@@ -195,6 +195,7 @@ export interface InterrogationPhase {
     suspectName: string;
     conversation?: InterrogationScript;
     conversationChoices?: InterrogationConversationChoice[];
+    fallbackAnswers?: InterrogationScript[];
     questions: InterrogationQuestion[];
   }[];
   requiredCombinationIds: string[];
