@@ -1,0 +1,88 @@
+import type { ClueInterrogation } from "@/types";
+
+export const circusInterrogations: ClueInterrogation[] = [
+  {
+    id: "rody-1",
+    suspectName: "로디",
+    prompt: "인간 생체 실험을 진행 중이다.",
+    requiredReferenceIds: ["17-a", "17-b"],
+    result: { referenceId: "35", title: "로디의 진술 1", description: "저는 몰래 인간들을 이용해 연구를 진행 중이었습니다. 쓸모없는 것들을 이렇게라도 써주겠다는데 무슨 문제라도 있습니까? 가끔 실패해서 폐기물이 탄생하긴 하지만 뭐 대체로 재밌는 결과가 많이 나오죠." },
+  },
+  {
+    id: "rody-2",
+    suspectName: "로디",
+    prompt: "이상식욕을 가지고 있다.",
+    requiredReferenceIds: ["16", "28", "41"],
+    result: { referenceId: "36", title: "로디의 진술 2", description: "그렇습니다. 저는 수인 고기를 먹는 것을 좋아합니다. 한 번 먹기 시작한 후로 그 쫄깃하고 야들한 식감을 잊을 수가 없더군요. 관심 있으면 연락 주시죠. 흐흐흐.." },
+  },
+  {
+    id: "rody-3",
+    suspectName: "로디",
+    prompt: "사건 당일 트럭에서 단장에게 폐기 인간을 주고 수인 시체를 제공받았다.",
+    requiredReferenceIds: ["25-a", "27"],
+    result: { referenceId: "37", title: "로디의 진술 3", description: "계약 말입니까? 사실 계약이라기보단 각자 필요한 걸 주고받은 것뿐이죠. 저는 도덕적인 수인이라 수인을 죽일 수는 없단 말이죠." },
+  },
+  {
+    id: "trixie-1",
+    suspectName: "트릭시",
+    prompt: "토끼굴을 통해 서커스에 무단 침입하였다.",
+    requiredReferenceIds: ["22", "23"],
+    result: { referenceId: "39", title: "트릭시의 진술 1", description: "네. 저는 이 서커스에 몰래 들어왔어요. 이런 역겨운 공연에 제 돈 한 푼도 쓰기 아까운걸요? 어디서 표를 구하는지도 잘 모르겠고…" },
+  },
+  {
+    id: "trixie-2",
+    suspectName: "트릭시",
+    prompt: "단장실에서 단장에게 입막음의 대가로 돈을 받았다.",
+    requiredReferenceIds: ["26-a", "18", "49"],
+    result: { referenceId: "40", title: "트릭시의 진술 2", description: "아 이거요? 이건 어… 단장 자식이 돈으로 저를 회유하려 하길래 일단 받는 척하고 이 서커스 밖으로 빠져나온 다음에 공론화하려고 했죠! …혹시 제 돈을 뺏어갈 생각은 아니시죠?" },
+  },
+  {
+    id: "trixie-3",
+    suspectName: "트릭시",
+    prompt: "로디가 수인을 뜯어먹은 이후의 모습을 포착했다.",
+    requiredReferenceIds: ["50"],
+    result: { referenceId: "41", title: "트릭시의 진술 3", description: "으… 정말 무서운 광경이었어요. 저 여우 놈이 헝클어진 모습으로 입에 피를 잔뜩 묻히고 서 있던 거 있죠?! 제가 한마디 하려다가 급한 일이 있어서… 제가 말했다는 말은 하지 말아주세요!" },
+  },
+  {
+    id: "trixie-4",
+    suspectName: "트릭시",
+    prompt: "인간 우리를 열었다.",
+    requiredReferenceIds: ["7", "26-e"],
+    result: { referenceId: "42", title: "트릭시의 진술 4", description: "오 저 인간들 정말 불쌍하지 않나요?? 밥은 제때 챙겨주는 건지… 그래서 저 가여운 아이들을 위해 우리를 열고 자유를 선사했죠! 근데 지능이 낮아서인지 가만히 있더라고요. 정말 답답하다니까요. 누군가 나타나지만 않았어도 무사히 해방시켜주는 건데 아쉽네요." },
+  },
+  {
+    id: "reynold-1",
+    suspectName: "레이놀드",
+    prompt: "단장의 살인 리스트를 목격하고 그 의미를 이해하였다.",
+    requiredReferenceIds: ["15-a", "10", "44"],
+    result: { referenceId: "43", title: "레이놀드의 진술 1", description: "여기 적힌 동물들은 전부 실종되거나 사고사 처리된 서커스 직원들입니다. 정황상 여기 적힌 ‘사자’는 저일 겁니다. 단장님이 저를 죽일 계획이었다니… 얼마나 믿고 따랐는데! 크릉.. 하지만 저는 방금 전에 알았습니다! 그전까지는 전혀 몰랐습니다. 정말 결백해요." },
+  },
+  {
+    id: "reynold-2",
+    suspectName: "레이놀드",
+    prompt: "단장을 도와 서커스 직원들을 살해했다.",
+    requiredReferenceIds: ["14", "51"],
+    result: { referenceId: "44", title: "레이놀드의 진술 2", description: "네. 제가 했습니다. 왜 그랬냐고요? 단장님이 그렇게 하라고 하셨거든요. 이러면 다 잘 될 거라면서… 실제로 이 서커스는 매우 흥행하고 있지 않습니까?" },
+  },
+  {
+    id: "boss-1",
+    suspectName: "빅 보스",
+    prompt: "서커스에 대규모 자금을 투자하고 ‘인간 처형식’을 요구하였다.",
+    requiredReferenceIds: ["15-b", "31"],
+    result: { referenceId: "45", title: "보스의 진술 1", description: "이런 수생을 살다 보면 웬만한 자극에는 반응이 오지 않는단 말이지. 고통의 선율, 영롱한 선혈의 빛! 이 얼마나 예술적이지 아니한가." },
+  },
+  {
+    id: "boss-2",
+    suspectName: "빅 보스",
+    prompt: "단장이 도망갈 계획이라는 것을 눈치챘다.",
+    requiredReferenceIds: ["6", "30", "34"],
+    result: { referenceId: "47", title: "보스의 진술 2", description: "그래 도망칠 생각이었던 게지? 나와 비슷한 취향을 가진 동지라고 생각했는데 정말 실망이구만." },
+  },
+  {
+    id: "boss-3",
+    suspectName: "빅 보스",
+    prompt: "‘인간 처형식’이 어떻게 준비되는지 알고 있다.",
+    requiredReferenceIds: ["19", "32", "46"],
+    result: { referenceId: "48", title: "보스의 진술 3", description: "무언가를 진심으로 좋아하면 그 모든 것을 알고 싶어진다는 말 들어봤나? 나에게는 그 무언가가 이 서커스의 피날레라네." },
+  },
+];

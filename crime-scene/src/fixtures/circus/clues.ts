@@ -147,6 +147,19 @@ const ringClues: BasicDraft[] = [
     description: "무대 구조도다.",
     icon: "document",
   },
+  {
+    id: 34,
+    title: "깃털",
+    location: "무대 위",
+    description: "검은 깃털이 무대 구석에 떨어져 있다.",
+  },
+  {
+    id: 46,
+    title: "인간 종교 서적",
+    location: "VIP실",
+    description: "빅 보스가 오늘의 공연 연출을 위해 참고한 서적이다. 십자가에 못 박혀 불타 죽는 부분에 밑줄이 쳐져 있다.",
+    icon: "document",
+  },
 ];
 
 const backstageClues: BasicDraft[] = [
@@ -275,6 +288,40 @@ const backstageClues: BasicDraft[] = [
       "“보스는 요즘 공연을 지루해하는 것 같아요. 옛날에 인간 서커스를 기획하실 때는 의욕이 가득해서 준비 과정도 직접 확인하셨는데 말이죠.”",
     icon: "document",
   },
+  {
+    id: 38,
+    title: "마취약",
+    location: "트럭",
+    description: "연구소장의 특제 마취약이다. 사용하면 흔적이 남지 않는다.",
+  },
+  {
+    id: 49,
+    title: "사진기",
+    location: "단장실",
+    description: "서커스를 촬영한 사진들이 들어 있다. 인간의 비중이 높다.",
+    icon: "camera",
+  },
+  {
+    id: 50,
+    title: "경비원의 증언 1",
+    location: "경비실",
+    description: "“20:50쯤이었을까요. 평소처럼 순찰을 돌고 있는데 수상한 수인 하나가 땀을 뻘뻘 흘리며 정신없이 도망가길래 일단 제압했습니다. 조금 진정하니까 어딘가 불안한 듯 계속 주변을 살피던데요.”",
+    icon: "document",
+  },
+  {
+    id: 51,
+    title: "경비원의 증언 2",
+    location: "경비실",
+    description: "“여기 인간들이요? 항상 같은 행동을 정확하게 반복하죠. 한 치의 오차도 없습니다. 경력 있는 경비원들도 그러기는 힘든데… 꽤나 신기하지 않습니까?”",
+    icon: "document",
+  },
+  {
+    id: 52,
+    title: "문자 내역(로디 → 프레디)",
+    location: "단장실",
+    description: "“확인했습니다.”",
+    icon: "document",
+  },
 ];
 
 const additionalClues: ClueType[] = [
@@ -395,6 +442,10 @@ const clueNumberByDraftId = new Map(
 export const circusClues: ClueType[] = orderedClues.map((clue, index) => ({
   ...clue,
   id: index + 1,
+  referenceId:
+    clue.type === "additional"
+      ? `${Math.floor(clue.id / 100)}-${String.fromCharCode(96 + (clue.id % 100))}`
+      : String(clue.id),
   place:
     typeof clue.place === "number"
       ? clueNumberByDraftId.get(clue.place)!

@@ -8,7 +8,7 @@ export const circusSuspects: SuspectType[] = [
     gender: "male",
     job: "연구소장",
     description: "연구소장",
-    statement: "아직 공개된 진술이 없습니다.",
+    statement: "닝닝닝닝링닝닝",
   },
   {
     name: "트릭시",
@@ -17,7 +17,7 @@ export const circusSuspects: SuspectType[] = [
     gender: "female",
     job: "관객",
     description: "관객",
-    statement: "아직 공개된 진술이 없습니다.",
+    statement: "깡총깡총",
   },
   {
     name: "레이놀드",
@@ -26,7 +26,7 @@ export const circusSuspects: SuspectType[] = [
     gender: "male",
     job: "사육사",
     description: "사육사",
-    statement: "아직 공개된 진술이 없습니다.",
+    statement: "어흥.",
   },
   {
     name: "빅 보스",
@@ -35,7 +35,7 @@ export const circusSuspects: SuspectType[] = [
     gender: "male",
     job: "투자자",
     description: "VIP",
-    statement: "아직 공개된 진술이 없습니다.",
+    statement: "까악까악.",
   },
 ];
 

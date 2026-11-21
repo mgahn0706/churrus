@@ -308,7 +308,7 @@ export const scenarioCatalog = defineScenarioCatalog([
     histories: [],
     backgroundImage: "/image/scenario/circus/circus-main.png",
     isInDevelopment: false,
-    description: "인간 서커스의 단장 프레디가 숨진 채 발견되었다.",
+    description: "인간 처형식 무대에서 불타 숨진 서커스 단장. 누가 그를 죽였을까?",
     places: ["ring", "backstage"],
     suspects: circusSuspects,
     victims: [circusVictim],
@@ -338,7 +338,7 @@ export const createClueScenario = (
   content: Pick<
     ClueScenarioType,
     "clues" | "prologue" | "movePlaceButtons" | "additionalQuestions"
-  >
+  > & Pick<ClueScenarioType, "interrogations">
 ): ClueScenarioType => {
   const scenario = getScenarioSummary(id);
 
@@ -371,6 +371,28 @@ export const createClueScenario = (
       throw new Error(
         `Unknown move place in ${id}: ${move.from} -> ${move.to}`
       );
+    }
+  }
+
+  if (content.interrogations?.length) {
+    const referenceIds = new Set(content.clues.map((clue) => clue.referenceId).filter(Boolean));
+    const questionIds = new Set<string>();
+    const suspectNames = new Set(scenario.suspects.map((suspect) => suspect.name));
+    for (const question of content.interrogations) {
+      if (questionIds.has(question.id) || !suspectNames.has(question.suspectName)) {
+        throw new Error(`Invalid interrogation in ${id}: ${question.id}`);
+      }
+      questionIds.add(question.id);
+      if (referenceIds.has(question.result.referenceId)) {
+        throw new Error(`Duplicate interrogation result in ${id}: ${question.result.referenceId}`);
+      }
+      referenceIds.add(question.result.referenceId);
+    }
+    for (const question of content.interrogations) {
+      const required = question.requiredReferenceIds;
+      if (required.length < 1 || required.length > 3 || new Set(required).size !== required.length || required.some((referenceId) => !referenceIds.has(referenceId))) {
+        throw new Error(`Invalid interrogation clues in ${id}: ${question.id}`);
+      }
     }
   }
 

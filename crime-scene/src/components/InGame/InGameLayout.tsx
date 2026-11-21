@@ -16,6 +16,7 @@ import MobileWidthAlertModal from "../MobileWidthAlertModal";
 import { ClueDetailView } from "./ClueDetailView";
 import { ClueButton } from "./ClueButton";
 import ClueDashboardModal from "./ClueDashboardModal";
+import ClueInterrogationModal from "./ClueInterrogationModal";
 import MovePlaceButton from "./MovePlaceButton";
 import ClueUnlockModal from "./ClueUnlockModal";
 import PrologueModal from "./PrologueModal";
@@ -54,6 +55,7 @@ export default function InGameLayout({ scenario }: InGameLayoutProps) {
   const [openedClueId, setOpenedClueId] = useState<number | null>(null);
   const [currentPlace, setCurrentPlace] = useState(scenario.places[0] ?? "");
   const [checkedClueList, setCheckedClueList] = useState<number[]>([]);
+  const [isClueProgressLoaded, setIsClueProgressLoaded] = useState(false);
   const [openedModal, setOpenedModal] = useState<
     | "prologue"
     | "suspects"
@@ -72,6 +74,27 @@ export default function InGameLayout({ scenario }: InGameLayoutProps) {
   useEffect(() => {
     document.title = `협동 크라임씬: ${scenario.title}`;
   }, [scenario.title]);
+
+  useEffect(() => {
+    if (scenario.id === "circus") {
+      try {
+        const saved: unknown = JSON.parse(localStorage.getItem("circus-checked-clues-v1") ?? "[]");
+        if (Array.isArray(saved)) {
+          const validIds = new Set(scenario.clues.map((clue) => clue.id));
+          setCheckedClueList(saved.filter((id): id is number => typeof id === "number" && validIds.has(id)));
+        }
+      } catch {
+        setCheckedClueList([]);
+      }
+    }
+    setIsClueProgressLoaded(true);
+  }, [scenario.id, scenario.clues]);
+
+  useEffect(() => {
+    if (scenario.id === "circus" && isClueProgressLoaded) {
+      localStorage.setItem("circus-checked-clues-v1", JSON.stringify(checkedClueList));
+    }
+  }, [scenario.id, checkedClueList, isClueProgressLoaded]);
 
   const handleCloseModal = () => {
     setOpenedModal(null);
@@ -299,12 +322,25 @@ export default function InGameLayout({ scenario }: InGameLayoutProps) {
             )
           );
         })}
-        <ClueDashboardModal
-          clues={scenario.clues}
-          isOpen={openedModal === "dashboard"}
-          checkedClueList={checkedClueList}
-          onClose={handleCloseModal}
-        />
+        {scenario.interrogations?.length ? (
+          <ClueInterrogationModal
+            clues={scenario.clues}
+            isOpen={openedModal === "dashboard"}
+            checkedClueList={checkedClueList}
+            suspects={scenario.suspects}
+            interrogations={scenario.interrogations}
+            scenarioId={scenario.id}
+            onInterrogationComplete={(title) => recordInteraction(`신문 완료 ${title}`)}
+            onClose={handleCloseModal}
+          />
+        ) : (
+          <ClueDashboardModal
+            clues={scenario.clues}
+            isOpen={openedModal === "dashboard"}
+            checkedClueList={checkedClueList}
+            onClose={handleCloseModal}
+          />
+        )}
         <SuspectsInfoCard
           isOpen={openedModal === "suspects"}
           victims={scenario.victims}
@@ -382,7 +418,7 @@ export default function InGameLayout({ scenario }: InGameLayoutProps) {
                 onClick={() => setOpenedModal("dashboard")}
                 sx={quickMenuButtonSx}
               >
-                단서 현황
+                {scenario.interrogations?.length ? "단서함 · 신문" : "단서 현황"}
               </Button>
               <Button
                 startIcon={<PersonSearchIcon fontSize="small" />}

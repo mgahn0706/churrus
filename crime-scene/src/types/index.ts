@@ -52,6 +52,19 @@ export type ClueLock = PasswordClueLock | PrerequisiteClueLock;
 export interface ClueType extends ClueBase {
   type: "basic" | "additional";
   lock?: ClueLock;
+  referenceId?: string;
+}
+
+export interface ClueInterrogation {
+  id: string;
+  suspectName: string;
+  prompt: string;
+  requiredReferenceIds: string[];
+  result: {
+    referenceId: string;
+    title: string;
+    description: string;
+  };
 }
 
 export interface MovePlaceButtonType {
@@ -107,6 +120,7 @@ export interface ClueScenarioType extends ScenarioSummary {
   clues: ClueType[];
   movePlaceButtons: MovePlaceButtonType[];
   additionalQuestions: AdditionalQuestionType[];
+  interrogations?: ClueInterrogation[];
 }
 
 export interface InterrogationEvidence {
