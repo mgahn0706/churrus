@@ -9,8 +9,6 @@ import {
   Button,
   Dialog,
   DialogActions,
-  DialogContent,
-  DialogContentText,
   DialogTitle,
   IconButton,
   MenuItem,
@@ -53,7 +51,6 @@ export default function MemoModal({
   const [section, setSection] = useState<"main" | "additional">("main");
   const [questionIndex, setQuestionIndex] = useState(0);
   const [isFinalConfirmModalOpen, setIsFinalConfirmModalOpen] = useState(false);
-  const [isUnsaveAlertModalOpen, setIsUnsaveAlertModalOpen] = useState(false);
 
   useEffect(() => {
     const savedNote = localStorage.getItem(scenarioKeyword);
@@ -67,16 +64,17 @@ export default function MemoModal({
     note.whyDunnit,
   ].every((answer) => answer.trim().length > 0);
 
-  const handleNoteSave = () => {
+  const updateNote = (changes: Partial<DetectiveNoteType>) => {
+    setNote({ ...note, ...changes });
+  };
+
+  const saveNote = () => {
     localStorage.setItem(scenarioKeyword, JSON.stringify(note));
   };
 
-  const isNoteChanged = () => {
-    const savedNote = localStorage.getItem(scenarioKeyword);
-    return (
-      (!!savedNote && savedNote !== JSON.stringify(note)) ||
-      (!savedNote && JSON.stringify(note) !== JSON.stringify(INIT_NOTE))
-    );
+  const handleClose = () => {
+    saveNote();
+    onClose();
   };
 
   return (
@@ -100,16 +98,10 @@ export default function MemoModal({
         <DialogTitle
           sx={{ flexShrink: 0, borderBottom: 1, borderColor: "divider" }}
         >
-          추리 노트
+          추리 노트 및 정답 제출
           <IconButton
-            aria-label="추리 노트 닫기"
-            onClick={() => {
-              if (isNoteChanged()) {
-                setIsUnsaveAlertModalOpen(true);
-                return;
-              }
-              onClose();
-            }}
+            aria-label="추리 노트 및 정답 제출 닫기"
+            onClick={handleClose}
             sx={{ position: "absolute", top: 5, right: 5 }}
           >
             <Close />
@@ -171,7 +163,7 @@ export default function MemoModal({
                       required
                       value={note.accusedSuspect}
                       onChange={(event) =>
-                        setNote({ ...note, accusedSuspect: event.target.value })
+                        updateNote({ accusedSuspect: event.target.value })
                       }
                     >
                       <MenuItem value="">
@@ -201,7 +193,7 @@ export default function MemoModal({
                       maxRows={3}
                       value={note.howDunnit}
                       onChange={(event) =>
-                        setNote({ ...note, howDunnit: event.target.value })
+                        updateNote({ howDunnit: event.target.value })
                       }
                     />
                   </Box>
@@ -222,7 +214,7 @@ export default function MemoModal({
                       maxRows={3}
                       value={note.whyDunnit}
                       onChange={(event) =>
-                        setNote({ ...note, whyDunnit: event.target.value })
+                        updateNote({ whyDunnit: event.target.value })
                       }
                     />
                   </Box>
@@ -259,7 +251,7 @@ export default function MemoModal({
                     onChange={(event) => {
                       const answers = [...note.additionalQuestionAnswers];
                       answers[questionIndex] = event.target.value;
-                      setNote({ ...note, additionalQuestionAnswers: answers });
+                      updateNote({ additionalQuestionAnswers: answers });
                     }}
                   />
                   <Box
@@ -313,7 +305,7 @@ export default function MemoModal({
               placeholder="잊기 쉬운 용의자들의 알리바이, 증거 등을 메모해보세요."
               value={note.memo}
               onChange={(event) =>
-                setNote({ ...note, memo: event.target.value })
+                updateNote({ memo: event.target.value })
               }
               sx={{
                 flex: 1,
@@ -348,14 +340,8 @@ export default function MemoModal({
             py: 2,
           }}
         >
-          <Button
-            size="large"
-            onClick={() => {
-              handleNoteSave();
-              onClose();
-            }}
-          >
-            저장하고 닫기
+          <Button size="large" onClick={handleClose}>
+            닫기
           </Button>
           <Button
             size="large"
@@ -374,37 +360,11 @@ export default function MemoModal({
           (suspect) => suspect.name === note.accusedSuspect,
         )}
         onConfirm={() => {
-          handleNoteSave();
+          saveNote();
           router.push(`/scenarios/scenario/${scenarioKeyword}/answer`);
         }}
         onClose={() => setIsFinalConfirmModalOpen(false)}
       />
-      <Dialog open={isUnsaveAlertModalOpen}>
-        <DialogTitle>저장되지 않은 변경 사항이 있습니다.</DialogTitle>
-        <DialogContent>
-          <DialogContentText>저장하고 닫으시겠습니까?</DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            color="error"
-            onClick={() => {
-              setIsUnsaveAlertModalOpen(false);
-              onClose();
-            }}
-          >
-            저장하지 않고 닫기
-          </Button>
-          <Button
-            onClick={() => {
-              handleNoteSave();
-              setIsUnsaveAlertModalOpen(false);
-              onClose();
-            }}
-          >
-            저장하고 닫기
-          </Button>
-        </DialogActions>
-      </Dialog>
     </>
   );
 }

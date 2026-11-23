@@ -397,7 +397,7 @@ export default function InGameLayout({ scenario }: InGameLayoutProps) {
                 position: "absolute",
                 top: 48,
                 right: 0,
-                width: 216,
+                width: 256,
                 p: 1,
                 borderRadius: 3,
                 display: "flex",
@@ -412,7 +412,7 @@ export default function InGameLayout({ scenario }: InGameLayoutProps) {
                 onClick={() => setOpenedModal("memo")}
                 sx={quickMenuButtonSx}
               >
-                추리 노트
+                추리 노트 및 정답 제출
               </Button>
               <Button
                 startIcon={scenario.interrogations?.length ? <RecordVoiceOverIcon fontSize="small" /> : <LightBulbIcon fontSize="small" />}

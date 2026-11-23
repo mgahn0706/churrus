@@ -3,7 +3,7 @@ import { Button, Tooltip } from "@mui/material";
 
 export default function MemoButton({ onClick }: { onClick: () => void }) {
   return (
-    <Tooltip title="추리 노트" placement="right">
+    <Tooltip title="추리 노트 및 정답 제출" placement="right">
       <Button
         variant="contained"
         startIcon={<LibraryBooks sx={{ color: "primary.main" }} />}
@@ -26,10 +26,10 @@ export default function MemoButton({ onClick }: { onClick: () => void }) {
             backgroundColor: "rgba(255,255,255,1)",
           },
         }}
-        aria-label="memo"
+        aria-label="추리 노트 및 정답 제출"
         onClick={onClick}
       >
-        추리 노트
+        추리 노트 및 정답 제출
       </Button>
     </Tooltip>
   );
