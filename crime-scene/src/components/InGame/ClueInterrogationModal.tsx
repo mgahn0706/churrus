@@ -208,7 +208,7 @@ export default function ClueInterrogationModal({
       maxWidth="xl"
       slotProps={{ paper: { sx: { width: "calc(100vw - 32px)", height: "min(760px, calc(100dvh - 32px))", maxHeight: "calc(100dvh - 32px)" } } }}
     >
-      <DialogTitle sx={{ px: 2, py: 1, borderBottom: 1, borderColor: "divider" }}>
+      <DialogTitle component="div" sx={{ px: 2, py: 1, borderBottom: 1, borderColor: "divider" }}>
         <Typography component="h2" variant="h5" sx={{ fontWeight: 800 }}>용의자 신문</Typography>
         <Typography variant="body2" color="text.secondary">
           확보한 진술 {completed.size}/{interrogations.length}건
