@@ -7,6 +7,9 @@ const nextConfig = {
   compiler: {
     styledComponents: true,
   },
+  images: {
+    qualities: [60, 65, 72, 75],
+  },
   async redirects() {
     return [
       {

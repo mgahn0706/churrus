@@ -33,6 +33,31 @@ body {
   padding: 0;
 }
 
+@keyframes circus-evidence-accept {
+  from { transform: translate3d(0, -6px, 0); opacity: 0.5; }
+  to { transform: translate3d(0, 0, 0); opacity: 1; }
+}
+
+@keyframes circus-evidence-reject {
+  from { transform: translate3d(0, 0, 0); opacity: 1; }
+  to { transform: translate3d(0, 14px, 0); opacity: 0; }
+}
+
+.circus-evidence-accept {
+  animation: circus-evidence-accept 180ms ease-out;
+}
+
+.circus-evidence-reject {
+  animation: circus-evidence-reject 280ms ease-in forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .circus-evidence-accept,
+  .circus-evidence-reject {
+    animation: none;
+  }
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;

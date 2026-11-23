@@ -1,6 +1,7 @@
 import { Box, Button, Grow, Paper } from "@mui/material";
 import Image from "next/image";
 import LightBulbIcon from "@mui/icons-material/Lightbulb";
+import RecordVoiceOverIcon from "@mui/icons-material/RecordVoiceOver";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import InfoIcon from "@mui/icons-material/Info";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
@@ -221,7 +222,7 @@ export default function InGameLayout({ scenario }: InGameLayoutProps) {
 
   return (
     <>
-      <Box>
+      <Box sx={{ position: "relative", minHeight: "100dvh", isolation: "isolate" }}>
         <Image
           priority
           src={mapImageSrc}
@@ -414,11 +415,11 @@ export default function InGameLayout({ scenario }: InGameLayoutProps) {
                 추리 노트
               </Button>
               <Button
-                startIcon={<LightBulbIcon fontSize="small" />}
+                startIcon={scenario.interrogations?.length ? <RecordVoiceOverIcon fontSize="small" /> : <LightBulbIcon fontSize="small" />}
                 onClick={() => setOpenedModal("dashboard")}
                 sx={quickMenuButtonSx}
               >
-                {scenario.interrogations?.length ? "단서함 · 신문" : "단서 현황"}
+                {scenario.interrogations?.length ? "용의자 신문" : "단서 현황"}
               </Button>
               <Button
                 startIcon={<PersonSearchIcon fontSize="small" />}
