@@ -1,4 +1,5 @@
-import { Avatar, Box, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
+import OptimizedAvatar from "@/components/OptimizedAvatar";
 
 import { SuspectType } from "@/types";
 
@@ -63,7 +64,8 @@ export default function SuspectVoteResultsGrid({
                 textAlign: "center",
               }}
             >
-              <Avatar
+              <OptimizedAvatar
+                imageSize={72}
                 src={suspect.image || ""}
                 alt={suspect.name}
                 sx={{

@@ -1,7 +1,6 @@
 import { SuspectType } from "@/types";
 import {
   Alert,
-  Avatar,
   Box,
   Button,
   DialogContentText,
@@ -12,6 +11,7 @@ import {
   Paper,
   Typography,
 } from "@mui/material";
+import OptimizedAvatar from "@/components/OptimizedAvatar";
 
 interface FinalConfirmModalProps {
   isAllClueSearched: boolean;
@@ -86,7 +86,8 @@ export default function FinalConfirmModal({
             </Typography>
           </Box>
           <Box sx={{ flexGrow: 1 }} />
-          <Avatar
+          <OptimizedAvatar
+            imageSize={56}
             src={suspect.image}
             alt={suspect.name}
             sx={{ width: 56, height: 56 }}

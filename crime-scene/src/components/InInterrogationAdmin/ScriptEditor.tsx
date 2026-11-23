@@ -1,6 +1,7 @@
 "use client";
 
-import { Avatar, Box, Button, FormControl, IconButton, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
+import { Box, Button, FormControl, IconButton, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
+import OptimizedAvatar from "@/components/OptimizedAvatar";
 import { AddRounded, ArrowDownwardRounded, ArrowUpwardRounded, DeleteOutlineRounded } from "@mui/icons-material";
 import { useId } from "react";
 import type { InterrogationDialogueLine, InterrogationScript } from "@/types";
@@ -71,7 +72,7 @@ export default function ScriptEditor({
             >
               {availableSpeakers.map((option) => (
                 <MenuItem key={option.name} value={option.name} sx={{ display: "flex", gap: 1 }}>
-                  {option.image && <Avatar src={option.image} alt="" sx={{ width: 24, height: 24 }} />}
+                  {option.image && <OptimizedAvatar imageSize={24} src={option.image} alt="" sx={{ width: 24, height: 24 }} />}
                   {option.label}
                 </MenuItem>
               ))}

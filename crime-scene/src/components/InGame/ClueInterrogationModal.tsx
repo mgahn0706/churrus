@@ -1,7 +1,8 @@
 import type { ClueInterrogation, ClueType, SuspectType } from "@/types";
 import { AddRounded, CheckRounded, CloseRounded, DescriptionOutlined } from "@mui/icons-material";
-import { Avatar, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from "@mui/material";
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from "@mui/material";
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import OptimizedAvatar from "@/components/OptimizedAvatar";
 
 type Progress = {
   completedIds: string[];
@@ -219,7 +220,7 @@ export default function ClueInterrogationModal({
         <Box sx={{ display: "grid", gridTemplateColumns: { xs: "minmax(0, 1fr) 300px", lg: "420px minmax(0, 1fr) 380px" }, gridTemplateRows: { xs: "auto minmax(0, 1fr)", lg: "minmax(0, 1fr)" }, height: "100%", minHeight: 0 }}>
           <Box component="section" aria-label={`${suspectName} 신문`} sx={{ gridColumn: 1, gridRow: 1, p: 2, minWidth: 0, minHeight: 0, overflowY: "auto", borderRight: 1, borderColor: "divider" }}>
             <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mb: 1.25, p: 1.25, minHeight: 100, bgcolor: "grey.100", borderLeft: 4, borderColor: "primary.main", borderRadius: 2 }}>
-              <Avatar src={suspect?.image} alt={`${suspectName} 프로필`} sx={{ width: 72, height: 72, flexShrink: 0 }} />
+              <OptimizedAvatar imageSize={72} src={suspect?.image} alt={`${suspectName} 프로필`} sx={{ width: 72, height: 72, flexShrink: 0 }} />
               <Box sx={{ minWidth: 0 }}>
                 <Typography variant="overline" color="text.secondary" sx={{ fontWeight: 800 }}>현재 신문 대상</Typography>
                 <Typography component="h3" variant="h5" sx={{ fontWeight: 800, lineHeight: 1.2 }}>{suspectName}</Typography>
@@ -237,7 +238,7 @@ export default function ClueInterrogationModal({
                     onClick={() => setSuspectName(person.name)}
                     sx={{ minWidth: 64, p: 0.25, display: "flex", flexDirection: "column", gap: 0.25, textTransform: "none", color: "text.primary", borderRadius: 2, bgcolor: "transparent", "&:hover": { bgcolor: "action.hover" } }}
                   >
-                    <Avatar src={person.image} alt="" sx={{ width: 38, height: 38, border: 2, borderColor: selected ? "primary.main" : "grey.300" }} />
+                    <OptimizedAvatar imageSize={38} src={person.image} alt="" sx={{ width: 38, height: 38, border: 2, borderColor: selected ? "primary.main" : "grey.300" }} />
                     <Typography variant="caption" sx={{ fontWeight: selected ? 800 : 600 }}>{person.name}</Typography>
                   </Button>
                 );

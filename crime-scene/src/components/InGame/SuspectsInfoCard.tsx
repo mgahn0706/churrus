@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Box,
   Button,
   Chip,
@@ -16,6 +15,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import { SuspectType, VictimType } from "@/types";
 import { useEffect, useMemo, useState } from "react";
+import OptimizedAvatar from "@/components/OptimizedAvatar";
 
 interface SuspectsInfoCardProps {
   isOpen: boolean;
@@ -152,7 +152,8 @@ export default function SuspectsInfoCard({
                           },
                         }}
                       >
-                        <Avatar
+                        <OptimizedAvatar
+                          imageSize={28}
                           src={victim.image}
                           sx={{ width: 28, height: 28, mr: 1 }}
                         />
@@ -251,7 +252,8 @@ export default function SuspectsInfoCard({
                       },
                     }}
                   >
-                    <Avatar
+                    <OptimizedAvatar
+                      imageSize={28}
                       src={suspect.image}
                       sx={{ width: 28, height: 28, mr: 1 }}
                     />
@@ -316,7 +318,8 @@ export default function SuspectsInfoCard({
                       gap: 1.2,
                     }}
                   >
-                    <Avatar
+                    <OptimizedAvatar
+                      imageSize={92}
                       src={selectedPerson.image}
                       sx={{ width: 92, height: 92 }}
                     />

@@ -88,7 +88,7 @@ export const useSuspectVoteModal = ({
   }, [isOpen, roomCode, suspects]);
 
   useEffect(() => {
-    if (!roomCode || !playroomModule) {
+    if (!isOpen || !roomCode || !playroomModule) {
       return;
     }
 
@@ -110,7 +110,12 @@ export const useSuspectVoteModal = ({
         }
       });
 
-      setVoteCounts(nextCounts);
+      setVoteCounts((previous) =>
+        Object.keys(previous).length === suspects.length &&
+        suspects.every((suspect) => previous[suspect.name] === nextCounts[suspect.name])
+          ? previous
+          : nextCounts
+      );
       setVoterCount(voters.length);
     };
 
@@ -120,7 +125,7 @@ export const useSuspectVoteModal = ({
     return () => {
       window.clearInterval(intervalId);
     };
-  }, [playroomModule, roomCode, suspects]);
+  }, [isOpen, playroomModule, roomCode, suspects]);
 
   const voteSummary = useMemo(() => {
     return suspects.map((suspect) => ({

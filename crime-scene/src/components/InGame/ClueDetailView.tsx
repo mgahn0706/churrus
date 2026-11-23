@@ -88,6 +88,10 @@ export function ClueDetailView({ clueData, onClose }: ClueDetailViewProps) {
             ml: "50px",
             mr: "100px",
             my: "50px",
+            position: "relative",
+            width: 600,
+            height: 600,
+            flexShrink: 0,
           }}
         >
           <Image
@@ -96,16 +100,16 @@ export function ClueDetailView({ clueData, onClose }: ClueDetailViewProps) {
             onError={() => setIsImageLoading(false)}
             src={clueData.image}
             alt={`${clueData.id}번째 단서 이미지`}
-            width={isImageLoading ? 0 : 600}
-            height={isImageLoading ? 0 : 600}
-            style={{ borderRadius: 16 }}
+            width={600}
+            height={600}
+            style={{ borderRadius: 16, visibility: isImageLoading ? "hidden" : "visible" }}
           />
           {isImageLoading && (
             <Skeleton
               variant="rectangular"
               width={600}
               height={600}
-              sx={{ borderRadius: 2 }}
+              sx={{ borderRadius: 2, position: "absolute", inset: 0 }}
             />
           )}
         </Box>

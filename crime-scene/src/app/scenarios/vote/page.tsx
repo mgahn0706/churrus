@@ -1,6 +1,7 @@
 "use client";
 
-import { Avatar, Box, CircularProgress, Typography } from "@mui/material";
+import { Box, CircularProgress, Typography } from "@mui/material";
+import OptimizedAvatar from "@/components/OptimizedAvatar";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 
@@ -293,7 +294,8 @@ function SuspectVoteContent() {
                       pointerEvents: isVoteLocked ? "none" : "auto",
                     }}
                   >
-                    <Avatar
+                    <OptimizedAvatar
+                      imageSize={320}
                       src={suspect.image || ""}
                       alt={suspect.name}
                       sx={{
