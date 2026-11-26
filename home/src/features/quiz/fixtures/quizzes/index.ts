@@ -1,6 +1,410 @@
 import { QuizType } from "../../types";
 
 export const QuizData: Record<string, QuizType[]> = {
+  "2026-11": [
+    {
+      "id": "2026-11-1",
+      "meetingId": "2026-11",
+      "quizNumber": 1,
+      "title": "영어 규칙 찾기",
+      "creators": [
+        "안민규"
+      ],
+      "quizImageSource": [
+        "/image/quiz/2026-11-1.png"
+      ],
+      "answerImageSource": [
+        "/image/quiz/2026-11-1-answer.png"
+      ],
+      "answer": "아이팟",
+      "tags": [
+        "EASY",
+        "WORD"
+      ]
+    },
+    {
+      "id": "2026-11-2",
+      "meetingId": "2026-11",
+      "quizNumber": 2,
+      "title": "함수 규칙",
+      "creators": [
+        "권현수"
+      ],
+      "quizImageSource": [
+        "/image/quiz/2026-11-2.png"
+      ],
+      "answerImageSource": [
+        "/image/quiz/2026-11-2-answer.png"
+      ],
+      "answer": "math",
+      "tags": [
+        "MATHEMATICS",
+        "EASY"
+      ]
+    },
+    {
+      "id": "2026-11-3",
+      "meetingId": "2026-11",
+      "quizNumber": 3,
+      "title": "알파벳에 따른 단어",
+      "creators": [
+        "안민규"
+      ],
+      "quizImageSource": [
+        "/image/quiz/2026-11-3.png"
+      ],
+      "answerImageSource": [
+        "/image/quiz/2026-11-3-answer.png"
+      ],
+      "answer": "캠프",
+      "tags": [
+        "EASY",
+        "ENIGMATIC"
+      ]
+    },
+    {
+      "id": "2026-11-4",
+      "meetingId": "2026-11",
+      "quizNumber": 4,
+      "title": "선들의 공식",
+      "creators": [
+        "조경아"
+      ],
+      "quizImageSource": [
+        "/image/quiz/2026-11-4.png"
+      ],
+      "answerImageSource": [
+        "/image/quiz/2026-11-4-answer.png"
+      ],
+      "answer": "달",
+      "tags": [
+        "LATERAL_THINKING"
+      ]
+    },
+    {
+      "id": "2026-11-5",
+      "meetingId": "2026-11",
+      "quizNumber": 5,
+      "title": "가나다라마바사",
+      "creators": [
+        "조경아"
+      ],
+      "quizImageSource": [
+        "/image/quiz/2026-11-5.png"
+      ],
+      "answerImageSource": [
+        "/image/quiz/2026-11-5-answer.png"
+      ],
+      "answer": "뉴델리",
+      "tags": [
+        "LATERAL_THINKING",
+        "WORD"
+      ]
+    },
+    {
+      "id": "2026-11-6",
+      "meetingId": "2026-11",
+      "quizNumber": 6,
+      "title": "나는 누구일까요",
+      "creators": [
+        "김시영"
+      ],
+      "quizImageSource": [
+        "/image/quiz/2026-11-6.png"
+      ],
+      "answerImageSource": [
+        "/image/quiz/2026-11-6-answer.png"
+      ],
+      "answer": "정",
+      "tags": [
+        "RIDDLE"
+      ]
+    },
+    {
+      "id": "2026-11-7",
+      "meetingId": "2026-11",
+      "quizNumber": 7,
+      "title": "A에 들어갈 단어",
+      "creators": [
+        "김태연"
+      ],
+      "quizImageSource": [
+        "/image/quiz/2026-11-7.png"
+      ],
+      "answerImageSource": [
+        "/image/quiz/2026-11-7-answer.png"
+      ],
+      "answer": "구미",
+      "tags": [
+        "PATTERN",
+        "WORD"
+      ]
+    },
+    {
+      "id": "2026-11-8",
+      "meetingId": "2026-11",
+      "quizNumber": 8,
+      "title": "지그재그",
+      "creators": [
+        "정해찬"
+      ],
+      "quizImageSource": [
+        "/image/quiz/2026-11-8.png"
+      ],
+      "answerImageSource": [
+        "/image/quiz/2026-11-8-answer.png"
+      ],
+      "answer": "가용성",
+      "tags": [
+        "PUZZLE",
+        "WORD"
+      ]
+    },
+    {
+      "id": "2026-11-9",
+      "meetingId": "2026-11",
+      "quizNumber": 9,
+      "title": "범인을 찾아라",
+      "creators": [
+        "김시영"
+      ],
+      "quizImageSource": [
+        "/image/quiz/2026-11-9.png"
+      ],
+      "answerImageSource": [
+        "/image/quiz/2026-11-9-answer.png"
+      ],
+      "answer": "박졸부",
+      "tags": [
+        "RIDDLE",
+        "LATERAL_THINKING"
+      ]
+    },
+    {
+      "id": "2026-11-10",
+      "meetingId": "2026-11",
+      "quizNumber": 10,
+      "title": "알파벳 나열",
+      "creators": [
+        "고민우"
+      ],
+      "quizImageSource": [
+        "/image/quiz/2026-11-10.png"
+      ],
+      "answerImageSource": [
+        "/image/quiz/2026-11-10-answer.png"
+      ],
+      "answer": "ENDGAME",
+      "tags": [
+        "PATTERN",
+        "LATERAL_THINKING"
+      ]
+    },
+    {
+      "id": "2026-11-11",
+      "meetingId": "2026-11",
+      "quizNumber": 11,
+      "title": "두 학생이 대화하는 것",
+      "creators": [
+        "정해찬"
+      ],
+      "quizImageSource": [
+        "/image/quiz/2026-11-11.png"
+      ],
+      "answerImageSource": [
+        "/image/quiz/2026-11-11-answer.png"
+      ],
+      "answer": "드론",
+      "tags": [
+        "WORD",
+        "RIDDLE"
+      ]
+    },
+    {
+      "id": "2026-11-12",
+      "meetingId": "2026-11",
+      "quizNumber": 12,
+      "title": "회고록.",
+      "creators": [
+        "김시영"
+      ],
+      "quizImageSource": [
+        "/image/quiz/2026-11-12.png"
+      ],
+      "answerImageSource": [
+        "/image/quiz/2026-11-12-answer.png"
+      ],
+      "answer": "곡선",
+      "tags": [
+        "WORD",
+        "PUZZLE",
+        "ENIGMATIC"
+      ]
+    },
+    {
+      "id": "2026-11-13",
+      "meetingId": "2026-11",
+      "quizNumber": 13,
+      "title": "양피지에 기록된 역사",
+      "creators": [
+        "김시영"
+      ],
+      "quizImageSource": [
+        "/image/quiz/2026-11-13.png"
+      ],
+      "answerImageSource": [
+        "/image/quiz/2026-11-13-answer.png"
+      ],
+      "answer": "남극해",
+      "tags": [
+        "WORD",
+        "RIDDLE"
+      ]
+    },
+    {
+      "id": "2026-11-14",
+      "meetingId": "2026-11",
+      "quizNumber": 14,
+      "title": "우승이와 친구들",
+      "creators": [
+        "김시영"
+      ],
+      "quizImageSource": [
+        "/image/quiz/2026-11-14.png"
+      ],
+      "answerImageSource": [
+        "/image/quiz/2026-11-14-answer.png"
+      ],
+      "answer": "이순신",
+      "tags": [
+        "RIDDLE",
+        "LATERAL_THINKING"
+      ]
+    },
+    {
+      "id": "2026-11-15",
+      "meetingId": "2026-11",
+      "quizNumber": 15,
+      "title": "자기계발",
+      "creators": [
+        "김시영"
+      ],
+      "quizImageSource": [
+        "/image/quiz/2026-11-15.png"
+      ],
+      "answerImageSource": [
+        "/image/quiz/2026-11-15-answer.png"
+      ],
+      "answer": "벨트",
+      "tags": [
+        "WORD",
+        "RIDDLE"
+      ]
+    },
+    {
+      "id": "2026-11-16",
+      "meetingId": "2026-11",
+      "quizNumber": 16,
+      "title": "현대암호학",
+      "creators": [
+        "조경아"
+      ],
+      "quizImageSource": [
+        "/image/quiz/2026-11-16.png"
+      ],
+      "answerImageSource": [
+        "/image/quiz/2026-11-16-answer.png"
+      ],
+      "answer": "error",
+      "tags": [
+        "MATHEMATICS",
+        "PATTERN"
+      ]
+    },
+    {
+      "id": "2026-11-17",
+      "meetingId": "2026-11",
+      "quizNumber": 17,
+      "title": "진화하는 퍼즐",
+      "creators": [
+        "김태연"
+      ],
+      "quizImageSource": [
+        "/image/quiz/2026-11-17.png"
+      ],
+      "answerImageSource": [
+        "/image/quiz/2026-11-17-answer.png"
+      ],
+      "answer": "4",
+      "tags": [
+        "MATHEMATICS",
+        "GEOMETRY",
+        "HARD"
+      ]
+    },
+    {
+      "id": "2026-11-18",
+      "meetingId": "2026-11",
+      "quizNumber": 18,
+      "title": "문제적 추러스 탐구활동",
+      "creators": [
+        "권현수"
+      ],
+      "quizImageSource": [
+        "/image/quiz/2026-11-18.png"
+      ],
+      "answerImageSource": [
+        "/image/quiz/2026-11-18-answer.png"
+      ],
+      "answer": null,
+      "tags": [
+        "LATERAL_THINKING"
+      ]
+    },
+    {
+      "id": "2026-11-19",
+      "meetingId": "2026-11",
+      "quizNumber": 19,
+      "title": "도박사의 게임",
+      "creators": [
+        "이예준"
+      ],
+      "quizImageSource": [
+        "/image/quiz/2026-11-19.png"
+      ],
+      "answerImageSource": [
+        "/image/quiz/2026-11-19-answer.png"
+      ],
+      "answer": "JANUARY",
+      "tags": [
+        "PUZZLE",
+        "ENIGMATIC",
+        "WORD",
+        "HARD"
+      ]
+    },
+    {
+      "id": "2026-11-20",
+      "meetingId": "2026-11",
+      "quizNumber": 20,
+      "title": "Length of...",
+      "creators": [
+        "김시영"
+      ],
+      "quizImageSource": [
+        "/image/quiz/2026-11-20.png"
+      ],
+      "answerImageSource": [
+        "/image/quiz/2026-11-20-answer.png"
+      ],
+      "answer": "달력",
+      "tags": [
+        "LATERAL_THINKING",
+        "HARD"
+      ]
+    }
+  ],
+
   "2026-MOVE-FALL": [
     {
       "id": "2026-MOVE-FALL-1",
