@@ -6,9 +6,9 @@ export const circusAdditionalQuestions = createAdditionalQuestions([]);
 export const circusClues: ClueType[] = [
   {
     id: 1,
-    title: "시체 상태",
-    x: 22,
-    y: 64,
+    title: "시체",
+    x: 29.903,
+    y: 78.654,
     image: "/image/scenario/circus/clues/scene.svg",
     description:
       "어깨에 바늘 구멍이 있고, 그 주변으로 푸른 멍이 들어 있다. 입에 재갈이 물려 있으며, 몸은 밧줄로 묶여 있다.",
@@ -18,9 +18,9 @@ export const circusClues: ClueType[] = [
   },
   {
     id: 2,
-    title: "무대 상태",
-    x: 36,
-    y: 64,
+    title: "무대",
+    x: 35.437,
+    y: 75.92,
     image: "/image/scenario/circus/clues/scene.svg",
     description: "십자가에 시체가 못 박혀 있다. 불에 반쯤 타버린 상태이다.",
     type: "basic",
@@ -42,8 +42,8 @@ export const circusClues: ClueType[] = [
   {
     id: 4,
     title: "항공권 및 위조여권",
-    x: 4,
-    y: 12,
+    x: 8.325,
+    y: 21.945,
     image: "/image/scenario/circus/clues/document.svg",
     description:
       "출국일은 내일이다. 항공권은 약간 찢어져 있으며, 프래니라는 이름의 위조여권과 함께 있다.",
@@ -54,8 +54,8 @@ export const circusClues: ClueType[] = [
   {
     id: 5,
     title: "보석",
-    x: 22,
-    y: 12,
+    x: 10.286,
+    y: 40.571,
     image: "/image/scenario/circus/clues/scene.svg",
     description: "이런 서커스단에 있기에는 값비싸 보이는 보석이다.",
     type: "additional",
@@ -65,8 +65,8 @@ export const circusClues: ClueType[] = [
   {
     id: 6,
     title: "캐리어",
-    x: 40,
-    y: 12,
+    x: 24.755,
+    y: 46.168,
     image: "/image/scenario/circus/clues/scene.svg",
     description: "옷가지와 바나나가 들어 있다.",
     type: "additional",
@@ -76,10 +76,10 @@ export const circusClues: ClueType[] = [
   {
     id: 7,
     title: "VIP실",
-    x: 76,
-    y: 64,
+    x: 74.173,
+    y: 42.156,
     image: "/image/scenario/circus/clues/scene.svg",
-    description: "",
+    description: "3층에 따로 떨어진 VIP실이다.",
     type: "basic",
     place: "auditorium",
     referenceId: "4",
@@ -87,8 +87,8 @@ export const circusClues: ClueType[] = [
   {
     id: 8,
     title: "VIP실 구조",
-    x: 4,
-    y: 12,
+    x: 12.762,
+    y: 24.213,
     image: "/image/scenario/circus/clues/scene.svg",
     description:
       "거대한 창을 통해 무대에서도 VIP실 내부를 충분히 볼 수 있을 것 같다. 천장은 뚫려 있다. (무대를 바라보는 유리창 너머로 비밀공간이 보이는 사진)",
@@ -99,8 +99,8 @@ export const circusClues: ClueType[] = [
   {
     id: 9,
     title: "마취총",
-    x: 22,
-    y: 12,
+    x: 26.855,
+    y: 34.771,
     image: "/image/scenario/circus/clues/scene.svg",
     description: "이미 사용한 흔적이 있다. 비싼 브랜드의 마크가 박혀 있다.",
     type: "additional",
@@ -110,8 +110,8 @@ export const circusClues: ClueType[] = [
   {
     id: 10,
     title: "인간 종교 서적",
-    x: 40,
-    y: 12,
+    x: 8.732,
+    y: 42.25,
     image: "/image/scenario/circus/clues/document.svg",
     description:
       "과거 인간의 종교에 대하여 적혀 있는 책이다. 소실된 기록인 만큼 터무니없는 이야기들이 적혀 있다. 십자가에 못 박혀 불타 죽는 부분에 밑줄이 그어져 있다.",
@@ -122,8 +122,8 @@ export const circusClues: ClueType[] = [
   {
     id: 11,
     title: "그림",
-    x: 58,
-    y: 12,
+    x: 17.382,
+    y: 56.678,
     image: "/image/scenario/circus/clues/scene.svg",
     description:
       "검붉은 색으로 그려진 난해한 그림이 걸려 있다. 어쩐지 불쾌한 느낌이 든다.",
@@ -134,8 +134,8 @@ export const circusClues: ClueType[] = [
   {
     id: 12,
     title: "깃털",
-    x: 51,
-    y: 78,
+    x: 51.024,
+    y: 79.891,
     image: "/image/scenario/circus/clues/scene.svg",
     description:
       "검은 깃털이 떨어져 있다. 분명 서커스 직원 중 조류 수인은 존재하지 않는다.",
@@ -146,8 +146,8 @@ export const circusClues: ClueType[] = [
   {
     id: 13,
     title: "커피잔",
-    x: 7,
-    y: 12,
+    x: 11.375,
+    y: 7.998,
     image: "/image/scenario/circus/clues/scene.svg",
     description: "바닥에 커피잔이 쓰러져 있고, 카펫에는 얼룩이 남아 있다.",
     type: "basic",
@@ -157,8 +157,8 @@ export const circusClues: ClueType[] = [
   {
     id: 14,
     title: "신문 기사",
-    x: 7,
-    y: 20,
+    x: 12.536,
+    y: 17.265,
     image: "/image/scenario/circus/clues/document.svg",
     description:
       "인간의 실수로 인해 연이어 발생한 서커스 수인 사고 사건에 대한 기사이다. 서커스의 위험성에 대해 경고하고 있다.",
@@ -169,8 +169,8 @@ export const circusClues: ClueType[] = [
   {
     id: 15,
     title: "서랍",
-    x: 7,
-    y: 28,
+    x: 15.597,
+    y: 24.614,
     image: "/image/scenario/circus/clues/scene.svg",
     description:
       "닫힌 서랍에 열쇠가 꽂혀 있다. 열쇠는 항상 단장이 들고 다닌다고 한다.",
@@ -181,8 +181,8 @@ export const circusClues: ClueType[] = [
   {
     id: 16,
     title: "메모장",
-    x: 4,
-    y: 12,
+    x: 13.964,
+    y: 29.422,
     image: "/image/scenario/circus/clues/document.svg",
     description:
       "동물의 목록이 적혀 있다. (1. 닭, 2. 쥐, 3. 개구리, …, 12. 개, 13. 사자) 사자를 제외한 모든 동물에 빨간 줄이 그어져 있다.",
@@ -193,8 +193,8 @@ export const circusClues: ClueType[] = [
   {
     id: 17,
     title: "계약서",
-    x: 22,
-    y: 12,
+    x: 23.07,
+    y: 47.763,
     image: "/image/scenario/circus/clues/document.svg",
     description:
       "마피아와의 계약서이다. 마피아가 서커스 자금을 제공하는 대신, 서커스단은 마피아가 원하는 코너를 추가해야 한다.",
@@ -205,8 +205,8 @@ export const circusClues: ClueType[] = [
   {
     id: 18,
     title: "보관함",
-    x: 12,
-    y: 58,
+    x: 11.314,
+    y: 42.331,
     image: "/image/scenario/circus/clues/scene.svg",
     description: "인간 한 마리가 들어가기에 적합한 크기의 보관함이다.",
     type: "basic",
@@ -216,8 +216,8 @@ export const circusClues: ClueType[] = [
   {
     id: 19,
     title: "밧줄",
-    x: 24,
-    y: 58,
+    x: 10.432,
+    y: 50.802,
     image: "/image/scenario/circus/clues/scene.svg",
     description:
       "시체에 묶여 있는 밧줄과 동일한 것으로 보인다. 주로 인간들이 공연할 때 사용한다.",
@@ -228,8 +228,8 @@ export const circusClues: ClueType[] = [
   {
     id: 20,
     title: "인간",
-    x: 36,
-    y: 58,
+    x: 7.438,
+    y: 59.277,
     image: "/image/scenario/circus/clues/scene.svg",
     description: "바닥에 누워 있다. 건드려도 아무런 반응이 없다.",
     type: "basic",
@@ -239,8 +239,8 @@ export const circusClues: ClueType[] = [
   {
     id: 21,
     title: "신문 기사",
-    x: 36,
-    y: 12,
+    x: 19.665,
+    y: 48.02,
     image: "/image/scenario/circus/clues/document.svg",
     description:
       "이상식욕 증상에 대한 신문 기사이다. 수인 중 일부는 다른 수인을 먹으려는 중독성과 충동성을 보인다. 식욕을 해소하지 못하면 충동성이 점점 심해지며, 30분이 지나면 억제할 수 없게 된다. 자신보다 약한 동물을 먹는 사건이 종종 발생하며, 특히 본래 먹이사슬상 피식자에 해당하는 동물을 보면 증상이 극대화된다.",
@@ -251,8 +251,8 @@ export const circusClues: ClueType[] = [
   {
     id: 22,
     title: "주스",
-    x: 36,
-    y: 20,
+    x: 23.79,
+    y: 53.106,
     image: "/image/scenario/circus/clues/scene.svg",
     description: "반쯤 남긴 주스가 덩그러니 놓여 있다.",
     type: "basic",
@@ -262,8 +262,8 @@ export const circusClues: ClueType[] = [
   {
     id: 23,
     title: "우리",
-    x: 54,
-    y: 12,
+    x: 57.944,
+    y: 12.393,
     image: "/image/scenario/circus/clues/scene.svg",
     description: "자물쇠가 뜯어져 있다. 우리 안에는 인간들이 모여 있다.",
     type: "basic",
@@ -273,8 +273,8 @@ export const circusClues: ClueType[] = [
   {
     id: 24,
     title: "바늘",
-    x: 54,
-    y: 20,
+    x: 61.873,
+    y: 20.112,
     image: "/image/scenario/circus/clues/scene.svg",
     description: "벽에 바늘이 하나 꽂혀 있다.",
     type: "basic",
@@ -284,8 +284,8 @@ export const circusClues: ClueType[] = [
   {
     id: 25,
     title: "훈련 기록",
-    x: 72,
-    y: 12,
+    x: 71.862,
+    y: 5.693,
     image: "/image/scenario/circus/clues/document.svg",
     description:
       "사육사가 참고하는 훈련 기록이다. 인간이 취해야 할 행동이 필요 이상으로 자세하게 적혀 있다. 보관함에 담긴 인간을 십자가에 박는 행위는 20:30에 시작한다.",
@@ -296,8 +296,8 @@ export const circusClues: ClueType[] = [
   {
     id: 26,
     title: "몽둥이",
-    x: 83,
-    y: 20,
+    x: 82.491,
+    y: 4.927,
     image: "/image/scenario/circus/clues/scene.svg",
     description: "오래되어 굳은 검은 핏자국이 가득하다.",
     type: "basic",
@@ -307,8 +307,8 @@ export const circusClues: ClueType[] = [
   {
     id: 27,
     title: "마취총",
-    x: 23,
-    y: 12,
+    x: 84.656,
+    y: 24.861,
     image: "/image/scenario/circus/clues/scene.svg",
     description: "보급형 마취총이다. 이미 사용한 흔적이 있다.",
     type: "basic",
@@ -318,8 +318,8 @@ export const circusClues: ClueType[] = [
   {
     id: 28,
     title: "일기",
-    x: 23,
-    y: 20,
+    x: 88.785,
+    y: 34.015,
     image: "/image/scenario/circus/clues/document.svg",
     description:
       "단장에 대한 찬양과 소리 소문 없이 사라진 서커스 동료들에 대한 의문이 적혀 있다.",
@@ -330,8 +330,8 @@ export const circusClues: ClueType[] = [
   {
     id: 29,
     title: "직원의 증언 1",
-    x: 18,
-    y: 36,
+    x: 48.447,
+    y: 9.357,
     image: "/image/scenario/circus/clues/document.svg",
     description: "“복도에서 의문의 USB를 주웠어요. 연구소장님의 것 같아요.”",
     type: "basic",
@@ -340,33 +340,33 @@ export const circusClues: ClueType[] = [
   },
   {
     id: 30,
-    title: "폐기 인간 기록",
-    x: 4,
-    y: 12,
+    title: "USB",
+    x: 68.911,
+    y: 30.613,
     image: "/image/scenario/circus/clues/document.svg",
     description:
       "폐기 인간에 대한 연구 자료이다. 폐기 인간은 지능이 거의 없으며 정상적인 인지 능력도 없다. 그저 정해진 도구처럼 훈련받은 명령만 수행한다.",
-    type: "additional",
-    place: 29,
+    type: "basic",
+    place: "indoor",
     referenceId: "20-a",
   },
   {
     id: 31,
-    title: "생체 실험 연구 기록",
-    x: 22,
-    y: 12,
+    title: "USB",
+    x: 11.196,
+    y: 20.912,
     image: "/image/scenario/circus/clues/document.svg",
     description:
       "신약 개발을 위해 인간을 모르모트로 사용한 기록이다. 실험의 부작용으로 폐기 인간이 된다고 적혀 있다.",
     type: "additional",
-    place: 29,
+    place: 30,
     referenceId: "20-b",
   },
   {
     id: 32,
     title: "직원의 증언 2",
-    x: 31,
-    y: 36,
+    x: 25.916,
+    y: 32.888,
     image: "/image/scenario/circus/clues/document.svg",
     description: "“19:40에 단장님이 누군가와 대화하는 소리를 들었어요.”",
     type: "basic",
@@ -376,8 +376,8 @@ export const circusClues: ClueType[] = [
   {
     id: 33,
     title: "직원의 증언 3",
-    x: 44,
-    y: 36,
+    x: 40.746,
+    y: 38.651,
     image: "/image/scenario/circus/clues/document.svg",
     description:
       "“VIP님이 오시는 날에는 항상 어떤 공연이 예정되어 있는지 일정표를 보내드립니다.”",
@@ -388,8 +388,8 @@ export const circusClues: ClueType[] = [
   {
     id: 34,
     title: "직원의 증언 4",
-    x: 57,
-    y: 36,
+    x: 57.167,
+    y: 33.172,
     image: "/image/scenario/circus/clues/document.svg",
     description:
       "“인간들은 멍청해서 공연하기 20분 전에는 대기실에 세팅을 해야 공연을 제대로 하더라고요.”",
@@ -400,8 +400,8 @@ export const circusClues: ClueType[] = [
   {
     id: 35,
     title: "서커스 일정표",
-    x: 70,
-    y: 36,
+    x: 71.577,
+    y: 42.645,
     image: "/image/scenario/circus/clues/document.svg",
     description:
       "서커스 일정이 적혀 있는 표이다. 19:00~19:30에는 사육사 쇼가 진행되며, 마지막 이벤트로는 ‘인간 처형식’이 예정되어 있다.",
@@ -412,8 +412,8 @@ export const circusClues: ClueType[] = [
   {
     id: 36,
     title: "작은 굴",
-    x: 10,
-    y: 42,
+    x: 21.049,
+    y: 41.751,
     image: "/image/scenario/circus/clues/scene.svg",
     description: "작은 수인 한 명이 지나갈 수 있는 통로이다.",
     type: "basic",
@@ -423,8 +423,8 @@ export const circusClues: ClueType[] = [
   {
     id: 37,
     title: "비밀 계약서",
-    x: 66,
-    y: 60,
+    x: 69.037,
+    y: 13.684,
     image: "/image/scenario/circus/clues/document.svg",
     description:
       "(갑)이 (을)에게 인간을 제공하고, 대신 (을)이 (갑)에게 수인 시체를 제공한다는 계약서이다. 나머지 부분은 피에 번져 읽기 어렵다. 계약서는 살짝 구겨져 있다.",
@@ -435,8 +435,8 @@ export const circusClues: ClueType[] = [
   {
     id: 38,
     title: "냉동창고",
-    x: 78,
-    y: 60,
+    x: 69.092,
+    y: 21.855,
     image: "/image/scenario/circus/clues/scene.svg",
     description:
       "피투성이가 되어 형체를 알아볼 수 없는 뼈와 살덩이들이 널려 있다. 이빨 자국이 남아 있다.",
@@ -447,8 +447,8 @@ export const circusClues: ClueType[] = [
   {
     id: 39,
     title: "수면제",
-    x: 66,
-    y: 68,
+    x: 69.117,
+    y: 30.265,
     image: "/image/scenario/circus/clues/scene.svg",
     description:
       "연구소장의 특제 수면제이다. 섭취 시 하루 종일 잠들게 된다고 한다.",
@@ -459,8 +459,8 @@ export const circusClues: ClueType[] = [
   {
     id: 40,
     title: "관람객 명부",
-    x: 21,
-    y: 76,
+    x: 37.39,
+    y: 72.91,
     image: "/image/scenario/circus/clues/document.svg",
     description:
       "오늘의 관람객 명단이다. VIP의 이름 옆에 “절대 심기를 거스르지 말 것!!!”이라고 적혀 있다. 명부에 토끼는 존재하지 않는다.",
@@ -471,8 +471,8 @@ export const circusClues: ClueType[] = [
   {
     id: 41,
     title: "마취총",
-    x: 35,
-    y: 76,
+    x: 37.367,
+    y: 81.267,
     image: "/image/scenario/circus/clues/scene.svg",
     description: "보급형 마취총이다. 사용된 흔적이 없다.",
     type: "basic",
@@ -482,8 +482,8 @@ export const circusClues: ClueType[] = [
   {
     id: 42,
     title: "CCTV 기록 1",
-    x: 49,
-    y: 76,
+    x: 37.3,
+    y: 90.347,
     image: "/image/scenario/circus/clues/camera.svg",
     description:
       "주차장 CCTV 기록이다. 19:00에 트럭 한 대가 들어온 것이 확인되지만, 19:30~20:00 동안에는 CCTV가 꺼져 있다.",
@@ -494,8 +494,8 @@ export const circusClues: ClueType[] = [
   {
     id: 43,
     title: "CCTV 기록 2",
-    x: 56,
-    y: 76,
+    x: 53.975,
+    y: 74.567,
     image: "/image/scenario/circus/clues/camera.svg",
     description:
       "천막 입구 CCTV 기록이다. 19:00에 토끼가 들어온 모습이 찍혀 있다.",
@@ -506,8 +506,8 @@ export const circusClues: ClueType[] = [
   {
     id: 44,
     title: "가방",
-    x: 63,
-    y: 76,
+    x: 54.168,
+    y: 83.381,
     image: "/image/scenario/circus/clues/scene.svg",
     description:
       "관객에게서 압수한 가방이다. 당근 모양이 그려져 있으며, 겉면에 진흙이 잔뜩 묻어 있다.",
@@ -518,8 +518,8 @@ export const circusClues: ClueType[] = [
   {
     id: 45,
     title: "돈",
-    x: 4,
-    y: 12,
+    x: 7.935,
+    y: 17.896,
     image: "/image/scenario/circus/clues/scene.svg",
     description: "단순 관람객이 들고 다니기에는 너무 많은 돈이다.",
     type: "additional",
@@ -529,8 +529,8 @@ export const circusClues: ClueType[] = [
   {
     id: 46,
     title: "사진",
-    x: 22,
-    y: 12,
+    x: 7.109,
+    y: 38.317,
     image: "/image/scenario/circus/clues/scene.svg",
     description: "유기인간 보호소에서 우수 표창장을 받은 사진이다.",
     type: "additional",
@@ -540,8 +540,8 @@ export const circusClues: ClueType[] = [
   {
     id: 47,
     title: "테이저건",
-    x: 40,
-    y: 12,
+    x: 24.813,
+    y: 14.272,
     image: "/image/scenario/circus/clues/scene.svg",
     description: "호신용 테이저건이다. 위력이 상당히 강력하게 개조되어 있다.",
     type: "additional",
@@ -551,8 +551,8 @@ export const circusClues: ClueType[] = [
   {
     id: 48,
     title: "서커스 잡지",
-    x: 58,
-    y: 12,
+    x: 24.594,
+    y: 42.98,
     image: "/image/scenario/circus/clues/document.svg",
     description:
       "서커스에 대한 홍보 잡지이다. 새로운 조명 연출이 공개된다고 적혀 있다.",
@@ -563,8 +563,8 @@ export const circusClues: ClueType[] = [
   {
     id: 49,
     title: "펜치",
-    x: 76,
-    y: 12,
+    x: 12.383,
+    y: 60.138,
     image: "/image/scenario/circus/clues/scene.svg",
     description: "공구함에 들어 있어야 할 것 같은 펜치이다.",
     type: "additional",
@@ -574,8 +574,8 @@ export const circusClues: ClueType[] = [
   {
     id: 50,
     title: "경비원의 증언 1",
-    x: 27,
-    y: 84,
+    x: 54.267,
+    y: 92.281,
     image: "/image/scenario/circus/clues/document.svg",
     description:
       "“20:50쯤이었을까요, 평소처럼 순찰을 돌고 있는데 수상한 수인 하나가 땀을 뻘뻘 흘리는 채로 정신없이 도망가길래 일단 제압했습니다. 조금 진정하니까 어딘가 불안한 듯 계속 주변을 살피던데요.”",
@@ -586,8 +586,8 @@ export const circusClues: ClueType[] = [
   {
     id: 51,
     title: "경비원의 증언 2",
-    x: 56,
-    y: 84,
+    x: 37.563,
+    y: 64.327,
     image: "/image/scenario/circus/clues/document.svg",
     description:
       "“여기 인간들이요? 항상 같은 행동을 정확하게 반복하죠. 한 치의 오차도 없습니다. 경력 있는 경비원들도 그러기는 힘든데… 꽤나 신기하지 않습니까?”",
