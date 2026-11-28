@@ -309,7 +309,7 @@ export const scenarioCatalog = defineScenarioCatalog([
     backgroundImage: "/image/scenario/circus/circus-main.png",
     isInDevelopment: false,
     description: "인간 처형식 무대에서 불타 숨진 서커스 단장. 누가 그를 죽였을까?",
-    places: ["ring", "backstage"],
+    places: ["auditorium", "indoor", "outdoor"],
     suspects: circusSuspects,
     victims: [circusVictim],
     color: "#991b1b",
