@@ -198,12 +198,10 @@ export default function InGameLayout({ scenario }: InGameLayoutProps) {
     navigator.clipboard?.writeText(`x: ${x}, y: ${y},`);
   };
 
-  const visibleClues = scenario.clues.filter((clue) => {
-    return (
-      clue.place === currentPlace ||
-      (clue.place === openedClueId && clue.type === "additional")
-    );
-  });
+  const mapClues = scenario.clues.filter((clue) => clue.place === currentPlace);
+  const nestedClues = scenario.clues.filter((clue) =>
+    clue.type === "additional" && clue.place === openedClueId,
+  );
   const uncheckedAdditionalParentIds = new Set(
     scenario.clues
       .filter(
@@ -214,6 +212,38 @@ export default function InGameLayout({ scenario }: InGameLayoutProps) {
       )
       .map((clue) => clue.place)
   );
+
+  const renderClueButton = (clue: ClueType) => {
+    const isChecked = checkedClueList.includes(clue.id);
+    const isUnlocked =
+      !clue.lock ||
+      isChecked ||
+      (clue.lock.method === "clue" && checkedClueList.includes(clue.lock.clueId));
+    const clueStatus =
+      !isUnlocked
+        ? "locked"
+        : isChecked && uncheckedAdditionalParentIds.has(clue.id)
+          ? "pending"
+          : isChecked
+            ? "checked"
+            : "default";
+
+    return (
+      <ClueButton
+        key={clue.id}
+        clue={clue}
+        status={clueStatus}
+        onClick={() => {
+          if (!isUnlocked && clue.lock) {
+            setOpenedModal("unlock");
+            setUnlockingClue(clue);
+            return;
+          }
+          openClue(clue);
+        }}
+      />
+    );
+  };
 
   const { isMobileWidth } = useMobileWidth();
   if (isMobileWidth) {
@@ -255,41 +285,11 @@ export default function InGameLayout({ scenario }: InGameLayoutProps) {
               }
               setOpenedClueId(null);
             }}
-          />
+          >
+            {nestedClues.map(renderClueButton)}
+          </ClueDetailView>
         )}
-        {visibleClues.map((clue) => {
-          const isChecked = checkedClueList.includes(clue.id);
-          const isUnlocked =
-            !clue.lock ||
-            isChecked ||
-            (clue.lock.method === "clue" &&
-              checkedClueList.includes(clue.lock.clueId));
-          const clueStatus =
-            !isUnlocked
-              ? "locked"
-              : isChecked && uncheckedAdditionalParentIds.has(clue.id)
-                ? "pending"
-                : isChecked
-                ? "checked"
-                : "default";
-
-          return (
-            <ClueButton
-              key={clue.id}
-              clue={clue}
-              status={clueStatus}
-              onClick={() => {
-                if (!isUnlocked && clue.lock) {
-                  setOpenedModal("unlock");
-                  setUnlockingClue(clue);
-                  return;
-                }
-
-                openClue(clue);
-              }}
-            />
-          );
-        })}
+        {mapClues.map(renderClueButton)}
 
         <ClueUnlockModal
           targetClue={unlockingClue}

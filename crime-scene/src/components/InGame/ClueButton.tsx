@@ -33,6 +33,7 @@ export function ClueButton({
         sx={{
           zIndex: clue.type === "additional" ? 1081 : 0,
           position: "absolute",
+          pointerEvents: "auto",
           left: `${clue.x}%`,
           top: `${clue.y}%`,
         }}

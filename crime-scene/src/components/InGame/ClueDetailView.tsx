@@ -19,6 +19,7 @@ import { ClueType } from "@/types";
 interface ClueDetailViewProps {
   clueData: ClueType | null;
   onClose: () => void;
+  children?: React.ReactNode;
 }
 
 const Transition = React.forwardRef(function Transition(
@@ -30,7 +31,7 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export function ClueDetailView({ clueData, onClose }: ClueDetailViewProps) {
+export function ClueDetailView({ clueData, onClose, children }: ClueDetailViewProps) {
   const [isImageLoading, setIsImageLoading] = useState(true);
 
   useEffect(() => {
@@ -138,6 +139,11 @@ export function ClueDetailView({ clueData, onClose }: ClueDetailViewProps) {
           </Box>
         </Box>
       </Box>
+      {children && (
+        <Box sx={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
+          {children}
+        </Box>
+      )}
     </Dialog>
   );
 }

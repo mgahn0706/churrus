@@ -112,6 +112,12 @@ export default function CircusClueAdmin({
   const selected = editedClues.find((clue) => clue.id === selectedId);
   const originalSelected = clues.find((clue) => clue.id === selectedId);
   const selectedPosition = positions[selectedId];
+  const parentClue = selected?.type === "additional"
+    ? editedClues.find((clue) => clue.id === selected.place)
+    : undefined;
+  const previewClues = parentClue
+    ? editedClues.filter((clue) => clue.type === "additional" && clue.place === parentClue.id)
+    : [];
   const availableParents = editedClues.filter((candidate) => {
     if (candidate.id === selectedId) return false;
     const visited = new Set<number>();
@@ -159,7 +165,8 @@ export default function CircusClueAdmin({
   };
 
   const placeSelected = (event: ReactMouseEvent<HTMLDivElement>) => {
-    if (event.target !== event.currentTarget || !selected || selected.place !== tab) return;
+    if (event.target !== event.currentTarget || !selected ||
+      (tab === "additional" ? selected.type !== "additional" : selected.place !== tab)) return;
     const bounds = event.currentTarget.getBoundingClientRect();
     updatePosition(selected.id, {
       x: (event.clientX - bounds.left) / bounds.width * 100,
@@ -203,6 +210,42 @@ export default function CircusClueAdmin({
     link.remove();
     window.setTimeout(() => URL.revokeObjectURL(url), 1000);
     setMessage({ severity: "success", text: "clues.ts를 다운로드했습니다. 저장소의 서커스 단서 파일을 교체한 뒤 배포하세요." });
+  };
+
+  const renderMarker = (clue: ClueType) => {
+    const position = positions[clue.id] ?? clue;
+    return (
+      <Button
+        key={clue.id}
+        size="small"
+        variant="contained"
+        title={`${clue.id}. ${clue.title}`}
+        aria-label={`${clue.id}번 ${clue.title} 위치 이동`}
+        onPointerDown={(event) => startDrag(event, clue.id)}
+        onPointerMove={moveDrag}
+        onPointerUp={(event) => { if (dragRef.current?.pointerId === event.pointerId) dragRef.current = null; }}
+        onPointerCancel={() => { dragRef.current = null; }}
+        onKeyDown={(event) => {
+          const step = event.shiftKey ? 2 : 0.5;
+          const delta = { ArrowLeft: [-step, 0], ArrowRight: [step, 0], ArrowUp: [0, -step], ArrowDown: [0, step] }[event.key];
+          if (!delta) return;
+          event.preventDefault();
+          setSelectedId(clue.id);
+          updatePosition(clue.id, { x: position.x + delta[0], y: position.y + delta[1] });
+        }}
+        sx={{
+          position: "absolute", left: `${position.x}%`, top: `${position.y}%`,
+          minWidth: 32, height: 32, p: 0.5, borderRadius: "50%",
+          bgcolor: clue.id === selectedId ? "#facc15" : "#991b1b",
+          color: clue.id === selectedId ? "#211715" : "white",
+          border: "2px solid white", boxShadow: "0 1px 8px #000",
+          cursor: "grab", touchAction: "none", zIndex: clue.id === selectedId ? 2 : 1,
+          "&:hover": { bgcolor: clue.id === selectedId ? "#fde047" : "#b91c1c" },
+        }}
+      >
+        {clue.id}
+      </Button>
+    );
   };
 
   return (
@@ -249,8 +292,27 @@ export default function CircusClueAdmin({
               ))}
             </Stack>
             {tab === "additional" ? (
-              <Box sx={{ aspectRatio: "16 / 9", bgcolor: "#2c2320", display: "grid", placeItems: "center", p: 3 }}>
-                <Typography sx={{ color: "white", textAlign: "center" }}>추가 단서는 지도에 표시되지 않습니다. 오른쪽에서 상위 단서와 좌표를 편집하세요.</Typography>
+              <Box
+                ref={mapRef}
+                onClick={placeSelected}
+                sx={{ position: "relative", aspectRatio: "16 / 9", bgcolor: "#eee7df", overflow: "hidden", cursor: "crosshair" }}
+              >
+                {parentClue ? (
+                  <>
+                    <Box sx={{ position: "absolute", left: "4%", top: "13%", width: "32%", aspectRatio: "1", pointerEvents: "none" }}>
+                      <Image src={parentClue.image} alt={`${parentClue.title} 단서 이미지`} fill sizes="(max-width: 1200px) 32vw, 360px" style={{ objectFit: "contain" }} />
+                    </Box>
+                    <Box sx={{ position: "absolute", left: "45%", top: "22%", width: "48%", pointerEvents: "none" }}>
+                      <Typography sx={{ fontWeight: 800 }}>{parentClue.id}. {parentClue.title}</Typography>
+                      <Typography variant="body2" sx={{ mt: 1, whiteSpace: "pre-line", overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 5, WebkitBoxOrient: "vertical" }}>
+                        {parentClue.description}
+                      </Typography>
+                    </Box>
+                    {previewClues.map(renderMarker)}
+                  </>
+                ) : (
+                  <Typography sx={{ position: "absolute", left: "10%", top: "45%" }}>추가 단서를 선택하고 상위 단서를 지정하세요.</Typography>
+                )}
               </Box>
             ) : <Box
               ref={mapRef}
@@ -265,43 +327,9 @@ export default function CircusClueAdmin({
                 style={{ objectFit: "fill", pointerEvents: "none" }}
                 priority
               />
-              {visibleClues.map((clue) => {
-                const position = positions[clue.id] ?? clue;
-                return (
-                  <Button
-                    key={clue.id}
-                    size="small"
-                    variant="contained"
-                    title={`${clue.id}. ${clue.title}`}
-                    aria-label={`${clue.id}번 ${clue.title} 위치 이동`}
-                    onPointerDown={(event) => startDrag(event, clue.id)}
-                    onPointerMove={moveDrag}
-                    onPointerUp={(event) => { if (dragRef.current?.pointerId === event.pointerId) dragRef.current = null; }}
-                    onPointerCancel={() => { dragRef.current = null; }}
-                    onKeyDown={(event) => {
-                      const step = event.shiftKey ? 2 : 0.5;
-                      const delta = { ArrowLeft: [-step, 0], ArrowRight: [step, 0], ArrowUp: [0, -step], ArrowDown: [0, step] }[event.key];
-                      if (!delta) return;
-                      event.preventDefault();
-                      setSelectedId(clue.id);
-                      updatePosition(clue.id, { x: position.x + delta[0], y: position.y + delta[1] });
-                    }}
-                    sx={{
-                      position: "absolute", left: `${position.x}%`, top: `${position.y}%`,
-                      minWidth: 32, height: 32, p: 0.5, borderRadius: "50%",
-                      bgcolor: clue.id === selectedId ? "#facc15" : "#991b1b",
-                      color: clue.id === selectedId ? "#211715" : "white",
-                      border: "2px solid white", boxShadow: "0 1px 8px #000",
-                      cursor: "grab", touchAction: "none", zIndex: clue.id === selectedId ? 2 : 1,
-                      "&:hover": { bgcolor: clue.id === selectedId ? "#fde047" : "#b91c1c" },
-                    }}
-                  >
-                    {clue.id}
-                  </Button>
-                );
-              })}
+              {visibleClues.map(renderMarker)}
             </Box>}
-            {tab !== "additional" && <Typography variant="caption" color="text.secondary">표식을 선택한 뒤 방향키로 0.5%, Shift+방향키로 2% 이동할 수 있습니다.</Typography>}
+            <Typography variant="caption" color="text.secondary">표식을 드래그하거나 빈 곳을 클릭해 이동하세요. 방향키는 0.5%, Shift+방향키는 2%씩 이동합니다.</Typography>
           </Paper>
 
           <Paper sx={{ p: 2, display: "flex", flexDirection: "column", gap: 2, maxHeight: { lg: "calc(100dvh - 140px)" } }}>
