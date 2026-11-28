@@ -11,11 +11,13 @@ type Place = "auditorium" | "indoor" | "outdoor";
 type Tab = Place | "additional";
 type Position = Pick<CircusClueEdit, "x" | "y">;
 type Positions = Record<number, Position>;
-type ClueMetadata = Pick<CircusClueEdit, "title" | "description" | "location" | "type" | "place">;
+type ClueMetadata = Pick<CircusClueEdit, "id" | "title" | "description" | "type" | "place">;
 type Metadata = Record<number, ClueMetadata>;
+type EditableClue = ClueType & { sourceId: number };
 
 const draftKey = "circus-clue-positions-v2";
-const metadataDraftKey = "circus-clue-metadata-v2";
+const metadataDraftKey = "circus-clue-metadata-v4";
+const previousMetadataDraftKeys = ["circus-clue-metadata-v3", "circus-clue-metadata-v2"];
 const legacyMetadataDraftKey = "circus-clue-metadata-v1";
 const clamp = (value: number) => Math.max(0, Math.min(100, Number(value.toFixed(3))));
 
@@ -32,7 +34,7 @@ export default function CircusClueAdmin({
     Object.fromEntries(clues.map(({ id, x, y }) => [id, { x, y }])),
   );
   const [metadata, setMetadata] = useState<Metadata>(() =>
-    Object.fromEntries(clues.map(({ id, title, description, location, type, place }) => [id, { title, description, location, type, place }])),
+    Object.fromEntries(clues.map(({ id, title, description, type, place }) => [id, { id, title, description, type, place }])),
   );
   const [loaded, setLoaded] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -59,7 +61,11 @@ export default function CircusClueAdmin({
       localStorage.removeItem(draftKey);
     }
     try {
-      const draft = JSON.parse(localStorage.getItem(metadataDraftKey) ?? localStorage.getItem(legacyMetadataDraftKey) ?? "null") as Metadata | null;
+      const draft = JSON.parse(
+        localStorage.getItem(metadataDraftKey) ??
+        previousMetadataDraftKeys.map((key) => localStorage.getItem(key)).find(Boolean) ??
+        localStorage.getItem(legacyMetadataDraftKey) ?? "null",
+      ) as Metadata | null;
       if (draft && typeof draft === "object") {
         setMetadata((current) => {
           const next = { ...current };
@@ -67,9 +73,9 @@ export default function CircusClueAdmin({
             const entry = draft[clue.id];
             if (!entry || (entry.type !== "basic" && entry.type !== "additional")) continue;
             next[clue.id] = {
+              id: Number.isSafeInteger(entry.id) && entry.id > 0 ? entry.id : clue.id,
               title: typeof entry.title === "string" ? entry.title : clue.title,
               description: typeof entry.description === "string" ? entry.description : clue.description,
-              location: typeof entry.location === "string" ? entry.location : undefined,
               type: entry.type,
               place: entry.place,
             };
@@ -79,31 +85,36 @@ export default function CircusClueAdmin({
       }
     } catch {
       localStorage.removeItem(metadataDraftKey);
+      previousMetadataDraftKeys.forEach((key) => localStorage.removeItem(key));
       localStorage.removeItem(legacyMetadataDraftKey);
     }
     setLoaded(true);
   }, [clues]);
 
   const edits: CircusClueEdit[] = clues.map((clue) => ({
-    id: clue.id,
+    sourceId: clue.id,
+    id: metadata[clue.id]?.id ?? clue.id,
     title: metadata[clue.id]?.title ?? clue.title,
     description: metadata[clue.id]?.description ?? clue.description,
     x: positions[clue.id]?.x ?? clue.x,
     y: positions[clue.id]?.y ?? clue.y,
-    location: metadata[clue.id]?.location,
     type: metadata[clue.id]?.type ?? clue.type,
     place: metadata[clue.id]?.place ?? clue.place,
   }));
-  const editedClues = applyCircusClueEdits(clues, edits);
+  const outputClues = applyCircusClueEdits(clues, edits);
+  const editedClues: EditableClue[] = outputClues
+    .map((clue, index) => ({ ...clue, sourceId: clues[index].id }));
   const changedCount = editedClues.filter((clue, index) =>
+    clue.id !== clues[index].id ||
     clue.title !== clues[index].title || clue.description !== clues[index].description ||
     clue.x !== clues[index].x || clue.y !== clues[index].y ||
-    clue.location !== clues[index].location || clue.type !== clues[index].type ||
+    clue.type !== clues[index].type ||
     clue.place !== clues[index].place,
   ).length;
 
   useEffect(() => {
     if (!loaded) return;
+    previousMetadataDraftKeys.forEach((key) => localStorage.removeItem(key));
     localStorage.removeItem(legacyMetadataDraftKey);
     if (changedCount === 0) {
       localStorage.removeItem(draftKey);
@@ -117,7 +128,7 @@ export default function CircusClueAdmin({
   const visibleClues = editedClues.filter((clue) =>
     tab === "additional" ? clue.type === "additional" : clue.type === "basic" && clue.place === tab,
   );
-  const selected = editedClues.find((clue) => clue.id === selectedId);
+  const selected = editedClues.find((clue) => clue.sourceId === selectedId);
   const originalSelected = clues.find((clue) => clue.id === selectedId);
   const selectedPosition = positions[selectedId];
   const parentClue = selected?.type === "additional"
@@ -127,11 +138,11 @@ export default function CircusClueAdmin({
     ? editedClues.filter((clue) => clue.type === "additional" && clue.place === parentClue.id)
     : [];
   const availableParents = editedClues.filter((candidate) => {
-    if (candidate.id === selectedId) return false;
+    if (candidate.sourceId === selectedId) return false;
     const visited = new Set<number>();
-    let current: ClueType | undefined = candidate;
+    let current: EditableClue | undefined = candidate;
     while (current?.type === "additional" && typeof current.place === "number") {
-      if (current.place === selectedId || visited.has(current.place)) return false;
+      if (current.place === selected?.id || visited.has(current.place)) return false;
       visited.add(current.place);
       current = editedClues.find((clue) => clue.id === current?.place);
     }
@@ -145,6 +156,25 @@ export default function CircusClueAdmin({
 
   const updateMetadata = (id: number, value: Partial<ClueMetadata>) => {
     setMetadata((current) => ({ ...current, [id]: { ...current[id], ...value } }));
+    setMessage(null);
+  };
+
+  const changeClueId = (sourceId: number, nextId: number) => {
+    if (!Number.isSafeInteger(nextId) || nextId <= 0) return;
+    if (editedClues.some((clue) => clue.sourceId !== sourceId && clue.id === nextId)) {
+      setMessage({ severity: "error", text: `${nextId}번 ID는 이미 사용 중입니다.` });
+      return;
+    }
+    setMetadata((current) => {
+      const previousId = current[sourceId].id;
+      const next = { ...current, [sourceId]: { ...current[sourceId], id: nextId } };
+      for (const [key, entry] of Object.entries(next)) {
+        if (entry.type === "additional" && entry.place === previousId) {
+          next[Number(key)] = { ...entry, place: nextId };
+        }
+      }
+      return next;
+    });
     setMessage(null);
   };
 
@@ -176,7 +206,7 @@ export default function CircusClueAdmin({
     if (event.target !== event.currentTarget || !selected ||
       (tab === "additional" ? selected.type !== "additional" : selected.place !== tab)) return;
     const bounds = event.currentTarget.getBoundingClientRect();
-    updatePosition(selected.id, {
+    updatePosition(selected.sourceId, {
       x: (event.clientX - bounds.left) / bounds.width * 100,
       y: (event.clientY - bounds.top) / bounds.height * 100,
     });
@@ -208,7 +238,7 @@ export default function CircusClueAdmin({
       setMessage({ severity: "error", text: error });
       return;
     }
-    const source = serializeCircusClues(editedClues);
+    const source = serializeCircusClues(outputClues);
     const url = URL.createObjectURL(new Blob([source], { type: "text/plain;charset=utf-8" }));
     const link = document.createElement("a");
     link.href = url;
@@ -220,16 +250,16 @@ export default function CircusClueAdmin({
     setMessage({ severity: "success", text: "clues.ts를 다운로드했습니다. 저장소의 서커스 단서 파일을 교체한 뒤 배포하세요." });
   };
 
-  const renderMarker = (clue: ClueType) => {
-    const position = positions[clue.id] ?? clue;
+  const renderMarker = (clue: EditableClue) => {
+    const position = positions[clue.sourceId] ?? clue;
     return (
       <Button
-        key={clue.id}
+        key={clue.sourceId}
         size="small"
         variant="contained"
         title={`${clue.id}. ${clue.title}`}
         aria-label={`${clue.id}번 ${clue.title} 위치 이동`}
-        onPointerDown={(event) => startDrag(event, clue.id)}
+        onPointerDown={(event) => startDrag(event, clue.sourceId)}
         onPointerMove={moveDrag}
         onPointerUp={(event) => { if (dragRef.current?.pointerId === event.pointerId) dragRef.current = null; }}
         onPointerCancel={() => { dragRef.current = null; }}
@@ -238,17 +268,17 @@ export default function CircusClueAdmin({
           const delta = { ArrowLeft: [-step, 0], ArrowRight: [step, 0], ArrowUp: [0, -step], ArrowDown: [0, step] }[event.key];
           if (!delta) return;
           event.preventDefault();
-          setSelectedId(clue.id);
-          updatePosition(clue.id, { x: position.x + delta[0], y: position.y + delta[1] });
+          setSelectedId(clue.sourceId);
+          updatePosition(clue.sourceId, { x: position.x + delta[0], y: position.y + delta[1] });
         }}
         sx={{
           position: "absolute", left: `${position.x}%`, top: `${position.y}%`,
           minWidth: 32, height: 32, p: 0.5, borderRadius: "50%",
-          bgcolor: clue.id === selectedId ? "#facc15" : "#991b1b",
-          color: clue.id === selectedId ? "#211715" : "white",
+          bgcolor: clue.sourceId === selectedId ? "#facc15" : "#991b1b",
+          color: clue.sourceId === selectedId ? "#211715" : "white",
           border: "2px solid white", boxShadow: "0 1px 8px #000",
-          cursor: "grab", touchAction: "none", zIndex: clue.id === selectedId ? 2 : 1,
-          "&:hover": { bgcolor: clue.id === selectedId ? "#fde047" : "#b91c1c" },
+          cursor: "grab", touchAction: "none", zIndex: clue.sourceId === selectedId ? 2 : 1,
+          "&:hover": { bgcolor: clue.sourceId === selectedId ? "#fde047" : "#b91c1c" },
         }}
       >
         {clue.id}
@@ -292,7 +322,7 @@ export default function CircusClueAdmin({
                     setTab(item);
                     setSelectedId(editedClues.find((clue) => item === "additional"
                       ? clue.type === "additional"
-                      : clue.type === "basic" && clue.place === item)?.id ?? 0);
+                      : clue.type === "basic" && clue.place === item)?.sourceId ?? 0);
                   }}
                 >
                   {item === "auditorium" ? "공연장" : item === "indoor" ? "실내" : item === "outdoor" ? "실외" : "추가 단서"}
@@ -346,11 +376,20 @@ export default function CircusClueAdmin({
                 <Typography sx={{ fontWeight: 700 }}>{selected.id}. {selected.title}</Typography>
                 <Stack sx={{ gap: 1.5, mt: 1.5 }}>
                   <TextField
+                    label="단서 ID"
+                    type="number"
+                    size="small"
+                    fullWidth
+                    value={selected.id}
+                    slotProps={{ htmlInput: { min: 1, step: 1 } }}
+                    onChange={(event) => changeClueId(selected.sourceId, Number(event.target.value))}
+                  />
+                  <TextField
                     label="단서 이름"
                     size="small"
                     fullWidth
                     value={selected.title}
-                    onChange={(event) => updateMetadata(selected.id, { title: event.target.value })}
+                    onChange={(event) => updateMetadata(selected.sourceId, { title: event.target.value })}
                   />
                   <TextField
                     label="단서 설명"
@@ -360,14 +399,7 @@ export default function CircusClueAdmin({
                     minRows={4}
                     maxRows={8}
                     value={selected.description}
-                    onChange={(event) => updateMetadata(selected.id, { description: event.target.value })}
-                  />
-                  <TextField
-                    label="위치 설명"
-                    size="small"
-                    fullWidth
-                    value={selected.location ?? ""}
-                    onChange={(event) => updateMetadata(selected.id, { location: event.target.value || undefined })}
+                    onChange={(event) => updateMetadata(selected.sourceId, { description: event.target.value })}
                   />
                   <TextField
                     select
@@ -380,7 +412,7 @@ export default function CircusClueAdmin({
                       const nextPlace = type === "basic"
                         ? (tab === "additional" ? "auditorium" : tab)
                         : (availableParents[0]?.id ?? selected.id);
-                      updateMetadata(selected.id, { type, place: nextPlace });
+                      updateMetadata(selected.sourceId, { type, place: nextPlace });
                       setTab(type === "basic" ? nextPlace as Place : "additional");
                     }}
                   >
@@ -395,13 +427,13 @@ export default function CircusClueAdmin({
                     value={selected.place}
                     onChange={(event) => {
                       const place = selected.type === "basic" ? event.target.value : Number(event.target.value);
-                      updateMetadata(selected.id, { place });
+                      updateMetadata(selected.sourceId, { place });
                       if (selected.type === "basic") setTab(place as Place);
                     }}
                   >
                     {selected.type === "basic"
                       ? circusPlaces.map((place) => <MenuItem key={place} value={place}>{place === "auditorium" ? "공연장" : place === "indoor" ? "실내" : "실외"}</MenuItem>)
-                      : availableParents.map((clue) => <MenuItem key={clue.id} value={clue.id}>{clue.id}. {clue.title}</MenuItem>)}
+                      : availableParents.map((clue) => <MenuItem key={clue.sourceId} value={clue.id}>{clue.id}. {clue.title}</MenuItem>)}
                   </TextField>
                 </Stack>
                 <Stack direction="row" sx={{ gap: 1, mt: 1.5 }}>
@@ -415,18 +447,22 @@ export default function CircusClueAdmin({
                       slotProps={{ htmlInput: { min: 0, max: 100, step: 0.1 } }}
                       onChange={(event) => {
                         const value = Number(event.target.value);
-                        if (Number.isFinite(value)) updatePosition(selected.id, { ...selectedPosition, [axis]: value });
+                        if (Number.isFinite(value)) updatePosition(selected.sourceId, { ...selectedPosition, [axis]: value });
                       }}
                     />
                   ))}
                 </Stack>
                 <Button size="small" sx={{ mt: 1 }} onClick={() => {
                   if (!originalSelected) return;
-                  updatePosition(selected.id, { x: originalSelected.x, y: originalSelected.y });
-                  updateMetadata(selected.id, {
+                  if (editedClues.some((clue) => clue.sourceId !== selected.sourceId && clue.id === originalSelected.id)) {
+                    setMessage({ severity: "error", text: `${originalSelected.id}번 ID가 이미 사용 중이어서 되돌릴 수 없습니다.` });
+                    return;
+                  }
+                  changeClueId(selected.sourceId, originalSelected.id);
+                  updatePosition(selected.sourceId, { x: originalSelected.x, y: originalSelected.y });
+                  updateMetadata(selected.sourceId, {
                     title: originalSelected.title,
                     description: originalSelected.description,
-                    location: originalSelected.location,
                     type: originalSelected.type,
                     place: originalSelected.place,
                   });
@@ -439,9 +475,9 @@ export default function CircusClueAdmin({
               <Stack sx={{ gap: 0.5 }}>
                 {visibleClues.map((clue) => (
                   <Button
-                    key={clue.id}
-                    variant={selectedId === clue.id ? "contained" : "text"}
-                    onClick={() => setSelectedId(clue.id)}
+                    key={clue.sourceId}
+                    variant={selectedId === clue.sourceId ? "contained" : "text"}
+                    onClick={() => setSelectedId(clue.sourceId)}
                     sx={{ justifyContent: "flex-start", textAlign: "left" }}
                   >
                     {clue.id}. {clue.title}

@@ -136,7 +136,7 @@ export default function ClueInterrogationModal({
       referenceId: clue.referenceId!,
       title: clue.title,
       description: clue.description,
-      source: clue.location ?? "현장 조사",
+      source: "현장 조사",
       number: clue.id,
     })),
     ...interrogations.filter((item) => completed.has(item.id)).map((item) => ({
