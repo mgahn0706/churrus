@@ -2,30 +2,36 @@
 
 import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent, type MouseEvent as ReactMouseEvent } from "react";
 import Image from "next/image";
-import { Alert, Box, Button, Paper, Stack, TextField, Typography } from "@mui/material";
+import { Alert, Box, Button, MenuItem, Paper, Stack, TextField, Typography } from "@mui/material";
 import type { ClueType } from "@/types";
-import { saveCircusCluePositions, type CluePosition } from "./actions";
+import { applyCircusClueEdits, circusPlaces, serializeCircusClues, validateCircusClueEdits, type CircusClueEdit } from "@/fixtures/circus/clueEditor";
+import { saveCircusClues } from "./actions";
 
 type Place = "auditorium" | "indoor" | "outdoor";
-type Position = Pick<CluePosition, "x" | "y">;
+type Tab = Place | "additional";
+type Position = Pick<CircusClueEdit, "x" | "y">;
 type Positions = Record<number, Position>;
+type ClueMetadata = Pick<CircusClueEdit, "location" | "type" | "place">;
+type Metadata = Record<number, ClueMetadata>;
 
 const draftKey = "circus-clue-positions-v2";
+const metadataDraftKey = "circus-clue-metadata-v1";
 const clamp = (value: number) => Math.max(0, Math.min(100, Number(value.toFixed(3))));
 
 export default function CircusClueAdmin({
   clues,
-  allClues,
   canSaveToSource,
 }: {
   clues: ClueType[];
-  allClues: ClueType[];
   canSaveToSource: boolean;
 }) {
-  const [place, setPlace] = useState<Place>("auditorium");
-  const [selectedId, setSelectedId] = useState(clues[0]?.id ?? 0);
+  const [tab, setTab] = useState<Tab>("auditorium");
+  const [selectedId, setSelectedId] = useState(clues.find((clue) => clue.type === "basic" && clue.place === "auditorium")?.id ?? 0);
   const [positions, setPositions] = useState<Positions>(() =>
     Object.fromEntries(clues.map(({ id, x, y }) => [id, { x, y }])),
+  );
+  const [metadata, setMetadata] = useState<Metadata>(() =>
+    Object.fromEntries(clues.map(({ id, location, type, place }) => [id, { location, type, place }])),
   );
   const [loaded, setLoaded] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -51,25 +57,80 @@ export default function CircusClueAdmin({
     } catch {
       localStorage.removeItem(draftKey);
     }
+    try {
+      const draft = JSON.parse(localStorage.getItem(metadataDraftKey) ?? "null") as Metadata | null;
+      if (draft && typeof draft === "object") {
+        setMetadata((current) => {
+          const next = { ...current };
+          for (const clue of clues) {
+            const entry = draft[clue.id];
+            if (!entry || (entry.type !== "basic" && entry.type !== "additional")) continue;
+            next[clue.id] = {
+              location: typeof entry.location === "string" ? entry.location : undefined,
+              type: entry.type,
+              place: entry.place,
+            };
+          }
+          return next;
+        });
+      }
+    } catch {
+      localStorage.removeItem(metadataDraftKey);
+    }
     setLoaded(true);
   }, [clues]);
 
-  const changedCount = clues.filter((clue) =>
-    positions[clue.id]?.x !== clue.x || positions[clue.id]?.y !== clue.y,
+  const edits: CircusClueEdit[] = clues.map((clue) => ({
+    id: clue.id,
+    x: positions[clue.id]?.x ?? clue.x,
+    y: positions[clue.id]?.y ?? clue.y,
+    location: metadata[clue.id]?.location,
+    type: metadata[clue.id]?.type ?? clue.type,
+    place: metadata[clue.id]?.place ?? clue.place,
+  }));
+  const editedClues = applyCircusClueEdits(clues, edits);
+  const changedCount = editedClues.filter((clue, index) =>
+    clue.x !== clues[index].x || clue.y !== clues[index].y ||
+    clue.location !== clues[index].location || clue.type !== clues[index].type ||
+    clue.place !== clues[index].place,
   ).length;
 
   useEffect(() => {
     if (!loaded) return;
-    if (changedCount === 0) localStorage.removeItem(draftKey);
-    else localStorage.setItem(draftKey, JSON.stringify(positions));
-  }, [loaded, positions, changedCount]);
+    if (changedCount === 0) {
+      localStorage.removeItem(draftKey);
+      localStorage.removeItem(metadataDraftKey);
+    } else {
+      localStorage.setItem(draftKey, JSON.stringify(positions));
+      localStorage.setItem(metadataDraftKey, JSON.stringify(metadata));
+    }
+  }, [loaded, positions, metadata, changedCount]);
 
-  const visibleClues = clues.filter((clue) => clue.place === place);
-  const selected = clues.find((clue) => clue.id === selectedId);
+  const visibleClues = editedClues.filter((clue) =>
+    tab === "additional" ? clue.type === "additional" : clue.type === "basic" && clue.place === tab,
+  );
+  const selected = editedClues.find((clue) => clue.id === selectedId);
+  const originalSelected = clues.find((clue) => clue.id === selectedId);
   const selectedPosition = positions[selectedId];
+  const availableParents = editedClues.filter((candidate) => {
+    if (candidate.id === selectedId) return false;
+    const visited = new Set<number>();
+    let current: ClueType | undefined = candidate;
+    while (current?.type === "additional" && typeof current.place === "number") {
+      if (current.place === selectedId || visited.has(current.place)) return false;
+      visited.add(current.place);
+      current = editedClues.find((clue) => clue.id === current?.place);
+    }
+    return true;
+  });
 
   const updatePosition = (id: number, position: Position) => {
     setPositions((current) => ({ ...current, [id]: { x: clamp(position.x), y: clamp(position.y) } }));
+    setMessage(null);
+  };
+
+  const updateMetadata = (id: number, value: ClueMetadata) => {
+    setMetadata((current) => ({ ...current, [id]: value }));
     setMessage(null);
   };
 
@@ -98,7 +159,7 @@ export default function CircusClueAdmin({
   };
 
   const placeSelected = (event: ReactMouseEvent<HTMLDivElement>) => {
-    if (event.target !== event.currentTarget || !selected || selected.place !== place) return;
+    if (event.target !== event.currentTarget || !selected || selected.place !== tab) return;
     const bounds = event.currentTarget.getBoundingClientRect();
     updatePosition(selected.id, {
       x: (event.clientX - bounds.left) / bounds.width * 100,
@@ -107,14 +168,17 @@ export default function CircusClueAdmin({
   };
 
   const save = async () => {
+    const error = validateCircusClueEdits(clues, edits);
+    if (error) {
+      setMessage({ severity: "error", text: error });
+      return;
+    }
     setSaving(true);
     setMessage(null);
     try {
-      const result = await saveCircusCluePositions(
-        clues.map((clue) => ({ id: clue.id, ...positions[clue.id] })),
-      );
+      const result = await saveCircusClues(edits);
       setMessage(result.ok
-        ? { severity: "success", text: "단서 좌표를 src/fixtures/circus/clues.ts에 저장했습니다." }
+        ? { severity: "success", text: "단서 변경사항을 src/fixtures/circus/clues.ts에 저장했습니다." }
         : { severity: "error", text: result.error ?? "저장하지 못했습니다." });
     } catch {
       setMessage({ severity: "error", text: "저장하지 못했습니다. 개발 서버 로그를 확인하세요." });
@@ -124,24 +188,12 @@ export default function CircusClueAdmin({
   };
 
   const downloadFixture = () => {
-    const source = [
-      'import type { ClueType } from "@/types";',
-      'import { createAdditionalQuestions } from "../utils";',
-      "",
-      "export const circusAdditionalQuestions = createAdditionalQuestions([]);",
-      "",
-      "export const circusClues: ClueType[] = [",
-      ...allClues.map((clue) => {
-        const next = clue.type === "basic" ? { ...clue, ...positions[clue.id] } : clue;
-        return [
-          "  {",
-          ...Object.entries(next).map(([key, value]) => `    ${key}: ${JSON.stringify(value)},`),
-          "  },",
-        ].join("\n");
-      }),
-      "];",
-      "",
-    ].join("\n");
+    const error = validateCircusClueEdits(clues, edits);
+    if (error) {
+      setMessage({ severity: "error", text: error });
+      return;
+    }
+    const source = serializeCircusClues(editedClues);
     const url = URL.createObjectURL(new Blob([source], { type: "text/plain;charset=utf-8" }));
     const link = document.createElement("a");
     link.href = url;
@@ -158,13 +210,13 @@ export default function CircusClueAdmin({
       <Box sx={{ maxWidth: 1500, mx: "auto" }}>
         <Stack direction={{ xs: "column", sm: "row" }} sx={{ justifyContent: "space-between", alignItems: { sm: "center" }, gap: 2, mb: 2 }}>
           <Box>
-            <Typography variant="h5" sx={{ fontWeight: 800 }}>서커스 단서 위치 편집</Typography>
-            <Typography variant="body2" sx={{ color: "#d9c7c0" }}>표식을 드래그하거나 지도를 클릭해 선택한 단서를 이동하세요.</Typography>
+            <Typography variant="h5" sx={{ fontWeight: 800 }}>서커스 단서 편집</Typography>
+            <Typography variant="body2" sx={{ color: "#d9c7c0" }}>지도에서 표식을 옮기고, 오른쪽에서 위치와 단서 종류를 편집하세요.</Typography>
           </Box>
           <Stack direction="row" sx={{ gap: 1, alignItems: "center" }}>
             <Typography variant="body2">변경 {changedCount}개</Typography>
             {canSaveToSource ? (
-              <Button variant="contained" disabled={!loaded || changedCount === 0 || saving} onClick={save}>좌표 저장</Button>
+              <Button variant="contained" disabled={!loaded || changedCount === 0 || saving} onClick={save}>변경 저장</Button>
             ) : (
               <Button variant="contained" disabled={!loaded || changedCount === 0} onClick={downloadFixture}>clues.ts 다운로드</Button>
             )}
@@ -181,27 +233,33 @@ export default function CircusClueAdmin({
         <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", lg: "minmax(0, 1fr) 320px" }, gap: 2 }}>
           <Paper sx={{ p: 1.5, minWidth: 0 }}>
             <Stack direction="row" sx={{ gap: 1, mb: 1.5 }}>
-              {(["auditorium", "indoor", "outdoor"] as const).map((item) => (
+              {(["auditorium", "indoor", "outdoor", "additional"] as const).map((item) => (
                 <Button
                   key={item}
-                  variant={place === item ? "contained" : "outlined"}
+                  variant={tab === item ? "contained" : "outlined"}
                   onClick={() => {
-                    setPlace(item);
-                    setSelectedId(clues.find((clue) => clue.place === item)?.id ?? 0);
+                    setTab(item);
+                    setSelectedId(editedClues.find((clue) => item === "additional"
+                      ? clue.type === "additional"
+                      : clue.type === "basic" && clue.place === item)?.id ?? 0);
                   }}
                 >
-                  {item === "auditorium" ? "공연장" : item === "indoor" ? "실내" : "실외"}
+                  {item === "auditorium" ? "공연장" : item === "indoor" ? "실내" : item === "outdoor" ? "실외" : "추가 단서"}
                 </Button>
               ))}
             </Stack>
-            <Box
+            {tab === "additional" ? (
+              <Box sx={{ aspectRatio: "16 / 9", bgcolor: "#2c2320", display: "grid", placeItems: "center", p: 3 }}>
+                <Typography sx={{ color: "white", textAlign: "center" }}>추가 단서는 지도에 표시되지 않습니다. 오른쪽에서 상위 단서와 좌표를 편집하세요.</Typography>
+              </Box>
+            ) : <Box
               ref={mapRef}
               onClick={placeSelected}
               sx={{ position: "relative", aspectRatio: "16 / 9", width: "100%", bgcolor: "#211715", overflow: "hidden", cursor: "crosshair" }}
             >
               <Image
-                src={`/image/scenario/circus/map/circus-${place}.png`}
-                alt={`서커스 ${place === "auditorium" ? "공연장" : place === "indoor" ? "실내" : "실외"} 지도`}
+                src={`/image/scenario/circus/map/circus-${tab}.png`}
+                alt={`서커스 ${tab === "auditorium" ? "공연장" : tab === "indoor" ? "실내" : "실외"} 지도`}
                 fill
                 sizes="(max-width: 1200px) 100vw, 1100px"
                 style={{ objectFit: "fill", pointerEvents: "none" }}
@@ -242,15 +300,61 @@ export default function CircusClueAdmin({
                   </Button>
                 );
               })}
-            </Box>
-            <Typography variant="caption" color="text.secondary">표식을 선택한 뒤 방향키로 0.5%, Shift+방향키로 2% 이동할 수 있습니다.</Typography>
+            </Box>}
+            {tab !== "additional" && <Typography variant="caption" color="text.secondary">표식을 선택한 뒤 방향키로 0.5%, Shift+방향키로 2% 이동할 수 있습니다.</Typography>}
           </Paper>
 
           <Paper sx={{ p: 2, display: "flex", flexDirection: "column", gap: 2, maxHeight: { lg: "calc(100dvh - 140px)" } }}>
             {selected && selectedPosition && (
               <Box>
                 <Typography sx={{ fontWeight: 700 }}>{selected.id}. {selected.title}</Typography>
-                <Typography variant="caption" color="text.secondary">{selected.location ?? selected.place}</Typography>
+                <Stack sx={{ gap: 1.5, mt: 1.5 }}>
+                  <TextField
+                    label="위치 설명"
+                    size="small"
+                    fullWidth
+                    value={selected.location ?? ""}
+                    onChange={(event) => updateMetadata(selected.id, {
+                      location: event.target.value || undefined,
+                      type: selected.type,
+                      place: selected.place,
+                    })}
+                  />
+                  <TextField
+                    select
+                    label="단서 종류"
+                    size="small"
+                    fullWidth
+                    value={selected.type}
+                    onChange={(event) => {
+                      const type = event.target.value as ClueType["type"];
+                      const nextPlace = type === "basic"
+                        ? (tab === "additional" ? "auditorium" : tab)
+                        : (availableParents[0]?.id ?? selected.id);
+                      updateMetadata(selected.id, { location: selected.location, type, place: nextPlace });
+                      setTab(type === "basic" ? nextPlace as Place : "additional");
+                    }}
+                  >
+                    <MenuItem value="basic">기본 단서 (지도)</MenuItem>
+                    <MenuItem value="additional">추가 단서 (상위 단서)</MenuItem>
+                  </TextField>
+                  <TextField
+                    select
+                    label={selected.type === "basic" ? "지도" : "상위 단서"}
+                    size="small"
+                    fullWidth
+                    value={selected.place}
+                    onChange={(event) => {
+                      const place = selected.type === "basic" ? event.target.value : Number(event.target.value);
+                      updateMetadata(selected.id, { location: selected.location, type: selected.type, place });
+                      if (selected.type === "basic") setTab(place as Place);
+                    }}
+                  >
+                    {selected.type === "basic"
+                      ? circusPlaces.map((place) => <MenuItem key={place} value={place}>{place === "auditorium" ? "공연장" : place === "indoor" ? "실내" : "실외"}</MenuItem>)
+                      : availableParents.map((clue) => <MenuItem key={clue.id} value={clue.id}>{clue.id}. {clue.title}</MenuItem>)}
+                  </TextField>
+                </Stack>
                 <Stack direction="row" sx={{ gap: 1, mt: 1.5 }}>
                   {(["x", "y"] as const).map((axis) => (
                     <TextField
@@ -267,11 +371,20 @@ export default function CircusClueAdmin({
                     />
                   ))}
                 </Stack>
-                <Button size="small" sx={{ mt: 1 }} onClick={() => updatePosition(selected.id, { x: selected.x, y: selected.y })}>이 단서 원래 위치로</Button>
+                <Button size="small" sx={{ mt: 1 }} onClick={() => {
+                  if (!originalSelected) return;
+                  updatePosition(selected.id, { x: originalSelected.x, y: originalSelected.y });
+                  updateMetadata(selected.id, {
+                    location: originalSelected.location,
+                    type: originalSelected.type,
+                    place: originalSelected.place,
+                  });
+                  setTab(originalSelected.type === "basic" ? originalSelected.place as Place : "additional");
+                }}>이 단서 원래 값으로</Button>
               </Box>
             )}
             <Box sx={{ overflowY: "auto", minHeight: 0 }}>
-              <Typography variant="subtitle2" sx={{ mb: 1 }}>{place === "auditorium" ? "공연장" : place === "indoor" ? "실내" : "실외"} 단서 ({visibleClues.length})</Typography>
+              <Typography variant="subtitle2" sx={{ mb: 1 }}>{tab === "auditorium" ? "공연장" : tab === "indoor" ? "실내" : tab === "outdoor" ? "실외" : "추가"} 단서 ({visibleClues.length})</Typography>
               <Stack sx={{ gap: 0.5 }}>
                 {visibleClues.map((clue) => (
                   <Button

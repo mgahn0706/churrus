@@ -46,9 +46,9 @@ The catalog lives at `/scenarios`. A scenario's game page is `/scenarios/scenari
 
 ### Circus clue position editor
 
-Open the [circus admin page](http://localhost:3000/scenarios/scenario/circus/admin) to select the auditorium, indoor, or outdoor map. Drag a marker, click the map to move the selected clue, or enter exact `x`/`y` percentages. The editor keeps an unsaved draft in browser storage.
+Open the [circus admin page](http://localhost:3000/scenarios/scenario/circus/admin) to select the auditorium, indoor, or outdoor map. Drag a marker, click the map to move the selected clue, or enter exact `x`/`y` percentages. The sidebar also edits each clue's location description, map or parent clue, and basic or additional type. Additional clues are listed in their own tab. The editor keeps an unsaved draft in browser storage.
 
-In local development, **좌표 저장** writes base clue positions directly to `src/fixtures/circus/clues.ts`. On a deployed site, download the updated `clues.ts`, replace that file in the repository, and redeploy to make the positions visible to all players. Additional clues appear inside their parent clue and are edited in the fixture.
+In local development, **변경 저장** writes the edited clues directly to `src/fixtures/circus/clues.ts`. On a deployed site, download the updated `clues.ts`, replace that file in the repository, and redeploy to make the changes visible to all players.
 
 ## Checks
 

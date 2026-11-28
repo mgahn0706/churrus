@@ -4,8 +4,7 @@ import CircusClueAdmin from "./CircusClueAdmin";
 export default function CircusAdminPage() {
   return (
     <CircusClueAdmin
-      clues={circusClues.filter((clue) => clue.type === "basic")}
-      allClues={circusClues}
+      clues={circusClues}
       canSaveToSource={process.env.NODE_ENV === "development"}
     />
   );
