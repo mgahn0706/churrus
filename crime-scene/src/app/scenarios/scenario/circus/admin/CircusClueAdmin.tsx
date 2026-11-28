@@ -13,7 +13,15 @@ type Positions = Record<number, Position>;
 const draftKey = "circus-clue-positions-v2";
 const clamp = (value: number) => Math.max(0, Math.min(100, Number(value.toFixed(3))));
 
-export default function CircusClueAdmin({ clues }: { clues: ClueType[] }) {
+export default function CircusClueAdmin({
+  clues,
+  allClues,
+  canSaveToSource,
+}: {
+  clues: ClueType[];
+  allClues: ClueType[];
+  canSaveToSource: boolean;
+}) {
   const [place, setPlace] = useState<Place>("auditorium");
   const [selectedId, setSelectedId] = useState(clues[0]?.id ?? 0);
   const [positions, setPositions] = useState<Positions>(() =>
@@ -115,6 +123,36 @@ export default function CircusClueAdmin({ clues }: { clues: ClueType[] }) {
     }
   };
 
+  const downloadFixture = () => {
+    const source = [
+      'import type { ClueType } from "@/types";',
+      'import { createAdditionalQuestions } from "../utils";',
+      "",
+      "export const circusAdditionalQuestions = createAdditionalQuestions([]);",
+      "",
+      "export const circusClues: ClueType[] = [",
+      ...allClues.map((clue) => {
+        const next = clue.type === "basic" ? { ...clue, ...positions[clue.id] } : clue;
+        return [
+          "  {",
+          ...Object.entries(next).map(([key, value]) => `    ${key}: ${JSON.stringify(value)},`),
+          "  },",
+        ].join("\n");
+      }),
+      "];",
+      "",
+    ].join("\n");
+    const url = URL.createObjectURL(new Blob([source], { type: "text/plain;charset=utf-8" }));
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "clues.ts";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+    setMessage({ severity: "success", text: "clues.ts를 다운로드했습니다. 저장소의 서커스 단서 파일을 교체한 뒤 배포하세요." });
+  };
+
   return (
     <Box sx={{ minHeight: "100dvh", bgcolor: "#1e1615", color: "#fff7ed", p: { xs: 2, md: 3 } }}>
       <Box sx={{ maxWidth: 1500, mx: "auto" }}>
@@ -125,10 +163,19 @@ export default function CircusClueAdmin({ clues }: { clues: ClueType[] }) {
           </Box>
           <Stack direction="row" sx={{ gap: 1, alignItems: "center" }}>
             <Typography variant="body2">변경 {changedCount}개</Typography>
-            <Button variant="contained" disabled={!loaded || changedCount === 0 || saving} onClick={save}>좌표 저장</Button>
+            {canSaveToSource ? (
+              <Button variant="contained" disabled={!loaded || changedCount === 0 || saving} onClick={save}>좌표 저장</Button>
+            ) : (
+              <Button variant="contained" disabled={!loaded || changedCount === 0} onClick={downloadFixture}>clues.ts 다운로드</Button>
+            )}
           </Stack>
         </Stack>
 
+        {!canSaveToSource && (
+          <Alert severity="info" sx={{ mb: 2 }}>
+            이 페이지의 변경은 현재 브라우저에 임시 저장됩니다. 모든 플레이어에게 적용하려면 clues.ts를 다운로드해 저장소에 반영하고 다시 배포하세요.
+          </Alert>
+        )}
         {message && <Alert severity={message.severity} sx={{ mb: 2 }}>{message.text}</Alert>}
 
         <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", lg: "minmax(0, 1fr) 320px" }, gap: 2 }}>
