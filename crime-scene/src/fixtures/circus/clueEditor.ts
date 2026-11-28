@@ -2,7 +2,7 @@ import type { ClueType } from "@/types";
 
 export const circusPlaces = ["auditorium", "indoor", "outdoor"] as const;
 
-export type CircusClueEdit = Pick<ClueType, "id" | "x" | "y" | "type" | "place" | "location">;
+export type CircusClueEdit = Pick<ClueType, "id" | "title" | "description" | "x" | "y" | "type" | "place" | "location">;
 
 export function validateCircusClueEdits(clues: ClueType[], edits: CircusClueEdit[]): string | null {
   const knownIds = new Set(clues.map((clue) => clue.id));
@@ -12,6 +12,12 @@ export function validateCircusClueEdits(clues: ClueType[], edits: CircusClueEdit
   }
 
   for (const edit of edits) {
+    if (typeof edit.title !== "string" || !edit.title.trim() || edit.title.length > 120) {
+      return `${edit.id}번 단서의 이름이 올바르지 않습니다.`;
+    }
+    if (typeof edit.description !== "string" || !edit.description.trim() || edit.description.length > 20000) {
+      return `${edit.id}번 단서의 설명이 올바르지 않습니다.`;
+    }
     if (
       !Number.isFinite(edit.x) || !Number.isFinite(edit.y) ||
       edit.x < 0 || edit.x > 100 || edit.y < 0 || edit.y > 100 ||

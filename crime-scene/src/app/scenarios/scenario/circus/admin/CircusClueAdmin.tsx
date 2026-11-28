@@ -11,11 +11,12 @@ type Place = "auditorium" | "indoor" | "outdoor";
 type Tab = Place | "additional";
 type Position = Pick<CircusClueEdit, "x" | "y">;
 type Positions = Record<number, Position>;
-type ClueMetadata = Pick<CircusClueEdit, "location" | "type" | "place">;
+type ClueMetadata = Pick<CircusClueEdit, "title" | "description" | "location" | "type" | "place">;
 type Metadata = Record<number, ClueMetadata>;
 
 const draftKey = "circus-clue-positions-v2";
-const metadataDraftKey = "circus-clue-metadata-v1";
+const metadataDraftKey = "circus-clue-metadata-v2";
+const legacyMetadataDraftKey = "circus-clue-metadata-v1";
 const clamp = (value: number) => Math.max(0, Math.min(100, Number(value.toFixed(3))));
 
 export default function CircusClueAdmin({
@@ -31,7 +32,7 @@ export default function CircusClueAdmin({
     Object.fromEntries(clues.map(({ id, x, y }) => [id, { x, y }])),
   );
   const [metadata, setMetadata] = useState<Metadata>(() =>
-    Object.fromEntries(clues.map(({ id, location, type, place }) => [id, { location, type, place }])),
+    Object.fromEntries(clues.map(({ id, title, description, location, type, place }) => [id, { title, description, location, type, place }])),
   );
   const [loaded, setLoaded] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -58,7 +59,7 @@ export default function CircusClueAdmin({
       localStorage.removeItem(draftKey);
     }
     try {
-      const draft = JSON.parse(localStorage.getItem(metadataDraftKey) ?? "null") as Metadata | null;
+      const draft = JSON.parse(localStorage.getItem(metadataDraftKey) ?? localStorage.getItem(legacyMetadataDraftKey) ?? "null") as Metadata | null;
       if (draft && typeof draft === "object") {
         setMetadata((current) => {
           const next = { ...current };
@@ -66,6 +67,8 @@ export default function CircusClueAdmin({
             const entry = draft[clue.id];
             if (!entry || (entry.type !== "basic" && entry.type !== "additional")) continue;
             next[clue.id] = {
+              title: typeof entry.title === "string" ? entry.title : clue.title,
+              description: typeof entry.description === "string" ? entry.description : clue.description,
               location: typeof entry.location === "string" ? entry.location : undefined,
               type: entry.type,
               place: entry.place,
@@ -76,12 +79,15 @@ export default function CircusClueAdmin({
       }
     } catch {
       localStorage.removeItem(metadataDraftKey);
+      localStorage.removeItem(legacyMetadataDraftKey);
     }
     setLoaded(true);
   }, [clues]);
 
   const edits: CircusClueEdit[] = clues.map((clue) => ({
     id: clue.id,
+    title: metadata[clue.id]?.title ?? clue.title,
+    description: metadata[clue.id]?.description ?? clue.description,
     x: positions[clue.id]?.x ?? clue.x,
     y: positions[clue.id]?.y ?? clue.y,
     location: metadata[clue.id]?.location,
@@ -90,6 +96,7 @@ export default function CircusClueAdmin({
   }));
   const editedClues = applyCircusClueEdits(clues, edits);
   const changedCount = editedClues.filter((clue, index) =>
+    clue.title !== clues[index].title || clue.description !== clues[index].description ||
     clue.x !== clues[index].x || clue.y !== clues[index].y ||
     clue.location !== clues[index].location || clue.type !== clues[index].type ||
     clue.place !== clues[index].place,
@@ -97,6 +104,7 @@ export default function CircusClueAdmin({
 
   useEffect(() => {
     if (!loaded) return;
+    localStorage.removeItem(legacyMetadataDraftKey);
     if (changedCount === 0) {
       localStorage.removeItem(draftKey);
       localStorage.removeItem(metadataDraftKey);
@@ -135,8 +143,8 @@ export default function CircusClueAdmin({
     setMessage(null);
   };
 
-  const updateMetadata = (id: number, value: ClueMetadata) => {
-    setMetadata((current) => ({ ...current, [id]: value }));
+  const updateMetadata = (id: number, value: Partial<ClueMetadata>) => {
+    setMetadata((current) => ({ ...current, [id]: { ...current[id], ...value } }));
     setMessage(null);
   };
 
@@ -332,21 +340,34 @@ export default function CircusClueAdmin({
             <Typography variant="caption" color="text.secondary">표식을 드래그하거나 빈 곳을 클릭해 이동하세요. 방향키는 0.5%, Shift+방향키는 2%씩 이동합니다.</Typography>
           </Paper>
 
-          <Paper sx={{ p: 2, display: "flex", flexDirection: "column", gap: 2, maxHeight: { lg: "calc(100dvh - 140px)" } }}>
+          <Paper sx={{ p: 2, display: "flex", flexDirection: "column", gap: 2, maxHeight: { lg: "calc(100dvh - 140px)" }, overflowY: "auto" }}>
             {selected && selectedPosition && (
               <Box>
                 <Typography sx={{ fontWeight: 700 }}>{selected.id}. {selected.title}</Typography>
                 <Stack sx={{ gap: 1.5, mt: 1.5 }}>
                   <TextField
+                    label="단서 이름"
+                    size="small"
+                    fullWidth
+                    value={selected.title}
+                    onChange={(event) => updateMetadata(selected.id, { title: event.target.value })}
+                  />
+                  <TextField
+                    label="단서 설명"
+                    size="small"
+                    fullWidth
+                    multiline
+                    minRows={4}
+                    maxRows={8}
+                    value={selected.description}
+                    onChange={(event) => updateMetadata(selected.id, { description: event.target.value })}
+                  />
+                  <TextField
                     label="위치 설명"
                     size="small"
                     fullWidth
                     value={selected.location ?? ""}
-                    onChange={(event) => updateMetadata(selected.id, {
-                      location: event.target.value || undefined,
-                      type: selected.type,
-                      place: selected.place,
-                    })}
+                    onChange={(event) => updateMetadata(selected.id, { location: event.target.value || undefined })}
                   />
                   <TextField
                     select
@@ -359,7 +380,7 @@ export default function CircusClueAdmin({
                       const nextPlace = type === "basic"
                         ? (tab === "additional" ? "auditorium" : tab)
                         : (availableParents[0]?.id ?? selected.id);
-                      updateMetadata(selected.id, { location: selected.location, type, place: nextPlace });
+                      updateMetadata(selected.id, { type, place: nextPlace });
                       setTab(type === "basic" ? nextPlace as Place : "additional");
                     }}
                   >
@@ -374,7 +395,7 @@ export default function CircusClueAdmin({
                     value={selected.place}
                     onChange={(event) => {
                       const place = selected.type === "basic" ? event.target.value : Number(event.target.value);
-                      updateMetadata(selected.id, { location: selected.location, type: selected.type, place });
+                      updateMetadata(selected.id, { place });
                       if (selected.type === "basic") setTab(place as Place);
                     }}
                   >
@@ -403,6 +424,8 @@ export default function CircusClueAdmin({
                   if (!originalSelected) return;
                   updatePosition(selected.id, { x: originalSelected.x, y: originalSelected.y });
                   updateMetadata(selected.id, {
+                    title: originalSelected.title,
+                    description: originalSelected.description,
                     location: originalSelected.location,
                     type: originalSelected.type,
                     place: originalSelected.place,
@@ -411,7 +434,7 @@ export default function CircusClueAdmin({
                 }}>이 단서 원래 값으로</Button>
               </Box>
             )}
-            <Box sx={{ overflowY: "auto", minHeight: 0 }}>
+            <Box sx={{ flexShrink: 0 }}>
               <Typography variant="subtitle2" sx={{ mb: 1 }}>{tab === "auditorium" ? "공연장" : tab === "indoor" ? "실내" : tab === "outdoor" ? "실외" : "추가"} 단서 ({visibleClues.length})</Typography>
               <Stack sx={{ gap: 0.5 }}>
                 {visibleClues.map((clue) => (
